@@ -130,7 +130,7 @@ class UpdateCardViewModel @AssistedInject constructor(
                     updateChannel
                 }
 
-                val deeplinkWebUpdater = deeplink as? Deeplink.WebUpdate
+                val deeplinkWebUpdater = deeplink as? Deeplink.BottomBar.DeviceTab.WebUpdate
 
                 return@combine UpdateCardHelper(
                     newUpdateChannel,

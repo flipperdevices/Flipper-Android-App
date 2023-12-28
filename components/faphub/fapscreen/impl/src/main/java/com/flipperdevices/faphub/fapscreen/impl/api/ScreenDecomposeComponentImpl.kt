@@ -7,9 +7,9 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.bottombar.api.BottomNavigationHandleDeeplink
-import com.flipperdevices.bottombar.model.BottomBarTab
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.fapscreen.impl.composable.ComposableFapScreen
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
@@ -18,6 +18,7 @@ import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -30,7 +31,6 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<FapScreenNavigationConfig>,
     private val fapScreenViewModelFactory: FapScreenViewModel.Factory,
     private val installationUIApi: FapInstallationUIApi,
-    private val bottomBarApi: BottomNavigationHandleDeeplink,
     private val uninstallApi: FapUninstallApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : DecomposeComponent, ComponentContext by componentContext {
@@ -43,6 +43,8 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
         val loadingState by fapScreenViewModel.getLoadingState().collectAsState()
         val controlState by fapScreenViewModel.getControlState().collectAsState()
 
+        val deeplinkHandler = LocalDeeplinkHandler.current
+
         ComposableFapScreen(
             onBack = navigation::pop,
             installationButton = { fapItem, modifier ->
@@ -52,7 +54,9 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
                     fapButtonSize = FapButtonSize.LARGE
                 )
             },
-            onOpenDeviceTab = { bottomBarApi.onChangeTab(BottomBarTab.DEVICE, force = true) },
+            onOpenDeviceTab = {
+                deeplinkHandler.handleDeeplink(Deeplink.BottomBar.OpenTab(DeeplinkBottomBarTab.DEVICE))
+            },
             uninstallButton = { modifier, fapItem ->
                 uninstallApi.ComposableFapUninstallButton(
                     modifier = modifier,

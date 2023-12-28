@@ -44,7 +44,7 @@ class DeepLinkFlipperFormatCryproSharing @Inject constructor(
             folder = path.substringBeforeLast("/"),
             nameWithExtension = path.substringAfterLast("/")
         )
-        return Deeplink.FlipperKey(
+        return Deeplink.RootLevel.SaveKey.FlipperKey(
             path = flipperFilePath,
             content = DeeplinkContent.FFFCryptoContent(key = flipperKeyCrypto)
         )

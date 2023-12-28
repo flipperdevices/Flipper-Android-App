@@ -1,58 +1,72 @@
 package com.flipperdevices.deeplink.model
 
-import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
 @Immutable
-sealed class Deeplink : Parcelable {
-    @Parcelize
-    @Serializable
-    data class ExternalContent(
-        val content: DeeplinkContent? = null
-    ) : Deeplink()
+sealed class Deeplink {
 
-    @Parcelize
     @Serializable
-    data class FlipperKey(
-        val path: FlipperFilePath,
-        val content: DeeplinkContent? = null
-    ) : Deeplink()
+    sealed class RootLevel : Deeplink() {
+        @Serializable
+        sealed class SaveKey : RootLevel() {
+            @Serializable
+            data class ExternalContent(
+                val content: DeeplinkContent? = null
+            ) : SaveKey()
 
-    @Parcelize
-    @Serializable
-    data class WidgetOptions(
-        val appWidgetId: Int
-    ) : Deeplink()
+            @Serializable
+            data class FlipperKey(
+                val path: FlipperFilePath,
+                val content: DeeplinkContent? = null
+            ) : SaveKey()
+        }
 
-    @Parcelize
-    @Serializable
-    data class OpenKey(
-        val keyPath: FlipperKeyPath
-    ) : Deeplink()
+        @Serializable
+        data class WidgetOptions(
+            val appWidgetId: Int
+        ) : RootLevel()
+    }
 
-    @Parcelize
     @Serializable
-    data class WebUpdate(
-        val url: String,
-        val name: String,
-    ) : Deeplink()
+    sealed class BottomBar : Deeplink() {
+        @Serializable
+        data class OpenTab(val bottomTab: DeeplinkBottomBarTab) : BottomBar()
 
-    @Parcelize
-    @Serializable
-    data class Fap(
-        val appId: String,
-    ) : Deeplink()
+        @Serializable
+        sealed class DeviceTab : BottomBar() {
+            @Serializable
+            data class WebUpdate(
+                val url: String,
+                val name: String,
+            ) : DeviceTab()
 
-    @Parcelize
-    @Serializable
-    data object OpenMfKey : Deeplink()
+            @Serializable
+            data object OpenUpdate : DeviceTab()
+        }
 
-    @Parcelize
-    @Serializable
-    data object OpenUpdate : Deeplink()
+        @Serializable
+        sealed class ArchiveTab : BottomBar() {
+            @Serializable
+            data class OpenKey(
+                val keyPath: FlipperKeyPath
+            ) : ArchiveTab()
+        }
+
+        @Serializable
+        sealed class HubTab : BottomBar() {
+            sealed class FapHub : HubTab() {
+                @Serializable
+                data class Fap(
+                    val appId: String,
+                ) : FapHub()
+            }
+
+            @Serializable
+            data object OpenMfKey : HubTab()
+        }
+    }
 }

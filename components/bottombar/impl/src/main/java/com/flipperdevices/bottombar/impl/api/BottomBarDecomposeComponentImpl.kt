@@ -30,6 +30,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
@@ -48,6 +49,7 @@ import javax.inject.Provider
 class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onBack: DecomposeOnBackParameter,
+    @Assisted deeplink: Deeplink.BottomBar?,
     private val settingsDataStore: DataStore<Settings>,
     private val archiveScreenFactory: ArchiveDecomposeComponent.Factory,
     private val deviceScreenFactory: DeviceScreenDecomposeComponent.Factory,
@@ -79,6 +81,10 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
 
     init {
         backHandler.register(backCallback)
+    }
+
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar) {
+        //
     }
 
     @Composable
@@ -162,6 +168,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         override fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
+            deeplink: Deeplink.BottomBar?
         ): BottomBarDecomposeComponentImpl
     }
 }

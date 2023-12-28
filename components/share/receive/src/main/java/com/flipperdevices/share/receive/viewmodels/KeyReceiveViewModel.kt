@@ -27,9 +27,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import java.net.UnknownServiceException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.plus
 
 class KeyReceiveViewModel @AssistedInject constructor(
-    @Assisted initialDeeplink: Deeplink,
+    @Assisted initialDeeplink: Deeplink.RootLevel.SaveKey,
     application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val flipperKeyParserHelper: FlipperKeyParserHelper,
@@ -39,24 +44,23 @@ class KeyReceiveViewModel @AssistedInject constructor(
     private val internalDeeplinkFlow = MutableStateFlow(initialDeeplink)
 
     private val state = MutableStateFlow<ReceiveState>(ReceiveState.NotStarted)
+    private var job: Job? = null
     fun getState() = state.asStateFlow()
 
     init {
-        internalDeeplinkFlow.onEach {
-            parseFlipperKey()
-        }.launchIn(viewModelScope)
+        job = internalDeeplinkFlow.onEach {
+            parseFlipperKey(it)
+        }.launchIn(viewModelScope + Dispatchers.Default)
     }
 
-    private suspend fun parseFlipperKey() {
-        internalDeeplinkFlow.onEach {
-            val flipperKey = flipperKeyParserHelper.toFlipperKey(it)
-            flipperKey.onSuccess { localFlipperKey ->
-                processSuccessfullyParseKey(localFlipperKey)
-            }
-            flipperKey.onFailure { exception ->
-                processFailureParseKey(exception)
-            }
-        }.launchIn(viewModelScope)
+    private suspend fun parseFlipperKey(deeplink: Deeplink.RootLevel.SaveKey) {
+        val flipperKey = flipperKeyParserHelper.toFlipperKey(deeplink)
+        flipperKey.onSuccess { localFlipperKey ->
+            processSuccessfullyParseKey(localFlipperKey)
+        }
+        flipperKey.onFailure { exception ->
+            processFailureParseKey(exception)
+        }
     }
 
     private suspend fun processSuccessfullyParseKey(flipperKey: FlipperKey) {
@@ -85,10 +89,15 @@ class KeyReceiveViewModel @AssistedInject constructor(
     }
 
     fun onRetry() {
-        internalDeeplinkFlow.onEach {
-            state.emit(ReceiveState.NotStarted)
-            parseFlipperKey()
-        }.launchIn(viewModelScope)
+        val oldJob = job
+        job = viewModelScope.launch(Dispatchers.Default) {
+            oldJob?.cancelAndJoin()
+            internalDeeplinkFlow.collect {
+                state.emit(ReceiveState.NotStarted)
+                parseFlipperKey(it)
+            }
+        }
+
     }
 
     fun onSave() {
@@ -128,7 +137,7 @@ class KeyReceiveViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            initialDeeplink: Deeplink
+            initialDeeplink: Deeplink.RootLevel.SaveKey
         ): KeyReceiveViewModel
     }
 }

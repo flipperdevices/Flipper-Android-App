@@ -13,58 +13,71 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
+import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.screenstreaming.api.ScreenStreamingDecomposeComponent
+import com.flipperdevices.share.api.KeyReceiveDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
+import com.flipperdevices.widget.api.WidgetDecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
 class RootDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted initialDeeplink: Deeplink?,
     private val firstPairApi: FirstPairApi,
     private val firstPairFactory: FirstPairDecomposeComponent.Factory,
     private val bottomBarFactory: BottomBarDecomposeComponent.Factory,
     private val updaterFactory: UpdaterDecomposeComponent.Factory,
     private val updaterApi: UpdaterApi,
-    private val screenStreamingFactory: ScreenStreamingDecomposeComponent.Factory
+    private val screenStreamingFactory: ScreenStreamingDecomposeComponent.Factory,
+    private val widgetScreenFactory: WidgetDecomposeComponent.Factory,
+    private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
+    private val scope = coroutineScope(Dispatchers.Default)
     private val navigation = StackNavigation<RootScreenConfig>()
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    private val stack: Value<ChildStack<RootScreenConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = RootScreenConfig.serializer(),
-        initialStack = this::getInitialConfiguration,
+        initialStack = { getInitialConfiguration(initialDeeplink) },
         handleBackButton = true,
         childFactory = ::child,
     )
+    private val deeplinkHandler = RootDeeplinkHandler(navigation, stack, firstPairApi)
 
     private fun child(
         config: RootScreenConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        RootScreenConfig.BottomBar -> bottomBarFactory(
+        is RootScreenConfig.BottomBar -> bottomBarFactory(
             componentContext = componentContext,
-            onBack = this::internalOnBack
+            onBack = this::internalOnBack,
+            deeplink = config.bottomBarDeeplink
         )
 
-        RootScreenConfig.FirstPair -> firstPairFactory(
+        is RootScreenConfig.FirstPair -> firstPairFactory(
             componentContext = componentContext,
             onBack = this::internalOnBack,
             invalidate = {
                 @Suppress("SpreadOperator")
-                navigation.replaceAll(*getInitialConfiguration().toTypedArray())
+                navigation.replaceAll(*getInitialConfiguration(config.pendingDeeplink).toTypedArray())
             }
         )
 
@@ -78,19 +91,32 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onBack = this::internalOnBack
         )
+
+        is RootScreenConfig.WidgetOptions -> widgetScreenFactory(
+            componentContext = componentContext,
+            widgetId = config.widgetId
+        )
+
+        is RootScreenConfig.SaveKey -> receiveKeyFactory(
+            componentContext = componentContext,
+            deeplink = config.saveKeyDeeplink,
+            onBack = this::internalOnBack
+        )
     }
 
-    private fun getInitialConfiguration(): List<RootScreenConfig> {
-        val rootConfig = if (firstPairApi.shouldWeOpenPairScreen()) {
-            RootScreenConfig.FirstPair
-        } else {
-            RootScreenConfig.BottomBar
+    private fun getInitialConfiguration(deeplink: Deeplink?): List<RootScreenConfig> {
+        if (firstPairApi.shouldWeOpenPairScreen()) {
+            return listOf(RootScreenConfig.FirstPair(deeplink))
         }
+        val stack = mutableListOf<RootScreenConfig>()
+
+        stack.addAll(RootDeeplinkHandler.getConfigStackFromDeeplink(deeplink))
+
         if (updaterApi.isUpdateInProcess()) {
-            return listOf(rootConfig, RootScreenConfig.UpdateScreen(null))
+            stack.add(RootScreenConfig.UpdateScreen(null))
         }
 
-        return listOf(rootConfig)
+        return stack
     }
 
     private fun internalOnBack() {
@@ -103,6 +129,12 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
 
     override fun push(config: RootScreenConfig) {
         navigation.push(config)
+    }
+
+    override fun handleDeeplink(deeplink: Deeplink) {
+        scope.launch(Dispatchers.Main) {
+            deeplinkHandler.handleDeeplink(deeplink)
+        }
     }
 
     @Composable
@@ -123,7 +155,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : RootDecomposeComponent.Factory {
         override operator fun invoke(
             componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
+            initialDeeplink: Deeplink?
         ): RootDecomposeComponentImpl
     }
 }

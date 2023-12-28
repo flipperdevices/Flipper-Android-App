@@ -21,12 +21,3 @@ fun Intent.toFullString(): String {
 
     return sb.toString()
 }
-
-inline fun <reified T : Parcelable> Intent.parcelableExtra(key: String): T? {
-    return when {
-        SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getParcelableExtra(key, T::class.java)
-        else ->
-            @Suppress("DEPRECATION")
-            getParcelableExtra(key)
-    }
-}
