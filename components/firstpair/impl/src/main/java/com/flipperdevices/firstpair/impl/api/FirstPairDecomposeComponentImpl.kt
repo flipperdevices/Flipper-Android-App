@@ -17,6 +17,7 @@ import com.flipperdevices.firstpair.impl.model.FirstPairNavigationConfig
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -55,11 +56,7 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
             onFinishConnect = invalidate,
             onHelpClick = { navigation.push(FirstPairNavigationConfig.HelpScreen) },
             onBack = {
-                navigation.pop {
-                    if (!it) {
-                        onBack()
-                    }
-                }
+                navigation.popOr(onBack::invoke)
             }
         )
 

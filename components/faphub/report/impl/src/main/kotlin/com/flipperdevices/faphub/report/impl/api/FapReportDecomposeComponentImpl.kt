@@ -8,13 +8,14 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.report.api.FapReportDecomposeComponent
 import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,6 +24,7 @@ import dagger.assisted.AssistedInject
 class FapReportDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted fapReportArgument: FapReportArgument,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val reportSelectFactory: FapReportSelectDecomposeComponentImpl.Factory,
     private val reportConcernFactory: FapReportConcernDecomposeComponentImpl.Factory,
     private val reportBugFactory: FapReportBugDecomposeComponentImpl.Factory
@@ -44,19 +46,20 @@ class FapReportDecomposeComponentImpl @AssistedInject constructor(
         is FapReportNavigationConfig.ReportBug -> reportBugFactory(
             componentContext = componentContext,
             reportUrl = config.reportUrl,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapReportNavigationConfig.ReportConcern -> reportConcernFactory(
             componentContext = componentContext,
             applicationUid = config.applicationUid,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapReportNavigationConfig.ReportSelect -> reportSelectFactory(
             componentContext = componentContext,
             fapReportArgument = config.fapReportArgument,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -77,7 +80,8 @@ class FapReportDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : FapReportDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            fapReportArgument: FapReportArgument
+            fapReportArgument: FapReportArgument,
+            onBack: DecomposeOnBackParameter
         ): FapReportDecomposeComponentImpl
     }
 }

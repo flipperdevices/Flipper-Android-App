@@ -14,6 +14,8 @@ import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
 import com.flipperdevices.faphub.report.api.FapReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,6 +25,7 @@ import dagger.assisted.AssistedInject
 class FapScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val id: String,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapReportFactory: FapReportDecomposeComponent.Factory,
     private val screenDecomposeFactory: ScreenDecomposeComponentImpl.Factory
 ) : FapScreenDecomposeComponent, ComponentContext by componentContext {
@@ -43,12 +46,14 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
         is FapScreenNavigationConfig.Main -> screenDecomposeFactory(
             componentContext = componentContext,
             id = config.id,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapScreenNavigationConfig.FapReport -> fapReportFactory(
             componentContext = componentContext,
-            fapReportArgument = config.fapReportArgument
+            fapReportArgument = config.fapReportArgument,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -69,7 +74,8 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : FapScreenDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            id: String
+            id: String,
+            onBack: DecomposeOnBackParameter
         ): FapScreenDecomposeComponentImpl
     }
 }

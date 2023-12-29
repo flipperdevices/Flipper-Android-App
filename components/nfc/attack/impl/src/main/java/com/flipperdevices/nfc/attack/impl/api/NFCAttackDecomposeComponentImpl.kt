@@ -8,7 +8,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
@@ -16,6 +15,8 @@ import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
 import com.flipperdevices.nfc.attack.impl.model.NFCAttackNavigationConfig
 import com.flipperdevices.nfc.mfkey32.api.MfKey32DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,6 +25,7 @@ import dagger.assisted.AssistedInject
 class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcAttackFactory: NFCAttackScreenDecomposeComponentImpl.Factory,
     private val mfKey32Factory: MfKey32DecomposeComponent.Factory
 ) : NFCAttackDecomposeComponent, ComponentContext by componentContext {
@@ -49,12 +51,13 @@ class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         NFCAttackNavigationConfig.MfKey32 -> mfKey32Factory(
             componentContext = componentContext,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         NFCAttackNavigationConfig.NFCAttack -> nfcAttackFactory(
             componentContext = componentContext,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -75,7 +78,8 @@ class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : NFCAttackDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?
+            deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
+            onBack: DecomposeOnBackParameter
         ): NFCAttackDecomposeComponentImpl
     }
 }

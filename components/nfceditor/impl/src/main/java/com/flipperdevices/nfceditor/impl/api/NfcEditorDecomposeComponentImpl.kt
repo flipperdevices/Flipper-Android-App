@@ -8,7 +8,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
@@ -17,6 +16,7 @@ import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -52,7 +52,7 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
 
         is NfcEditorNavigationConfig.Save -> saveDecomposeComponentFactory(
             componentContext = componentContext,
-            onBack = navigation::pop,
+            onBack = { navigation.popOr(onBack::invoke) },
             notSavedFlipperKey = config.notSavedFlipperKey,
             title = config.title
         )

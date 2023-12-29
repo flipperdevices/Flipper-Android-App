@@ -10,7 +10,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
@@ -27,6 +26,7 @@ import com.flipperdevices.screenstreaming.api.ScreenStreamingDecomposeComponent
 import com.flipperdevices.share.api.KeyReceiveDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
@@ -127,11 +127,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun internalOnBack() {
-        navigation.pop { isSuccess ->
-            if (!isSuccess) {
-                onBack()
-            }
-        }
+        navigation.popOr(onBack::invoke)
     }
 
     override fun push(config: RootScreenConfig) {

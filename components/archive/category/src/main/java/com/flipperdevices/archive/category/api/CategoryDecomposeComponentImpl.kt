@@ -13,8 +13,6 @@ import com.flipperdevices.archive.api.CategoryDecomposeComponent
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted

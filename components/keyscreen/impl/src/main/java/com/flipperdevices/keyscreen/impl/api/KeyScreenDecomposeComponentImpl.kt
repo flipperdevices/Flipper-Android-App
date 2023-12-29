@@ -8,7 +8,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
@@ -20,6 +19,7 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
 import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -51,7 +51,7 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is KeyScreenNavigationConfig.Main -> when {
             config.keyPath.path.keyType != FlipperKeyType.INFRARED ||
-                    config.keyPath.deleted ->
+                config.keyPath.deleted ->
                 keyScreenViewFactory(
                     componentContext = componentContext,
                     keyPath = config.keyPath,
@@ -61,7 +61,8 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
 
             else -> infraredKeyScreenFactory(
                 componentContext = componentContext,
-                keyPath = config.keyPath
+                keyPath = config.keyPath,
+                onBack = this::internalOnBack
             )
         }
 
@@ -79,13 +80,7 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
         )
     }
 
-    private fun internalOnBack() {
-        navigation.pop { onComplete ->
-            if (!onComplete) {
-                onBack()
-            }
-        }
-    }
+    private fun internalOnBack() = navigation.popOr(onBack::invoke)
 
     @Composable
     @Suppress("NonSkippableComposable")

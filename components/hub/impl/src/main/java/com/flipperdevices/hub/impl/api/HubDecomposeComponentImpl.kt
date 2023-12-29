@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
@@ -48,7 +49,8 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is HubNavigationConfig.FapHub -> fapHubFactory(
             componentContext = componentContext,
-            deeplink = config.deeplink
+            deeplink = config.deeplink,
+            onBack = navigation::pop
         )
 
         HubNavigationConfig.Main -> hubMainFactory(
@@ -58,7 +60,8 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
 
         is HubNavigationConfig.NfcAttack -> nfcAttackFactory(
             componentContext = componentContext,
-            deeplink = config.deeplink
+            deeplink = config.deeplink,
+            onBack = navigation::pop
         )
     }
 

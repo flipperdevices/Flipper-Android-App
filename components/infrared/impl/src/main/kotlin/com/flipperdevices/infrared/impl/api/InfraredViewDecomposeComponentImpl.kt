@@ -3,7 +3,6 @@ package com.flipperdevices.infrared.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
@@ -15,6 +14,7 @@ import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,6 +24,7 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val keyPath: FlipperKeyPath,
     @Assisted private val navigation: StackNavigation<InfraredNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val infraredViewModelFactory: InfraredViewModel.Factory,
     private val shareBottomUiApi: ShareBottomUIApi,
     private val keyScreenApi: KeyScreenApi,
@@ -50,7 +51,7 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
                     navigation.push(InfraredNavigationConfig.Rename(it))
                 },
                 onShare = onShare,
-                onBack = navigation::pop
+                onBack = onBack::invoke
             )
         }
     }
@@ -60,7 +61,8 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             keyPath: FlipperKeyPath,
-            navigation: StackNavigation<InfraredNavigationConfig>
+            navigation: StackNavigation<InfraredNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): InfraredViewDecomposeComponentImpl
     }
 }

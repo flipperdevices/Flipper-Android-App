@@ -3,7 +3,6 @@ package com.flipperdevices.main.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.installedtab.api.FapInstalledApi
@@ -12,6 +11,7 @@ import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -19,6 +19,7 @@ import dagger.assisted.AssistedInject
 class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi
@@ -29,7 +30,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     override fun Render() {
         val readyToUpdateCount = installedApi.getUpdatePendingCount()
         ComposableFapHubMainScreen(
-            onBack = navigation::pop,
+            onBack = onBack::invoke,
             catalogTabComposable = {
                 catalogTabApi.ComposableCatalogTab(
                     onOpenFapItem = {
@@ -63,7 +64,8 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            navigation: StackNavigation<FapHubNavigationConfig>
+            navigation: StackNavigation<FapHubNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): MainScreenDecomposeComponentImpl
     }
 }

@@ -1,7 +1,6 @@
 package com.flipperdevices.archive.impl.model
 
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.deeplink.model.Deeplink
 import kotlinx.serialization.Serializable
 

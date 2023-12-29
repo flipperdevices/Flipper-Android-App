@@ -20,6 +20,7 @@ import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -29,6 +30,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val id: String,
     @Assisted private val navigation: StackNavigation<FapScreenNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapScreenViewModelFactory: FapScreenViewModel.Factory,
     private val installationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
@@ -46,7 +48,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
         val deeplinkHandler = LocalDeeplinkHandler.current
 
         ComposableFapScreen(
-            onBack = navigation::pop,
+            onBack = onBack::invoke,
             installationButton = { fapItem, modifier ->
                 installationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
@@ -79,7 +81,8 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             id: String,
-            navigation: StackNavigation<FapScreenNavigationConfig>
+            navigation: StackNavigation<FapScreenNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): ScreenDecomposeComponentImpl
     }
 }

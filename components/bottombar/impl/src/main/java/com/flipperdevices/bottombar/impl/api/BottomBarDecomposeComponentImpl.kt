@@ -14,7 +14,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
@@ -41,6 +40,7 @@ import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -76,11 +76,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         )
 
     private val backCallback = BackCallback {
-        navigation.pop(onComplete = { isComplete ->
-            if (!isComplete) {
-                onBack()
-            }
-        })
+        navigation.popOr(onBack::invoke)
     }
 
     init {
@@ -145,6 +141,14 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
+        runBlocking {
+            settingsDataStore.updateData {
+                it.toBuilder()
+                    .setSelectedTab(bottomBarTabEnum.protobufRepresentation)
+                    .build()
+            }
+        }
+
         val existedPair = stack.value.items.find { it.configuration.enum == bottomBarTabEnum }
         if (existedPair == null) {
             navigation.bringToFront(bottomBarTabEnum.toConfig())
@@ -156,14 +160,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             val instance = existedPair.instance
             if (instance is ResetTabDecomposeHandler) {
                 instance.onResetTab()
-            }
-        }
-
-        runBlocking {
-            settingsDataStore.updateData {
-                it.toBuilder()
-                    .setSelectedTab(bottomBarTabEnum.protobufRepresentation)
-                    .build()
             }
         }
     }

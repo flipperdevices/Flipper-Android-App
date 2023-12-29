@@ -55,29 +55,25 @@ class RootDeeplinkHandler(
     companion object {
         fun getConfigStackFromDeeplink(deeplink: Deeplink?): List<RootScreenConfig> {
             return when (deeplink) {
-                is Deeplink.BottomBar -> {
-                    if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
-                        listOf(
-                            RootScreenConfig.BottomBar(deeplink),
-                            RootScreenConfig.OpenKey(deeplink.keyPath)
-                        )
-                    } else {
-                        listOf(RootScreenConfig.BottomBar(deeplink))
-                    }
+                is Deeplink.BottomBar -> if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
+                    listOf(
+                        RootScreenConfig.BottomBar(deeplink),
+                        RootScreenConfig.OpenKey(deeplink.keyPath)
+                    )
+                } else {
+                    listOf(RootScreenConfig.BottomBar(deeplink))
                 }
 
-                is Deeplink.RootLevel -> {
-                    listOf(
-                        RootScreenConfig.BottomBar(
-                            if (deeplink is Deeplink.RootLevel.SaveKey) {
-                                Deeplink.BottomBar.OpenTab(DeeplinkBottomBarTab.ARCHIVE)
-                            } else {
-                                null
-                            }
-                        ),
-                        getConfigFromRootLevelDeeplink(deeplink)
-                    )
-                }
+                is Deeplink.RootLevel -> listOf(
+                    RootScreenConfig.BottomBar(
+                        if (deeplink is Deeplink.RootLevel.SaveKey) {
+                            Deeplink.BottomBar.OpenTab(DeeplinkBottomBarTab.ARCHIVE)
+                        } else {
+                            null
+                        }
+                    ),
+                    getConfigFromRootLevelDeeplink(deeplink)
+                )
 
                 null -> listOf(RootScreenConfig.BottomBar(null))
             }

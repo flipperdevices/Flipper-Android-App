@@ -16,6 +16,8 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,6 +26,7 @@ import dagger.assisted.AssistedInject
 class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val fapCategory: FapCategory,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryScreenFactory: FapHubCategoryScreenDecomposeComponentImpl.Factory
@@ -45,16 +48,19 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
         is FapCategoryNavigationConfig.CategoryList -> fapCategoryScreenFactory(
             componentContext = componentContext,
             fapCategory = config.fapCategory,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapCategoryNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
-            id = config.id
+            id = config.id,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapCategoryNavigationConfig.Search -> fapSearchFactory(
-            componentContext = componentContext
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -75,7 +81,8 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : FapHubCategoryDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            category: FapCategory
+            category: FapCategory,
+            onBack: DecomposeOnBackParameter,
         ): FapHubCategoryDecomposeComponentImpl
     }
 }
