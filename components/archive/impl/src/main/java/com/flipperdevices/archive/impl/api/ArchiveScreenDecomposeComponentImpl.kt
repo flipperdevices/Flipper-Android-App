@@ -15,6 +15,8 @@ import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -59,13 +61,15 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
             }
         }
 
+        val rootNavigation = LocalRootNavigation.current
+
         ComposableArchive(
             synchronizationUiApi = synchronizationUiApi,
             onOpenSearchScreen = {
                 navigation.push(ArchiveNavigationConfig.OpenSearch)
             },
             onOpenKeyScreen = { flipperKeyPath ->
-                navigation.push(ArchiveNavigationConfig.OpenKey(flipperKeyPath))
+                rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
             },
             onOpenCategory = { categoryType ->
                 navigation.push(ArchiveNavigationConfig.OpenCategory(categoryType, null))

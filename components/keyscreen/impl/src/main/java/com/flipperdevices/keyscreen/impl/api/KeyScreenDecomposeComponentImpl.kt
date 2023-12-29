@@ -19,14 +19,17 @@ import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
 import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
+@Suppress("LongParameterList")
 class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted keyPath: FlipperKeyPath,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val infraredKeyScreenFactory: InfraredDecomposeComponent.Factory,
     private val keyScreenViewFactory: KeyScreenViewDecomposeComponentImpl.Factory,
     private val keyEditFactory: KeyEditDecomposeComponent.Factory,
@@ -48,11 +51,12 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is KeyScreenNavigationConfig.Main -> when {
             config.keyPath.path.keyType != FlipperKeyType.INFRARED ||
-                config.keyPath.deleted ->
+                    config.keyPath.deleted ->
                 keyScreenViewFactory(
                     componentContext = componentContext,
                     keyPath = config.keyPath,
-                    navigation = navigation
+                    navigation = navigation,
+                    onBack = this::internalOnBack
                 )
 
             else -> infraredKeyScreenFactory(
@@ -63,7 +67,7 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
 
         is KeyScreenNavigationConfig.KeyEdit -> keyEditFactory(
             componentContext = componentContext,
-            onBack = navigation::pop,
+            onBack = this::internalOnBack,
             flipperKeyPath = config.keyPath,
             title = null
         )
@@ -71,8 +75,16 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
         is KeyScreenNavigationConfig.NfcEdit -> nfcEditFactory(
             componentContext = componentContext,
             flipperKeyPath = config.keyPath,
-            onBack = navigation::pop
+            onBack = this::internalOnBack
         )
+    }
+
+    private fun internalOnBack() {
+        navigation.pop { onComplete ->
+            if (!onComplete) {
+                onBack()
+            }
+        }
     }
 
     @Composable
@@ -92,7 +104,8 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     fun interface Factory : KeyScreenDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            keyPath: FlipperKeyPath
+            keyPath: FlipperKeyPath,
+            onBack: DecomposeOnBackParameter
         ): KeyScreenDecomposeComponentImpl
     }
 }

@@ -19,6 +19,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
+import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -48,7 +49,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val updaterApi: UpdaterApi,
     private val screenStreamingFactory: ScreenStreamingDecomposeComponent.Factory,
     private val widgetScreenFactory: WidgetDecomposeComponent.Factory,
-    private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory
+    private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
+    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(Dispatchers.Default)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -101,6 +103,12 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             deeplink = config.saveKeyDeeplink,
             onBack = this::internalOnBack
         )
+
+        is RootScreenConfig.OpenKey -> keyScreenFactory(
+            componentContext = componentContext,
+            keyPath = config.flipperKeyPath,
+            onBack = this::internalOnBack
+        )
     }
 
     private fun getInitialConfiguration(deeplink: Deeplink?): List<RootScreenConfig> {
@@ -133,6 +141,9 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     override fun handleDeeplink(deeplink: Deeplink) {
         scope.launch(Dispatchers.Main) {
             deeplinkHandler.handleDeeplink(deeplink)
+            if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
+                navigation.push(RootScreenConfig.OpenKey(deeplink.keyPath))
+            }
         }
     }
 

@@ -18,7 +18,6 @@ import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popToRoot
@@ -31,13 +30,12 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ArchiveTab?,
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
-    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
 ) : ArchiveDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
     private val navigation = StackNavigation<ArchiveNavigationConfig>()
 
-    val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = ArchiveNavigationConfig.serializer(),
         initialStack = {
@@ -58,13 +56,7 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
             componentContext = componentContext,
-            categoryType = config.categoryType,
-            deeplink = config.deeplink
-        )
-
-        is ArchiveNavigationConfig.OpenKey -> keyScreenFactory(
-            componentContext = componentContext,
-            keyPath = config.flipperKeyPath
+            categoryType = config.categoryType
         )
 
         ArchiveNavigationConfig.OpenSearch -> searchFactory(

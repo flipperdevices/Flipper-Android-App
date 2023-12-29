@@ -24,8 +24,6 @@ import dagger.assisted.AssistedInject
 class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
-    @Assisted deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?,
-    private val openKeyFactory: KeyScreenDecomposeComponent.Factory,
     private val categoryFactory: CategoryScreenDecomposeComponentImpl.Factory
 ) : CategoryDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<CategoryNavigationConfig>()
@@ -34,14 +32,7 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
         source = navigation,
         serializer = CategoryNavigationConfig.serializer(),
         initialStack = {
-            if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
-                listOf(
-                    CategoryNavigationConfig.Category(categoryType),
-                    CategoryNavigationConfig.OpenKey(deeplink.keyPath)
-                )
-            } else {
-                listOf(CategoryNavigationConfig.Category(categoryType))
-            }
+            listOf(CategoryNavigationConfig.Category(categoryType))
         },
         handleBackButton = true,
         childFactory = ::child,
@@ -55,11 +46,6 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             categoryType = config.categoryType,
             navigation = navigation
-        )
-
-        is CategoryNavigationConfig.OpenKey -> openKeyFactory(
-            componentContext = componentContext,
-            keyPath = config.keyPath
         )
     }
 
@@ -80,8 +66,7 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : CategoryDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            categoryType: CategoryType,
-            deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?
+            categoryType: CategoryType
         ): CategoryDecomposeComponentImpl
     }
 }

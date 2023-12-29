@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.widget.api)
     implementation(projects.components.share.api)
+    implementation(projects.components.keyscreen.api)
+    implementation(projects.components.bridge.dao.api)
 
     // Compose
     implementation(libs.compose.ui)

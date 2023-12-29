@@ -11,9 +11,6 @@ sealed class ArchiveNavigationConfig {
     data object ArchiveObject : ArchiveNavigationConfig()
 
     @Serializable
-    data class OpenKey(val flipperKeyPath: FlipperKeyPath) : ArchiveNavigationConfig()
-
-    @Serializable
     data class OpenCategory(
         val categoryType: CategoryType,
         val deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?
@@ -35,8 +32,6 @@ fun Deeplink.BottomBar.ArchiveTab?.toArchiveNavigationStack(): List<ArchiveNavig
                         this
                     )
                 )
-            } else {
-                stack.add(ArchiveNavigationConfig.OpenKey(keyPath))
             }
         }
 

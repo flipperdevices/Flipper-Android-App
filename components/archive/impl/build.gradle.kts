@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.keyedit.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
+    implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)

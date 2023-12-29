@@ -8,7 +8,4 @@ import kotlinx.serialization.Serializable
 sealed class CategoryNavigationConfig {
     @Serializable
     data class Category(val categoryType: CategoryType) : CategoryNavigationConfig()
-
-    @Serializable
-    data class OpenKey(val keyPath: FlipperKeyPath) : CategoryNavigationConfig()
 }

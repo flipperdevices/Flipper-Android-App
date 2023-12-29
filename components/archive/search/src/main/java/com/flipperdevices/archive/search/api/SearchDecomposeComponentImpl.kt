@@ -13,7 +13,6 @@ import com.flipperdevices.archive.api.SearchDecomposeComponent
 import com.flipperdevices.archive.api.SelectKeyPathListener
 import com.flipperdevices.archive.search.model.SearchNavigationConfig
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -23,7 +22,6 @@ import dagger.assisted.AssistedInject
 class SearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onItemSelected: SelectKeyPathListener?,
-    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val searchScreenFactory: SearchScreenDecomposeComponentImpl.Factory
 ) : SearchDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<SearchNavigationConfig>()
@@ -40,11 +38,6 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
         config: SearchNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        is SearchNavigationConfig.OpenKey -> keyScreenFactory(
-            componentContext = componentContext,
-            keyPath = config.keyPath
-        )
-
         is SearchNavigationConfig.Search -> searchScreenFactory(
             componentContext = componentContext,
             onItemSelected = config.onItemSelected,

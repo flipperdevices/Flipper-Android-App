@@ -3,7 +3,6 @@ package com.flipperdevices.keyscreen.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -15,6 +14,7 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,6 +24,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val keyPath: FlipperKeyPath,
     @Assisted private val navigation: StackNavigation<KeyScreenNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val keyScreenViewModelFactory: KeyScreenViewModel.Factory,
     private val shareBottomApi: ShareBottomUIApi,
     private val synchronizationUiApi: SynchronizationUiApi,
@@ -43,7 +44,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                 nfcEditorApi = nfcEditor,
                 keyEmulateApi = keyEmulateApi,
                 onShare = onShare,
-                onBack = navigation::pop,
+                onBack = onBack::invoke,
                 onOpenNfcEditor = {
                     viewModel.openNfcEditor { flipperKeyPath ->
                         navigation.push(KeyScreenNavigationConfig.NfcEdit(flipperKeyPath))
@@ -61,7 +62,8 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             keyPath: FlipperKeyPath,
-            navigation: StackNavigation<KeyScreenNavigationConfig>
+            navigation: StackNavigation<KeyScreenNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): KeyScreenViewDecomposeComponentImpl
     }
 }

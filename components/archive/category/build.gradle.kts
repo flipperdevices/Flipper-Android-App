@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyparser.api)
     implementation(projects.components.deeplink.api)
+    implementation(projects.components.rootscreen.api)
 
     implementation(libs.appcompat)
 
