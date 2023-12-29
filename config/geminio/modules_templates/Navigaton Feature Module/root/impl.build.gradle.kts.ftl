@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.components.${__moduleName}.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.theme)
 
     // Compose
@@ -17,7 +16,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+
 
     // ViewModel
     implementation(libs.lifecycle.compose)

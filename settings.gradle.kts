@@ -58,7 +58,6 @@ include(
     ":components:core:ui:theme",
     ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
-    ":components:core:ui:navigation",
     ":components:core:ui:tabswitch",
     ":components:core:ui:flippermockup",
     ":components:core:ui:decompose",

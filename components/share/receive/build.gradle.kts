@@ -35,7 +35,7 @@ dependencies {
     implementation(projects.components.inappnotification.api)
 
     implementation(libs.appcompat)
-    implementation(libs.compose.navigation)
+
 
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.client)

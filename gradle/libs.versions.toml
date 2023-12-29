@@ -17,9 +17,6 @@ compose-compiler = "1.5.3" # https://developer.android.com/jetpack/androidx/rele
 # https://github.com/oleksandrbalan/modalsheet/issues/32
 compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
-# Use 2.6.0 because 2.7.0+ use new AnimationNavHost with bad animation
-# https://issuetracker.google.com/issues/295536728
-compose-navigation = "2.6.0" # https://developer.android.com/jetpack/compose/navigation
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" #https://github.com/aclassen/ComposeReorderable/releases
 horologist = "0.5.16" # https://github.com/google/horologist/releases
@@ -171,11 +168,6 @@ tangle-viewmodel-api = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-ap
 tangle-viewmodel-compiler = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compiler", version.ref = "tangle" }
 tangle-viewmodel-compose = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compose", version.ref = "tangle" }
 tangle-viewmodel-fragment = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
-
-# Navigation
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
-compose-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "compose-accompanist" }
-compose-wear-navigation = { module = "androidx.wear.compose:compose-navigation", version.ref = "compose-wear" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

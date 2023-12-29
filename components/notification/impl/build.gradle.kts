@@ -25,7 +25,8 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.lifecycle.compose)
+
 
     implementation(libs.gms.firebase)
     implementation(libs.kotlin.coroutines.play.services)
