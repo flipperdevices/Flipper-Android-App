@@ -36,7 +36,6 @@ dependencies {
 
     implementation(libs.appcompat)
 
-
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.client)
 

@@ -1,5 +1,6 @@
 package com.flipperdevices.core.ui.theme.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,9 +10,10 @@ import com.flipperdevices.core.preference.pb.Settings
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class ThemeViewModel @VMInject constructor(
+@Immutable
+class ThemeViewModel @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>
 ) : ViewModel() {
 

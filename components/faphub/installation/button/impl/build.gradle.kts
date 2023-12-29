@@ -38,7 +38,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.lifecycle.compose)
 
-
     implementation(projects.components.faphub.dao.api)
 
     implementation(libs.kotlin.coroutines)

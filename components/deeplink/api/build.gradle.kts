@@ -13,7 +13,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
     implementation(libs.compose.ui)
 
-
     implementation(libs.annotations)
     implementation(libs.appcompat)
 }

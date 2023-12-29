@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.ktx)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.singleactivity.api)

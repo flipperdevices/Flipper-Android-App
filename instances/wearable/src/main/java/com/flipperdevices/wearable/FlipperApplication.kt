@@ -6,7 +6,6 @@ import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.wearable.di.DaggerAppComponent
 import com.flipperdevices.wearable.di.WearableComponent
-import tangle.inject.TangleGraph
 import timber.log.Timber
 
 class FlipperApplication : Application() {
@@ -26,7 +25,6 @@ class FlipperApplication : Application() {
             )
 
         ComponentHolder.components += appComponent
-        TangleGraph.add(appComponent)
 
         if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())

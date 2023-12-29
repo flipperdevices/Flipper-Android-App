@@ -15,7 +15,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.theme.composable.FlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
-import com.flipperdevices.core.ui.theme.composable.isLight
 
 @Composable
 fun WearFlipperTheme(

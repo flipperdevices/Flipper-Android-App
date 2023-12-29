@@ -27,14 +27,9 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.lifecycle.compose)
 
-
     implementation(libs.gms.firebase)
     implementation(libs.kotlin.coroutines.play.services)
     implementation(libs.kotlin.coroutines)
 
     implementation(libs.appcompat)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

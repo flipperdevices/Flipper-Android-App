@@ -17,7 +17,6 @@ import com.flipperdevices.singleactivity.impl.SingleActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import tangle.inject.TangleGraph
 import timber.log.Timber
 
 class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
@@ -41,7 +40,6 @@ class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
             )
 
         ComponentHolder.components += appComponent
-        TangleGraph.add(appComponent)
 
         if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())

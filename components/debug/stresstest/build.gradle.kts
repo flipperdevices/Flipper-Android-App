@@ -28,7 +28,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-
     implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.lifecycle.viewmodel.ktx)

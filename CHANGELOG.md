@@ -11,6 +11,7 @@
 - [Refactor] Migrate root screens to decompose
 - [Refactor] Add deeplink handle to decompose
 - [Refactor] Migrate wearos to decompose
+- [Refactor] Remove tangle and jetpack navigation deps
 - [Feature] Button vibration in ScreenStreaming
 
 # 1.6.7

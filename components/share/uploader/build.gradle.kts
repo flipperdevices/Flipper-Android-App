@@ -39,11 +39,6 @@ dependencies {
 
     implementation(libs.compose.systemuicontroller)
 
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

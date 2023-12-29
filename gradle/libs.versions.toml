@@ -54,7 +54,6 @@ apache-compress = "1.22" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.16.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "23.6.0" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
-tangle = "ndoglio-kotlin-1.8-SNAPSHOT" # https://github.com/RBusarow/Tangle/releases
 work = "2.8.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.4.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
@@ -160,14 +159,6 @@ square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", versio
 square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
-
-# Dependency Injection - Tangle
-tangle-fragment-api = { module = "com.github.LionZXY.Tangle:tangle-fragment-api", version.ref = "tangle" }
-tangle-fragment-compiler = { module = "com.github.LionZXY.Tangle:tangle-fragment-compiler", version.ref = "tangle" }
-tangle-viewmodel-api = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-api", version.ref = "tangle" }
-tangle-viewmodel-compiler = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compiler", version.ref = "tangle" }
-tangle-viewmodel-compose = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-compose", version.ref = "tangle" }
-tangle-viewmodel-fragment = { module = "com.github.LionZXY.Tangle:tangle-viewmodel-fragment", version.ref = "tangle" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

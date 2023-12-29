@@ -35,8 +35,4 @@ dependencies {
     implementation(libs.lifecycle.compose)
 
     implementation(libs.bundles.decompose)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

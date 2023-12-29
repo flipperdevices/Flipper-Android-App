@@ -6,9 +6,9 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class MainViewModel @VMInject constructor() : ViewModel() {
+class MainViewModel @Inject constructor() : ViewModel() {
     private val tabFlow = MutableStateFlow(FapHubTabEnum.APPS)
 
     fun getTabFlow(): StateFlow<FapHubTabEnum> = tabFlow

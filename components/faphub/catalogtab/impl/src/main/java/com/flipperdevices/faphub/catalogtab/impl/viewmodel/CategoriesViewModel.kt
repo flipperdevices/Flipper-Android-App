@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class CategoriesViewModel @VMInject constructor(
+class CategoriesViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel(), LogTagProvider {

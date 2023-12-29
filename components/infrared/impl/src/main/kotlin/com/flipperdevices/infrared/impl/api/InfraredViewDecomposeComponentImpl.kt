@@ -51,7 +51,6 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
             infraredViewModelFactory(keyPath)
         }
 
-
         shareBottomUiApi.ComposableShareBottomSheet(
             viewModel.keyPath,
             onSheetStateVisible = { isShown, onClose ->

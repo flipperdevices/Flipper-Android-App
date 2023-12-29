@@ -258,10 +258,6 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.fragment.api)
-    anvil(libs.tangle.fragment.compiler)
 
     implementation(libs.timber)
 }
