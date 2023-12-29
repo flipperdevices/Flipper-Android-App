@@ -56,8 +56,9 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation
         )
 
-        HubNavigationConfig.NfcAttack -> nfcAttackFactory(
-            componentContext = componentContext
+        is HubNavigationConfig.NfcAttack -> nfcAttackFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink
         )
     }
 

@@ -9,7 +9,7 @@ sealed class HubNavigationConfig {
     data object Main : HubNavigationConfig()
 
     @Serializable
-    data object NfcAttack : HubNavigationConfig()
+    data class NfcAttack(val deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?) : HubNavigationConfig()
 
     @Serializable
     data class FapHub(val deeplink: Deeplink.BottomBar.HubTab.FapHub?) : HubNavigationConfig()
@@ -19,7 +19,7 @@ fun Deeplink.BottomBar.HubTab?.toConfigStack(): List<HubNavigationConfig> {
     val stack = mutableListOf<HubNavigationConfig>(HubNavigationConfig.Main)
     when (this) {
         is Deeplink.BottomBar.HubTab.FapHub -> stack.add(HubNavigationConfig.FapHub(this))
-        Deeplink.BottomBar.HubTab.OpenMfKey -> stack.add(HubNavigationConfig.NfcAttack)
+        is Deeplink.BottomBar.HubTab.OpenMfKey -> stack.add(HubNavigationConfig.NfcAttack(this))
         null -> {}
     }
     return stack

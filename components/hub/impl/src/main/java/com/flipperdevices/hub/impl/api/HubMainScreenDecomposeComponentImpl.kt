@@ -44,7 +44,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
         ComposableHub(
             notificationCount = notificationCount,
             onOpenAttack = {
-                navigation.push(HubNavigationConfig.NfcAttack)
+                navigation.push(HubNavigationConfig.NfcAttack(null))
             },
             mainCardComposable = {
                 mainCardApi.ComposableMainCard(
