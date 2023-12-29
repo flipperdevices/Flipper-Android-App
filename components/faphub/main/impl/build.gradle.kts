@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.faphub.category.api)
     implementation(projects.components.faphub.fapscreen.api)
 
+    implementation(projects.components.deeplink.api)
     implementation(projects.components.analytics.metric.api)
 
     // Compose

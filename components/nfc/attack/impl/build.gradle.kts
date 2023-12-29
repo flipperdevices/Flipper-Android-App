@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
 
     implementation(projects.components.nfc.mfkey32.api)
+    implementation(projects.components.deeplink.api)
 
     // Compose
     implementation(libs.compose.ui)

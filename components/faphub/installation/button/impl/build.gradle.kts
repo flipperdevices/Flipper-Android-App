@@ -20,9 +20,9 @@ dependencies {
     implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.lifecycle)
 
-    implementation(projects.components.bottombar.api)
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.rootscreen.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)

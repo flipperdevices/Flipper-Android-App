@@ -2,6 +2,7 @@ package com.flipperdevices.ui.decompose
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigator
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.popTo
 import com.arkivanov.decompose.value.Value
 import kotlin.reflect.KClass
@@ -14,4 +15,12 @@ fun <C : Any, T : Any> Value<ChildStack<C, T>>.findComponentByConfig(configClazz
     return value.items.find {
         it.configuration::class == configClazz
     }?.instance
+}
+
+inline fun <C : Any> StackNavigator<C>.popOr(
+    crossinline fallback: () -> Unit = {},
+) = pop { onComplete ->
+    if (!onComplete) {
+        fallback()
+    }
 }

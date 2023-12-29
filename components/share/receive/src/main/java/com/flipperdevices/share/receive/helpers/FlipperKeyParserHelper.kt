@@ -13,16 +13,17 @@ import javax.inject.Inject
 class FlipperKeyParserHelper @Inject constructor(
     private val cryptoStorageApi: CryptoStorageApi
 ) {
-    suspend fun toFlipperKey(link: Deeplink?): Result<FlipperKey> {
+    suspend fun toFlipperKey(link: Deeplink.RootLevel.SaveKey?): Result<FlipperKey> {
         if (link == null) return Result.failure(FlipperKeyParseException())
         var content: DeeplinkContent? = null
         var path: FlipperFilePath? = null
-        if (link is Deeplink.ExternalContent) {
-            content = link.content
-        }
-        if (link is Deeplink.FlipperKey) {
-            path = link.path
-            content = link.content
+        when (link) {
+            is Deeplink.RootLevel.SaveKey.ExternalContent -> content = link.content
+
+            is Deeplink.RootLevel.SaveKey.FlipperKey -> {
+                path = link.path
+                content = link.content
+            }
         }
 
         return when (content) {

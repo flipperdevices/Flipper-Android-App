@@ -113,7 +113,7 @@ class UpdateCardHelperTest {
             isFlashExist = true,
             firmwareVersion = FirmwareVersion(channel = FirmwareChannel.CUSTOM, version = "1"),
             alwaysShowUpdate = false,
-            webUpdate = Deeplink.WebUpdate(
+            webUpdate = Deeplink.BottomBar.DeviceTab.WebUpdate(
                 name = "123 test",
                 url = "456"
             ),

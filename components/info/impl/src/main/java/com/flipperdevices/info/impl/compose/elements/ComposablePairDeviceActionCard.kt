@@ -34,7 +34,7 @@ fun ComposablePairDeviceActionCard(
             DeviceStatus.NoDevice ->
                 ComposableFirstConnectElement(
                     onGoToConnectScreen = {
-                        rootNavigation.push(RootScreenConfig.FirstPair)
+                        rootNavigation.push(RootScreenConfig.FirstPair(null))
                     }
                 )
 

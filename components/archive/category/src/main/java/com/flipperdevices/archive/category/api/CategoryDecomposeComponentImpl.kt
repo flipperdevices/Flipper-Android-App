@@ -13,7 +13,6 @@ import com.flipperdevices.archive.api.CategoryDecomposeComponent
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -23,7 +22,6 @@ import dagger.assisted.AssistedInject
 class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
-    private val openKeyFactory: KeyScreenDecomposeComponent.Factory,
     private val categoryFactory: CategoryScreenDecomposeComponentImpl.Factory
 ) : CategoryDecomposeComponent, ComponentContext by componentContext {
     private val navigation = StackNavigation<CategoryNavigationConfig>()
@@ -31,7 +29,9 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = CategoryNavigationConfig.serializer(),
-        initialConfiguration = CategoryNavigationConfig.Category(categoryType),
+        initialStack = {
+            listOf(CategoryNavigationConfig.Category(categoryType))
+        },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -44,11 +44,6 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             categoryType = config.categoryType,
             navigation = navigation
-        )
-
-        is CategoryNavigationConfig.OpenKey -> openKeyFactory(
-            componentContext = componentContext,
-            keyPath = config.keyPath
         )
     }
 

@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
@@ -20,6 +19,7 @@ import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -29,6 +29,7 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val fapCategory: FapCategory,
     @Assisted private val navigation: StackNavigation<FapCategoryNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val categoryViewModelFactory: FapHubCategoryViewModel.Factory,
     private val metricApi: MetricApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
@@ -45,7 +46,7 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val sortType by categoryViewModel.getSortTypeFlow().collectAsState()
 
         ComposableFapHubCategory(
-            onBack = navigation::pop,
+            onBack = onBack::invoke,
             onOpenSearch = {
                 navigation.push(FapCategoryNavigationConfig.Search)
             },
@@ -73,7 +74,8 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             fapCategory: FapCategory,
-            navigation: StackNavigation<FapCategoryNavigationConfig>
+            navigation: StackNavigation<FapCategoryNavigationConfig>,
+            onBack: DecomposeOnBackParameter,
         ): FapHubCategoryScreenDecomposeComponentImpl
     }
 }

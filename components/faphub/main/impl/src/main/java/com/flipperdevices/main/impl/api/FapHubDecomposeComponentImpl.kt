@@ -10,19 +10,25 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
+@Suppress("LongParameterList")
 class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted deeplink: Deeplink.BottomBar.HubTab.FapHub?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
@@ -33,7 +39,16 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapHubNavigationConfig.serializer(),
-        initialConfiguration = FapHubNavigationConfig.Main,
+        initialStack = {
+            if (deeplink is Deeplink.BottomBar.HubTab.FapHub.Fap) {
+                listOf(
+                    FapHubNavigationConfig.Main,
+                    FapHubNavigationConfig.FapScreen(deeplink.appId)
+                )
+            } else {
+                listOf(FapHubNavigationConfig.Main)
+            }
+        },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -44,21 +59,25 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         FapHubNavigationConfig.Main -> mainScreenFactory(
             componentContext = componentContext,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
-            id = config.id
+            id = config.id,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapHubNavigationConfig.Search -> fapSearchFactory(
-            componentContext = componentContext
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapHubNavigationConfig.Category -> fapCategoryFactory(
             componentContext = componentContext,
-            category = config.fapCategory
+            category = config.fapCategory,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -78,7 +97,9 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, FapHubDecomposeComponent.Factory::class)
     interface Factory : FapHubDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            deeplink: Deeplink.BottomBar.HubTab.FapHub?,
+            onBack: DecomposeOnBackParameter
         ): FapHubDecomposeComponentImpl
     }
 }

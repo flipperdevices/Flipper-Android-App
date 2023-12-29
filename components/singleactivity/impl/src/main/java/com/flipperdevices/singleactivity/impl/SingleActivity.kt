@@ -1,5 +1,6 @@
 package com.flipperdevices.singleactivity.impl
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,32 +11,32 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.animation.LocalStackAnimationProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.android.parcelableExtra
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.theme.FlipperTheme
+import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SessionState
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.FlipperStackAnimationProvider
 import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-const val LAUNCH_PARAMS_INTENT = "launch_params_intent"
-
-@Suppress("ForbiddenComment")
 class SingleActivity : AppCompatActivity(), LogTagProvider {
     override val TAG = "SingleActivity"
 
@@ -47,6 +48,9 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
 
     @Inject
     lateinit var onCreateHandlerDispatcher: OnCreateHandlerDispatcher
+
+    @Inject
+    lateinit var deeplinkParser: DeepLinkParser
 
     private var rootDecomposeComponent: RootDecomposeComponent? = null
 
@@ -64,17 +68,17 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
 
         val root = rootComponentFactory(
             componentContext = defaultComponentContext(),
-            onBack = this::finish
+            onBack = this::finish,
+            initialDeeplink = runBlocking {
+                deeplinkParser.parseOrLog(this@SingleActivity, intent)
+            }
         ).also { rootDecomposeComponent = it }
 
         setContent {
-            LaunchedEffect(Unit) {
-                // Open deeplink
-                // TODO: Process deeplink
-            }
             FlipperTheme(content = {
                 CompositionLocalProvider(
                     LocalRootNavigation provides root,
+                    LocalDeeplinkHandler provides root,
                     LocalStackAnimationProvider provides FlipperStackAnimationProvider
                 ) {
                     root.Render(
@@ -94,15 +98,10 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         if (intent == null) {
             return
         }
-        val deeplink = intent.parcelableExtra<Deeplink>(LAUNCH_PARAMS_INTENT)
-        if (deeplink != null) {
-            lifecycleScope.launch {
-                // TODO: Process deeplink
+        lifecycleScope.launch(Dispatchers.Default) {
+            deeplinkParser.parseOrLog(this@SingleActivity, intent)?.let {
+                rootDecomposeComponent?.handleDeeplink(it)
             }
-            return
-        }
-        lifecycleScope.launch {
-            // TODO: Process deeplink
         }
     }
 
@@ -119,5 +118,14 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
     override fun onStop() {
         super.onStop()
         metricApi.reportSessionState(SessionState.StopSession)
+    }
+
+    private suspend fun DeepLinkParser.parseOrLog(context: Context, intent: Intent): Deeplink? {
+        return try {
+            fromIntent(context, intent)
+        } catch (throwable: Exception) {
+            error(throwable) { "Failed parse deeplink" }
+            null
+        }
     }
 }

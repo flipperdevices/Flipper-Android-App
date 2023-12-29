@@ -9,9 +9,11 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.info.impl.model.DeviceScreenNavigationConfig
 import com.flipperdevices.settings.api.SettingsDecomposeComponent
@@ -25,6 +27,7 @@ import dagger.assisted.AssistedInject
 
 class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted deeplink: Deeplink.BottomBar.DeviceTab?,
     private val settingsFactory: SettingsDecomposeComponent.Factory,
     private val updateFactory: UpdateScreenDecomposeComponent.Factory,
     private val fullInfoDecomposeComponentFactory: FullInfoDecomposeComponent.Factory
@@ -35,7 +38,9 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
         childStack(
             source = navigation,
             serializer = DeviceScreenNavigationConfig.serializer(),
-            initialConfiguration = DeviceScreenNavigationConfig.Update(),
+            initialConfiguration = DeviceScreenNavigationConfig.Update(
+                deeplink as? Deeplink.BottomBar.DeviceTab.WebUpdate
+            ),
             handleBackButton = true,
             childFactory = ::child,
         )
@@ -66,6 +71,18 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
         }
     }
 
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar.DeviceTab) {
+        when (deeplink) {
+            Deeplink.BottomBar.DeviceTab.OpenUpdate -> navigation.replaceAll(
+                DeviceScreenNavigationConfig.Update(null)
+            )
+
+            is Deeplink.BottomBar.DeviceTab.WebUpdate -> navigation.replaceAll(
+                DeviceScreenNavigationConfig.Update(deeplink)
+            )
+        }
+    }
+
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
@@ -83,6 +100,7 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : DeviceScreenDecomposeComponent.Factory {
         override operator fun invoke(
             componentContext: ComponentContext,
+            deeplink: Deeplink.BottomBar.DeviceTab?
         ): DeviceScreenDecomposeComponentImpl
     }
 }

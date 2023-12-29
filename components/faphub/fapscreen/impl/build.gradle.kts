@@ -37,8 +37,9 @@ dependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.bundles.decompose)
 
-    implementation(projects.components.bottombar.api)
     implementation(projects.components.inappnotification.api)
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

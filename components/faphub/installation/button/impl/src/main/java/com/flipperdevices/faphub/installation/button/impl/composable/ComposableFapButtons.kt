@@ -11,12 +11,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.impl.R
 import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperNotConnectedDialog
 import com.flipperdevices.faphub.installation.button.impl.composable.dialogs.ComposableFlipperNotSdCardDialog
 import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableFlipperButton
 import com.flipperdevices.faphub.installation.button.impl.composable.elements.ComposableInProgressFapButton
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 
 @Composable
 fun ComposableFapInstallButton(
@@ -58,9 +61,10 @@ fun ComposableFlipperNoSdCardButton(
 @Composable
 fun ComposableFlipperNotConnectedButton(
     fapButtonSize: FapButtonSize,
-    onOpenDeviceTab: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val deeplinkHandler = LocalDeeplinkHandler.current
+
     var showDialog by remember { mutableStateOf(false) }
     ComposableFapInstallButton(
         modifier = modifier,
@@ -74,7 +78,13 @@ fun ComposableFlipperNotConnectedButton(
             onDismiss = {
                 showDialog = false
             },
-            onOpenDeviceTab = onOpenDeviceTab
+            onOpenDeviceTab = {
+                deeplinkHandler.handleDeeplink(
+                    Deeplink.BottomBar.OpenTab(
+                        DeeplinkBottomBarTab.DEVICE
+                    )
+                )
+            }
         )
     }
 }

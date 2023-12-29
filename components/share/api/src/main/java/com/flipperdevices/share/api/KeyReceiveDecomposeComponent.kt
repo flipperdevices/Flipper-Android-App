@@ -9,7 +9,7 @@ interface KeyReceiveDecomposeComponent : DecomposeComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink,
+            deeplink: Deeplink.RootLevel.SaveKey,
             onBack: DecomposeOnBackParameter
         ): KeyReceiveDecomposeComponent
     }

@@ -12,7 +12,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 
-    implementation(projects.components.bottombar.api)
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.deeplink.api)
 
     // Compose
     implementation(libs.compose.ui)

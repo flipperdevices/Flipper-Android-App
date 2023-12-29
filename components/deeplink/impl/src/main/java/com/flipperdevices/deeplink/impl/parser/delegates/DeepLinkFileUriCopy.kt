@@ -38,7 +38,7 @@ class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTag
 
         val contentResolver = context.contentResolver
 
-        return Deeplink.ExternalContent(
+        return Deeplink.RootLevel.SaveKey.ExternalContent(
             content = buildInternalFile(
                 contentResolver,
                 context.cacheDir,

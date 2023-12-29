@@ -14,6 +14,8 @@ import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.faphub.search.impl.model.FapHubSearchNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -21,6 +23,7 @@ import dagger.assisted.AssistedInject
 
 class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val searchScreenFactory: SearchScreenDecomposeComponentImpl.Factory
 ) : FapHubSearchDecomposeComponent, ComponentContext by componentContext {
@@ -40,12 +43,14 @@ class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is FapHubSearchNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
-            id = config.id
+            id = config.id,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapHubSearchNavigationConfig.SearchScreen -> searchScreenFactory(
             componentContext = componentContext,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -65,7 +70,8 @@ class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, FapHubSearchDecomposeComponent.Factory::class)
     interface Factory : FapHubSearchDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            onBack: DecomposeOnBackParameter
         ): FapHubSearchDecomposeComponentImpl
     }
 }

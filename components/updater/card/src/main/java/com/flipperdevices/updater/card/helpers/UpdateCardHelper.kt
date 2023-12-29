@@ -20,7 +20,7 @@ class UpdateCardHelper(
     private val isFlashExist: Boolean?,
     private val firmwareVersion: FirmwareVersion?,
     private val alwaysShowUpdate: Boolean,
-    private val webUpdate: Deeplink.WebUpdate?,
+    private val webUpdate: Deeplink.BottomBar.DeviceTab.WebUpdate?,
     private val latestVersionAsync: Deferred<Result<EnumMap<FirmwareChannel, VersionFiles>>>
 ) {
 

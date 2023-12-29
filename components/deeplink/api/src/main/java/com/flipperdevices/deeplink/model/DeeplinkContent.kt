@@ -29,7 +29,7 @@ sealed class DeeplinkContent : Parcelable {
         val uriString: String
     ) : DeeplinkContent() {
         @IgnoredOnParcel
-        val uri by lazy { Uri.parse(uriString) }
+        val uri: Uri by lazy { Uri.parse(uriString) }
     }
 
     @Parcelize
@@ -82,8 +82,8 @@ sealed class DeeplinkContent : Parcelable {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             is InternalStorageFile -> file.delete()
-            is FFFContent -> {} // Noting
-            is FFFCryptoContent -> {} // Noting
+            is FFFContent -> {} // Nothing
+            is FFFCryptoContent -> {} // Nothing
         }
     }
 }

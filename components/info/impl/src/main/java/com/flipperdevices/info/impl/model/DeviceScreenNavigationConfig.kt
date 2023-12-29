@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class DeviceScreenNavigationConfig {
     @Serializable
-    data class Update(val deeplink: Deeplink? = null) : DeviceScreenNavigationConfig()
+    data class Update(
+        val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
+    ) : DeviceScreenNavigationConfig()
 
     @Serializable
     data object FullInfo : DeviceScreenNavigationConfig()

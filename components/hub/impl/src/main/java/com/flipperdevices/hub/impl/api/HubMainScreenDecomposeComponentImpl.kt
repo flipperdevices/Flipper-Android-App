@@ -44,7 +44,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
         ComposableHub(
             notificationCount = notificationCount,
             onOpenAttack = {
-                navigation.push(HubNavigationConfig.NfcAttack)
+                navigation.push(HubNavigationConfig.NfcAttack(null))
             },
             mainCardComposable = {
                 mainCardApi.ComposableMainCard(
@@ -55,7 +55,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
                     ),
                     onClick = {
                         metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB)
-                        navigation.push(HubNavigationConfig.FapHub)
+                        navigation.push(HubNavigationConfig.FapHub(null))
                     }
                 )
             },

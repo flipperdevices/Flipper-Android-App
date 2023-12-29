@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
@@ -19,14 +18,17 @@ import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Provider
 
+@Suppress("LongParameterList")
 class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubSearchNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapInstallationUIApi: FapInstallationUIApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val metricApi: MetricApi,
@@ -43,7 +45,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
         val searchRequest by searchViewModel.getSearchRequest().collectAsState()
 
         ComposableSearchScreen(
-            onBack = navigation::pop,
+            onBack = onBack::invoke,
             onFapItemClick = {
                 metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.name)
                 navigation.push(FapHubSearchNavigationConfig.FapScreen(it.id))
@@ -66,7 +68,8 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            navigation: StackNavigation<FapHubSearchNavigationConfig>
+            navigation: StackNavigation<FapHubSearchNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): SearchScreenDecomposeComponentImpl
     }
 }

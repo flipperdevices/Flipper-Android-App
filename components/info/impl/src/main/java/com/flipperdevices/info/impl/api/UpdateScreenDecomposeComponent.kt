@@ -33,7 +33,7 @@ import javax.inject.Provider
 @Suppress("LongParameterList")
 class UpdateScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val deeplink: Deeplink?,
+    @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
     @Assisted private val navigator: StackNavigator<DeviceScreenNavigationConfig>,
     private val updaterCardApi: UpdaterCardApi,
     private val deviceStatusViewModelProvider: Provider<DeviceStatusViewModel>,
@@ -113,7 +113,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink?,
+            deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
             navigator: StackNavigator<DeviceScreenNavigationConfig>
         ): UpdateScreenDecomposeComponent
     }

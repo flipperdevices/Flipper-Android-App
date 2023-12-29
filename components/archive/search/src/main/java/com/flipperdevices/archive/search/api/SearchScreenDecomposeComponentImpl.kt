@@ -12,6 +12,8 @@ import com.flipperdevices.archive.search.model.SearchNavigationConfig
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -33,6 +35,8 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             searchViewModelProvider.get()
         }
 
+        val rootNavigation = LocalRootNavigation.current
+
         ComposableSearch(
             searchViewModel = searchViewModel,
             synchronizationUiApi = synchronizationUiApi,
@@ -45,7 +49,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
                 if (onItemSelected != null) {
                     onItemSelected.invoke(flipperKeyPath)
                 } else {
-                    navigation.push(SearchNavigationConfig.OpenKey(flipperKeyPath))
+                    rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
                 }
             }
         )

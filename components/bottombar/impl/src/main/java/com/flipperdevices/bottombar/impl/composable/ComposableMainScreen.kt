@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
+import com.flipperdevices.bottombar.impl.model.BottomBarTabConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
@@ -16,7 +17,7 @@ import com.flipperdevices.ui.decompose.DecomposeComponent
 @Composable
 @Suppress("NonSkippableComposable")
 fun ComposableMainScreen(
-    childStack: ChildStack<BottomBarTabEnum, DecomposeComponent>,
+    childStack: ChildStack<BottomBarTabConfig, DecomposeComponent>,
     connectionTabState: TabState,
     hubHasNotification: Boolean,
     onTabClick: (tab: BottomBarTabEnum, force: Boolean) -> Unit,
@@ -28,10 +29,10 @@ fun ComposableMainScreen(
         bottomBar = {
             ComposeBottomBar(
                 connectionTabState = connectionTabState,
-                selectedItem = selectedTab,
+                selectedItem = selectedTab.enum,
                 hubHasNotification = hubHasNotification,
                 onBottomBarClick = {
-                    onTabClick(it, selectedTab == it)
+                    onTabClick(it, selectedTab.enum == it)
                 }
             )
             SetUpNavigationBarColor(color = LocalPallet.current.bottomBarBackground)

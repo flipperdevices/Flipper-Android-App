@@ -8,12 +8,16 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.hub.impl.model.HubNavigationConfig
+import com.flipperdevices.hub.impl.model.toConfigStack
 import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.popToRoot
@@ -24,6 +28,7 @@ import dagger.assisted.AssistedInject
 
 class HubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted deeplink: Deeplink.BottomBar.HubTab?,
     private val fapHubFactory: FapHubDecomposeComponent.Factory,
     private val hubMainFactory: HubMainScreenDecomposeComponentImpl.Factory,
     private val nfcAttackFactory: NFCAttackDecomposeComponent.Factory
@@ -33,7 +38,7 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
     private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = HubNavigationConfig.serializer(),
-        initialConfiguration = HubNavigationConfig.Main,
+        initialStack = { deeplink.toConfigStack() },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -42,15 +47,26 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
         config: HubNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        HubNavigationConfig.FapHub -> fapHubFactory(componentContext = componentContext)
+        is HubNavigationConfig.FapHub -> fapHubFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink,
+            onBack = navigation::pop
+        )
+
         HubNavigationConfig.Main -> hubMainFactory(
             componentContext = componentContext,
             navigation = navigation
         )
 
-        HubNavigationConfig.NfcAttack -> nfcAttackFactory(
-            componentContext = componentContext
+        is HubNavigationConfig.NfcAttack -> nfcAttackFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink,
+            onBack = navigation::pop
         )
+    }
+
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar.HubTab) {
+        navigation.navigate { deeplink.toConfigStack() }
     }
 
     override fun onResetTab() {
@@ -73,7 +89,8 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, HubDecomposeComponent.Factory::class)
     fun interface Factory : HubDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            deeplink: Deeplink.BottomBar.HubTab?
         ): HubDecomposeComponentImpl
     }
 }

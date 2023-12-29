@@ -16,6 +16,8 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -43,8 +45,10 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val categoryState by categoryViewModel.getState().collectAsState()
         val synchronizationState by categoryViewModel.getSynchronizationState().collectAsState()
 
+        val rootNavigation = LocalRootNavigation.current
+
         val onOpenKeyScreen: (FlipperKeyPath) -> Unit = { flipperKeyPath ->
-            navigation.push(CategoryNavigationConfig.OpenKey(flipperKeyPath))
+            rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
         }
 
         when (categoryType) {

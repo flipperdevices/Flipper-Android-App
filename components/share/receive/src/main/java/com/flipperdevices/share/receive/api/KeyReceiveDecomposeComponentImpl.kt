@@ -19,7 +19,7 @@ import dagger.assisted.AssistedInject
 
 class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val deeplink: Deeplink,
+    @Assisted private val deeplink: Deeplink.RootLevel.SaveKey,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val keyScreenApi: KeyScreenApi,
     private val keyReceiveViewModelFactory: KeyReceiveViewModel.Factory
@@ -49,7 +49,7 @@ class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(
     fun interface Factory : KeyReceiveDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink,
+            deeplink: Deeplink.RootLevel.SaveKey,
             onBack: DecomposeOnBackParameter
         ): KeyReceiveDecomposeComponentImpl
     }
