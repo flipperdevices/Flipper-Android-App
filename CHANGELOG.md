@@ -9,7 +9,8 @@
 - [Refactor] Migrate archive screen to decompose
 - [Refactor] Migrate bottombar to decompose
 - [Refactor] Migrate root screens to decompose
-- [Refactor] Add deeplink handle
+- [Refactor] Add deeplink handle to decompose
+- [Refactor] Migrate wearos to decompose
 - [Feature] Button vibration in ScreenStreaming
 
 # 1.6.7

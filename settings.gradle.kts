@@ -167,6 +167,8 @@ include(
     ":components:wearable:emulate:handheld:impl",
     ":components:wearable:emulate:handheld:noop",
     ":components:wearable:emulate:common",
+    ":components:wearable:wearrootscreen:api",
+    ":components:wearable:wearrootscreen:impl",
 
     ":components:widget:api",
     ":components:widget:screen",

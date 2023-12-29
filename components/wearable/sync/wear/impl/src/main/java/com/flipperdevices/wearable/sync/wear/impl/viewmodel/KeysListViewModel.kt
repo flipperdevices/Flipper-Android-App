@@ -37,12 +37,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val ANDROID_MARKET_APP_URI = "market://details?id=com.flipperdevices.app"
 
-class KeysListViewModel @VMInject constructor(
+class KeysListViewModel @Inject constructor(
     private val application: Application,
     findPhoneApi: FindPhoneApi
 ) : AndroidViewModel(application), LogTagProvider, DataClient.OnDataChangedListener {
