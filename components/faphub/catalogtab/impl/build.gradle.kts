@@ -35,10 +35,5 @@ dependencies {
 
     implementation(libs.lifecycle.viewmodel.ktx)
 
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-
     implementation(libs.kotlin.immutable.collections)
 }

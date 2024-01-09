@@ -9,7 +9,6 @@ android.namespace = "com.flipperdevices.archive.api"
 dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.deeplink.api)

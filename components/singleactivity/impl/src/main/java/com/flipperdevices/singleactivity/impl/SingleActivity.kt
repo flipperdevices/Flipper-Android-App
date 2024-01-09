@@ -21,7 +21,9 @@ import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.FlipperTheme
+import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.metric.api.MetricApi
@@ -36,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import javax.inject.Provider
 
 class SingleActivity : AppCompatActivity(), LogTagProvider {
     override val TAG = "SingleActivity"
@@ -51,6 +54,9 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
 
     @Inject
     lateinit var deeplinkParser: DeepLinkParser
+
+    @Inject
+    lateinit var themeViewModelProvider: Provider<ThemeViewModel>
 
     private var rootDecomposeComponent: RootDecomposeComponent? = null
 
@@ -75,20 +81,25 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         ).also { rootDecomposeComponent = it }
 
         setContent {
-            FlipperTheme(content = {
-                CompositionLocalProvider(
-                    LocalRootNavigation provides root,
-                    LocalDeeplinkHandler provides root,
-                    LocalStackAnimationProvider provides FlipperStackAnimationProvider
-                ) {
-                    root.Render(
-                        modifier = Modifier
-                            .safeDrawingPadding()
-                            .fillMaxSize()
-                            .background(MaterialTheme.colors.background)
-                    )
+            FlipperTheme(
+                content = {
+                    CompositionLocalProvider(
+                        LocalRootNavigation provides root,
+                        LocalDeeplinkHandler provides root,
+                        LocalStackAnimationProvider provides FlipperStackAnimationProvider
+                    ) {
+                        root.Render(
+                            modifier = Modifier
+                                .safeDrawingPadding()
+                                .fillMaxSize()
+                                .background(MaterialTheme.colors.background)
+                        )
+                    }
+                },
+                themeViewModel = viewModelWithFactory(key = null) {
+                    themeViewModelProvider.get()
                 }
-            })
+            )
         }
     }
 

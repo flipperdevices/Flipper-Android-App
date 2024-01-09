@@ -1,6 +1,5 @@
 package com.flipperdevices.uploader.api
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -45,7 +44,8 @@ class ShareBottomUIImpl @Inject constructor(
     @Composable
     override fun ComposableShareBottomSheet(
         flipperKeyPath: FlipperKeyPath,
-        screenContent: @Composable (() -> Unit) -> Unit
+        onSheetStateVisible: @Composable (isVisible: Boolean, onClose: () -> Unit) -> Unit,
+        screenContent: @Composable (() -> Unit) -> Unit,
     ) {
         val viewModel: UploaderViewModel = viewModel(
             factory = UploaderViewModelFactory(
@@ -70,7 +70,7 @@ class ShareBottomUIImpl @Inject constructor(
 
         val sheetScope = rememberCoroutineScope()
 
-        BackHandler(enabled = sheetState.isVisible) {
+        onSheetStateVisible(sheetState.isVisible) {
             sheetScope.launch { sheetState.hide() }
         }
 

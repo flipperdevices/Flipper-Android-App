@@ -21,5 +21,4 @@ dependencies {
     implementation(libs.annotations)
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
-    implementation(libs.compose.navigation)
 }

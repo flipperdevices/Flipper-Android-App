@@ -5,5 +5,6 @@ plugins {
 android.namespace = "${packageName}.api"
 
 dependencies {
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(libs.decompose)
 }

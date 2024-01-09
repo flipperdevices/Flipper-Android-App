@@ -14,15 +14,14 @@ import com.flipperdevices.wearable.emulate.impl.helper.WearEmulateState
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
 import com.google.android.horologist.compose.layout.fillMaxRectangle
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 @Suppress("LongMethod")
 fun ComposableWearEmulate(
     keyEmulateUiApi: KeyEmulateUiApi,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    emulateViewModel: WearEmulateViewModel
 ) {
-    val emulateViewModel = tangleViewModel<WearEmulateViewModel>()
     val state by emulateViewModel.getWearEmulateState().collectAsState()
     val modifier = Modifier
         .fillMaxRectangle()

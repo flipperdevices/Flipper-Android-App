@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -16,19 +17,22 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonSta
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, FapInstalledApi::class)
 class FapInstalledApiImpl @Inject constructor(
     private val fapInstallationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
-    private val errorsRenderer: FapHubComposableErrorsRenderer
+    private val errorsRenderer: FapHubComposableErrorsRenderer,
+    private val installedFapsViewModelProvider: Provider<InstalledFapsViewModel>
 ) : FapInstalledApi {
 
     @Composable
     override fun getUpdatePendingCount(): Int {
-        val installedViewModel = tangleViewModel<InstalledFapsViewModel>()
+        val installedViewModel = viewModelWithFactory(key = null) {
+            installedFapsViewModelProvider.get()
+        }
         val buttonStateFlow = remember { installedViewModel.getFapBatchUpdateButtonState() }
         val state by buttonStateFlow.collectAsState()
         return state.let {
@@ -45,6 +49,9 @@ class FapInstalledApiImpl @Inject constructor(
 
     @Composable
     override fun ComposableInstalledTab(onOpenFapItem: (uid: String) -> Unit) {
+        val installedViewModel = viewModelWithFactory(key = null) {
+            installedFapsViewModelProvider.get()
+        }
         ComposableInstalledTabScreen(
             onOpenFapItem = onOpenFapItem,
             installationButton = { fapItem, modifier ->
@@ -68,7 +75,8 @@ class FapInstalledApiImpl @Inject constructor(
                     fapItem = fapItemShort
                 )
             },
-            errorsRenderer = errorsRenderer
+            errorsRenderer = errorsRenderer,
+            viewModel = installedViewModel
         )
     }
 }

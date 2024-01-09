@@ -27,13 +27,12 @@ import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
 import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import kotlinx.collections.immutable.ImmutableList
-import tangle.viewmodel.compose.tangleViewModel
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableKeysList(
-    onKeyOpen: (FlipperWearKey) -> Unit = {},
-    keysListViewModel: KeysListViewModel = tangleViewModel()
+    onKeyOpen: (FlipperWearKey) -> Unit,
+    keysListViewModel: KeysListViewModel
 ) {
     val state by keysListViewModel.getKeysListFlow().collectAsState()
     when (val localState = state) {

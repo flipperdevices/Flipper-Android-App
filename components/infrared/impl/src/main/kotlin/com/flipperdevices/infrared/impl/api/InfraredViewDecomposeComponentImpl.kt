@@ -1,9 +1,13 @@
 package com.flipperdevices.infrared.impl.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.infrared.impl.composable.ComposableInfraredScreen
@@ -18,6 +22,8 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 @Suppress("LongParameterList")
 class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
@@ -31,6 +37,12 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
     private val keyEmulateApi: KeyEmulateApi,
     private val keyEmulateUiApi: KeyEmulateUiApi,
 ) : DecomposeComponent, ComponentContext by componentContext {
+    private val isBackPressHandledFlow = MutableStateFlow(false)
+    private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
+
+    init {
+        backHandler.register(backCallback)
+    }
 
     @Composable
     @Suppress("NonSkippableComposable")
@@ -38,7 +50,21 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
         val viewModel: InfraredViewModel = viewModelWithFactory(key = keyPath.toString()) {
             infraredViewModelFactory(keyPath)
         }
-        shareBottomUiApi.ComposableShareBottomSheet(viewModel.keyPath) { onShare ->
+
+        shareBottomUiApi.ComposableShareBottomSheet(
+            viewModel.keyPath,
+            onSheetStateVisible = { isShown, onClose ->
+                val isBackPressHandled by isBackPressHandledFlow.collectAsState()
+                backCallback.isEnabled = isShown
+
+                LaunchedEffect(isBackPressHandled) {
+                    if (isBackPressHandled) {
+                        onClose()
+                        isBackPressHandledFlow.emit(false)
+                    }
+                }
+            }
+        ) { onShare ->
             ComposableInfraredScreen(
                 viewModel = viewModel,
                 keyScreenApi = keyScreenApi,

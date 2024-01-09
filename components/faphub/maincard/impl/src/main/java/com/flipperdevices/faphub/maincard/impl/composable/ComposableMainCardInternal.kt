@@ -20,10 +20,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.maincard.impl.R
 import com.flipperdevices.faphub.maincard.impl.composable.suggestion.ComposableSuggestion
+import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableMainCardInternal(
+    state: FapMainCardState,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -41,7 +43,8 @@ fun ComposableMainCardInternal(
                 modifier = Modifier.padding(
                     horizontal = 12.dp,
                     vertical = 12.dp
-                )
+                ),
+                state = state
             )
         }
     }

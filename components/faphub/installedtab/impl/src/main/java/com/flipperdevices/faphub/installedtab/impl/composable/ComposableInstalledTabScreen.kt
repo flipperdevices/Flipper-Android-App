@@ -34,7 +34,6 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 private const val DEFAULT_FAP_COUNT = 20
 
@@ -45,9 +44,9 @@ fun ComposableInstalledTabScreen(
     uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
+    viewModel: InstalledFapsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = tangleViewModel<InstalledFapsViewModel>()
     val state by viewModel.getFapInstalledScreenState().collectAsState()
     val buttonState by remember {
         viewModel.getFapBatchUpdateButtonState()

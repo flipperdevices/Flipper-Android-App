@@ -13,7 +13,8 @@ dependencies {
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
-    implementation(libs.compose.navigation)
+
+    implementation(libs.compose.ui)
 
     implementation(libs.bundles.decompose)
 }

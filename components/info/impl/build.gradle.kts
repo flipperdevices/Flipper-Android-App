@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
-    implementation(libs.compose.navigation)
+
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.essenty)
 

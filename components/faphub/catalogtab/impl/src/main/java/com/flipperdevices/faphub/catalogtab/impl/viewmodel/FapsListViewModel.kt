@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapsListViewModel @VMInject constructor(
+class FapsListViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val fapManifestApi: FapManifestApi,
     fapHubHideItemApi: FapHubHideItemApi,

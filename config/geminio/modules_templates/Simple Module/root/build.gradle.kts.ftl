@@ -31,9 +31,6 @@ dependencies {
     // ViewModel
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 </#if>
 
 <#if needTest>

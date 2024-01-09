@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapMainCardViewModel @VMInject constructor(
+class FapMainCardViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val targetProviderApi: FlipperTargetProviderApi
 ) : ViewModel(), LogTagProvider {

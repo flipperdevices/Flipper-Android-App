@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.navigation)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
@@ -35,7 +34,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.placeholder)
-    implementation(libs.compose.navigation)
+
     implementation(libs.image.lottie)
 
     implementation(libs.appcompat)

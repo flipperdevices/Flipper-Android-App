@@ -13,17 +13,22 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
+import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.notification.impl.R
 import com.flipperdevices.notification.viewmodel.NotificationDialogViewModel
 import com.squareup.anvil.annotations.ContributesBinding
-import tangle.viewmodel.compose.tangleViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, FlipperAppNotificationDialogApi::class)
-class FlipperAppNotificationDialogApiImpl @Inject constructor() : FlipperAppNotificationDialogApi {
+class FlipperAppNotificationDialogApiImpl @Inject constructor(
+    private val notificationDialogViewModelProvider: Provider<NotificationDialogViewModel>
+) : FlipperAppNotificationDialogApi {
     @Composable
     override fun NotificationDialog() {
-        val dialogViewModel = tangleViewModel<NotificationDialogViewModel>()
+        val dialogViewModel = viewModelWithFactory(key = null) {
+            notificationDialogViewModelProvider.get()
+        }
         val isDialogShown by dialogViewModel.isNotificationShown().collectAsState()
 
         if (isDialogShown) {

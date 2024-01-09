@@ -11,7 +11,7 @@ dependencies {
     implementation(projects.components.core.ktx)
 
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.compose.navigation)
+    implementation(libs.compose.ui)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

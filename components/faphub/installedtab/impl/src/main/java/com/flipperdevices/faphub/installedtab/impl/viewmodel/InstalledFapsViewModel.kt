@@ -28,9 +28,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class InstalledFapsViewModel @VMInject constructor(
+class InstalledFapsViewModel @Inject constructor(
     private val fapManifestApi: FapManifestApi,
     private val queueApi: FapInstallationQueueApi,
     private val fapsStateProducer: InstalledFapsFromNetworkProducer

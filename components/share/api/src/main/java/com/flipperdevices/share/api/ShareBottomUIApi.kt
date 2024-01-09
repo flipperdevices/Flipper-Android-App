@@ -7,6 +7,7 @@ interface ShareBottomUIApi {
     @Composable
     fun ComposableShareBottomSheet(
         flipperKeyPath: FlipperKeyPath,
-        screenContent: @Composable (() -> Unit) -> Unit
+        onSheetStateVisible: @Composable (isVisible: Boolean, onClose: () -> Unit) -> Unit,
+        screenContent: @Composable (() -> Unit) -> Unit,
     )
 }

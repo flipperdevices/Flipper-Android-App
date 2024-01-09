@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 import javax.inject.Provider
 
-class NotificationDialogViewModel @VMInject constructor(
+class NotificationDialogViewModel @Inject constructor(
     settingsProvider: Provider<DataStore<Settings>>,
     flipperNotificationApiProvider: Provider<FlipperAppNotificationApi>,
     coroutineScopeProvider: Provider<CoroutineScope>

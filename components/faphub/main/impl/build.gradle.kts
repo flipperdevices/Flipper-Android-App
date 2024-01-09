@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.tabswitch)
     implementation(projects.components.core.ui.decompose)
 
@@ -33,10 +32,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
-    implementation(libs.bundles.decompose)
+    implementation(libs.lifecycle.compose)
 
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.bundles.decompose)
 }

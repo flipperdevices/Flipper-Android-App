@@ -58,7 +58,6 @@ include(
     ":components:core:ui:theme",
     ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
-    ":components:core:ui:navigation",
     ":components:core:ui:tabswitch",
     ":components:core:ui:flippermockup",
     ":components:core:ui:decompose",
@@ -167,6 +166,8 @@ include(
     ":components:wearable:emulate:handheld:impl",
     ":components:wearable:emulate:handheld:noop",
     ":components:wearable:emulate:common",
+    ":components:wearable:wearrootscreen:api",
+    ":components:wearable:wearrootscreen:impl",
 
     ":components:widget:api",
     ":components:widget:screen",
