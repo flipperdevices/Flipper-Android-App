@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -44,9 +44,9 @@ private fun ComposableSearchBarInternal(
     onChangeText: (String) -> Unit,
     onBack: () -> Unit
 ) {
-    SetUpStatusBarColor(LocalPallet.current.background)
     Row(
-        modifier = Modifier.background(LocalPallet.current.background),
+        modifier = Modifier.background(LocalPallet.current.background)
+            .statusBarsPadding(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ComposableSearchBarBack(onBack)

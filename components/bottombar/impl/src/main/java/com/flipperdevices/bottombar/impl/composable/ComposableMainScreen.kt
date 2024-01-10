@@ -10,8 +10,6 @@ import com.flipperdevices.bottombar.impl.composable.bottombar.ComposeBottomBar
 import com.flipperdevices.bottombar.impl.model.BottomBarTabConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.ui.decompose.DecomposeComponent
 
 @Composable
@@ -35,7 +33,6 @@ fun ComposableMainScreen(
                     onTabClick(it, selectedTab.enum == it)
                 }
             )
-            SetUpNavigationBarColor(color = LocalPallet.current.bottomBarBackground)
         }
     ) {
         Children(

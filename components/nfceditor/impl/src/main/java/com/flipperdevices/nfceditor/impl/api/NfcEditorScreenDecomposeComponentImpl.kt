@@ -3,6 +3,7 @@ package com.flipperdevices.nfceditor.impl.api
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +52,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
+                .navigationBarsPadding()
         ) {
             val isBackPressHandled by isBackPressHandledFlow.collectAsState()
             val saveAsTitle = LocalContext.current.getString(R.string.nfc_dialog_save_as_title)

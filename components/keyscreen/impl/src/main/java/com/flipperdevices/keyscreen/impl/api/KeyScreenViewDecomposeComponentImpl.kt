@@ -1,9 +1,12 @@
 package com.flipperdevices.keyscreen.impl.api
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
@@ -11,6 +14,7 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
@@ -79,6 +83,9 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                 onOpenEditScreen = { flipperKeyPath ->
                     navigation.push(KeyScreenNavigationConfig.KeyEdit(flipperKeyPath))
                 },
+                modifier = Modifier
+                    .background(LocalPallet.current.background)
+                    .navigationBarsPadding(),
             )
         }
     }

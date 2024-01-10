@@ -36,7 +36,6 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
-    implementation(libs.compose.systemuicontroller)
     implementation(libs.bundles.decompose)
     implementation(libs.image.lottie)
 

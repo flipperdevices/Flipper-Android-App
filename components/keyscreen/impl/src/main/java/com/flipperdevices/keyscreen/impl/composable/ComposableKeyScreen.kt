@@ -3,11 +3,10 @@ package com.flipperdevices.keyscreen.impl.composable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.model.KeyScreenState
@@ -25,13 +24,15 @@ fun ComposableKeyScreen(
     onBack: () -> Unit,
     onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
-    onOpenEditScreen: (FlipperKeyPath) -> Unit
+    onOpenEditScreen: (FlipperKeyPath) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val keyScreenState by viewModel.getKeyScreenState().collectAsState()
 
     when (val localKeyScreenState = keyScreenState) {
-        KeyScreenState.InProgress -> ComposableKeyScreenLoading()
+        KeyScreenState.InProgress -> ComposableKeyScreenLoading(modifier)
         is KeyScreenState.Error -> ComposableKeyScreenError(
+            modifier = modifier,
             text = stringResource(id = localKeyScreenState.reason)
         )
 
@@ -47,8 +48,8 @@ fun ComposableKeyScreen(
             onEdit = { viewModel.onOpenEdit(onOpenEditScreen) },
             emulateConfig = localKeyScreenState.emulateConfig,
             onRestore = { viewModel.onRestore(onBack) },
-            onDelete = { viewModel.onDelete(onBack) }
+            onDelete = { viewModel.onDelete(onBack) },
+            modifier = modifier
         )
     }
-    SetUpNavigationBarColor(color = LocalPallet.current.background)
 }

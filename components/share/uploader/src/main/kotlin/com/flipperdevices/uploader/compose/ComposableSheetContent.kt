@@ -33,9 +33,10 @@ internal fun ComposableSheetContent(
     onShareFile: (ShareContent) -> Unit,
     onRetry: () -> Unit,
     onClose: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ComposableSheetFooter(keyName = keyName)

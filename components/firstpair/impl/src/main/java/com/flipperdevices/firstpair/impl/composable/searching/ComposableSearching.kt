@@ -1,7 +1,9 @@
 package com.flipperdevices.firstpair.impl.composable.searching
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.composable.common.ComposableSearchingAppBar
 import com.flipperdevices.firstpair.impl.model.SearchingContent
@@ -26,7 +29,12 @@ fun ComposableSearchingScreen(
     onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier
+            .background(LocalPallet.current.background)
+            .navigationBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         ComposableSearchingAppBar(stringResource(R.string.firstpair_search_title), onBack)
         ComposableSearchingStatus(state, onHelpClicking)
         ComposableSearchingContent(

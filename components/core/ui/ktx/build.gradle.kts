@@ -17,7 +17,6 @@ dependencies {
     implementation(libs.compose.placeholder)
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
-    implementation(libs.compose.systemuicontroller)
     implementation(libs.image.lottie)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)

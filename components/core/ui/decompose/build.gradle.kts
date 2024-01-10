@@ -5,6 +5,8 @@ plugins {
 android.namespace = "com.flipperdevices.ui.decompose"
 
 dependencies {
+    implementation(projects.components.core.activityholder)
+
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
     implementation(libs.compose.activity)

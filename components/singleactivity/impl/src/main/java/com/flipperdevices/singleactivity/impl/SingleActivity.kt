@@ -3,13 +3,13 @@ package com.flipperdevices.singleactivity.impl
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
@@ -23,6 +23,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.FlipperTheme
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
@@ -70,6 +71,9 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
             "Create new activity with hashcode: ${this.hashCode()} " + "and intent ${intent.toFullString()}"
         }
 
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val root = rootComponentFactory(
@@ -90,9 +94,9 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
                     ) {
                         root.Render(
                             modifier = Modifier
-                                .safeDrawingPadding()
                                 .fillMaxSize()
-                                .background(MaterialTheme.colors.background)
+                                .imePadding()
+                                .background(LocalPallet.current.background)
                         )
                     }
                 },
