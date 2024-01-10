@@ -9,6 +9,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 
 object FlipperStackAnimationProvider : StackAnimationProvider {
     override fun <C : Any, T : Any> provide(): StackAnimation<C, T> {
-        return stackAnimation(fade() + scale())
+        return stackAnimation(fade())
     }
 }

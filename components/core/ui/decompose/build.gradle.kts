@@ -17,4 +17,5 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.bundles.decompose)
+    implementation(libs.kotlin.serialization.json)
 }
