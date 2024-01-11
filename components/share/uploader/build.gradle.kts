@@ -37,8 +37,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-    implementation(libs.compose.systemuicontroller)
-
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)

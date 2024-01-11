@@ -1,12 +1,8 @@
 package com.flipperdevices.widget.screen.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.archive.api.SearchDecomposeComponent
@@ -24,10 +20,9 @@ class WidgetDecomposeComponentImpl @AssistedInject constructor(
     @Assisted widgetId: Int,
     private val searchScreenFactory: SearchDecomposeComponent.Factory,
     private val widgetOptionsFactory: WidgetOptionsDecomposeComponentImpl.Factory
-) : WidgetDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<WidgetNavigationConfig>()
+) : WidgetDecomposeComponent<WidgetNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<WidgetNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = WidgetNavigationConfig.serializer(),
         initialConfiguration = WidgetNavigationConfig.WidgetOptions(widgetId),
@@ -49,18 +44,6 @@ class WidgetDecomposeComponentImpl @AssistedInject constructor(
             widgetId = config.widgetId,
             navigation = navigation
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

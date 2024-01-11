@@ -22,7 +22,7 @@ class WearEmulateDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val keyEmulateUiApi: KeyEmulateUiApi,
     private val wearEmulateViewModelFactory: WearEmulateViewModel.Factory
-) : WearEmulateDecomposeComponent, ComponentContext by componentContext {
+) : WearEmulateDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

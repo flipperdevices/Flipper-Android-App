@@ -20,7 +20,7 @@ class KeysListDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<WearRootConfig>,
     private val keysListViewModelProvider: Provider<KeysListViewModel>
-) : KeysListDecomposeComponent, ComponentContext by componentContext {
+) : KeysListDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

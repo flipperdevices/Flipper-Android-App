@@ -1,9 +1,11 @@
 package com.flipperdevices.info.impl.compose.screens
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.info.impl.compose.bar.ComposableDeviceBar
 import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceActionCard
@@ -49,7 +52,11 @@ fun ComposableDeviceInfoScreen(
     var refreshRequested: Boolean by remember { mutableStateOf(false) }
 
     SwipeRefresh(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize()
+            .background(LocalPallet.current.accent)
+            .statusBarsPadding()
+            .background(LocalPallet.current.background),
         onRefresh = { refreshRequested = true }
     ) {
         Column(

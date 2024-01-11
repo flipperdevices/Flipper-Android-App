@@ -7,8 +7,8 @@ import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.report.impl.composable.main.ComposableMainReport
 import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -18,7 +18,7 @@ class FapReportSelectDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val fapReportArgument: FapReportArgument,
     @Assisted private val navigation: StackNavigation<FapReportNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

@@ -1,12 +1,8 @@
 package com.flipperdevices.faphub.report.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
@@ -28,10 +24,9 @@ class FapReportDecomposeComponentImpl @AssistedInject constructor(
     private val reportSelectFactory: FapReportSelectDecomposeComponentImpl.Factory,
     private val reportConcernFactory: FapReportConcernDecomposeComponentImpl.Factory,
     private val reportBugFactory: FapReportBugDecomposeComponentImpl.Factory
-) : FapReportDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<FapReportNavigationConfig>()
+) : FapReportDecomposeComponent<FapReportNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<FapReportNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapReportNavigationConfig.serializer(),
         initialConfiguration = FapReportNavigationConfig.ReportSelect(fapReportArgument),
@@ -61,18 +56,6 @@ class FapReportDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

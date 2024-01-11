@@ -2,7 +2,7 @@ package com.flipperdevices.ui.decompose
 
 import androidx.compose.runtime.Composable
 
-interface DecomposeComponent {
+abstract class DecomposeComponent internal constructor() {
     @Composable
-    fun Render()
+    abstract fun Render()
 }

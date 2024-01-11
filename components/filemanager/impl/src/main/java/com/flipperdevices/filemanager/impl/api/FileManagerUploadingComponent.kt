@@ -11,7 +11,7 @@ import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploa
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.ReceiveViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,8 +22,7 @@ class FileManagerUploadingComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val config: FileManagerNavigationConfig.Uploading,
     @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
-) : DecomposeComponent,
-    ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

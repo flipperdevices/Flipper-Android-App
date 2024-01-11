@@ -18,7 +18,7 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,7 +30,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
     private val mainCardApi: MainCardApi,
     private val metricApi: MetricApi,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

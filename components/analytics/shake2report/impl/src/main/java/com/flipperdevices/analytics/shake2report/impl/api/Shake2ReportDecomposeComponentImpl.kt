@@ -1,6 +1,7 @@
 package com.flipperdevices.analytics.shake2report.impl.api
 
 import androidx.compose.runtime.Composable
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.analytics.shake2report.impl.composable.Shake2ReportScreen
 import com.flipperdevices.analytics.shake2report.impl.viewmodel.Shake2ReportViewModel
 import com.flipperdevices.core.di.AppGraph
@@ -14,9 +15,10 @@ import dagger.assisted.AssistedInject
 import javax.inject.Provider
 
 class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
+    @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val viewModelProvider: Provider<Shake2ReportViewModel>
-) : Shake2ReportDecomposeComponent {
+) : Shake2ReportDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
@@ -32,6 +34,7 @@ class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
     @ContributesBinding(AppGraph::class, Shake2ReportDecomposeComponent.Factory::class)
     interface Factory : Shake2ReportDecomposeComponent.Factory {
         override operator fun invoke(
+            componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter
         ): Shake2ReportDecomposeComponentImpl
     }

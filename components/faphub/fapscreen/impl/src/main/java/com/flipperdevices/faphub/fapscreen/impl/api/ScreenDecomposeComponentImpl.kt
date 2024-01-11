@@ -19,8 +19,8 @@ import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -35,7 +35,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
     private val installationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

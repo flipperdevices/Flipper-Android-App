@@ -1,20 +1,19 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
-kotlin-general = "1.9.21" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "1.9.22" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.5.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "1.9.21-1.0.16" # https://github.com/google/ksp/releases
+ksp = "1.9.22-1.0.16" # https://github.com/google/ksp/releases
 anvil = "2.4.8" # https://github.com/square/anvil/releases
-android-gradle = "8.2.0" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.2.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.25.1" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
 compose-material = "1.5.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-foundation = "1.5.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-ui = "1.5.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.2.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
-compose-compiler = "1.5.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-# https://github.com/oleksandrbalan/modalsheet/issues/32
+compose-compiler = "1.5.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
@@ -124,7 +123,6 @@ compose-wear-foundation = { module = "androidx.wear.compose:compose-foundation",
 horologist-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 
 # UI - Compose Extension
-compose-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose-accompanist" }
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
 compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }

@@ -1,18 +1,21 @@
 package com.flipperdevices.uploader.api
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -28,7 +31,6 @@ import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
 import com.flipperdevices.uploader.viewmodel.UploaderViewModelFactory
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -74,7 +76,7 @@ class ShareBottomUIImpl @Inject constructor(
             sheetScope.launch { sheetState.hide() }
         }
 
-        ProcessSystemBar(sheetState)
+        // ProcessSystemBar(sheetState)
         ModalBottomSheetLayout(
             scrimColor = scrimColor,
             sheetBackgroundColor = LocalPallet.current.shareSheetBackground,
@@ -84,36 +86,11 @@ class ShareBottomUIImpl @Inject constructor(
                     sheetScope.launch { sheetState.hide() }
                 }
             },
-            sheetState = sheetState
+            sheetState = sheetState,
         ) {
             screenContent {
                 viewModel.invalidate()
                 sheetScope.launch { sheetState.show() }
-            }
-        }
-    }
-
-    @OptIn(ExperimentalMaterialApi::class)
-    @Composable
-    private fun ProcessSystemBar(sheetState: ModalBottomSheetState) {
-        val systemUIController = rememberSystemUiController()
-        key(sheetState.isVisible) {
-            if (sheetState.isVisible) {
-                systemUIController.setNavigationBarColor(
-                    color = LocalPallet.current.shareSheetNavigationBarActiveColor,
-                    darkIcons = false
-                )
-                systemUIController.setStatusBarColor(
-                    color = LocalPallet.current.shareSheetStatusBarActiveColor
-                )
-            } else {
-                systemUIController.setNavigationBarColor(
-                    color = LocalPallet.current.shareSheetNavigationBarDefaultColor,
-                    darkIcons = true
-                )
-                systemUIController.setStatusBarColor(
-                    color = LocalPallet.current.shareSheetStatusBarDefaultColor
-                )
             }
         }
     }
@@ -129,6 +106,11 @@ class ShareBottomUIImpl @Inject constructor(
         val keyName = remember(viewModel::getFlipperKeyName)
 
         ComposableSheetContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(LocalPallet.current.shareSheetBackground)
+                .navigationBarsPadding()
+                .systemBarsPadding(),
             state = state,
             keyName = keyName,
             onShareFile = { viewModel.shareByFile(it, context) },

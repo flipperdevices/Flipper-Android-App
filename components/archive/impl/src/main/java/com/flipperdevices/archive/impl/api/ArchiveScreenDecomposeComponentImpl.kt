@@ -17,7 +17,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,8 +30,8 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<ArchiveNavigationConfig>,
     private val synchronizationUiApi: SynchronizationUiApi,
     private val generalTabviewModelProvider: Provider<GeneralTabViewModel>,
-    private val categoryViewModelProvider: Provider<CategoryViewModel>
-) : DecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
+    private val categoryViewModelProvider: Provider<CategoryViewModel>,
+) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Composable

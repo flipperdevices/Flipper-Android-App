@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TabPosition
@@ -29,7 +30,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.ktx.tab.tabIndicatorOffset
 import com.flipperdevices.core.ui.theme.LocalPallet
 
@@ -74,6 +74,7 @@ private fun ComposeBottomBarInternal(
     var tabHeightPx by remember { mutableStateOf(0) }
     Box(
         modifier = modifier.background(LocalPallet.current.bottomBarBackground)
+            .navigationBarsPadding()
     ) {
         if (tabPositions.size > selectedIndex) {
             val currentTabPosition = tabPositions[selectedIndex]
@@ -109,7 +110,6 @@ private fun ComposeBottomBarInternal(
             }
         }
     }
-    SetUpNavigationBarColor(LocalPallet.current.bottomBarBackground)
 }
 
 @Composable

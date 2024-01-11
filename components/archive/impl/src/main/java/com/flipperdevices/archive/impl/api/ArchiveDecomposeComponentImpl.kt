@@ -1,12 +1,7 @@
 package com.flipperdevices.archive.impl.api
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.value.Value
@@ -32,10 +27,11 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
-) : ArchiveDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
-    private val navigation = StackNavigation<ArchiveNavigationConfig>()
+) : ArchiveDecomposeComponent<ArchiveNavigationConfig>(),
+    ComponentContext by componentContext,
+    ResetTabDecomposeHandler {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<ArchiveNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = ArchiveNavigationConfig.serializer(),
         initialStack = {
@@ -74,18 +70,6 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
         val instance = stack.findComponentByConfig(ArchiveNavigationConfig.ArchiveObject::class)
         if (instance is ResetTabDecomposeHandler) {
             instance.onResetTab()
-        }
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
         }
     }
 

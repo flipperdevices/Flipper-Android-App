@@ -6,8 +6,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,7 +24,7 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
     @Assisted private val onHelpClick: OnClickHelp,
     private val bleDeviceViewModelProvider: Provider<BLEDeviceViewModel>,
     private val pairDeviceViewModelProvider: Provider<PairDeviceViewModel>
-) : ComponentContext by componentContext, DecomposeComponent {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

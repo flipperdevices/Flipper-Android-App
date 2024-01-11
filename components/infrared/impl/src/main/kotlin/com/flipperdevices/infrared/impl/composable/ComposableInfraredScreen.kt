@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.infrared.impl.R
 import com.flipperdevices.infrared.impl.composable.components.ComposableInfraredAppBar
@@ -39,15 +38,20 @@ internal fun ComposableInfraredScreen(
     onEdit: (FlipperKeyPath) -> Unit,
     onRename: (FlipperKeyPath) -> Unit,
     onShare: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val state by viewModel.getState().collectAsState()
     val emulateState by viewModel.getEmulateState().collectAsState()
     when (val localState = state) {
-        is KeyScreenState.Error -> ComposableKeyScreenError(stringResource(id = localState.reason))
-        KeyScreenState.InProgress -> ComposableKeyScreenLoading()
+        is KeyScreenState.Error -> ComposableKeyScreenError(
+            modifier = modifier,
+            text = stringResource(id = localState.reason)
+        )
+
+        KeyScreenState.InProgress -> ComposableKeyScreenLoading(modifier)
         is KeyScreenState.Ready ->
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = modifier.fillMaxSize()) {
                 ComposableInfraredAppBar(
                     onBack = onBack,
                     onEdit = { onEdit(localState.flipperKey.getKeyPath()) },
@@ -81,7 +85,6 @@ internal fun ComposableInfraredScreen(
                 )
             }
     }
-    SetUpNavigationBarColor(color = LocalPallet.current.background)
 }
 
 @Composable

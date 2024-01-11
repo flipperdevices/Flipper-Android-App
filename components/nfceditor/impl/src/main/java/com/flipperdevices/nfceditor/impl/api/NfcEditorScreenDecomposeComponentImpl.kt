@@ -3,6 +3,7 @@ package com.flipperdevices.nfceditor.impl.api
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,8 +21,8 @@ import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -36,7 +37,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<NfcEditorNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcEditorViewModelFactory: NfcEditorViewModel.Factory
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback { isBackPressHandledFlow.update { true } }
 
@@ -51,6 +52,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
+                .navigationBarsPadding()
         ) {
             val isBackPressHandled by isBackPressHandledFlow.collectAsState()
             val saveAsTitle = LocalContext.current.getString(R.string.nfc_dialog_save_as_title)

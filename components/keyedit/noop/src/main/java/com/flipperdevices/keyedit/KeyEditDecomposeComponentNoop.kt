@@ -10,9 +10,12 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
-class KeyEditDecomposeComponentNoop : KeyEditDecomposeComponent {
+class KeyEditDecomposeComponentNoop(
+    componentContext: ComponentContext
+) : KeyEditDecomposeComponent(componentContext) {
 
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun Render() = Unit
 
     @ContributesBinding(AppGraph::class, KeyEditDecomposeComponent.Factory::class)
@@ -22,13 +25,13 @@ class KeyEditDecomposeComponentNoop : KeyEditDecomposeComponent {
             onBack: DecomposeOnBackParameter,
             flipperKeyPath: FlipperKeyPath,
             title: String?
-        ) = KeyEditDecomposeComponentNoop()
+        ) = KeyEditDecomposeComponentNoop(componentContext)
 
         override fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             notSavedFlipperKey: NotSavedFlipperKey,
             title: String?
-        ) = KeyEditDecomposeComponentNoop()
+        ) = KeyEditDecomposeComponentNoop(componentContext)
     }
 }

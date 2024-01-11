@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +25,12 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun OrangeAppBar(
     @StringRes titleId: Int,
+    modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
     OrangeAppBar(
+        modifier = modifier,
         title = stringResource(titleId),
         onBack = onBack,
         endBlock = endBlock
@@ -41,11 +44,11 @@ fun OrangeAppBar(
     onBack: (() -> Unit)? = null,
     endBlock: (@Composable (Modifier) -> Unit)? = null
 ) {
-    SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(LocalPallet.current.accent),
+            .background(LocalPallet.current.accent)
+            .statusBarsPadding(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBack != null) {

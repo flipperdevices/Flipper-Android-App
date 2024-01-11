@@ -1,5 +1,14 @@
 package com.flipperdevices.debug.api
 
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
-interface StressTestDecomposeComponent : DecomposeComponent
+abstract class StressTestDecomposeComponent(componentContext: ComponentContext) : ScreenDecomposeComponent(
+    componentContext
+) {
+    fun interface Factory {
+        operator fun invoke(
+            componentContext: ComponentContext
+        ): StressTestDecomposeComponent
+    }
+}

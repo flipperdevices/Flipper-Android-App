@@ -1,29 +1,38 @@
 package com.flipperdevices.keyscreen.impl.api
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.preference.pb.SelectedTheme
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomUIApi
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 
 @Suppress("LongParameterList")
 class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
@@ -36,7 +45,8 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val nfcEditor: NfcEditorApi,
     private val keyEmulateApi: KeyEmulateApi,
-) : DecomposeComponent, ComponentContext by componentContext {
+    private val dataStore: DataStore<Settings>
+) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 
@@ -79,7 +89,21 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                 onOpenEditScreen = { flipperKeyPath ->
                     navigation.push(KeyScreenNavigationConfig.KeyEdit(flipperKeyPath))
                 },
+                modifier = Modifier
+                    .background(LocalPallet.current.background)
+                    .navigationBarsPadding(),
             )
+        }
+    }
+
+    override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {
+        val settings = runBlocking { dataStore.data.first() }
+        return when (settings.selectedTheme) {
+            SelectedTheme.SYSTEM,
+            SelectedTheme.UNRECOGNIZED -> systemIsDark
+
+            SelectedTheme.DARK -> true
+            SelectedTheme.LIGHT -> false
         }
     }
 

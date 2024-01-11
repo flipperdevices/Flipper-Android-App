@@ -6,7 +6,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.model.WidgetNavigationConfig
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
@@ -20,7 +20,7 @@ class WidgetOptionsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<WidgetNavigationConfig>,
     private val archiveApi: ArchiveApi,
     private val widgetSelectViewModelFactory: WidgetSelectViewModel.Factory
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

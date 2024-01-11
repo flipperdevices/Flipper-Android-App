@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockup
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
-import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
@@ -46,7 +45,6 @@ private fun DeviceBar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
         FlipperImage(
             deviceStatus = deviceStatus,
             flipperColor = hardwareColor

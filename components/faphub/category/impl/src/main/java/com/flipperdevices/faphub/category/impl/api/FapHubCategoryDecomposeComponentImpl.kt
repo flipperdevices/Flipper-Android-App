@@ -1,12 +1,8 @@
 package com.flipperdevices.faphub.category.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
@@ -30,10 +26,8 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryScreenFactory: FapHubCategoryScreenDecomposeComponentImpl.Factory
-) : FapHubCategoryDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<FapCategoryNavigationConfig>()
-
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+) : FapHubCategoryDecomposeComponent<FapCategoryNavigationConfig>(), ComponentContext by componentContext {
+    override val stack: Value<ChildStack<FapCategoryNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapCategoryNavigationConfig.serializer(),
         initialConfiguration = FapCategoryNavigationConfig.CategoryList(fapCategory),
@@ -62,18 +56,6 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

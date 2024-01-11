@@ -12,7 +12,7 @@ import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.NotificationViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.settings.impl.viewmodels.VersionViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,8 +25,7 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
     private val settingsViewModelProvider: Provider<SettingsViewModel>,
     private val debugViewModelProvider: Provider<DebugViewModel>,
     private val versionViewModelProvider: Provider<VersionViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
-
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
