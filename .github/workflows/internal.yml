@@ -93,7 +93,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.5"
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
@@ -104,7 +104,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.5"
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
@@ -155,7 +155,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.5"
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign Wear APK
         id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
@@ -166,7 +166,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.5"
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
