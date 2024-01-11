@@ -14,7 +14,6 @@ compose-foundation = "1.5.4" # https://developer.android.com/jetpack/androidx/re
 compose-ui = "1.5.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.2.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-compiler = "1.5.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-# https://github.com/oleksandrbalan/modalsheet/issues/32
 compose-accompanist = "0.32.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
