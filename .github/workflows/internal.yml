@@ -92,6 +92,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.5"
       - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
@@ -101,6 +103,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.5"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
@@ -150,6 +154,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.5"
       - name: Sign Wear APK
         id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
@@ -159,6 +165,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.5"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
@@ -242,7 +250,6 @@ jobs:
       - name: Create internal Release
         id: create_internal_release
         uses: softprops/action-gh-release@v1
-        if: ${{ false }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -266,7 +273,6 @@ jobs:
           name: artifacts-googleplay
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.1.2
-        if: ${{ false }}
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
@@ -284,7 +290,6 @@ jobs:
           name: artifacts-wearos
       - name: Upload to Play Store Wear OS
         uses: r0adkll/upload-google-play@v1.1.2
-        if: ${{ false }}
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
