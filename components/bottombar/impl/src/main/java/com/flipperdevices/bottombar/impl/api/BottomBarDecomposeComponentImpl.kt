@@ -11,7 +11,6 @@ import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
@@ -64,10 +63,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val appNotificationApi: FlipperAppNotificationDialogApi,
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
     private val inAppNotificationViewModelProvider: Provider<InAppNotificationViewModel>
-) : DecomposeComponent, BottomBarDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<BottomBarTabConfig>()
-
-    private val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
+) : BottomBarDecomposeComponent<BottomBarTabConfig>(), ComponentContext by componentContext {
+    override val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
         childStack(
             source = navigation,
             serializer = BottomBarTabConfig.serializer(),
@@ -168,7 +165,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         when (deeplink) {
             is Deeplink.BottomBar.ArchiveTab -> {
                 val instance = stack.findComponentByConfig(BottomBarTabConfig.Archive::class)
-                if (instance == null || instance !is ArchiveDecomposeComponent) {
+                if (instance == null || instance !is ArchiveDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Archive(deeplink))
                 } else {
                     instance.handleDeeplink(deeplink)
@@ -177,7 +174,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
 
             is Deeplink.BottomBar.DeviceTab -> {
                 val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
-                if (instance == null || instance !is DeviceScreenDecomposeComponent) {
+                if (instance == null || instance !is DeviceScreenDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Device(deeplink))
                 } else {
                     instance.handleDeeplink(deeplink)
@@ -186,7 +183,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
 
             is Deeplink.BottomBar.HubTab -> {
                 val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
-                if (instance == null || instance !is HubDecomposeComponent) {
+                if (instance == null || instance !is HubDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Hub(deeplink))
                 } else {
                     instance.handleDeeplink(deeplink)

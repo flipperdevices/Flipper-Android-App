@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.archive.category.composable.ComposableCategory
 import com.flipperdevices.archive.category.composable.ComposableDeleted
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
@@ -18,7 +17,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -31,7 +30,7 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     private val deleteViewModelProvider: Provider<DeleteViewModel>,
     private val categoryViewModelFactory: CategoryViewModel.Factory,
     private val synchronizationUiApi: SynchronizationUiApi
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
 
     @Composable
     @Suppress("NonSkippableComposable")

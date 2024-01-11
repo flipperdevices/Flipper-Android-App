@@ -14,8 +14,8 @@ import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,7 +30,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi,
     private val mainViewModelProvider: Provider<MainViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
 
     @Composable
     @Suppress("NonSkippableComposable")

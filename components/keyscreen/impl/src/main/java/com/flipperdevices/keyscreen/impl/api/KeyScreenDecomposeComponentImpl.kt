@@ -1,12 +1,8 @@
 package com.flipperdevices.keyscreen.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -34,10 +30,9 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenViewFactory: KeyScreenViewDecomposeComponentImpl.Factory,
     private val keyEditFactory: KeyEditDecomposeComponent.Factory,
     private val nfcEditFactory: NfcEditorDecomposeComponent.Factory
-) : KeyScreenDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<KeyScreenNavigationConfig>()
+) : KeyScreenDecomposeComponent<KeyScreenNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<KeyScreenNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = KeyScreenNavigationConfig.serializer(),
         initialConfiguration = KeyScreenNavigationConfig.Main(keyPath),
@@ -81,18 +76,6 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun internalOnBack() = navigation.popOr(onBack::invoke)
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
-    }
 
     @AssistedFactory
     @ContributesBinding(AppGraph::class, KeyScreenDecomposeComponent.Factory::class)

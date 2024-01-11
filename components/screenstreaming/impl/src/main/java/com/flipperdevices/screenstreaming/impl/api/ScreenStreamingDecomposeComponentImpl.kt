@@ -22,7 +22,7 @@ class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val screenStreamingViewModelProvider: Provider<ScreenStreamingViewModel>
-) : ComponentContext by componentContext, ScreenStreamingDecomposeComponent {
+) : ComponentContext by componentContext, ScreenStreamingDecomposeComponent() {
 
     @Composable
     @Suppress("NonSkippableComposable")

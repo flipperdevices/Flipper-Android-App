@@ -10,8 +10,8 @@ import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.nfc.attack.impl.composable.ComposableNfcAttack
 import com.flipperdevices.nfc.attack.impl.model.NFCAttackNavigationConfig
 import com.flipperdevices.nfc.attack.impl.viewmodel.NfcAttackViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,7 +22,7 @@ class NFCAttackScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<NFCAttackNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

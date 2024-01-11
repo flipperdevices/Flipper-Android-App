@@ -2,14 +2,14 @@ package com.flipperdevices.archive.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 
-interface SearchDecomposeComponent : DecomposeComponent {
+abstract class SearchDecomposeComponent<C : Any> : CompositeDecomposeComponent<C>() {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
             onItemSelected: SelectKeyPathListener?
-        ): SearchDecomposeComponent
+        ): SearchDecomposeComponent<*>
     }
 }
 

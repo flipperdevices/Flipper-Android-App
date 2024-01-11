@@ -14,7 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -26,7 +26,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<SearchNavigationConfig>,
     private val searchViewModelProvider: Provider<SearchViewModel>,
     private val synchronizationUiApi: SynchronizationUiApi,
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

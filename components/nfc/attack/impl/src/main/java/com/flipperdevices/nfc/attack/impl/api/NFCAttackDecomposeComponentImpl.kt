@@ -1,12 +1,8 @@
 package com.flipperdevices.nfc.attack.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
@@ -28,10 +24,9 @@ class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcAttackFactory: NFCAttackScreenDecomposeComponentImpl.Factory,
     private val mfKey32Factory: MfKey32DecomposeComponent.Factory
-) : NFCAttackDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<NFCAttackNavigationConfig>()
+) : NFCAttackDecomposeComponent<NFCAttackNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<NFCAttackNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = NFCAttackNavigationConfig.serializer(),
         initialStack = {
@@ -59,18 +54,6 @@ class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

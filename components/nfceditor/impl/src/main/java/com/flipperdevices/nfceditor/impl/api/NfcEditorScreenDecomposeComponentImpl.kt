@@ -21,8 +21,8 @@ import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -37,7 +37,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<NfcEditorNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcEditorViewModelFactory: NfcEditorViewModel.Factory
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback { isBackPressHandledFlow.update { true } }
 

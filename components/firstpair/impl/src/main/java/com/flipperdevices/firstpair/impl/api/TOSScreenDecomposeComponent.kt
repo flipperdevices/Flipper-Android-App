@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.firstpair.impl.composable.tos.ComposableTOS
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -13,7 +13,7 @@ class TOSScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onApply: () -> Unit,
     private val firstPairStorage: FirstPairStorage
-) : ComponentContext by componentContext, DecomposeComponent {
+) : ComponentContext by componentContext, ScreenDecomposeComponent() {
 
     @Composable
     @Suppress("NonSkippableComposable")

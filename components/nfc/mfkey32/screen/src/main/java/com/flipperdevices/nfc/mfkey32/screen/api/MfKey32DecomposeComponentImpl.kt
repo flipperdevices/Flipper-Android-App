@@ -33,7 +33,7 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val mfKey32ViewModelProvider: Provider<MfKey32ViewModel>,
     private val flipperColorViewModelProvider: Provider<FlipperColorViewModel>
-) : MfKey32DecomposeComponent, ComponentContext by componentContext {
+) : MfKey32DecomposeComponent(), ComponentContext by componentContext {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback { isBackPressHandledFlow.update { true } }
 

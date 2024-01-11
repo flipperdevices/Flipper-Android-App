@@ -1,10 +1,10 @@
 package com.flipperdevices.nfc.mfkey32.api
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
-interface MfKey32DecomposeComponent : DecomposeComponent {
+abstract class MfKey32DecomposeComponent : ScreenDecomposeComponent() {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,

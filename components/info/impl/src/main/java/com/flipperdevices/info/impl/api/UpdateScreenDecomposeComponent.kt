@@ -21,7 +21,7 @@ import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.updater.api.UpdaterCardApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -42,7 +42,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     private val firmwareUpdateViewModelProvider: Provider<FirmwareUpdateViewModel>,
     private val alarmViewModelProvider: Provider<AlarmViewModel>,
     private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>
-) : DecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext, ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Suppress("NonSkippableComposable")

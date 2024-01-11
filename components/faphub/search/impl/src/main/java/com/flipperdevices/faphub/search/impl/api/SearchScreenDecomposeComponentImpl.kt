@@ -17,8 +17,8 @@ import com.flipperdevices.faphub.search.impl.model.FapHubSearchNavigationConfig
 import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -33,7 +33,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val metricApi: MetricApi,
     private val searchViewModelProvider: Provider<FapHubSearchViewModel>
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
 
     @Composable
     @Suppress("NonSkippableComposable")

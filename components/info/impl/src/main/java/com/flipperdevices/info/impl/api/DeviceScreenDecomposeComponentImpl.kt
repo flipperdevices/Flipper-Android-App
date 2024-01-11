@@ -1,12 +1,8 @@
 package com.flipperdevices.info.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.replaceAll
@@ -31,10 +27,11 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     private val settingsFactory: SettingsDecomposeComponent.Factory,
     private val updateFactory: UpdateScreenDecomposeComponent.Factory,
     private val fullInfoDecomposeComponentFactory: FullInfoDecomposeComponent.Factory
-) : DeviceScreenDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
-    private val navigation = StackNavigation<DeviceScreenNavigationConfig>()
+) : DeviceScreenDecomposeComponent<DeviceScreenNavigationConfig>(),
+    ComponentContext by componentContext,
+    ResetTabDecomposeHandler {
 
-    private val stack: Value<ChildStack<DeviceScreenNavigationConfig, DecomposeComponent>> =
+    override val stack: Value<ChildStack<DeviceScreenNavigationConfig, DecomposeComponent>> =
         childStack(
             source = navigation,
             serializer = DeviceScreenNavigationConfig.serializer(),
@@ -80,18 +77,6 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
             is Deeplink.BottomBar.DeviceTab.WebUpdate -> navigation.replaceAll(
                 DeviceScreenNavigationConfig.Update(deeplink)
             )
-        }
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
         }
     }
 

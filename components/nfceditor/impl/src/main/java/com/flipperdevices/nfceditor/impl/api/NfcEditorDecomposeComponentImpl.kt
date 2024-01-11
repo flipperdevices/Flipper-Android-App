@@ -1,12 +1,8 @@
 package com.flipperdevices.nfceditor.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -28,10 +24,9 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val saveDecomposeComponentFactory: KeyEditDecomposeComponent.Factory,
     private val nfcEditorDecomposeComponentFactory: NfcEditorScreenDecomposeComponentImpl.Factory
-) : NfcEditorDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<NfcEditorNavigationConfig>()
+) : NfcEditorDecomposeComponent<NfcEditorNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<NfcEditorNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = NfcEditorNavigationConfig.serializer(),
         initialConfiguration = NfcEditorNavigationConfig.NfcEditor(flipperKeyPath),
@@ -56,18 +51,6 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
             notSavedFlipperKey = config.notSavedFlipperKey,
             title = config.title
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

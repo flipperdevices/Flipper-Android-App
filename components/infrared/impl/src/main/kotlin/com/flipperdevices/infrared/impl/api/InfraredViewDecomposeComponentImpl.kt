@@ -21,8 +21,8 @@ import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.share.api.ShareBottomUIApi
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -40,7 +40,7 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenApi: KeyScreenApi,
     private val keyEmulateApi: KeyEmulateApi,
     private val keyEmulateUiApi: KeyEmulateUiApi,
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 

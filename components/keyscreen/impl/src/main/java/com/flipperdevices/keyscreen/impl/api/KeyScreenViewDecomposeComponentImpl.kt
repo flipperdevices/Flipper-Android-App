@@ -21,8 +21,8 @@ import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomUIApi
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -40,7 +40,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val nfcEditor: NfcEditorApi,
     private val keyEmulateApi: KeyEmulateApi,
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 

@@ -10,7 +10,7 @@ import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerEditorScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.EditorViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -20,7 +20,7 @@ class FileManagerEditingComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val config: FileManagerNavigationConfig.Editing,
     @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
-) : DecomposeComponent,
+) : ScreenDecomposeComponent(),
     ComponentContext by componentContext {
     @Composable
     @Suppress("NonSkippableComposable")

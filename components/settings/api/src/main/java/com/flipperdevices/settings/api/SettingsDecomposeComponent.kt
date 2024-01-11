@@ -1,12 +1,12 @@
 package com.flipperdevices.settings.api
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 
-interface SettingsDecomposeComponent : DecomposeComponent {
+abstract class SettingsDecomposeComponent<C : Any> : CompositeDecomposeComponent<C>() {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-        ): SettingsDecomposeComponent
+        ): SettingsDecomposeComponent<*>
     }
 }

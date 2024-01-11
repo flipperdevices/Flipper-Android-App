@@ -2,10 +2,10 @@ package com.flipperdevices.wearable.sync.wear.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
 
-interface KeysListDecomposeComponent : DecomposeComponent {
+abstract class KeysListDecomposeComponent : ScreenDecomposeComponent() {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,

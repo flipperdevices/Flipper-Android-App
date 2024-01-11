@@ -7,8 +7,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.faphub.report.impl.composable.concern.ComposableReport
 import com.flipperdevices.faphub.report.impl.viewmodel.ReportViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -18,7 +18,7 @@ class FapReportConcernDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val applicationUid: String,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val reportViewModelFactory: ReportViewModel.Factory
-) : DecomposeComponent, ComponentContext by componentContext {
+) : ScreenDecomposeComponent(), ComponentContext by componentContext {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

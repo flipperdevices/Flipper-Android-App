@@ -44,7 +44,7 @@ class RootDeeplinkHandler(
 
     private fun notifyBottomBar(deeplink: Deeplink.BottomBar) {
         val component = stack.findComponentByConfig(RootScreenConfig.BottomBar::class)
-        if (component == null || component !is BottomBarDecomposeComponent) {
+        if (component == null || component !is BottomBarDecomposeComponent<*>) {
             warn { "Bottom bar component is not exist in stack, but first pair screen already passed" }
             navigation.bringToFront(RootScreenConfig.BottomBar(deeplink))
             return

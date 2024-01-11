@@ -6,7 +6,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.router.stack.pop
@@ -32,10 +31,8 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
     private val fapHubFactory: FapHubDecomposeComponent.Factory,
     private val hubMainFactory: HubMainScreenDecomposeComponentImpl.Factory,
     private val nfcAttackFactory: NFCAttackDecomposeComponent.Factory
-) : HubDecomposeComponent, ComponentContext by componentContext, ResetTabDecomposeHandler {
-    private val navigation = StackNavigation<HubNavigationConfig>()
-
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+) : HubDecomposeComponent<HubNavigationConfig>(), ComponentContext by componentContext, ResetTabDecomposeHandler {
+    override val stack: Value<ChildStack<HubNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = HubNavigationConfig.serializer(),
         initialStack = { deeplink.toConfigStack() },

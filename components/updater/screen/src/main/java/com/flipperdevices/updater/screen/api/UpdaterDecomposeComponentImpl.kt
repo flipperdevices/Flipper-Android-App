@@ -34,7 +34,7 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val flipperColorViewModelProvider: Provider<FlipperColorViewModel>,
     private val updaterViewModelProvider: Provider<UpdaterViewModel>
-) : ComponentContext by componentContext, UpdaterDecomposeComponent {
+) : ComponentContext by componentContext, UpdaterDecomposeComponent() {
 
     @Composable
     @Suppress("NonSkippableComposable")

@@ -1,12 +1,7 @@
 package com.flipperdevices.archive.category.api
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.archive.api.CategoryDecomposeComponent
@@ -23,10 +18,8 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
     private val categoryFactory: CategoryScreenDecomposeComponentImpl.Factory
-) : CategoryDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<CategoryNavigationConfig>()
-
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+) : CategoryDecomposeComponent<CategoryNavigationConfig>(), ComponentContext by componentContext {
+    override val stack: Value<ChildStack<CategoryNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = CategoryNavigationConfig.serializer(),
         initialStack = {
@@ -45,18 +38,6 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
             categoryType = config.categoryType,
             navigation = navigation
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

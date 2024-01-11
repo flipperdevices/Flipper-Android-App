@@ -1,12 +1,8 @@
 package com.flipperdevices.firstpair.impl.api
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
@@ -32,10 +28,9 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
     private val tosScreenFactory: TOSScreenDecomposeComponent.Factory,
     private val helpScreenFactory: HelpScreenDecomposeComponent.Factory,
     private val deviceScreenFactory: DeviceScreenDecomposeComponent.Factory
-) : FirstPairDecomposeComponent, ComponentContext by componentContext {
-    private val navigation = StackNavigation<FirstPairNavigationConfig>()
+) : FirstPairDecomposeComponent<FirstPairNavigationConfig>(), ComponentContext by componentContext {
 
-    private val stack: Value<ChildStack<*, DecomposeComponent>> = childStack(
+    override val stack: Value<ChildStack<FirstPairNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FirstPairNavigationConfig.serializer(),
         initialConfiguration = if (firstPairStorage.isTosPassed()) {
@@ -75,18 +70,6 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
                 }
             }
         )
-    }
-
-    @Composable
-    @Suppress("NonSkippableComposable")
-    override fun Render() {
-        val childStack by stack.subscribeAsState()
-
-        Children(
-            stack = childStack,
-        ) {
-            it.instance.Render()
-        }
     }
 
     @AssistedFactory

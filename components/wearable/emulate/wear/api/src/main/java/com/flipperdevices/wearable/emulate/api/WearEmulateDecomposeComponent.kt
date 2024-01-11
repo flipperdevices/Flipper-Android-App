@@ -2,10 +2,10 @@ package com.flipperdevices.wearable.emulate.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
-interface WearEmulateDecomposeComponent : DecomposeComponent {
+abstract class WearEmulateDecomposeComponent : ScreenDecomposeComponent() {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
