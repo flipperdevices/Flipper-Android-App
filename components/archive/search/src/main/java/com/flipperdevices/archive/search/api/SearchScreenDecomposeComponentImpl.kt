@@ -26,7 +26,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<SearchNavigationConfig>,
     private val searchViewModelProvider: Provider<SearchViewModel>,
     private val synchronizationUiApi: SynchronizationUiApi,
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

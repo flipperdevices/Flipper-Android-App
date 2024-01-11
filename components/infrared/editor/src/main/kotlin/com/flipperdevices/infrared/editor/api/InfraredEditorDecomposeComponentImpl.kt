@@ -27,7 +27,7 @@ class InfraredEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val keyPath: FlipperKeyPath,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val infraredEditorViewModelFactory: InfraredEditorViewModel.Factory
-) : InfraredEditorDecomposeComponent(), ComponentContext by componentContext {
+) : InfraredEditorDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback { isBackPressHandledFlow.update { true } }
 

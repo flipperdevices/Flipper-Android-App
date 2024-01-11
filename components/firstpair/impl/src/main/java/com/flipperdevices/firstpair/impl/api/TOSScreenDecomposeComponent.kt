@@ -13,7 +13,7 @@ class TOSScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onApply: () -> Unit,
     private val firstPairStorage: FirstPairStorage
-) : ComponentContext by componentContext, ScreenDecomposeComponent() {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

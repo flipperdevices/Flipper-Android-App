@@ -30,7 +30,7 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
     private val mainCardApi: MainCardApi,
     private val metricApi: MetricApi,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

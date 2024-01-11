@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class KeyEditDecomposeComponentNoop(
     componentContext: ComponentContext
-) : KeyEditDecomposeComponent(), ComponentContext by componentContext {
+) : KeyEditDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

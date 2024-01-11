@@ -31,7 +31,7 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val generalTabviewModelProvider: Provider<GeneralTabViewModel>,
     private val categoryViewModelProvider: Provider<CategoryViewModel>,
-) : ScreenDecomposeComponent(), ComponentContext by componentContext, ResetTabDecomposeHandler {
+) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Composable

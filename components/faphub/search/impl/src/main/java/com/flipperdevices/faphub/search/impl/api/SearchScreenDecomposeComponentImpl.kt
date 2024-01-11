@@ -33,7 +33,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val metricApi: MetricApi,
     private val searchViewModelProvider: Provider<FapHubSearchViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

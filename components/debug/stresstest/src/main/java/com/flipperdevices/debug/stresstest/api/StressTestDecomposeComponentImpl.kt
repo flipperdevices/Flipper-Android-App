@@ -16,7 +16,7 @@ import javax.inject.Provider
 class StressTestDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val stressTestViewModelProvider: Provider<StressTestViewModel>
-) : StressTestDecomposeComponent(), ComponentContext by componentContext {
+) : StressTestDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

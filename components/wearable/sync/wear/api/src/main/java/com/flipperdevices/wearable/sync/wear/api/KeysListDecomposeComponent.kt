@@ -5,7 +5,9 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
 
-abstract class KeysListDecomposeComponent : ScreenDecomposeComponent() {
+abstract class KeysListDecomposeComponent(componentContext: ComponentContext) : ScreenDecomposeComponent(
+    componentContext
+) {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,

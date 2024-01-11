@@ -22,7 +22,7 @@ class FullInfoDecomposeComponent @AssistedInject constructor(
     private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>,
     private val fullInfoViewModelProvider: Provider<FullInfoViewModel>,
     private val deviceStatusViewModelProvider: Provider<DeviceStatusViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

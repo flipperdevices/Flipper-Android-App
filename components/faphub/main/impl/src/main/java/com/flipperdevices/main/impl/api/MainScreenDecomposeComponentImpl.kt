@@ -30,7 +30,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi,
     private val mainViewModelProvider: Provider<MainViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

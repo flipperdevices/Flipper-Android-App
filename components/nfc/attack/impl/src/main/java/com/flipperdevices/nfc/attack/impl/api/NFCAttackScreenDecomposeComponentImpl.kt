@@ -22,7 +22,7 @@ class NFCAttackScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<NFCAttackNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

@@ -42,7 +42,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     private val firmwareUpdateViewModelProvider: Provider<FirmwareUpdateViewModel>,
     private val alarmViewModelProvider: Provider<AlarmViewModel>,
     private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext, ResetTabDecomposeHandler {
+) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
     @Suppress("NonSkippableComposable")

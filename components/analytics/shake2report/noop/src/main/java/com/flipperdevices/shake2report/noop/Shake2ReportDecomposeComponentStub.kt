@@ -14,7 +14,7 @@ import dagger.assisted.AssistedInject
 class Shake2ReportDecomposeComponentStub @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onBack: DecomposeOnBackParameter
-) : Shake2ReportDecomposeComponent(), ComponentContext by componentContext {
+) : Shake2ReportDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() = Unit

@@ -17,7 +17,7 @@ class ScreenStreamingDecomposeComponentNoop @AssistedInject constructor(
     @Assisted
     @Suppress("UnusedPrivateProperty")
     onBack: DecomposeOnBackParameter
-) : ScreenStreamingDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenStreamingDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

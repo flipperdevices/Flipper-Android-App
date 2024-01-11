@@ -30,7 +30,7 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     private val deleteViewModelProvider: Provider<DeleteViewModel>,
     private val categoryViewModelFactory: CategoryViewModel.Factory,
     private val synchronizationUiApi: SynchronizationUiApi
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

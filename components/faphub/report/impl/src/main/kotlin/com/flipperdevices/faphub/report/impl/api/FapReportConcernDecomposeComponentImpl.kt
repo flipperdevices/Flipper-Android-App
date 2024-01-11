@@ -18,7 +18,7 @@ class FapReportConcernDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val applicationUid: String,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val reportViewModelFactory: ReportViewModel.Factory
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

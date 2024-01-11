@@ -18,7 +18,7 @@ class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val viewModelProvider: Provider<Shake2ReportViewModel>
-) : Shake2ReportDecomposeComponent(), ComponentContext by componentContext {
+) : Shake2ReportDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

@@ -35,7 +35,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
     private val installationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

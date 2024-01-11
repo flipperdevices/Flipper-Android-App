@@ -5,7 +5,9 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.updater.model.UpdateRequest
 
-abstract class UpdaterDecomposeComponent : ScreenDecomposeComponent() {
+abstract class UpdaterDecomposeComponent(componentContext: ComponentContext) : ScreenDecomposeComponent(
+    componentContext
+) {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,

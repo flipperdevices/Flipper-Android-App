@@ -22,7 +22,7 @@ class FileManagerListingComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val config: FileManagerNavigationConfig.Screen,
     @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

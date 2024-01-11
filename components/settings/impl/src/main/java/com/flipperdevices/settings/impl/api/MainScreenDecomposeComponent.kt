@@ -25,7 +25,7 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
     private val settingsViewModelProvider: Provider<SettingsViewModel>,
     private val debugViewModelProvider: Provider<DebugViewModel>,
     private val versionViewModelProvider: Provider<VersionViewModel>
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

@@ -23,7 +23,7 @@ class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val keyScreenApi: KeyScreenApi,
     private val keyReceiveViewModelFactory: KeyReceiveViewModel.Factory
-) : ComponentContext by componentContext, KeyReceiveDecomposeComponent() {
+) : KeyReceiveDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

@@ -22,8 +22,7 @@ class FileManagerUploadingComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val config: FileManagerNavigationConfig.Uploading,
     @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
-) : ScreenDecomposeComponent(),
-    ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {

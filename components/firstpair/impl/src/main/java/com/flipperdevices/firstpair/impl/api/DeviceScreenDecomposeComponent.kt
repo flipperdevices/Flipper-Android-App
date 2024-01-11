@@ -24,7 +24,7 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
     @Assisted private val onHelpClick: OnClickHelp,
     private val bleDeviceViewModelProvider: Provider<BLEDeviceViewModel>,
     private val pairDeviceViewModelProvider: Provider<PairDeviceViewModel>
-) : ComponentContext by componentContext, ScreenDecomposeComponent() {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

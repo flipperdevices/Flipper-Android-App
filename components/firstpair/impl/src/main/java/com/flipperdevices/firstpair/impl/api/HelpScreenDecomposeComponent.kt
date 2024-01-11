@@ -12,7 +12,7 @@ import dagger.assisted.AssistedInject
 class HelpScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter
-) : ComponentContext by componentContext, ScreenDecomposeComponent() {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

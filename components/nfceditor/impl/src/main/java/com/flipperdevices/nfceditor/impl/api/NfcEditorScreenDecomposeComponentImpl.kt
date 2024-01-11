@@ -37,7 +37,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<NfcEditorNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcEditorViewModelFactory: NfcEditorViewModel.Factory
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback { isBackPressHandledFlow.update { true } }
 

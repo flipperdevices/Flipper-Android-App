@@ -20,7 +20,7 @@ class WidgetOptionsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val navigation: StackNavigation<WidgetNavigationConfig>,
     private val archiveApi: ArchiveApi,
     private val widgetSelectViewModelFactory: WidgetSelectViewModel.Factory
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

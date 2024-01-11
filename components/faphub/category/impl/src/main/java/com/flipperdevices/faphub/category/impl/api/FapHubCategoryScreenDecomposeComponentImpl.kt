@@ -34,7 +34,7 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     private val metricApi: MetricApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val fapInstallationUIApi: FapInstallationUIApi
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")

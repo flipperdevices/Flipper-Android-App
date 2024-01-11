@@ -7,12 +7,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
+import com.flipperdevices.core.preference.pb.SelectedTheme
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
@@ -27,7 +30,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 
 @Suppress("LongParameterList")
 class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
@@ -40,7 +45,8 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val nfcEditor: NfcEditorApi,
     private val keyEmulateApi: KeyEmulateApi,
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+    private val dataStore: DataStore<Settings>
+) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 
@@ -87,6 +93,17 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                     .background(LocalPallet.current.background)
                     .navigationBarsPadding(),
             )
+        }
+    }
+
+    override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {
+        val settings = runBlocking { dataStore.data.first() }
+        return when (settings.selectedTheme) {
+            SelectedTheme.SYSTEM,
+            SelectedTheme.UNRECOGNIZED -> systemIsDark
+
+            SelectedTheme.DARK -> true
+            SelectedTheme.LIGHT -> false
         }
     }
 

@@ -40,7 +40,7 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenApi: KeyScreenApi,
     private val keyEmulateApi: KeyEmulateApi,
     private val keyEmulateUiApi: KeyEmulateUiApi,
-) : ScreenDecomposeComponent(), ComponentContext by componentContext {
+) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 

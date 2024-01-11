@@ -20,7 +20,7 @@ class KeyEditDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val title: String?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val keyEditViewModelFactory: KeyEditViewModel.Factory
-) : KeyEditDecomposeComponent(), ComponentContext by componentContext {
+) : KeyEditDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
