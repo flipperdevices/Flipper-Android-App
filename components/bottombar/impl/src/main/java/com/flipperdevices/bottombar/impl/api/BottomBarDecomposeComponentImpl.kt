@@ -91,7 +91,13 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         }
         val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
 
+        val notificationViewModel: InAppNotificationViewModel = viewModelWithFactory(key = null) {
+            inAppNotificationViewModelProvider.get()
+        }
+
         ComposableMainScreen(
+            notificationViewModel = notificationViewModel,
+            notificationRenderer = notificationRenderer,
             childStack = childStack,
             connectionTabState = connectionTabState,
             onTabClick = ::goToTab,
@@ -99,17 +105,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             hubHasNotification = hubHasNotification
         )
 
-        val notificationViewModel: InAppNotificationViewModel = viewModelWithFactory(key = null) {
-            inAppNotificationViewModelProvider.get()
-        }
-        val notificationState by notificationViewModel.state().collectAsState()
-
-        ComposableInAppNotification(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            notificationRenderer = notificationRenderer,
-            notificationState = notificationState,
-            onNotificationHidden = notificationViewModel::onNotificationHidden
-        )
         OnLifecycleEvent(onEvent = notificationViewModel::onLifecycleEvent)
 
         connectionApi.CheckAndShowUnsupportedDialog()

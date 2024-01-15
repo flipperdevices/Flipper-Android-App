@@ -3,7 +3,6 @@ package com.flipperdevices.settings.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.settings.impl.composable.ComposableSettings
@@ -12,15 +11,18 @@ import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.NotificationViewModel
 import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.settings.impl.viewmodels.VersionViewModel
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Provider
 
+@Suppress("LongParameterList")
 class MainScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<SettingsNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val notificationViewModelProvider: Provider<NotificationViewModel>,
     private val settingsViewModelProvider: Provider<SettingsViewModel>,
     private val debugViewModelProvider: Provider<DebugViewModel>,
@@ -46,7 +48,7 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
             settingsViewModel = settingsViewModel,
             notificationViewModel = notificationViewModel,
             versionViewModel = versionViewModel,
-            onBack = navigation::pop,
+            onBack = onBack::invoke,
             onOpen = { navigation.push(it) },
             debugViewModel = debugViewModel,
             onDebugAction = { debugViewModel.onAction(it, navigation) },
@@ -57,7 +59,8 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            navigation: StackNavigation<SettingsNavigationConfig>
+            navigation: StackNavigation<SettingsNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): MainScreenDecomposeComponent
     }
 }
