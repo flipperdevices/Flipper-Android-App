@@ -5,8 +5,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -24,19 +25,21 @@ class FapInstallationUIApiImpl @Inject constructor(
     private val fapStatusViewModelProvider: Provider<FapStatusViewModel>
 ) : FapInstallationUIApi {
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun ComposableButton(
-        config: FapButtonConfig?,
         modifier: Modifier,
+        componentContext: ComponentContext,
+        config: FapButtonConfig?,
         fapButtonSize: FapButtonSize
     ) {
-        val statusViewModel = viewModelWithFactory(key = null) {
+        val statusViewModel = componentContext.viewModelWithFactory(key = null) {
             fapStatusViewModelProvider.get()
         }
         val stateFlow = remember(config) {
             statusViewModel.getStateForApplicationId(config)
         }
         val state by stateFlow.collectAsState(FapState.NotInitialized)
-        val openViewModel = viewModelWithFactory(key = null) {
+        val openViewModel = componentContext.viewModelWithFactory(key = null) {
             openFapViewModelProvider.get()
         }
 

@@ -1,7 +1,6 @@
 package com.flipperdevices.debug.stresstest.viewmodel
 
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.toHumanReadableString
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -11,7 +10,7 @@ import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.split
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.protobuf.main
@@ -49,7 +48,7 @@ const val TEST_FILE = "/any/stresstest_mobile.tmp"
 @Suppress("TooManyFunctions")
 class StressTestViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider
-) : LifecycleViewModel() {
+) : DecomposeViewModel() {
     private val isStressTestRunning = AtomicBoolean(false)
     private val debugLog = MutableStateFlow(persistentListOf<LogLine>())
     private val stressTestState = MutableStateFlow(StressTestState())

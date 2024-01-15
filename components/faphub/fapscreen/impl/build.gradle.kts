@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.analytics.metric.api)
 

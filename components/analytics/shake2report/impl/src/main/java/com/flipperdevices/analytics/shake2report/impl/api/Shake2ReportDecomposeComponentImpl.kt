@@ -5,7 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.analytics.shake2report.impl.composable.Shake2ReportScreen
 import com.flipperdevices.analytics.shake2report.impl.viewmodel.Shake2ReportViewModel
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.squareup.anvil.annotations.ContributesBinding

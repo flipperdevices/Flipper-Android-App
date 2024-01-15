@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
@@ -26,12 +27,13 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "NonSkippableComposable")
 fun ComposableKeyParsed(
     keyScreenState: KeyScreenState.Ready,
     nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
+    componentContext: ComponentContext,
     onBack: () -> Unit,
     onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
@@ -52,8 +54,9 @@ fun ComposableKeyParsed(
             synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
                 { ->
                     synchronizationUiApi.RenderSynchronizationState(
-                        keyScreenState.flipperKey.getKeyPath(),
-                        withText = true
+                        keyPath = keyScreenState.flipperKey.getKeyPath(),
+                        withText = true,
+                        componentContext = componentContext
                     )
                 }
             } else {
@@ -71,7 +74,8 @@ fun ComposableKeyParsed(
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp, bottom = 14.dp),
                     emulateConfig = config,
-                    isSynchronized = keyScreenState.flipperKey.synchronized
+                    isSynchronized = keyScreenState.flipperKey.synchronized,
+                    componentContext = componentContext
                 )
             }
 

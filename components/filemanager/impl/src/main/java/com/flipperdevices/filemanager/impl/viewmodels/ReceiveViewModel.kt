@@ -1,14 +1,13 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareState
@@ -33,7 +32,7 @@ class ReceiveViewModel @AssistedInject constructor(
     @Assisted private val deeplinkContent: DeeplinkContent,
     context: Context,
     serviceProvider: FlipperServiceProvider
-) : LifecycleViewModel(),
+) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "ReceiveViewModel"

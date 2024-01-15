@@ -3,7 +3,7 @@ package com.flipperdevices.firstpair.impl.api
 import ComposableSearchingView
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter

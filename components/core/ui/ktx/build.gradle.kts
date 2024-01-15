@@ -20,4 +20,6 @@ dependencies {
     implementation(libs.image.lottie)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
+
+    implementation(libs.decompose)
 }

@@ -1,10 +1,10 @@
 package com.flipperdevices.faphub.catalogtab.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class CategoriesViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val targetProviderApi: FlipperTargetProviderApi
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "CategoriesViewModel"
     private val categoriesLoadStateFlow = MutableStateFlow<CategoriesLoadState>(
         CategoriesLoadState.Loading

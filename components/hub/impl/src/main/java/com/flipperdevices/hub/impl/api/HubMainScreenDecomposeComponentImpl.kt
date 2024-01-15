@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.hub.impl.composable.ComposableHub
 import com.flipperdevices.hub.impl.model.HubNavigationConfig
@@ -56,7 +56,8 @@ class HubMainScreenDecomposeComponentImpl @AssistedInject constructor(
                     onClick = {
                         metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB)
                         navigation.push(HubNavigationConfig.FapHub(null))
-                    }
+                    },
+                    componentContext = this
                 )
             },
             onOpenRemoteControl = {

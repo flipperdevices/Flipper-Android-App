@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig

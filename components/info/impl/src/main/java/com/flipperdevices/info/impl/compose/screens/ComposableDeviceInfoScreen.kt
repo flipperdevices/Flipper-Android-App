@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
@@ -33,8 +34,10 @@ import com.flipperdevices.updater.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
+@Suppress("NonSkippableComposable")
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
+    componentContext: ComponentContext,
     deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
     deviceStatus: DeviceStatus,
     scrollState: ScrollState,
@@ -70,7 +73,8 @@ fun ComposableDeviceInfoScreen(
                 onStartUpdateRequest = onStartUpdateRequest,
                 requestRefresh = refreshRequested,
                 onRefreshRequestExecuted = { refreshRequested = false },
-                deeplink = deeplink
+                deeplink = deeplink,
+                componentContext = componentContext
             )
             ComposableFirmwareUpdate(
                 modifier = Modifier.padding(top = 14.dp),

@@ -6,7 +6,10 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
-interface RootDecomposeComponent : RootNavigationInterface, RootDeeplinkHandler {
+interface RootDecomposeComponent :
+    ComponentContext,
+    RootNavigationInterface,
+    RootDeeplinkHandler {
     @Composable
     fun Render(modifier: Modifier)
 

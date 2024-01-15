@@ -16,7 +16,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.composable.ComposableNfcEditorScreen
 import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig

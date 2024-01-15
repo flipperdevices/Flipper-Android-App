@@ -1,12 +1,12 @@
 package com.flipperdevices.firstpair.impl.viewmodels.searching
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.ScanState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +25,7 @@ private const val TIMEOUT_MS = 30L * 1000
 
 class BLEDeviceViewModel @Inject constructor(
     scannerProvider: Provider<FlipperScanner>
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "BLEDeviceViewModel"
 
     private val scanner by scannerProvider

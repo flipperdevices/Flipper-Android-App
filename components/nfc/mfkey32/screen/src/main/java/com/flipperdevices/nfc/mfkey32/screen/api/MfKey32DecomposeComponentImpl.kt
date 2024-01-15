@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.nfc.mfkey32.api.MfKey32DecomposeComponent
 import com.flipperdevices.nfc.mfkey32.screen.composable.ComposableMfKey32Dialog
 import com.flipperdevices.nfc.mfkey32.screen.composable.ComposableMfKey32Screen

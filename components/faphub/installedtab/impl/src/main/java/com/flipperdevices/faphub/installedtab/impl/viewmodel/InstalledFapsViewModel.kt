@@ -1,10 +1,10 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -34,7 +34,7 @@ class InstalledFapsViewModel @Inject constructor(
     private val fapManifestApi: FapManifestApi,
     private val queueApi: FapInstallationQueueApi,
     private val fapsStateProducer: InstalledFapsFromNetworkProducer
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
 

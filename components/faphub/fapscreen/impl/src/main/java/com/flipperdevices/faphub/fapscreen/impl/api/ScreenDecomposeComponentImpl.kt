@@ -7,7 +7,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
@@ -53,7 +53,8 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
                 installationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
-                    fapButtonSize = FapButtonSize.LARGE
+                    fapButtonSize = FapButtonSize.LARGE,
+                    componentContext = this
                 )
             },
             onOpenDeviceTab = {

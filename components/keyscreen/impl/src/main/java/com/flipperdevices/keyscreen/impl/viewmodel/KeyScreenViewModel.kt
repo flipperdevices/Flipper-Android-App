@@ -1,9 +1,8 @@
 package com.flipperdevices.keyscreen.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.metric.api.MetricApi
@@ -18,7 +17,7 @@ class KeyScreenViewModel @AssistedInject constructor(
     @Assisted val keyPath: FlipperKeyPath, // For get value to bottom sheet
     keyStateHelperApi: KeyStateHelperApi.Builder,
     private val metricApi: MetricApi
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
 
     private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)

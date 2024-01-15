@@ -1,7 +1,6 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -15,7 +14,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressWrapperTracker
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
@@ -54,7 +53,7 @@ class MfKey32ViewModel @Inject constructor(
     private val metricApi: MetricApi,
     flipperServiceProvider: FlipperServiceProvider,
     private val flipperStorageApi: FlipperStorageApi
-) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
     private val bruteforceDispatcher = Executors.newFixedThreadPool(
         Runtime.getRuntime().availableProcessors()

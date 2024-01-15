@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.service.noop.provider
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -14,13 +13,11 @@ import javax.inject.Inject
 class FlipperServiceProviderNoop @Inject constructor() : FlipperServiceProvider {
     override fun provideServiceApi(
         consumer: FlipperBleServiceConsumer,
-        lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event
+        lifecycleOwner: LifecycleOwner
     ) = Unit
 
     override fun provideServiceApi(
         lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event,
         onError: (FlipperBleServiceError) -> Unit,
         onBleManager: (FlipperServiceApi) -> Unit
     ) = Unit

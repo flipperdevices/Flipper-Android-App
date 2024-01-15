@@ -1,9 +1,9 @@
 package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.helper.OpenFapHelper
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class OpenFapViewModel @Inject constructor(
     private val openFapHelper: OpenFapHelper
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "OpenFapViewModel"
 
     private val busyDialogState = MutableStateFlow(false)

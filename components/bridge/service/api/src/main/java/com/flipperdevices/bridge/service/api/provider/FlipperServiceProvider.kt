@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.service.api.provider
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 
@@ -17,12 +16,10 @@ interface FlipperServiceProvider {
     fun provideServiceApi(
         consumer: FlipperBleServiceConsumer,
         lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
     )
 
     fun provideServiceApi(
         lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY,
         onError: (FlipperBleServiceError) -> Unit = {},
         onBleManager: (FlipperServiceApi) -> Unit
     )

@@ -1,9 +1,9 @@
 package com.flipperdevices.faphub.maincard.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class FapMainCardViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val targetProviderApi: FlipperTargetProviderApi
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FapMainCardViewModel"
 
     private val fapMainCardStateFlow = MutableStateFlow<FapMainCardState>(FapMainCardState.Loading)

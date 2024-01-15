@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
@@ -18,7 +17,6 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
-import com.flipperdevices.bottombar.impl.composable.ComposableInAppNotification
 import com.flipperdevices.bottombar.impl.composable.ComposableMainScreen
 import com.flipperdevices.bottombar.impl.model.BottomBarTabConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
@@ -30,7 +28,7 @@ import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
@@ -84,7 +82,9 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() = Box {
         val childStack by stack.subscribeAsState()
-        val connectionTabState = connectionApi.getConnectionTabState()
+        val connectionTabState = connectionApi.getConnectionTabState(
+            componentContext = this@BottomBarDecomposeComponentImpl
+        )
 
         val bottomBarViewModel: BottomBarViewModel = viewModelWithFactory(key = null) {
             bottomBarViewModelProvider.get()
@@ -107,8 +107,12 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
 
         OnLifecycleEvent(onEvent = notificationViewModel::onLifecycleEvent)
 
-        connectionApi.CheckAndShowUnsupportedDialog()
-        appNotificationApi.NotificationDialog()
+        connectionApi.CheckAndShowUnsupportedDialog(
+            componentContext = this@BottomBarDecomposeComponentImpl
+        )
+        appNotificationApi.NotificationDialog(
+            componentContext = this@BottomBarDecomposeComponentImpl
+        )
         unhandledExceptionRendererApi.ComposableUnhandledExceptionRender(Modifier)
     }
 

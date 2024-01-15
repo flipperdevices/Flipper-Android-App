@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.errors.api)
@@ -32,6 +33,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
+    implementation(libs.decompose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
 

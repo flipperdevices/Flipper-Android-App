@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+    implementation(libs.decompose)
     implementation(libs.lifecycle.compose)
 
     implementation(projects.components.faphub.dao.api)

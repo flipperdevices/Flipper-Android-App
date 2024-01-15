@@ -1,7 +1,7 @@
 package com.flipperdevices.nfc.attack.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class NfcAttackViewModel @Inject constructor(
     private val mfKey32Api: MfKey32Api
-) : ViewModel() {
+) : DecomposeViewModel() {
     fun hasMfKey32Notification(): StateFlow<Boolean> = mfKey32Api.hasNotification()
         .stateIn(
             viewModelScope + Dispatchers.Default,

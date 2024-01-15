@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.infrared.impl.R
@@ -35,6 +36,7 @@ internal fun ComposableInfraredScreen(
     keyScreenApi: KeyScreenApi,
     keyEmulateApi: KeyEmulateApi,
     keyEmulateUiApi: KeyEmulateUiApi,
+    componentContext: ComponentContext,
     onEdit: (FlipperKeyPath) -> Unit,
     onRename: (FlipperKeyPath) -> Unit,
     onShare: () -> Unit,
@@ -69,14 +71,16 @@ internal fun ComposableInfraredScreen(
                             state = localState,
                             modifier = Modifier
                                 .padding(horizontal = 24.dp)
-                                .padding(vertical = 14.dp)
+                                .padding(vertical = 14.dp),
+                            componentContext = componentContext
                         )
                     },
                     keyEmulateContent = { config ->
                         keyEmulateApi.ComposableEmulateButton(
                             modifier = Modifier.padding(horizontal = 24.dp),
                             emulateConfig = config,
-                            isSynchronized = localState.flipperKey.synchronized
+                            isSynchronized = localState.flipperKey.synchronized,
+                            componentContext = componentContext
                         )
                     },
                     keyEmulateErrorContent = {

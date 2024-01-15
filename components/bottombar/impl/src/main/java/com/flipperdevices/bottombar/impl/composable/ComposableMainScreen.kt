@@ -15,7 +15,6 @@ import com.flipperdevices.bottombar.impl.model.BottomBarTabConfig
 import com.flipperdevices.bottombar.impl.model.BottomBarTabEnum
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.bottombar.model.TabState
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.ui.decompose.DecomposeComponent
 
@@ -43,10 +42,9 @@ fun ComposableMainScreen(
                 }
             )
         }
-    ) {
-        Box(Modifier.padding(it)) {
+    ) { paddingValues ->
+        Box(Modifier.padding(paddingValues)) {
             Children(
-                modifier = Modifier.padding(it),
                 stack = childStack,
             ) {
                 it.instance.Render()

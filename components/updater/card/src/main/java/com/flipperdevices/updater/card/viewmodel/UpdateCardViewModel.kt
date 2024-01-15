@@ -10,7 +10,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
@@ -42,7 +42,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     private val updateOfferHelper: UpdateOfferProviderApi,
     private val storageExistHelper: StorageExistHelper,
     @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
-) : LifecycleViewModel(),
+) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"

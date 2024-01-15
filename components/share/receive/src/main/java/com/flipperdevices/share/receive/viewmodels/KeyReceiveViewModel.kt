@@ -1,14 +1,13 @@
 package com.flipperdevices.share.receive.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.share.receive.R
 import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
@@ -25,7 +24,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -35,11 +33,11 @@ import java.net.UnknownServiceException
 
 class KeyReceiveViewModel @AssistedInject constructor(
     @Assisted initialDeeplink: Deeplink.RootLevel.SaveKey,
-    application: Application,
+    private val application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val flipperKeyParserHelper: FlipperKeyParserHelper,
     private val receiveKeyActionHelper: ReceiveKeyActionHelper
-) : AndroidLifecycleViewModel(application), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyReceiveViewModel"
     private val internalDeeplinkFlow = MutableStateFlow(initialDeeplink)
 
@@ -118,7 +116,7 @@ class KeyReceiveViewModel @AssistedInject constructor(
 
             saveKeyResult.onFailure { exception ->
                 error(exception) { "While save key ${localState.flipperKey}" }
-                getApplication<Application>().toast(R.string.receive_error_conflict)
+                application.toast(R.string.receive_error_conflict)
                 state.emit(ReceiveState.Pending(localState.flipperKey, localState.parsed))
                 return@launch
             }

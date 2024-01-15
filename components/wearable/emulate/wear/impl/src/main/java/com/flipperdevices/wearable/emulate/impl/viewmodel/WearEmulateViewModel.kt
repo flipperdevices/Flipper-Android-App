@@ -1,10 +1,9 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
 import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
 import com.flipperdevices.wearable.emulate.impl.helper.EmulateHelper
@@ -24,7 +23,7 @@ class WearEmulateViewModel @AssistedInject constructor(
     connectionHelper: ConnectionHelper,
     flipperStatusHelper: FlipperStatusHelper,
     private val emulateHelper: EmulateHelper
-) : ViewModel(),
+) : DecomposeViewModel(),
     LogTagProvider {
     override val TAG = "WearEmulateViewModel"
 
@@ -55,8 +54,8 @@ class WearEmulateViewModel @AssistedInject constructor(
 
     fun onStopEmulate() = emulateHelper.onStopEmulate()
 
-    override fun onCleared() {
-        super.onCleared()
+    override fun onDestroy() {
+        super.onDestroy()
         emulateHelper.onStopEmulate()
     }
 

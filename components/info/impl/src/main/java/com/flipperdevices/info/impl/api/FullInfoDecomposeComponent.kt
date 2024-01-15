@@ -2,7 +2,7 @@ package com.flipperdevices.info.impl.api
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.info.impl.compose.screens.ComposableFullDeviceInfoScreen
 import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel

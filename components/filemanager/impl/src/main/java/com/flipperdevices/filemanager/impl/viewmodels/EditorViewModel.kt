@@ -1,7 +1,6 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -12,7 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.EditorState
@@ -34,7 +33,7 @@ class EditorViewModel @AssistedInject constructor(
     @Assisted private val shareFile: ShareFile,
     context: Context,
     private val serviceProvider: FlipperServiceProvider
-) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "EditorViewModel"
 
     private val downloadFileHelper = DownloadFileHelper()
@@ -152,8 +151,8 @@ class EditorViewModel @AssistedInject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    override fun onDestroy() {
+        super.onDestroy()
         editorFile.delete()
     }
 

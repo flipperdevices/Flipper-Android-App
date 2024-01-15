@@ -11,7 +11,7 @@ import com.flipperdevices.archive.search.composable.ComposableSearch
 import com.flipperdevices.archive.search.model.SearchNavigationConfig
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent

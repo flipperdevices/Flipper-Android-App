@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.inappnotification.api)
 
@@ -26,6 +27,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.lifecycle.compose)
+    implementation(libs.decompose)
 
     implementation(libs.gms.firebase)
     implementation(libs.kotlin.coroutines.play.services)

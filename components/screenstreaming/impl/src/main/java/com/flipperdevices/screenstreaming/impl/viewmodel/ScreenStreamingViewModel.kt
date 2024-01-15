@@ -3,10 +3,9 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 import android.app.Application
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.android.vibrateCompat
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
@@ -21,10 +20,10 @@ private const val VIBRATOR_TIME_MS = 10L
 
 class ScreenStreamingViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
-    application: Application,
+    private val application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
-) : AndroidLifecycleViewModel(application) {
+) : DecomposeViewModel() {
     private var vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     private val lockRepository = LockRepository(

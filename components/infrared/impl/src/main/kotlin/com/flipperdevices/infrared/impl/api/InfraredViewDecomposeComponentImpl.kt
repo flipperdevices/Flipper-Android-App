@@ -12,7 +12,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.infrared.impl.composable.ComposableInfraredScreen
 import com.flipperdevices.infrared.impl.model.InfraredNavigationConfig
@@ -67,7 +67,8 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
                         isBackPressHandledFlow.emit(false)
                     }
                 }
-            }
+            },
+            componentContext = this
         ) { onShare ->
             ComposableInfraredScreen(
                 modifier = Modifier.background(LocalPallet.current.background)
@@ -83,7 +84,8 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
                     navigation.push(InfraredNavigationConfig.Rename(it))
                 },
                 onShare = onShare,
-                onBack = onBack::invoke
+                onBack = onBack::invoke,
+                componentContext = this
             )
         }
     }

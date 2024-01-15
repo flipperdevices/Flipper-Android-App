@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.ServiceConnection
 import android.os.Build
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.testing.TestLifecycleOwner
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.destroy
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.impl.FlipperService
@@ -85,7 +84,7 @@ class FlipperServiceProviderTest {
 
         verify(applicationContext).bindService(any(), any(), anyInt())
 
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        lifecycleOwner.lifecycle.destroy()
 
         verify(applicationContext).unbindService(any())
         verify(applicationContext).startService(
@@ -152,7 +151,7 @@ class FlipperServiceProviderTest {
         verify(firstConsumer).onServiceApiReady(firstServerApi)
 
         // Stopping..
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        lifecycleOwner.lifecycle.destroy()
         verify(applicationContext).unbindService(any())
         clearInvocations(applicationContext)
         // Now service stopped

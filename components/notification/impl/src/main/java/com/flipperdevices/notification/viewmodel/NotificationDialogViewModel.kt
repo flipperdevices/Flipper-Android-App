@@ -1,10 +1,10 @@
 package com.flipperdevices.notification.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.preference.pb.Settings
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.notification.api.FlipperAppNotificationApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +19,7 @@ class NotificationDialogViewModel @Inject constructor(
     settingsProvider: Provider<DataStore<Settings>>,
     flipperNotificationApiProvider: Provider<FlipperAppNotificationApi>,
     coroutineScopeProvider: Provider<CoroutineScope>
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val settings by settingsProvider
     private val flipperNotificationApi by flipperNotificationApiProvider
     private val coroutineScope by coroutineScopeProvider

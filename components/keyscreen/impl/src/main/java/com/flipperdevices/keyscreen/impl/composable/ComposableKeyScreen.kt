@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
@@ -21,6 +22,7 @@ fun ComposableKeyScreen(
     synchronizationUiApi: SynchronizationUiApi,
     nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
+    componentContext: ComponentContext,
     onBack: () -> Unit,
     onShare: () -> Unit,
     onOpenNfcEditor: (FlipperKeyPath) -> Unit,
@@ -49,7 +51,8 @@ fun ComposableKeyScreen(
             emulateConfig = localKeyScreenState.emulateConfig,
             onRestore = { viewModel.onRestore(onBack) },
             onDelete = { viewModel.onDelete(onBack) },
-            modifier = modifier
+            modifier = modifier,
+            componentContext = componentContext
         )
     }
 }

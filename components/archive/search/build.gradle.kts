@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.rootscreen.api)

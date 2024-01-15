@@ -8,7 +8,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.infrared.api.InfraredEditorDecomposeComponent
 import com.flipperdevices.infrared.editor.compose.screen.ComposableInfraredEditorScreen
 import com.flipperdevices.infrared.editor.viewmodel.InfraredEditorViewModel

@@ -1,13 +1,12 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.updater.api.UpdateStateApi
 import com.flipperdevices.updater.model.FlipperUpdateState
@@ -22,7 +21,7 @@ class DeviceStatusViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val dataStorePair: DataStore<PairSettings>,
     private val updateStateApi: UpdateStateApi
-) : LifecycleViewModel(), FlipperBleServiceConsumer {
+) : DecomposeViewModel(), FlipperBleServiceConsumer {
     private val deviceStatus = MutableStateFlow<DeviceStatus>(DeviceStatus.NoDevice)
     private val updateStatus = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotConnected)
 

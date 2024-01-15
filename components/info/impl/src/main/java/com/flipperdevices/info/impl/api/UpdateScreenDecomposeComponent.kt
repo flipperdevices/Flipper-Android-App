@@ -9,7 +9,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigator
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
 import com.flipperdevices.info.impl.model.DeviceScreenNavigationConfig
@@ -101,7 +101,8 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
             updateState = updateState,
             alarmOnFlipper = alarmViewModel::alarmOnFlipper,
             deviceInfo = basicInfo,
-            scrollState = scrollState
+            scrollState = scrollState,
+            componentContext = this
         )
     }
 

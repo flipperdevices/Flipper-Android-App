@@ -20,44 +20,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.keyparser.api.KeyParser
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
-import com.flipperdevices.uploader.viewmodel.UploaderViewModelFactory
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, ShareBottomUIApi::class)
 class ShareBottomUIImpl @Inject constructor(
-    private val keyParser: KeyParser,
-    private val cryptoStorageApi: CryptoStorageApi,
-    private val simpleKeyApi: SimpleKeyApi,
-    private val metricApi: MetricApi,
+    private val uploaderViewModelFactory: UploaderViewModel.Factory
 ) : ShareBottomUIApi {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun ComposableShareBottomSheet(
         flipperKeyPath: FlipperKeyPath,
+        componentContext: ComponentContext,
         onSheetStateVisible: @Composable (isVisible: Boolean, onClose: () -> Unit) -> Unit,
         screenContent: @Composable (() -> Unit) -> Unit,
     ) {
-        val viewModel: UploaderViewModel = viewModel(
-            factory = UploaderViewModelFactory(
-                keyParser = keyParser,
-                cryptoStorageApi = cryptoStorageApi,
-                simpleKeyApi = simpleKeyApi,
-                metricApi = metricApi,
-                flipperKeyPath = flipperKeyPath
-            )
-        )
+        val viewModel = componentContext.viewModelWithFactory(flipperKeyPath) {
+            uploaderViewModelFactory(flipperKeyPath)
+        }
 
         val scrimColor = if (MaterialTheme.colors.isLight) {
             LocalPallet.current.shareSheetScrimColor

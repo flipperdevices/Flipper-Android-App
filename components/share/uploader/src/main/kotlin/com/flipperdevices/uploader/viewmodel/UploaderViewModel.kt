@@ -1,7 +1,6 @@
 package com.flipperdevices.uploader.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -11,7 +10,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
@@ -20,6 +19,9 @@ import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -29,13 +31,13 @@ import java.net.UnknownServiceException
 
 private const val SHORT_LINK_SIZE = 256
 
-class UploaderViewModel(
+class UploaderViewModel @AssistedInject constructor(
     private val keyParser: KeyParser,
     private val cryptoStorageApi: CryptoStorageApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
-    private val flipperKeyPath: FlipperKeyPath
-) : LifecycleViewModel(), LogTagProvider {
+    @Assisted private val flipperKeyPath: FlipperKeyPath
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "UploaderViewModel"
 
     private val _state = MutableStateFlow<ShareState>(ShareState.Initial)
@@ -145,5 +147,12 @@ class UploaderViewModel(
         }
 
         return flipperKey.mainFile.content
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            flipperKeyPath: FlipperKeyPath
+        ): UploaderViewModel
     }
 }

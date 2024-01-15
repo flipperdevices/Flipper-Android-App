@@ -1,12 +1,12 @@
 package com.flipperdevices.archive.category.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -24,7 +24,7 @@ class CategoryViewModel @AssistedInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val synchronizationState: SynchronizationApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val categoryState = MutableStateFlow<CategoryState>(CategoryState.Loading)
 
     init {

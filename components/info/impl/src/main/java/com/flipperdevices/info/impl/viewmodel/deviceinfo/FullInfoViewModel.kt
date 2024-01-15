@@ -1,7 +1,5 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
-import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.rpcinfo.api.FlipperRpcInformationApi
@@ -12,7 +10,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.cancelAndClear
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import kotlinx.coroutines.Dispatchers
@@ -28,9 +26,8 @@ import javax.inject.Inject
 class FullInfoViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val flipperRpcInformationApi: FlipperRpcInformationApi,
-    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,
-    application: Application
-) : AndroidLifecycleViewModel(application),
+    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi
+) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "FullInfoViewModel"

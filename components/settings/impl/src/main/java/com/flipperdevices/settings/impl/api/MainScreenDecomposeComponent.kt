@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.settings.impl.composable.ComposableSettings
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel

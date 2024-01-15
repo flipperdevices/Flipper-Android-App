@@ -1,18 +1,18 @@
 package com.flipperdevices.settings.impl.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.notification.api.FlipperAppNotificationApi
 import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(
     private val notificationApi: FlipperAppNotificationApi
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "NotificationViewModel"
-
-    fun getNotificationToggleState() = notificationApi
+    private val notificationStateFlow = notificationApi
         .isSubscribedToUpdateNotificationTopic(viewModelScope)
+
+    fun getNotificationToggleState() = notificationStateFlow
 
     fun switchToggle(newState: Boolean) {
         notificationApi.setSubscribeToUpdateAsync(newState, viewModelScope)

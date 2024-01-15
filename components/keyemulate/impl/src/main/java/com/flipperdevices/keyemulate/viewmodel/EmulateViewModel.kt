@@ -2,7 +2,6 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -15,7 +14,7 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
@@ -44,7 +43,7 @@ abstract class EmulateViewModel(
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
     application: FlipperApp
-) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
     protected val emulateButtonStateFlow =
         MutableStateFlow<EmulateButtonState>(EmulateButtonState.Loading(LoadingState.CONNECTING))
@@ -180,10 +179,10 @@ abstract class EmulateViewModel(
         }.launchIn(viewModelScope)
     }
 
-    override fun onCleared() {
+    override fun onDestroy() {
         if (emulateButtonStateFlow.value is EmulateButtonState.Active) {
             CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
         }
-        super.onCleared()
+        super.onDestroy()
     }
 }

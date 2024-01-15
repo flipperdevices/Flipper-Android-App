@@ -2,6 +2,7 @@ package com.flipperdevices.keyscreen.impl.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
@@ -28,6 +29,7 @@ class KeyScreenApiImpl @Inject constructor(
 
     @Composable
     override fun KeyCard(
+        componentContext: ComponentContext,
         onEdit: () -> Unit,
         onFavorite: (Boolean) -> Unit,
         state: KeyScreenState.Ready,
@@ -40,8 +42,9 @@ class KeyScreenApiImpl @Inject constructor(
             synchronizationState = if (state.deleteState == DeleteState.NOT_DELETED) {
                 {
                     synchronizationUiApi.RenderSynchronizationState(
-                        state.flipperKey.getKeyPath(),
-                        withText = true
+                        keyPath = state.flipperKey.getKeyPath(),
+                        withText = true,
+                        componentContext = componentContext
                     )
                 }
             } else {

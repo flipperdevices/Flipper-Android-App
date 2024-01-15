@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.updater.card.model.BatteryState
@@ -23,7 +24,9 @@ import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateRequest
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -34,38 +37,47 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
+private val requestServer = UpdatePending.Request(
+    updateRequest = UpdateRequest(
+        updateFrom = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
+        updateTo = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
+        content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
+        changelog = null
+    )
+)
+
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class UpdateRequestViewModelTest {
-    private val serviceProvider: FlipperServiceProvider = mockk(relaxUnitFun = true)
-    private val serviceApi: FlipperServiceApi = mockk(relaxUnitFun = true)
-    private val synchronizationState = MutableStateFlow<SynchronizationState>(
-        SynchronizationState.NotStarted
-    )
-    private val synchronizationApi: SynchronizationApi = mockk {
-        every { getSynchronizationState() } returns synchronizationState
-    }
-    private val viewModel = UpdateRequestViewModel(
-        serviceProvider = serviceProvider,
-        synchronizationApi = synchronizationApi
-    )
-
-    private val requestServer = UpdatePending.Request(
-        updateRequest = UpdateRequest(
-            updateFrom = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
-            updateTo = FirmwareVersion(channel = FirmwareChannel.DEV, version = ""),
-            content = OfficialFirmware(DistributionFile(url = "", sha256 = "")),
-            changelog = null
-        )
-    )
+    private lateinit var serviceProvider: FlipperServiceProvider
+    private lateinit var serviceApi: FlipperServiceApi
+    private lateinit var synchronizationState: MutableStateFlow<SynchronizationState>
+    private lateinit var synchronizationApi: SynchronizationApi
+    private lateinit var viewModel: UpdateRequestViewModel
 
     @Before
     fun setup() {
+        mockkObject(FlipperDispatchers)
+        every { FlipperDispatchers.getDefault() } returns Dispatchers.Main.immediate
         mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
+
+        serviceProvider = mockk(relaxUnitFun = true)
+        serviceApi = mockk(relaxUnitFun = true)
+        synchronizationState = MutableStateFlow(
+            SynchronizationState.NotStarted
+        )
+        synchronizationApi = mockk {
+            every { getSynchronizationState() } returns synchronizationState
+        }
+
         synchronizationState.update { SynchronizationState.NotStarted }
         every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
             MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f))
         }
+        viewModel = UpdateRequestViewModel(
+            serviceProvider = serviceProvider,
+            synchronizationApi = synchronizationApi
+        )
         viewModel.onServiceApiReady(serviceApi)
     }
 

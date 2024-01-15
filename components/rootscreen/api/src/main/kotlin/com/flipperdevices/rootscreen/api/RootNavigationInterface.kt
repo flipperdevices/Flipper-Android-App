@@ -6,7 +6,7 @@ import com.flipperdevices.rootscreen.model.RootScreenConfig
 val LocalRootNavigation = staticCompositionLocalOf<RootNavigationInterface> {
     error("CompositionLocal LocalRootComponent not present")
 }
-interface RootNavigationInterface {
 
+interface RootNavigationInterface {
     fun push(config: RootScreenConfig)
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -8,6 +7,7 @@ import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapItem
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
@@ -48,7 +48,7 @@ class FapScreenViewModel @AssistedInject constructor(
     private val fapHubHideApi: FapHubHideItemApi,
     private val inAppNotificationStorage: InAppNotificationStorage,
     private val metricApi: MetricApi
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FapScreenViewModel"
 
     private val fapScreenLoadingStateFlow = MutableStateFlow<FapScreenLoadingState>(
