@@ -13,6 +13,7 @@
 - [Refactor] Migrate wearos to decompose
 - [Refactor] Remove tangle and jetpack navigation deps
 - [Refactor] Migrate all viewmodel to DecomposeViewModel
+- [FIX] Fix crash with notification on options screen
 - [Fix] Fix status bar color
 - [Feature] Button vibration in ScreenStreaming
 
