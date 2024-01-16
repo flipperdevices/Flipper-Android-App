@@ -40,7 +40,8 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
             onFinishConnection = onFinishConnect,
             onBack = onBack::invoke,
             bleDeviceViewModel = bleDeviceViewModel,
-            pairViewModel = pairViewModel
+            pairViewModel = pairViewModel,
+            lifecycleOwner = this
         )
     }
 

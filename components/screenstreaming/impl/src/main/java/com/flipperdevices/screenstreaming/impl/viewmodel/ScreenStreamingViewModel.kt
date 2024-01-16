@@ -3,6 +3,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 import android.app.Application
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -13,14 +14,17 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ButtonStackR
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FlipperButtonRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.LockRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.StreamingRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
 private const val VIBRATOR_TIME_MS = 10L
 
-class ScreenStreamingViewModel @Inject constructor(
+class ScreenStreamingViewModel @AssistedInject constructor(
+    @Assisted private val lifecycleOwner: LifecycleOwner,
     serviceProvider: FlipperServiceProvider,
-    private val application: Application,
+    application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
 ) : DecomposeViewModel() {
@@ -36,14 +40,13 @@ class ScreenStreamingViewModel @Inject constructor(
     init {
         serviceProvider.provideServiceApi(lockRepository, this)
         serviceProvider.provideServiceApi(streamingRepository, this)
+        lifecycleOwner.lifecycle.subscribe(streamingRepository)
     }
 
     fun getFlipperScreen(): StateFlow<FlipperScreenState> = streamingRepository.getFlipperScreen()
     fun getFlipperButtons() = buttonStackRepository.getButtonStack()
     fun getLockState() = lockRepository.getLockState()
     fun onChangeLock(isWillBeLocked: Boolean) = lockRepository.onChangeLock(isWillBeLocked)
-    fun enableStreaming() = streamingRepository.enableStreaming()
-    fun disableStreaming() = streamingRepository.disableStreaming()
     fun onPressButton(
         buttonEnum: ButtonEnum,
         inputType: Gui.InputType
@@ -59,5 +62,17 @@ class ScreenStreamingViewModel @Inject constructor(
                 buttonStackRepository.onRemoveStackButton(uuid)
             }
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleOwner.lifecycle.unsubscribe(streamingRepository)
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            lifecycleOwner: LifecycleOwner
+        ): ScreenStreamingViewModel
     }
 }

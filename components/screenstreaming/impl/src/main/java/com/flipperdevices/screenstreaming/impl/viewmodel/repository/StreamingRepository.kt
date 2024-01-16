@@ -1,5 +1,6 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -22,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 class StreamingRepository(
     private val scope: CoroutineScope
-) : FlipperBleServiceConsumer {
+) : FlipperBleServiceConsumer, Lifecycle.Callbacks {
     private val flipperScreen = MutableStateFlow<FlipperScreenState>(FlipperScreenState.InProgress)
     private val streamingState = MutableStateFlow(StreamingState.DISABLED)
 
@@ -80,14 +81,14 @@ class StreamingRepository(
         ).launchIn(scope)
     }
 
-    fun enableStreaming() {
+    override fun onResume() {
         streamingState.compareAndSet(
             expect = StreamingState.DISABLED,
             update = StreamingState.ENABLED
         )
     }
 
-    fun disableStreaming() {
+    override fun onPause() {
         streamingState.compareAndSet(
             expect = StreamingState.ENABLED,
             update = StreamingState.DISABLED

@@ -26,7 +26,6 @@ import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
@@ -60,7 +59,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
     private val appNotificationApi: FlipperAppNotificationDialogApi,
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
-    private val inAppNotificationViewModelProvider: Provider<InAppNotificationViewModel>
+    private val inAppNotificationViewModelFactory: InAppNotificationViewModel.Factory
 ) : BottomBarDecomposeComponent<BottomBarTabConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
         childStack(
@@ -78,6 +77,10 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         backHandler.register(backCallback)
     }
 
+    private val notificationViewModel = viewModelWithFactory(key = this) {
+        inAppNotificationViewModelFactory(this)
+    }
+
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() = Box {
@@ -91,10 +94,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         }
         val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
 
-        val notificationViewModel: InAppNotificationViewModel = viewModelWithFactory(key = null) {
-            inAppNotificationViewModelProvider.get()
-        }
-
         ComposableMainScreen(
             notificationViewModel = notificationViewModel,
             notificationRenderer = notificationRenderer,
@@ -104,8 +103,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             modifier = Modifier.fillMaxSize(),
             hubHasNotification = hubHasNotification
         )
-
-        OnLifecycleEvent(onEvent = notificationViewModel::onLifecycleEvent)
 
         connectionApi.CheckAndShowUnsupportedDialog(
             componentContext = this@BottomBarDecomposeComponentImpl
