@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.activity)
+    implementation(libs.decompose)
 
     // Testing
     testImplementation(libs.junit)

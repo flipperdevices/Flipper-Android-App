@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)

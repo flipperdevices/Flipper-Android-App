@@ -3,13 +3,13 @@ package com.flipperdevices.keyedit.impl.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyedit.impl.viewmodel.processors.EditableKeyProcessor
@@ -29,7 +29,7 @@ class KeyEditViewModel @AssistedInject constructor(
     @Assisted private val editableKey: EditableKey,
     private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
     private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
 
     private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)

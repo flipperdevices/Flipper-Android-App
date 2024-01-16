@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.updater.model.UpdateRequest

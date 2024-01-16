@@ -15,4 +15,5 @@ dependencies {
     implementation(libs.compose.ui)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.decompose)
 }

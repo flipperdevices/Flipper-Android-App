@@ -2,13 +2,12 @@ package com.flipperdevices.settings.impl.viewmodels
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -25,7 +24,7 @@ class SettingsViewModel @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val exportKeysHelper: ExportKeysHelper,
     private val shake2ReportApi: Shake2ReportApi,
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
     private val settingsState by lazy {

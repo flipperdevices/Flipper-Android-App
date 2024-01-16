@@ -1,8 +1,9 @@
 package com.flipperdevices.faphub.catalogtab.impl.api
 
 import androidx.compose.runtime.Composable
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.catalogtab.impl.composable.ComposableCatalogTabScreen
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.CategoriesViewModel
@@ -25,7 +26,9 @@ class CatalogTabApiImpl @Inject constructor(
     private val fapsListViewModelProvider: Provider<FapsListViewModel>
 ) : CatalogTabApi {
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun ComposableCatalogTab(
+        componentContext: ComponentContext,
         onOpenFapItem: (FapItemShort) -> Unit,
         onCategoryClick: (FapCategory) -> Unit
     ) {
@@ -37,13 +40,14 @@ class CatalogTabApiImpl @Inject constructor(
                 fapInstallationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
-                    fapButtonSize = FapButtonSize.COMPACTED
+                    fapButtonSize = FapButtonSize.COMPACTED,
+                    componentContext = componentContext
                 )
             },
-            categoriesViewModel = viewModelWithFactory(key = null) {
+            categoriesViewModel = componentContext.viewModelWithFactory(key = null) {
                 categoriesViewModelProvider.get()
             },
-            fapsListViewModel = viewModelWithFactory(key = null) {
+            fapsListViewModel = componentContext.viewModelWithFactory(key = null) {
                 fapsListViewModelProvider.get()
             }
         )

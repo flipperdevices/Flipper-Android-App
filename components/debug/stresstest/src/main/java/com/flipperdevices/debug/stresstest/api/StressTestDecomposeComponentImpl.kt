@@ -3,7 +3,7 @@ package com.flipperdevices.debug.stresstest.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.debug.api.StressTestDecomposeComponent
 import com.flipperdevices.debug.stresstest.composable.ComposableStressTestScreen
 import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel

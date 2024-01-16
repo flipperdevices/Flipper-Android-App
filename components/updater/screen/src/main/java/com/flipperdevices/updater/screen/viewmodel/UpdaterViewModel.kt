@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.screen.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
@@ -12,7 +11,7 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
@@ -36,7 +35,7 @@ class UpdaterViewModel @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val synchronizationApi: SynchronizationApi,
     serviceProvider: FlipperServiceProvider,
-) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "UpdaterViewModel"
 
     private val updaterScreenStateFlow = MutableStateFlow<UpdaterScreenState>(

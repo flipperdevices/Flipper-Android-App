@@ -3,11 +3,10 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
@@ -16,18 +15,19 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
 private const val QUALITY = 100
 private const val EXPORT_RESCALE_MULTIPLIER = 8f
 
-class ScreenshotViewModel(
-    application: Application
-) : AndroidLifecycleViewModel(application) {
+class ScreenshotViewModel @Inject constructor(
+    private val application: Application
+) : DecomposeViewModel() {
     fun shareScreenshot(
         screenShapshot: FlipperScreenState
-    ) = lifecycleScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch(Dispatchers.Default) {
         val currentSnapshotState = screenShapshot as? FlipperScreenState.Ready ?: return@launch
         var currentSnapshot = currentSnapshotState.bitmap
         currentSnapshot = currentSnapshot.rescale()
@@ -39,12 +39,12 @@ class ScreenshotViewModel(
         }
         val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
         val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
-        val sharableFile = SharableFile(getApplication(), filename)
+        val sharableFile = SharableFile(application, filename)
         sharableFile.createClearNewFileWithMkDirs()
         sharableFile.outputStream().use {
             currentSnapshot.compress(Bitmap.CompressFormat.PNG, QUALITY, it)
         }
-        ShareHelper.shareFile(getApplication(), sharableFile, R.string.screenshot_export_title)
+        ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
     }
 }
 

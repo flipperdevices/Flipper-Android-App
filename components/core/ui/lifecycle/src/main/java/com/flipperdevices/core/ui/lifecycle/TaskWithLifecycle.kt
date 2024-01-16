@@ -1,29 +1,29 @@
 package com.flipperdevices.core.ui.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 abstract class TaskWithLifecycle : LifecycleOwner {
-    private val registry by lazy { LifecycleRegistry(this) }
+    private val registry by lazy { LifecycleRegistry(Lifecycle.State.INITIALIZED) }
 
     suspend fun onStart() = withContext(Dispatchers.Main) {
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        registry.onCreate()
+        registry.onStart()
+        registry.onResume()
     }
 
     override val lifecycle: Lifecycle
         get() = registry
 
     suspend fun onStop() = withContext(Dispatchers.Main) {
-        if (registry.currentState == Lifecycle.State.DESTROYED) {
+        if (registry.state == Lifecycle.State.DESTROYED) {
             return@withContext
         }
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        registry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        registry.onPause()
+        registry.onStop()
+        registry.onDestroy()
     }
 }

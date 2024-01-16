@@ -1,7 +1,6 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -11,7 +10,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareFile
@@ -31,8 +30,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 class ShareViewModel @AssistedInject constructor(
     flipperServiceProvider: FlipperServiceProvider,
     @Assisted private val shareFile: ShareFile,
-    application: Application
-) : AndroidLifecycleViewModel(application),
+    private val application: Application
+) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "ShareViewModel"
@@ -109,7 +108,7 @@ class ShareViewModel @AssistedInject constructor(
 
     private suspend fun onCompleteDownload() = withContext(Dispatchers.Main) {
         ShareHelper.shareFile(
-            context = getApplication(),
+            context = application,
             file = fileInSharedDir,
             resId = R.string.share_picker_title
         )

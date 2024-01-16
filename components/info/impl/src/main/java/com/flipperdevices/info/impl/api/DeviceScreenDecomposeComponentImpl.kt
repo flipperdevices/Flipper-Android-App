@@ -57,7 +57,10 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
             onBack = navigation::pop
         )
 
-        DeviceScreenNavigationConfig.Options -> settingsFactory(componentContext)
+        DeviceScreenNavigationConfig.Options -> settingsFactory(
+            componentContext,
+            onBack = navigation::pop
+        )
     }
 
     override fun onResetTab() {

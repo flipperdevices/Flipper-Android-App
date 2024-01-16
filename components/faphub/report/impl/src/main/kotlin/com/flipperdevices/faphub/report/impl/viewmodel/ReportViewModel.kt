@@ -1,9 +1,9 @@
 package com.flipperdevices.faphub.report.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapReportApi
 import com.flipperdevices.faphub.report.impl.model.FapReportState
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
@@ -21,7 +21,7 @@ class ReportViewModel @AssistedInject constructor(
     @Assisted private val applicationUid: String,
     private val reportApi: FapReportApi,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "ReportViewModel"
 
     private val state = MutableStateFlow<FapReportState>(FapReportState.ReadyToReport)

@@ -2,7 +2,6 @@ package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
 import android.annotation.SuppressLint
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
@@ -11,6 +10,7 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
 import kotlinx.coroutines.Job
@@ -29,10 +29,10 @@ import javax.inject.Inject
 private const val TIMEOUT_MS = 30L * 1000
 
 class PairDeviceViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val firstPairStorage: FirstPairStorage,
     private val deviceColorSaver: DeviceColorSaver
-) : AndroidViewModel(application),
+) : DecomposeViewModel(),
     LogTagProvider {
     override val TAG = "PairDeviceViewModel"
 
@@ -135,8 +135,8 @@ class PairDeviceViewModel @Inject constructor(
         pairState.update { DevicePairState.NotInitialized }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    override fun onDestroy() {
+        super.onDestroy()
         close()
     }
 
@@ -157,7 +157,7 @@ class PairDeviceViewModel @Inject constructor(
             return bleManager
         }
 
-        bleManager = FirstPairBleManager(getApplication(), viewModelScope)
+        bleManager = FirstPairBleManager(application, viewModelScope)
         _firstPairBleManager = bleManager
 
         return bleManager

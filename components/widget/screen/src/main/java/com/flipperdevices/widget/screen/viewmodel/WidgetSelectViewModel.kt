@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.WidgetDataApi
@@ -16,6 +15,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.widget.api.WidgetApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -40,7 +40,7 @@ class WidgetSelectViewModel @AssistedInject constructor(
     private val widgetDataApi: WidgetDataApi,
     private val widgetApi: WidgetApi,
     @Assisted private val widgetId: Int
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "WidgetSelectViewModel"
 
     private val keys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())

@@ -1,12 +1,12 @@
 package com.flipperdevices.archive.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -24,7 +24,7 @@ class GeneralTabViewModel @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val favoriteApi: FavoriteApi,
     private val synchronizationApi: SynchronizationApi,
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val keys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val favoriteKeys = MutableStateFlow<ImmutableList<FlipperKey>>(persistentListOf())
     private val synchronizationState =
@@ -58,9 +58,5 @@ class GeneralTabViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             synchronizationApi.stop()
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }

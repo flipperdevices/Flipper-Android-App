@@ -16,7 +16,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
@@ -57,7 +57,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
-        val viewModel: KeyScreenViewModel = viewModelWithFactory(key = keyPath.toString()) {
+        val viewModel = viewModelWithFactory(key = keyPath.toString()) {
             keyScreenViewModelFactory(keyPath)
         }
         shareBottomApi.ComposableShareBottomSheet(
@@ -72,9 +72,13 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                         isBackPressHandledFlow.emit(false)
                     }
                 }
-            }
+            },
+            componentContext = this
         ) { onShare ->
             ComposableKeyScreen(
+                modifier = Modifier
+                    .background(LocalPallet.current.background)
+                    .navigationBarsPadding(),
                 viewModel = viewModel,
                 synchronizationUiApi = synchronizationUiApi,
                 nfcEditorApi = nfcEditor,
@@ -89,9 +93,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                 onOpenEditScreen = { flipperKeyPath ->
                     navigation.push(KeyScreenNavigationConfig.KeyEdit(flipperKeyPath))
                 },
-                modifier = Modifier
-                    .background(LocalPallet.current.background)
-                    .navigationBarsPadding(),
+                componentContext = this
             )
         }
     }

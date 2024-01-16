@@ -4,8 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.maincard.api.MainCardApi
 import com.flipperdevices.faphub.maincard.impl.composable.ComposableMainCardInternal
 import com.flipperdevices.faphub.maincard.impl.viewmodel.FapMainCardViewModel
@@ -18,11 +19,13 @@ class MainCardApiImpl @Inject constructor(
     private val fapMainCardViewModelProvider: Provider<FapMainCardViewModel>
 ) : MainCardApi {
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun ComposableMainCard(
         modifier: Modifier,
+        componentContext: ComponentContext,
         onClick: () -> Unit
     ) {
-        val viewModel = viewModelWithFactory(key = null) {
+        val viewModel = componentContext.viewModelWithFactory(key = null) {
             fapMainCardViewModelProvider.get()
         }
         val state by viewModel.getFapMainCardState().collectAsState()

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollableColumn

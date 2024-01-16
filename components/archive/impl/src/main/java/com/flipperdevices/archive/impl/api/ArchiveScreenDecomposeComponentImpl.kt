@@ -14,7 +14,7 @@ import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent

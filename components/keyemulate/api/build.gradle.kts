@@ -16,6 +16,7 @@ dependencies {
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
+    implementation(libs.decompose)
 
     // Dagger deps
     implementation(libs.dagger)

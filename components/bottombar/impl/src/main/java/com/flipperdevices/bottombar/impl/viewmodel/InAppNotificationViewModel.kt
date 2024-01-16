@@ -1,10 +1,10 @@
 package com.flipperdevices.bottombar.impl.viewmodel
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
@@ -16,7 +16,7 @@ import javax.inject.Provider
 
 class InAppNotificationViewModel @Inject constructor(
     notificationStorageProvider: Provider<InAppNotificationStorage>
-) : ViewModel(), InAppNotificationListener, LogTagProvider {
+) : DecomposeViewModel(), InAppNotificationListener, LogTagProvider {
     override val TAG = "InAppNotificationViewModel"
 
     private val notificationStorage by notificationStorageProvider

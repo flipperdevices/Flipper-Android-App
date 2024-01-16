@@ -4,8 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
@@ -29,8 +30,8 @@ class FapInstalledApiImpl @Inject constructor(
 ) : FapInstalledApi {
 
     @Composable
-    override fun getUpdatePendingCount(): Int {
-        val installedViewModel = viewModelWithFactory(key = null) {
+    override fun getUpdatePendingCount(componentContext: ComponentContext): Int {
+        val installedViewModel = componentContext.viewModelWithFactory(key = null) {
             installedFapsViewModelProvider.get()
         }
         val buttonStateFlow = remember { installedViewModel.getFapBatchUpdateButtonState() }
@@ -48,8 +49,12 @@ class FapInstalledApiImpl @Inject constructor(
     }
 
     @Composable
-    override fun ComposableInstalledTab(onOpenFapItem: (uid: String) -> Unit) {
-        val installedViewModel = viewModelWithFactory(key = null) {
+    @Suppress("NonSkippableComposable")
+    override fun ComposableInstalledTab(
+        componentContext: ComponentContext,
+        onOpenFapItem: (uid: String) -> Unit
+    ) {
+        val installedViewModel = componentContext.viewModelWithFactory(key = null) {
             installedFapsViewModelProvider.get()
         }
         ComposableInstalledTabScreen(
@@ -59,6 +64,7 @@ class FapInstalledApiImpl @Inject constructor(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
                     fapButtonSize = FapButtonSize.COMPACTED,
+                    componentContext = componentContext
                 )
             },
             uninstallButtonOffline = { offlineFapApp, modifier ->

@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)
     implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.search.api)

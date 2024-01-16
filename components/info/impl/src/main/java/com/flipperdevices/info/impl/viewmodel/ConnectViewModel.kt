@@ -1,11 +1,10 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +16,7 @@ class ConnectViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi,
     private val dataStoreFirstPair: DataStore<PairSettings>
-) : LifecycleViewModel() {
+) : DecomposeViewModel() {
     private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
     )

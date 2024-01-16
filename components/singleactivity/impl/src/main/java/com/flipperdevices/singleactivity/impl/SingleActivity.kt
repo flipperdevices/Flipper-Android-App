@@ -21,7 +21,7 @@ import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
@@ -100,7 +100,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
                         )
                     }
                 },
-                themeViewModel = viewModelWithFactory(key = null) {
+                themeViewModel = root.viewModelWithFactory(key = null) {
                     themeViewModelProvider.get()
                 }
             )

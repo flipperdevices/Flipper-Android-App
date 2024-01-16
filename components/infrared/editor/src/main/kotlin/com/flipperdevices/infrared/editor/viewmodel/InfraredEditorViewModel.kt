@@ -3,7 +3,6 @@ package com.flipperdevices.infrared.editor.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -15,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.editor.R
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
 import com.flipperdevices.infrared.editor.model.InfraredRemote
@@ -41,7 +41,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     context: Context
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredEditorViewModel"
 
     private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)

@@ -3,13 +3,12 @@ package com.flipperdevices.settings.impl.viewmodels
 import android.app.Application
 import android.widget.Toast
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.installation.all.api.FapInstallationAllApi
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.DebugSettingAction
@@ -22,12 +21,12 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 class DebugViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
     private val serviceProvider: FlipperServiceProvider,
     private val fapInstallationAllApi: FapInstallationAllApi
-) : AndroidLifecycleViewModel(application) {
+) : DecomposeViewModel() {
 
     fun onAction(
         action: DebugSettingAction,
@@ -112,9 +111,8 @@ class DebugViewModel @Inject constructor(
     }
 
     private suspend fun askRestartApp() = withContext(Dispatchers.Main) {
-        val context = getApplication<Application>()
         Toast.makeText(
-            context,
+            application,
             R.string.debug_ignored_unsupported_version_toast,
             Toast.LENGTH_LONG
         ).show()

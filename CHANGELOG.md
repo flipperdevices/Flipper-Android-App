@@ -12,6 +12,7 @@
 - [Refactor] Add deeplink handle to decompose
 - [Refactor] Migrate wearos to decompose
 - [Refactor] Remove tangle and jetpack navigation deps
+- [Refactor] Migrate all viewmodel to DecomposeViewModel
 - [Fix] Fix status bar color
 - [Feature] Button vibration in ScreenStreaming
 

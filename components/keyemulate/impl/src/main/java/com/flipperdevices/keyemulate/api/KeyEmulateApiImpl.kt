@@ -2,9 +2,10 @@ package com.flipperdevices.keyemulate.api
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.keyemulate.composable.ComposableInfraredSendButton
 import com.flipperdevices.keyemulate.composable.ComposableSimpleEmulateButton
 import com.flipperdevices.keyemulate.composable.ComposableSubGhzSendButton
@@ -23,17 +24,19 @@ class KeyEmulateApiImpl @Inject constructor(
     private val subGhzViewModel: Provider<SubGhzViewModel>
 ) : KeyEmulateApi {
     @Composable
+    @Suppress("NonSkippableComposable")
     override fun ComposableEmulateButton(
         modifier: Modifier,
         emulateConfig: EmulateConfig,
-        isSynchronized: Boolean
+        isSynchronized: Boolean,
+        componentContext: ComponentContext
     ) {
         when (emulateConfig.keyType) {
             FlipperKeyType.SUB_GHZ -> ComposableSubGhzSendButton(
                 modifier = modifier,
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
-                emulateViewModel = viewModelWithFactory(key = null) {
+                emulateViewModel = componentContext.viewModelWithFactory(key = null) {
                     subGhzViewModel.get()
                 }
             )
@@ -44,7 +47,7 @@ class KeyEmulateApiImpl @Inject constructor(
                 modifier = modifier,
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
-                emulateViewModel = viewModelWithFactory(key = null) {
+                emulateViewModel = componentContext.viewModelWithFactory(key = null) {
                     simpleEmulateViewModel.get()
                 }
             )
@@ -53,7 +56,7 @@ class KeyEmulateApiImpl @Inject constructor(
                 modifier = modifier,
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
-                emulateViewModel = viewModelWithFactory(key = null) {
+                emulateViewModel = componentContext.viewModelWithFactory(key = null) {
                     infraredViewModel.get()
                 }
             )

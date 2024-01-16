@@ -1,6 +1,6 @@
 package com.flipperdevices.core.ui.lifecycle
 
-import androidx.lifecycle.lifecycleScope
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 abstract class OneTimeExecutionBleTask<INPUT, STATE>(
     private val serviceProvider: FlipperServiceProvider
 ) : TaskWithLifecycle(), LogTagProvider {
-    private val taskScope = lifecycleScope
+    private val taskScope = coroutineScope(Dispatchers.Default)
     private val mutex = Mutex()
     private var job: Job? = null
     private val isAlreadyLaunched = AtomicBoolean(false)

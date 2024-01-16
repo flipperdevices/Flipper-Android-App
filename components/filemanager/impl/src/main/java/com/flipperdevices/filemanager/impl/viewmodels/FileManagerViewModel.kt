@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -9,7 +8,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
@@ -37,7 +36,7 @@ class FileManagerViewModel @AssistedInject constructor(
     private val serviceProvider: FlipperServiceProvider,
     @Assisted
     private val directory: String
-) : LifecycleViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FileManagerViewModel"
 
     private val mutex = Mutex()

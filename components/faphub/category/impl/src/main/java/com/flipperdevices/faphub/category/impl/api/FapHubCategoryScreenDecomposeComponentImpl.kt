@@ -7,7 +7,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
-import com.flipperdevices.core.ui.ktx.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
 import com.flipperdevices.faphub.category.impl.model.FapCategoryNavigationConfig
 import com.flipperdevices.faphub.category.impl.viewmodel.FapHubCategoryViewModel
@@ -59,7 +59,8 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
                 fapInstallationUIApi.ComposableButton(
                     config = fapItem?.toFapButtonConfig(),
                     modifier = modifier,
-                    fapButtonSize = FapButtonSize.COMPACTED
+                    fapButtonSize = FapButtonSize.COMPACTED,
+                    componentContext = this
                 )
             },
             categoryName = fapCategory.name,

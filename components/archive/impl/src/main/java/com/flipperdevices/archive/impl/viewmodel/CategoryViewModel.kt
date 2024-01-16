@@ -1,7 +1,6 @@
 package com.flipperdevices.archive.impl.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.model.CategoryItem
@@ -10,6 +9,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ktx.jre.map
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
@@ -24,10 +24,10 @@ import java.util.TreeMap
 import javax.inject.Inject
 
 class CategoryViewModel @Inject constructor(
-    application: Application,
+    private val application: Application,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
-) : AndroidViewModel(application) {
+) : DecomposeViewModel() {
     private val deletedCategoryName = application.getString(R.string.archive_tab_deleted)
 
     private val categoriesFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(

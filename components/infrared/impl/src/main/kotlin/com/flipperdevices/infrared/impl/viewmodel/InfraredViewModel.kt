@@ -1,6 +1,5 @@
 package com.flipperdevices.infrared.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_INFRARED_EMULATE
@@ -12,7 +11,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -28,7 +27,7 @@ class InfraredViewModel @AssistedInject constructor(
     keyStateHelperApi: KeyStateHelperApi.Builder,
     private val synchronizationApi: SynchronizationApi,
     serviceProvider: FlipperServiceProvider
-) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG: String = "InfraredViewModel"
 
     private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
