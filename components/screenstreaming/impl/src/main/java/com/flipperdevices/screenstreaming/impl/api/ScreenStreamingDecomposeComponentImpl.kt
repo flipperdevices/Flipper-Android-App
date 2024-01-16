@@ -1,10 +1,8 @@
 package com.flipperdevices.screenstreaming.impl.api
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.Lifecycle
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.android.OnLifecycleEvent
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.screenstreaming.api.ScreenStreamingDecomposeComponent
 import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScreen
@@ -20,26 +18,18 @@ import javax.inject.Provider
 class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    private val screenStreamingViewModelProvider: Provider<ScreenStreamingViewModel>,
+    private val screenStreamingViewModelFactory: ScreenStreamingViewModel.Factory,
     private val screenshotViewModelProvider: Provider<ScreenshotViewModel>
 ) : ScreenStreamingDecomposeComponent(componentContext) {
+    private val screenStreamingViewModel = viewModelWithFactory(key = this) {
+        screenStreamingViewModelFactory(this@ScreenStreamingDecomposeComponentImpl)
+    }
 
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
-        val screenStreamingViewModel = viewModelWithFactory(key = null) {
-            screenStreamingViewModelProvider.get()
-        }
         val screenshotViewModel = viewModelWithFactory(null) {
             screenshotViewModelProvider.get()
-        }
-
-        OnLifecycleEvent {
-            when (it) {
-                Lifecycle.Event.ON_RESUME -> screenStreamingViewModel.enableStreaming()
-                Lifecycle.Event.ON_PAUSE -> screenStreamingViewModel.disableStreaming()
-                else -> {}
-            }
         }
 
         ComposableStreamingScreen(

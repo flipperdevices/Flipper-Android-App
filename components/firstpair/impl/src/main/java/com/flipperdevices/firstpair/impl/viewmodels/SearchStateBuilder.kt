@@ -1,6 +1,7 @@
 package com.flipperdevices.firstpair.impl.viewmodels
 
 import android.content.Context
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.model.DevicePairState
@@ -31,7 +32,7 @@ class SearchStateBuilder(
     private val viewModelSearch: BLEDeviceViewModel,
     viewModelConnecting: PairDeviceViewModel,
     scope: CoroutineScope
-) : LogTagProvider {
+) : LogTagProvider, Lifecycle.Callbacks {
     override val TAG = "SearchStateBuilder"
 
     private val state = MutableStateFlow(
@@ -50,6 +51,8 @@ class SearchStateBuilder(
 
     // If freeze is true, we don't change state on invalidate
     private var freezeInvalidate = false
+
+    override fun onResume() = invalidate()
 
     fun invalidate() {
         val permissionState = permissionStateBuilder.invalidateState()

@@ -11,8 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import com.flipperdevices.core.ktx.android.OnLifecycleEvent
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.firstpair.impl.R
@@ -28,6 +27,7 @@ import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBui
 internal fun ComposableSearchingView(
     pairViewModel: PairDeviceViewModel,
     bleDeviceViewModel: BLEDeviceViewModel,
+    lifecycleOwner: LifecycleOwner,
     onHelpClicking: () -> Unit,
     onFinishConnection: () -> Unit,
     onBack: () -> Unit
@@ -53,7 +53,8 @@ internal fun ComposableSearchingView(
         scope,
         bleDeviceViewModel,
         pairViewModel,
-        permissionStateBuilder
+        permissionStateBuilder,
+        lifecycleOwner
     ) {
         SearchStateBuilder(
             context = context,
@@ -61,7 +62,7 @@ internal fun ComposableSearchingView(
             viewModelSearch = bleDeviceViewModel,
             viewModelConnecting = pairViewModel,
             permissionStateBuilder = permissionStateBuilder
-        )
+        ).also { lifecycleOwner.lifecycle.subscribe(it) }
     }
 
     val broadcast = remember(searchStateBuilder) {
@@ -73,8 +74,7 @@ internal fun ComposableSearchingView(
         permissionRequestState = permissionRequestState,
         broadcast = broadcast,
         processPermissionActivityResult = permissionStateBuilder::processPermissionActivityResult,
-        processBluetoothActivityResult = permissionStateBuilder::processBluetoothActivityResult,
-        invalidate = searchStateBuilder::invalidate
+        processBluetoothActivityResult = permissionStateBuilder::processBluetoothActivityResult
     )
 
     val state by searchStateBuilder.getState().collectAsState()
@@ -120,8 +120,7 @@ private fun ComposableSearchingInternal(
     permissionRequestState: Array<String>,
     broadcast: PermissionChangeDetectBroadcastReceiver,
     processPermissionActivityResult: (Map<String, Boolean>) -> Unit,
-    processBluetoothActivityResult: (ActivityResult) -> Unit,
-    invalidate: () -> Unit
+    processBluetoothActivityResult: (ActivityResult) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -144,13 +143,6 @@ private fun ComposableSearchingInternal(
     LaunchedEffect(key1 = bluetoothRequestState) {
         if (bluetoothRequestState) {
             bluetoothActivityResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
-        }
-    }
-
-    OnLifecycleEvent { lifecycleState ->
-        when (lifecycleState) {
-            Lifecycle.Event.ON_RESUME -> invalidate()
-            else -> {}
         }
     }
 
