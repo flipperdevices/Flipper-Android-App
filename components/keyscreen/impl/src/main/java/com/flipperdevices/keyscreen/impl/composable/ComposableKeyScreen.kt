@@ -13,7 +13,6 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenError
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenLoading
-import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 @Suppress("NonSkippableComposable")

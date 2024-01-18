@@ -22,7 +22,6 @@ import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyscreen.impl.composable.ComposableKeyScreen
 import com.flipperdevices.keyscreen.impl.model.KeyScreenNavigationConfig
 import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
-import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
@@ -43,7 +42,6 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenViewModelFactory: KeyScreenViewModel.Factory,
     private val shareBottomApi: ShareBottomUIApi,
     private val synchronizationUiApi: SynchronizationUiApi,
-    private val nfcEditor: NfcEditorApi,
     private val keyEmulateApi: KeyEmulateApi,
     private val dataStore: DataStore<Settings>
 ) : ScreenDecomposeComponent(componentContext) {

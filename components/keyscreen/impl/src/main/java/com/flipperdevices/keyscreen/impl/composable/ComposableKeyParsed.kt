@@ -24,7 +24,6 @@ import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
-import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 @Suppress("LongParameterList", "NonSkippableComposable")

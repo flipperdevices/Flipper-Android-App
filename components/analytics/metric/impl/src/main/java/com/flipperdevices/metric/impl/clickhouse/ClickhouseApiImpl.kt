@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SimpleEvent
+import com.flipperdevices.metric.api.events.complex.DebugInfoEvent
 import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.metric.api.events.complex.RegionSource
@@ -22,6 +23,7 @@ import com.flipperdevices.pbmetric.Metric
 import com.flipperdevices.pbmetric.events.OpenOuterClass
 import com.flipperdevices.pbmetric.events.SubGhzProvisioningOuterClass
 import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
+import com.flipperdevices.pbmetric.events.debugInfo
 import com.flipperdevices.pbmetric.events.flipperGattInfo
 import com.flipperdevices.pbmetric.events.flipperRpcInfo
 import com.flipperdevices.pbmetric.events.open
@@ -198,6 +200,13 @@ class ClickhouseApiImpl @Inject constructor(
                         RegionSource.DEFAULT ->
                             SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
                     }
+                }
+            }
+
+            is DebugInfoEvent -> metricEventsCollection {
+                debugInfo = debugInfo {
+                    key = complexEvent.key.key
+                    value = complexEvent.value
                 }
             }
 

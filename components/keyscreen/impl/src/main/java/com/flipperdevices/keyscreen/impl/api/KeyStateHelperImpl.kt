@@ -147,6 +147,10 @@ class KeyStateHelperImpl @AssistedInject constructor(
 
             val parsedKey = keyParser.parseKey(flipperKey)
             val isFavorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
+            val isSupportEditing = keyEditorApi.isSupportedByNfcEditor(parsedKey)
+            if (!isSupportEditing) {
+                keyEditorApi.reportUnsupportedFormat(parsedKey)
+            }
             keyScreenState.update {
                 KeyScreenState.Ready(
                     parsedKey,
@@ -158,7 +162,7 @@ class KeyStateHelperImpl @AssistedInject constructor(
                         flipperKey = flipperKey,
                         parsedKey = parsedKey
                     ),
-                    isSupportEditing = keyEditorApi.isSupportedByNfcEditor(parsedKey)
+                    isSupportEditing = isSupportEditing
                 )
             }
         }

@@ -15,6 +15,7 @@
 - [Refactor] Migrate all viewmodel to DecomposeViewModel
 - [FIX] Fix crash with notification on options screen
 - [Fix] Fix status bar color
+- [Feature] Support 4 version of NFC Mifare format
 - [Feature] Button vibration in ScreenStreaming
 
 # 1.6.7
