@@ -20,7 +20,6 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     synchronizationUiApi: SynchronizationUiApi,
-    nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
     componentContext: ComponentContext,
     onBack: () -> Unit,
@@ -40,7 +39,6 @@ fun ComposableKeyScreen(
 
         is KeyScreenState.Ready -> ComposableKeyParsed(
             localKeyScreenState,
-            nfcEditorApi,
             synchronizationUiApi,
             keyEmulateApi,
             onShare = onShare,

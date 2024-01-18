@@ -30,7 +30,6 @@ import com.flipperdevices.nfceditor.api.NfcEditorApi
 @Suppress("LongParameterList", "NonSkippableComposable")
 fun ComposableKeyParsed(
     keyScreenState: KeyScreenState.Ready,
-    nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
     componentContext: ComponentContext,
@@ -79,7 +78,7 @@ fun ComposableKeyParsed(
                 )
             }
 
-            if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
+            if (keyScreenState.isSupportEditing) {
                 ComposableNfcEdit {
                     onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
                 }

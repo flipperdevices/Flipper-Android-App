@@ -81,7 +81,6 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                     .navigationBarsPadding(),
                 viewModel = viewModel,
                 synchronizationUiApi = synchronizationUiApi,
-                nfcEditorApi = nfcEditor,
                 keyEmulateApi = keyEmulateApi,
                 onShare = onShare,
                 onBack = onBack::invoke,

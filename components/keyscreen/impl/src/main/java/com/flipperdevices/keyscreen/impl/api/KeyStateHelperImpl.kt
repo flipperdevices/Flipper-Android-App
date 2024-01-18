@@ -20,7 +20,11 @@ import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
+import com.flipperdevices.nfceditor.api.NfcEditorApi
 import com.squareup.anvil.annotations.ContributesBinding
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,44 +34,18 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-
-@ContributesBinding(AppGraph::class, KeyStateHelperApi.Builder::class)
-class KeyStateHelperBuilder @Inject constructor(
-    private val simpleKeyApi: SimpleKeyApi,
-    private val deleteKeyApi: DeleteKeyApi,
-    private val favoriteApi: FavoriteApi,
-    private val keyParser: KeyParser,
-    private val metricApi: MetricApi,
-    private val updaterKeyApi: UpdateKeyApi
-) : KeyStateHelperApi.Builder {
-    override fun build(
-        flipperKeyPath: FlipperKeyPath,
-        scope: CoroutineScope
-    ): KeyStateHelperApi {
-        return KeyStateHelperImpl(
-            flipperKeyPath,
-            scope,
-            simpleKeyApi,
-            deleteKeyApi,
-            favoriteApi,
-            keyParser,
-            metricApi,
-            updaterKeyApi
-        )
-    }
-}
 
 @Suppress("LongParameterList")
-class KeyStateHelperImpl(
-    keyPath: FlipperKeyPath,
-    private val scope: CoroutineScope,
+class KeyStateHelperImpl @AssistedInject constructor(
+    @Assisted keyPath: FlipperKeyPath,
+    @Assisted private val scope: CoroutineScope,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val favoriteApi: FavoriteApi,
     private val keyParser: KeyParser,
     private val metricApi: MetricApi,
-    private val updaterKeyApi: UpdateKeyApi
+    private val updaterKeyApi: UpdateKeyApi,
+    private val keyEditorApi: NfcEditorApi
 ) : KeyStateHelperApi {
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val restoreInProgress = AtomicBoolean(false)
@@ -179,7 +157,8 @@ class KeyStateHelperImpl(
                     emulateConfig = getEmulateConfig(
                         flipperKey = flipperKey,
                         parsedKey = parsedKey
-                    )
+                    ),
+                    isSupportEditing = keyEditorApi.isSupportedByNfcEditor(parsedKey)
                 )
             }
         }
@@ -208,5 +187,14 @@ class KeyStateHelperImpl(
             keyPath = flipperKey.path,
             minEmulateTime = timeout,
         )
+    }
+
+    @AssistedFactory
+    @ContributesBinding(AppGraph::class, KeyStateHelperApi.Builder::class)
+    interface Factory : KeyStateHelperApi.Builder {
+        override fun build(
+            flipperKeyPath: FlipperKeyPath,
+            scope: CoroutineScope
+        ): KeyStateHelperImpl
     }
 }
