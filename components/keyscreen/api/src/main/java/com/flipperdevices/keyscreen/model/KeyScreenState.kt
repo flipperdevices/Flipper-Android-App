@@ -16,6 +16,7 @@ sealed class KeyScreenState {
         val shareState: ShareState,
         val deleteState: DeleteState,
         val flipperKey: FlipperKey,
-        val emulateConfig: EmulateConfig?
+        val emulateConfig: EmulateConfig?,
+        val isSupportEditing: Boolean
     ) : KeyScreenState()
 }

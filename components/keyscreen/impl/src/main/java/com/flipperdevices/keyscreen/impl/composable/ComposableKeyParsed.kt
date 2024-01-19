@@ -24,13 +24,11 @@ import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarBackIcon
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
-import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 @Suppress("LongParameterList", "NonSkippableComposable")
 fun ComposableKeyParsed(
     keyScreenState: KeyScreenState.Ready,
-    nfcEditorApi: NfcEditorApi,
     synchronizationUiApi: SynchronizationUiApi,
     keyEmulateApi: KeyEmulateApi,
     componentContext: ComponentContext,
@@ -79,7 +77,7 @@ fun ComposableKeyParsed(
                 )
             }
 
-            if (nfcEditorApi.isSupportedByNfcEditor(keyScreenState.parsedKey)) {
+            if (keyScreenState.isSupportEditing) {
                 ComposableNfcEdit {
                     onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
                 }

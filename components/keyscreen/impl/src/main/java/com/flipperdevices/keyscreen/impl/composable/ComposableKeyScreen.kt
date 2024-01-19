@@ -13,14 +13,12 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenError
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenLoading
-import com.flipperdevices.nfceditor.api.NfcEditorApi
 
 @Composable
 @Suppress("NonSkippableComposable")
 fun ComposableKeyScreen(
     viewModel: KeyScreenViewModel,
     synchronizationUiApi: SynchronizationUiApi,
-    nfcEditorApi: NfcEditorApi,
     keyEmulateApi: KeyEmulateApi,
     componentContext: ComponentContext,
     onBack: () -> Unit,
@@ -40,7 +38,6 @@ fun ComposableKeyScreen(
 
         is KeyScreenState.Ready -> ComposableKeyParsed(
             localKeyScreenState,
-            nfcEditorApi,
             synchronizationUiApi,
             keyEmulateApi,
             onShare = onShare,
