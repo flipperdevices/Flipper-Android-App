@@ -97,10 +97,8 @@ class ShareBottomUIImpl @Inject constructor(
 
         ComposableSheetContent(
             modifier = Modifier
-                .fillMaxSize()
                 .background(LocalPallet.current.shareSheetBackground)
-                .navigationBarsPadding()
-                .systemBarsPadding(),
+                .navigationBarsPadding(),
             state = state,
             keyName = keyName,
             onShareFile = { viewModel.shareByFile(it, context) },
