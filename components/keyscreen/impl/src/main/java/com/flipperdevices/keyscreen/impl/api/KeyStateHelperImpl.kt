@@ -34,6 +34,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Suppress("LongParameterList")
 class KeyStateHelperImpl @AssistedInject constructor(
@@ -104,7 +106,9 @@ class KeyStateHelperImpl @AssistedInject constructor(
             } else {
                 deleteKeyApi.markDeleted(state.flipperKey.path)
             }
-            onEndAction()
+            withContext(Dispatchers.Main) {
+                onEndAction()
+            }
         }
     }
 
@@ -121,7 +125,9 @@ class KeyStateHelperImpl @AssistedInject constructor(
 
         scope.launch {
             deleteKeyApi.restore(state.flipperKey.path)
-            onEndAction()
+            withContext(Dispatchers.Main) {
+                onEndAction()
+            }
         }
     }
 
