@@ -2,6 +2,7 @@ package com.flipperdevices.core.ui.flippermockup.internal
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,7 +27,7 @@ internal fun ComposableFlipperMockupInternal(
     @DrawableRes picId: Int,
     modifier: Modifier = Modifier
 ) {
-    BoxWithConstraints(
+    Box(
         modifier
             .aspectRatio(
                 ratio = FLIPPER_RATIO
