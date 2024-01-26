@@ -13,9 +13,10 @@ import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -27,16 +28,16 @@ class SettingsViewModel @Inject constructor(
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
-    private val settingsState by lazy {
-        dataStoreSettings.data.stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            initialValue = Settings.getDefaultInstance()
-        )
-    }
+    private val settingsStateFlow = MutableStateFlow(Settings.getDefaultInstance())
     private val exportStateFlow = MutableStateFlow(ExportState.NOT_STARTED)
 
-    fun getState(): StateFlow<Settings> = settingsState
+    init {
+        dataStoreSettings.data.onEach {
+            settingsStateFlow.emit(it)
+        }.launchIn(viewModelScope)
+    }
+
+    fun getState() = settingsStateFlow.asStateFlow()
 
     fun getExportState(): StateFlow<ExportState> = exportStateFlow
 
@@ -88,10 +89,6 @@ class SettingsViewModel @Inject constructor(
                     .build()
             }
         }
-    }
-
-    fun getSelectedTheme(): SelectedTheme {
-        return settingsState.value.selectedTheme
     }
 
     fun onExpertModeActivate() {

@@ -30,7 +30,7 @@ fun ComposableCatalogTabScreen(
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
-    val fapsList = fapsListViewModel.faps.collectAsLazyPagingItems()
+    val fapsList = fapsListViewModel.getFapsFlow().collectAsLazyPagingItems()
     val sortType by fapsListViewModel.getSortTypeFlow().collectAsState()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
     SwipeRefresh(
