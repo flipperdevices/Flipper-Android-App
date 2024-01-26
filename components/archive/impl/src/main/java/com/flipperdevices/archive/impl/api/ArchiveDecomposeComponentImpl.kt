@@ -14,7 +14,9 @@ import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -24,6 +26,7 @@ import dagger.assisted.AssistedInject
 class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ArchiveTab?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
@@ -52,12 +55,14 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
             componentContext = componentContext,
-            categoryType = config.categoryType
+            categoryType = config.categoryType,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         ArchiveNavigationConfig.OpenSearch -> searchFactory(
             componentContext = componentContext,
-            onItemSelected = null
+            onItemSelected = null,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -78,7 +83,8 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : ArchiveDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.ArchiveTab?
+            deeplink: Deeplink.BottomBar.ArchiveTab?,
+            onBack: DecomposeOnBackParameter
         ): ArchiveDecomposeComponentImpl
     }
 }

@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
@@ -14,7 +13,9 @@ import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.info.impl.model.DeviceScreenNavigationConfig
 import com.flipperdevices.settings.api.SettingsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
@@ -24,6 +25,7 @@ import dagger.assisted.AssistedInject
 class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.DeviceTab?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val settingsFactory: SettingsDecomposeComponent.Factory,
     private val updateFactory: UpdateScreenDecomposeComponent.Factory,
     private val fullInfoDecomposeComponentFactory: FullInfoDecomposeComponent.Factory
@@ -54,12 +56,12 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
 
         DeviceScreenNavigationConfig.FullInfo -> fullInfoDecomposeComponentFactory(
             componentContext = componentContext,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         DeviceScreenNavigationConfig.Options -> settingsFactory(
             componentContext,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -88,7 +90,8 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : DeviceScreenDecomposeComponent.Factory {
         override operator fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.DeviceTab?
+            deeplink: Deeplink.BottomBar.DeviceTab?,
+            onBack: DecomposeOnBackParameter
         ): DeviceScreenDecomposeComponentImpl
     }
 }

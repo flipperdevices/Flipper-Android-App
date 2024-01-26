@@ -110,7 +110,8 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         }
 
         val rootComponent = rootScreenFactory(
-            componentContext = defaultComponentContext()
+            componentContext = defaultComponentContext(),
+            onBack = { finish() }
         )
 
         setContent {

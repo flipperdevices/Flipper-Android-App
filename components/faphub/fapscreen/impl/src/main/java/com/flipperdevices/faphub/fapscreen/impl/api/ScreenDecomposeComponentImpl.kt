@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
@@ -70,7 +69,12 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             loadingState = loadingState,
             controlState = controlState,
             onRefresh = fapScreenViewModel::onRefresh,
-            onPressHide = { fapScreenViewModel.onPressHide(it.isHidden, navigation::pop) },
+            onPressHide = {
+                fapScreenViewModel.onPressHide(
+                    it.isHidden,
+                    onBack::invoke
+                )
+            },
             onOpenReport = {
                 navigation.push(fapScreenViewModel.getReportAppNavigationConfig(it))
             }

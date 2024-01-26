@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.flipperdevices.archive.category.composable.ComposableCategory
 import com.flipperdevices.archive.category.composable.ComposableDeleted
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
@@ -17,16 +16,20 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
+import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Provider
 
+@Suppress("LongParameterList")
 class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val categoryType: CategoryType,
     @Assisted private val navigation: StackNavigation<CategoryNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val deleteViewModelProvider: Provider<DeleteViewModel>,
     private val categoryViewModelFactory: CategoryViewModel.Factory,
     private val synchronizationUiApi: SynchronizationUiApi
@@ -54,14 +57,14 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
             is CategoryType.ByFileType -> ComposableCategory(
                 categoryType = categoryType,
                 synchronizationUiApi = synchronizationUiApi,
-                onBack = navigation::pop,
+                onBack = { navigation.popOr(onBack::invoke) },
                 onOpenKeyScreen = onOpenKeyScreen,
                 categoryState = categoryState,
                 synchronizationState = synchronizationState
             )
 
             CategoryType.Deleted -> ComposableDeleted(
-                onBack = navigation::pop,
+                onBack = { navigation.popOr(onBack::invoke) },
                 onOpenKeyScreen = onOpenKeyScreen,
                 onRestoreAll = deleteViewModel::onRestoreAll,
                 onDeleteAll = deleteViewModel::onDeleteAll,
@@ -76,7 +79,8 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             categoryType: CategoryType,
-            navigation: StackNavigation<CategoryNavigationConfig>
+            navigation: StackNavigation<CategoryNavigationConfig>,
+            onBack: DecomposeOnBackParameter
         ): CategoryScreenDecomposeComponentImpl
     }
 }

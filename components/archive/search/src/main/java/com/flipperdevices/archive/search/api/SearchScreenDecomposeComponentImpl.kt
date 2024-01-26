@@ -3,17 +3,14 @@ package com.flipperdevices.archive.search.api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.archive.api.SelectKeyPathListener
 import com.flipperdevices.archive.search.composable.ComposableSearch
-import com.flipperdevices.archive.search.model.SearchNavigationConfig
 import com.flipperdevices.archive.search.viewmodel.SearchViewModel
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,7 +20,7 @@ import javax.inject.Provider
 class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onItemSelected: SelectKeyPathListener?,
-    @Assisted private val navigation: StackNavigation<SearchNavigationConfig>,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val searchViewModelProvider: Provider<SearchViewModel>,
     private val synchronizationUiApi: SynchronizationUiApi,
 ) : ScreenDecomposeComponent(componentContext) {
@@ -42,7 +39,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             synchronizationUiApi = synchronizationUiApi,
             onBack = {
                 keyboard?.hide()
-                navigation.pop()
+                onBack()
             },
             onOpenKeyScreen = { flipperKeyPath ->
                 keyboard?.hide()
@@ -60,7 +57,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onItemSelected: SelectKeyPathListener?,
-            navigation: StackNavigation<SearchNavigationConfig>
+            onBack: DecomposeOnBackParameter
         ): SearchScreenDecomposeComponentImpl
     }
 }

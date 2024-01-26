@@ -8,6 +8,8 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.archive.api.SearchDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
 import com.flipperdevices.widget.screen.model.WidgetNavigationConfig
 import com.squareup.anvil.annotations.ContributesBinding
@@ -18,6 +20,7 @@ import dagger.assisted.AssistedInject
 class WidgetDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted widgetId: Int,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val searchScreenFactory: SearchDecomposeComponent.Factory,
     private val widgetOptionsFactory: WidgetOptionsDecomposeComponentImpl.Factory
 ) : WidgetDecomposeComponent<WidgetNavigationConfig>(), ComponentContext by componentContext {
@@ -36,7 +39,8 @@ class WidgetDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is WidgetNavigationConfig.SearchScreen -> searchScreenFactory(
             componentContext = componentContext,
-            onItemSelected = config.listener
+            onItemSelected = config.listener,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is WidgetNavigationConfig.WidgetOptions -> widgetOptionsFactory(
@@ -51,7 +55,8 @@ class WidgetDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : WidgetDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            widgetId: Int
+            widgetId: Int,
+            onBack: DecomposeOnBackParameter
         ): WidgetDecomposeComponentImpl
     }
 }

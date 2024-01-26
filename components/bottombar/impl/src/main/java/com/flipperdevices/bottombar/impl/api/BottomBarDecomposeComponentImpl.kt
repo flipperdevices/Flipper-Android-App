@@ -48,8 +48,8 @@ import javax.inject.Provider
 @Suppress("LongParameterList")
 class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted onBack: DecomposeOnBackParameter,
     @Assisted deeplink: Deeplink.BottomBar?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val settingsDataStore: DataStore<Settings>,
     private val archiveScreenFactory: ArchiveDecomposeComponent.Factory,
     private val deviceScreenFactory: DeviceScreenDecomposeComponent.Factory,
@@ -119,17 +119,20 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is BottomBarTabConfig.Archive -> archiveScreenFactory(
             componentContext = componentContext,
-            deeplink = config.deeplink
+            deeplink = config.deeplink,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is BottomBarTabConfig.Device -> deviceScreenFactory(
             componentContext = componentContext,
-            deeplink = config.deeplink
+            deeplink = config.deeplink,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is BottomBarTabConfig.Hub -> hubScreenFactory(
             componentContext = componentContext,
-            deeplink = config.deeplink
+            deeplink = config.deeplink,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 

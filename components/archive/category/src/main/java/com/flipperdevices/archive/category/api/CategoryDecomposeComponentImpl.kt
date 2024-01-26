@@ -9,6 +9,8 @@ import com.flipperdevices.archive.category.model.CategoryNavigationConfig
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -17,17 +19,19 @@ import dagger.assisted.AssistedInject
 class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val categoryFactory: CategoryScreenDecomposeComponentImpl.Factory
 ) : CategoryDecomposeComponent<CategoryNavigationConfig>(), ComponentContext by componentContext {
-    override val stack: Value<ChildStack<CategoryNavigationConfig, DecomposeComponent>> = childStack(
-        source = navigation,
-        serializer = CategoryNavigationConfig.serializer(),
-        initialStack = {
-            listOf(CategoryNavigationConfig.Category(categoryType))
-        },
-        handleBackButton = true,
-        childFactory = ::child,
-    )
+    override val stack: Value<ChildStack<CategoryNavigationConfig, DecomposeComponent>> =
+        childStack(
+            source = navigation,
+            serializer = CategoryNavigationConfig.serializer(),
+            initialStack = {
+                listOf(CategoryNavigationConfig.Category(categoryType))
+            },
+            handleBackButton = true,
+            childFactory = ::child,
+        )
 
     private fun child(
         config: CategoryNavigationConfig,
@@ -36,7 +40,8 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
         is CategoryNavigationConfig.Category -> categoryFactory(
             componentContext = componentContext,
             categoryType = config.categoryType,
-            navigation = navigation
+            navigation = navigation,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -45,7 +50,8 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : CategoryDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            categoryType: CategoryType
+            categoryType: CategoryType,
+            onBack: DecomposeOnBackParameter
         ): CategoryDecomposeComponentImpl
     }
 }

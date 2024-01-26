@@ -10,6 +10,8 @@ import com.flipperdevices.archive.api.SelectKeyPathListener
 import com.flipperdevices.archive.search.model.SearchNavigationConfig
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -18,6 +20,7 @@ import dagger.assisted.AssistedInject
 class SearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onItemSelected: SelectKeyPathListener?,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val searchScreenFactory: SearchScreenDecomposeComponentImpl.Factory
 ) : SearchDecomposeComponent<SearchNavigationConfig>(), ComponentContext by componentContext {
 
@@ -36,7 +39,7 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
         is SearchNavigationConfig.Search -> searchScreenFactory(
             componentContext = componentContext,
             onItemSelected = config.onItemSelected,
-            navigation = navigation
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -45,7 +48,8 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : SearchDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,
-            onItemSelected: SelectKeyPathListener?
+            onItemSelected: SelectKeyPathListener?,
+            onBack: DecomposeOnBackParameter
         ): SearchDecomposeComponentImpl
     }
 }
