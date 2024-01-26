@@ -1,20 +1,20 @@
 package com.flipperdevices.archive.impl.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.core.ktx.jre.map
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -30,11 +30,12 @@ class CategoryViewModel @Inject constructor(
 ) : DecomposeViewModel() {
     private val deletedCategoryName = application.getString(R.string.archive_tab_deleted)
 
-    private val categoriesFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(
+    private val categoriesMapFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(
         FlipperKeyType.entries.map {
             it to CategoryItem(it.icon, it.humanReadableName, null, CategoryType.ByFileType(it))
         }.toMap(TreeMap())
     )
+    private val categoriesFlow = MutableStateFlow<PersistentList<CategoryItem>>(persistentListOf())
     private val deletedCategoryFlow = MutableStateFlow(
         CategoryItem(null, deletedCategoryName, null, CategoryType.Deleted)
     )
@@ -43,13 +44,14 @@ class CategoryViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             subscribeOnCategoriesCount()
         }
+        categoriesMapFlow.onEach {
+            categoriesFlow.emit(it.values.toPersistentList())
+        }.launchIn(viewModelScope)
     }
 
     fun getDeletedFlow(): StateFlow<CategoryItem> = deletedCategoryFlow
 
-    fun getCategoriesFlow(): StateFlow<ImmutableList<CategoryItem>> = categoriesFlow.map(viewModelScope) {
-        it.values.toPersistentList()
-    }
+    fun getCategoriesFlow() = categoriesFlow.asStateFlow()
 
     private suspend fun subscribeOnCategoriesCount() {
         deleteKeyApi.getDeletedKeyAsFlow().onEach {
@@ -65,7 +67,7 @@ class CategoryViewModel @Inject constructor(
 
         FlipperKeyType.entries.forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
-                categoriesFlow.update {
+                categoriesMapFlow.update {
                     val mutableMap = TreeMap(it)
                     mutableMap[fileType] = CategoryItem(
                         fileType.icon,
