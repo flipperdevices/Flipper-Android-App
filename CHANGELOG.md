@@ -17,6 +17,8 @@
 - [Fix] Fix status bar color
 - [Feature] Support 4 version of NFC Mifare format
 - [Feature] Button vibration in ScreenStreaming
+- [Refactor] Bump version
+- [FIX] On back button on each page
 
 # 1.6.7
 
