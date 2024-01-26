@@ -9,6 +9,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.api.navigation.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -16,19 +18,22 @@ import dagger.assisted.AssistedInject
 
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val fileManagerListingFactory: FileManagerListingComponent.Factory,
     private val fileManagerUploadingFactory: FileManagerUploadingComponent.Factory,
     private val fileManagerEditingFactory: FileManagerEditingComponent.Factory,
     private val fileManagerDownloadFactory: FileManagerDownloadComponent.Factory
-) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(), ComponentContext by componentContext {
+) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
+    ComponentContext by componentContext {
 
-    override val stack: Value<ChildStack<FileManagerNavigationConfig, DecomposeComponent>> = childStack(
-        source = navigation,
-        serializer = FileManagerNavigationConfig.serializer(),
-        initialConfiguration = FileManagerNavigationConfig.Screen("/"),
-        handleBackButton = true,
-        childFactory = ::child,
-    )
+    override val stack: Value<ChildStack<FileManagerNavigationConfig, DecomposeComponent>> =
+        childStack(
+            source = navigation,
+            serializer = FileManagerNavigationConfig.serializer(),
+            initialConfiguration = FileManagerNavigationConfig.Screen("/"),
+            handleBackButton = true,
+            childFactory = ::child,
+        )
 
     private fun child(
         config: FileManagerNavigationConfig,
@@ -43,19 +48,19 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         is FileManagerNavigationConfig.Uploading -> fileManagerUploadingFactory(
             componentContext,
             config,
-            navigation
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FileManagerNavigationConfig.Editing -> fileManagerEditingFactory(
             componentContext,
             config,
-            navigation
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FileManagerNavigationConfig.Download -> fileManagerDownloadFactory(
             componentContext,
             config,
-            navigation
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 
@@ -64,6 +69,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     interface Factory : FileManagerDecomposeComponent.Factory {
         override operator fun invoke(
             componentContext: ComponentContext,
+            onBack: DecomposeOnBackParameter
         ): FileManagerDecomposeComponentImpl
     }
 }

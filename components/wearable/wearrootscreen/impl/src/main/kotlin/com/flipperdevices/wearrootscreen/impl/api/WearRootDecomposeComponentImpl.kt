@@ -4,10 +4,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.wearable.emulate.api.WearEmulateDecomposeComponent
 import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
 import com.flipperdevices.wearrootscreen.api.WearRootDecomposeComponent
@@ -19,6 +20,7 @@ import dagger.assisted.AssistedInject
 
 class WearRootDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val onBackParameter: DecomposeOnBackParameter,
     private val keysListFactory: KeysListDecomposeComponent.Factory,
     private val keyScreenFactory: WearEmulateDecomposeComponent.Factory
 ) : WearRootDecomposeComponent, ComponentContext by componentContext {
@@ -45,19 +47,20 @@ class WearRootDecomposeComponentImpl @AssistedInject constructor(
         is WearRootConfig.OpenKey -> keyScreenFactory(
             componentContext = componentContext,
             flipperKeyPath = config.path,
-            onBack = navigation::pop
+            onBack = ::onBack
         )
     }
 
     override fun onBack() {
-        navigation.pop()
+        navigation.popOr(onBackParameter::invoke)
     }
 
     @AssistedFactory
     @ContributesBinding(AppGraph::class, WearRootDecomposeComponent.Factory::class)
     interface Factory : WearRootDecomposeComponent.Factory {
         override fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            onBack: DecomposeOnBackParameter
         ): WearRootDecomposeComponentImpl
     }
 }

@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
@@ -57,7 +56,7 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
 
         FirstPairNavigationConfig.HelpScreen -> helpScreenFactory(
             componentContext = componentContext,
-            onBack = navigation::pop
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FirstPairNavigationConfig.TOSScreen -> tosScreenFactory(

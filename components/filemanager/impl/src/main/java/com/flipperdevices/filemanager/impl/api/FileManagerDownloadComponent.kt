@@ -4,13 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerDownloadScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.ShareViewModel
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -20,8 +19,8 @@ class FileManagerDownloadComponent @AssistedInject constructor(
     private val fileManagerViewModelFactory: FileManagerViewModel.Factory,
     private val shareModelFactory: ShareViewModel.Factory,
     @Assisted componentContext: ComponentContext,
-    @Assisted val config: FileManagerNavigationConfig.Download,
-    @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
+    @Assisted private val config: FileManagerNavigationConfig.Download,
+    @Assisted private val onBack: DecomposeOnBackParameter
 ) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
@@ -37,7 +36,7 @@ class FileManagerDownloadComponent @AssistedInject constructor(
         ComposableFileManagerDownloadScreen(
             fileManagerState = fileManagerState,
             shareState = shareState,
-            onBack = navigation::pop
+            onBack = onBack::invoke
         )
     }
 
@@ -46,7 +45,7 @@ class FileManagerDownloadComponent @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             config: FileManagerNavigationConfig.Download,
-            navigation: StackNavigation<FileManagerNavigationConfig>
+            onBack: DecomposeOnBackParameter
         ): FileManagerDownloadComponent
     }
 }

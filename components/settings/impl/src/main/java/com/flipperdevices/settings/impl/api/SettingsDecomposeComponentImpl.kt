@@ -40,7 +40,11 @@ class SettingsDecomposeComponentImpl @AssistedInject constructor(
         config: SettingsNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        SettingsNavigationConfig.FileManager -> fileManagerComponentFactory(componentContext)
+        SettingsNavigationConfig.FileManager -> fileManagerComponentFactory(
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) }
+        )
+
         SettingsNavigationConfig.Main -> mainComponentFactory(
             componentContext,
             navigation,

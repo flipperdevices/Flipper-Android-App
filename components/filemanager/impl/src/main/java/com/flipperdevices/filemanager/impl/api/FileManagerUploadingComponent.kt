@@ -4,13 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.pop
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerUploadedScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.ReceiveViewModel
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -20,8 +19,8 @@ class FileManagerUploadingComponent @AssistedInject constructor(
     private val fileManagerViewModelFactory: FileManagerViewModel.Factory,
     private val receiveViewModelFactory: ReceiveViewModel.Factory,
     @Assisted componentContext: ComponentContext,
-    @Assisted val config: FileManagerNavigationConfig.Uploading,
-    @Assisted val navigation: StackNavigation<FileManagerNavigationConfig>
+    @Assisted private val config: FileManagerNavigationConfig.Uploading,
+    @Assisted private val onBack: DecomposeOnBackParameter
 ) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
@@ -37,7 +36,7 @@ class FileManagerUploadingComponent @AssistedInject constructor(
         ComposableFileManagerUploadedScreen(
             fileManagerState = fileManagerState,
             shareState = shareState,
-            onBack = navigation::pop
+            onBack = onBack::invoke
         )
     }
 
@@ -46,7 +45,7 @@ class FileManagerUploadingComponent @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             config: FileManagerNavigationConfig.Uploading,
-            navigation: StackNavigation<FileManagerNavigationConfig>
+            onBack: DecomposeOnBackParameter
         ): FileManagerUploadingComponent
     }
 }

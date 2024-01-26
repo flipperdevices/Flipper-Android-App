@@ -95,7 +95,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
 
         is RootScreenConfig.WidgetOptions -> widgetScreenFactory(
             componentContext = componentContext,
-            widgetId = config.widgetId
+            widgetId = config.widgetId,
+            onBack = this::internalOnBack
         )
 
         is RootScreenConfig.SaveKey -> receiveKeyFactory(

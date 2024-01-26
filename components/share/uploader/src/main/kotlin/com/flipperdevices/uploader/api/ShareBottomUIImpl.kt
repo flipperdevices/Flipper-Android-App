@@ -1,9 +1,7 @@
 package com.flipperdevices.uploader.api
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -97,10 +95,8 @@ class ShareBottomUIImpl @Inject constructor(
 
         ComposableSheetContent(
             modifier = Modifier
-                .fillMaxSize()
                 .background(LocalPallet.current.shareSheetBackground)
-                .navigationBarsPadding()
-                .systemBarsPadding(),
+                .navigationBarsPadding(),
             state = state,
             keyName = keyName,
             onShareFile = { viewModel.shareByFile(it, context) },

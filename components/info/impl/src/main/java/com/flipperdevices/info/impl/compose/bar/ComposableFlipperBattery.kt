@@ -27,7 +27,7 @@ private const val FULL_BATTERY = 1.0f
 
 @Composable
 fun ComposableFlipperBattery(
-    @FloatRange(from = 0.0, to = 1.0) percent: Float,
+    @FloatRange(from = 0.0, to = 1.0, fromInclusive = false) percent: Float,
     isCharging: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +56,7 @@ fun ComposableFlipperBattery(
 
 @Composable
 private fun BatteryContent(
-    @FloatRange(from = 0.0, to = 1.0) percent: Float,
+    @FloatRange(from = 0.0, to = 1.0, fromInclusive = false) percent: Float,
     modifier: Modifier = Modifier
 ) {
     val batteryColor = when (percent) {
