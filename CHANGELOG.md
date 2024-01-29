@@ -19,7 +19,6 @@
 - [Feature] Button vibration in ScreenStreaming
 - [Refactor] Bump version
 - [FIX] On back button on each page
-- [FIX] Fix blinking caused on wrong stateIn used function
 
 # 1.6.7
 

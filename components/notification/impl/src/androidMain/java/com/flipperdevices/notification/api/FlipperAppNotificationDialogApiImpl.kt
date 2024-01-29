@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
@@ -25,9 +24,7 @@ import javax.inject.Provider
 @ContributesBinding(AppGraph::class, FlipperAppNotificationDialogApi::class)
 class FlipperAppNotificationDialogApiImpl @Inject constructor(
     private val notificationDialogViewModelProvider: Provider<NotificationDialogViewModel>
-) : FlipperAppNotificationDialogApi, LogTagProvider {
-    override val TAG = "FlipperAppNotificationDialogApi"
-
+) : FlipperAppNotificationDialogApi {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun NotificationDialog(

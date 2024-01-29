@@ -18,12 +18,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class FapHubCategoryViewModel @AssistedInject constructor(
@@ -33,19 +33,20 @@ class FapHubCategoryViewModel @AssistedInject constructor(
     targetProviderApi: FlipperTargetProviderApi,
     private val dataStoreSettings: DataStore<Settings>
 ) : DecomposeViewModel() {
-    private val sortStateFlow = MutableStateFlow(SortType.UPDATE_AT_DESC)
-
-    init {
+    private val sortState by lazy {
         dataStoreSettings.data
-            .onEach {
-                sortStateFlow.emit(it.selectedCatalogSort.toSortType())
-            }.launchIn(viewModelScope)
+            .map { it.selectedCatalogSort.toSortType() }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                initialValue = SortType.UPDATE_AT_DESC
+            )
     }
 
-    fun getSortTypeFlow() = sortStateFlow.asStateFlow()
+    fun getSortTypeFlow(): StateFlow<SortType> = sortState
 
-    private val faps = combine(
-        sortStateFlow,
+    val faps = combine(
+        sortState,
         targetProviderApi.getFlipperTarget(),
         fapHubHideItemApi.getHiddenItems()
     ) { sortType, target, hiddenItems ->
@@ -58,8 +59,6 @@ class FapHubCategoryViewModel @AssistedInject constructor(
             FapsCategoryPagingSource(fapNetworkApi, category, sortType, target, hiddenItems)
         }.flow
     }.flatMapLatest { it }.cachedIn(viewModelScope)
-
-    fun getFapsFlow() = faps
 
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch(Dispatchers.Default) {

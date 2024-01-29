@@ -7,11 +7,10 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.notification.api.FlipperAppNotificationApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Provider
@@ -24,15 +23,9 @@ class NotificationDialogViewModel @Inject constructor(
     private val settings by settingsProvider
     private val flipperNotificationApi by flipperNotificationApiProvider
     private val coroutineScope by coroutineScopeProvider
-    private val isNotificationShownStateFlow = MutableStateFlow(false)
-
-    init {
-        settings.data.onEach {
-            isNotificationShownStateFlow.emit(it.notificationDialogShown.not())
-        }.launchIn(viewModelScope)
-    }
-
-    fun isNotificationShown(): StateFlow<Boolean> = isNotificationShownStateFlow.asStateFlow()
+    fun isNotificationShown(): StateFlow<Boolean> = settings.data.map {
+        it.notificationDialogShown.not()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     fun onEnableNotification() {
         flipperNotificationApi.setSubscribeToUpdateAsync(

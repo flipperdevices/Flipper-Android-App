@@ -27,9 +27,11 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
@@ -64,7 +66,7 @@ class FlipperAppNotificationApiImpl @Inject constructor(
     private val mutex = Mutex()
     private var permissionRequestDenied = 0
 
-    override fun isSubscribedToUpdateNotificationTopic(scope: CoroutineScope): Flow<UpdateNotificationState> {
+    override fun isSubscribedToUpdateNotificationTopic(scope: CoroutineScope): StateFlow<UpdateNotificationState> {
         return combine(
             settingsDataStore.data,
             updateNotificationStateInternalFlow
@@ -83,7 +85,7 @@ class FlipperAppNotificationApiImpl @Inject constructor(
                     UpdateNotificationState.DISABLED
                 }
             }
-        }
+        }.stateIn(scope, SharingStarted.WhileSubscribed(), UpdateNotificationState.IN_PROGRESS)
     }
 
     override fun setSubscribeToUpdateAsync(
