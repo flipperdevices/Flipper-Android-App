@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.rootscreen.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.core.di)
@@ -39,6 +32,3 @@ android.namespace = "com.flipperdevices.rootscreen.impl"
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.essenty)
 }
-            }
-        }
-    }

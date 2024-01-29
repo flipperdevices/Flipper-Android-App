@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.search.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.faphub.search.api)
 
     implementation(projects.components.core.di)
@@ -45,6 +38,3 @@ android.namespace = "com.flipperdevices.faphub.search.impl"
     implementation(libs.bundles.decompose)
     implementation(libs.lifecycle.viewmodel.ktx)
 }
-            }
-        }
-    }

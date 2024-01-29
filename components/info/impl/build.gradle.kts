@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
@@ -7,14 +7,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.info.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.markdown)
     implementation(projects.components.core.ktx)
@@ -82,6 +75,3 @@ android.namespace = "com.flipperdevices.info.impl"
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
-            }
-        }
-    }

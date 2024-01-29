@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.debug.stresstest"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.debug.api)
 
     implementation(projects.components.core.di)
@@ -42,6 +35,3 @@ android.namespace = "com.flipperdevices.debug.stresstest"
 
     implementation(libs.bundles.decompose)
 }
-            }
-        }
-    }

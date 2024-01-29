@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.source.googleplay"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
@@ -29,6 +22,3 @@ android.namespace = "com.flipperdevices.selfupdater.source.googleplay"
     // Dagger deps
     implementation(projects.components.core.di)
 }
-            }
-        }
-    }

@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.unhandledexception.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.unhandledexception.api)
 
     implementation(projects.components.core.di)
@@ -32,6 +25,3 @@ android.namespace = "com.flipperdevices.unhandledexception.impl"
     implementation(libs.compose.material)
     implementation(libs.compose.tooling)
 }
-            }
-        }
-    }

@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.singleactivity.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -44,6 +37,3 @@ android.namespace = "com.flipperdevices.singleactivity.impl"
     implementation(libs.ktx.activity)
     implementation(libs.kotlin.immutable.collections)
 }
-            }
-        }
-    }

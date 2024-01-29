@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
 }
 
 android.namespace = "com.flipperdevices.faphub.errors"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.theme)
 
     // Compose
@@ -24,6 +17,3 @@ android.namespace = "com.flipperdevices.faphub.errors"
     implementation(libs.ktor.client)
     implementation(projects.components.bridge.rpc.api)
 }
-            }
-        }
-    }

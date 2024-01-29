@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.nfc.mfkey32.screen"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.tools.api)
 
@@ -52,6 +45,3 @@ android.namespace = "com.flipperdevices.nfc.mfkey32.screen"
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
 }
-            }
-        }
-    }

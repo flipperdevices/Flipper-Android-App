@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.nfc.tools.api"

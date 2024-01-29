@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.infrared.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.infrared.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.shared)
@@ -64,6 +57,3 @@ android.namespace = "com.flipperdevices.infrared.impl"
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
-            }
-        }
-    }

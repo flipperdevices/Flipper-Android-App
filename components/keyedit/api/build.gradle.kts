@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.keyedit.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.decompose)
@@ -21,6 +14,3 @@ android.namespace = "com.flipperdevices.keyedit.api"
     implementation(libs.kotlin.serialization.json)
     implementation(libs.decompose)
 }
-            }
-        }
-    }

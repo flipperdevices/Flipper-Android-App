@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.card"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
@@ -60,6 +53,3 @@ android.namespace = "com.flipperdevices.updater.card"
     testImplementation(libs.ktx.testing)
     testImplementation(libs.mockk)
 }
-            }
-        }
-    }

@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.screenstreaming.noop"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.core.ui.decompose)
 
@@ -21,6 +14,3 @@ android.namespace = "com.flipperdevices.screenstreaming.noop"
 
     implementation(projects.components.core.di)
 }
-            }
-        }
-    }

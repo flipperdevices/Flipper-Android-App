@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.deeplink.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -29,6 +22,3 @@ android.namespace = "com.flipperdevices.deeplink.impl"
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
 }
-            }
-        }
-    }

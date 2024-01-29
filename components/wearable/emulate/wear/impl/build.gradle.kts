@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.sync.wear.api)
@@ -53,6 +46,3 @@ android.namespace = "com.flipperdevices.wearable.emulate.impl"
     implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
 }
-            }
-        }
-    }

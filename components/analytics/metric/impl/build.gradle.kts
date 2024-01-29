@@ -2,7 +2,7 @@ import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_APP_KEY
 import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
 
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
     id("flipper.protobuf")
 }
@@ -24,14 +24,7 @@ android {
         }
     }
 }
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.core.di)
@@ -43,6 +36,3 @@ android {
     implementation(libs.ktor.client)
     implementation(libs.ktor.logging)
 }
-            }
-        }
-    }

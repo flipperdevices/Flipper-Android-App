@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.all.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.faphub.installation.all.api)
 
     implementation(projects.components.core.di)
@@ -26,6 +19,3 @@ android.namespace = "com.flipperdevices.faphub.installation.all.impl"
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
 }
-            }
-        }
-    }

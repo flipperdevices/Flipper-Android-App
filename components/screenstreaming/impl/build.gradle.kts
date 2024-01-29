@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.screenstreaming.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.screenstreaming.api)
@@ -48,6 +41,3 @@ android.namespace = "com.flipperdevices.screenstreaming.impl"
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
 }
-            }
-        }
-    }

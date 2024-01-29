@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ui.hexkeyboard"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.data)
 
@@ -24,6 +17,3 @@ android.namespace = "com.flipperdevices.core.ui.hexkeyboard"
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
 }
-            }
-        }
-    }

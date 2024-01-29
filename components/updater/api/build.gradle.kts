@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.updater.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.core.ktx)
@@ -25,6 +18,3 @@ android.namespace = "com.flipperdevices.updater.api"
     implementation(libs.compose.ui)
     implementation(libs.decompose)
 }
-            }
-        }
-    }

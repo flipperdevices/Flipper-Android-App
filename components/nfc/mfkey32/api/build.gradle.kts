@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.nfc.mfkey32.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(libs.bundles.decompose)
 
@@ -19,6 +12,3 @@ android.namespace = "com.flipperdevices.nfc.mfkey32.api"
 
     implementation(libs.kotlin.coroutines)
 }
-            }
-        }
-    }

@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.permission.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.permission.api)
 
@@ -21,6 +14,3 @@ android.namespace = "com.flipperdevices.core.permission.impl"
 
     implementation(libs.ktx.activity)
 }
-            }
-        }
-    }

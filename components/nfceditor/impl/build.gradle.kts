@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.nfceditor.api)
 
     implementation(projects.components.core.ui.lifecycle)
@@ -60,6 +53,3 @@ android.namespace = "com.flipperdevices.nfceditor.impl"
     testImplementation(libs.mockito.kotlin)
     testImplementation(projects.components.keyparser.impl)
 }
-            }
-        }
-    }

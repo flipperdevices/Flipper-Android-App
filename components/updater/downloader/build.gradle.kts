@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.updater.downloader"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.updater.api)
 
     implementation(projects.components.core.di)
@@ -30,6 +23,3 @@ android.namespace = "com.flipperdevices.updater.downloader"
     implementation(libs.apache.compress)
     implementation(libs.apache.codec)
 }
-            }
-        }
-    }

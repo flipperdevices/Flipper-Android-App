@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
 }
 
 android.namespace = "com.flipperdevices.archive.shared"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyparser.api)
 
@@ -29,6 +22,3 @@ android.namespace = "com.flipperdevices.archive.shared"
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.immutable.collections)
 }
-            }
-        }
-    }

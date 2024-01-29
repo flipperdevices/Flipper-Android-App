@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.archive.category"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
 
@@ -49,6 +42,3 @@ android.namespace = "com.flipperdevices.archive.category"
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
 }
-            }
-        }
-    }

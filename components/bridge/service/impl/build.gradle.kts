@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("kotlin-kapt")
     id("flipper.anvil")
 }
@@ -12,14 +12,7 @@ android {
     }
 }
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -61,6 +54,3 @@ android {
     testImplementation(libs.roboelectric)
     testImplementation(libs.lifecycle.test)
 }
-            }
-        }
-    }

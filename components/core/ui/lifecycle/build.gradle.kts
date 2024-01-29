@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.core.ui.lifecycle"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.bridge.service.api)
@@ -23,6 +16,3 @@ android.namespace = "com.flipperdevices.core.ui.lifecycle"
 
     implementation(libs.annotations)
 }
-            }
-        }
-    }

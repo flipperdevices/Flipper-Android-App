@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.keyemulate.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.bridge.api)
@@ -29,6 +22,3 @@ android.namespace = "com.flipperdevices.keyemulate.api"
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 }
-            }
-        }
-    }

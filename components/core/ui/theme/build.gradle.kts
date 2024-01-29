@@ -1,18 +1,11 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.theme"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
@@ -28,6 +21,3 @@ android.namespace = "com.flipperdevices.core.ui.theme"
     implementation(libs.lifecycle.compose)
     implementation(libs.appcompat)
 }
-            }
-        }
-    }

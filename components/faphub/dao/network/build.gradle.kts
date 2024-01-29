@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.ktorfit")
     id("flipper.anvil")
     id("kotlinx-serialization")
@@ -7,14 +7,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.faphub.dao.network"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.faphub.dao.api)
 
     implementation(projects.components.core.di)
@@ -35,6 +28,3 @@ android.namespace = "com.flipperdevices.faphub.dao.network"
 
     implementation(libs.annotations)
 }
-            }
-        }
-    }

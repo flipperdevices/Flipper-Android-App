@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("kotlinx-serialization")
     id("kotlin-parcelize")
 }
 
 android.namespace = "com.flipperdevices.bridge.dao.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ktx)
@@ -24,6 +17,3 @@ android.namespace = "com.flipperdevices.bridge.dao.api"
 
     implementation(libs.compose.ui)
 }
-            }
-        }
-    }

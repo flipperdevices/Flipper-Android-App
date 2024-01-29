@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.core.data"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.compose.ui)
 
@@ -20,6 +13,3 @@ android.namespace = "com.flipperdevices.core.data"
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.ktx.testing)
 }
-            }
-        }
-    }

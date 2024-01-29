@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.share.cryptostorage"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.share.api)
 
     implementation(projects.components.core.di)
@@ -44,6 +37,3 @@ android.namespace = "com.flipperdevices.share.cryptostorage"
     testImplementation(libs.ktx.testing)
     testImplementation(libs.mockk)
 }
-            }
-        }
-    }

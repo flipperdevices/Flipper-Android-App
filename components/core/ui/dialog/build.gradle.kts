@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ui.dialog"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
@@ -22,6 +15,3 @@ android.namespace = "com.flipperdevices.core.ui.dialog"
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }
-            }
-        }
-    }

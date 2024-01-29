@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.nfc.attack.impl"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.nfc.attack.api)
 
     implementation(projects.components.core.di)
@@ -35,6 +28,3 @@ android.namespace = "com.flipperdevices.nfc.attack.impl"
 
     implementation(libs.lifecycle.viewmodel.ktx)
 }
-            }
-        }
-    }

@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
 }
 
 android.namespace = "com.flipperdevices.faphub.utils"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.data)
 
     implementation(projects.components.bridge.api)
@@ -22,6 +15,3 @@ android.namespace = "com.flipperdevices.faphub.utils"
 
     implementation(libs.dagger)
 }
-            }
-        }
-    }

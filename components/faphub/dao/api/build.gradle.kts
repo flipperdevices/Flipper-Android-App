@@ -1,19 +1,12 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.android-lib")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.dao.api"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.progress)
     implementation(projects.components.core.preference)
@@ -26,6 +19,3 @@ android.namespace = "com.flipperdevices.faphub.dao.api"
     implementation(libs.annotations)
     implementation(libs.compose.ui)
 }
-            }
-        }
-    }

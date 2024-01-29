@@ -1,17 +1,10 @@
 plugins {
-    id("flipper.multiplatform-compose")
+    id("flipper.android-compose")
 }
 
 android.namespace = "com.flipperdevices.wearable.core.ui.components"
 
-
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-
-            }
-            androidMain.dependencies {
-                dependencies {
+dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
 
@@ -22,6 +15,3 @@ android.namespace = "com.flipperdevices.wearable.core.ui.components"
     implementation(libs.compose.wear.material)
     implementation(libs.horologist.layout)
 }
-            }
-        }
-    }
