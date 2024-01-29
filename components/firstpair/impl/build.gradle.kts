@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.firstpair.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.firstpair.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -45,3 +52,6 @@ dependencies {
 
     implementation(libs.ktx)
 }
+            }
+        }
+    }

@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.widget.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.widget.api)
 
     implementation(projects.components.core.log)
@@ -28,3 +35,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.kotlin.coroutines)
 }
+            }
+        }
+    }

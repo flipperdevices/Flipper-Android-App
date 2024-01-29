@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.service.noop"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.core.di)
 
@@ -13,3 +20,6 @@ dependencies {
 
     implementation(libs.essenty.lifecycle)
 }
+            }
+        }
+    }

@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.share.uploader"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.share.api)
     implementation(projects.components.bridge.dao.api)
@@ -42,3 +49,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
 }
+            }
+        }
+    }

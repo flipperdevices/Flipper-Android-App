@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installedtab.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.faphub.installedtab.api)
 
     implementation(projects.components.core.di)
@@ -42,3 +49,6 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 }
+            }
+        }
+    }

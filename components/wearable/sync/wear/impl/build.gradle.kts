@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.wear.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.wearable.sync.common)
     implementation(projects.components.wearable.sync.wear.api)
 
@@ -42,3 +49,6 @@ dependencies {
     implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
 }
+            }
+        }
+    }

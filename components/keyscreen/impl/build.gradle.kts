@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.keyscreen.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
@@ -62,3 +69,6 @@ dependencies {
     testImplementation(libs.ktx.testing)
     testImplementation(libs.mockk)
 }
+            }
+        }
+    }

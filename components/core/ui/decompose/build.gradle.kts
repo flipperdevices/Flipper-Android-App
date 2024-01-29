@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.ui.decompose"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.activityholder)
 
     implementation(libs.compose.ui)
@@ -20,3 +27,6 @@ dependencies {
     implementation(libs.essenty.lifecycle.coroutines)
     implementation(libs.kotlin.serialization.json)
 }
+            }
+        }
+    }

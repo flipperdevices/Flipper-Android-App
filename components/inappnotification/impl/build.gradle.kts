@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.inappnotification.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
@@ -24,3 +31,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.image.lottie)
 }
+            }
+        }
+    }

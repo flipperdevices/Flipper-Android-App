@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.debug"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
@@ -15,3 +22,6 @@ dependencies {
 
     implementation(libs.lifecycle.runtime.ktx)
 }
+            }
+        }
+    }

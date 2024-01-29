@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.updater.screen"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.info.shared)
 
@@ -48,3 +55,6 @@ dependencies {
 
     implementation(libs.appcompat)
 }
+            }
+        }
+    }

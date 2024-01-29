@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.thirdparty.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
@@ -27,3 +34,6 @@ dependencies {
     // Dagger deps
     implementation(projects.components.core.di)
 }
+            }
+        }
+    }

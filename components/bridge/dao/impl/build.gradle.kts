@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
     id("com.google.devtools.ksp")
 }
@@ -10,7 +10,14 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.di)
@@ -31,3 +38,6 @@ dependencies {
     testImplementation(libs.roboelectric)
     testImplementation(libs.kotlin.coroutines.test)
 }
+            }
+        }
+    }

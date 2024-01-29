@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.errors"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.faphub.errors.api)
 
     implementation(projects.components.core.di)
@@ -24,3 +31,6 @@ dependencies {
 
     implementation(libs.ktor.client)
 }
+            }
+        }
+    }

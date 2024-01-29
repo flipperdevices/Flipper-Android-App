@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.ui"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
@@ -25,3 +32,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.lifecycle.compose)
 }
+            }
+        }
+    }

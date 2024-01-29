@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("kotlin-parcelize")
     id("flipper.anvil")
     id("kotlinx-serialization")
@@ -7,7 +7,14 @@ plugins {
 
 android.namespace = "com.flipperdevices.archive.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
 
@@ -50,3 +57,6 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
 }
+            }
+        }
+    }

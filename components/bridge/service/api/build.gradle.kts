@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.service.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.api)
 
     implementation(libs.annotations)
@@ -12,3 +19,6 @@ dependencies {
 
     implementation(libs.essenty.lifecycle)
 }
+            }
+        }
+    }

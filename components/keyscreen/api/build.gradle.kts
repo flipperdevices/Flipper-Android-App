@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyscreen.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.decompose)
@@ -21,3 +28,6 @@ dependencies {
 
     implementation(projects.components.keyemulate.api)
 }
+            }
+        }
+    }

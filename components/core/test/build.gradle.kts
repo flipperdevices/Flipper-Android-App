@@ -1,12 +1,22 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.test"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(libs.junit)
     implementation(libs.timber)
     implementation(libs.roboelectric)
     implementation(libs.kotlin.coroutines)
 }
+            }
+        }
+    }

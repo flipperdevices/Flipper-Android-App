@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.subghz"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.updater.api)
 
     implementation(projects.components.bridge.api)
@@ -46,3 +53,6 @@ dependencies {
     testImplementation(libs.kotlin.serialization.json)
     testImplementation(libs.kotlin.immutable.collections)
 }
+            }
+        }
+    }

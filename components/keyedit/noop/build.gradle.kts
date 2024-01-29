@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyedit.noop"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.keyedit.api)
 
     implementation(projects.components.bridge.dao.api)
@@ -17,3 +24,6 @@ dependencies {
 
     implementation(libs.appcompat)
 }
+            }
+        }
+    }

@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyparser.api)
     implementation(projects.components.core.ui.decompose)
@@ -16,3 +23,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.decompose)
 }
+            }
+        }
+    }
