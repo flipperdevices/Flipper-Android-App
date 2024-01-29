@@ -1,6 +1,5 @@
 plugins {
     id("flipper.multiplatform")
-    id("kotlin-android")
     id("kotlin-parcelize")
 }
 

@@ -9,7 +9,7 @@ android.namespace = "com.flipperdevices.nfc.tools.impl"
 android {
     externalNativeBuild {
         cmake {
-            path("src/main/cpp/CMakeLists.txt")
+            path("src/androidMain/cpp/CMakeLists.txt")
             version = "3.22.1"
             ndkVersion = "26.1.10909125"
         }

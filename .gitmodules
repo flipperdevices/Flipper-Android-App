@@ -1,5 +1,5 @@
-[submodule "components/nfc/tools/impl/src/main/cpp/nfc-tools"]
-	path = components/nfc/tools/impl/src/main/cpp/nfc-tools
+[submodule "components/nfc/tools/impl/src/androidMain/cpp/nfc-tools"]
+	path = components/nfc/tools/impl/src/androidMain/cpp/nfc-tools
 	url = https://github.com/flipperdevices/flipperzero-nfc-tools.git
 	branch = 808695143e7d6eb225398bcfd29e0009066e2c93
 [submodule "components/bridge/pbutils/src/main/proto"]
