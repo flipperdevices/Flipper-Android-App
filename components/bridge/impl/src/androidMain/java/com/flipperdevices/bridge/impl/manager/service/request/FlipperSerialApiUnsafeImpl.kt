@@ -18,8 +18,10 @@ import com.flipperdevices.core.log.verbose
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class FlipperSerialApiUnsafeImpl(
@@ -39,6 +41,18 @@ class FlipperSerialApiUnsafeImpl(
 
     private val txSpeed = SpeedMeter(scope)
     private val rxSpeed = SpeedMeter(scope)
+    private val speedFlowState = MutableStateFlow(FlipperSerialSpeed())
+
+    init {
+        combine(
+            rxSpeed.getSpeed(),
+            txSpeed.getSpeed()
+        ) { rxBPS, txBPS ->
+            speedFlowState.emit(
+                FlipperSerialSpeed(receiveBytesInSec = rxBPS, transmitBytesInSec = txBPS)
+            )
+        }.launchIn(scope)
+    }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(
@@ -80,10 +94,7 @@ class FlipperSerialApiUnsafeImpl(
     }
 
     override fun receiveBytesFlow() = receiveBytesFlow
-    override suspend fun getSpeed() = rxSpeed.getSpeed()
-        .combine(txSpeed.getSpeed()) { rxBPS, txBPS ->
-            FlipperSerialSpeed(receiveBytesInSec = rxBPS, transmitBytesInSec = txBPS)
-        }.stateIn(scope)
+    override suspend fun getSpeed() = speedFlowState.asStateFlow()
 
     override fun sendBytes(data: ByteArray) {
         if (data.isEmpty()) {

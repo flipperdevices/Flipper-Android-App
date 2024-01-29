@@ -42,7 +42,7 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val categoryViewModel = viewModelWithFactory(key = fapCategory.toString()) {
             categoryViewModelFactory(fapCategory)
         }
-        val fapsList = categoryViewModel.faps.collectAsLazyPagingItems()
+        val fapsList = categoryViewModel.getFapsFlow().collectAsLazyPagingItems()
         val sortType by categoryViewModel.getSortTypeFlow().collectAsState()
 
         ComposableFapHubCategory(
