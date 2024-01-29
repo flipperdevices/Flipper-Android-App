@@ -1,9 +1,19 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(libs.kotlin.coroutines)
 }
+            }
+        }
+    }

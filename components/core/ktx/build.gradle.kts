@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ktx"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.log)
 
     implementation(libs.appcompat)
@@ -21,3 +28,6 @@ dependencies {
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
 }
+            }
+        }
+    }

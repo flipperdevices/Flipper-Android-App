@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("kotlin-android")
     id("kotlin-parcelize")
 }
 
 android.namespace = "com.flipperdevices.bridge.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -26,3 +33,6 @@ dependencies {
     testImplementation(libs.ktx.testing)
     testImplementation(libs.mockk)
 }
+            }
+        }
+    }

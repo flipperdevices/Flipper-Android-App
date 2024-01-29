@@ -1,6 +1,6 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.android-compose")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
     id("kotlin-kapt")
@@ -9,7 +9,14 @@ plugins {
 android.namespace = "com.flipperdevices.bridge.synchronization.impl"
 anvil.generateDaggerFactories.set(false) // DaggerTaskSynchronizationComponent
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
@@ -55,3 +62,6 @@ dependencies {
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
+            }
+        }
+    }

@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.settings.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.settings.api)
 
     implementation(projects.components.core.di)
@@ -56,3 +63,6 @@ dependencies {
 
     implementation(libs.kotlin.serialization.json)
 }
+            }
+        }
+    }

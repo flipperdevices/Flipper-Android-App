@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
 
@@ -42,3 +49,6 @@ dependencies {
     testImplementation(libs.ktor.mock)
     testImplementation(libs.kotlin.serialization.json)
 }
+            }
+        }
+    }

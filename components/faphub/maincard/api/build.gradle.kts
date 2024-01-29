@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.faphub.maincard.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
 
     // Compose
     implementation(libs.compose.ui)
@@ -13,3 +20,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.decompose)
 }
+            }
+        }
+    }

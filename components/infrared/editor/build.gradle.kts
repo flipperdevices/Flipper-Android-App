@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.infrared.editor"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.infrared.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.shared)
@@ -53,3 +60,6 @@ dependencies {
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
+            }
+        }
+    }

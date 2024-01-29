@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.core.markdown"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
 
@@ -29,3 +36,6 @@ dependencies {
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
+            }
+        }
+    }

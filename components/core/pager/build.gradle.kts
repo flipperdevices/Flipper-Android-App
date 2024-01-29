@@ -1,11 +1,21 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.pager"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.log)
 
     implementation(libs.compose.paging)
 }
+            }
+        }
+    }

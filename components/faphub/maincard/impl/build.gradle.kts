@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.maincard.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.faphub.maincard.api)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
@@ -28,3 +35,6 @@ dependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
 }
+            }
+        }
+    }

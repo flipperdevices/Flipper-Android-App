@@ -20,7 +20,14 @@ android {
     }
 }
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
@@ -66,3 +73,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }
+            }
+        }
+    }

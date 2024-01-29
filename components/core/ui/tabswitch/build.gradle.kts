@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.tabswitch"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
 
@@ -14,3 +21,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }
+            }
+        }
+    }

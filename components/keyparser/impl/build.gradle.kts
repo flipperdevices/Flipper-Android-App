@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyparser.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.bridge.dao.api)
 
@@ -25,3 +32,6 @@ dependencies {
     testImplementation(libs.lifecycle.test)
     testImplementation(libs.kotlin.coroutines.test)
 }
+            }
+        }
+    }

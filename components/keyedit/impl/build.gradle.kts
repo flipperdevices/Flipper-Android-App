@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
@@ -7,7 +7,14 @@ plugins {
 
 android.namespace = "com.flipperdevices.keyedit.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -45,3 +52,6 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
 }
+            }
+        }
+    }

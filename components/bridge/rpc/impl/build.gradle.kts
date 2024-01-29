@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.rpc.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.rpc.api)
 
     implementation(projects.components.core.di)
@@ -20,3 +27,6 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
 }
+            }
+        }
+    }

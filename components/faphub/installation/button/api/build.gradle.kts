@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.button.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.faphub.dao.api)
 
     implementation(projects.components.core.data)
@@ -16,3 +23,6 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.decompose)
 }
+            }
+        }
+    }

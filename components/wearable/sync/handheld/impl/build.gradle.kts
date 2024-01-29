@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.handheld.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.wearable.sync.common)
     implementation(projects.components.wearable.sync.handheld.api)
 
@@ -20,3 +27,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.coroutines.play.services)
 }
+            }
+        }
+    }

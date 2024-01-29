@@ -1,10 +1,17 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.shake2report.api"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.core.ui.decompose)
 
@@ -12,3 +19,6 @@ dependencies {
 
     implementation(libs.decompose)
 }
+            }
+        }
+    }

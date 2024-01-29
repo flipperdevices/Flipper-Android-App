@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.hub.impl"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.hub.api)
     implementation(projects.components.faphub.maincard.api)
     implementation(projects.components.faphub.main.api)
@@ -38,3 +45,6 @@ dependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.kotlin.immutable.collections)
 }
+            }
+        }
+    }

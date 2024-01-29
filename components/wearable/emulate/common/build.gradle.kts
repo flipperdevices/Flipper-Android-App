@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.protobuf")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.common"
 
-dependencies {
+
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+
+            }
+            androidMain.dependencies {
+                dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.bridge.pbutils)
@@ -14,3 +21,6 @@ dependencies {
     implementation(libs.kotlin.coroutines.play.services)
     implementation(libs.wear.gms)
 }
+            }
+        }
+    }
