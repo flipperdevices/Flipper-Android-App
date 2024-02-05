@@ -22,6 +22,7 @@
 - [FIX] Fix blinking caused on wrong stateIn used function
 - [FIX] Box size in inapp notification
 - [FIX] Crash on delete/restore key
+- [FIX] Fix lost connection in screen streaming
 
 # 1.6.7
 
