@@ -21,6 +21,7 @@
 - [FIX] On back button on each page
 - [FIX] Fix blinking caused on wrong stateIn used function
 - [FIX] Box size in inapp notification
+- [FIX] Crash on delete/restore key
 
 # 1.6.7
 
