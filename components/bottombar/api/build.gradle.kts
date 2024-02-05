@@ -9,7 +9,7 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.core.ui.decompose)
 
-    implementation(libs.decompose
+    implementation(libs.decompose)
 
     // Testing
     testImplementation(projects.components.core.test)
