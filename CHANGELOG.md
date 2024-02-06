@@ -23,6 +23,7 @@
 - [FIX] Box size in inapp notification
 - [FIX] Crash on delete/restore key
 - [FIX] Fix lost connection in screen streaming
+- [Feature] Change notification icon
 
 # 1.6.7
 
