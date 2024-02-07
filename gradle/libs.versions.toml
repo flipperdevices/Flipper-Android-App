@@ -47,7 +47,7 @@ datastore = "1.0.0" # https://developer.android.com/topic/libraries/architecture
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
 markdown = "0.1.9" # https://github.com/Programistich/multiplatform-markdown-renderer
-ktor = "2.3.7" # https://ktor.io/
+ktor = "2.3.8" # https://ktor.io/
 apache-compress = "1.25.0" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.16.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "24.1.0" # https://github.com/Countly/countly-sdk-android/releases
