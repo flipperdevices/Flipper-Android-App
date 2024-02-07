@@ -28,6 +28,7 @@
 - [FIX] Atomic write/read manifest storage
 - [Refactor] Bump version with dependabot
 - [FIX] Disable edit when emulating in progress
+- [FIX] Single Activity launch mode to singleTask
 
 # 1.6.7
 

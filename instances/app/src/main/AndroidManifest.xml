@@ -15,6 +15,7 @@
                 android:exported="true"
                 android:windowSoftInputMode="adjustResize"
                 android:name="${splashScreenActivity}"
+                android:launchMode="singleTask"
                 android:screenOrientation="portrait"
                 android:theme="@style/FlipperTheme.SplashTheme"
                 tools:node="merge">
