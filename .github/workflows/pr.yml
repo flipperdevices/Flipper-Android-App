@@ -11,7 +11,7 @@ jobs:
     name: "Run unit tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -27,7 +27,7 @@ jobs:
     name: "Check project by detekt"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -43,7 +43,7 @@ jobs:
     name: "Check project by android`s lint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -59,7 +59,7 @@ jobs:
     name: "Checking that changelog has changed"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Get change status for CHANGELOG.md

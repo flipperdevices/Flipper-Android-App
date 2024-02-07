@@ -13,7 +13,7 @@ jobs:
     name: Update gradle cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -59,7 +59,7 @@ jobs:
       matrix:
         target: [ "gh_gms", "gh_nogms", "googleplay" ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -123,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -185,7 +185,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build_internal_release, build_internal_release_gms_wearos, build_number ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - uses: actions/download-artifact@v3
