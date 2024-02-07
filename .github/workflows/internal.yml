@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build internal
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
           arguments: testDebug detekt lint

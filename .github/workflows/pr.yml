@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Unit test
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: testDebug
   detekt:
@@ -36,7 +36,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: detekt
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: detekt
   android_lint:
@@ -52,7 +52,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Android lint
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: lint
   changelog_changes:
