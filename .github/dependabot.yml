@@ -16,47 +16,11 @@ updates:
       day: "saturday"
       interval: "weekly"
       time: "03:00"
-
-  - package-ecosystem: "gradle"
-    commit-message:
-      prefix: "Gradle"
-    directory: "/instances/app"
-    schedule:
-      day: "saturday"
-      interval: "weekly"
-      time: "03:00"
-
-  - package-ecosystem: "gradle"
-    commit-message:
-      prefix: "Gradle"
-    directory: "/instances/wearable"
-    schedule:
-      day: "saturday"
-      interval: "weekly"
-      time: "03:00"
       
   - package-ecosystem: "maven"
     commit-message:
       prefix: "Maven"
     directory: "/" 
-    schedule:
-      day: "saturday"
-      interval: "weekly"
-      time: "03:00"
-
-  - package-ecosystem: "maven"
-    commit-message:
-      prefix: "Maven"
-    directory: "/instances/app"
-    schedule:
-      day: "saturday"
-      interval: "weekly"
-      time: "03:00"
-
-  - package-ecosystem: "maven"
-    commit-message:
-      prefix: "Maven"
-    directory: "/instances/wearable"
     schedule:
       day: "saturday"
       interval: "weekly"
