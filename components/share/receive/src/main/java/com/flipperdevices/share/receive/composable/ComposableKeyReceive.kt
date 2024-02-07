@@ -38,7 +38,7 @@ fun ComposableKeyReceive(
             onCancel = onCancel
         )
 
-        ReceiveState.Finished -> LaunchedEffect(Unit) {
+        ReceiveState.Finished -> LaunchedEffect(onCancel) {
             withContext(Dispatchers.Main) {
                 onCancel()
             }

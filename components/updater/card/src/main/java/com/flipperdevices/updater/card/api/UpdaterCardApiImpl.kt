@@ -33,19 +33,21 @@ class UpdaterCardApiImpl @Inject constructor(
         requestRefresh: Boolean,
         onRefreshRequestExecuted: () -> Unit
     ) {
-        val updateStateViewModel: UpdateStateViewModel = componentContext.viewModelWithFactory(key = null) {
-            updateStateViewModelProvider.get()
-        }
+        val updateStateViewModel: UpdateStateViewModel =
+            componentContext.viewModelWithFactory(key = null) {
+                updateStateViewModelProvider.get()
+            }
         val updateCardViewModel: UpdateCardViewModel = componentContext.viewModelWithFactory(
             key = deeplink?.toString()
         ) {
             updateCardFactory(deeplink)
         }
-        val updateRequestViewModel: UpdateRequestViewModel = componentContext.viewModelWithFactory(key = null) {
-            updateRequestViewModelProvider.get()
-        }
+        val updateRequestViewModel: UpdateRequestViewModel =
+            componentContext.viewModelWithFactory(key = null) {
+                updateRequestViewModelProvider.get()
+            }
 
-        LaunchedEffect(requestRefresh) {
+        LaunchedEffect(requestRefresh, onRefreshRequestExecuted) {
             if (requestRefresh) {
                 updateCardViewModel.refresh()
                 onRefreshRequestExecuted()

@@ -43,7 +43,7 @@ internal fun ComposableSheetContent(
         when (state) {
             is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
             ShareState.Completed ->
-                LaunchedEffect(key1 = Unit) {
+                LaunchedEffect(onClose) {
                     onClose()
                 }
             ShareState.Prepare -> ComposableSheetPrepare()

@@ -18,7 +18,7 @@ fun ComposableFileManagerUploadedScreen(
     onBack: () -> Unit
 ) {
     if (shareState.processCompleted) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(onBack) {
             onBack()
         }
     }
