@@ -66,7 +66,7 @@ roboelectric = "4.11.1" # https://github.com/robolectric/robolectric/releases
 mockk = "1.13.5" # https://mockk.io/
 
 # Linters
-detekt = "1.23.4" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt = "1.23.5" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.2" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
 detekt-ruleset-compose = "0.3.0" # https://github.com/mrmans0n/compose-rules/releases
