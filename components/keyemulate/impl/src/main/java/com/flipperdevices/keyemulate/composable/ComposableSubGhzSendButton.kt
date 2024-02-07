@@ -21,8 +21,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
 import com.flipperdevices.keyemulate.composable.common.ComposableBubbleHoldToSend
-import com.flipperdevices.keyemulate.composable.common.ComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
+import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
@@ -150,7 +150,7 @@ private fun ComposableActiveEmulateInternal(
         Picture.StaticRes(R.drawable.ic_send)
     }
 
-    ComposableEmulateButtonWithText(
+    InternalComposableEmulateButtonWithText(
         modifier = modifier,
         buttonModifier = buttonActiveModifier,
         buttonTextId = textId,

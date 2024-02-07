@@ -109,7 +109,9 @@ abstract class EmulateViewModel(
             return
         }
         if (!emulateStarted) {
+            info { "Failed start emulation" }
             emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
     }
 

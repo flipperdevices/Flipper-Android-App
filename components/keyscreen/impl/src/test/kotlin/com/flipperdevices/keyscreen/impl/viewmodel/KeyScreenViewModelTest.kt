@@ -115,7 +115,8 @@ class KeyScreenViewModelTest {
                 deleteState = mockk(),
                 flipperKey = flipperKey,
                 emulateConfig = mockk(),
-                isSupportEditing = true
+                isSupportEditing = true,
+                emulatingInProgress = false
             )
         )
 

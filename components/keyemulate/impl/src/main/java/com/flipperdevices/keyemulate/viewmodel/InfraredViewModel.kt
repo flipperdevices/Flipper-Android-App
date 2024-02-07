@@ -148,6 +148,11 @@ class InfraredViewModel @Inject constructor(
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
         }
+        if (!appStarted) {
+            info { "Failed start emulation" }
+            emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
+        }
 
         return appStarted
     }

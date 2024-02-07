@@ -34,16 +34,12 @@ class SubGhzViewModel @Inject constructor(
         serviceApi: FlipperServiceApi,
         config: EmulateConfig
     ) {
-        val appStarted = calculateTimeoutAndStartEmulate(
+        calculateTimeoutAndStartEmulate(
             scope = scope,
             serviceApi = serviceApi,
             config = config,
             oneTimePress = false
         )
-
-        if (!appStarted) {
-            emulateHelper.stopEmulateForce(serviceApi.requestApi)
-        }
     }
 
     fun onSinglePress(config: EmulateConfig) {
@@ -91,7 +87,7 @@ class SubGhzViewModel @Inject constructor(
         serviceApi: FlipperServiceApi,
         config: EmulateConfig,
         oneTimePress: Boolean
-    ): Boolean {
+    ) {
         val requestApi = serviceApi.requestApi
         val timeout = config.minEmulateTime
         val appStarted: Boolean?
@@ -122,18 +118,22 @@ class SubGhzViewModel @Inject constructor(
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
-            return false
+            return
         } catch (ignored: ForbiddenFrequencyException) {
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
-            return false
+            return
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate subghz" }
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
-            return false
+            return
         }
 
-        return appStarted
+        if (!appStarted) {
+            info { "Failed start app without crash" }
+            emulateHelper.stopEmulateForce(serviceApi.requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
+        }
     }
 }

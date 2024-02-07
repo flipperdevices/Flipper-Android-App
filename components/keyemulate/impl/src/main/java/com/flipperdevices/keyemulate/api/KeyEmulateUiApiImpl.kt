@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.ktx.image.Picture
+import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.composable.common.button.ComposableEmulateButton
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.squareup.anvil.annotations.ContributesBinding
@@ -45,7 +46,7 @@ class KeyEmulateUiApiImpl @Inject constructor() : KeyEmulateUiApi {
         color: Color,
         progressColor: Color
     ) {
-        com.flipperdevices.keyemulate.composable.common.ComposableEmulateButtonWithText(
+        InternalComposableEmulateButtonWithText(
             modifier = modifier,
             buttonModifier = buttonModifier,
             progress = progress,

@@ -27,6 +27,7 @@
 - [FIX] Try to fix impact for connect button
 - [FIX] Atomic write/read manifest storage
 - [Refactor] Bump version with dependabot
+- [FIX] Disable edit when emulating in progress
 
 # 1.6.7
 

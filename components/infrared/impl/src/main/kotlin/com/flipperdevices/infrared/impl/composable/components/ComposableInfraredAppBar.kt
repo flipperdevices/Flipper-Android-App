@@ -15,6 +15,7 @@ internal fun ComposableInfraredAppBar(
     onDelete: () -> Unit,
     onShare: () -> Unit,
     keyName: String,
+    emulatingInProgress: Boolean
 ) {
     ComposableKeyScreenAppBar(
         startBlock = {
@@ -32,7 +33,8 @@ internal fun ComposableInfraredAppBar(
                 modifier = it,
                 onEdit = onEdit,
                 onDelete = onDelete,
-                onShare = onShare
+                onShare = onShare,
+                emulatingInProgress = emulatingInProgress
             )
         }
     )
@@ -47,7 +49,8 @@ private fun InfraredAppBar() {
             onEdit = {},
             onDelete = {},
             onShare = {},
-            keyName = "Test"
+            keyName = "Test",
+            emulatingInProgress = false
         )
     }
 }
