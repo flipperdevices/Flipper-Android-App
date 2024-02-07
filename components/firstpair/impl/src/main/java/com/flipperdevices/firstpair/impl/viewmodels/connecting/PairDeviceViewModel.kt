@@ -53,12 +53,19 @@ class PairDeviceViewModel @Inject constructor(
         @Suppress("SwallowedException")
         connectingJob = viewModelScope.launch {
             try {
+                pairState.emit(
+                    DevicePairState.Connecting(
+                        device.address,
+                        device.name
+                    )
+                )
                 withTimeout(TIMEOUT_MS) {
                     firstPairBleManager.connectToDevice(device.device)
                 }
 
                 deviceColorSaver.saveDeviceColor(device)
             } catch (timeout: TimeoutCancellationException) {
+                info { "Timeout Cancellation" }
                 pairState.emit(DevicePairState.TimeoutConnecting(device))
             } catch (anyOtherException: Throwable) {
                 error(anyOtherException) { "Fatal exception while try connecting to device" }
@@ -77,6 +84,7 @@ class PairDeviceViewModel @Inject constructor(
     ) = launchWithLock(mutex, viewModelScope) {
         connectionStateUpdateJob?.cancelAndJoin()
         connectionStateUpdateJob = firstPairBleManager.stateAsFlow().onEach {
+            info { "Receive $it" }
             when (it) {
                 is ConnectionState.Disconnected ->
                     pairState.update { localPairState ->
