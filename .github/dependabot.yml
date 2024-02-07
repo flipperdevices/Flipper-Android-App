@@ -1,0 +1,15 @@
+updates:
+  - package-ecosystem: "gradle"
+    commit-message:
+      prefix: "Update deps"
+    directory: "/" 
+    schedule:
+      day: "saturday"
+      interval: "weekly"
+      time: "03:00"
+    groups:
+      dependencies:
+        patterns:
+          - "*"  
+
+version: 2

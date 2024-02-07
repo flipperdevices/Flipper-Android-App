@@ -1,12 +1,14 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import android.content.Context
+import android.util.AtomicFile
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -15,6 +17,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 interface ManifestStorage {
@@ -32,7 +35,7 @@ class ManifestStorageImpl @Inject constructor(
 
     private val mutex = Mutex()
 
-    private val file: File = File(context.filesDir, "LastSyncManifest_v4.json")
+    private val file = AtomicFile(File(context.filesDir, "LastSyncManifest_v4.json"))
 
     override suspend fun update(block: (ManifestFile) -> ManifestFile) = withLock(mutex, "update") {
         val manifest = loadInternal() ?: ManifestFile(keys = emptyList())
@@ -45,20 +48,31 @@ class ManifestStorageImpl @Inject constructor(
     }
 
     private suspend fun saveInternal(manifestFile: ManifestFile) = withContext(Dispatchers.IO) {
-        if (file.exists()) {
-            file.delete()
-        }
-        file.outputStream().use {
-            Json.encodeToStream(manifestFile, it)
+        file.delete()
+        var os: FileOutputStream? = null
+        try {
+            os = file.startWrite()
+            Json.encodeToStream(manifestFile, os)
+            file.finishWrite(os)
+        } catch (throwable: Throwable) {
+            if (os != null) {
+                file.failWrite(os)
+            }
+            throw throwable
         }
     }
 
     private suspend fun loadInternal(): ManifestFile? = withContext(Dispatchers.IO) {
-        if (!file.exists()) {
+        if (!file.baseFile.exists()) {
             return@withContext null
         }
-        return@withContext file.inputStream().use {
-            Json.decodeFromStream<ManifestFile>(it)
+        try {
+            return@withContext file.openRead().use {
+                Json.decodeFromStream<ManifestFile>(it)
+            }
+        } catch (throwable: Throwable) {
+            error(throwable) { "Error while reading manifest file" }
+            return@withContext null
         }
     }
 }
