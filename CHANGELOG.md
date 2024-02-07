@@ -24,6 +24,7 @@
 - [FIX] Crash on delete/restore key
 - [FIX] Fix lost connection in screen streaming
 - [Feature] Change notification icon
+- [FIX] Atomic write/read manifest storage
 
 # 1.6.7
 
