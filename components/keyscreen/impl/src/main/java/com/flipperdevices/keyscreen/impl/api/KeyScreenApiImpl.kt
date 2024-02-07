@@ -23,7 +23,8 @@ class KeyScreenApiImpl @Inject constructor(
             modifier = modifier,
             parsedKey = key,
             synchronizationState = null,
-            deleteState = if (deleted) DeleteState.DELETED else DeleteState.NOT_DELETED
+            deleteState = if (deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
+            emulatingInProgress = false
         )
     }
 
@@ -52,7 +53,8 @@ class KeyScreenApiImpl @Inject constructor(
             },
             favoriteState = state.favoriteState,
             onSwitchFavorites = onFavorite,
-            onEditName = onEdit
+            onEditName = onEdit,
+            emulatingInProgress = state.emulatingInProgress
         )
     }
 }

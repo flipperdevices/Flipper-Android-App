@@ -46,9 +46,9 @@ fun ComposableKeyParsed(
     Column(modifier = modifier.verticalScroll(scrollState)) {
         ComposableKeyScreenBar(keyScreenState.flipperKey.path.nameWithoutExtension, onBack = onBack)
         ComposableKeyCard(
-            keyScreenState.parsedKey,
-            keyScreenState.deleteState,
-            Modifier.padding(all = 24.dp),
+            parsedKey = keyScreenState.parsedKey,
+            deleteState = keyScreenState.deleteState,
+            modifier = Modifier.padding(all = 24.dp),
             synchronizationState = if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
                 { ->
                     synchronizationUiApi.RenderSynchronizationState(
@@ -60,9 +60,10 @@ fun ComposableKeyParsed(
             } else {
                 null
             },
-            keyScreenState.favoriteState,
+            favoriteState = keyScreenState.favoriteState,
             onSwitchFavorites = setFavorite,
-            onEditName = onEdit
+            onEditName = onEdit,
+            emulatingInProgress = keyScreenState.emulatingInProgress
         )
 
         if (keyScreenState.deleteState == DeleteState.NOT_DELETED) {
@@ -78,9 +79,12 @@ fun ComposableKeyParsed(
             }
 
             if (keyScreenState.isSupportEditing) {
-                ComposableNfcEdit {
-                    onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
-                }
+                ComposableNfcEdit(
+                    emulatingInProgress = keyScreenState.emulatingInProgress,
+                    onClick = {
+                        onOpenNfcEditor(keyScreenState.flipperKey.getKeyPath())
+                    }
+                )
             }
             ComposableShare(keyScreenState.shareState) {
                 onShare()

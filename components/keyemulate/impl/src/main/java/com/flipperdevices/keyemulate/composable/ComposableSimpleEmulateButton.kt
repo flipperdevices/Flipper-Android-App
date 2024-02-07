@@ -9,8 +9,8 @@ import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
-import com.flipperdevices.keyemulate.composable.common.ComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
+import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
@@ -59,7 +59,7 @@ fun ComposableSimpleEmulateButton(
             reason = (emulateButtonState as EmulateButtonState.Disabled).reason
         )
 
-        is EmulateButtonState.Active -> ComposableEmulateButtonWithText(
+        is EmulateButtonState.Active -> InternalComposableEmulateButtonWithText(
             modifier = modifier,
             buttonModifier = buttonActiveModifier,
             buttonTextId = R.string.keyscreen_emulating,
@@ -73,7 +73,7 @@ fun ComposableSimpleEmulateButton(
             textId = R.string.keyscreen_emulating_desc
         )
 
-        is EmulateButtonState.Inactive -> ComposableEmulateButtonWithText(
+        is EmulateButtonState.Inactive -> InternalComposableEmulateButtonWithText(
             modifier = modifier,
             buttonTextId = R.string.keyscreen_emulate,
             buttonModifier = buttonActiveModifier,

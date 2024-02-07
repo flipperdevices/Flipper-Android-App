@@ -74,4 +74,6 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
     shareSheetStatusBarActiveColor = animateColor(shareSheetStatusBarActiveColor),
     shareSheetNavigationBarDefaultColor = animateColor(shareSheetNavigationBarDefaultColor),
     shareSheetStatusBarDefaultColor = animateColor(shareSheetStatusBarDefaultColor),
+
+    keyScreenDisabled = animateColor(keyScreenDisabled)
 )

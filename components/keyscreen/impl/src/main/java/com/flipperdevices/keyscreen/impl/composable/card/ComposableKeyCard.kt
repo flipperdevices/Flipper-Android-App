@@ -30,6 +30,7 @@ import com.flipperdevices.keyscreen.shared.ComposableKeyContent
 fun ComposableKeyCard(
     parsedKey: FlipperKeyParsed,
     deleteState: DeleteState,
+    emulatingInProgress: Boolean,
     modifier: Modifier = Modifier,
     synchronizationState: (@Composable () -> Unit)? = null,
     favoriteState: FavoriteState? = null,
@@ -82,7 +83,8 @@ fun ComposableKeyCard(
                 ).placeholderByLocalProvider(defaultWidth = 128.dp),
                 deleteState = deleteState,
                 keyName = parsedKey.keyName,
-                onEditName = onEditName
+                onEditName = onEditName,
+                emulatingInProgress = emulatingInProgress
             )
             val notes = parsedKey.notes
             SelectionContainer {
@@ -118,6 +120,7 @@ private fun ComposableKeyCardPreview() {
         parsedKey = parsedKey,
         deleteState = DeleteState.NOT_DELETED,
         synchronizationState = {},
-        favoriteState = FavoriteState.FAVORITE
+        favoriteState = FavoriteState.FAVORITE,
+        emulatingInProgress = false
     )
 }

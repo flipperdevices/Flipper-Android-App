@@ -9,8 +9,8 @@ import com.flipperdevices.core.ui.ktx.onScrollHoldPress
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
 import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
-import com.flipperdevices.keyemulate.composable.common.ComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
+import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
@@ -133,7 +133,7 @@ private fun ComposableActiveEmulateInternal(
         Color.Transparent
     }
 
-    ComposableEmulateButtonWithText(
+    InternalComposableEmulateButtonWithText(
         modifier = modifier,
         buttonModifier = buttonActiveModifier,
         buttonText = text,

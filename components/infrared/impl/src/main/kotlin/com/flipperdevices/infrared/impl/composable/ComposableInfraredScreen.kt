@@ -60,6 +60,7 @@ internal fun ComposableInfraredScreen(
                     onDelete = { viewModel.onDelete(onEndAction = onBack) },
                     onShare = onShare,
                     keyName = localState.flipperKey.path.nameWithoutExtension,
+                    emulatingInProgress = localState.emulatingInProgress
                 )
                 ComposableInfraredScreenReady(
                     state = localState,

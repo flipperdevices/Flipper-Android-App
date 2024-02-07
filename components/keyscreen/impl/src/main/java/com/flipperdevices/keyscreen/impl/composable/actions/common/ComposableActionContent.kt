@@ -24,6 +24,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 fun ComposableActionRow(
     @DrawableRes iconId: Int,
     @StringRes descriptionId: Int,
+    isActive: Boolean = true,
     tint: Color = LocalPallet.current.iconTint100,
     descriptionColor: Color = LocalPallet.current.text100,
     onClick: () -> Unit
@@ -33,13 +34,15 @@ fun ComposableActionRow(
         tint = tint,
         descriptionId = descriptionId,
         descriptionColor = descriptionColor,
-        onClick = onClick
+        onClick = onClick,
+        isActive = isActive
     )
 }
 
 @Composable
 fun ComposableActionRowInProgress(
     @StringRes descriptionId: Int,
+    isActive: Boolean = true,
     descriptionColor: Color = LocalPallet.current.text100
 ) {
     ComposableActionRowInternal(
@@ -47,12 +50,14 @@ fun ComposableActionRowInProgress(
         descriptionId = descriptionId,
         descriptionColor = descriptionColor,
         isProgress = true,
-        onClick = null
+        onClick = null,
+        isActive = isActive
     )
 }
 
 @Composable
 private fun ComposableActionRowInternal(
+    isActive: Boolean,
     @StringRes descriptionId: Int,
     onClick: (() -> Unit)?,
     @DrawableRes iconId: Int? = null,
@@ -63,7 +68,7 @@ private fun ComposableActionRowInternal(
     var modifierForRow = Modifier
         .fillMaxWidth()
 
-    if (!isProgress && onClick != null) {
+    if (!isProgress && onClick != null && isActive) {
         modifierForRow = modifierForRow.clickableRipple(onClick = onClick)
     }
     modifierForRow = modifierForRow
@@ -73,13 +78,21 @@ private fun ComposableActionRowInternal(
         modifier = modifierForRow,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ComposableActionContent(descriptionId, iconId, tint, descriptionColor, isProgress)
+        ComposableActionContent(
+            descriptionId = descriptionId,
+            iconId = iconId,
+            tint = tint,
+            descriptionColor = descriptionColor,
+            isProgress = isProgress,
+            isActive = isActive
+        )
     }
 }
 
 @Composable
 private fun ComposableActionContent(
     @StringRes descriptionId: Int,
+    isActive: Boolean,
     @DrawableRes iconId: Int? = null,
     tint: Color = LocalPallet.current.iconTint100,
     descriptionColor: Color = LocalPallet.current.text100,
@@ -96,14 +109,22 @@ private fun ComposableActionContent(
             modifier = Modifier.size(size = 24.dp),
             painter = painterResourceByKey(iconId!!),
             contentDescription = descriptionText,
-            tint = tint
+            tint = if (isActive) {
+                tint
+            } else {
+                LocalPallet.current.keyScreenDisabled
+            }
         )
     }
 
     Text(
         modifier = Modifier.padding(start = 10.dp),
         text = stringResource(descriptionId),
-        color = descriptionColor,
+        color = if (isActive) {
+            descriptionColor
+        } else {
+            LocalPallet.current.keyScreenDisabled
+        },
         style = LocalTypography.current.buttonM16
     )
 }

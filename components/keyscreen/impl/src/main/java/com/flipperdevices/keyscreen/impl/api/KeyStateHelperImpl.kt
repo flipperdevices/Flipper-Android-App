@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -47,7 +49,8 @@ class KeyStateHelperImpl @AssistedInject constructor(
     private val keyParser: KeyParser,
     private val metricApi: MetricApi,
     private val updaterKeyApi: UpdateKeyApi,
-    private val keyEditorApi: NfcEditorApi
+    private val keyEditorApi: NfcEditorApi,
+    private val emulateHelper: EmulateHelper
 ) : KeyStateHelperApi {
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val restoreInProgress = AtomicBoolean(false)
@@ -142,8 +145,11 @@ class KeyStateHelperImpl @AssistedInject constructor(
 
     private suspend fun loadFileAsFlow(keyPathNotNull: FlipperKeyPath) {
         updaterKeyApi.subscribeOnUpdatePath(keyPathNotNull).flatMapLatest {
-            simpleKeyApi.getKeyAsFlow(it)
-        }.collectLatest { flipperKey ->
+            combine(
+                simpleKeyApi.getKeyAsFlow(it),
+                emulateHelper.getCurrentEmulatingKey()
+            ) { flipperKey, currentEmulateConfig -> flipperKey to currentEmulateConfig }
+        }.collectLatest { (flipperKey, currentEmulateConfig) ->
             if (flipperKey == null) {
                 keyScreenState.update {
                     KeyScreenState.Error(R.string.keyscreen_error_notfound_key)
@@ -157,6 +163,10 @@ class KeyStateHelperImpl @AssistedInject constructor(
             if (!isSupportEditing) {
                 keyEditorApi.reportUnsupportedFormat(parsedKey)
             }
+            val emulateConfig = getEmulateConfig(
+                flipperKey = flipperKey,
+                parsedKey = parsedKey
+            )
             keyScreenState.update {
                 KeyScreenState.Ready(
                     parsedKey,
@@ -164,11 +174,9 @@ class KeyStateHelperImpl @AssistedInject constructor(
                     ShareState.NOT_SHARING,
                     if (flipperKey.deleted) DeleteState.DELETED else DeleteState.NOT_DELETED,
                     flipperKey,
-                    emulateConfig = getEmulateConfig(
-                        flipperKey = flipperKey,
-                        parsedKey = parsedKey
-                    ),
-                    isSupportEditing = isSupportEditing
+                    emulateConfig = emulateConfig,
+                    isSupportEditing = isSupportEditing,
+                    emulatingInProgress = flipperKey.path == currentEmulateConfig?.keyPath
                 )
             }
         }

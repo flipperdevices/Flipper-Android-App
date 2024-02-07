@@ -108,6 +108,8 @@ private val lightPallet = FlipperPallet(
     shareSheetStatusBarDefaultColor = Color(0xFFFBFBFB),
     shareSheetNavigationBarActiveColor = Color(0xFFFFFFFF),
     shareSheetNavigationBarDefaultColor = Color(0xFFFBFBFB),
+
+    keyScreenDisabled = Color(0xFFC1C1C1)
 )
 
 @Suppress("MagicNumber")
@@ -172,4 +174,6 @@ private val darkPallet = FlipperPallet(
     shareSheetStatusBarDefaultColor = Color(0xFF000000),
     shareSheetNavigationBarActiveColor = Color(0xFF303030),
     shareSheetNavigationBarDefaultColor = Color(0xFF000000),
+
+    keyScreenDisabled = Color(0xFF616161)
 )

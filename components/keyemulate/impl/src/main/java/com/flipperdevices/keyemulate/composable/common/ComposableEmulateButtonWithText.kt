@@ -23,7 +23,7 @@ import com.flipperdevices.keyemulate.composable.common.button.ComposableEmulateB
 import com.flipperdevices.keyemulate.model.EmulateProgress
 
 @Composable
-internal fun ComposableEmulateButtonWithText(
+internal fun InternalComposableEmulateButtonWithText(
     buttonText: String,
     color: Color,
     modifier: Modifier = Modifier,
@@ -70,7 +70,7 @@ internal fun ComposableEmulateButtonWithText(
 }
 
 @Composable
-internal fun ComposableEmulateButtonWithText(
+internal fun InternalComposableEmulateButtonWithText(
     @StringRes buttonTextId: Int,
     color: Color,
     modifier: Modifier = Modifier,
@@ -81,7 +81,7 @@ internal fun ComposableEmulateButtonWithText(
     picture: Picture? = null,
     progressColor: Color = Color.Transparent
 ) {
-    ComposableEmulateButtonWithText(
+    InternalComposableEmulateButtonWithText(
         buttonText = stringResource(buttonTextId),
         color = color,
         modifier = modifier,
