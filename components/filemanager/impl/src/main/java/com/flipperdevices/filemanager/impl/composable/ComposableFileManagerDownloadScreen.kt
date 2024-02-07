@@ -18,7 +18,7 @@ fun ComposableFileManagerDownloadScreen(
     onBack: () -> Unit
 ) {
     if (shareState.processCompleted) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(onBack) {
             onBack()
         }
     }

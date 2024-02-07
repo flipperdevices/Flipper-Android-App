@@ -38,7 +38,7 @@ fun ComposableFileManagerEditorScreen(
     onBack: () -> Unit
 ) {
     if (editorState is EditorState.Saved) {
-        LaunchedEffect(Unit) {
+        LaunchedEffect(onBack) {
             onBack()
         }
     }

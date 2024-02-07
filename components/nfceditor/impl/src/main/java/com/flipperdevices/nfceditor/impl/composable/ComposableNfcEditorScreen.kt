@@ -48,7 +48,7 @@ fun ComposableNfcEditorScreen(
     val currentActiveCell by nfcEditorViewModel.getCurrentActiveCellState()
 
     if (localNfcEditorState == null) {
-        LaunchedEffect(null) {
+        LaunchedEffect(onBack) {
             onBack()
         }
         return

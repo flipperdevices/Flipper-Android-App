@@ -102,7 +102,7 @@ private fun ComposableInAppNotificationCard(
             }
         }
     }
-    DisposableEffect(notification) {
+    DisposableEffect(notification, onNotificationHidden) {
         val handler = Handler(Looper.getMainLooper())
 
         val fadeOutRunnable = {

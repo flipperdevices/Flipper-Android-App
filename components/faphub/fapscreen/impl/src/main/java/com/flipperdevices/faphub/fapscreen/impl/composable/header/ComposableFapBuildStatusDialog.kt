@@ -41,7 +41,7 @@ fun ComposableFapBuildStatusDialog(
     onDismiss: () -> Unit
 ) {
     when (fapItem.upToDateVersion.buildState) {
-        FapBuildState.READY -> LaunchedEffect(Unit) {
+        FapBuildState.READY -> LaunchedEffect(onDismiss) {
             onDismiss()
         }
 
