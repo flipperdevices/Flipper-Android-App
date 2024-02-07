@@ -61,7 +61,7 @@ essenty = "2.0.0-alpha03" # https://github.com/arkivanov/Essenty/releases
 
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
-mockito = "5.0.0" # https://github.com/mockito/mockito/releases
+mockito = "5.2.1" # https://github.com/mockito/mockito/releases
 roboelectric = "4.11.1" # https://github.com/robolectric/robolectric/releases
 mockk = "1.13.5" # https://mockk.io/
 
