@@ -16,7 +16,7 @@ updates:
       - dependency-name: "com.arkivanov.essenty:lifecycle"
       - dependency-name: "com.arkivanov.essenty:lifecycle-coroutines"
       - dependency-name: "com.arkivanov.decompose:decompose"
-      - dependency-name: "com.squareup.anvil*"
+      - dependency-name: "com.squareup.anvil"
         versions: ["2.4.9-1-8"]
 
 
