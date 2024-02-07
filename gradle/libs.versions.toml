@@ -63,7 +63,7 @@ essenty = "2.0.0-alpha03" # https://github.com/arkivanov/Essenty/releases
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
 mockito = "5.0.0" # https://github.com/mockito/mockito/releases
 roboelectric = "4.11.1" # https://github.com/robolectric/robolectric/releases
-mockk = "1.13.5" # https://mockk.io/
+mockk = "1.13.9" # https://mockk.io/
 
 # Linters
 detekt = "1.23.4" # https://detekt.dev/docs/gettingstarted/gradle/
