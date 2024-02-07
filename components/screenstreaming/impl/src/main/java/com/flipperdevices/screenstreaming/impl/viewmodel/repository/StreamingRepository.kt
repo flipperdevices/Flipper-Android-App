@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,13 +26,25 @@ class StreamingRepository(
     private val scope: CoroutineScope
 ) : FlipperBleServiceConsumer, Lifecycle.Callbacks {
     private val flipperScreen = MutableStateFlow<FlipperScreenState>(FlipperScreenState.InProgress)
-    private val streamingState = MutableStateFlow(StreamingState.DISABLED)
+    private val streamingStateFlow = MutableStateFlow(StreamingState.DISABLED)
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        streamingState.onEach { state ->
-            when (state) {
-                StreamingState.ENABLED -> onStartStreaming(serviceApi)
-                StreamingState.DISABLED -> onPauseStreaming(serviceApi)
+        combine(
+            streamingStateFlow,
+            serviceApi
+                .connectionInformationApi
+                .getConnectionStateFlow()
+        ) { streamingState, connectionState ->
+            if (connectionState is ConnectionState.Ready &&
+                connectionState.supportedState == FlipperSupportedState.READY
+            ) {
+                flipperScreen.emit(FlipperScreenState.InProgress)
+                when (streamingState) {
+                    StreamingState.ENABLED -> onStartStreaming(serviceApi)
+                    StreamingState.DISABLED -> onPauseStreaming(serviceApi)
+                }
+            } else {
+                flipperScreen.emit(FlipperScreenState.NotConnected)
             }
         }.launchIn(scope)
         serviceApi.requestApi.notificationFlow().onEach {
@@ -39,17 +52,6 @@ class StreamingRepository(
                 onStreamFrameReceived(it.guiScreenFrame)
             }
         }.launchIn(scope)
-        serviceApi
-            .connectionInformationApi
-            .getConnectionStateFlow().onEach {
-                if (it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
-                ) {
-                    flipperScreen.emit(FlipperScreenState.InProgress)
-                } else {
-                    flipperScreen.emit(FlipperScreenState.NotConnected)
-                }
-            }.launchIn(scope)
     }
 
     fun getFlipperScreen() = flipperScreen.asStateFlow()
@@ -82,14 +84,14 @@ class StreamingRepository(
     }
 
     override fun onResume() {
-        streamingState.compareAndSet(
+        streamingStateFlow.compareAndSet(
             expect = StreamingState.DISABLED,
             update = StreamingState.ENABLED
         )
     }
 
     override fun onPause() {
-        streamingState.compareAndSet(
+        streamingStateFlow.compareAndSet(
             expect = StreamingState.ENABLED,
             update = StreamingState.DISABLED
         )

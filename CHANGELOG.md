@@ -20,6 +20,10 @@
 - [Refactor] Bump version
 - [FIX] On back button on each page
 - [FIX] Fix blinking caused on wrong stateIn used function
+- [FIX] Box size in inapp notification
+- [FIX] Crash on delete/restore key
+- [FIX] Fix lost connection in screen streaming
+- [Feature] Change notification icon
 
 # 1.6.7
 
