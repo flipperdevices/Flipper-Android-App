@@ -29,6 +29,7 @@
 - [Refactor] Bump version with dependabot
 - [FIX] Disable edit when emulating in progress
 - [FIX] Single Activity launch mode to singleTask
+- [FIX] Bug with infinite connect state in first pair
 
 # 1.6.7
 
