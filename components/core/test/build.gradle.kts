@@ -9,4 +9,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.roboelectric)
     implementation(libs.kotlin.coroutines)
+    implementation(libs.mockk)
+
+    implementation(projects.components.core.ui.lifecycle)
 }

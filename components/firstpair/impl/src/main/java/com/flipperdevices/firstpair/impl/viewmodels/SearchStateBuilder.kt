@@ -86,8 +86,8 @@ class SearchStateBuilder(
     ) {
         info {
             "Received permissionState: $permissionState, " +
-                    "scanState: $scanState, " +
-                    "pairState: $pairState"
+                "scanState: $scanState, " +
+                "pairState: $pairState"
         }
         if (pairState is DevicePairState.Connected) {
             state.emit(

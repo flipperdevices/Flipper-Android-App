@@ -23,11 +23,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 import javax.inject.Inject
-import kotlinx.coroutines.sync.withLock
 
 @ContributesBinding(AppGraph::class, FlipperScanner::class)
 class FlipperScannerImpl @Inject constructor(
@@ -59,7 +59,7 @@ class FlipperScannerImpl @Inject constructor(
             }
         ).filter {
             it.address.startsWith(Constants.MAC_PREFIX) ||
-                    it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map { discoveredBluetoothDevice ->
             var mutableDevicesList: List<DiscoveredBluetoothDevice> = emptyList()
             mutex.withLock {
@@ -116,7 +116,7 @@ class FlipperScannerImpl @Inject constructor(
 
         return bluetoothManager.getConnectedDevices(BluetoothProfile.GATT).filter {
             it.address?.startsWith(Constants.MAC_PREFIX) == true ||
-                    it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map {
             DiscoveredBluetoothDevice(
                 device = it,

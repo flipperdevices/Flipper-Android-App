@@ -11,7 +11,6 @@ sealed class DevicePairState {
      */
     data class WaitingForStart(val address: String?, val deviceName: String?) : DevicePairState()
 
-
     data class Connecting(val address: String?, val deviceName: String?) : DevicePairState()
 
     data class Connected(val address: String?, val deviceName: String?) : DevicePairState()

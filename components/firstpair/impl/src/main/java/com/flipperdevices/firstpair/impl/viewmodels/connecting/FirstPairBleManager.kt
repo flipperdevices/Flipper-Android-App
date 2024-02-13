@@ -109,6 +109,6 @@ class FirstPairBleManager @AssistedInject constructor(
     interface Factory {
         operator fun invoke(
             scope: CoroutineScope
-        ) : FirstPairBleManager
+        ): FirstPairBleManager
     }
 }
