@@ -1,6 +1,9 @@
 # Changelog
 
-# 1.6.8 - In progress
+# 1.6.9 - In progress
+
+
+# 1.6.8
 
 - [Refactor] Migrate file manager to decompose
 - [Refactor] Migrate options screen to decompose
