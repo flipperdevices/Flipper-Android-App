@@ -1,7 +1,6 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -9,36 +8,35 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
-import com.flipperdevices.core.ui.lifecycle.AndroidLifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.nfceditor.impl.api.EXTRA_KEY_PATH
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
 import com.flipperdevices.nfceditor.impl.model.NfcEditorState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class NfcEditorViewModel @VMInject constructor(
-    @TangleParam(EXTRA_KEY_PATH)
-    private val flipperKeyPath: FlipperKeyPath,
-    application: Application,
+class NfcEditorViewModel @AssistedInject constructor(
+    @Assisted private val flipperKeyPath: FlipperKeyPath,
+    private val application: Application,
     private val keyParser: KeyParser,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi
-) : AndroidLifecycleViewModel(application), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
 
     private val textUpdaterHelper = TextUpdaterHelper()
@@ -125,12 +123,17 @@ class NfcEditorViewModel @VMInject constructor(
                 localNfcEditorState
             )
             val notSavedKey = NotSavedFlipperKey(
-                mainFile = newFlipperKey.mainFile.toNotSavedFlipperFile(getApplication()),
+                mainFile = newFlipperKey.mainFile.toNotSavedFlipperFile(application),
                 additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )
             metricApi.reportSimpleEvent(SimpleEvent.SAVE_DUMP)
             onEndAction(notSavedKey)
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(flipperKeyPath: FlipperKeyPath): NfcEditorViewModel
     }
 }

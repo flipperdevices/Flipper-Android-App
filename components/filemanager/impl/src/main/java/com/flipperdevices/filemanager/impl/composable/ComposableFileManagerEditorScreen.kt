@@ -13,7 +13,6 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -32,23 +30,22 @@ import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.composable.bar.ComposableEditorTopBar
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.EditorState
-import com.flipperdevices.filemanager.impl.viewmodels.EditorViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableFileManagerEditorScreen(navController: NavController) {
-    val editorViewModel: EditorViewModel = tangleViewModel()
-    val editorState by editorViewModel.getEditorState().collectAsState()
-
+fun ComposableFileManagerEditorScreen(
+    editorState: EditorState,
+    onClickSaveButton: (String) -> Unit,
+    onBack: () -> Unit
+) {
     if (editorState is EditorState.Saved) {
-        LaunchedEffect(Unit) {
-            navController.popBackStack()
+        LaunchedEffect(onBack) {
+            onBack()
         }
     }
 
     ComposableFileManagerEditorScreenInternal(
         editorState = editorState,
-        onClickSaveButton = editorViewModel::onSaveFile
+        onClickSaveButton = onClickSaveButton
     )
 }
 
@@ -62,14 +59,17 @@ private fun ComposableFileManagerEditorScreenInternal(
             editorState,
             onClickSaveButton
         )
+
         is EditorState.Loading -> ComposableFileManagerInProgress(
             textId = R.string.filemanager_editor_loading_title,
             progress = editorState.progress
         )
+
         is EditorState.Saving -> ComposableFileManagerInProgress(
             textId = R.string.filemanager_editor_saving_title,
             progress = editorState.progress
         )
+
         EditorState.Saved -> return
     }
 }

@@ -25,17 +25,16 @@ import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import kotlinx.coroutines.runBlocking
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableFileManagerScreen(
+    fileManagerViewModel: FileManagerViewModel,
     deepLinkParser: DeepLinkParser,
     onOpenFolder: (FileItem) -> Unit,
     onDownloadAndShareFile: (FileItem) -> Unit,
     onOpenEditor: (FileItem) -> Unit,
     onUploadFile: (path: String, DeeplinkContent) -> Unit
 ) {
-    val fileManagerViewModel: FileManagerViewModel = tangleViewModel()
     val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
 
     var pendingDialogItem by remember { mutableStateOf<FileItem?>(null) }
@@ -151,7 +150,7 @@ private fun ComposableFileManagerScreenInternal(
             runBlocking {
                 val deeplink = deepLinkParser.fromUri(context, uri)
 
-                if (deeplink != null && deeplink is Deeplink.ExternalContent) {
+                if (deeplink != null && deeplink is Deeplink.RootLevel.SaveKey.ExternalContent) {
                     val deeplinkContent = deeplink.content
                     if (deeplinkContent != null) {
                         onUploadFile(deeplinkContent)

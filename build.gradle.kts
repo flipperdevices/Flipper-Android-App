@@ -6,5 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.ksp) apply false
     alias(libs.plugins.square.anvil) apply false
     alias(libs.plugins.protobuf) apply false
+    alias(libs.plugins.google.gms) apply false
     id("flipper.lint")
 }

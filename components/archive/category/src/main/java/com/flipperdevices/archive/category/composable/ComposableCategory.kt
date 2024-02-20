@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.category.R
 import com.flipperdevices.archive.category.model.CategoryState
-import com.flipperdevices.archive.category.viewmodels.CategoryViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -31,11 +29,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import kotlinx.collections.immutable.ImmutableList
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableCategory(
     categoryType: CategoryType.ByFileType,
+    categoryState: CategoryState,
+    synchronizationState: SynchronizationState,
     synchronizationUiApi: SynchronizationUiApi,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -49,7 +48,9 @@ fun ComposableCategory(
         ComposableCategoryContent(
             categoryType = categoryType,
             synchronizationUiApi = synchronizationUiApi,
-            onOpenKeyScreen = onOpenKeyScreen
+            onOpenKeyScreen = onOpenKeyScreen,
+            categoryState = categoryState,
+            synchronizationState = synchronizationState
         )
     }
 }
@@ -58,29 +59,27 @@ fun ComposableCategory(
 fun ColumnScope.ComposableCategoryContent(
     categoryType: CategoryType,
     synchronizationUiApi: SynchronizationUiApi?,
-    categoryViewModel: CategoryViewModel = tangleViewModel(),
+    categoryState: CategoryState,
+    synchronizationState: SynchronizationState,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
 ) {
-    val categoryState by categoryViewModel.getState().collectAsState()
-    val synchronizationState by categoryViewModel.getSynchronizationState().collectAsState()
-    val localCategoryState = categoryState
-
     val contentModifier = Modifier
         .weight(weight = 1f)
         .fillMaxWidth()
-    when (localCategoryState) {
-        is CategoryState.Loaded -> if (localCategoryState.keys.isEmpty()) {
+    when (categoryState) {
+        is CategoryState.Loaded -> if (categoryState.keys.isEmpty()) {
             CategoryEmpty(contentModifier)
         } else {
             CategoryList(
                 categoryType,
                 synchronizationUiApi,
                 synchronizationState,
-                localCategoryState.keys,
+                categoryState.keys,
                 contentModifier,
                 onOpenKeyScreen
             )
         }
+
         CategoryState.Loading -> CategoryLoadingProgress(contentModifier)
     }
 }

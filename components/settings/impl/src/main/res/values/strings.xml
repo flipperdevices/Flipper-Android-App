@@ -2,12 +2,15 @@
 <resources>
     <string name="options">Options</string>
 
-    <string name="theme_options">Color Theme</string>
-    <string name="theme_options_desc">System/Light/Dark</string>
-    <string name="theme_options_system">System</string>
-    <string name="theme_options_light">Light</string>
-    <string name="theme_options_dark">Dark</string>
-    <string name="theme_options_unknown">Unknown</string>
+    <string name="app_theme_options">Color Theme</string>
+    <string name="app_theme_options_desc">System/Light/Dark</string>
+    <string name="app_theme_options_system">System</string>
+    <string name="app_theme_options_light">Light</string>
+    <string name="app_theme_options_dark">Dark</string>
+    <string name="app_theme_options_unknown">Unknown</string>
+    <string name="app_title">App</string>
+    <string name="app_notification_title">Push Notifications</string>
+    <string name="app_notification_desc">Notify about new firmware releases</string>
 
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>
@@ -37,7 +40,6 @@
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
     <string name="experimental_application_catalog">Enable Apps in Hub</string>
-    <string name="experimental_new_infrared">Enable New Infrared</string>
 
     <string name="other_github_open">GitHub</string>
     <string name="other_github_url">https://github.com/flipperdevices/Flipper-Android-App</string>
@@ -48,10 +50,6 @@
     <string name="export_keys_picker_title">Save the zip with the keys…</string>
     <string name="version_name_app">Flipper Mobile App</string>
     <string name="version">Version</string>
-
-    <string name="options_remote_control_title">Remote Control</string>
-    <string name="options_remote_control_subtitle">New Remote Control</string>
-    <string name="options_remote_control_desc">We’ve improved this feature and moved it to the Hub tab</string>\
 
     <string name="check_updates_text">Flipper Mobile App</string>
     <string name="check_updates_desc">Version from %1$s: %2$s</string>

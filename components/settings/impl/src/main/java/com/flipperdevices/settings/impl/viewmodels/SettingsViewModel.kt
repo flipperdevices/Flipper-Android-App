@@ -2,45 +2,42 @@ package com.flipperdevices.settings.impl.viewmodels
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.share.ShareHelper
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import com.flipperdevices.shake2report.api.Shake2ReportFeatureEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SettingsViewModel @VMInject constructor(
+class SettingsViewModel @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val exportKeysHelper: ExportKeysHelper,
-    private val shake2ReportFeatureEntry: Shake2ReportFeatureEntry,
     private val shake2ReportApi: Shake2ReportApi,
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
-    private val settingsState by lazy {
-        dataStoreSettings.data.stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            initialValue = Settings.getDefaultInstance()
-        )
-    }
+    private val settingsStateFlow = MutableStateFlow(Settings.getDefaultInstance())
     private val exportStateFlow = MutableStateFlow(ExportState.NOT_STARTED)
 
-    fun getState(): StateFlow<Settings> = settingsState
+    init {
+        dataStoreSettings.data.onEach {
+            settingsStateFlow.emit(it)
+        }.launchIn(viewModelScope)
+    }
+
+    fun getState() = settingsStateFlow.asStateFlow()
 
     fun getExportState(): StateFlow<ExportState> = exportStateFlow
 
@@ -64,10 +61,6 @@ class SettingsViewModel @VMInject constructor(
                     .build()
             }
         }
-    }
-
-    fun onReportBug(navController: NavController) {
-        navController.navigate(shake2ReportFeatureEntry.start())
     }
 
     fun onMakeExport(context: Context) {
@@ -96,10 +89,6 @@ class SettingsViewModel @VMInject constructor(
                     .build()
             }
         }
-    }
-
-    fun getSelectedTheme(): SelectedTheme {
-        return settingsState.value.selectedTheme
     }
 
     fun onExpertModeActivate() {

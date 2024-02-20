@@ -16,29 +16,30 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.api)
 
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ktx)
+    implementation(projects.components.core.log)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.ui.lifecycle)
 
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.compose.drag.drop)
 
     // ViewModel
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)

@@ -1,0 +1,23 @@
+updates:
+  - package-ecosystem: "gradle"
+    commit-message:
+      prefix: "Update deps"
+    directory: "/" 
+    schedule:
+      day: "saturday"
+      interval: "weekly"
+      time: "03:00"
+    groups:
+      dependencies:
+        patterns:
+          - "*"  
+    ignore:
+      - dependency-name: "com.vladsch.flexmark:flexmark"
+      - dependency-name: "com.arkivanov.essenty:lifecycle"
+      - dependency-name: "com.arkivanov.essenty:lifecycle-coroutines"
+      - dependency-name: "com.arkivanov.decompose:decompose"
+      - dependency-name: "com.squareup.anvil"
+        versions: ["2.4.9-1-8"]
+
+
+version: 2

@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -8,7 +7,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.filename
 import com.flipperdevices.core.ktx.jre.length
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
@@ -24,16 +23,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
 import java.io.File
+import javax.inject.Inject
 
 private const val EXT_UPDATER_FILE = "tgz"
 private const val SIZE_FOLDER_UPDATE_MAX = 1024L * 1024L * 1024L * 10 // 10Mb
 
-class UpdateRequestViewModel @VMInject constructor(
+class UpdateRequestViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi
-) : LifecycleViewModel(), FlipperBleServiceConsumer {
+) : DecomposeViewModel(), FlipperBleServiceConsumer {
 
     private val batteryFlow = MutableStateFlow<BatteryState>(BatteryState.Unknown)
     fun getBatteryState(): StateFlow<BatteryState> = batteryFlow

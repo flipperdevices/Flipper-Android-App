@@ -11,7 +11,7 @@ android {
         cmake {
             path("src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
-            ndkVersion = "25.1.8937393"
+            ndkVersion = "26.1.10909125"
         }
     }
 }

@@ -58,12 +58,13 @@ class EmulateHelperImpl @Inject constructor(
             stopEmulateInternal(requestApi)
         }
         currentKeyEmulating.emit(config)
+        var isEmulateStarted = false
         try {
-            return@withLockResult startEmulateHelper.onStart(
+            isEmulateStarted = startEmulateHelper.onStart(
                 scope,
                 serviceApi,
                 config,
-                onStop = { stopEmulateInternal(requestApi) },
+                onStop = { stopEmulateHelper.onStop(requestApi) },
                 onResultTime = { time -> stopEmulateTimeAllowedMs = time }
             )
         } catch (throwable: Throwable) {
@@ -71,6 +72,11 @@ class EmulateHelperImpl @Inject constructor(
             currentKeyEmulating.emit(null)
             throw throwable
         }
+        if (!isEmulateStarted) {
+            info { "Failed start $config but without crash" }
+            currentKeyEmulating.emit(null)
+        }
+        return@withLockResult isEmulateStarted
     }
 
     override suspend fun stopEmulate(

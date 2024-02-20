@@ -9,13 +9,12 @@ import com.flipperdevices.updater.card.model.UpdatePending
 import com.flipperdevices.updater.card.model.UpdatePendingState
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.model.UpdateRequest
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableUpdateRequest(
     pendingUpdateRequest: UpdatePending,
     onStartUpdateRequest: (UpdateRequest) -> Unit,
-    updateRequestViewModel: UpdateRequestViewModel = tangleViewModel(),
+    updateRequestViewModel: UpdateRequestViewModel,
     onDismiss: () -> Unit
 ) {
     val updatePendingState by updateRequestViewModel.getUpdatePendingState().collectAsState()

@@ -29,70 +29,19 @@ class FlipperKeyParserHelperTest {
     @Test
     fun `Nullable Deeplink`() = runTest {
         // Initialize
-        val deeplink: Deeplink? = null
+        val deeplink: Deeplink.RootLevel.SaveKey? = null
 
         // Actions
         val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
 
         // Assertions
         Assert.assertTrue(resultParse.isFailure)
-    }
-
-    @Test
-    fun `Widget deeplink parse`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.WidgetOptions(1)
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
-    }
-
-    @Test
-    fun `Open key deeplink parse`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.OpenKey(keyPath = mockk())
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
-    }
-
-    @Test
-    fun `Web update deeplink parse`() = runTest {
-        // Initialize
-        val deeplink = Deeplink.WebUpdate(url = "", name = "")
-
-        // Actions
-        val resultParse = flipperKeyParserHelper.toFlipperKey(deeplink)
-        val exception = resultParse.exceptionOrNull()
-
-        // Assertions
-        Assert.assertTrue(resultParse.isFailure)
-        when (exception) {
-            null -> Assert.fail("Exception is null")
-            else -> Assert.assertTrue(exception is FlipperKeyParseException)
-        }
     }
 
     @Test
     fun `Flipper key deeplink with null content`() = runTest {
         // Initialize
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = mockk(),
             content = null
         )
@@ -113,7 +62,7 @@ class FlipperKeyParserHelperTest {
     fun `Flipper key deeplink with external uri content`() = runTest {
         // Initialize
         val content = DeeplinkContent.ExternalUri("", null, "")
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = mockk(),
             content = content
         )
@@ -142,7 +91,7 @@ class FlipperKeyParserHelperTest {
             filename = "test",
             flipperFileFormat = fff
         )
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = path,
             content = content
         )
@@ -171,7 +120,7 @@ class FlipperKeyParserHelperTest {
     fun `Flipper key deeplink with internal storage content`() = runTest {
         // Initialize
         val content = DeeplinkContent.InternalStorageFile(filePath = "test/test.test")
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = mockk(),
             content = content
         )
@@ -208,7 +157,7 @@ class FlipperKeyParserHelperTest {
             nameWithExtension = "test.test"
         )
 
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = path,
             content = content
         )
@@ -253,7 +202,7 @@ class FlipperKeyParserHelperTest {
             nameWithExtension = "test.test"
         )
 
-        val deeplink = Deeplink.FlipperKey(
+        val deeplink = Deeplink.RootLevel.SaveKey.FlipperKey(
             path = path,
             content = content
         )

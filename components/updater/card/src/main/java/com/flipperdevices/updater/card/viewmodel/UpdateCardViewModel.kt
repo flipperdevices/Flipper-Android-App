@@ -10,9 +10,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkConstants
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.card.helpers.StorageExistHelper
@@ -20,6 +19,9 @@ import com.flipperdevices.updater.card.helpers.UpdateCardHelper
 import com.flipperdevices.updater.card.helpers.UpdateOfferProviderApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.UpdateCardState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -30,20 +32,17 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
 @Suppress("LongParameterList")
-class UpdateCardViewModel @VMInject constructor(
+class UpdateCardViewModel @AssistedInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
     private val storageExistHelper: StorageExistHelper,
-    @TangleParam(DeeplinkConstants.KEY)
-    private val deeplink: Deeplink?
-) : LifecycleViewModel(),
+    @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
+) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"
@@ -81,6 +80,7 @@ class UpdateCardViewModel @VMInject constructor(
                         .setSelectedChannel(channel.toSelectedChannel())
                         .build()
                 }
+
                 else -> {}
             }
         }
@@ -130,14 +130,12 @@ class UpdateCardViewModel @VMInject constructor(
                     updateChannel
                 }
 
-                val deeplinkWebUpdater = deeplink as? Deeplink.WebUpdate
-
                 return@combine UpdateCardHelper(
                     newUpdateChannel,
                     isFlashExist,
                     flipperFirmwareVersion,
                     isAlwaysUpdate,
-                    deeplinkWebUpdater,
+                    deeplink,
                     latestVersionAsync
                 )
             }.collectLatest {
@@ -145,6 +143,13 @@ class UpdateCardViewModel @VMInject constructor(
                 updateCardState.emit(state)
             }
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
+        ): UpdateCardViewModel
     }
 }
 
@@ -161,5 +166,6 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.DEV -> SelectedChannel.DEV
     FirmwareChannel.UNKNOWN,
     FirmwareChannel.CUSTOM -> error("Can`t convert unknown firmware channel to internal channel")
+
     null -> SelectedChannel.UNRECOGNIZED
 }

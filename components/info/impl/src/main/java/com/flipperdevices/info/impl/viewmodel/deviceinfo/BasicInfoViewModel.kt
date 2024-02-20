@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
@@ -10,7 +9,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.cancelAndClear
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import kotlinx.coroutines.Dispatchers
@@ -22,13 +21,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class BasicInfoViewModel @VMInject constructor(
+class BasicInfoViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
     private val flipperStorageInformationApi: FlipperStorageInformationApi
-) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "DeviceInfoViewModel"
     private val flipperBasicInfoState = MutableStateFlow(FlipperBasicInfo())
     private var jobs = mutableListOf<Job>()

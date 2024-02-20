@@ -92,6 +92,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
@@ -101,6 +103,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
@@ -150,6 +154,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign Wear APK
         id: sign_wear_apk
         uses: r0adkll/sign-android-release@v1
@@ -159,6 +165,8 @@ jobs:
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
       - name: Copy artifacts
         id: artifacts_copy
         run: |
@@ -271,7 +279,6 @@ jobs:
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
-          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest

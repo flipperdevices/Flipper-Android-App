@@ -1,0 +1,23 @@
+requiredParams:
+  name: Decompose Component
+  description: Decompose Component Template
+
+# optional
+optionalParams:
+  revision: 1
+
+widgets:
+  - stringParameter:
+      id: componentName
+      name: Decompose Component Name
+      help: The name of the decompose component
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Blank
+
+recipe:
+  - instantiateAndOpen:
+      from: root/src/app_package/BlankDecomposeComponent.kt.ftl
+      to: ${srcOut}/${componentName}DecomposeComponent.kt

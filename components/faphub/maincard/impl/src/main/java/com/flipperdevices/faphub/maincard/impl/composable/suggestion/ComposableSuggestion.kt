@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,18 +16,9 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.appcard.composable.SmallHorizontalAppCard
 import com.flipperdevices.faphub.maincard.impl.R
 import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
-import com.flipperdevices.faphub.maincard.impl.viewmodel.FapMainCardViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
-fun ComposableSuggestion(modifier: Modifier = Modifier) {
-    val viewModel = tangleViewModel<FapMainCardViewModel>()
-    val state by viewModel.getFapMainCardState().collectAsState()
-    ComposableSuggestionContent(state, modifier)
-}
-
-@Composable
-private fun ComposableSuggestionContent(
+fun ComposableSuggestion(
     state: FapMainCardState,
     modifier: Modifier = Modifier
 ) {
@@ -41,10 +31,12 @@ private fun ComposableSuggestionContent(
             style = LocalTypography.current.bodyR14,
             color = LocalPallet.current.text30
         )
+
         is FapMainCardState.Loaded -> SmallHorizontalAppCard(
             modifier = modifier.fillMaxWidth(),
             fapItem = state.fapItem
         )
+
         FapMainCardState.Loading -> Box(
             modifier = modifier
                 .height(42.dp)

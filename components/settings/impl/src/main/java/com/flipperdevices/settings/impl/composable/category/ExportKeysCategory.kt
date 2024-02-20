@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
-import com.flipperdevices.settings.impl.composable.elements.SimpleElement
+import com.flipperdevices.settings.impl.composable.components.SimpleElement
 import com.flipperdevices.settings.impl.model.ExportState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 

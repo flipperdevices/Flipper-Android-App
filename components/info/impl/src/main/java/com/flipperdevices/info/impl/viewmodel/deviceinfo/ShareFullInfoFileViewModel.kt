@@ -1,8 +1,6 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
 import android.app.Application
-import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
@@ -11,15 +9,17 @@ import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class ShareFullInfoFileViewModel(
-    application: Application,
-) : AndroidViewModel(application) {
+class ShareFullInfoFileViewModel @Inject constructor(
+    private val application: Application,
+) : DecomposeViewModel() {
     fun shareDeviceInfo(
         flipperRpcInformation: FlipperRpcInformation?,
         basicInfo: FlipperBasicInfo
@@ -32,15 +32,14 @@ class ShareFullInfoFileViewModel(
         ) {
             return
         }
-        val context: Context = getApplication<Application>()
 
-        val file = SharableFile(nameFile = getFileName(flipperRpcInformation), context = context)
+        val file = SharableFile(nameFile = getFileName(flipperRpcInformation), context = application)
         file.createClearNewFileWithMkDirs()
 
         try {
             addInfoToFile(flipperRpcInformation, internalStorageStats, externalStorageStats, file)
             ShareHelper.shareFile(
-                context = context,
+                context = application,
                 file = file,
                 resId = R.string.device_info_share
             )

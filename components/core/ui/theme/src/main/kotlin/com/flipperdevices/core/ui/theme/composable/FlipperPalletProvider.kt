@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 /**
  * Please, use LocalPallet instead
@@ -33,9 +32,9 @@ fun getThemedFlipperPallet(
 }
 
 @Composable
-fun isLight(
-    systemIsDark: Boolean = isSystemInDarkTheme(),
-    themeViewModel: ThemeViewModel = tangleViewModel()
+internal fun isLight(
+    themeViewModel: ThemeViewModel,
+    systemIsDark: Boolean = isSystemInDarkTheme()
 ): Boolean {
     val theme by themeViewModel.getAppTheme().collectAsState()
 
@@ -109,6 +108,8 @@ private val lightPallet = FlipperPallet(
     shareSheetStatusBarDefaultColor = Color(0xFFFBFBFB),
     shareSheetNavigationBarActiveColor = Color(0xFFFFFFFF),
     shareSheetNavigationBarDefaultColor = Color(0xFFFBFBFB),
+
+    keyScreenDisabled = Color(0xFFC1C1C1)
 )
 
 @Suppress("MagicNumber")
@@ -173,4 +174,6 @@ private val darkPallet = FlipperPallet(
     shareSheetStatusBarDefaultColor = Color(0xFF000000),
     shareSheetNavigationBarActiveColor = Color(0xFF303030),
     shareSheetNavigationBarDefaultColor = Color(0xFF000000),
+
+    keyScreenDisabled = Color(0xFF616161)
 )

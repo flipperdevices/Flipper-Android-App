@@ -12,4 +12,8 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.client)
+    implementation(projects.components.bridge.rpc.api)
 }

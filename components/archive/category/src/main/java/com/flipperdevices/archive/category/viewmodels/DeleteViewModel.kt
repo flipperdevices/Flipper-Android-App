@@ -1,17 +1,17 @@
 package com.flipperdevices.archive.category.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class DeleteViewModel @VMInject constructor(
+class DeleteViewModel @Inject constructor(
     private val deleteKeyApi: DeleteKeyApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     fun onDeleteAll() {
         viewModelScope.launch(Dispatchers.IO) {
             val deletedKeys = deleteKeyApi.getDeletedKeyAsFlow().first()

@@ -2,8 +2,6 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -16,7 +14,7 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
@@ -27,7 +25,6 @@ import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.model.LoadingState
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,9 +42,8 @@ abstract class EmulateViewModel(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
-    private val screenStreamingFeatureEntry: ScreenStreamingFeatureEntry,
     application: FlipperApp
-) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
     protected val emulateButtonStateFlow =
         MutableStateFlow<EmulateButtonState>(EmulateButtonState.Loading(LoadingState.CONNECTING))
@@ -113,7 +109,9 @@ abstract class EmulateViewModel(
             return
         }
         if (!emulateStarted) {
+            info { "Failed start emulation" }
             emulateHelper.stopEmulateForce(requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
     }
 
@@ -183,14 +181,10 @@ abstract class EmulateViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun goToRemoteScreen(navController: NavController) {
-        navController.navigate(screenStreamingFeatureEntry.start())
-    }
-
-    override fun onCleared() {
+    override fun onDestroy() {
         if (emulateButtonStateFlow.value is EmulateButtonState.Active) {
             CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
         }
-        super.onCleared()
+        super.onDestroy()
     }
 }

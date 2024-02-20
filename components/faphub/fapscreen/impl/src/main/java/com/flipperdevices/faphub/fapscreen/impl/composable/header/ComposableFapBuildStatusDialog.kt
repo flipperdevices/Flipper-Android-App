@@ -11,14 +11,17 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -38,7 +41,7 @@ fun ComposableFapBuildStatusDialog(
     onDismiss: () -> Unit
 ) {
     when (fapItem.upToDateVersion.buildState) {
-        FapBuildState.READY -> LaunchedEffect(Unit) {
+        FapBuildState.READY -> LaunchedEffect(onDismiss) {
             onDismiss()
         }
 
@@ -72,7 +75,39 @@ private fun ComposableFapBuildStatusReadyToReleaseDialog(
 ) {
     FlipperDialog(
         titleId = R.string.fapscreen_building_dialog_not_connected_title,
-        textId = R.string.fapscreen_building_dialog_not_connected_desc,
+        textComposable = {
+            val preText = stringResource(R.string.fapscreen_building_dialog_not_connected_desc_pre)
+            val channelText = stringResource(
+                R.string.fapscreen_building_dialog_not_connected_desc_channel
+            )
+            val postText = stringResource(
+                R.string.fapscreen_building_dialog_not_connected_desc_post
+            )
+            val style = LocalTypography.current.bodyR14
+            val releaseColor = LocalPallet.current.channelFirmwareRelease
+
+            Text(
+                text = remember(preText, channelText, postText, style, releaseColor) {
+                    buildAnnotatedString {
+                        append(preText)
+                        append(' ')
+                        withStyle(
+                            style = style.toSpanStyle()
+                                .copy(
+                                    color = releaseColor
+                                )
+                        ) {
+                            append(channelText)
+                        }
+                        append(' ')
+                        append(postText)
+                    }
+                },
+                color = LocalPallet.current.text40,
+                style = LocalTypography.current.bodyR14,
+                textAlign = TextAlign.Center
+            )
+        },
         buttonTextId = R.string.fapscreen_building_dialog_not_connected_btn,
         onDismissRequest = onDismiss,
         onClickButton = {

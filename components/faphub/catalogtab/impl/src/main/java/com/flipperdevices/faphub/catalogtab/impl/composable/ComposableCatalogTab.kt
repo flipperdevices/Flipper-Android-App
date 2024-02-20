@@ -19,21 +19,19 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
     onCategoryClick: (FapCategory) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
+    fapsListViewModel: FapsListViewModel,
+    categoriesViewModel: CategoriesViewModel,
     modifier: Modifier = Modifier,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
-    val fapsListViewModel = tangleViewModel<FapsListViewModel>()
-    val fapsList = fapsListViewModel.faps.collectAsLazyPagingItems()
+    val fapsList = fapsListViewModel.getFapsFlow().collectAsLazyPagingItems()
     val sortType by fapsListViewModel.getSortTypeFlow().collectAsState()
-
-    val categoriesViewModel = tangleViewModel<CategoriesViewModel>()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
     SwipeRefresh(
         modifier = modifier,

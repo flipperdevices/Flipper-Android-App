@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -8,16 +7,16 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FirmwareUpdateViewModel @VMInject constructor(
+class FirmwareUpdateViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider
-) : LifecycleViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "FirmwareUpdateViewModel"
 
     private val connectionState = MutableStateFlow(

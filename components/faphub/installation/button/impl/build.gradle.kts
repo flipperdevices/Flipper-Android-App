@@ -17,11 +17,11 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
-    implementation(projects.components.core.ui.navigation)
     implementation(projects.components.core.ui.lifecycle)
 
-    implementation(projects.components.bottombar.api)
     implementation(projects.components.screenstreaming.api)
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.deeplink.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.service.api)
@@ -36,13 +36,10 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.decompose)
+    implementation(libs.lifecycle.compose)
 
     implementation(projects.components.faphub.dao.api)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.viewmodel.ktx)

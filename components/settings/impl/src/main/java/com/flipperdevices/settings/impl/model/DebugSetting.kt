@@ -7,7 +7,6 @@ sealed interface DebugSettingSwitch {
     data object SkipAutoSync : DebugSettingSwitch
     data object FapHubDev : DebugSettingSwitch
     data object SelfUpdaterDebug : DebugSettingSwitch
-    data object NewInfrared : DebugSettingSwitch
 }
 
 sealed interface DebugSettingAction {
@@ -15,4 +14,5 @@ sealed interface DebugSettingAction {
     data object StartSynchronization : DebugSettingAction
     data object RestartRPC : DebugSettingAction
     data object InstallAllFap : DebugSettingAction
+    data object BrokeBytes : DebugSettingAction
 }

@@ -26,7 +26,8 @@ class KeyScreenViewModelTest {
 
     private lateinit var underTest: KeyScreenViewModel
 
-    @Before fun setUp() {
+    @Before
+    fun setUp() {
         every { keyStateHelperApi.build(any(), any()) } returns keyStateHelper
 
         underTest = KeyScreenViewModel(
@@ -36,7 +37,8 @@ class KeyScreenViewModelTest {
         )
     }
 
-    @Test fun `get current key state`() {
+    @Test
+    fun `get current key state`() {
         val expectedState = MutableStateFlow(KeyScreenState.InProgress)
         every { keyStateHelper.getKeyScreenState() } returns expectedState
 
@@ -45,7 +47,8 @@ class KeyScreenViewModelTest {
         Assert.assertEquals(expectedState, actualState)
     }
 
-    @Test fun `set favorite`() {
+    @Test
+    fun `set favorite`() {
         val isFavorite = true
         val slot = slot<Boolean>()
 
@@ -55,7 +58,8 @@ class KeyScreenViewModelTest {
         Assert.assertEquals(isFavorite, slot.captured)
     }
 
-    @Test fun `open edit key`() {
+    @Test
+    fun `open edit key`() {
         val onEndAction: (FlipperKeyPath) -> Unit = mockk(relaxUnitFun = true)
         val slot = slot<(FlipperKeyPath) -> Unit>()
 
@@ -65,7 +69,8 @@ class KeyScreenViewModelTest {
         Assert.assertEquals(onEndAction, slot.captured)
     }
 
-    @Test fun `delete key`() {
+    @Test
+    fun `delete key`() {
         val onEndAction: () -> Unit = mockk(relaxUnitFun = true)
         val slot = slot<() -> Unit>()
 
@@ -75,7 +80,8 @@ class KeyScreenViewModelTest {
         Assert.assertEquals(onEndAction, slot.captured)
     }
 
-    @Test fun `restore key`() {
+    @Test
+    fun `restore key`() {
         val onEndAction: () -> Unit = mockk(relaxUnitFun = true)
         val slot = slot<() -> Unit>()
 
@@ -85,7 +91,8 @@ class KeyScreenViewModelTest {
         Assert.assertEquals(onEndAction, slot.captured)
     }
 
-    @Test fun `open nfc editor with incorrect state`() {
+    @Test
+    fun `open nfc editor with incorrect state`() {
         every { keyStateHelper.getKeyScreenState() } returns MutableStateFlow(KeyScreenState.InProgress)
         val onEndAction: (FlipperKeyPath) -> Unit = mockk(relaxUnitFun = true)
 
@@ -107,7 +114,9 @@ class KeyScreenViewModelTest {
                 shareState = mockk(),
                 deleteState = mockk(),
                 flipperKey = flipperKey,
-                emulateConfig = mockk()
+                emulateConfig = mockk(),
+                isSupportEditing = true,
+                emulatingInProgress = false
             )
         )
 

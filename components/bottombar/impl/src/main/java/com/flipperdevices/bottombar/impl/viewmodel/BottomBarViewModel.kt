@@ -1,7 +1,7 @@
 package com.flipperdevices.bottombar.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.hub.api.HubApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class BottomBarViewModel @VMInject constructor(
+class BottomBarViewModel @Inject constructor(
     hubApi: HubApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val hasNotificationHubStateFlow = MutableStateFlow(false)
 
     init {

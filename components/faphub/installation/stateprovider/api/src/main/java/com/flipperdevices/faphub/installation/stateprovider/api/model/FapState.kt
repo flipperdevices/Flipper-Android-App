@@ -1,17 +1,18 @@
 package com.flipperdevices.faphub.installation.stateprovider.api.model
 
 import androidx.annotation.FloatRange
+import androidx.compose.runtime.Immutable
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
+@Immutable
 sealed class FapState {
-    object NotInitialized : FapState()
+    data object NotInitialized : FapState()
 
-    object RetrievingManifest : FapState()
+    data object RetrievingManifest : FapState()
 
-    object Installed : FapState()
+    data object Installed : FapState()
 
-    object ReadyToInstall : FapState()
-    object ConnectFlipper : FapState()
+    data object ReadyToInstall : FapState()
 
     data class NotAvailableForInstall(val reason: NotAvailableReason) : FapState()
 
@@ -29,14 +30,16 @@ sealed class FapState {
         val progress: Float
     ) : FapState()
 
-    object Deleting : FapState()
+    data object Deleting : FapState()
 
-    object Canceling : FapState()
+    data object Canceling : FapState()
 }
 
 enum class NotAvailableReason {
     BUILD_RUNNING,
     UNSUPPORTED_APP,
     FLIPPER_OUTDATED,
-    UNSUPPORTED_SDK
+    UNSUPPORTED_SDK,
+    NO_SD_CARD,
+    FLIPPER_NOT_CONNECTED
 }

@@ -4,15 +4,13 @@ import android.app.Application
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SimpleEmulateViewModel @VMInject constructor(
+class SimpleEmulateViewModel @Inject constructor(
     serviceProvider: FlipperServiceProvider,
     emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     application: Application,
-    screenStreamingEntry: ScreenStreamingFeatureEntry,
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
     override val TAG = "SimpleEmulateViewModel"
 }

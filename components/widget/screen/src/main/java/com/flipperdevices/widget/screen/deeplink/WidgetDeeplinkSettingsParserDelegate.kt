@@ -36,7 +36,7 @@ class WidgetDeeplinkSettingsParserDelegate @Inject constructor() :
         if (widgetId < 0) {
             return null
         }
-        return Deeplink.WidgetOptions(widgetId)
+        return Deeplink.RootLevel.WidgetOptions(widgetId)
     }
 
     private fun isWidgetOptionsIntent(intent: Intent): Boolean {

@@ -58,15 +58,17 @@ include(
     ":components:core:ui:theme",
     ":components:core:ui:searchbar",
     ":components:core:ui:hexkeyboard",
-    ":components:core:ui:navigation",
     ":components:core:ui:tabswitch",
     ":components:core:ui:flippermockup",
+    ":components:core:ui:decompose",
     ":components:core:test",
     ":components:core:markdown",
     ":components:core:activityholder",
     ":components:core:share",
     ":components:core:pager",
     ":components:core:progress",
+    ":components:core:permission:api",
+    ":components:core:permission:impl",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",
@@ -164,6 +166,8 @@ include(
     ":components:wearable:emulate:handheld:impl",
     ":components:wearable:emulate:handheld:noop",
     ":components:wearable:emulate:common",
+    ":components:wearable:wearrootscreen:api",
+    ":components:wearable:wearrootscreen:impl",
 
     ":components:widget:api",
     ":components:widget:screen",
@@ -226,5 +230,12 @@ include(
     ":components:selfupdater:thirdparty:github",
 
     ":components:unhandledexception:api",
-    ":components:unhandledexception:impl"
+    ":components:unhandledexception:impl",
+
+    ":components:notification:api",
+    ":components:notification:impl",
+    ":components:notification:noop",
+
+    ":components:rootscreen:api",
+    ":components:rootscreen:impl",
 )

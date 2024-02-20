@@ -1,32 +1,32 @@
 package com.flipperdevices.archive.category.viewmodels
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flipperdevices.archive.category.api.EXTRA_CATEGORY_TYPE
 import com.flipperdevices.archive.category.model.CategoryState
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
-class CategoryViewModel @VMInject constructor(
-    @TangleParam(EXTRA_CATEGORY_TYPE)
-    categoryType: CategoryType,
+class CategoryViewModel @AssistedInject constructor(
+    @Assisted categoryType: CategoryType,
     private val parser: KeyParser,
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,
     private val synchronizationState: SynchronizationApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val categoryState = MutableStateFlow<CategoryState>(CategoryState.Loading)
+
     init {
         viewModelScope.launch(Dispatchers.Default) {
             when (categoryType) {
@@ -45,4 +45,11 @@ class CategoryViewModel @VMInject constructor(
     fun getState(): StateFlow<CategoryState> = categoryState
 
     fun getSynchronizationState() = synchronizationState.getSynchronizationState()
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            categoryType: CategoryType
+        ): CategoryViewModel
+    }
 }

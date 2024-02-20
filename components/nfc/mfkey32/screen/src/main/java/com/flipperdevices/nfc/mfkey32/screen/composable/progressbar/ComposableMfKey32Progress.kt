@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.ktx.elements.FlipperProgressIndicator
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -28,9 +28,13 @@ import com.flipperdevices.nfc.mfkey32.screen.composable.progressbar.error.Compos
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 
 @Composable
-fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State) {
+fun ComposableMfKey32Progress(
+    onBack: () -> Unit,
+    state: MfKey32State,
+    flipperColor: HardwareColor
+) {
     when (state) {
-        MfKey32State.WaitingForFlipper -> ComposableWaitingFlipperConnection()
+        MfKey32State.WaitingForFlipper -> ComposableWaitingFlipperConnection(flipperColor)
 
         is MfKey32State.Calculating -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_calculation_title,
@@ -40,6 +44,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background,
         )
+
         is MfKey32State.DownloadingRawFile -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_downloading_title,
             descriptionId = R.string.mfkey32_downloading_desc,
@@ -48,6 +53,7 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.actionOnFlipperEnable,
             secondColor = LocalPallet.current.actionOnFlipperProgress
         )
+
         MfKey32State.Uploading -> ComposableMfKey32ProgressInternal(
             titleId = R.string.mfkey32_uploading_title,
             descriptionId = R.string.mfkey32_uploading_desc,
@@ -56,16 +62,18 @@ fun ComposableMfKey32Progress(navController: NavController, state: MfKey32State)
             accentColor = LocalPallet.current.calculationMfKey32,
             secondColor = LocalPallet.current.calculationMfKey32Background
         )
+
         is MfKey32State.Error -> {
-            ComposableMfKey32Error(state.errorType)
+            ComposableMfKey32Error(state.errorType, flipperColor = flipperColor)
             return
         }
+
         is MfKey32State.Saved -> if (state.keys.isEmpty()) {
-            NotFoundCompleteAttack(navController::popBackStack)
+            NotFoundCompleteAttack(onBack)
         } else {
             CompleteAttack(
                 state.keys,
-                navController::popBackStack
+                onBack
             )
         }
     }

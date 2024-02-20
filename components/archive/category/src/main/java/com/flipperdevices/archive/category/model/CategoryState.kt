@@ -5,9 +5,9 @@ import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class CategoryState {
-    object Loading : CategoryState()
+    data object Loading : CategoryState()
 
-    class Loaded(
+    data class Loaded(
         val keys: ImmutableList<Pair<FlipperKeyParsed, FlipperKey>>
     ) : CategoryState()
 }

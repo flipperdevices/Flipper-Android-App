@@ -16,5 +16,4 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     implementation(libs.compose.ui)
-    implementation(libs.compose.navigation)
 }

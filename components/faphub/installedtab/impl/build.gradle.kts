@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.appcard.composable)
@@ -26,19 +27,18 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.errors.api)
 
+    implementation(projects.components.bridge.rpc.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
+    implementation(libs.decompose)
     implementation(libs.coil.compose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.kotlin.immutable.collections)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

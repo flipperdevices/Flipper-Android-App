@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.infrared.impl"
@@ -23,7 +24,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.data)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)
     implementation(projects.components.core.ui.ktx)
@@ -36,16 +37,13 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
     implementation(libs.compose.placeholder)
+    implementation(libs.bundles.decompose)
 
     // ViewModel
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)

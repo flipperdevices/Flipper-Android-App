@@ -1,34 +1,33 @@
 package com.flipperdevices.wearable.emulate.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
-import com.flipperdevices.wearable.emulate.impl.api.EMULATE_PATH_KEY
 import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
 import com.flipperdevices.wearable.emulate.impl.helper.EmulateHelper
 import com.flipperdevices.wearable.emulate.impl.helper.FlipperStatusHelper
 import com.flipperdevices.wearable.emulate.impl.helper.WearStateMachineHelper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.io.File
 
-class WearEmulateViewModel @VMInject constructor(
-    @TangleParam(EMULATE_PATH_KEY)
-    private val keyPath: String,
+class WearEmulateViewModel @AssistedInject constructor(
+    @Assisted private val keyPath: FlipperKeyPath,
     private val wearStateMachineHelper: WearStateMachineHelper,
     channelClientHelper: ChannelClientHelper,
     connectionHelper: ConnectionHelper,
     flipperStatusHelper: FlipperStatusHelper,
     private val emulateHelper: EmulateHelper
-) : ViewModel(),
+) : DecomposeViewModel(),
     LogTagProvider {
     override val TAG = "WearEmulateViewModel"
 
-    private val keyToEmulate = KeyToEmulate(keyPath)
+    private val keyToEmulate = KeyToEmulate(keyPath.path.pathToKey)
 
     init {
         combine(
@@ -55,9 +54,16 @@ class WearEmulateViewModel @VMInject constructor(
 
     fun onStopEmulate() = emulateHelper.onStopEmulate()
 
-    override fun onCleared() {
-        super.onCleared()
+    override fun onDestroy() {
+        super.onDestroy()
         emulateHelper.onStopEmulate()
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            keyPath: FlipperKeyPath
+        ): WearEmulateViewModel
     }
 }
 

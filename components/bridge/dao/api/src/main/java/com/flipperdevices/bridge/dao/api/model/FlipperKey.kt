@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.api.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -9,6 +10,7 @@ import kotlinx.serialization.Serializable
  * The most complete description of the key
  */
 @Parcelize
+@Immutable
 data class FlipperKey(
     val mainFile: FlipperFile,
     val additionalFiles: List<FlipperFile> = emptyList(),
@@ -28,6 +30,7 @@ data class FlipperKey(
 
 @Parcelize
 @Serializable
+@Immutable
 data class FlipperKeyPath(
     @SerialName("path")
     val path: FlipperFilePath,

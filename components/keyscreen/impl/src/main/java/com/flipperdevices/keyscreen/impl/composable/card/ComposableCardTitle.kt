@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.model.DeleteState
@@ -21,6 +22,7 @@ fun ComposableCardTitle(
     keyName: String,
     deleteState: DeleteState,
     onEditName: (() -> Unit)?,
+    emulatingInProgress: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -34,9 +36,18 @@ fun ComposableCardTitle(
         )
         if (deleteState != DeleteState.DELETED && onEditName != null) {
             Icon(
-                modifier = Modifier.clickableRipple(onClick = onEditName),
+                modifier = Modifier.clickableRipple(onClick = {
+                    if (!emulatingInProgress) {
+                        onEditName()
+                    }
+                }),
                 painter = painterResource(DesignSystem.drawable.ic_edit_icon),
-                contentDescription = stringResource(R.string.keyscreen_edit_text)
+                contentDescription = stringResource(R.string.keyscreen_edit_text),
+                tint = if (emulatingInProgress) {
+                    LocalPallet.current.keyScreenDisabled
+                } else {
+                    LocalPallet.current.text60
+                }
             )
         }
     }

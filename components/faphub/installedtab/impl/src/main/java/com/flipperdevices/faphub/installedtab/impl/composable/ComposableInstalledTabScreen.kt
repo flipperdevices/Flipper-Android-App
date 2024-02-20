@@ -24,6 +24,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
@@ -33,7 +34,6 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 private const val DEFAULT_FAP_COUNT = 20
 
@@ -44,9 +44,9 @@ fun ComposableInstalledTabScreen(
     uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
+    viewModel: InstalledFapsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = tangleViewModel<InstalledFapsViewModel>()
     val state by viewModel.getFapInstalledScreenState().collectAsState()
     val buttonState by remember {
         viewModel.getFapBatchUpdateButtonState()
@@ -56,7 +56,7 @@ fun ComposableInstalledTabScreen(
 
     when (val stateLocal = state) {
         is FapInstalledScreenState.Error -> errorsRenderer.ComposableThrowableError(
-            throwable = stateLocal.throwable,
+            throwable = stateLocal.throwable.toFapHubError(),
             onRetry = { viewModel.refresh(true) },
             modifier = screenModifier
                 .fillMaxSize(),

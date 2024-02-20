@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.wear.phone.interactions.PhoneTypeHelper
 import androidx.wear.remote.interactions.RemoteActivityHelper
@@ -14,6 +13,7 @@ import com.flipperdevices.core.ktx.android.toast
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.wearable.sync.common.WearableSyncItem
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneState
@@ -37,15 +37,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val ANDROID_MARKET_APP_URI = "market://details?id=com.flipperdevices.app"
 
-class KeysListViewModel @VMInject constructor(
+class KeysListViewModel @Inject constructor(
     private val application: Application,
     findPhoneApi: FindPhoneApi
-) : AndroidViewModel(application), LogTagProvider, DataClient.OnDataChangedListener {
+) : DecomposeViewModel(), LogTagProvider, DataClient.OnDataChangedListener {
     override val TAG = "KeysListViewModel"
 
     private val dataClient by lazy { Wearable.getDataClient(application) }
@@ -107,7 +107,7 @@ class KeysListViewModel @VMInject constructor(
 
     fun openStore() {
         info { "#openAppInStoreOnPhone" }
-        val intent = when (PhoneTypeHelper.getPhoneDeviceType(getApplication())) {
+        val intent = when (PhoneTypeHelper.getPhoneDeviceType(application)) {
             PhoneTypeHelper.DEVICE_TYPE_ANDROID -> {
                 info { "DEVICE_TYPE_ANDROID" }
                 // Create Remote Intent to open Play Store listing of app on remote device.
@@ -115,6 +115,7 @@ class KeysListViewModel @VMInject constructor(
                     .addCategory(Intent.CATEGORY_BROWSABLE)
                     .setData(Uri.parse(ANDROID_MARKET_APP_URI))
             }
+
             else -> {
                 info { "DEVICE_TYPE_ERROR_UNKNOWN" }
                 return
@@ -143,8 +144,9 @@ class KeysListViewModel @VMInject constructor(
             }
         }
     }
-    override fun onCleared() {
-        super.onCleared()
+
+    override fun onDestroy() {
+        super.onDestroy()
         dataClient.removeListener(this)
     }
 }

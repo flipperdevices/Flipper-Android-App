@@ -8,6 +8,7 @@ plugins {
     id("flipper.android-app")
     id("com.squareup.anvil")
     id("kotlin-kapt")
+    alias(libs.plugins.google.gms)
 }
 
 android.namespace = "com.flipperdevices.app"
@@ -18,12 +19,14 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.permission.api)
+    implementation(projects.components.core.permission.impl)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.firstpair.api)
     implementation(projects.components.firstpair.impl)
@@ -47,6 +50,9 @@ dependencies {
 
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.singleactivity.impl)
+
+    implementation(projects.components.rootscreen.api)
+    implementation(projects.components.rootscreen.impl)
 
     implementation(projects.components.deeplink.api)
     implementation(projects.components.deeplink.impl)
@@ -214,14 +220,23 @@ dependencies {
             implementation(projects.components.selfupdater.thirdparty.api)
             implementation(projects.components.selfupdater.thirdparty.github)
         }
+
         SourceInstall.DEBUG ->
             implementation(projects.components.selfupdater.debug)
+
         else ->
             implementation(projects.components.selfupdater.unknown)
     }
 
     implementation(projects.components.unhandledexception.api)
     implementation(projects.components.unhandledexception.impl)
+
+    implementation(projects.components.notification.api)
+    if (IS_GOOGLE_FEATURE_AVAILABLE) {
+        implementation(projects.components.notification.impl)
+    } else {
+        implementation(projects.components.notification.noop)
+    }
 
     implementation(libs.ktor.client)
 
@@ -232,6 +247,8 @@ dependencies {
     implementation(libs.work.ktx)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.bundles.decompose)
+
     implementation(libs.coil.svg)
     implementation(libs.coil.compose)
     implementation(libs.compose.pager)
@@ -241,10 +258,6 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.fragment.api)
-    anvil(libs.tangle.fragment.compiler)
 
     implementation(libs.timber)
 }

@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
 
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
 
@@ -35,7 +35,9 @@ dependencies {
     implementation(projects.components.inappnotification.api)
 
     implementation(libs.appcompat)
-    implementation(libs.compose.navigation)
+
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.client)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
@@ -49,10 +51,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.bundles.decompose)
 
     // Testing
     testImplementation(projects.components.core.test)

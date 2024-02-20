@@ -12,13 +12,11 @@ import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.faphub.uninstallbutton.impl.R
-import com.flipperdevices.faphub.uninstallbutton.impl.viewmodel.DeleteViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 internal fun ComposableFapUninstall(
-    applicationUid: String,
     dialogAppBox: @Composable (Modifier) -> Unit,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -36,11 +34,10 @@ internal fun ComposableFapUninstall(
     )
 
     if (showDeleteDialog) {
-        val deleteViewModel = tangleViewModel<DeleteViewModel>()
         ComposableDeleteConfirmDialog(
             dialogAppBox = dialogAppBox,
             onDismiss = { showDeleteDialog = false },
-            onConfirmDelete = { deleteViewModel.onDelete(applicationUid) }
+            onConfirmDelete = onDelete
         )
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.widget.screen"
@@ -16,7 +17,8 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
@@ -34,15 +36,10 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.swipetorefresh)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
-
-    implementation(libs.tangle.viewmodel.fragment)
-    implementation(libs.tangle.viewmodel.api)
-    implementation(libs.tangle.viewmodel.compose)
-    anvil(libs.tangle.viewmodel.compiler)
 }

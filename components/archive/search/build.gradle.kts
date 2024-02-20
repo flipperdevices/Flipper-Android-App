@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.archive.search"
@@ -20,9 +21,11 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.searchbar)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.rootscreen.api)
 
     implementation(libs.appcompat)
 
@@ -31,15 +34,10 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
 
     implementation(libs.lifecycle.compose)
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.kotlin.immutable.collections)
-
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

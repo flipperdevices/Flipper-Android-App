@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,16 +21,12 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
-import com.flipperdevices.nfc.mfkey32.screen.viewmodel.FlipperColorViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
 fun ComposableWaitingFlipperConnection(
+    flipperColor: HardwareColor,
     modifier: Modifier = Modifier
 ) {
-    val flipperColorViewModel = tangleViewModel<FlipperColorViewModel>()
-    val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
-
     ComposableWaitingFlipperConnectionInternal(
         flipperColor = flipperColor,
         modifier = modifier

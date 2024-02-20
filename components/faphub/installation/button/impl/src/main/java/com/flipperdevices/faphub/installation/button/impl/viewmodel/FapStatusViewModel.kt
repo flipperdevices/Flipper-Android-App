@@ -1,6 +1,6 @@
 package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -8,12 +8,12 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import kotlinx.coroutines.flow.MutableStateFlow
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapStatusViewModel @VMInject constructor(
+class FapStatusViewModel @Inject constructor(
     private val stateManager: FapInstallationStateManager,
     private val queueApi: FapInstallationQueueApi,
-) : LifecycleViewModel() {
+) : DecomposeViewModel() {
     fun getStateForApplicationId(
         fapButtonConfig: FapButtonConfig?
     ) = if (fapButtonConfig == null) {

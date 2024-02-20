@@ -208,7 +208,7 @@ class FapInstallationStateManagerImplTest {
         ).first()
 
         Assert.assertEquals(
-            FapState.ConnectFlipper,
+            FapState.NotAvailableForInstall(NotAvailableReason.FLIPPER_NOT_CONNECTED),
             fapState
         )
     }

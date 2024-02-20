@@ -4,12 +4,12 @@ import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.analytics.shake2report.impl.R
 import com.flipperdevices.analytics.shake2report.impl.model.Shake2ReportState
 import com.flipperdevices.core.ktx.android.toast
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import io.sentry.Attachment
 import io.sentry.Sentry
 import io.sentry.SentryEvent
@@ -25,17 +25,17 @@ import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
-import tangle.viewmodel.VMInject
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("MagicNumber")
 private val SENTRY_TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES)
 
-class Shake2ReportViewModel @VMInject constructor(
-    application: Application,
+class Shake2ReportViewModel @Inject constructor(
+    private val application: Application,
     private val internalShake2Report: InternalShake2Report
-) : AndroidViewModel(application) {
+) : DecomposeViewModel() {
     private val shake2ReportStateFlow = MutableStateFlow<Shake2ReportState>(
         Shake2ReportState.Pending
     )
@@ -66,22 +66,21 @@ class Shake2ReportViewModel @VMInject constructor(
         if (state !is Shake2ReportState.Complete) return
         val id = state.id
 
-        val context = getApplication<Application>()
-        val clipboardManager = ContextCompat.getSystemService(context, ClipboardManager::class.java)
+        val clipboardManager = ContextCompat.getSystemService(application, ClipboardManager::class.java)
         val clipData = ClipData.newHtmlText(
-            context.getString(R.string.shake2report_copy_sentry_title),
+            application.getString(R.string.shake2report_copy_sentry_title),
             id,
             "<code>$id</code>"
         )
         clipboardManager?.setPrimaryClip(clipData)
-        context.toast(R.string.shake2report_copy_sentry_copy_toast)
+        application.toast(R.string.shake2report_copy_sentry_copy_toast)
     }
 
     private suspend fun compressLogFolder(): File = withContext(Dispatchers.IO) {
         val logDir = internalShake2Report.logDir
         val zipFile = ZipFile(
             File(
-                getApplication<Application>().cacheDir,
+                application.cacheDir,
                 "logs-${System.currentTimeMillis()}.zip"
             )
         )

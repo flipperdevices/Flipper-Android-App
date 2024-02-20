@@ -1,7 +1,10 @@
 package com.flipperdevices.updater.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 sealed class UpdateCardState {
-    object InProgress : UpdateCardState()
+    data object InProgress : UpdateCardState()
 
     data class NoUpdate(
         val flipperVersion: FirmwareVersion

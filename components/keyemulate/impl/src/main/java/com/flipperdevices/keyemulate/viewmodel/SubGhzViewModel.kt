@@ -15,20 +15,18 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.screenstreaming.api.ScreenStreamingFeatureEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SubGhzViewModel @VMInject constructor(
+class SubGhzViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     application: Application,
-    screenStreamingEntry: ScreenStreamingFeatureEntry
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, screenStreamingEntry, application) {
+) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
     override val TAG = "SubGhzViewModel"
 
     override suspend fun onStartEmulateInternal(
@@ -36,16 +34,12 @@ class SubGhzViewModel @VMInject constructor(
         serviceApi: FlipperServiceApi,
         config: EmulateConfig
     ) {
-        val appStarted = calculateTimeoutAndStartEmulate(
+        calculateTimeoutAndStartEmulate(
             scope = scope,
             serviceApi = serviceApi,
             config = config,
             oneTimePress = false
         )
-
-        if (!appStarted) {
-            emulateHelper.stopEmulateForce(serviceApi.requestApi)
-        }
     }
 
     fun onSinglePress(config: EmulateConfig) {
@@ -59,10 +53,12 @@ class SubGhzViewModel @VMInject constructor(
             when (it) {
                 is EmulateButtonState.Disabled,
                 is EmulateButtonState.Loading -> it
+
                 is EmulateButtonState.Inactive -> EmulateButtonState.Active(
                     progress = EmulateProgress.Infinite,
                     config = config
                 )
+
                 is EmulateButtonState.Active -> {
                     super.onStopEmulate(force = true)
                     return
@@ -91,7 +87,7 @@ class SubGhzViewModel @VMInject constructor(
         serviceApi: FlipperServiceApi,
         config: EmulateConfig,
         oneTimePress: Boolean
-    ): Boolean {
+    ) {
         val requestApi = serviceApi.requestApi
         val timeout = config.minEmulateTime
         val appStarted: Boolean?
@@ -122,18 +118,22 @@ class SubGhzViewModel @VMInject constructor(
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
-            return false
+            return
         } catch (ignored: ForbiddenFrequencyException) {
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
-            return false
+            return
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate subghz" }
             emulateHelper.stopEmulateForce(requestApi)
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
-            return false
+            return
         }
 
-        return appStarted
+        if (!appStarted) {
+            info { "Failed start app without crash" }
+            emulateHelper.stopEmulateForce(serviceApi.requestApi)
+            emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
+        }
     }
 }

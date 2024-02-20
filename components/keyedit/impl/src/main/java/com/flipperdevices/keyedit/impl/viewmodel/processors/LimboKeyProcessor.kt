@@ -10,21 +10,18 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
-import com.flipperdevices.singleactivity.api.SingleActivityApi
 import javax.inject.Inject
-
-private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
 class LimboKeyProcessor @Inject constructor(
     private val parser: KeyParser,
     private val utilsKeyApi: UtilsKeyApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val synchronizationApi: SynchronizationApi,
-    private val inAppNotificationStorage: InAppNotificationStorage,
-    private val singleActivityApi: SingleActivityApi
+    private val inAppNotificationStorage: InAppNotificationStorage
 ) : EditableKeyProcessor<EditableKey.Limb> {
     override suspend fun loadKey(
         editableKey: EditableKey.Limb,
@@ -69,12 +66,12 @@ class LimboKeyProcessor @Inject constructor(
         simpleKeyApi.insertKey(newKey)
         synchronizationApi.startSynchronization(force = true)
         inAppNotificationStorage.addNotification(
-            InAppNotification.SavedKey(
+            InAppNotification.Successful(
                 title = newKey.path.nameWithExtension,
-                durationMs = NOTIFICATION_DURATION_MS
+                descId = R.string.saved_key_desc
             )
         )
-        singleActivityApi.open()
+        onEndAction()
     }
 }
 

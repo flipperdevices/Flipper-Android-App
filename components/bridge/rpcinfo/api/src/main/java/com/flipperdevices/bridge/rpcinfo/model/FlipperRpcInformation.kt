@@ -13,7 +13,7 @@ data class FlipperRpcInformation(
 )
 
 sealed class StorageStats {
-    object Error : StorageStats()
+    data object Error : StorageStats()
 
     data class Loaded(val total: Long, val free: Long) : StorageStats()
 }

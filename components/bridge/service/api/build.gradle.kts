@@ -9,4 +9,6 @@ dependencies {
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
+
+    implementation(libs.essenty.lifecycle)
 }

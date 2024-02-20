@@ -1,7 +1,6 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -14,7 +13,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
+import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
@@ -39,21 +39,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tangle.viewmodel.VMInject
 import java.math.BigInteger
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
 
-class MfKey32ViewModel @VMInject constructor(
+class MfKey32ViewModel @Inject constructor(
     context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
     private val metricApi: MetricApi,
     flipperServiceProvider: FlipperServiceProvider,
     private val flipperStorageApi: FlipperStorageApi
-) : LifecycleViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
     private val bruteforceDispatcher = Executors.newFixedThreadPool(
         Runtime.getRuntime().availableProcessors()
@@ -143,16 +143,19 @@ class MfKey32ViewModel @VMInject constructor(
 
     private suspend fun prepare(): Boolean {
         info { "Flipper connected" }
-        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(null))
+        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(0f))
 
         try {
             flipperStorageApi.download(
                 pathOnFlipper = PATH_NONCE_LOG,
                 fileOnAndroid = fileWithNonce,
-                progressListener = {
-                    info { "Download file progress $it" }
-                    mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
-                }
+                progressListener = ProgressWrapperTracker(
+                    progressListener = {
+                        info { "Download file progress $it" }
+                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
+                    },
+                    max = 0.99f
+                )
             )
         } catch (error: Throwable) {
             error(error) { "Not found $PATH_NONCE_LOG" }

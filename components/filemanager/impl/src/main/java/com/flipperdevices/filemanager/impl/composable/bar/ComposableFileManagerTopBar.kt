@@ -1,16 +1,16 @@
 package com.flipperdevices.filemanager.impl.composable.bar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
@@ -21,10 +21,11 @@ fun ComposableFileManagerTopBar(
     onClickAddButton: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SetUpStatusBarColor(MaterialTheme.colors.primarySurface)
     TopAppBar(
-        modifier = modifier,
-        backgroundColor = MaterialTheme.colors.primarySurface,
+        modifier = modifier
+            .background(LocalPallet.current.background)
+            .statusBarsPadding(),
+        backgroundColor = LocalPallet.current.background,
         title = {
             ComposableEllipsizeStartText(
                 text = path

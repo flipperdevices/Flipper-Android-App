@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -9,8 +8,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.filemanager.impl.api.PATH_KEY
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
@@ -22,21 +20,23 @@ import com.flipperdevices.protobuf.storage.listRequest
 import com.flipperdevices.protobuf.storage.mkdirRequest
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.google.protobuf.ByteString
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 import java.io.File
 
-class FileManagerViewModel @VMInject constructor(
+class FileManagerViewModel @AssistedInject constructor(
     private val serviceProvider: FlipperServiceProvider,
-    @TangleParam(PATH_KEY)
+    @Assisted
     private val directory: String
-) : LifecycleViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FileManagerViewModel"
 
     private val mutex = Mutex()
@@ -107,7 +107,7 @@ class FileManagerViewModel @VMInject constructor(
         }.collect { fileList ->
             fileManagerStateFlow.update { oldState ->
                 val newSet = oldState.filesInDirectory.plus(fileList)
-                oldState.copy(filesInDirectory = newSet)
+                oldState.copy(filesInDirectory = newSet.toImmutableSet())
             }
         }
         fileManagerStateFlow.update {
@@ -127,10 +127,18 @@ class FileManagerViewModel @VMInject constructor(
                     path = absolutePath
                     file = file { data = ByteString.EMPTY }
                 }
+
                 CreateFileManagerAction.FOLDER -> storageMkdirRequest = mkdirRequest {
                     path = absolutePath
                 }
             }
         }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            directory: String
+        ): FileManagerViewModel
     }
 }

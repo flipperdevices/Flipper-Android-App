@@ -27,6 +27,13 @@ fun ComposableSearchingDevices(
     modifier: Modifier = Modifier
 ) {
     val devices = state.devices
+    val currentDeviceConnecting = remember(state) {
+        when (state.pairState) {
+            is DevicePairState.Connecting -> state.pairState.address
+            is DevicePairState.WaitingForStart -> state.pairState.address
+            else -> null
+        }
+    }
 
     when (state.pairState) {
         is DevicePairState.TimeoutPairing -> {
@@ -38,6 +45,7 @@ fun ComposableSearchingDevices(
                 onResetTimeoutState = onResetTimeoutState
             )
         }
+
         is DevicePairState.TimeoutConnecting -> {
             val pairDevice = state.pairState.discoveredBluetoothDevice
             ComposableConnectingTimeoutDialog(
@@ -47,6 +55,7 @@ fun ComposableSearchingDevices(
                 onResetTimeoutState = onResetTimeoutState
             )
         }
+
         else -> {}
     }
 
@@ -62,10 +71,13 @@ fun ComposableSearchingDevices(
                 items = devices,
                 key = { it.address }
             ) { device ->
-                val deviceName = device.name ?: device.address
-                val name = deviceName.replaceFirst(Constants.DEVICENAME_PREFIX, "")
-                val currentDevice = (state.pairState as? DevicePairState.Connecting)?.address
-                val isConnecting = device.address == currentDevice
+                val name = remember(device) {
+                    val deviceName = device.name ?: device.address
+                    deviceName.replaceFirst(Constants.DEVICENAME_PREFIX, "")
+                }
+                val isConnecting = remember(device.address, currentDeviceConnecting) {
+                    device.address == currentDeviceConnecting
+                }
                 ComposableSearchItem(text = name, isConnecting = isConnecting) {
                     onDeviceClick(device)
                 }

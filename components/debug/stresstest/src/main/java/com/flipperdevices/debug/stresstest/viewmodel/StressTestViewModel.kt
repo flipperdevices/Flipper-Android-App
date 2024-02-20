@@ -1,7 +1,6 @@
 package com.flipperdevices.debug.stresstest.viewmodel
 
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.delegates.toHumanReadableString
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -10,10 +9,8 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.split
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.debug.stresstest.di.StressTestComponent
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.debug.stresstest.model.LogLine
 import com.flipperdevices.debug.stresstest.model.StressTestState
 import com.flipperdevices.protobuf.main
@@ -49,10 +46,9 @@ const val BUFFER_SIZE = 20 * 1024
 const val TEST_FILE = "/any/stresstest_mobile.tmp"
 
 @Suppress("TooManyFunctions")
-class StressTestViewModel : LifecycleViewModel() {
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
+class StressTestViewModel @Inject constructor(
+    private val serviceProvider: FlipperServiceProvider
+) : DecomposeViewModel() {
     private val isStressTestRunning = AtomicBoolean(false)
     private val debugLog = MutableStateFlow(persistentListOf<LogLine>())
     private val stressTestState = MutableStateFlow(StressTestState())
@@ -61,7 +57,6 @@ class StressTestViewModel : LifecycleViewModel() {
     private var stressTestJob: Job? = null
 
     init {
-        ComponentHolder.component<StressTestComponent>().inject(this)
         serviceProvider.provideServiceApi(this) {
             subscribeToConnectionStateUpdate(it)
             subscribeToSpeedStateUpdate(it)

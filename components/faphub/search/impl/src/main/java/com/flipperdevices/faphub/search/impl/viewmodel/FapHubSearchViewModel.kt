@@ -1,12 +1,12 @@
 package com.flipperdevices.faphub.search.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.pager.loadingPagingDataFlow
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.Dispatchers
@@ -15,13 +15,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FapHubSearchViewModel @VMInject constructor(
+class FapHubSearchViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     fapHubHideItemApi: FapHubHideItemApi,
     targetProviderApi: FlipperTargetProviderApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val searchRequestFlow = MutableStateFlow("")
 
     val faps = combine(

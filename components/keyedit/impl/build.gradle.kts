@@ -14,7 +14,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.keyedit.api)
     implementation(projects.components.keyparser.api)
@@ -38,13 +39,8 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.constraint)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.lifecycle.compose)
-
-    implementation(libs.tangle.viewmodel.fragment)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.viewmodel.compose)
 
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.runtime.ktx)

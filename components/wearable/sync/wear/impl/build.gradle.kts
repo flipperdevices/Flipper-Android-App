@@ -15,11 +15,14 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.ktx)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.core.ui.components)
+    implementation(projects.components.wearable.wearrootscreen.api)
 
     implementation(libs.wear)
     implementation(libs.wear.gms)
@@ -35,12 +38,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
-    implementation(libs.compose.wear.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.horologist.layout)
     implementation(libs.lifecycle.compose)
-
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
 }

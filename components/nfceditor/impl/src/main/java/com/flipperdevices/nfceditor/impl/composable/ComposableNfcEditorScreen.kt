@@ -1,6 +1,5 @@
 package com.flipperdevices.nfceditor.impl.composable
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,29 +30,25 @@ import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.nfceditor.impl.R
 import com.flipperdevices.nfceditor.impl.composable.dialog.ComposableNfcEditExitDialog
 import com.flipperdevices.nfceditor.impl.viewmodel.NfcEditorViewModel
-import tangle.viewmodel.compose.tangleViewModel
 
 private const val KEYBOARD_HEIGHT_DP = 256
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun ComposableNfcEditorScreen(
     onBack: () -> Unit,
     onSaveEndAction: () -> Unit,
+    nfcEditorViewModel: NfcEditorViewModel,
     modifier: Modifier = Modifier,
-    nfcEditorViewModel: NfcEditorViewModel = tangleViewModel(),
     onSaveAsEndAction: (NotSavedFlipperKey) -> Unit
 ) {
-    BackHandler {
-        nfcEditorViewModel.onProcessBack(onBack)
-    }
-
     val nfcEditorState by nfcEditorViewModel.getNfcEditorState().collectAsState()
     val localNfcEditorState = nfcEditorState
 
     val currentActiveCell by nfcEditorViewModel.getCurrentActiveCellState()
 
     if (localNfcEditorState == null) {
-        LaunchedEffect(null) {
+        LaunchedEffect(onBack) {
             onBack()
         }
         return

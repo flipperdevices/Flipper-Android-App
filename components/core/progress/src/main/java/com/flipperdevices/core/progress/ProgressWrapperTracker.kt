@@ -32,6 +32,14 @@ class ProgressWrapperTracker(
             }
             return
         }
+        if (max == 0L) {
+            onProgress(MAX_PERCENT)
+            if (BuildConfig.DEBUG) {
+                error("Max is zero")
+            }
+            return
+        }
+
         val percent = current.toDouble() / max
         onProgress(percent.toFloat())
     }

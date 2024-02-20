@@ -1,19 +1,18 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class FlipperColorViewModel @VMInject constructor(
+class FlipperColorViewModel @Inject constructor(
     settings: DataStore<PairSettings>
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val colorFlipperState = MutableStateFlow(HardwareColor.WHITE)
 
     init {

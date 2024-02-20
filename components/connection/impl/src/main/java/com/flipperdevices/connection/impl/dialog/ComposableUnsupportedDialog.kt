@@ -4,17 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.connection.impl.R
-import com.flipperdevices.connection.impl.viewmodel.UnsupportedStateViewModel
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
@@ -22,10 +19,8 @@ private var inThisSessionAlreadyHided = false
 
 @Composable
 fun ComposableUnsupportedDialog(
-    viewModel: UnsupportedStateViewModel = viewModel()
+    supportedState: FlipperSupportedState
 ) {
-    val supportedState by viewModel.getUnsupportedState().collectAsState()
-
     if (supportedState == FlipperSupportedState.READY) {
         return
     }
@@ -44,6 +39,7 @@ fun ComposableUnsupportedDialog(
             onDismissRequest = { showDialog = false },
             onClickButton = { showDialog = false }
         )
+
         FlipperSupportedState.DEPRECATED_APPLICATION -> {
             val url = stringResource(R.string.dialog_unsupported_application_link)
             val context = LocalContext.current
@@ -64,6 +60,7 @@ fun ComposableUnsupportedDialog(
                 }
             )
         }
+
         FlipperSupportedState.READY -> {} // Do nothing
     }
 }

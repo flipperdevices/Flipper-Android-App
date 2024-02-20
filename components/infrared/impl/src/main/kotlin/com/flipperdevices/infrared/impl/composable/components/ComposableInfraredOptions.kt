@@ -42,6 +42,7 @@ internal fun ComposableInfraredDropDown(
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onShare: () -> Unit,
+    emulatingInProgress: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var isShowHowToUseDialog by remember { mutableStateOf(false) }
@@ -70,7 +71,8 @@ internal fun ComposableInfraredDropDown(
                 ComposableInfraredDropDownItem(
                     textId = R.string.infrared_options_edit,
                     iconId = R.drawable.ic_edit,
-                    onClick = onEdit
+                    onClick = onEdit,
+                    isActive = !emulatingInProgress
                 )
                 Divider(modifier = Modifier.padding(horizontal = 8.dp))
                 ComposableInfraredDropDownItem(
@@ -101,6 +103,7 @@ internal fun ComposableInfraredDropDown(
 private fun ComposableInfraredDropDownItem(
     @StringRes textId: Int,
     @DrawableRes iconId: Int,
+    isActive: Boolean = true,
     colorText: Color = LocalPallet.current.text100,
     colorIcon: Color = LocalPallet.current.text100,
     onClick: () -> Unit,
@@ -109,8 +112,10 @@ private fun ComposableInfraredDropDownItem(
 
     DropdownMenuItem(
         onClick = {
-            onChangeState()
-            onClick()
+            if (isActive) {
+                onChangeState()
+                onClick()
+            }
         },
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
     ) {
@@ -124,13 +129,21 @@ private fun ComposableInfraredDropDownItem(
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(iconId),
-                    tint = colorIcon,
+                    tint = if (isActive) {
+                        colorIcon
+                    } else {
+                        LocalPallet.current.keyScreenDisabled
+                    },
                     contentDescription = null
                 )
                 Text(
                     text = stringResource(id = textId),
                     style = LocalTypography.current.bodyM14,
-                    color = colorText
+                    color = if (isActive) {
+                        colorText
+                    } else {
+                        LocalPallet.current.keyScreenDisabled
+                    }
                 )
             }
         }

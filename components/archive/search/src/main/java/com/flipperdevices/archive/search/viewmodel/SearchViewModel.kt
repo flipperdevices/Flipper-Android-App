@@ -1,11 +1,11 @@
 package com.flipperdevices.archive.search.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class SearchViewModel @VMInject constructor(
+class SearchViewModel @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi,
     private val keyParser: KeyParser,
     private val synchronizationApi: SynchronizationApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val queryFlow = MutableStateFlow("")
     private val searchState = MutableStateFlow<SearchState>(SearchState.Loading)
     init {

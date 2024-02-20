@@ -1,11 +1,13 @@
 package com.flipperdevices.keyscreen.emulate.viewmodel.helpers
 
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.test.TimberRule
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.helpers.AppEmulateHelper
@@ -27,6 +29,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -57,6 +61,7 @@ class EmulateHelperTest {
     private lateinit var appEmulateHelper: AppEmulateHelper
     private lateinit var serviceApi: FlipperServiceApi
     private lateinit var requestTestApi: FlipperRequestApi
+    private lateinit var versionTestApi: FlipperVersionApi
     private lateinit var underTest: EmulateHelper
 
     private fun mockAfterStart(scope: CoroutineScope) {
@@ -73,6 +78,7 @@ class EmulateHelperTest {
     fun setUp() {
         serviceApi = mockk {
             every { requestApi } answers { requestTestApi }
+            every { flipperVersionApi } answers { versionTestApi }
         }
         flipperAppErrorHandler = mockk {
             coEvery { requestError(serviceApi, FlipperRequestPriority.FOREGROUND) } answers {
@@ -88,6 +94,12 @@ class EmulateHelperTest {
             every { notificationFlow() } coAnswers {
                 flowOf(appStateResponseOk)
             }
+        }
+        versionTestApi = mockk {
+            every { getVersionInformationFlow() } coAnswers {
+                MutableStateFlow(SemVer(0, 20)).asStateFlow()
+            }
+            coEvery { isSupported(any(), any()) } coAnswers { true }
         }
         mockFlipperRequest()
     }

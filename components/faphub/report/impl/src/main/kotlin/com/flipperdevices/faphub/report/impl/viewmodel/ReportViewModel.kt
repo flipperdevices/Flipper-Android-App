@@ -1,28 +1,27 @@
 package com.flipperdevices.faphub.report.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapReportApi
-import com.flipperdevices.faphub.report.impl.api.EXTRA_KEY_UID
 import com.flipperdevices.faphub.report.impl.model.FapReportState
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tangle.inject.TangleParam
-import tangle.viewmodel.VMInject
 
-class ReportViewModel @VMInject constructor(
-    @TangleParam(EXTRA_KEY_UID)
-    private val applicationUid: String,
+class ReportViewModel @AssistedInject constructor(
+    @Assisted private val applicationUid: String,
     private val reportApi: FapReportApi,
     private val inAppNotificationStorage: InAppNotificationStorage
-) : ViewModel(), LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "ReportViewModel"
 
     private val state = MutableStateFlow<FapReportState>(FapReportState.ReadyToReport)
@@ -44,5 +43,12 @@ class ReportViewModel @VMInject constructor(
                 onBack()
             }
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            applicationUid: String
+        ): ReportViewModel
     }
 }

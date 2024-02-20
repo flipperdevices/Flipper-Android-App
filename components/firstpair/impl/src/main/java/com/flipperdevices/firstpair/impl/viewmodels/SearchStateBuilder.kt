@@ -1,6 +1,7 @@
 package com.flipperdevices.firstpair.impl.viewmodels
 
 import android.content.Context
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.firstpair.impl.model.DevicePairState
@@ -19,6 +20,7 @@ import com.flipperdevices.firstpair.impl.model.SearchingState
 import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.firstpair.impl.viewmodels.searching.PermissionStateBuilder
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +33,7 @@ class SearchStateBuilder(
     private val viewModelSearch: BLEDeviceViewModel,
     viewModelConnecting: PairDeviceViewModel,
     scope: CoroutineScope
-) : LogTagProvider {
+) : LogTagProvider, Lifecycle.Callbacks {
     override val TAG = "SearchStateBuilder"
 
     private val state = MutableStateFlow(
@@ -50,6 +52,8 @@ class SearchStateBuilder(
 
     // If freeze is true, we don't change state on invalidate
     private var freezeInvalidate = false
+
+    override fun onResume() = invalidate()
 
     fun invalidate() {
         val permissionState = permissionStateBuilder.invalidateState()
@@ -110,34 +114,40 @@ class SearchStateBuilder(
             TURN_ON_BLUETOOTH, NOT_REQUESTED_YET -> SearchingContent.TurnOnBluetooth(
                 searchStateHolder = this
             )
+
             TURN_ON_LOCATION -> SearchingContent.TurnOnLocation(
                 searchStateHolder = this,
                 context = context
             )
+
             BLUETOOTH_PERMISSION ->
                 SearchingContent.BluetoothPermission(
                     searchStateHolder = this,
                     context = context,
                     requestedFirstTime = true
                 )
+
             BLUETOOTH_PERMISSION_GO_TO_SETTINGS ->
                 SearchingContent.BluetoothPermission(
                     searchStateHolder = this,
                     context = context,
                     requestedFirstTime = false
                 )
+
             LOCATION_PERMISSION ->
                 SearchingContent.LocationPermission(
                     searchStateHolder = this,
                     context = context,
                     requestedFirstTime = true
                 )
+
             LOCATION_PERMISSION_GO_TO_SETTINGS ->
                 SearchingContent.LocationPermission(
                     searchStateHolder = this,
                     context = context,
                     requestedFirstTime = false
                 )
+
             ALL_GRANTED -> null
         }
         if (permissionContent != null) {
@@ -155,6 +165,7 @@ class SearchStateBuilder(
                     content = SearchingContent.Searching
                 )
             )
+
             ScanState.Timeout -> state.emit(
                 SearchingState(
                     showSearching = false,
@@ -162,13 +173,14 @@ class SearchStateBuilder(
                     content = SearchingContent.FlipperNotFound(this)
                 )
             )
+
             is ScanState.Stopped -> viewModelSearch.startScanIfNotYet()
             is ScanState.Founded -> state.emit(
                 SearchingState(
                     showSearching = true,
                     showHelp = true,
                     content = SearchingContent.FoundedDevices(
-                        devices = scanState.devices,
+                        devices = scanState.devices.toPersistentList(),
                         pairState = pairState
                     )
                 )

@@ -1,8 +1,6 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
@@ -10,6 +8,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.property.getRequest
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,13 +17,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
 private const val RPC_KEY_HARDWARE_COLOR = "hardware.color"
 
-class FlipperColorViewModel @VMInject constructor(
+class FlipperColorViewModel @Inject constructor(
     private val settings: DataStore<PairSettings>
-) : ViewModel(), FlipperBleServiceConsumer {
+) : DecomposeViewModel(), FlipperBleServiceConsumer {
     private val colorFlipperState = MutableStateFlow(HardwareColor.UNRECOGNIZED)
 
     init {

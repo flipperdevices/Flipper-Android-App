@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.firstpair.impl"
@@ -15,7 +16,8 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.deeplink.api)
@@ -37,12 +39,18 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.compose.swipetorefresh)
-    implementation(libs.compose.navigation)
+    implementation(libs.compose.activity)
+    implementation(libs.bundles.decompose)
     implementation(libs.lifecycle.compose)
 
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-
     implementation(libs.ktx)
+
+    // Testing
+    testImplementation(projects.components.core.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.lifecycle.test)
+    testImplementation(libs.kotlin.coroutines.test)
 }

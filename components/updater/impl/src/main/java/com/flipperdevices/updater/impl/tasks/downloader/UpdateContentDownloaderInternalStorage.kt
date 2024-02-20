@@ -33,7 +33,7 @@ class UpdateContentDownloaderInternalStorage @Inject constructor(
     ) {
         require(updateContent is InternalStorageFirmware) { "Content not compare" }
         val deeplink = deeplinkParser.fromUri(context, updateContent.uri)
-        val deeplinkContent = if (deeplink is Deeplink.ExternalContent) {
+        val deeplinkContent = if (deeplink is Deeplink.RootLevel.SaveKey.ExternalContent) {
             deeplink.content ?: throw UpdateContentException()
         } else {
             throw UpdateContentException()

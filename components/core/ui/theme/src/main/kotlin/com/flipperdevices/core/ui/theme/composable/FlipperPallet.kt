@@ -71,7 +71,9 @@ data class FlipperPallet(
     val fapHubBuildStatusFailedText: Color,
 
     val screenStreamingBorderColor: Color,
-    val screenStreamingNotConnectedColor: Color
+    val screenStreamingNotConnectedColor: Color,
+
+    val keyScreenDisabled: Color
 ) {
     val accent: Color = Color(0xFFFF8200)
     val accentSecond: Color = Color(0xFF589DFF)
@@ -166,8 +168,6 @@ data class FlipperPallet(
     val tabSwitchActiveColor: Color = Color(0xFF000000)
     val tabSwitchInActiveColor: Color = Color(0xFF000000).copy(alpha = 0.5f)
     val tabSwitchBackgroundColor: Color = Color(0xFFFFFFFF).copy(alpha = 0.5f)
-
-    val accentShareSheetStatusBarColor = Color(0xFFD96F00)
 
     val infraredEditorDrag = Color(0xFFFFFFFF).copy(alpha = 0.5f)
     val infraredEditorKeyName = Color(0xFFFFFFFF)

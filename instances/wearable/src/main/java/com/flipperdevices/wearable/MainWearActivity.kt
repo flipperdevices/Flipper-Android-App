@@ -5,31 +5,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.arkivanov.decompose.defaultComponentContext
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
-import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.wearable.core.ui.ktx.WearFlipperTheme
 import com.flipperdevices.wearable.di.WearableComponent
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
-import com.flipperdevices.wearable.sync.wear.api.KeysListApi
+import com.flipperdevices.wearrootscreen.api.WearRootDecomposeComponent
 import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.CapabilityInfo
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -46,6 +39,9 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
 
     @Inject
     lateinit var findPhoneApi: FindPhoneApi
+
+    @Inject
+    lateinit var rootScreenFactory: WearRootDecomposeComponent.Factory
 
     private var activeChannel: ChannelClient.Channel? = null
 
@@ -113,44 +109,21 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
             activeChannel = channelClientHelper.onChannelOpen(lifecycleScope)
         }
 
-        val futureEntries by ComponentHolder.component<WearableComponent>().futureEntries
-        val composableFutureEntries by ComponentHolder.component<WearableComponent>()
-            .composableFutureEntries
-        val keysListApi = ComponentHolder.component<WearableComponent>().keysListApi
+        val rootComponent = rootScreenFactory(
+            componentContext = defaultComponentContext(),
+            onBack = { finish() }
+        )
 
         setContent {
             WearFlipperTheme {
-                SetUpNavigation(
-                    futureEntries.toImmutableSet(),
-                    composableFutureEntries.toImmutableSet(),
-                    keysListApi
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun SetUpNavigation(
-        futureEntries: ImmutableSet<AggregateFeatureEntry>,
-        composableFutureEntries: ImmutableSet<ComposableFeatureEntry>,
-        keysListApi: KeysListApi
-    ) {
-        val navController = rememberSwipeDismissableNavController()
-        SwipeDismissableNavHost(
-            navController = navController,
-            startDestination = keysListApi.ROUTE.name,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(LocalPallet.current.background)
-        ) {
-            futureEntries.forEach {
-                with(it) {
-                    navigation(navController)
-                }
-            }
-            composableFutureEntries.forEach { featureEntry ->
-                with(featureEntry) {
-                    composable(navController)
+                SwipeToDismissBox(
+                    stack = rootComponent.stack,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(LocalPallet.current.background),
+                    onDismissed = rootComponent::onBack
+                ) {
+                    it.instance.Render()
                 }
             }
         }

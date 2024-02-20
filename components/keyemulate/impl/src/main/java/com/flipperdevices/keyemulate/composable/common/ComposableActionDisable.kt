@@ -46,7 +46,7 @@ internal fun ComposableActionDisable(
         DisableButtonReason.NOT_SYNCHRONIZED -> R.string.emulate_disabled_not_synchronized
         null -> null
     }
-    ComposableEmulateButtonWithText(
+    InternalComposableEmulateButtonWithText(
         modifier = modifier,
         progress = null,
         buttonText = text,

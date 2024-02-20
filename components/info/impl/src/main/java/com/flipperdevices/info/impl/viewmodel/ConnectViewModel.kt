@@ -1,34 +1,26 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.flipperdevices.core.ui.lifecycle.LifecycleViewModel
-import com.flipperdevices.firstpair.api.FirstPairFeatureEntry
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tangle.viewmodel.VMInject
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
-class ConnectViewModel @VMInject constructor(
+class ConnectViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi,
-    private val dataStoreFirstPair: DataStore<PairSettings>,
-    private val firstPairFeatureEntry: FirstPairFeatureEntry
-) : LifecycleViewModel() {
+    private val dataStoreFirstPair: DataStore<PairSettings>
+) : DecomposeViewModel() {
     private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
     )
     private val alreadyRequestConnect = AtomicBoolean(false)
-
-    fun goToConnectScreen(navController: NavController) {
-        navController.navigate(firstPairFeatureEntry.start())
-    }
 
     fun connectAndSynchronize() {
         if (!alreadyRequestConnect.compareAndSet(false, true)) {

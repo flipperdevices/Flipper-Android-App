@@ -1,6 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.category.impl"
@@ -13,9 +14,10 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.pager)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.faphub.search.api)
     implementation(projects.components.faphub.dao.api)
@@ -34,13 +36,10 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.navigation)
+    implementation(libs.bundles.decompose)
     implementation(libs.compose.paging)
 
-    implementation(libs.kotlin.serialization.json)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
-    // Dagger deps
-    implementation(libs.tangle.viewmodel.compose)
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
+    implementation(libs.kotlin.serialization.json)
 }

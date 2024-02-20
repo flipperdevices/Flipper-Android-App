@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockup
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
-import com.flipperdevices.core.ui.ktx.SetUpNavigationBarColor
-import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -34,10 +34,10 @@ fun ComposableUpdaterScreen(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SetUpStatusBarColor(LocalPallet.current.background)
     Column(
         modifier
             .background(LocalPallet.current.background)
+            .statusBarsPadding()
     ) {
         Column(
             Modifier
@@ -89,6 +89,7 @@ private fun ColumnScope.UpdaterScreenHeader(
                 mockupImage = ComposableFlipperMockupImage.FLASH_FAILED,
                 modifier = flipperModifier
             )
+
             else -> ComposableFlipperMockup(
                 flipperColor = flipperColor,
                 isActive = false,
@@ -112,7 +113,10 @@ private fun CancelButton(
     onCancel: () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(LocalPallet.current.background)
+            .navigationBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
         if (updaterScreenState == UpdaterScreenState.CancelingUpdate) {
@@ -133,5 +137,4 @@ private fun CancelButton(
             style = LocalTypography.current.buttonM16
         )
     }
-    SetUpNavigationBarColor(LocalPallet.current.background)
 }

@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("com.squareup.anvil")
+    id("flipper.anvil")
     id("kotlin-kapt")
 }
 
@@ -16,6 +16,7 @@ dependencies {
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
+    implementation(libs.decompose)
 
     // Dagger deps
     implementation(libs.dagger)

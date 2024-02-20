@@ -11,35 +11,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockup
 import com.flipperdevices.core.ui.flippermockup.ComposableFlipperMockupImage
-import com.flipperdevices.core.ui.ktx.SetUpStatusBarColor
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
-import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
-import tangle.viewmodel.compose.tangleViewModel
 import kotlin.math.roundToInt
 
 const val FLOAT_TO_PERCENT_QUALIFIER = 100
 
 @Composable
-fun ComposableDeviceBar(deviceStatusViewModel: DeviceStatusViewModel = tangleViewModel()) {
-    val deviceStatus by deviceStatusViewModel.getState().collectAsState()
-    DeviceBar(deviceStatus)
+fun ComposableDeviceBar(deviceStatus: DeviceStatus, hardwareColor: HardwareColor) {
+    DeviceBar(deviceStatus, hardwareColor)
 }
 
 @Composable
-private fun DeviceBar(deviceStatus: DeviceStatus) {
+private fun DeviceBar(
+    deviceStatus: DeviceStatus,
+    hardwareColor: HardwareColor
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,8 +45,10 @@ private fun DeviceBar(deviceStatus: DeviceStatus) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SetUpStatusBarColor(LocalPallet.current.accent, darkIcon = true)
-        FlipperImage(deviceStatus)
+        FlipperImage(
+            deviceStatus = deviceStatus,
+            flipperColor = hardwareColor
+        )
         FlipperInformation(deviceStatus)
     }
 }
@@ -69,10 +69,8 @@ private fun FlipperInformation(deviceStatus: DeviceStatus) {
 @Composable
 private fun FlipperImage(
     deviceStatus: DeviceStatus,
-    flipperColorViewModel: FlipperColorViewModel = tangleViewModel()
+    flipperColor: HardwareColor,
 ) {
-    val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
-
     val isActive = when (deviceStatus) {
         DeviceStatus.NoDevice -> false
         is DeviceStatus.Connected -> true
@@ -161,7 +159,7 @@ private fun ComposableFlipperDeviceBarInformationPreview() {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         deviceStatus.forEach {
-            DeviceBar(it)
+            DeviceBar(it, HardwareColor.BLACK)
         }
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationError
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationHideApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
@@ -55,6 +56,14 @@ private fun ComposableInAppNotificationCard(
     LaunchedEffect(notification) {
         visibleState = true
     }
+
+    val onClickAction = remember(onNotificationHidden) {
+        {
+            visibleState = false
+            actionClicked = true
+            onNotificationHidden()
+        }
+    }
     AnimatedVisibility(
         modifier = modifier,
         visible = visibleState,
@@ -69,14 +78,10 @@ private fun ComposableInAppNotificationCard(
             backgroundColor = LocalPallet.current.notificationCard
         ) {
             when (notification) {
-                is InAppNotification.SavedKey -> ComposableInAppNotificationSavedKey(notification)
+                is InAppNotification.Successful -> ComposableInAppNotificationSavedKey(notification)
 
                 is InAppNotification.SelfUpdateReady ->
-                    ComposableInAppNotificationSelfUpdateReady(notification) {
-                        visibleState = false
-                        actionClicked = true
-                        onNotificationHidden()
-                    }
+                    ComposableInAppNotificationSelfUpdateReady(notification, onClickAction)
 
                 is InAppNotification.SelfUpdateError ->
                     ComposableInAppNotificationSelfUpdateError()
@@ -87,16 +92,17 @@ private fun ComposableInAppNotificationCard(
                 InAppNotification.ReportApp -> ComposableInAppNotificationReportApp()
                 is InAppNotification.HiddenApp -> ComposableInAppNotificationHideApp(
                     notification = notification,
-                    onClickAction = {
-                        visibleState = false
-                        actionClicked = true
-                        onNotificationHidden()
-                    }
+                    onClickAction = onClickAction
+                )
+
+                is InAppNotification.Error -> ComposableInAppNotificationError(
+                    notification,
+                    onClickAction
                 )
             }
         }
     }
-    DisposableEffect(notification) {
+    DisposableEffect(notification, onNotificationHidden) {
         val handler = Handler(Looper.getMainLooper())
 
         val fadeOutRunnable = {

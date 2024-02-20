@@ -3,8 +3,8 @@ package com.flipperdevices.bridge.service.impl.provider
 import android.content.Context
 import android.os.Looper
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.LifecycleOwner
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -15,7 +15,6 @@ import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelper
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceConnectionHelperImpl
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.android.subscribeOnFirst
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -47,8 +46,7 @@ class FlipperServiceProviderImpl @Inject constructor(
     @Synchronized
     override fun provideServiceApi(
         consumer: FlipperBleServiceConsumer,
-        lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event
+        lifecycleOwner: LifecycleOwner
     ) {
         if (BuildConfig.INTERNAL && Looper.myLooper() != Looper.getMainLooper()) {
             error("provideServiceApi() must be called from the main thread")
@@ -56,7 +54,7 @@ class FlipperServiceProviderImpl @Inject constructor(
 
         info { "Add new consumer: $consumer (${consumer.hashCode()})" }
         serviceConsumers.add(consumer)
-        lifecycleOwner.subscribeOnFirst(onDestroyEvent) { disconnectInternal(consumer) }
+        lifecycleOwner.doOnDestroy { disconnectInternal(consumer) }
 
         invalidate()
         connectionHelper.serviceBinder?.let {
@@ -69,7 +67,6 @@ class FlipperServiceProviderImpl @Inject constructor(
     @Synchronized
     override fun provideServiceApi(
         lifecycleOwner: LifecycleOwner,
-        onDestroyEvent: Lifecycle.Event,
         onError: (FlipperBleServiceError) -> Unit,
         onBleManager: (FlipperServiceApi) -> Unit
     ) {
@@ -78,7 +75,7 @@ class FlipperServiceProviderImpl @Inject constructor(
         }
 
         val consumer = LambdaFlipperBleServiceConsumer(onBleManager, onError)
-        provideServiceApi(consumer, lifecycleOwner, onDestroyEvent)
+        provideServiceApi(consumer, lifecycleOwner)
     }
 
     override suspend fun getServiceApi(): FlipperServiceApi =

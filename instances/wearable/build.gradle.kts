@@ -24,7 +24,8 @@ dependencies {
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.navigation)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.emulate.wear.impl)
@@ -32,6 +33,8 @@ dependencies {
     implementation(projects.components.wearable.sync.wear.api)
     implementation(projects.components.wearable.sync.wear.impl)
     implementation(projects.components.wearable.core.ui.theme)
+    implementation(projects.components.wearable.wearrootscreen.api)
+    implementation(projects.components.wearable.wearrootscreen.impl)
 
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.noop)
@@ -65,8 +68,10 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.wear.foundation)
-    implementation(libs.compose.wear.navigation)
     implementation(libs.compose.wear.material)
+    implementation(libs.horologist.layout)
+    implementation(libs.bundles.decompose)
+    implementation(libs.lifecycle.compose)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.coroutines.play.services)
@@ -74,9 +79,4 @@ dependencies {
     // Dagger deps
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
-
-    implementation(libs.tangle.viewmodel.api)
-    anvil(libs.tangle.viewmodel.compiler)
-    implementation(libs.tangle.fragment.api)
-    anvil(libs.tangle.fragment.compiler)
 }

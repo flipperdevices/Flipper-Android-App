@@ -33,16 +33,17 @@ internal fun ComposableSheetContent(
     onShareFile: (ShareContent) -> Unit,
     onRetry: () -> Unit,
     onClose: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ComposableSheetFooter(keyName = keyName)
         when (state) {
             is ShareState.Error -> ComposableSheetError(state.typeError, onRetry)
             ShareState.Completed ->
-                LaunchedEffect(key1 = Unit) {
+                LaunchedEffect(onClose) {
                     onClose()
                 }
             ShareState.Prepare -> ComposableSheetPrepare()

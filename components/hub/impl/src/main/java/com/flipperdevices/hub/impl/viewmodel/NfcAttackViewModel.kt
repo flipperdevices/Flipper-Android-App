@@ -1,17 +1,17 @@
 package com.flipperdevices.hub.impl.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.nfc.attack.api.NfcAttackApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import tangle.viewmodel.VMInject
+import javax.inject.Inject
 
-class NfcAttackViewModel @VMInject constructor(
+class NfcAttackViewModel @Inject constructor(
     nfcAttackApi: NfcAttackApi
-) : ViewModel() {
+) : DecomposeViewModel() {
     private val nfcAttackNotificationCountStateFlow = MutableStateFlow(0)
 
     init {

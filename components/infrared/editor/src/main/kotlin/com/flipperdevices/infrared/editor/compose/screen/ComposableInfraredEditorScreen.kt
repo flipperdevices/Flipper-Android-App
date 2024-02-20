@@ -5,15 +5,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
-import com.flipperdevices.infrared.editor.viewmodel.InfraredViewModel
+import com.flipperdevices.infrared.editor.viewmodel.InfraredEditorViewModel
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenError
 import com.flipperdevices.keyscreen.shared.screen.ComposableKeyScreenLoading
-import tangle.viewmodel.compose.tangleViewModel
 
 @Composable
+@Suppress("NonSkippableComposable")
 internal fun ComposableInfraredEditorScreen(
+    viewModel: InfraredEditorViewModel,
     onBack: () -> Unit,
-    viewModel: InfraredViewModel = tangleViewModel()
 ) {
     val keyState by viewModel.getKeyState().collectAsState()
     val dialogState by viewModel.getDialogState().collectAsState()
@@ -23,17 +23,42 @@ internal fun ComposableInfraredEditorScreen(
         is InfraredEditorState.Error -> ComposableKeyScreenError(
             text = stringResource(id = localState.reason)
         )
+
         is InfraredEditorState.Ready ->
             ComposableInfraredEditorScreenReady(
                 keyState = localState,
                 dialogState = dialogState,
                 onDoNotSave = onBack,
                 onDismissDialog = viewModel::onDismissDialog,
-                onCancel = { viewModel.processCancel(onBack) },
-                onSave = { viewModel.processSave(onBack) },
-                onTapRemote = {},
-                onDelete = viewModel::processDeleteRemote,
-                onEditOrder = viewModel::processEditOrder
+                onCancel = {
+                    viewModel.processCancel(keyState, onBack)
+                },
+                onSave = {
+                    viewModel.processSave(currentState = localState, onBack)
+                },
+                onChangeName = { index, value ->
+                    viewModel.editRemoteName(
+                        currentState = localState,
+                        index = index,
+                        source = value
+                    )
+                },
+                onDelete = {
+                    viewModel.processDeleteRemote(
+                        currentState = localState,
+                        index = it
+                    )
+                },
+                onEditOrder = { from, to ->
+                    viewModel.processEditOrder(
+                        currentState = localState,
+                        from = from,
+                        to = to
+                    )
+                },
+                onChangeIndexEditor = {
+                    viewModel.processChangeIndexEditor(localState, it)
+                }
             )
     }
 }

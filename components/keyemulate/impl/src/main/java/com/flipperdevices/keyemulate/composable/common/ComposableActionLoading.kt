@@ -20,7 +20,7 @@ fun ComposableActionLoading(
     modifier: Modifier = Modifier
 ) {
     val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
-    ComposableEmulateButtonWithText(
+    InternalComposableEmulateButtonWithText(
         modifier = modifier,
         buttonModifier = Modifier.placeholder(
             visible = true,
