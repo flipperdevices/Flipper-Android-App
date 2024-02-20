@@ -26,6 +26,9 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.work.ktx)
+    implementation(libs.ktx)
+    implementation(libs.kotlin.serialization.json)
 
     // Testing
     testImplementation(projects.components.core.test)
@@ -40,5 +43,4 @@ dependencies {
     testImplementation(libs.ktor.negotiation)
     testImplementation(libs.ktor.serialization)
     testImplementation(libs.ktor.mock)
-    testImplementation(libs.kotlin.serialization.json)
 }

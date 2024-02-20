@@ -6,6 +6,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.json.Json
 
 @Parcelize
 @Serializable
@@ -15,7 +16,9 @@ data class UpdateRequest(
     val changelog: String?,
     val content: UpdateContent,
     val requestId: Long = System.currentTimeMillis()
-) : Parcelable
+) : Parcelable {
+    fun encode(): String = Json.encodeToString(serializer(), this)
+}
 
 @Parcelize
 @Serializable

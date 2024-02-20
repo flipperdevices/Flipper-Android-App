@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_notification_cancel">Cancel</string>
+    <string name="update_notification_title">Flipper Update</string>
+    <string name="update_notification_desc">Flipper Update Description</string>
+
+
+    <string name="update_notification_channel_title">Flipper Update Channel</string>
+    <string name="update_notification_channel_desc">Flipper Update Channel Description</string>
+</resources>
