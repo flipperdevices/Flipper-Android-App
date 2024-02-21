@@ -16,4 +16,9 @@
 
     <string name="error_update_title">Unable to Update</string>
     <string name="error_update_desc">Сheck your internet connection or try again later</string>
+
+
+    <string name="ready_to_update_title">Update Apps</string>
+    <string name="ready_to_update_desc">Apps installed on your Flipper require updates</string>
+    <string name="ready_to_update_btn">Go to Update</string>
 </resources>

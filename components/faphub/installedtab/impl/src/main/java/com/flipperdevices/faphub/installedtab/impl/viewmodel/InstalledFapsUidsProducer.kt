@@ -39,7 +39,9 @@ class InstalledFapsUidsProducer @Inject constructor(
         val oldJob = applicationUidJob
         applicationUidJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationUidsStateFlow.emit(FapInstalledUidsState.Loading)
+            if (force) {
+                applicationUidsStateFlow.emit(FapInstalledUidsState.Loading)
+            }
             combine(
                 fapManifestApi.getManifestFlow(),
                 queueApi.getAllTasks()

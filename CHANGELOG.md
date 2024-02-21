@@ -2,6 +2,7 @@
 
 # 1.6.9 - In progress
 
+- [Feature] Add ready app updates popup and notification dot
 
 # 1.6.8
 

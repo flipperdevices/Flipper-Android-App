@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
 
     implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.faphub.installedtab.api)
 
     implementation(libs.lifecycle.runtime.ktx)
 

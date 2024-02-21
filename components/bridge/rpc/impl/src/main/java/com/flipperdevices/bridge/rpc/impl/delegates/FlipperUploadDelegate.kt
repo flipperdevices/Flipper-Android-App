@@ -24,6 +24,7 @@ class FlipperUploadDelegate @Inject constructor() : LogTagProvider {
         val progressListener = ProgressWrapperTracker(externalProgressListener)
 
         var currentProgress = 0L
+        val lenght = fileOnAndroid.length()
 
         fileOnAndroid.inputStream().use { inputStream ->
             val requestFlow = streamToCommandFlow(
@@ -39,7 +40,7 @@ class FlipperUploadDelegate @Inject constructor() : LogTagProvider {
                     data = it,
                     onSendCallback = {
                         currentProgress += it.storageWriteRequest.file.data.size()
-                        progressListener.report(currentProgress, fileOnAndroid.length())
+                        progressListener.report(currentProgress, lenght)
                     }
                 )
             }

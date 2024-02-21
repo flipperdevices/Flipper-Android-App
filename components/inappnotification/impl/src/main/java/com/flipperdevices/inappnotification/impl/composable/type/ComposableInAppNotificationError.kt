@@ -2,15 +2,10 @@ package com.flipperdevices.inappnotification.impl.composable.type
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,44 +22,34 @@ internal fun ComposableInAppNotificationError(
     error: InAppNotification.Error,
     onClickAction: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(id = R.drawable.pic_update_error),
-            contentDescription = stringResource(error.titleId),
-        )
-        Column(Modifier.weight(1f)) {
-            Text(
-                text = stringResource(error.titleId),
-                style = LocalTypography.current.subtitleB12
+    ComposableInAppNotificationBase(
+        icon = {
+            Image(
+                modifier = Modifier.padding(12.dp).size(24.dp),
+                painter = painterResource(id = R.drawable.pic_update_error),
+                contentDescription = stringResource(error.titleId),
             )
-            Text(
-                text = stringResource(error.descId),
-                style = LocalTypography.current.subtitleR12
-            )
+        },
+        titleId = error.titleId,
+        descId = error.descId,
+        actionButton = {
+            val actionTextId = error.actionTextId
+            val action = error.action
+            if (actionTextId != null && action != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .clickable {
+                            action()
+                            onClickAction()
+                        },
+                    text = stringResource(actionTextId),
+                    style = LocalTypography.current.subtitleM12,
+                    color = LocalPallet.current.accentSecond
+                )
+            }
         }
-        val actionTextId = error.actionTextId
-        val action = error.action
-        if (actionTextId != null && action != null) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .clickable {
-                        action()
-                        onClickAction()
-                    },
-                text = stringResource(actionTextId),
-                style = LocalTypography.current.subtitleM12,
-                color = LocalPallet.current.accentSecond
-            )
-        }
-    }
+    )
 }
 
 @Preview
