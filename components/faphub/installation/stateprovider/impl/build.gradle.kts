@@ -1,33 +1,42 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.stateprovider.impl"
 
-dependencies {
-    implementation(projects.components.faphub.installation.stateprovider.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.data)
+            implementation(projects.components.faphub.installation.stateprovider.api)
 
-    implementation(projects.components.bridge.api)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.data)
 
-    implementation(projects.components.faphub.dao.api)
-    implementation(projects.components.faphub.installation.manifest.api)
-    implementation(projects.components.faphub.installation.queue.api)
-    implementation(projects.components.faphub.target.api)
+            implementation(projects.components.bridge.api)
 
-    implementation(projects.components.bridge.rpc.api)
+            implementation(projects.components.faphub.dao.api)
+            implementation(projects.components.faphub.installation.manifest.api)
+            implementation(projects.components.faphub.installation.queue.api)
+            implementation(projects.components.faphub.target.api)
 
-    implementation(libs.kotlin.coroutines)
-    implementation(libs.kotlin.immutable.collections)
+            implementation(projects.components.bridge.rpc.api)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlin.coroutines.test)
+            implementation(libs.kotlin.coroutines)
+            implementation(libs.kotlin.immutable.collections)
+
+            // Testing
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.components.core.test)
+            implementation(libs.junit)
+            implementation(libs.mockk)
+            implementation(libs.kotlin.coroutines.test)
+        }
+    }
 }

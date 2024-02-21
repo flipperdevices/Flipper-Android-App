@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
@@ -7,41 +7,48 @@ plugins {
 
 android.namespace = "com.flipperdevices.keyedit.impl"
 
-dependencies {
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.decompose)
-    implementation(projects.components.core.ui.lifecycle)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.keyedit.api)
-    implementation(projects.components.keyparser.api)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.ktx)
+            implementation(projects.components.core.ui.theme)
+            implementation(projects.components.core.ui.decompose)
+            implementation(projects.components.core.ui.lifecycle)
 
-    implementation(projects.components.keyscreen.shared)
+            implementation(projects.components.keyedit.api)
+            implementation(projects.components.keyparser.api)
 
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.inappnotification.api)
-    implementation(projects.components.singleactivity.api)
-    implementation(projects.components.deeplink.api)
+            implementation(projects.components.keyscreen.shared)
 
-    implementation(libs.appcompat)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.bridge.synchronization.api)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.inappnotification.api)
+            implementation(projects.components.singleactivity.api)
+            implementation(projects.components.deeplink.api)
 
-    implementation(libs.kotlin.serialization.json)
+            implementation(libs.appcompat)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.constraint)
-    implementation(libs.bundles.decompose)
-    implementation(libs.lifecycle.compose)
+            implementation(libs.kotlin.serialization.json)
 
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.compose.constraint)
+            implementation(libs.bundles.decompose)
+            implementation(libs.lifecycle.compose)
+
+            implementation(libs.lifecycle.viewmodel.ktx)
+            implementation(libs.lifecycle.runtime.ktx)
+        }
+    }
 }

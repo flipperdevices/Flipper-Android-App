@@ -1,14 +1,21 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.report.api"
 
-dependencies {
-    implementation(projects.components.core.ui.decompose)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(libs.decompose)
+            implementation(projects.components.core.ui.decompose)
 
-    implementation(libs.kotlin.serialization.json)
+            implementation(libs.decompose)
+
+            implementation(libs.kotlin.serialization.json)
+        }
+    }
 }

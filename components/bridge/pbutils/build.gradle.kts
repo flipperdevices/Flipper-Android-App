@@ -1,11 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.protobuf")
 }
 
 android.namespace = "com.flipperdevices.bridge.pbutils"
 
-dependencies {
-    implementation(projects.components.core.log)
-    implementation(libs.kotlin.coroutines)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
+
+            implementation(projects.components.core.log)
+            implementation(libs.kotlin.coroutines)
+        }
+    }
 }

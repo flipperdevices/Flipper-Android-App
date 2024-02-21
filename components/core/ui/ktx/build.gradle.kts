@@ -1,25 +1,32 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ui.ktx"
 
-dependencies {
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.placeholder)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.svg)
-    implementation(libs.image.lottie)
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.compose)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.theme)
 
-    implementation(libs.decompose)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.compose.placeholder)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.svg)
+            implementation(libs.image.lottie)
+            implementation(libs.lifecycle.viewmodel.ktx)
+            implementation(libs.lifecycle.compose)
+
+            implementation(libs.decompose)
+        }
+    }
 }

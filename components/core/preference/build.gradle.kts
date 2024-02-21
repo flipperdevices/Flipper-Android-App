@@ -1,14 +1,21 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
     id("flipper.protobuf")
 }
 
 android.namespace = "com.flipperdevices.core.preference"
 
-dependencies {
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.share)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    api(libs.datastore)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.share)
+
+            api(libs.datastore)
+        }
+    }
 }

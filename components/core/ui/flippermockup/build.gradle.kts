@@ -1,17 +1,24 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ui.flippermockup"
 
-dependencies {
-    implementation(projects.components.core.ui.theme)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
+            implementation(projects.components.core.ui.theme)
 
-    implementation(projects.components.core.preference)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+
+            implementation(projects.components.core.preference)
+        }
+    }
 }

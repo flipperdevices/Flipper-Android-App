@@ -1,26 +1,33 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.errors"
 
-dependencies {
-    implementation(projects.components.faphub.errors.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
+            implementation(projects.components.faphub.errors.api)
 
-    implementation(projects.components.rootscreen.api)
-    implementation(projects.components.deeplink.api)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.theme)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.paging)
+            implementation(projects.components.rootscreen.api)
+            implementation(projects.components.deeplink.api)
 
-    implementation(libs.ktor.client)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.compose.paging)
+
+            implementation(libs.ktor.client)
+        }
+    }
 }

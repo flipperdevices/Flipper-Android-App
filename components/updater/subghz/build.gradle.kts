@@ -1,48 +1,57 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.subghz"
 
-dependencies {
-    implementation(projects.components.updater.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
+            implementation(projects.components.updater.api)
 
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.data)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.preference)
-    implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.res)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.bridge.pbutils)
+            implementation(projects.components.bridge.service.api)
 
-    implementation(projects.components.analytics.metric.api)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.data)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.preference)
+            implementation(projects.components.core.ui.lifecycle)
+            implementation(projects.components.core.ui.res)
 
-    implementation(libs.lifecycle.runtime.ktx)
+            implementation(projects.components.analytics.metric.api)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
+            implementation(libs.lifecycle.runtime.ktx)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(projects.components.updater.downloader)
-    testImplementation(libs.ktor.client)
-    testImplementation(libs.ktor.negotiation)
-    testImplementation(libs.ktor.serialization)
-    testImplementation(libs.ktor.mock)
-    testImplementation(libs.kotlin.serialization.json)
-    testImplementation(libs.kotlin.immutable.collections)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+
+            // Testing
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.components.core.test)
+            implementation(libs.junit)
+            implementation(libs.mockk)
+            implementation(libs.ktx.testing)
+            implementation(libs.roboelectric)
+            implementation(libs.lifecycle.test)
+            implementation(libs.kotlin.coroutines.test)
+            implementation(projects.components.updater.downloader)
+            implementation(libs.ktor.client)
+            implementation(libs.ktor.negotiation)
+            implementation(libs.ktor.serialization)
+            implementation(libs.ktor.mock)
+            implementation(libs.kotlin.serialization.json)
+            implementation(libs.kotlin.immutable.collections)
+        }
+    }
 }

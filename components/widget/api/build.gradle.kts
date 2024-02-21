@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.widget.api"
 
-dependencies {
-    implementation(projects.components.core.ui.decompose)
-    implementation(projects.components.deeplink.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(libs.decompose)
+            implementation(projects.components.core.ui.decompose)
+            implementation(projects.components.deeplink.api)
+
+            implementation(libs.decompose)
+        }
+    }
 }

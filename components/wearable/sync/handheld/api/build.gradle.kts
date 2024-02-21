@@ -1,9 +1,16 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.handheld.api"
 
-dependencies {
-    implementation(projects.components.bridge.dao.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
+
+            implementation(projects.components.bridge.dao.api)
+        }
+    }
 }

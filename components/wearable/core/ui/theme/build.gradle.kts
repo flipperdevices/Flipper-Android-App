@@ -1,15 +1,22 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.wearable.core.ui.theme"
 
-dependencies {
-    implementation(projects.components.core.ui.theme)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.wear.foundation)
-    implementation(libs.compose.wear.material)
+            implementation(projects.components.core.ui.theme)
+
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.wear.foundation)
+            implementation(libs.compose.wear.material)
+        }
+    }
 }

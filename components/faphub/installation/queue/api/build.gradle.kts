@@ -1,14 +1,21 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.queue.api"
 
-dependencies {
-    implementation(projects.components.faphub.dao.api)
-    implementation(projects.components.faphub.installation.manifest.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.data)
+            implementation(projects.components.faphub.dao.api)
+            implementation(projects.components.faphub.installation.manifest.api)
 
-    implementation(libs.kotlin.coroutines)
+            implementation(projects.components.core.data)
+
+            implementation(libs.kotlin.coroutines)
+        }
+    }
 }

@@ -1,14 +1,21 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.filemanager.api"
 
-dependencies {
-    implementation(projects.components.deeplink.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.ui.decompose)
+            implementation(projects.components.deeplink.api)
 
-    implementation(libs.compose.ui)
-    implementation(libs.decompose)
+            implementation(projects.components.core.ui.decompose)
+
+            implementation(libs.compose.ui)
+            implementation(libs.decompose)
+        }
+    }
 }

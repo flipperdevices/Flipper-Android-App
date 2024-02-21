@@ -1,18 +1,25 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.deeplink.api"
 
-dependencies {
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.core.ktx)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(libs.kotlin.serialization.json)
-    implementation(libs.compose.ui)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.core.ktx)
 
-    implementation(libs.annotations)
-    implementation(libs.appcompat)
+            implementation(libs.kotlin.serialization.json)
+            implementation(libs.compose.ui)
+
+            implementation(libs.annotations)
+            implementation(libs.appcompat)
+        }
+    }
 }

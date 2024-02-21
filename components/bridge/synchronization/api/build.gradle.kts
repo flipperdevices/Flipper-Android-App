@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.api"
 
-dependencies {
-    implementation(projects.components.bridge.dao.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(libs.compose.ui)
-    implementation(libs.decompose)
+            implementation(projects.components.bridge.dao.api)
+
+            implementation(libs.compose.ui)
+            implementation(libs.decompose)
+        }
+    }
 }

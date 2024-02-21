@@ -1,23 +1,30 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.keyscreen.shared"
 
-dependencies {
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.ktx)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.keyparser.api)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.theme)
+            implementation(projects.components.core.ui.ktx)
 
-    implementation(libs.kotlin.immutable.collections)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.keyparser.api)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.constraint)
+            implementation(libs.kotlin.immutable.collections)
+
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.compose.constraint)
+        }
+    }
 }

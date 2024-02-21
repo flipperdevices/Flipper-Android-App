@@ -1,12 +1,19 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.metric.noop"
 
-dependencies {
-    implementation(projects.components.analytics.metric.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.di)
+            implementation(projects.components.analytics.metric.api)
+
+            implementation(projects.components.core.di)
+        }
+    }
 }

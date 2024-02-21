@@ -1,24 +1,31 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.faphub.appcard.composable"
 
-dependencies {
-    implementation(projects.components.faphub.dao.api)
-    implementation(projects.components.faphub.errors.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
+            implementation(projects.components.faphub.dao.api)
+            implementation(projects.components.faphub.errors.api)
 
-    implementation(libs.kotlin.immutable.collections)
+            implementation(projects.components.core.ui.ktx)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.theme)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.coil.compose)
-    implementation(libs.compose.paging)
+            implementation(libs.kotlin.immutable.collections)
+
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.coil.compose)
+            implementation(libs.compose.paging)
+        }
+    }
 }

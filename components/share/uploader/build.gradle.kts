@@ -1,44 +1,53 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.share.uploader"
 
-dependencies {
-    implementation(projects.components.analytics.metric.api)
-    implementation(projects.components.share.api)
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.keyparser.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.share)
+            implementation(projects.components.analytics.metric.api)
+            implementation(projects.components.share.api)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.keyparser.api)
 
-    implementation(projects.components.keyedit.api)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.ui.lifecycle)
+            implementation(projects.components.core.ui.ktx)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.theme)
+            implementation(projects.components.core.share)
 
-    implementation(libs.appcompat)
+            implementation(projects.components.keyedit.api)
 
-    implementation(libs.kotlin.coroutines)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.compose)
+            implementation(libs.appcompat)
 
-    implementation(libs.kotlin.serialization.json)
+            implementation(libs.kotlin.coroutines)
+            implementation(libs.lifecycle.runtime.ktx)
+            implementation(libs.lifecycle.viewmodel.ktx)
+            implementation(libs.lifecycle.compose)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
+            implementation(libs.kotlin.serialization.json)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+
+            // Testing
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.components.core.test)
+            implementation(libs.junit)
+            implementation(libs.mockk)
+        }
+    }
 }

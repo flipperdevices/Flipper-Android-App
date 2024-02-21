@@ -1,16 +1,23 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.wear.api"
 
-dependencies {
-    implementation(projects.components.core.ui.decompose)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.decompose)
+            implementation(projects.components.core.ui.decompose)
 
-    implementation(projects.components.wearable.wearrootscreen.api)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.tooling)
+            implementation(libs.decompose)
+
+            implementation(projects.components.wearable.wearrootscreen.api)
+        }
+    }
 }

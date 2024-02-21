@@ -1,35 +1,44 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.rpcinfo.impl"
 
-dependencies {
-    implementation(projects.components.bridge.rpcinfo.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.data)
+            implementation(projects.components.bridge.rpcinfo.api)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.data)
 
-    implementation(projects.components.analytics.shake2report.api)
-    implementation(projects.components.analytics.metric.api)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.bridge.service.api)
+            implementation(projects.components.bridge.pbutils)
 
-    implementation(libs.kotlin.immutable.collections)
-    implementation(libs.kotlin.coroutines)
+            implementation(projects.components.analytics.shake2report.api)
+            implementation(projects.components.analytics.metric.api)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+            implementation(libs.kotlin.immutable.collections)
+            implementation(libs.kotlin.coroutines)
+
+            // Testing
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.components.core.test)
+            implementation(libs.junit)
+            implementation(libs.mockk)
+            implementation(libs.mockito.kotlin)
+            implementation(libs.ktx.testing)
+            implementation(libs.roboelectric)
+            implementation(libs.lifecycle.test)
+            implementation(libs.kotlin.coroutines.test)
+        }
+    }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.share"
@@ -13,8 +13,15 @@ android {
     }
 }
 
-dependencies {
-    implementation(projects.components.core.ktx)
-    implementation(libs.annotations)
-    implementation(libs.appcompat)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
+
+            implementation(projects.components.core.ktx)
+            implementation(libs.annotations)
+            implementation(libs.appcompat)
+        }
+    }
 }

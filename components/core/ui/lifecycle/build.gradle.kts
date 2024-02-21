@@ -1,22 +1,29 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
 }
 
 android.namespace = "com.flipperdevices.core.ui.lifecycle"
 
-dependencies {
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.log)
-    implementation(projects.components.bridge.service.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.log)
+            implementation(projects.components.bridge.service.api)
 
-    api(libs.decompose)
-    implementation(libs.kotlin.coroutines)
-    api(libs.essenty.lifecycle)
-    implementation(libs.essenty.lifecycle.coroutines)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.foundation)
 
-    implementation(libs.annotations)
+            api(libs.decompose)
+            implementation(libs.kotlin.coroutines)
+            api(libs.essenty.lifecycle)
+            implementation(libs.essenty.lifecycle.coroutines)
+
+            implementation(libs.annotations)
+        }
+    }
 }

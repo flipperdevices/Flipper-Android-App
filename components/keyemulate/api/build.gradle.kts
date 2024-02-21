@@ -1,24 +1,27 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.keyemulate.api"
 
-dependencies {
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.service.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
-    implementation(libs.decompose)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.ui.ktx)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.bridge.service.api)
 
-    // Dagger deps
-    implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+            // Compose
+            implementation(libs.compose.ui)
+            implementation(libs.compose.foundation)
+            implementation(libs.decompose)
+        }
+    }
 }

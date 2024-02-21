@@ -1,15 +1,22 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.wearrootscreen.api"
 
-dependencies {
-    implementation(projects.components.core.ui.decompose)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.bridge.dao.api)
+            implementation(projects.components.core.ui.decompose)
 
-    implementation(libs.compose.ui)
-    implementation(libs.bundles.decompose)
+            implementation(projects.components.bridge.dao.api)
+
+            implementation(libs.compose.ui)
+            implementation(libs.bundles.decompose)
+        }
+    }
 }

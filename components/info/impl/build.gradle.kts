@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
     id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
@@ -7,71 +7,80 @@ plugins {
 
 android.namespace = "com.flipperdevices.info.impl"
 
-dependencies {
-    implementation(projects.components.core.di)
-    implementation(projects.components.core.markdown)
-    implementation(projects.components.core.ktx)
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.preference)
-    implementation(projects.components.core.activityholder)
-    implementation(projects.components.core.data)
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.decompose)
-    implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.dialog)
-    implementation(projects.components.core.ui.flippermockup)
-    implementation(projects.components.core.share)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.info.api)
-    implementation(projects.components.info.shared)
+            implementation(projects.components.core.di)
+            implementation(projects.components.core.markdown)
+            implementation(projects.components.core.ktx)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.preference)
+            implementation(projects.components.core.activityholder)
+            implementation(projects.components.core.data)
+            implementation(projects.components.core.ui.res)
+            implementation(projects.components.core.ui.ktx)
+            implementation(projects.components.core.ui.decompose)
+            implementation(projects.components.core.ui.lifecycle)
+            implementation(projects.components.core.ui.theme)
+            implementation(projects.components.core.ui.dialog)
+            implementation(projects.components.core.ui.flippermockup)
+            implementation(projects.components.core.share)
 
-    implementation(projects.components.updater.api)
-    implementation(projects.components.firstpair.api)
-    implementation(projects.components.updater.api)
-    implementation(projects.components.settings.api)
-    implementation(projects.components.deeplink.api)
-    implementation(projects.components.bottombar.api)
-    implementation(projects.components.rootscreen.api)
+            implementation(projects.components.info.api)
+            implementation(projects.components.info.shared)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.rpcinfo.api)
+            implementation(projects.components.updater.api)
+            implementation(projects.components.firstpair.api)
+            implementation(projects.components.updater.api)
+            implementation(projects.components.settings.api)
+            implementation(projects.components.deeplink.api)
+            implementation(projects.components.bottombar.api)
+            implementation(projects.components.rootscreen.api)
 
-    // Core deps
-    implementation(libs.ktx)
-    implementation(libs.annotations)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.bridge.synchronization.api)
+            implementation(projects.components.bridge.service.api)
+            implementation(projects.components.bridge.pbutils)
+            implementation(projects.components.bridge.rpcinfo.api)
 
-    implementation(libs.appcompat)
+            // Core deps
+            implementation(libs.ktx)
+            implementation(libs.annotations)
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
+            implementation(libs.appcompat)
 
-    implementation(libs.bundles.decompose)
-    implementation(libs.bundles.essenty)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.material)
+            implementation(libs.compose.tooling)
+            implementation(libs.compose.foundation)
 
-    implementation(libs.kotlin.serialization.json)
-    implementation(libs.kotlin.coroutines)
-    implementation(libs.kotlin.immutable.collections)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.compose)
+            implementation(libs.bundles.decompose)
+            implementation(libs.bundles.essenty)
 
-    implementation(libs.ble)
-    implementation(libs.ble.common)
-    implementation(libs.ble.scan)
+            implementation(libs.kotlin.serialization.json)
+            implementation(libs.kotlin.coroutines)
+            implementation(libs.kotlin.immutable.collections)
+            implementation(libs.lifecycle.runtime.ktx)
+            implementation(libs.lifecycle.viewmodel.ktx)
+            implementation(libs.lifecycle.compose)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+            implementation(libs.ble)
+            implementation(libs.ble.common)
+            implementation(libs.ble.scan)
+
+            // Testing
+        }
+        androidUnitTest.dependencies {
+            implementation(projects.components.core.test)
+            implementation(libs.junit)
+            implementation(libs.mockk)
+            implementation(libs.ktx.testing)
+            implementation(libs.roboelectric)
+            implementation(libs.lifecycle.test)
+            implementation(libs.kotlin.coroutines.test)
+        }
+    }
 }

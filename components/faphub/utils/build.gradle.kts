@@ -1,17 +1,24 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.faphub.utils"
 
-dependencies {
-    implementation(projects.components.core.data)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.rpc.api)
+            implementation(projects.components.core.data)
 
-    implementation(libs.kotlin.coroutines)
+            implementation(projects.components.bridge.api)
+            implementation(projects.components.bridge.pbutils)
+            implementation(projects.components.bridge.rpc.api)
 
-    implementation(libs.dagger)
+            implementation(libs.kotlin.coroutines)
+
+            implementation(libs.dagger)
+        }
+    }
 }

@@ -1,24 +1,31 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.selfupdater.source.googleplay"
 
-dependencies {
-    implementation(projects.components.selfupdater.api)
-    implementation(projects.components.inappnotification.api)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+        }
+        androidMain.dependencies {
 
-    implementation(projects.components.core.log)
-    implementation(projects.components.core.activityholder)
+            implementation(projects.components.selfupdater.api)
+            implementation(projects.components.inappnotification.api)
 
-    // In-app update
-    implementation(libs.app.update)
-    implementation(libs.app.update.ktx)
-    implementation(libs.app.update.ktx)
+            implementation(projects.components.core.log)
+            implementation(projects.components.core.activityholder)
 
-    implementation(libs.kotlin.coroutines.play.services)
+            // In-app update
+            implementation(libs.app.update)
+            implementation(libs.app.update.ktx)
+            implementation(libs.app.update.ktx)
 
-    // Dagger deps
-    implementation(projects.components.core.di)
+            implementation(libs.kotlin.coroutines.play.services)
+
+            // Dagger deps
+            implementation(projects.components.core.di)
+        }
+    }
 }
