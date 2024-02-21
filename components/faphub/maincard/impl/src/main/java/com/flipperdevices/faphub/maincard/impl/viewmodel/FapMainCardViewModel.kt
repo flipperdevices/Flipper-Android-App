@@ -8,17 +8,11 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.installedtab.api.FapUpdatePendingCountApi
 import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 class FapMainCardViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
@@ -48,7 +42,6 @@ class FapMainCardViewModel @Inject constructor(
         fapUpdatePendingCountApi.getUpdatePendingCount().onEach {
             isExistAppReadyToUpdateStateFlow.emit(it > 0)
         }.launchIn(viewModelScope)
-
     }
 
     fun getFapMainCardState() = fapMainCardStateFlow.asStateFlow()

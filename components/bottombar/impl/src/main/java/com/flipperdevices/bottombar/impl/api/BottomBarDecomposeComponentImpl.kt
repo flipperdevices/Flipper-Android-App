@@ -28,6 +28,7 @@ import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
@@ -77,7 +78,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         backHandler.register(backCallback)
     }
 
-    private val notificationViewModel = viewModelWithFactory(key = this) {
+    private val notificationViewModel = viewModelWithFactoryWithoutRemember(key = this) {
         inAppNotificationViewModelFactory(this)
     }
 

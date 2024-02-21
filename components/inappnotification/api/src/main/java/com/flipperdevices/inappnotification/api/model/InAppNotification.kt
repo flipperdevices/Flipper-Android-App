@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 
 private const val NOTIFICATION_UPDATE_MS = 5000L
 private const val NOTIFICATION_REPORT_APP_MS = 3000L
+private const val NOTIFICATION_APP_UPDATE_MS = 10000L
 private const val NOTIFICATION_HIDE_APP_MS = 5000L
 private const val NOTIFICATION_DURATION_MS = 3 * 1000L
 
@@ -51,6 +52,6 @@ sealed class InAppNotification {
     ) : InAppNotification()
 
     data object ReadyToUpdateFaps : InAppNotification() {
-        override val durationMs = NOTIFICATION_UPDATE_MS
+        override val durationMs = NOTIFICATION_APP_UPDATE_MS
     }
 }

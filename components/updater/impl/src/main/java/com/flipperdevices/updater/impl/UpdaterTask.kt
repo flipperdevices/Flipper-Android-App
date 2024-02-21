@@ -35,6 +35,7 @@ import java.net.UnknownHostException
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
+@Suppress("LongParameterList")
 class UpdaterTask(
     serviceProvider: FlipperServiceProvider,
     private val context: Context,
@@ -156,12 +157,13 @@ class UpdaterTask(
             return@useTemporaryFolder
         }
 
-        fapNeedUpdatePopUpHelper.notifyIfUpdateAvailable()
-
         withTimeoutOrNull(DISCONNECT_WAIT_TIMEOUT_MS) {
             serviceApi.connectionInformationApi.getConnectionStateFlow()
                 .filter { !it.isConnected }.first()
         }
+
+        fapNeedUpdatePopUpHelper.notifyIfUpdateAvailable()
+
         stateListener(UpdatingState.Rebooting)
     }
 

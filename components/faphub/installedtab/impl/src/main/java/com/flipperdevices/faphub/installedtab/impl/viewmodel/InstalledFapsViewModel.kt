@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 
 class InstalledFapsViewModel @Inject constructor(
     private val fapManifestApi: FapManifestApi,

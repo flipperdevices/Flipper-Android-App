@@ -7,11 +7,10 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.FapInstalledInternalLoadingState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsFromNetworkProducer
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Provider
 
 @ContributesBinding(AppGraph::class, FapUpdatePendingCountApi::class)
 class FapUpdatePendingCountApiImpl @Inject constructor(
