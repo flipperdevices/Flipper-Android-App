@@ -33,16 +33,7 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     override val stack: Value<ChildStack<FapHubNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapHubNavigationConfig.serializer(),
-        initialStack = {
-            if (deeplink is Deeplink.BottomBar.HubTab.FapHub.Fap) {
-                listOf(
-                    FapHubNavigationConfig.Main,
-                    FapHubNavigationConfig.FapScreen(deeplink.appId)
-                )
-            } else {
-                listOf(FapHubNavigationConfig.Main)
-            }
-        },
+        initialStack = { getInitialStack(deeplink) },
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -51,10 +42,11 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         config: FapHubNavigationConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        FapHubNavigationConfig.Main -> mainScreenFactory(
+        is FapHubNavigationConfig.Main -> mainScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            deeplink = config.deeplink
         )
 
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
@@ -73,6 +65,25 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
             category = config.fapCategory,
             onBack = { navigation.popOr(onBack::invoke) }
         )
+    }
+
+    private fun getInitialStack(deeplink: Deeplink.BottomBar.HubTab.FapHub?): List<FapHubNavigationConfig> {
+        return if (deeplink is Deeplink.BottomBar.HubTab.FapHub) {
+            when (deeplink) {
+                is Deeplink.BottomBar.HubTab.FapHub.Fap -> listOf(
+                    FapHubNavigationConfig.Main(deeplink = null),
+                    FapHubNavigationConfig.FapScreen(deeplink.appId)
+                )
+
+                is Deeplink.BottomBar.HubTab.FapHub.MainScreen -> listOf(
+                    FapHubNavigationConfig.Main(
+                        deeplink
+                    )
+                )
+            }
+        } else {
+            listOf(FapHubNavigationConfig.Main(deeplink = null))
+        }
     }
 
     @AssistedFactory

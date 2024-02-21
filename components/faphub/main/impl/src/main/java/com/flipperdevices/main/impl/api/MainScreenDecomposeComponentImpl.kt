@@ -7,6 +7,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.push
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.installedtab.api.FapInstalledApi
 import com.flipperdevices.main.impl.composable.ComposableFapHubMainScreen
@@ -26,17 +27,18 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi,
-    private val mainViewModelProvider: Provider<MainViewModel>
+    private val mainViewModelFactory: MainViewModel.Factory
 ) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
-        val mainViewModel = viewModelWithFactory(key = null) {
-            mainViewModelProvider.get()
+        val mainViewModel = viewModelWithFactory(key = deeplink) {
+            mainViewModelFactory(deeplink)
         }
         val selectedTab by mainViewModel.getTabFlow().collectAsState()
 
@@ -84,7 +86,8 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubNavigationConfig>,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
+            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
         ): MainScreenDecomposeComponentImpl
     }
 }

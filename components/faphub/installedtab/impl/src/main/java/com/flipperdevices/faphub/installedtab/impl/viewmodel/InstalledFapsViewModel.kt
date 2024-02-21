@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -28,15 +29,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
 
 class InstalledFapsViewModel @Inject constructor(
     private val fapManifestApi: FapManifestApi,
     private val queueApi: FapInstallationQueueApi,
-    private val fapsStateProducer: InstalledFapsFromNetworkProducer
+    fapsStateProducerProvider: Provider<InstalledFapsFromNetworkProducer>
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "InstalledFapsViewModel"
     private var fetcherJob: Job? = null
 
+    private val fapsStateProducer by fapsStateProducerProvider
     private val installedFapsStateFlow = MutableStateFlow<FapInstalledInternalLoadingState>(
         FapInstalledInternalLoadingState.Loading
     )
@@ -100,7 +104,7 @@ class InstalledFapsViewModel @Inject constructor(
     }
 
     fun refresh(force: Boolean) {
-        fapsStateProducer.refresh(viewModelScope, force)
+        fapsStateProducer.refresh(force)
         val oldJob = fetcherJob
         fetcherJob = viewModelScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()

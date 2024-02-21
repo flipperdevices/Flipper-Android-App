@@ -79,7 +79,7 @@ private fun ComposableHubElementHead(
             modifier = Modifier
                 .size(16.dp)
                 .clip(CircleShape)
-                .background(LocalPallet.current.accent),
+                .background(LocalPallet.current.updateProgressGreen),
             contentAlignment = Alignment.Center
         ) {
             Text(

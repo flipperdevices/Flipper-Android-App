@@ -14,6 +14,8 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalSta
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -31,12 +33,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class InstalledFapsFromNetworkProducer @Inject constructor(
     private val installedFapsUidsProducer: InstalledFapsUidsProducer,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
     private val fapNetworkApi: FapNetworkApi,
     private val fapStateManager: FapInstallationStateManager,
+    private val globalScope: CoroutineScope
 ) : LogTagProvider {
     override val TAG = "InstalledFapsFromNetworkProducer"
 
@@ -46,10 +51,10 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     private var fetchFromNetworkJob: Job? = null
     private val mutex = Mutex()
 
-    fun refresh(scope: CoroutineScope, force: Boolean) {
-        installedFapsUidsProducer.refresh(scope, force)
+    fun refresh(force: Boolean) {
+        installedFapsUidsProducer.refresh(globalScope, force)
         val oldJob = fetchFromNetworkJob
-        fetchFromNetworkJob = scope.launch(Dispatchers.Default) {
+        fetchFromNetworkJob = globalScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
             applicationFromNetworkStateFlow.emit(FapInstalledFromNetworkState.Loading)
             combine(
@@ -188,7 +193,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
 }
 
 private sealed class FapInstalledFromNetworkState {
-    object Loading : FapInstalledFromNetworkState()
+    data object Loading : FapInstalledFromNetworkState()
 
     data class LoadedOffline(
         val faps: ImmutableList<OfflineFapApp>

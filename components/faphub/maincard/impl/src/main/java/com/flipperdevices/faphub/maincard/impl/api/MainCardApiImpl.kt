@@ -29,10 +29,12 @@ class MainCardApiImpl @Inject constructor(
             fapMainCardViewModelProvider.get()
         }
         val state by viewModel.getFapMainCardState().collectAsState()
+        val isExistAppReadyToUpdate by viewModel.isExistAppReadyToUpdateState().collectAsState()
         ComposableMainCardInternal(
             modifier = modifier,
             onClick = onClick,
-            state = state
+            state = state,
+            isExistAppReadyToUpdate = isExistAppReadyToUpdate
         )
     }
 }

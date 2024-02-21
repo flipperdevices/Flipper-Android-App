@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
+import com.flipperdevices.faphub.installedtab.api.FapNeedUpdatePopUpHelper
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
@@ -40,7 +41,8 @@ class UpdaterTask(
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
-    private val flipperStorageApi: FlipperStorageApi
+    private val flipperStorageApi: FlipperStorageApi,
+    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -153,6 +155,8 @@ class UpdaterTask(
             }
             return@useTemporaryFolder
         }
+
+        fapNeedUpdatePopUpHelper.notifyIfUpdateAvailable()
 
         withTimeoutOrNull(DISCONNECT_WAIT_TIMEOUT_MS) {
             serviceApi.connectionInformationApi.getConnectionStateFlow()

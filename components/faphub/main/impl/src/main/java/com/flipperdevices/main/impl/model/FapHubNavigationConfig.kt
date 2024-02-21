@@ -1,12 +1,15 @@
 package com.flipperdevices.main.impl.model
 
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class FapHubNavigationConfig {
     @Serializable
-    data object Main : FapHubNavigationConfig()
+    data class Main(
+        val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+    ) : FapHubNavigationConfig()
 
     @Serializable
     data class FapScreen(val id: String) : FapHubNavigationConfig()

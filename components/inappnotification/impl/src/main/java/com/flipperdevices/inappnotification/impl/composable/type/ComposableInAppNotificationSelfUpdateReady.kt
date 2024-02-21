@@ -26,38 +26,26 @@ internal fun ComposableInAppNotificationSelfUpdateReady(
     notification: InAppNotification.SelfUpdateReady,
     onClickAction: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(2f)
-        ) {
-            Text(
-                text = stringResource(R.string.ready_update_title),
-                style = LocalTypography.current.subtitleB12
-            )
-            Text(
-                text = stringResource(R.string.ready_update_desc),
-                style = LocalTypography.current.subtitleR12
+    ComposableInAppNotificationBase(
+        icon = null,
+        titleId = R.string.ready_update_title,
+        descId = R.string.ready_update_desc,
+        actionButton = {
+            ComposableFlipperButton(
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                textPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp),
+                text = stringResource(R.string.ready_update_button),
+                textStyle = TextStyle(
+                    fontSize = 12.sp
+                ),
+                onClick = {
+                    notification.action()
+                    onClickAction()
+                }
             )
         }
-        ComposableFlipperButton(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp),
-            textPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp),
-            text = stringResource(R.string.ready_update_button),
-            textStyle = TextStyle(
-                fontSize = 12.sp
-            ),
-            onClick = {
-                notification.action()
-                onClickAction()
-            }
-        )
-    }
+    )
 }
 
 @Preview(

@@ -21,29 +21,18 @@ import com.flipperdevices.inappnotification.impl.R
 
 @Composable
 internal fun ComposableInAppNotificationSelfUpdateStarted() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(id = R.drawable.pic_update_started),
-            contentDescription = stringResource(R.string.started_update_title),
-        )
-        Column {
-            Text(
-                text = stringResource(R.string.started_update_title),
-                style = LocalTypography.current.subtitleB12
+    ComposableInAppNotificationBase(
+        icon = {
+            Image(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.pic_update_started),
+                contentDescription = stringResource(R.string.started_update_title),
             )
-            Text(
-                text = stringResource(R.string.started_update_desc),
-                style = LocalTypography.current.subtitleR12
-            )
-        }
-    }
+        },
+        titleId = R.string.started_update_title,
+        descId = R.string.started_update_desc,
+        actionButton = null
+    )
 }
 
 @Preview(

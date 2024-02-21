@@ -27,44 +27,34 @@ internal fun ComposableInAppNotificationError(
     error: InAppNotification.Error,
     onClickAction: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(id = R.drawable.pic_update_error),
-            contentDescription = stringResource(error.titleId),
-        )
-        Column(Modifier.weight(1f)) {
-            Text(
-                text = stringResource(error.titleId),
-                style = LocalTypography.current.subtitleB12
+    ComposableInAppNotificationBase(
+        icon = {
+            Image(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.pic_update_error),
+                contentDescription = stringResource(error.titleId),
             )
-            Text(
-                text = stringResource(error.descId),
-                style = LocalTypography.current.subtitleR12
-            )
+        },
+        titleId = error.titleId,
+        descId = error.descId,
+        actionButton = {
+            val actionTextId = error.actionTextId
+            val action = error.action
+            if (actionTextId != null && action != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .clickable {
+                            action()
+                            onClickAction()
+                        },
+                    text = stringResource(actionTextId),
+                    style = LocalTypography.current.subtitleM12,
+                    color = LocalPallet.current.accentSecond
+                )
+            }
         }
-        val actionTextId = error.actionTextId
-        val action = error.action
-        if (actionTextId != null && action != null) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .clickable {
-                        action()
-                        onClickAction()
-                    },
-                text = stringResource(actionTextId),
-                style = LocalTypography.current.subtitleM12,
-                color = LocalPallet.current.accentSecond
-            )
-        }
-    }
+    )
 }
 
 @Preview

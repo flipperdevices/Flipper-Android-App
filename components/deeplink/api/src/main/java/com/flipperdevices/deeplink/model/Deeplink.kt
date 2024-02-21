@@ -72,6 +72,12 @@ sealed interface Deeplink {
                 data class Fap(
                     val appId: String,
                 ) : FapHub()
+
+                @Serializable
+                sealed class MainScreen : FapHub() {
+                    @Serializable
+                    data object InstalledTab : MainScreen()
+                }
             }
 
             @Serializable

@@ -14,6 +14,10 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
 
+
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.rootscreen.api)
+
     implementation(libs.appcompat)
     implementation(libs.kotlin.coroutines)
 

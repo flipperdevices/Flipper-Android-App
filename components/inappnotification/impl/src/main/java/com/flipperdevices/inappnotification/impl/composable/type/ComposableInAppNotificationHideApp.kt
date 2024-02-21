@@ -21,35 +21,22 @@ fun ComposableInAppNotificationHideApp(
     onClickAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+
+    ComposableInAppNotificationBase(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ComposableSaveIcon()
-        Column(
-            modifier = Modifier
-                .padding(top = 9.dp, bottom = 9.dp, end = 12.dp)
-                .weight(1f)
-        ) {
-            Text(
-                text = stringResource(R.string.hide_app_title),
-                style = LocalTypography.current.subtitleB12
-            )
-            Text(
-                text = stringResource(R.string.hide_app_desc),
-                style = LocalTypography.current.subtitleR12
-            )
-        }
-        Text(
-            modifier = Modifier
-                .clickable(onClick = {
+        icon = {
+            ComposableSaveIcon()
+        },
+        titleId = R.string.hide_app_title,
+        descId = R.string.hide_app_desc,
+        actionButton = {
+            ComposableInAppNotificationBaseActionText(
+                titleId = R.string.hide_app_btn,
+                onClick = {
                     notification.action.invoke()
                     onClickAction()
-                })
-                .padding(end = 12.dp),
-            text = stringResource(R.string.hide_app_btn),
-            style = LocalTypography.current.subtitleB12,
-            color = LocalPallet.current.actionOnFlipperEnable
-        )
-    }
+                }
+            )
+        }
+    )
 }

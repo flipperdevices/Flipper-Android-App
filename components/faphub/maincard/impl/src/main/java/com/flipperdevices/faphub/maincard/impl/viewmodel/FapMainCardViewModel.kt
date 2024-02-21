@@ -5,6 +5,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
+import com.flipperdevices.faphub.installedtab.api.FapUpdatePendingCountApi
 import com.flipperdevices.faphub.maincard.impl.model.FapMainCardState
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.coroutines.Dispatchers
@@ -13,31 +14,44 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class FapMainCardViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
-    private val targetProviderApi: FlipperTargetProviderApi
+    targetProviderApi: FlipperTargetProviderApi,
+    private val fapUpdatePendingCountApi: FapUpdatePendingCountApi
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FapMainCardViewModel"
 
     private val fapMainCardStateFlow = MutableStateFlow<FapMainCardState>(FapMainCardState.Loading)
 
+    private val isExistAppReadyToUpdateStateFlow = MutableStateFlow(false)
+
     init {
-        viewModelScope.launch(Dispatchers.Default) {
-            targetProviderApi.getFlipperTarget().collectLatest { target ->
-                if (target == null) {
-                    fapMainCardStateFlow.emit(FapMainCardState.Loading)
-                    return@collectLatest
-                }
-                fapNetworkApi.getFeaturedItem(target).onSuccess {
-                    fapMainCardStateFlow.emit(FapMainCardState.Loaded(it))
-                }.onFailure {
-                    error(it) { "Failed load suggested item" }
-                    fapMainCardStateFlow.emit(FapMainCardState.FailedLoad)
-                }
+        targetProviderApi.getFlipperTarget().onEach { target ->
+            if (target == null) {
+                fapMainCardStateFlow.emit(FapMainCardState.Loading)
+                return@onEach
             }
-        }
+            fapNetworkApi.getFeaturedItem(target).onSuccess {
+                fapMainCardStateFlow.emit(FapMainCardState.Loaded(it))
+            }.onFailure {
+                error(it) { "Failed load suggested item" }
+                fapMainCardStateFlow.emit(FapMainCardState.FailedLoad)
+            }
+        }.launchIn(viewModelScope)
+
+        fapUpdatePendingCountApi.getUpdatePendingCount().onEach {
+            isExistAppReadyToUpdateStateFlow.emit(it > 0)
+        }.launchIn(viewModelScope)
+
     }
 
-    fun getFapMainCardState(): StateFlow<FapMainCardState> = fapMainCardStateFlow
+    fun getFapMainCardState() = fapMainCardStateFlow.asStateFlow()
+
+    fun isExistAppReadyToUpdateState() = isExistAppReadyToUpdateStateFlow.asStateFlow()
 }

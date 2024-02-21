@@ -56,7 +56,7 @@ fun ComposeMaterialYouTab(
                 if (tabState.notificationDotActive) {
                     indicationDotModifier = indicationDotModifier
                         .clip(CircleShape)
-                        .background(LocalPallet.current.accent)
+                        .background(LocalPallet.current.updateProgressGreen)
                 }
                 Box(
                     modifier = indicationDotModifier
