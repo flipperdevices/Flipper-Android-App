@@ -41,7 +41,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     private val fapStateManager: FapInstallationStateManager,
     private val globalScope: CoroutineScope
 ) : LogTagProvider {
-    override val TAG = "InstalledFapsFromNetworkProducer"
+    override val TAG = "InstalledFapsFromNetworkProducer-${hashCode()}"
 
     private val applicationFromNetworkStateFlow = MutableStateFlow<FapInstalledFromNetworkState>(
         FapInstalledFromNetworkState.Loading
@@ -50,11 +50,14 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     private val mutex = Mutex()
 
     fun refresh(force: Boolean) {
+        info { "Call refresh $force" }
         installedFapsUidsProducer.refresh(globalScope, force)
         val oldJob = fetchFromNetworkJob
         fetchFromNetworkJob = globalScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationFromNetworkStateFlow.emit(FapInstalledFromNetworkState.Loading)
+            if (force) {
+                applicationFromNetworkStateFlow.emit(FapInstalledFromNetworkState.Loading)
+            }
             combine(
                 installedFapsUidsProducer.getUidsStateFlow(),
                 flipperTargetProviderApi.getFlipperTarget().filterNotNull()
@@ -79,6 +82,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                             FapInstalledFromNetworkState.Error(throwable)
                         }
                     }
+                    info { "Update applicationFromNetworkStateFlow with state $state" }
                     applicationFromNetworkStateFlow.emit(state)
                 }
             }
@@ -148,13 +152,16 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         flipperTarget: FlipperTarget
     ): FapInstalledFromNetworkState {
         val toRequestItems = uids.toMutableSet()
-        val alreadyLoadedApps = when (val currentState = applicationFromNetworkStateFlow.value) {
+        val currentLoadedItems = when (val currentState = applicationFromNetworkStateFlow.value) {
             is FapInstalledFromNetworkState.Error,
             is FapInstalledFromNetworkState.LoadedOffline,
             FapInstalledFromNetworkState.Loading -> persistentListOf()
 
             is FapInstalledFromNetworkState.Loaded -> currentState.faps
-        }.filter { (fapTarget, _) -> fapTarget == flipperTarget }
+        }
+        info { "currentLoadedItems: ${currentLoadedItems.map { it.second.id }}" }
+        val alreadyLoadedApps = currentLoadedItems
+            .filter { (fapTarget, _) -> fapTarget == flipperTarget }
             .filter { (_, fapItem) -> toRequestItems.contains(fapItem.id) }
 
         alreadyLoadedApps.forEach { (_, fapItem) ->

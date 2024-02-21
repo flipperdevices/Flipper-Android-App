@@ -108,7 +108,9 @@ class InstalledFapsViewModel @Inject constructor(
         fetcherJob = viewModelScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(FapInstalledInternalLoadingState.Loading)
-            fapManifestApi.invalidateAsync()
+            if (force) {
+                fapManifestApi.invalidateAsync()
+            }
 
             fapsStateProducer.getLoadedFapsFlow().catch {
                 if (it is CancellationException) {

@@ -68,6 +68,7 @@ class FapManifestApiImpl @Inject constructor(
             ) { storageInformation, connectionState ->
                 storageInformation to connectionState
             }.collectLatest { (storageStatus, connectionState) ->
+                info { "Call invalidate caused by changing $storageStatus or $connectionState" }
                 invalidate(connectionState, storageStatus)
             }
         }
@@ -96,6 +97,7 @@ class FapManifestApiImpl @Inject constructor(
     }
 
     override fun invalidateAsync() {
+        info { "Call invalidate async" }
         scope.launch(Dispatchers.Default) {
             val serviceApi = flipperServiceProvider
                 .getServiceApi()
