@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
@@ -78,10 +78,10 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
                 keyEmulateApi = keyEmulateApi,
                 keyEmulateUiApi = keyEmulateUiApi,
                 onEdit = {
-                    navigation.push(InfraredNavigationConfig.Edit(it))
+                    navigation.pushToFront(InfraredNavigationConfig.Edit(it))
                 },
                 onRename = {
-                    navigation.push(InfraredNavigationConfig.Rename(it))
+                    navigation.pushToFront(InfraredNavigationConfig.Rename(it))
                 },
                 onShare = onShare,
                 onBack = onBack::invoke,

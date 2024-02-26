@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.category.impl.composable.ComposableFapHubCategory
 import com.flipperdevices.faphub.category.impl.model.FapCategoryNavigationConfig
@@ -48,11 +48,11 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         ComposableFapHubCategory(
             onBack = onBack::invoke,
             onOpenSearch = {
-                navigation.push(FapCategoryNavigationConfig.Search)
+                navigation.pushToFront(FapCategoryNavigationConfig.Search)
             },
             onOpenFapItem = {
                 metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.applicationAlias)
-                navigation.push(FapCategoryNavigationConfig.FapScreen(it.id))
+                navigation.pushToFront(FapCategoryNavigationConfig.FapScreen(it.id))
             },
             errorsRenderer = errorsRenderer,
             installationButton = { fapItem, modifier ->

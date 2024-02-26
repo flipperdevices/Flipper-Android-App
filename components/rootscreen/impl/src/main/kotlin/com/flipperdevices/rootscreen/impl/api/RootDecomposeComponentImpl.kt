@@ -10,7 +10,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
@@ -132,14 +132,14 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     }
 
     override fun push(config: RootScreenConfig) {
-        navigation.push(config)
+        navigation.pushToFront(config)
     }
 
     override fun handleDeeplink(deeplink: Deeplink) {
         scope.launch(Dispatchers.Main) {
             deeplinkHandler.handleDeeplink(deeplink)
             if (deeplink is Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenKey) {
-                navigation.push(RootScreenConfig.OpenKey(deeplink.keyPath))
+                navigation.pushToFront(RootScreenConfig.OpenKey(deeplink.keyPath))
             }
         }
     }

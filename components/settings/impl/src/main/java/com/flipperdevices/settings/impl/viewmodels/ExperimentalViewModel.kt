@@ -1,7 +1,7 @@
 package com.flipperdevices.settings.impl.viewmodels
 
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.metric.api.MetricApi
@@ -17,6 +17,6 @@ class ExperimentalViewModel @Inject constructor(
 
     fun onOpenFileManager(navigation: StackNavigation<SettingsNavigationConfig>) {
         metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_FM)
-        navigation.push(SettingsNavigationConfig.FileManager)
+        navigation.pushToFront(SettingsNavigationConfig.FileManager)
     }
 }

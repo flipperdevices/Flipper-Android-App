@@ -3,7 +3,7 @@ package com.flipperdevices.rootscreen.impl.deeplink
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.log.LogTagProvider
@@ -29,7 +29,7 @@ class RootDeeplinkHandler(
                 if (deeplink is Deeplink.RootLevel.SaveKey) {
                     notifyBottomBar(Deeplink.BottomBar.OpenTab(DeeplinkBottomBarTab.ARCHIVE))
                 }
-                navigation.push(getConfigFromRootLevelDeeplink(deeplink))
+                navigation.pushToFront(getConfigFromRootLevelDeeplink(deeplink))
             }
 
             is Deeplink.BottomBar -> {
