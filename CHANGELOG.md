@@ -2,6 +2,7 @@
 
 # 1.6.9 - In progress
 
+- [KMP] Migration logger
 - [Feature] Add ready app updates popup and notification dot
 - [FIX] Replace decompose push to move safety push
 
