@@ -1,6 +1,5 @@
 package com.flipperdevices.core.log
 
-// TODO: Add flag release build for logging
 actual inline fun error(logMessage: () -> String) {
     System.err.println("ERROR: ${logMessage()}")
 }

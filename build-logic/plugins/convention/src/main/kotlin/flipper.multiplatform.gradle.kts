@@ -23,13 +23,10 @@ kotlin {
         val desktopMain by getting
 
         androidMain.dependencies {
-
         }
         commonMain.dependencies {
-
         }
         desktopMain.dependencies {
-
         }
     }
 }

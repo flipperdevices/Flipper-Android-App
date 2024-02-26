@@ -15,6 +15,5 @@ dependencies {
     implementation(libs.compose.multiplatform.gradle)
     implementation(libs.kotlin.jvm.gradle)
 
-
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
