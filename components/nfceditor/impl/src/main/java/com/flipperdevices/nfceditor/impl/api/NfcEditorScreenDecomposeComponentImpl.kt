@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
@@ -70,7 +70,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
                 onBack = onBack::invoke,
                 onSaveEndAction = onBack::invoke,
                 onSaveAsEndAction = { notSavedFlipperKey ->
-                    navigation.push(NfcEditorNavigationConfig.Save(notSavedFlipperKey, saveAsTitle))
+                    navigation.pushToFront(NfcEditorNavigationConfig.Save(notSavedFlipperKey, saveAsTitle))
                 },
                 nfcEditorViewModel = nfcEditorViewModel
             )

@@ -3,7 +3,7 @@ package com.flipperdevices.wearable.sync.wear.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
@@ -27,7 +27,7 @@ class KeysListDecomposeComponentImpl @AssistedInject constructor(
     override fun Render() {
         ComposableKeysList(
             onKeyOpen = {
-                navigation.push(WearRootConfig.OpenKey(it.path))
+                navigation.pushToFront(WearRootConfig.OpenKey(it.path))
             },
             keysListViewModel = viewModelWithFactory(key = null) {
                 keysListViewModelProvider.get()
