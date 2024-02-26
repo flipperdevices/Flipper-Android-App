@@ -3,7 +3,7 @@ package com.flipperdevices.widget.screen.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.archive.api.ArchiveApi
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
@@ -32,7 +32,7 @@ class WidgetOptionsDecomposeComponentImpl @AssistedInject constructor(
             archiveApi = archiveApi,
             widgetSelectViewModel = widgetSelectViewModel,
             onOpenSearchScreen = {
-                navigation.push(
+                navigation.pushToFront(
                     WidgetNavigationConfig.SearchScreen {
                         widgetSelectViewModel.onSelectKey(it)
                     }

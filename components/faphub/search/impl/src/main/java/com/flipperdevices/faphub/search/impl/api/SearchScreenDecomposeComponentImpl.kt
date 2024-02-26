@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
@@ -48,7 +48,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             onBack = onBack::invoke,
             onFapItemClick = {
                 metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it.name)
-                navigation.push(FapHubSearchNavigationConfig.FapScreen(it.id))
+                navigation.pushToFront(FapHubSearchNavigationConfig.FapScreen(it.id))
             },
             errorsRenderer = errorsRenderer,
             installationButton = { fapItem, modifier ->

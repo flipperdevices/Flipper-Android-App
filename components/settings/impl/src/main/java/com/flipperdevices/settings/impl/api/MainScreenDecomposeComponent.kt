@@ -3,7 +3,7 @@ package com.flipperdevices.settings.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.settings.impl.composable.ComposableSettings
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
@@ -49,7 +49,7 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
             notificationViewModel = notificationViewModel,
             versionViewModel = versionViewModel,
             onBack = onBack::invoke,
-            onOpen = { navigation.push(it) },
+            onOpen = { navigation.pushToFront(it) },
             debugViewModel = debugViewModel,
             onDebugAction = { debugViewModel.onAction(it, navigation) },
         )

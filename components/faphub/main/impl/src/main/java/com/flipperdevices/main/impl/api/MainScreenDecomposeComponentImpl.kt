@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
@@ -52,11 +52,11 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
                             SimpleEvent.OPEN_FAPHUB_APP,
                             it.applicationAlias
                         )
-                        navigation.push(FapHubNavigationConfig.FapScreen(it.id))
+                        navigation.pushToFront(FapHubNavigationConfig.FapScreen(it.id))
                     },
                     onCategoryClick = {
                         metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_CATEGORY, it.name)
-                        navigation.push(FapHubNavigationConfig.Category(it))
+                        navigation.pushToFront(FapHubNavigationConfig.Category(it))
                     },
                     componentContext = this
                 )
@@ -65,14 +65,14 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
                 installedApi.ComposableInstalledTab(
                     onOpenFapItem = {
                         metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_APP, it)
-                        navigation.push(FapHubNavigationConfig.FapScreen(it))
+                        navigation.pushToFront(FapHubNavigationConfig.FapScreen(it))
                     },
                     componentContext = this
                 )
             },
             onOpenSearch = {
                 metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_SEARCH)
-                navigation.push(FapHubNavigationConfig.Search)
+                navigation.pushToFront(FapHubNavigationConfig.Search)
             },
             installedNotificationCount = readyToUpdateCount,
             selectedTab = selectedTab,

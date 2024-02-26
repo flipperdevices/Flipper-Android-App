@@ -7,7 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigator
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
@@ -85,10 +85,10 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
         ComposableDeviceInfoScreen(
             updaterCardApi = updaterCardApi,
             onOpenFullDeviceInfo = {
-                navigator.push(DeviceScreenNavigationConfig.FullInfo)
+                navigator.pushToFront(DeviceScreenNavigationConfig.FullInfo)
             },
             onOpenOptions = {
-                navigator.push(DeviceScreenNavigationConfig.Options)
+                navigator.pushToFront(DeviceScreenNavigationConfig.Options)
             },
             onStartUpdateRequest = {
                 rootNavigation.push(RootScreenConfig.UpdateScreen(it))

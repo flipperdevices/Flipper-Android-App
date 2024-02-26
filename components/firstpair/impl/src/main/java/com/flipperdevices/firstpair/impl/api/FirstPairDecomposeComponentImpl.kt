@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
@@ -48,7 +48,7 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
         FirstPairNavigationConfig.DeviceScreen -> deviceScreenFactory(
             componentContext = componentContext,
             onFinishConnect = invalidate,
-            onHelpClick = { navigation.push(FirstPairNavigationConfig.HelpScreen) },
+            onHelpClick = { navigation.pushToFront(FirstPairNavigationConfig.HelpScreen) },
             onBack = {
                 navigation.popOr(onBack::invoke)
             }
@@ -65,7 +65,7 @@ class FirstPairDecomposeComponentImpl @AssistedInject constructor(
                 if (firstPairStorage.isDeviceSelected()) {
                     invalidate()
                 } else {
-                    navigation.push(FirstPairNavigationConfig.DeviceScreen)
+                    navigation.pushToFront(FirstPairNavigationConfig.DeviceScreen)
                 }
             }
         )

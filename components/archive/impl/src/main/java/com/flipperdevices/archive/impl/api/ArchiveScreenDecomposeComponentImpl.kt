@@ -7,7 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.archive.impl.model.ArchiveNavigationConfig
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
@@ -66,13 +66,13 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
         ComposableArchive(
             synchronizationUiApi = synchronizationUiApi,
             onOpenSearchScreen = {
-                navigation.push(ArchiveNavigationConfig.OpenSearch)
+                navigation.pushToFront(ArchiveNavigationConfig.OpenSearch)
             },
             onOpenKeyScreen = { flipperKeyPath ->
                 rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
             },
             onOpenCategory = { categoryType ->
-                navigation.push(ArchiveNavigationConfig.OpenCategory(categoryType, null))
+                navigation.pushToFront(ArchiveNavigationConfig.OpenCategory(categoryType, null))
             },
             keys = keys,
             synchronizationState = synchronizationState,

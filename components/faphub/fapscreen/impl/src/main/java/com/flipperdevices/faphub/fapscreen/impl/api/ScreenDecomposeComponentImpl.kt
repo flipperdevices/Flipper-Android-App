@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
@@ -76,7 +76,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
                 )
             },
             onOpenReport = {
-                navigation.push(fapScreenViewModel.getReportAppNavigationConfig(it))
+                navigation.pushToFront(fapScreenViewModel.getReportAppNavigationConfig(it))
             }
         )
     }

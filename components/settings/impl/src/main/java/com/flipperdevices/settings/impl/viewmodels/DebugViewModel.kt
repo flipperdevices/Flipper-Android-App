@@ -4,7 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
@@ -53,7 +53,7 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun onOpenStressTest(navigation: StackNavigation<SettingsNavigationConfig>) {
-        navigation.push(SettingsNavigationConfig.StressTest)
+        navigation.pushToFront(SettingsNavigationConfig.StressTest)
     }
 
     private fun onStartSynchronization() {

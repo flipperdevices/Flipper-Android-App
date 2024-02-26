@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
@@ -84,11 +84,11 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
                 onBack = onBack::invoke,
                 onOpenNfcEditor = {
                     viewModel.openNfcEditor { flipperKeyPath ->
-                        navigation.push(KeyScreenNavigationConfig.NfcEdit(flipperKeyPath))
+                        navigation.pushToFront(KeyScreenNavigationConfig.NfcEdit(flipperKeyPath))
                     }
                 },
                 onOpenEditScreen = { flipperKeyPath ->
-                    navigation.push(KeyScreenNavigationConfig.KeyEdit(flipperKeyPath))
+                    navigation.pushToFront(KeyScreenNavigationConfig.KeyEdit(flipperKeyPath))
                 },
                 componentContext = this
             )
