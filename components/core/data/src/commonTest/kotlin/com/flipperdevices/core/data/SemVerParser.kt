@@ -1,4 +1,5 @@
-import com.flipperdevices.core.data.SemVer
+package com.flipperdevices.core.data
+
 import org.junit.Assert
 import org.junit.Test
 
