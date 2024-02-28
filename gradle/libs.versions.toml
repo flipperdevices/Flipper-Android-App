@@ -18,6 +18,7 @@ compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
+compose-multiplatform = "1.6.0-rc02" # https://github.com/JetBrains/compose-multiplatform/releases
 horologist = "0.5.21" # https://github.com/google/horologist/releases
 serialization-json = "1.6.2" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
@@ -79,6 +80,7 @@ google-gms-firebase = "23.4.0" # https://firebase.google.com/docs/android/setup#
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+kotlin-jvm-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
 
 kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin-general" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin-general" }
@@ -130,6 +132,10 @@ compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperef
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
+
+# UI - Compose multiplatform
+compose-multiplatform-gradle = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+
 
 # Coil
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }

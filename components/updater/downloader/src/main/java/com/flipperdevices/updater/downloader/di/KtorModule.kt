@@ -2,7 +2,7 @@ package com.flipperdevices.updater.downloader.di
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.BuildConfig
-import com.flipperdevices.core.log.TaggedTimber
+import com.flipperdevices.core.log.TaggedLogger
 import com.flipperdevices.core.log.verbose
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -27,7 +27,7 @@ class KtorModule {
     @Provides
     @Singleton
     fun providerKtorClient(): HttpClient {
-        val ktorTimber = TaggedTimber("Ktor")
+        val ktorTimber = TaggedLogger("Ktor")
 
         return HttpClient(Android) {
             expectSuccess = true
