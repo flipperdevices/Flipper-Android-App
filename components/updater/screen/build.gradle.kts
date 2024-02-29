@@ -34,6 +34,9 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.markdown.renderer) {
+        exclude(libs.fastutil.get().group)
+    }
 
     // Compose
     implementation(libs.compose.ui)

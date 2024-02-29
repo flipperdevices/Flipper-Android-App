@@ -37,6 +37,9 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
     implementation(libs.bundles.decompose)
+    implementation(libs.markdown.renderer) {
+        exclude(libs.fastutil.get().group)
+    }
 
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.rootscreen.api)

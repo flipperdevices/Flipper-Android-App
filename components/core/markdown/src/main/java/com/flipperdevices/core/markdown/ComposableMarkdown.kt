@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.mikepenz.markdown.compose.Markdown
+import com.mikepenz.markdown.model.DefaultMarkdownColors
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.markdownPadding
 
 @Composable
 fun ComposableMarkdown(
@@ -19,7 +20,11 @@ fun ComposableMarkdown(
     modifier: Modifier = Modifier,
     typography: MarkdownTypography = markdownTypography(),
     colors: MarkdownColors = markdownColors(),
-    paddings: MarkdownPadding = markdownPadding()
+    paddings: MarkdownPadding = markdownPadding(
+        block = 2.dp,
+        indentList = 4.dp,
+        list = 1.dp
+    )
 ) {
     Markdown(
         content = content,
@@ -34,15 +39,16 @@ fun ComposableMarkdown(
 fun markdownColors(
     backgroundCode: Color = LocalPallet.current.text20,
     text: Color = LocalPallet.current.text100,
-    link: Color = LocalPallet.current.accentSecond
-): MarkdownColors {
-    return object : MarkdownColors {
-        override val backgroundCode = backgroundCode
-        override val text = text
-        override val markdownLink: Color = link
-        override val autoLink: Color = link
-    }
-}
+    link: Color = LocalPallet.current.accentSecond,
+    dividerColor: Color = LocalPallet.current.divider12
+) = DefaultMarkdownColors(
+    text = text,
+    codeText = text,
+    linkText = link,
+    codeBackground = backgroundCode,
+    inlineCodeBackground = backgroundCode,
+    dividerColor = dividerColor
+)
 
 @Composable
 fun markdownTypography(
@@ -75,18 +81,5 @@ fun markdownTypography(
         override val paragraph = paragraphStyle.merge(additionalTextStyle)
         override val quote = quoteStyle.merge(additionalTextStyle)
         override val text = textStyle.merge(additionalTextStyle)
-    }
-}
-
-@Composable
-fun markdownPadding(
-    block: Dp = 2.dp,
-    indentList: Dp = 4.dp,
-    list: Dp = 1.dp
-): MarkdownPadding {
-    return object : MarkdownPadding {
-        override val block: Dp = block
-        override val indentList: Dp = indentList
-        override val list: Dp = list
     }
 }

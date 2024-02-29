@@ -5,6 +5,7 @@
 - [KMP] Migration core:data
 - [KMP] Migration core:log
 - [Feature] Add ready app updates popup and notification dot
+- [Refactor] Migrate to markdown renderer from upstream
 - [FIX] Replace decompose push to move safety push
 
 # 1.6.8
