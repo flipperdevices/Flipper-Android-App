@@ -18,7 +18,9 @@ dependencies {
     implementation(libs.compose.material)
 
     implementation(libs.flexmark.core)
-    api(libs.markdown.renderer)
+    implementation(libs.markdown.renderer) {
+        exclude(libs.fastutil.get().group)
+    }
 
     // Testing
     testImplementation(projects.components.core.test)
