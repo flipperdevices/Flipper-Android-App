@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.maincard.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel

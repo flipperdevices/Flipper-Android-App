@@ -1,7 +1,6 @@
 package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider

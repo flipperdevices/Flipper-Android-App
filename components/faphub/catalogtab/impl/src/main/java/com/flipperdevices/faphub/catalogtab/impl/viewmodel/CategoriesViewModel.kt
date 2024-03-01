@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.catalogtab.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error

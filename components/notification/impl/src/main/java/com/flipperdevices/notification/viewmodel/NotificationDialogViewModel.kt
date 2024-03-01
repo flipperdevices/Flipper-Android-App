@@ -1,7 +1,6 @@
 package com.flipperdevices.notification.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel

@@ -1,6 +1,5 @@
 package com.flipperdevices.firstpair.impl.viewmodels.searching
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider

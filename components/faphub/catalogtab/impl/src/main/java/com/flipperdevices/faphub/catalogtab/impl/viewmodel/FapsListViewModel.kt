@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.catalogtab.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData

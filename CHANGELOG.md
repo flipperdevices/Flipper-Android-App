@@ -2,6 +2,7 @@
 
 # 1.6.9 - In progress
 
+- [KMP] Migration core:test, core:ktx, core:ui:lifecycle
 - [KMP] Migration core:data
 - [KMP] Migration core:log
 - [Feature] Add ready app updates popup and notification dot
