@@ -1,7 +1,5 @@
 updates:
   - package-ecosystem: "gradle"
-    commit-message:
-      prefix: "Update deps"
     directory: "/" 
     schedule:
       day: "saturday"
