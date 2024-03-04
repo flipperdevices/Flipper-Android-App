@@ -43,4 +43,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
 
     implementation(libs.kotlin.immutable.collections)
+
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
 }

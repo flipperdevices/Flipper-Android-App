@@ -17,11 +17,11 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableOfflineAppCategory
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableOfflineAppIcon
-import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 
 @Composable
 fun ComposableOfflineAppDialogBox(
-    offlineFapApp: OfflineFapApp,
+    offlineFapApp: InstalledFapApp.OfflineFapApp,
     modifier: Modifier = Modifier
 ) = Row(
     modifier = modifier

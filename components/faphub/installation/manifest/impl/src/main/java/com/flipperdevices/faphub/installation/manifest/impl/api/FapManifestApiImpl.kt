@@ -31,11 +31,14 @@ import kotlinx.coroutines.flow.update
 @Singleton
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
 class FapManifestApiImpl @Inject constructor(
-    private val loader: FapManifestsLoader,
+    loaderFactory: FapManifestsLoader.Factory,
     private val manifestUploader: FapManifestUploader,
     private val manifestDeleter: FapManifestDeleter,
 ) : FapManifestApi, LogTagProvider {
     override val TAG = "FapManifestApi"
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val loader = loaderFactory(scope)
 
     private val fapManifestStateFlow = MutableStateFlow<FapManifestState>(
         FapManifestState.Loaded(
@@ -45,7 +48,6 @@ class FapManifestApiImpl @Inject constructor(
     )
 
     private val mutex = Mutex()
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
 
     private var job: Job? = null

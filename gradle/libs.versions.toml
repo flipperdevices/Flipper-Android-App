@@ -218,7 +218,7 @@ protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protob
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito" } # deprecated
 roboelectric = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 

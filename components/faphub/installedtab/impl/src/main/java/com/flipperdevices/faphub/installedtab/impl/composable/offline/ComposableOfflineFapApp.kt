@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 
 @Composable
 fun ComposableOfflineFapApp(
-    offlineFapApp: OfflineFapApp,
+    offlineFapApp: InstalledFapApp.OfflineFapApp,
     uninstallButton: @Composable (Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -71,7 +71,7 @@ fun ComposableOfflineFapApp(
 private fun PreviewComposableOfflineFapApp() {
     FlipperThemeInternal {
         ComposableOfflineFapApp(
-            OfflineFapApp(
+            InstalledFapApp.OfflineFapApp(
                 name = "Test App",
                 iconBase64 = null,
                 category = "Game",

@@ -5,7 +5,7 @@ import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
-import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -71,14 +71,24 @@ class InstalledFapsUidsProducer @Inject constructor(
                                 is FapQueueState.InProgress -> it.request.applicationUid
                                 is FapQueueState.Pending -> it.request.applicationUid
                             }
-                        }.map { FapInstalled.RawUid(applicationUid = it) }
-                            .plus(manifestState.items.map { FapInstalled.Offline(OfflineFapApp(it)) })
-                            .distinctBy { it.applicationUid }
+                        }.toMutableSet()
+
+                        manifestState.items.forEach {
+                            ids.remove(it.uid)
+                        }
+
+                        val apps = ids.asSequence()
+                            .map { FapInstalledFromManifest.RawUid(applicationUid = it) }
+                            .plus(manifestState.items.map {
+                                FapInstalledFromManifest.Offline(
+                                    InstalledFapApp.OfflineFapApp(it)
+                                )
+                            })
                             .sortedBy { it.applicationUid }.toList()
                             .toImmutableList()
 
                         FapInstalledUidsState.Loaded(
-                            faps = ids,
+                            faps = apps,
                             inProgress = manifestState.inProgress
                         )
                     }
@@ -89,23 +99,23 @@ class InstalledFapsUidsProducer @Inject constructor(
     }
 }
 
-internal sealed class FapInstalled {
+internal sealed class FapInstalledFromManifest {
     abstract val applicationUid: String
 
     data class RawUid(
         override val applicationUid: String
-    ) : FapInstalled()
+    ) : FapInstalledFromManifest()
 
     data class Offline(
-        val offlineFap: OfflineFapApp
-    ) : FapInstalled() {
+        val offlineFap: InstalledFapApp.OfflineFapApp
+    ) : FapInstalledFromManifest() {
         override val applicationUid = offlineFap.applicationUid
     }
 }
 
 internal sealed class FapInstalledUidsState {
     data class Loaded(
-        val faps: ImmutableList<FapInstalled>,
+        val faps: ImmutableList<FapInstalledFromManifest>,
         val inProgress: Boolean
     ) : FapInstalledUidsState()
 

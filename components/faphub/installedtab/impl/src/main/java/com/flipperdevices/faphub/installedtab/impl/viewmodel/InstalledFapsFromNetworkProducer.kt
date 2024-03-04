@@ -1,19 +1,16 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
-import android.os.Looper
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
+import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailableReason
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
-import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
-import com.flipperdevices.faphub.installedtab.impl.model.OnlineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
@@ -81,7 +78,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                         )
 
                         is FapInstalledUidsState.Loaded -> try {
-                            updateStateUnsafe(uidsState.faps, flipperTarget)
+                            updateStateUnsafe(uidsState, flipperTarget)
                         } catch (throwable: Throwable) {
                             error(throwable) { "Failed load faps" }
                             FapInstalledFromNetworkState.Error(throwable)
@@ -103,26 +100,36 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                     )
                 )
 
-                FapInstalledFromNetworkState.Loading -> flowOf(FapInstalledInternalLoadingState.Loading)
-
-                is FapInstalledFromNetworkState.Loaded -> getLoadedFapsFlow(
-                    fapItems = state.faps.map { it.second }
-                )
+                is FapInstalledFromNetworkState.Loaded -> getLoadedFapsFlow(state)
             }
         }
     }
 
     private fun getLoadedFapsFlow(
-        fapItems: List<FapItemShort>
+        fapState: FapInstalledFromNetworkState.Loaded
     ): Flow<FapInstalledInternalLoadingState.Loaded> {
-        if (fapItems.isEmpty()) {
-            return flowOf(FapInstalledInternalLoadingState.Loaded(persistentListOf()))
+        if (fapState.faps.isEmpty()) {
+            return flowOf(
+                FapInstalledInternalLoadingState.Loaded(
+                    faps = persistentListOf(),
+                    inProgress = fapState.inProgress
+                )
+            )
         }
 
-        info { "Update #getLoadedFapsFlow. ${fapItems.size} fap items" }
-        val flows = fapItems.map { fapItem ->
-            fapStateManager.getFapStateFlow(fapItem.id, fapItem.upToDateVersion)
-                .map { fapItem to it }
+        info { "Update #getLoadedFapsFlow. ${fapState.faps.size} fap items" }
+        val flows = fapState.faps.map { (_, fapItem) ->
+            when (fapItem) {
+                is InstalledFapApp.OfflineFapApp -> flowOf(
+                    FapState.NotAvailableForInstall(
+                        NotAvailableReason.NOT_AVAILABLE_ONLINE
+                    )
+                )
+
+                is InstalledFapApp.OnlineFapApp -> fapStateManager.getFapStateFlow(
+                    fapItem.applicationUid, fapItem.fapItemShort.upToDateVersion
+                )
+            }.map { fapItem to it }
         }
         return combine(flows) { items ->
             items.map { (fapItem, state) ->
@@ -140,27 +147,37 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                         FapInstalledInternalState.UpdatingInProgress
                     }
 
+                    is FapState.NotAvailableForInstall -> if (state.reason == NotAvailableReason.NOT_AVAILABLE_ONLINE) {
+                        FapInstalledInternalState.InstalledOffline
+                    } else FapInstalledInternalState.Installed
+
                     else -> FapInstalledInternalState.Installed
                 }
             }
-        }.map { FapInstalledInternalLoadingState.Loaded(it.toImmutableList()) }
+        }.map {
+            FapInstalledInternalLoadingState.Loaded(
+                faps = it.toImmutableList(),
+                inProgress = fapState.inProgress,
+                networkError = fapState.networkError
+            )
+        }
     }
 
     private suspend fun updateStateUnsafe(
-        installedFaps: ImmutableList<FapInstalled>,
+        installedState: FapInstalledUidsState.Loaded,
         flipperTarget: FlipperTarget
     ): FapInstalledFromNetworkState {
-        val toRequestItems = installedFaps.associateBy { it.applicationUid }.toMutableMap()
+        val toRequestItems = installedState.faps.associateBy { it.applicationUid }.toMutableMap()
         val currentLoadedItems = when (val currentState = applicationFromNetworkStateFlow.value) {
-            is FapInstalledFromNetworkState.Error,
+            is FapInstalledFromNetworkState.Error -> persistentListOf()
             is FapInstalledFromNetworkState.Loaded -> currentState.faps
         }
 
-        info { "currentLoadedItems: ${currentLoadedItems.map { it.second.id }}" }
+        info { "currentLoadedItems: ${currentLoadedItems.map { it.second.applicationUid }}" }
         val alreadyLoadedApps = currentLoadedItems
             .filter { (fapTarget, _) -> fapTarget == flipperTarget }
             .filter { (_, fapItem) -> toRequestItems.contains(fapItem.applicationUid) }
-            .filter { (_, fapItem) -> fapItem is OnlineFapApp }
+            .filter { (_, fapItem) -> fapItem is InstalledFapApp.OnlineFapApp }
 
         alreadyLoadedApps.forEach { (_, fapItem) ->
             toRequestItems.remove(fapItem.applicationUid)
@@ -169,24 +186,45 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
 
         if (toRequestItems.isEmpty()) {
             info { "Not found faps for download" }
-            return FapInstalledFromNetworkState.Loaded(alreadyLoadedApps.toImmutableList())
+            return FapInstalledFromNetworkState.Loaded(
+                faps = alreadyLoadedApps.toImmutableList(),
+                inProgress = installedState.inProgress,
+                networkError = null
+            )
         }
 
-        val loadedFaps = fapNetworkApi.getAllItem(
+        val loadedFapsResult = fapNetworkApi.getAllItem(
             applicationIds = toRequestItems.keys.toList(),
             offset = 0,
             limit = toRequestItems.size,
             sortType = SortType.UPDATE_AT_DESC,
             target = flipperTarget
-        ).getOrThrow()
-
+        )
+        val loadedFaps = loadedFapsResult.getOrElse { emptyList() }
         info { "Loaded ${loadedFaps.size} faps from network" }
+        val networkError = loadedFapsResult.exceptionOrNull()
+        val readyFaps = installedState.faps.mapNotNull { installedFap ->
+            val fapFromNetwork = loadedFaps.find { it.id == installedFap.applicationUid }
+            val alreadyLoadedFap = currentLoadedItems.find {
+                it.second.applicationUid == installedFap.applicationUid
+            }
+            if (fapFromNetwork != null) { // If app exist in network response
+                InstalledFapApp.OnlineFapApp(fapFromNetwork)
+            } else if (alreadyLoadedFap != null) { // If app already loaded
+                alreadyLoadedFap.second
+            } else when (installedFap) {
+                is FapInstalledFromManifest.Offline -> installedFap.offlineFap
+                is FapInstalledFromManifest.RawUid -> null
+            }
+        }
+
 
         return FapInstalledFromNetworkState.Loaded(
-            alreadyLoadedApps.map { (_, fapItem) -> fapItem }
-                .plus(faps)
+            faps = readyFaps
                 .map { flipperTarget to it }
-                .toImmutableList()
+                .toImmutableList(),
+            inProgress = installedState.inProgress,
+            networkError = networkError
         )
     }
 }

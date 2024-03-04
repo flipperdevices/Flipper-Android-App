@@ -80,14 +80,17 @@ internal fun ComposableFapButton(
             NotAvailableReason.BUILD_RUNNING,
             NotAvailableReason.UNSUPPORTED_APP,
             NotAvailableReason.FLIPPER_OUTDATED,
+            NotAvailableReason.NOT_AVAILABLE_ONLINE,
             NotAvailableReason.UNSUPPORTED_SDK -> ComposableFapNoInstallButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize
             )
+
             NotAvailableReason.NO_SD_CARD -> ComposableFlipperNoSdCardButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize,
             )
+
             NotAvailableReason.FLIPPER_NOT_CONNECTED -> ComposableFlipperNotConnectedButton(
                 modifier = modifier,
                 fapButtonSize = fapButtonSize

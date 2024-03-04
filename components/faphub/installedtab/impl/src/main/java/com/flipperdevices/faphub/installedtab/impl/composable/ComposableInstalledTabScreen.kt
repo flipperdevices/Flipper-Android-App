@@ -28,19 +28,17 @@ import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.faphub.installedtab.impl.R
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
-import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableFapOfflineScreen
 import com.flipperdevices.faphub.installedtab.impl.composable.online.ComposableOnlineFapApp
-import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
-import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 
 private const val DEFAULT_FAP_COUNT = 20
 
 @Composable
-fun ComposableInstalledTabScreen(
+internal fun ComposableInstalledTabScreen(
     onOpenFapItem: (String) -> Unit,
-    uninstallButtonOffline: @Composable (OfflineFapApp, Modifier) -> Unit,
+    uninstallButtonOffline: @Composable (InstalledFapApp.OfflineFapApp, Modifier) -> Unit,
     uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
@@ -63,33 +61,30 @@ fun ComposableInstalledTabScreen(
             fapErrorSize = FapErrorSize.FULLSCREEN
         )
 
-        is FapInstalledScreenState.Loaded,
-        FapInstalledScreenState.Loading,
-        is FapInstalledScreenState.LoadedOffline ->
-            SwipeRefresh(
-                modifier = screenModifier,
-                onRefresh = { viewModel.refresh(true) }
-            ) {
-                LazyColumn {
-                    item {
-                        ComposableUpdateAllButton(
-                            state = buttonState,
-                            onUpdateAll = viewModel::updateAll,
-                            onCancelAll = viewModel::cancelAll,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 8.dp)
-                        )
-                    }
-                    ComposableInstalledTabScreenState(
-                        screenState = stateLocal,
-                        onOpenFapItem = onOpenFapItem,
-                        installationButton = installationButton,
-                        uninstallButtonOffline = uninstallButtonOffline,
-                        uninstallButtonOnline = uninstallButtonOnline
+        is FapInstalledScreenState.Loaded -> SwipeRefresh(
+            modifier = screenModifier,
+            onRefresh = { viewModel.refresh(true) }
+        ) {
+            LazyColumn {
+                item {
+                    ComposableUpdateAllButton(
+                        state = buttonState,
+                        onUpdateAll = viewModel::updateAll,
+                        onCancelAll = viewModel::cancelAll,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
                     )
                 }
+                ComposableInstalledTabScreenState(
+                    screenState = stateLocal,
+                    onOpenFapItem = onOpenFapItem,
+                    installationButton = installationButton,
+                    uninstallButtonOffline = uninstallButtonOffline,
+                    uninstallButtonOnline = uninstallButtonOnline
+                )
             }
+        }
     }
 }
 
@@ -97,75 +92,66 @@ fun ComposableInstalledTabScreen(
 private fun LazyListScope.ComposableInstalledTabScreenState(
     screenState: FapInstalledScreenState,
     onOpenFapItem: (String) -> Unit,
-    uninstallButtonOffline: @Composable (OfflineFapApp, Modifier) -> Unit,
+    uninstallButtonOffline: @Composable (InstalledFapApp.OfflineFapApp, Modifier) -> Unit,
     uninstallButtonOnline: @Composable (FapItemShort, Modifier) -> Unit,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     when (screenState) {
         is FapInstalledScreenState.Error -> {}
-        is FapInstalledScreenState.LoadedOffline -> if (screenState.faps.isEmpty()) {
-            item {
-                ComposableEmpty(Modifier.fillParentMaxSize())
-            }
-        } else {
-            ComposableFapOfflineScreen(
-                offlineApps = screenState.faps,
-                onOpen = onOpenFapItem,
-                uninstallButton = uninstallButtonOffline
-            )
-        }
-
-        FapInstalledScreenState.Loading -> items(DEFAULT_FAP_COUNT) {
-            ComposableOnlineFapApp(
-                modifier = Modifier.padding(vertical = 12.dp),
-                fapItem = null,
-                installationButton = { modifier ->
-                    installationButton(null, modifier)
-                },
-                uninstallButton = { Box(it.placeholderConnecting()) }
-            )
-        }
-
         is FapInstalledScreenState.Loaded -> if (screenState.faps.isEmpty()) {
-            item {
-                ComposableEmpty(Modifier.fillParentMaxSize())
+            if (screenState.inProgress) {
+                items(DEFAULT_FAP_COUNT) {
+                    ComposableOnlineFapApp(
+                        modifier = Modifier.padding(vertical = 12.dp),
+                        fapItem = null,
+                        installationButton = { modifier ->
+                            installationButton(null, modifier)
+                        },
+                        uninstallButton = { Box(it.placeholderConnecting()) }
+                    )
+                }
+            } else {
+                item {
+                    ComposableEmpty(Modifier.fillParentMaxSize())
+                }
             }
         } else {
             items(
                 count = screenState.faps.size,
-                key = { screenState.faps[it].first.id }
+                key = { screenState.faps[it].first.applicationUid }
             ) { index ->
                 val (item, state) = screenState.faps[index]
-                ComposableOnlineFapApp(
+                ComposableFapApp(
+                    installedFapApp = item,
+                    state = state,
+                    installationButton = installationButton,
+                    uninstallButtonOffline = uninstallButtonOffline,
+                    uninstallButtonOnline = uninstallButtonOnline,
+                    onOpenFapItem = onOpenFapItem,
                     modifier = Modifier
-                        .clickable(
-                            onClick = { onOpenFapItem(item.id) }
-                        )
+                        .animateItemPlacement()
                         .padding(vertical = 12.dp)
-                        .animateItemPlacement(),
-                    fapItem = item,
-                    installationButton = { modifier ->
-                        installationButton(item, modifier)
-                    },
-                    uninstallButton = {
-                        when (state) {
-                            FapInstalledInternalState.Installed,
-                            is FapInstalledInternalState.ReadyToUpdate ->
-                                uninstallButtonOnline(item, it)
-
-                            FapInstalledInternalState.InstallingInProgress,
-                            FapInstalledInternalState.InstallingInProgressActive,
-                            FapInstalledInternalState.UpdatingInProgress,
-                            FapInstalledInternalState.UpdatingInProgressActive -> {
-                            }
-                        }
-                    }
                 )
+
                 if (index != screenState.faps.lastIndex) {
                     ComposableLoadingItemDivider()
                 }
             }
+
+            if (screenState.inProgress) {
+                item {
+                    ComposableOnlineFapApp(
+                        modifier = Modifier.padding(vertical = 12.dp),
+                        fapItem = null,
+                        installationButton = { modifier ->
+                            installationButton(null, modifier)
+                        },
+                        uninstallButton = { Box(it.placeholderConnecting()) }
+                    )
+                }
+            }
         }
+
     }
 }
 

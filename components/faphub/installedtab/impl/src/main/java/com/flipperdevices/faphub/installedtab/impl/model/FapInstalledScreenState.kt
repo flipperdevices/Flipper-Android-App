@@ -5,11 +5,11 @@ import com.flipperdevices.faphub.installedtab.impl.viewmodel.FapInstalledInterna
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-internal sealed class FapInstalledScreenState {
-    data object Loading : FapInstalledScreenState()
-
+sealed class FapInstalledScreenState {
     data class Loaded(
-        val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>
+        val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>,
+        val inProgress: Boolean,
+        val networkError: Throwable? = null
     ) : FapInstalledScreenState()
 
     data class Error(
@@ -19,13 +19,14 @@ internal sealed class FapInstalledScreenState {
 
 fun FapInstalledInternalLoadingState.toScreenState() = when (this) {
     is FapInstalledInternalLoadingState.Error -> FapInstalledScreenState.Error(throwable)
-    FapInstalledInternalLoadingState.Loading -> FapInstalledScreenState.Loading
     is FapInstalledInternalLoadingState.Loaded -> FapInstalledScreenState.Loaded(
-        faps.sortedWith(
+        faps = faps.sortedWith(
             compareBy(
                 { (_, fapState) -> fapState },
                 { (fapItem, _) -> fapItem.name }
             )
-        ).toImmutableList()
+        ).toImmutableList(),
+        inProgress = inProgress,
+        networkError = networkError
     )
 }

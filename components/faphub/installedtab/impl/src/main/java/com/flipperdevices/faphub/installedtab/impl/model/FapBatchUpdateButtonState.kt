@@ -15,8 +15,6 @@ sealed class FapBatchUpdateButtonState {
 
 fun FapInstalledInternalLoadingState.toButtonState() = when (this) {
     is FapInstalledInternalLoadingState.Error -> FapBatchUpdateButtonState.NoUpdates
-    FapInstalledInternalLoadingState.Loading -> FapBatchUpdateButtonState.Loading
-    is FapInstalledInternalLoadingState.LoadedOffline -> FapBatchUpdateButtonState.Offline
     is FapInstalledInternalLoadingState.Loaded -> {
         val updatingInProgress = faps.count {
             it.second is FapInstalledInternalState.UpdatingInProgress

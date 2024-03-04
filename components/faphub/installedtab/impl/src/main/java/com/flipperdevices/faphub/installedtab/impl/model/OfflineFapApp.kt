@@ -1,42 +1,42 @@
 package com.flipperdevices.faphub.installedtab.impl.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
 
 @Stable
-internal abstract class InstalledFapApp {
+sealed class InstalledFapApp {
     abstract val name: String
-    abstract val iconBase64: String?
-    abstract val category: String
     abstract val applicationUid: String
     abstract val applicationAlias: String
-}
 
-@Stable
-internal data class OfflineFapApp(
-    override val name: String,
-    override val iconBase64: String?,
-    override val category: String,
-    override val applicationUid: String,
-    override val applicationAlias: String
-): InstalledFapApp() {
-    constructor(fapManifestItem: FapManifestItem) : this(
-        name = fapManifestItem.fullName,
-        iconBase64 = fapManifestItem.iconBase64,
-        category = extractCategoryFromPath(fapManifestItem.path),
-        applicationUid = fapManifestItem.uid,
-        applicationAlias = fapManifestItem.applicationAlias
-    )
+    @Stable
+    data class OfflineFapApp(
+        override val name: String,
+        override val applicationUid: String,
+        override val applicationAlias: String,
+        val iconBase64: String?,
+        val category: String
+    ) : InstalledFapApp() {
+        constructor(fapManifestItem: FapManifestItem) : this(
+            name = fapManifestItem.fullName,
+            iconBase64 = fapManifestItem.iconBase64,
+            category = extractCategoryFromPath(fapManifestItem.path),
+            applicationUid = fapManifestItem.uid,
+            applicationAlias = fapManifestItem.applicationAlias
+        )
+    }
+
+    @Stable
+    data class OnlineFapApp(
+        val fapItemShort: FapItemShort
+    ) : InstalledFapApp() {
+        override val name = fapItemShort.name
+        override val applicationUid = fapItemShort.id
+        override val applicationAlias = fapItemShort.applicationAlias
+    }
 }
-@Stable
-internal data class OnlineFapApp(
-    override val name: String,
-    override val iconBase64: String?,
-    override val category: String,
-    override val applicationUid: String,
-    override val applicationAlias: String
-) : InstalledFapApp()
 
 private const val UNKNOWN_CATEGORY = "Unknown"
 
