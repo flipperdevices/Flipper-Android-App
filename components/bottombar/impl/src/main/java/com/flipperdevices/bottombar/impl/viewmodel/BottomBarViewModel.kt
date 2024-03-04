@@ -1,6 +1,5 @@
 package com.flipperdevices.bottombar.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.hub.api.HubApi
 import kotlinx.coroutines.Dispatchers

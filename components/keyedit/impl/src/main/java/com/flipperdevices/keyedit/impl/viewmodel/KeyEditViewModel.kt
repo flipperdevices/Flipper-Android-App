@@ -3,7 +3,6 @@ package com.flipperdevices.keyedit.impl.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider

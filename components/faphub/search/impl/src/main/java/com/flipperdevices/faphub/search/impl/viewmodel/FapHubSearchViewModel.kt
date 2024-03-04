@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.search.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn

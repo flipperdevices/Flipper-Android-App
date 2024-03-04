@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.main.impl.model.FapHubTabEnum

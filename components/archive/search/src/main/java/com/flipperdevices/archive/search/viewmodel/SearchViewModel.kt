@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.search.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.archive.search.model.SearchState
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi

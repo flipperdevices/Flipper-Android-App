@@ -1,7 +1,6 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice

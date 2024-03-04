@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.category.viewmodels
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel

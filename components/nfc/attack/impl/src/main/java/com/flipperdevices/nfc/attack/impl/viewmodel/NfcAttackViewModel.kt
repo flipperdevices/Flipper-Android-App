@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.attack.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import kotlinx.coroutines.flow.MutableStateFlow

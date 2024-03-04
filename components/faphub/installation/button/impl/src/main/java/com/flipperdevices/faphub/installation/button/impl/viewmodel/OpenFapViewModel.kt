@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.installation.button.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel

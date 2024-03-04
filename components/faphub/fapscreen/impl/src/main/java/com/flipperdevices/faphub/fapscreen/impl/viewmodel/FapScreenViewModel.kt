@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
