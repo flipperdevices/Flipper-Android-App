@@ -5,15 +5,11 @@ import com.flipperdevices.faphub.installedtab.impl.viewmodel.FapInstalledInterna
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-sealed class FapInstalledScreenState {
+internal sealed class FapInstalledScreenState {
     data object Loading : FapInstalledScreenState()
 
     data class Loaded(
-        val faps: ImmutableList<Pair<FapItemShort, FapInstalledInternalState>>
-    ) : FapInstalledScreenState()
-
-    data class LoadedOffline(
-        val faps: ImmutableList<OfflineFapApp>
+        val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>
     ) : FapInstalledScreenState()
 
     data class Error(
@@ -31,9 +27,5 @@ fun FapInstalledInternalLoadingState.toScreenState() = when (this) {
                 { (fapItem, _) -> fapItem.name }
             )
         ).toImmutableList()
-    )
-
-    is FapInstalledInternalLoadingState.LoadedOffline -> FapInstalledScreenState.LoadedOffline(
-        faps
     )
 }

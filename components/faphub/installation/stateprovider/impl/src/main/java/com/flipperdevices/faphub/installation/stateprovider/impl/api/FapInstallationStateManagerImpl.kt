@@ -106,30 +106,31 @@ class FapInstallationStateManagerImpl @Inject constructor(
         currentVersion: FapItemVersion,
         flipperTarget: FlipperTarget.Received
     ) = when (manifest) {
-        is FapManifestState.Loaded -> manifest.items.find { it.fapManifestItem.uid == applicationUid }
-            ?.let { fapManifestEnrichedItem ->
-                val sdkApi = fapManifestEnrichedItem.fapManifestItem.sdkApi
+        is FapManifestState.Loaded -> {
+            val fapManifestItem = manifest.items.find { it.uid == applicationUid }
+            if (fapManifestItem == null) {
+                if (manifest.inProgress) {
+                    FapState.RetrievingManifest
+                } else {
+                    null
+                }
+            } else {
+                val sdkApi = fapManifestItem.sdkApi
                 if (currentVersion.buildState != FapBuildState.READY) {
                     FapState.Installed
-                } else if (fapManifestEnrichedItem.numberVersion < currentVersion.version) {
-                    FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
+                } else if (fapManifestItem.versionUid != currentVersion.id) {
+                    FapState.ReadyToUpdate(fapManifestItem)
                 } else if (sdkApi == null ||
                     sdkApi.majorVersion != flipperTarget.sdk.majorVersion ||
                     flipperTarget.sdk.minorVersion < sdkApi.minorVersion
                 ) {
-                    FapState.ReadyToUpdate(fapManifestEnrichedItem.fapManifestItem)
+                    FapState.ReadyToUpdate(fapManifestItem)
                 } else {
                     FapState.Installed
                 }
             }
-
-        is FapManifestState.LoadedOffline -> if (manifest.items.find { it.uid == applicationUid } != null) {
-            FapState.Installed
-        } else {
-            null
         }
 
-        FapManifestState.Loading -> FapState.RetrievingManifest
         is FapManifestState.NotLoaded -> when (manifest.throwable) {
             is NoSdCardException -> FapState.NotAvailableForInstall(NotAvailableReason.NO_SD_CARD)
             else -> FapState.NotAvailableForInstall(NotAvailableReason.FLIPPER_OUTDATED)

@@ -4,7 +4,6 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -240,20 +239,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = null,
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = null,
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -279,20 +276,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = null,
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(1, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = null,
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 

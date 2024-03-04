@@ -11,7 +11,9 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.OnlineFapApp
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
@@ -41,7 +43,10 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     override val TAG = "InstalledFapsFromNetworkProducer"
 
     private val applicationFromNetworkStateFlow = MutableStateFlow<FapInstalledFromNetworkState>(
-        FapInstalledFromNetworkState.Loading
+        FapInstalledFromNetworkState.Loaded(
+            faps = persistentListOf(),
+            inProgress = true
+        )
     )
     private var fetchFromNetworkJob: Job? = null
     private val mutex = Mutex()
@@ -51,7 +56,12 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         val oldJob = fetchFromNetworkJob
         fetchFromNetworkJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationFromNetworkStateFlow.emit(FapInstalledFromNetworkState.Loading)
+            applicationFromNetworkStateFlow.emit(
+                FapInstalledFromNetworkState.Loaded(
+                    faps = persistentListOf(),
+                    inProgress = true
+                )
+            )
             combine(
                 installedFapsUidsProducer.getUidsStateFlow(),
                 flipperTargetProviderApi.getFlipperTarget().filterNotNull()
@@ -64,11 +74,6 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                             uidsState.throwable
                         )
 
-                        is FapInstalledUidsState.LoadedOffline -> FapInstalledFromNetworkState.LoadedOffline(
-                            uidsState.faps
-                        )
-
-                        FapInstalledUidsState.Loading -> FapInstalledFromNetworkState.Loading
                         is FapInstalledUidsState.Loaded -> try {
                             updateStateUnsafe(uidsState.faps, flipperTarget)
                         } catch (throwable: Throwable) {
@@ -82,18 +87,12 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         }
     }
 
-    fun getLoadedFapsFlow(): Flow<FapInstalledInternalLoadingState> {
+    internal fun getLoadedFapsFlow(): Flow<FapInstalledInternalLoadingState> {
         return applicationFromNetworkStateFlow.flatMapLatest { state ->
             return@flatMapLatest when (state) {
                 is FapInstalledFromNetworkState.Error -> flowOf(
                     FapInstalledInternalLoadingState.Error(
                         state.throwable
-                    )
-                )
-
-                is FapInstalledFromNetworkState.LoadedOffline -> flowOf(
-                    FapInstalledInternalLoadingState.LoadedOffline(
-                        state.faps
                     )
                 )
 
@@ -141,42 +140,38 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     }
 
     private suspend fun updateStateUnsafe(
-        uids: ImmutableList<String>,
+        installedFaps: ImmutableList<FapInstalled>,
         flipperTarget: FlipperTarget
     ): FapInstalledFromNetworkState {
-        val toRequestItems = uids.toMutableSet()
+        val toRequestItems = installedFaps.associateBy { it.applicationUid }.toMutableMap()
         val alreadyLoadedApps = when (val currentState = applicationFromNetworkStateFlow.value) {
             is FapInstalledFromNetworkState.Error,
-            is FapInstalledFromNetworkState.LoadedOffline,
             FapInstalledFromNetworkState.Loading -> persistentListOf()
 
             is FapInstalledFromNetworkState.Loaded -> currentState.faps
         }.filter { (fapTarget, _) -> fapTarget == flipperTarget }
-            .filter { (_, fapItem) -> toRequestItems.contains(fapItem.id) }
+            .filter { (_, fapItem) -> toRequestItems.contains(fapItem.applicationUid) }
+            .filter { (_, fapItem) -> fapItem is OnlineFapApp }
 
         alreadyLoadedApps.forEach { (_, fapItem) ->
-            toRequestItems.remove(fapItem.id)
+            toRequestItems.remove(fapItem.applicationUid)
         }
-        info { "To request apps: $toRequestItems, Loaded apps: ${alreadyLoadedApps.map { it.second.id }}" }
-
-        val isUiThread = Looper.myLooper() == Looper.getMainLooper()
-
-        info { "isUiThread: $isUiThread" }
+        info { "To request apps: $toRequestItems, Loaded apps: ${alreadyLoadedApps.map { it.second.applicationUid }}" }
 
         if (toRequestItems.isEmpty()) {
             info { "Not found faps for download" }
             return FapInstalledFromNetworkState.Loaded(alreadyLoadedApps.toImmutableList())
         }
 
-        val faps = fapNetworkApi.getAllItem(
-            applicationIds = toRequestItems.toList(),
+        val loadedFaps = fapNetworkApi.getAllItem(
+            applicationIds = toRequestItems.keys.toList(),
             offset = 0,
             limit = toRequestItems.size,
             sortType = SortType.UPDATE_AT_DESC,
             target = flipperTarget
         ).getOrThrow()
 
-        info { "Loaded ${faps.size} faps from network" }
+        info { "Loaded ${loadedFaps.size} faps from network" }
 
         return FapInstalledFromNetworkState.Loaded(
             alreadyLoadedApps.map { (_, fapItem) -> fapItem }
@@ -188,14 +183,10 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
 }
 
 private sealed class FapInstalledFromNetworkState {
-    object Loading : FapInstalledFromNetworkState()
-
-    data class LoadedOffline(
-        val faps: ImmutableList<OfflineFapApp>
-    ) : FapInstalledFromNetworkState()
-
     data class Loaded(
-        val faps: ImmutableList<Pair<FlipperTarget, FapItemShort>>
+        val faps: ImmutableList<Pair<FlipperTarget, InstalledFapApp>>,
+        val inProgress: Boolean,
+        val networkError: Throwable? = null
     ) : FapInstalledFromNetworkState()
 
     data class Error(

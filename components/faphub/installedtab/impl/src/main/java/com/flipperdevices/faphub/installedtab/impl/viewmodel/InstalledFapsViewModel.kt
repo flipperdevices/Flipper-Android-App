@@ -11,6 +11,7 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.OfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.toButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.toScreenState
@@ -95,7 +96,7 @@ class InstalledFapsViewModel @Inject constructor(
         }
         state.faps.filter { (_, state) -> state is FapInstalledInternalState.UpdatingInProgress }
             .forEach { (fapItem, _) ->
-                queueApi.enqueueSync(FapActionRequest.Cancel(fapItem.id))
+                queueApi.enqueueSync(FapActionRequest.Cancel(fapItem.applicationUid))
             }
     }
 
@@ -120,15 +121,11 @@ class InstalledFapsViewModel @Inject constructor(
     }
 }
 
-sealed class FapInstalledInternalLoadingState {
+internal sealed class FapInstalledInternalLoadingState {
     data object Loading : FapInstalledInternalLoadingState()
 
-    data class LoadedOffline(
-        val faps: ImmutableList<OfflineFapApp>
-    ) : FapInstalledInternalLoadingState()
-
     data class Loaded(
-        val faps: ImmutableList<Pair<FapItemShort, FapInstalledInternalState>>
+        val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>
     ) : FapInstalledInternalLoadingState()
 
     data class Error(

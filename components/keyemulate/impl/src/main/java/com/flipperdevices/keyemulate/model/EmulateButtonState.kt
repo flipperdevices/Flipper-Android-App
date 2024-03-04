@@ -14,10 +14,10 @@ sealed class EmulateButtonState {
     open class Inactive : EmulateButtonState()
 
     @Stable
-    object AppAlreadyOpenDialog : Inactive()
+    data object AppAlreadyOpenDialog : Inactive()
 
     @Stable
-    object ForbiddenFrequencyDialog : Inactive()
+    data object ForbiddenFrequencyDialog : Inactive()
 
     @Stable
     data class Active(

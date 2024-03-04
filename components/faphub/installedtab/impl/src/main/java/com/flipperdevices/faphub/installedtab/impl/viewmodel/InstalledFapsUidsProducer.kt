@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 
 class InstalledFapsUidsProducer @Inject constructor(
     private val queueApi: FapInstallationQueueApi,
@@ -26,7 +27,10 @@ class InstalledFapsUidsProducer @Inject constructor(
     override val TAG = "InstalledFapsStateProducer"
 
     private val applicationUidsStateFlow = MutableStateFlow<FapInstalledUidsState>(
-        FapInstalledUidsState.Loading
+        FapInstalledUidsState.Loaded(
+            faps = persistentListOf(),
+            inProgress = true
+        )
     )
     private var applicationUidJob: Job? = null
 
@@ -39,7 +43,12 @@ class InstalledFapsUidsProducer @Inject constructor(
         val oldJob = applicationUidJob
         applicationUidJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationUidsStateFlow.emit(FapInstalledUidsState.Loading)
+            applicationUidsStateFlow.emit(
+                FapInstalledUidsState.Loaded(
+                    faps = persistentListOf(),
+                    inProgress = true
+                )
+            )
             combine(
                 fapManifestApi.getManifestFlow(),
                 queueApi.getAllTasks()
@@ -47,11 +56,6 @@ class InstalledFapsUidsProducer @Inject constructor(
                 fapManifestState to fapQueueStates
             }.collectLatest { (manifestState, tasks) ->
                 val state = when (manifestState) {
-                    is FapManifestState.LoadedOffline -> FapInstalledUidsState.LoadedOffline(
-                        manifestState.items.map { OfflineFapApp(it) }.toImmutableList()
-                    )
-
-                    FapManifestState.Loading -> FapInstalledUidsState.Loading
                     is FapManifestState.NotLoaded -> FapInstalledUidsState.Error(
                         manifestState.throwable
                     )
@@ -65,9 +69,15 @@ class InstalledFapsUidsProducer @Inject constructor(
                                 is FapQueueState.InProgress -> it.request.applicationUid
                                 is FapQueueState.Pending -> it.request.applicationUid
                             }
-                        } + manifestState.items.map { it.fapManifestItem.uid }
+                        }.map { FapInstalled.RawUid(applicationUid = it) }
+                            .plus(manifestState.items.map { FapInstalled.Offline(OfflineFapApp(it)) })
+                            .distinctBy { it.applicationUid }
+                            .sortedBy { it.applicationUid }
+                            .toImmutableList()
+
                         FapInstalledUidsState.Loaded(
-                            ids.distinct().sorted().toImmutableList()
+                            faps = ids,
+                            inProgress = manifestState.inProgress
                         )
                     }
                 }
@@ -77,15 +87,23 @@ class InstalledFapsUidsProducer @Inject constructor(
     }
 }
 
+internal sealed class FapInstalled {
+    abstract val applicationUid: String
+    data class RawUid(
+        override val applicationUid: String
+    ) : FapInstalled()
+
+    data class Offline(
+        val offlineFap: OfflineFapApp
+    ) : FapInstalled() {
+        override val applicationUid = offlineFap.applicationUid
+    }
+}
+
 internal sealed class FapInstalledUidsState {
-    data object Loading : FapInstalledUidsState()
-
-    data class LoadedOffline(
-        val faps: ImmutableList<OfflineFapApp>
-    ) : FapInstalledUidsState()
-
     data class Loaded(
-        val faps: ImmutableList<String>
+        val faps: ImmutableList<FapInstalled>,
+        val inProgress: Boolean
     ) : FapInstalledUidsState()
 
     data class Error(
