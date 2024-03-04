@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
@@ -61,7 +62,7 @@ class FlipperScannerImpl @Inject constructor(
                 it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map { discoveredBluetoothDevice ->
             var mutableDevicesList: List<DiscoveredBluetoothDevice> = emptyList()
-            withLock(mutex, "scan_map") {
+            mutex.withLock {
                 val alreadyExistDBD = devices.getOrNull(
                     devices.indexOf(discoveredBluetoothDevice)
                 )

@@ -33,14 +33,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class InstalledFapsFromNetworkProducer @Inject constructor(
     private val installedFapsUidsProducer: InstalledFapsUidsProducer,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
     private val fapNetworkApi: FapNetworkApi,
     private val fapStateManager: FapInstallationStateManager,
+    private val globalScope: CoroutineScope
 ) : LogTagProvider {
-    override val TAG = "InstalledFapsFromNetworkProducer"
+    override val TAG = "InstalledFapsFromNetworkProducer-${hashCode()}"
 
     private val applicationFromNetworkStateFlow = MutableStateFlow<FapInstalledFromNetworkState>(
         FapInstalledFromNetworkState.Loaded(
@@ -51,17 +54,20 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
     private var fetchFromNetworkJob: Job? = null
     private val mutex = Mutex()
 
-    fun refresh(scope: CoroutineScope, force: Boolean) {
-        installedFapsUidsProducer.refresh(scope, force)
+    fun refresh(force: Boolean) {
+        info { "Call refresh $force" }
+        installedFapsUidsProducer.refresh(globalScope, force)
         val oldJob = fetchFromNetworkJob
-        fetchFromNetworkJob = scope.launch(Dispatchers.Default) {
+        fetchFromNetworkJob = globalScope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationFromNetworkStateFlow.emit(
-                FapInstalledFromNetworkState.Loaded(
-                    faps = persistentListOf(),
-                    inProgress = true
+            if (force) {
+                applicationFromNetworkStateFlow.emit(
+                    FapInstalledFromNetworkState.Loaded(
+                        faps = persistentListOf(),
+                        inProgress = true
+                    )
                 )
-            )
+            }
             combine(
                 installedFapsUidsProducer.getUidsStateFlow(),
                 flipperTargetProviderApi.getFlipperTarget().filterNotNull()
@@ -81,6 +87,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                             FapInstalledFromNetworkState.Error(throwable)
                         }
                     }
+                    info { "Update applicationFromNetworkStateFlow with state $state" }
                     applicationFromNetworkStateFlow.emit(state)
                 }
             }
@@ -144,12 +151,14 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         flipperTarget: FlipperTarget
     ): FapInstalledFromNetworkState {
         val toRequestItems = installedFaps.associateBy { it.applicationUid }.toMutableMap()
-        val alreadyLoadedApps = when (val currentState = applicationFromNetworkStateFlow.value) {
+        val currentLoadedItems = when (val currentState = applicationFromNetworkStateFlow.value) {
             is FapInstalledFromNetworkState.Error,
-            FapInstalledFromNetworkState.Loading -> persistentListOf()
-
             is FapInstalledFromNetworkState.Loaded -> currentState.faps
-        }.filter { (fapTarget, _) -> fapTarget == flipperTarget }
+        }
+
+        info { "currentLoadedItems: ${currentLoadedItems.map { it.second.id }}" }
+        val alreadyLoadedApps = currentLoadedItems
+            .filter { (fapTarget, _) -> fapTarget == flipperTarget }
             .filter { (_, fapItem) -> toRequestItems.contains(fapItem.applicationUid) }
             .filter { (_, fapItem) -> fapItem is OnlineFapApp }
 

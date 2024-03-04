@@ -1,14 +1,8 @@
 package com.flipperdevices.inappnotification.impl.composable.type
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -17,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
 
@@ -26,38 +19,26 @@ internal fun ComposableInAppNotificationSelfUpdateReady(
     notification: InAppNotification.SelfUpdateReady,
     onClickAction: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(2f)
-        ) {
-            Text(
-                text = stringResource(R.string.ready_update_title),
-                style = LocalTypography.current.subtitleB12
-            )
-            Text(
-                text = stringResource(R.string.ready_update_desc),
-                style = LocalTypography.current.subtitleR12
+    ComposableInAppNotificationBase(
+        icon = null,
+        titleId = R.string.ready_update_title,
+        descId = R.string.ready_update_desc,
+        actionButton = {
+            ComposableFlipperButton(
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                textPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp),
+                text = stringResource(R.string.ready_update_button),
+                textStyle = TextStyle(
+                    fontSize = 12.sp
+                ),
+                onClick = {
+                    notification.action()
+                    onClickAction()
+                }
             )
         }
-        ComposableFlipperButton(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp),
-            textPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp),
-            text = stringResource(R.string.ready_update_button),
-            textStyle = TextStyle(
-                fontSize = 12.sp
-            ),
-            onClick = {
-                notification.action()
-                onClickAction()
-            }
-        )
-    }
+    )
 }
 
 @Preview(

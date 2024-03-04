@@ -1,10 +1,7 @@
 package com.flipperdevices.inappnotification.impl.composable.type
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,7 +11,6 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.R
 
@@ -22,25 +18,14 @@ import com.flipperdevices.inappnotification.impl.R
 internal fun ComposableInAppNotificationSavedKey(
     notification: InAppNotification.Successful
 ) {
-    Row {
-        ComposableSaveIcon()
-        Column(modifier = Modifier.padding(top = 9.dp, bottom = 9.dp, end = 12.dp)) {
-            val title = notification.title ?: notification.titleId?.let { stringResource(it) }
-            if (title != null) {
-                Text(
-                    text = title,
-                    style = LocalTypography.current.subtitleB12
-                )
-            }
-            val desc = notification.desc ?: notification.descId?.let { stringResource(it) }
-            if (desc != null) {
-                Text(
-                    text = desc,
-                    style = LocalTypography.current.subtitleR12
-                )
-            }
-        }
-    }
+    ComposableInAppNotificationBase(
+        icon = {
+            ComposableSaveIcon()
+        },
+        title = notification.title ?: notification.titleId?.let { stringResource(it) },
+        desc = notification.desc ?: notification.descId?.let { stringResource(it) },
+        actionButton = null
+    )
 }
 
 private const val ICON_ANIMATION_DURATION_MS = 1000.0f

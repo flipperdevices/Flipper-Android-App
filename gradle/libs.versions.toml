@@ -18,6 +18,7 @@ compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
+compose-multiplatform = "1.6.0-rc02" # https://github.com/JetBrains/compose-multiplatform/releases
 horologist = "0.5.21" # https://github.com/google/horologist/releases
 serialization-json = "1.6.2" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
@@ -46,7 +47,7 @@ appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/ap
 datastore = "1.0.0" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14"
-markdown = "0.1.9" # https://github.com/Programistich/multiplatform-markdown-renderer
+markdown = "0.13.0" # https://github.com/Programistich/multiplatform-markdown-renderer
 ktor = "2.3.8" # https://ktor.io/
 apache-compress = "1.25.0" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.16.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -79,6 +80,7 @@ google-gms-firebase = "23.4.0" # https://firebase.google.com/docs/android/setup#
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+kotlin-jvm-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
 
 kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin-general" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin-general" }
@@ -131,6 +133,10 @@ compose-constraint = { module = "androidx.constraintlayout:constraintlayout-comp
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
 
+# UI - Compose multiplatform
+compose-multiplatform-gradle = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+
+
 # Coil
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -138,7 +144,7 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }
-markdown-renderer = { module = "com.github.Programistich.multiplatform-markdown-renderer:multiplatform-markdown-renderer-android", version.ref = "markdown" }
+markdown-renderer = { module = "com.mikepenz:multiplatform-markdown-renderer", version.ref = "markdown" }
 
 # Storage
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

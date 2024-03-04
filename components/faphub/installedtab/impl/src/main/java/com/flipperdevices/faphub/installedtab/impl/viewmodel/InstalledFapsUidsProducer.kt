@@ -43,12 +43,14 @@ class InstalledFapsUidsProducer @Inject constructor(
         val oldJob = applicationUidJob
         applicationUidJob = scope.launch(Dispatchers.Default) {
             oldJob?.cancelAndJoin()
-            applicationUidsStateFlow.emit(
-                FapInstalledUidsState.Loaded(
-                    faps = persistentListOf(),
-                    inProgress = true
+            if (force) {
+                applicationUidsStateFlow.emit(
+                    FapInstalledUidsState.Loaded(
+                        faps = persistentListOf(),
+                        inProgress = true
+                    )
                 )
-            )
+            }
             combine(
                 fapManifestApi.getManifestFlow(),
                 queueApi.getAllTasks()
@@ -61,7 +63,7 @@ class InstalledFapsUidsProducer @Inject constructor(
                     )
 
                     is FapManifestState.Loaded -> {
-                        val ids = tasks.mapNotNull {
+                        val ids = tasks.asSequence().mapNotNull {
                             when (it) {
                                 is FapQueueState.Failed,
                                 FapQueueState.NotFound -> null
@@ -72,7 +74,7 @@ class InstalledFapsUidsProducer @Inject constructor(
                         }.map { FapInstalled.RawUid(applicationUid = it) }
                             .plus(manifestState.items.map { FapInstalled.Offline(OfflineFapApp(it)) })
                             .distinctBy { it.applicationUid }
-                            .sortedBy { it.applicationUid }
+                            .sortedBy { it.applicationUid }.toList()
                             .toImmutableList()
 
                         FapInstalledUidsState.Loaded(
@@ -89,6 +91,7 @@ class InstalledFapsUidsProducer @Inject constructor(
 
 internal sealed class FapInstalled {
     abstract val applicationUid: String
+
     data class RawUid(
         override val applicationUid: String
     ) : FapInstalled()

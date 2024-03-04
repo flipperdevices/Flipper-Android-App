@@ -1,10 +1,12 @@
 package com.flipperdevices.core.ui.lifecycle
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import kotlin.reflect.KClass
 
-inline fun <reified VM : DecomposeViewModel> ComponentContext.viewModelWithFactory(
+inline fun <reified VM : DecomposeViewModel> ComponentContext.viewModelWithFactoryWithoutRemember(
     key: Any?,
     crossinline factory: () -> VM
 ): VM {
@@ -12,6 +14,16 @@ inline fun <reified VM : DecomposeViewModel> ComponentContext.viewModelWithFacto
         key = InstanceKey(clazz = VM::class, key = key),
         factory = factory
     )
+}
+
+@Composable
+inline fun <reified VM : DecomposeViewModel> ComponentContext.viewModelWithFactory(
+    key: Any?,
+    crossinline factory: () -> VM
+): VM {
+    return remember(key, VM::class) {
+        viewModelWithFactoryWithoutRemember(key, factory)
+    }
 }
 
 data class InstanceKey(

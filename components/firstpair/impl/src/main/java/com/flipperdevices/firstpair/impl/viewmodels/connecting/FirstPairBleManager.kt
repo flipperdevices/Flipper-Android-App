@@ -16,6 +16,9 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -26,9 +29,9 @@ import no.nordicsemi.android.ble.ConnectRequest
 /**
  * Class for initial connection to device. Set up connection and set up pairing
  */
-internal class FirstPairBleManager(
+class FirstPairBleManager @AssistedInject constructor(
     context: Context,
-    scope: CoroutineScope
+    @Assisted scope: CoroutineScope
 ) : BleManager(context),
     LogTagProvider,
     ConnectionStateProvider {
@@ -36,7 +39,7 @@ internal class FirstPairBleManager(
 
     private val connectionObservers = ConnectionObserverComposite(
         scope,
-        ConnectionObserverLogger(TAG)
+        ConnectionObserverLogger("$TAG-ConnectionObserverComposite")
     )
     private val bleMutex = Mutex()
 
@@ -46,7 +49,7 @@ internal class FirstPairBleManager(
     private var informationService: BluetoothGattService? = null
 
     init {
-        setConnectionObserver(connectionObservers)
+        connectionObserver = connectionObservers
     }
 
     override fun supportState() = FlipperSupportedState.READY
@@ -96,11 +99,16 @@ internal class FirstPairBleManager(
 
     override fun subscribeOnConnectionState(observer: SuspendConnectionObserver) {
         connectionObservers.addObserver(observer)
-        setConnectionObserver(connectionObservers)
     }
 
     override fun unsubscribeConnectionState(observer: SuspendConnectionObserver) {
         connectionObservers.removeObserver(observer)
-        setConnectionObserver(connectionObservers)
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(
+            scope: CoroutineScope
+        ): FirstPairBleManager
     }
 }

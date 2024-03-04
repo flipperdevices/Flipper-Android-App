@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.faphub.installedtab.api.FapNeedUpdatePopUpHelper
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
@@ -40,7 +41,8 @@ class UpdaterApiImpl @Inject constructor(
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val context: Context,
     private val metricApi: MetricApi,
-    private val flipperStorageApi: FlipperStorageApi
+    private val flipperStorageApi: FlipperStorageApi,
+    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
@@ -57,13 +59,20 @@ class UpdaterApiImpl @Inject constructor(
             info { "Update skipped, because we already in update" }
             return
         }
+        /**
+         * Yes, the same behaviour can be achieved if you make a Provider using Dagger and get a new Instance each time.
+         * But at this point it is critical for us to have a new instance of UpdaterTask every time we use it.
+         * If by chance it happens to be the same instance, it will be very hard to debug.
+         * The main idea is to simplify the code in complex places
+         */
         val localActiveTask = UpdaterTask(
             serviceProvider,
             context,
             uploadToFlipperHelper,
             subGhzProvisioningHelper,
             updateContentDownloader,
-            flipperStorageApi
+            flipperStorageApi,
+            fapNeedUpdatePopUpHelper
         )
         currentActiveTask = localActiveTask
 

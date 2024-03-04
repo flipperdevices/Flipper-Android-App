@@ -27,6 +27,8 @@ dependencies {
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.errors.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(projects.components.bridge.rpc.api)
 
     // Compose

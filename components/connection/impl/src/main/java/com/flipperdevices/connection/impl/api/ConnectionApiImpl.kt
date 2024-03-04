@@ -3,7 +3,6 @@ package com.flipperdevices.connection.impl.api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.connection.api.ConnectionApi

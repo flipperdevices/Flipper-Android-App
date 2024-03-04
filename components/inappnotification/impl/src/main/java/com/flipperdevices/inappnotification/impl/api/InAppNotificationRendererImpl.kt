@@ -17,6 +17,10 @@ class InAppNotificationRendererImpl @Inject constructor() : InAppNotificationRen
         modifier: Modifier,
         onNotificationHidden: () -> Unit,
     ) {
-        ComposableInAppNotification(notification, onNotificationHidden, modifier)
+        ComposableInAppNotification(
+            notification = notification,
+            onNotificationHidden = onNotificationHidden,
+            modifier = modifier
+        )
     }
 }

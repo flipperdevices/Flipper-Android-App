@@ -3,7 +3,7 @@ package com.flipperdevices.faphub.report.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.faphub.report.api.FapReportArgument
 import com.flipperdevices.faphub.report.impl.composable.main.ComposableMainReport
 import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
@@ -25,14 +25,14 @@ class FapReportSelectDecomposeComponentImpl @AssistedInject constructor(
         ComposableMainReport(
             onBack = onBack::invoke,
             onOpenBug = {
-                navigation.push(
+                navigation.pushToFront(
                     FapReportNavigationConfig.ReportBug(
                         reportUrl = fapReportArgument.reportUrl
                     )
                 )
             },
             onOpenConcern = {
-                navigation.push(
+                navigation.pushToFront(
                     FapReportNavigationConfig.ReportConcern(
                         applicationUid = fapReportArgument.applicationUid
                     )

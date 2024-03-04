@@ -1,6 +1,14 @@
 # Changelog
 
-# 1.6.8 - In progress
+# 1.6.9 - In progress
+
+- [KMP] Migration core:data
+- [KMP] Migration core:log
+- [Feature] Add ready app updates popup and notification dot
+- [Refactor] Migrate to markdown renderer from upstream
+- [FIX] Replace decompose push to move safety push
+
+# 1.6.8
 
 - [Refactor] Migrate file manager to decompose
 - [Refactor] Migrate options screen to decompose
@@ -29,6 +37,7 @@
 - [Refactor] Bump version with dependabot
 - [FIX] Disable edit when emulating in progress
 - [FIX] Single Activity launch mode to singleTask
+- [FIX] Bug with infinite connect state in first pair
 
 # 1.6.7
 

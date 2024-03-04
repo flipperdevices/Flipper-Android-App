@@ -3,7 +3,7 @@ package com.flipperdevices.filemanager.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerScreen
@@ -32,14 +32,14 @@ class FileManagerListingComponent @AssistedInject constructor(
             },
             deepLinkParser = deepLinkParser,
             onOpenFolder = {
-                navigation.push(FileManagerNavigationConfig.Screen(it.path))
+                navigation.pushToFront(FileManagerNavigationConfig.Screen(it.path))
             },
             onOpenEditor = {
-                navigation.push(FileManagerNavigationConfig.Editing(ShareFile(it)))
+                navigation.pushToFront(FileManagerNavigationConfig.Editing(ShareFile(it)))
             },
             onDownloadAndShareFile = {
                 val shareFile = ShareFile(it)
-                navigation.push(
+                navigation.pushToFront(
                     FileManagerNavigationConfig.Download(
                         path = File(shareFile.flipperFilePath).absoluteFile.parent ?: "/",
                         shareFile = shareFile
@@ -47,7 +47,7 @@ class FileManagerListingComponent @AssistedInject constructor(
                 )
             },
             onUploadFile = { path, content ->
-                navigation.push(
+                navigation.pushToFront(
                     FileManagerNavigationConfig.Uploading(
                         path = path,
                         deeplinkContent = content

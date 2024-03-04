@@ -1,18 +1,19 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
-import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancelAndJoin
@@ -22,18 +23,27 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
-private const val TIMEOUT_MS = 30L * 1000
+private const val TIMEOUT_MS = 10L * 1000
 
-class PairDeviceViewModel @Inject constructor(
-    private val application: Application,
+class PairDeviceViewModel(
+    private val firstPairBleManagerFactory: FirstPairBleManager.Factory,
     private val firstPairStorage: FirstPairStorage,
-    private val deviceColorSaver: DeviceColorSaver
+    private val deviceColorSaver: DeviceColorSaver,
+    private val dispatcher: CoroutineDispatcher
 ) : DecomposeViewModel(),
     LogTagProvider {
+
+    @Inject constructor(
+        firstPairBleManagerFactory: FirstPairBleManager.Factory,
+        firstPairStorage: FirstPairStorage,
+        deviceColorSaver: DeviceColorSaver
+    ) : this(firstPairBleManagerFactory, firstPairStorage, deviceColorSaver, Dispatchers.Default)
+
     override val TAG = "PairDeviceViewModel"
 
     private var _firstPairBleManager: FirstPairBleManager? = null
@@ -51,16 +61,19 @@ class PairDeviceViewModel @Inject constructor(
             return
         }
         @Suppress("SwallowedException")
-        connectingJob = viewModelScope.launch {
+        connectingJob = viewModelScope.launch(dispatcher) {
             try {
                 pairState.emit(
-                    DevicePairState.Connecting(
+                    DevicePairState.WaitingForStart(
                         device.address,
                         device.name
                     )
                 )
+                subscribeOnPairState(device)
                 withTimeout(TIMEOUT_MS) {
+                    info { "Start connect to device job" }
                     firstPairBleManager.connectToDevice(device.device)
+                    info { "Finish method #connectToDevice" }
                 }
 
                 deviceColorSaver.saveDeviceColor(device)
@@ -74,14 +87,12 @@ class PairDeviceViewModel @Inject constructor(
                 connectingJob = null
             }
         }
-
-        subscribeOnPairState(device)
     }
 
     @SuppressLint("MissingPermission")
-    private fun subscribeOnPairState(
+    private suspend fun subscribeOnPairState(
         device: DiscoveredBluetoothDevice
-    ) = launchWithLock(mutex, viewModelScope) {
+    ) = withLock(mutex, "subscribe_on_pairstate") {
         connectionStateUpdateJob?.cancelAndJoin()
         connectionStateUpdateJob = firstPairBleManager.stateAsFlow().onEach {
             info { "Receive $it" }
@@ -94,7 +105,8 @@ class PairDeviceViewModel @Inject constructor(
                             DevicePairState.NotInitialized -> DevicePairState.NotInitialized
 
                             is DevicePairState.TimeoutConnecting,
-                            is DevicePairState.TimeoutPairing -> localPairState
+                            is DevicePairState.TimeoutPairing,
+                            is DevicePairState.WaitingForStart -> localPairState
                         }
                     }
 
@@ -116,18 +128,19 @@ class PairDeviceViewModel @Inject constructor(
                         )
                     )
 
-                is ConnectionState.Ready ->
+                is ConnectionState.Ready -> {
                     pairState.emit(
                         DevicePairState.Connected(
                             firstPairBleManager.bluetoothDevice?.address,
                             firstPairBleManager.bluetoothDevice?.name
                         )
                     )
+                }
             }
-        }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope + dispatcher)
     }
 
-    fun resetConnection() = viewModelScope.launch {
+    fun resetConnection() = viewModelScope.launch(dispatcher) {
         connectingJob?.cancelAndJoin()
         connectingJob = null
         pairState.emit(DevicePairState.NotInitialized)
@@ -135,7 +148,7 @@ class PairDeviceViewModel @Inject constructor(
 
     fun getConnectionState(): StateFlow<DevicePairState> = pairState
 
-    fun close() {
+    private fun close() {
         _firstPairBleManager?.close()
         _firstPairBleManager = null
         connectionStateUpdateJob?.cancel()
@@ -165,7 +178,7 @@ class PairDeviceViewModel @Inject constructor(
             return bleManager
         }
 
-        bleManager = FirstPairBleManager(application, viewModelScope)
+        bleManager = firstPairBleManagerFactory(viewModelScope)
         _firstPairBleManager = bleManager
 
         return bleManager

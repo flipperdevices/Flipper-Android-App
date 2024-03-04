@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.screenstreaming.api.ScreenStreamingDecomposeComponent
 import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScreen
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
@@ -21,7 +22,7 @@ class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
     private val screenStreamingViewModelFactory: ScreenStreamingViewModel.Factory,
     private val screenshotViewModelProvider: Provider<ScreenshotViewModel>
 ) : ScreenStreamingDecomposeComponent(componentContext) {
-    private val screenStreamingViewModel = viewModelWithFactory(key = this) {
+    private val screenStreamingViewModel = viewModelWithFactoryWithoutRemember(key = this) {
         screenStreamingViewModelFactory(this@ScreenStreamingDecomposeComponentImpl)
     }
 

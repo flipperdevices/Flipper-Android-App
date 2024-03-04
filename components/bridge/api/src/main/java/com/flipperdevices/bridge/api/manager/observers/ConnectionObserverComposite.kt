@@ -2,6 +2,8 @@ package com.flipperdevices.bridge.api.manager.observers
 
 import android.bluetooth.BluetoothDevice
 import com.flipperdevices.core.ktx.jre.forEachIterable
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -10,12 +12,15 @@ import no.nordicsemi.android.ble.observer.ConnectionObserver
 class ConnectionObserverComposite(
     private val scope: CoroutineScope,
     vararg initialObservers: SuspendConnectionObserver
-) : ConnectionObserver {
+) : ConnectionObserver, LogTagProvider {
+    override val TAG = "ConnectionObserverComposite"
+
     @Suppress("SpreadOperator")
     private val observers = mutableListOf(*initialObservers)
 
     @Synchronized
     fun addObserver(observer: SuspendConnectionObserver) {
+        info { "Add observer $observer" }
         if (observers.contains(observer)) {
             return
         }
@@ -24,6 +29,8 @@ class ConnectionObserverComposite(
 
     @Synchronized
     fun removeObserver(observer: SuspendConnectionObserver) {
+        info { "Remove observer $observer" }
+
         observers.remove(observer)
     }
 

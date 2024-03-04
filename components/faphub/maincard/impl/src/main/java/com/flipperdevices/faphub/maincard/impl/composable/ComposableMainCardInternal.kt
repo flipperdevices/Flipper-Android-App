@@ -1,5 +1,7 @@
 package com.flipperdevices.faphub.maincard.impl.composable
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +14,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.maincard.impl.R
@@ -26,6 +31,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableMainCardInternal(
     state: FapMainCardState,
+    isExistAppReadyToUpdate: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -38,7 +44,7 @@ fun ComposableMainCardInternal(
                 .fillMaxWidth()
                 .clickableRipple(onClick = onClick)
         ) {
-            ComposableTitle()
+            ComposableTitle(isExistAppReadyToUpdate)
             ComposableSuggestion(
                 modifier = Modifier.padding(
                     horizontal = 12.dp,
@@ -51,7 +57,9 @@ fun ComposableMainCardInternal(
 }
 
 @Composable
-private fun ComposableTitle() {
+private fun ComposableTitle(
+    isExistAppReadyToUpdate: Boolean
+) {
     val title = stringResource(R.string.maincard_title)
     Row(
         modifier = Modifier.padding(top = 12.dp, start = 12.dp, end = 12.dp),
@@ -71,6 +79,11 @@ private fun ComposableTitle() {
             style = LocalTypography.current.titleSB16,
             color = LocalPallet.current.text100
         )
+
+        if (isExistAppReadyToUpdate) {
+            ComposableUpdatesAvailableBubble()
+        }
+
         Icon(
             modifier = Modifier
                 .size(14.dp),
@@ -78,5 +91,32 @@ private fun ComposableTitle() {
             contentDescription = title,
             tint = LocalPallet.current.text16
         )
+    }
+}
+
+@Composable
+private fun ComposableUpdatesAvailableBubble() {
+    Box(
+        modifier = Modifier
+            .padding(2.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(LocalPallet.current.updateProgressGreen)
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            text = stringResource(R.string.maincard_update_available),
+            color = LocalPallet.current.onFlipperButton,
+            style = LocalTypography.current.subtitleB10
+        )
+    }
+}
+
+@Preview(
+    showBackground = true
+)
+@Composable
+private fun ComposableTitlePreview() {
+    FlipperThemeInternal {
+        ComposableTitle(isExistAppReadyToUpdate = true)
     }
 }

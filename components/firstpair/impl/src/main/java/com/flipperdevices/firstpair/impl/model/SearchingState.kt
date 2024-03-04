@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.viewmodels.SearchStateBuilder
+import kotlinx.collections.immutable.ImmutableList
 
 data class SearchingState(
     val showSearching: Boolean = false,
@@ -17,10 +18,10 @@ data class SearchingState(
 )
 
 sealed class SearchingContent {
-    object Searching : SearchingContent()
+    data object Searching : SearchingContent()
 
     data class FoundedDevices(
-        val devices: List<DiscoveredBluetoothDevice>,
+        val devices: ImmutableList<DiscoveredBluetoothDevice>,
         val pairState: DevicePairState
     ) : SearchingContent()
 

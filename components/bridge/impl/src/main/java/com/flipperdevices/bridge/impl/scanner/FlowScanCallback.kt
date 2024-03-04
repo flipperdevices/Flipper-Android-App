@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.impl.scanner
 
 import android.annotation.SuppressLint
-import com.flipperdevices.core.log.TaggedTimber
+import com.flipperdevices.core.log.TaggedLogger
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.channels.awaitClose
@@ -13,7 +13,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 
-private val timber = TaggedTimber("FlowScanCallback")
+private val timber = TaggedLogger("FlowScanCallback")
 
 internal fun BluetoothLeScannerCompat.scanFlow(
     settings: ScanSettings,

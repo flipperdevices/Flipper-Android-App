@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,6 +23,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationError
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationHideApp
+import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReadyToUpdate
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationReportApp
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSavedKey
 import com.flipperdevices.inappnotification.impl.composable.type.ComposableInAppNotificationSelfUpdateError
@@ -39,9 +39,11 @@ fun ComposableInAppNotification(
     onNotificationHidden: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    key(notification, onNotificationHidden, modifier) {
-        ComposableInAppNotificationCard(notification, onNotificationHidden, modifier)
-    }
+    ComposableInAppNotificationCard(
+        notification = notification,
+        onNotificationHidden = onNotificationHidden,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -98,6 +100,10 @@ private fun ComposableInAppNotificationCard(
                 is InAppNotification.Error -> ComposableInAppNotificationError(
                     notification,
                     onClickAction
+                )
+
+                InAppNotification.ReadyToUpdateFaps -> ComposableInAppNotificationReadyToUpdate(
+                    onAction = onClickAction
                 )
             }
         }

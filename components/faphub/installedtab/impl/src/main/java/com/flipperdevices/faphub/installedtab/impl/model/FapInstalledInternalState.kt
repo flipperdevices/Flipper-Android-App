@@ -12,7 +12,7 @@ sealed class FapInstalledInternalState(
 
     data object UpdatingInProgress : FapInstalledInternalState(order = 2)
 
-    class ReadyToUpdate(
+    data class ReadyToUpdate(
         val manifestItem: FapManifestItem
     ) : FapInstalledInternalState(order = 1)
 
