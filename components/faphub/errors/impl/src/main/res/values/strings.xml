@@ -8,6 +8,8 @@
     <string name="common_error_general_desc">¯\\_(ツ)_/¯\nTry again later</string>
     <string name="common_error_no_server_title">No Server Connection</string>
     <string name="common_error_no_server_desc">Can\'t browse apps</string>
+    <string name="common_error_not_found_title">App Not Found</string>
+    <string name="common_error_not_found_desc">This app doesn\’t exist or it was removed from the Apps Catalog</string>
     <string name="common_error_wrong_request_title">Server Request Error</string>
     <string name="common_error_wrong_request_desc">Update app to the latest version</string>
     <string name="common_error_not_connected_flipper_apps_title">Flipper Not Connected</string>

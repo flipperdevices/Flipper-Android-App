@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 @Singleton
 @ContributesBinding(AppGraph::class, FapInstallationQueueApi::class)
@@ -42,7 +44,7 @@ class FapInstallationQueueApiImpl @Inject constructor(
         }
     }
 
-    override fun getAllTasks(): Flow<List<FapQueueState>> {
+    override fun getAllTasks(): Flow<ImmutableList<FapQueueState>> {
         return combine(
             queueRunner.currentTaskFlow(),
             queueRunner.pendingTasksFlow()
@@ -53,7 +55,7 @@ class FapInstallationQueueApiImpl @Inject constructor(
             }
             toReturn.addAll(pendingTasks.map { FapQueueState.Pending(it) })
 
-            return@combine toReturn
+            return@combine toReturn.toPersistentList()
         }
     }
 

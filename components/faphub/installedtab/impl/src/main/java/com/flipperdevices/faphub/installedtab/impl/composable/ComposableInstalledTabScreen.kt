@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -129,7 +128,6 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                     uninstallButtonOnline = uninstallButtonOnline,
                     onOpenFapItem = onOpenFapItem,
                     modifier = Modifier
-                        .animateItemPlacement()
                         .padding(vertical = 12.dp)
                 )
 

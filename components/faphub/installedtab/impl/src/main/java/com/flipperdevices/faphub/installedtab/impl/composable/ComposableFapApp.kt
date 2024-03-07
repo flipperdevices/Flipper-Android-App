@@ -29,7 +29,9 @@ internal fun ComposableFapApp(
             uninstallButton = {
                 uninstallButtonOffline(installedFapApp, it)
             },
-            modifier = modifier
+            modifier = modifier.clickable(
+                onClick = { onOpenFapItem(installedFapApp.applicationUid) }
+            )
         )
 
         is InstalledFapApp.OnlineFapApp -> ComposableOnlineFapApp(
@@ -38,8 +40,8 @@ internal fun ComposableFapApp(
                     onClick = { onOpenFapItem(installedFapApp.applicationUid) }
                 ),
             fapItem = installedFapApp.fapItemShort,
-            installationButton = { modifier ->
-                installationButton(installedFapApp.fapItemShort, modifier)
+            installationButton = {
+                installationButton(installedFapApp.fapItemShort, it)
             },
             uninstallButton = {
                 when (state) {

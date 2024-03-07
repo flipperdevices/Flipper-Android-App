@@ -20,12 +20,14 @@ sealed class FapInstalledScreenState {
 fun FapInstalledInternalLoadingState.toScreenState() = when (this) {
     is FapInstalledInternalLoadingState.Error -> FapInstalledScreenState.Error(throwable)
     is FapInstalledInternalLoadingState.Loaded -> FapInstalledScreenState.Loaded(
-        faps = faps.sortedWith(
-            compareBy(
-                { (_, fapState) -> fapState },
-                { (fapItem, _) -> fapItem.name }
-            )
-        ).toImmutableList(),
+        faps = faps
+            .distinctBy { it.first.applicationUid }
+            .sortedWith(
+                compareBy(
+                    { (_, fapState) -> fapState },
+                    { (fapItem, _) -> fapItem.name }
+                )
+            ).toImmutableList(),
         inProgress = inProgress,
         networkError = networkError
     )

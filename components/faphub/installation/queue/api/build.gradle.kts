@@ -11,4 +11,5 @@ dependencies {
     implementation(projects.components.core.data)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.immutable.collections)
 }
