@@ -308,14 +308,3 @@ class InstalledFapsUidsProducerTest {
         job.cancelAndJoin()
     }
 }
-
-private fun getTestManifest(uid: String) = FapManifestItem(
-    applicationAlias = "",
-    uid = uid,
-    versionUid = "",
-    path = "",
-    fullName = "",
-    iconBase64 = null,
-    sdkApi = null,
-    sourceFileHash = null
-)
