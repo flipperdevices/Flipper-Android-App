@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
@@ -9,28 +8,21 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("LongMethod")
 class InstalledFapsUidsProducerTest {
     private lateinit var fapManifestStateFlow: MutableStateFlow<FapManifestState>
     private lateinit var fapQueueStateFlow: MutableStateFlow<ImmutableList<FapQueueState>>
@@ -170,7 +162,6 @@ class InstalledFapsUidsProducerTest {
         stateSubscribeJob.cancelAndJoin()
     }
 
-
     @Test
     fun `support queue api items in progress`() = runTest {
         fapManifestStateFlow.emit(
@@ -182,7 +173,7 @@ class InstalledFapsUidsProducerTest {
         fapQueueStateFlow.emit(
             persistentListOf(
                 FapQueueState.InProgress(
-                    request = mockk() {
+                    request = mockk {
                         every { applicationUid } returns "TEST_UID_QUEUE"
                     },
                     float = 0.5f
@@ -226,7 +217,7 @@ class InstalledFapsUidsProducerTest {
         fapQueueStateFlow.emit(
             persistentListOf(
                 FapQueueState.Pending(
-                    request = mockk() {
+                    request = mockk {
                         every { applicationUid } returns "TEST_UID_QUEUE_PENDING"
                     }
                 )
@@ -269,13 +260,13 @@ class InstalledFapsUidsProducerTest {
         fapQueueStateFlow.emit(
             persistentListOf(
                 FapQueueState.InProgress(
-                    request = mockk() {
+                    request = mockk {
                         every { applicationUid } returns "TEST_UID_QUEUE_INPROGRESS"
                     },
                     float = 0.5f
                 ),
                 FapQueueState.InProgress(
-                    request = mockk() {
+                    request = mockk {
                         every { applicationUid } returns "TEST"
                     },
                     float = 0.5f

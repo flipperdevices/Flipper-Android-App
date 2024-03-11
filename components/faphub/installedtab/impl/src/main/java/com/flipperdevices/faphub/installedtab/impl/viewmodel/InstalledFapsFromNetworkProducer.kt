@@ -91,7 +91,6 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         }
     }
 
-
     private suspend fun updateStateUnsafe(
         installedState: FapInstalledUidsState.Loaded,
         flipperTarget: FlipperTarget
@@ -141,12 +140,13 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                 InstalledFapApp.OnlineFapApp(fapFromNetwork)
             } else if (alreadyLoadedFap != null) { // If app already loaded
                 alreadyLoadedFap.second
-            } else when (installedFap) {
-                is FapInstalledFromManifest.Offline -> installedFap.offlineFap
-                is FapInstalledFromManifest.RawUid -> null
+            } else {
+                when (installedFap) {
+                    is FapInstalledFromManifest.Offline -> installedFap.offlineFap
+                    is FapInstalledFromManifest.RawUid -> null
+                }
             }
         }
-
 
         return FapInstalledFromNetworkState.Loaded(
             faps = readyFaps
@@ -193,7 +193,8 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                 )
 
                 is InstalledFapApp.OnlineFapApp -> fapStateManager.getFapStateFlow(
-                    fapItem.applicationUid, fapItem.fapItemShort.upToDateVersion
+                    fapItem.applicationUid,
+                    fapItem.fapItemShort.upToDateVersion
                 )
             }.map { fapItem to it }
         }
@@ -215,7 +216,9 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
 
                     is FapState.NotAvailableForInstall -> if (state.reason == NotAvailableReason.NOT_AVAILABLE_ONLINE) {
                         FapInstalledInternalState.InstalledOffline
-                    } else FapInstalledInternalState.Installed
+                    } else {
+                        FapInstalledInternalState.Installed
+                    }
 
                     else -> FapInstalledInternalState.Installed
                 }
@@ -228,7 +231,6 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
             )
         }
     }
-
 }
 
 private sealed class FapInstalledFromNetworkState {

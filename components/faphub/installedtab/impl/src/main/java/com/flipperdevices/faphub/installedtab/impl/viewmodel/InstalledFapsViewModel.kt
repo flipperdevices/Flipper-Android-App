@@ -5,7 +5,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
@@ -16,6 +15,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.toButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.toScreenState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlinx.collections.immutable.persistentListOf
 
 class InstalledFapsViewModel @Inject constructor(
     private val fapManifestApi: FapManifestApi,
@@ -79,14 +78,14 @@ class InstalledFapsViewModel @Inject constructor(
             return@launch
         }
         val toUpdate = state.faps.filter { (fapApp, state) ->
-            state is FapInstalledInternalState.ReadyToUpdate
-                    && fapApp is InstalledFapApp.OnlineFapApp
+            state is FapInstalledInternalState.ReadyToUpdate &&
+                fapApp is InstalledFapApp.OnlineFapApp
         }
         info { "Pending items is $toUpdate" }
 
         toUpdate.forEach { (fapItem, state) ->
-            if (state is FapInstalledInternalState.ReadyToUpdate
-                && fapItem is InstalledFapApp.OnlineFapApp
+            if (state is FapInstalledInternalState.ReadyToUpdate &&
+                fapItem is InstalledFapApp.OnlineFapApp
             ) {
                 queueApi.enqueueSync(
                     FapActionRequest.Update(

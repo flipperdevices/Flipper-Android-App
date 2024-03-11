@@ -13,7 +13,7 @@ sealed class FapManifestLoaderState {
         val isLoading: Boolean
     ) : FapManifestLoaderState()
 
-    fun toManifestState() = when(this) {
+    fun toManifestState() = when (this) {
         is Failed -> FapManifestState.NotLoaded(throwable)
         is Loaded -> FapManifestState.Loaded(
             items = items,

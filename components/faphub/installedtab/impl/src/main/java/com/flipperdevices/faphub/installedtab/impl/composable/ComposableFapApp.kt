@@ -1,13 +1,9 @@
 package com.flipperdevices.faphub.installedtab.impl.composable
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
-import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.offline.ComposableOfflineFapApp
 import com.flipperdevices.faphub.installedtab.impl.composable.online.ComposableOnlineFapApp
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState

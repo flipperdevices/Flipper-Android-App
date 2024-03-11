@@ -130,7 +130,7 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                     modifier = Modifier
                         .padding(vertical = 12.dp)
                     // Waiting for fix https://issuetracker.google.com/issues/326278117
-                    //.animateItemPlacement()
+                    // .animateItemPlacement()
                 )
 
                 if (index != screenState.faps.lastIndex) {
@@ -151,7 +151,6 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
                 }
             }
         }
-
     }
 }
 

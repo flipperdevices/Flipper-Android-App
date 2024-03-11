@@ -12,7 +12,6 @@ import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.ktx.jre.launchWithLock
-import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
@@ -24,27 +23,20 @@ import com.flipperdevices.protobuf.storage.readRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.toList
-import java.io.File
-import javax.inject.Inject
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import java.io.File
 
 class FapManifestsLoader @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
@@ -114,7 +106,7 @@ class FapManifestsLoader @AssistedInject constructor(
             throw FlipperNotConnected()
         }
         val externalStorageStatus = storageInformation.externalStorageStatus
-                as? FlipperInformationStatus.Ready<StorageStats?>
+            as? FlipperInformationStatus.Ready<StorageStats?>
         if (externalStorageStatus == null || externalStorageStatus.data !is StorageStats.Loaded) {
             throw NoSdCardException()
         }

@@ -9,7 +9,6 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.persistentListOf
 
-
 internal fun getTestManifest(uid: String) = FapManifestItem(
     applicationAlias = "",
     uid = uid,

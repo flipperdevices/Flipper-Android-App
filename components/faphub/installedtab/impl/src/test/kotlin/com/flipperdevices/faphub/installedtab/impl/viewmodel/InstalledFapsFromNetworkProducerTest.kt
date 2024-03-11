@@ -2,7 +2,6 @@ package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
-import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
@@ -19,16 +18,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
+@Suppress("LongMethod")
 class InstalledFapsFromNetworkProducerTest {
     private lateinit var fapStateManager: FapInstallationStateManager
     private lateinit var fapNetworkApi: FapNetworkApi
@@ -48,7 +44,7 @@ class InstalledFapsFromNetworkProducerTest {
         )
         flipperTargetFlow = MutableStateFlow(null)
         fapNetworkApi = mockk()
-        fapStateManager = mockk() {
+        fapStateManager = mockk {
             every { getFapStateFlow(any(), any()) } returns flowOf(FapState.Installed)
         }
         installedFapsUidsProducer = mockk(relaxUnitFun = true) {
@@ -92,7 +88,6 @@ class InstalledFapsFromNetworkProducerTest {
                 target = eq(testTarget)
             )
         } returns Result.success(listOf(getTestFapItemShort("TEST", name = "From Internet")))
-
 
         underTest.refresh(force = true)
 
@@ -150,7 +145,6 @@ class InstalledFapsFromNetworkProducerTest {
             )
         } returns Result.failure(testException)
 
-
         underTest.refresh(force = true)
 
         val state = underTest.getLoadedFapsFlow().filter {
@@ -207,7 +201,6 @@ class InstalledFapsFromNetworkProducerTest {
             )
         } returns Result.success(emptyList())
 
-
         underTest.refresh(force = true)
 
         val state = underTest.getLoadedFapsFlow().filter {
@@ -262,7 +255,6 @@ class InstalledFapsFromNetworkProducerTest {
                 target = eq(testTarget)
             )
         } returns Result.success(listOf(getTestFapItemShort("TEST1", name = "From Internet")))
-
 
         underTest.refresh(force = true)
 

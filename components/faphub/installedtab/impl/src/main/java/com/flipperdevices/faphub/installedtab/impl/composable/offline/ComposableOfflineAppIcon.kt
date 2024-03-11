@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.installedtab.impl.composable.offline
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

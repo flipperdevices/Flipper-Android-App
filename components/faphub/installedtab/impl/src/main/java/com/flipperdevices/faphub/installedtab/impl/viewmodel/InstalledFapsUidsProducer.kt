@@ -7,6 +7,7 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.collections.immutable.persistentListOf
 
 class InstalledFapsUidsProducer @Inject constructor(
     private val queueApi: FapInstallationQueueApi,
@@ -79,11 +79,13 @@ class InstalledFapsUidsProducer @Inject constructor(
 
                         val apps = ids.asSequence()
                             .map { FapInstalledFromManifest.RawUid(applicationUid = it) }
-                            .plus(manifestState.items.map {
-                                FapInstalledFromManifest.Offline(
-                                    InstalledFapApp.OfflineFapApp(it)
-                                )
-                            })
+                            .plus(
+                                manifestState.items.map {
+                                    FapInstalledFromManifest.Offline(
+                                        InstalledFapApp.OfflineFapApp(it)
+                                    )
+                                }
+                            )
                             .sortedBy { it.applicationUid }.toList()
                             .toImmutableList()
 

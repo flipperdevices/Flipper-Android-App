@@ -4,7 +4,6 @@ import androidx.compose.runtime.Stable
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 
-
 @Stable
 sealed class InstalledFapApp {
     abstract val name: String
