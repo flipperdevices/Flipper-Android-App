@@ -6,6 +6,7 @@ import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallat
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledNetworkErrorEnum
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import io.mockk.coEvery
@@ -159,7 +160,7 @@ class InstalledFapsFromNetworkProducerTest {
                     ) to FapInstalledInternalState.InstalledOffline
                 ),
                 inProgress = true,
-                networkError = testException
+                networkError = InstalledNetworkErrorEnum.GENERAL
             ),
             state
         )
