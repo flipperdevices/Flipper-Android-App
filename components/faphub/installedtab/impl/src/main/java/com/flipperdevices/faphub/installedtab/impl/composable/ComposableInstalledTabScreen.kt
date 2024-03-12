@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,6 +24,7 @@ import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.faphub.installedtab.impl.R
+import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableErrorButton
 import com.flipperdevices.faphub.installedtab.impl.composable.button.ComposableUpdateAllButton
 import com.flipperdevices.faphub.installedtab.impl.composable.common.ComposableLoadingItemDivider
 import com.flipperdevices.faphub.installedtab.impl.composable.online.ComposableOnlineFapApp
@@ -45,9 +45,7 @@ internal fun ComposableInstalledTabScreen(
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.getFapInstalledScreenState().collectAsState()
-    val buttonState by remember {
-        viewModel.getFapBatchUpdateButtonState()
-    }.collectAsState()
+    val buttonState by viewModel.getFapBatchUpdateButtonState().collectAsState()
 
     val screenModifier = modifier.padding(horizontal = 14.dp)
 
@@ -65,15 +63,26 @@ internal fun ComposableInstalledTabScreen(
             onRefresh = { viewModel.refresh(true) }
         ) {
             LazyColumn {
-                item {
-                    ComposableUpdateAllButton(
-                        state = buttonState,
-                        onUpdateAll = viewModel::updateAll,
-                        onCancelAll = viewModel::cancelAll,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
-                    )
+                if (stateLocal.networkError == null) {
+                    item {
+                        ComposableUpdateAllButton(
+                            state = buttonState,
+                            onUpdateAll = viewModel::updateAll,
+                            onCancelAll = viewModel::cancelAll,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        )
+                    }
+                } else {
+                    item {
+                        ComposableErrorButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp),
+                            installedNetworkErrorEnum = stateLocal.networkError
+                        )
+                    }
                 }
                 ComposableInstalledTabScreenState(
                     screenState = stateLocal,

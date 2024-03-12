@@ -11,6 +11,8 @@ import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import com.flipperdevices.faphub.installation.stateprovider.api.model.NotAvailableReason
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledNetworkErrorEnum
+import com.flipperdevices.faphub.installedtab.impl.model.toInstalledNetworkErrorEnum
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import kotlinx.collections.immutable.ImmutableList
@@ -153,7 +155,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
                 .map { flipperTarget to it }
                 .toImmutableList(),
             inProgress = installedState.inProgress,
-            networkError = networkError
+            networkError = networkError?.toInstalledNetworkErrorEnum()
         )
     }
 
@@ -237,7 +239,7 @@ private sealed class FapInstalledFromNetworkState {
     data class Loaded(
         val faps: ImmutableList<Pair<FlipperTarget, InstalledFapApp>>,
         val inProgress: Boolean,
-        val networkError: Throwable? = null
+        val networkError: InstalledNetworkErrorEnum? = null
     ) : FapInstalledFromNetworkState()
 
     data class Error(

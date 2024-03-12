@@ -5,4 +5,6 @@
     <string name="faphub_installed_offline">Connect to the internet to see available updates</string>
     <string name="faphub_installed_offline_btn">INSTALLED</string>
     <string name="faphub_installed_empty_desc">You haven\'t installed any apps yet</string>
+    <string name="faphub_installed_error_pull_to_refresh">Pull to refresh</string>
+    <string name="faphub_installed_error_desc">Unable to browse apps due to network issues</string>
 </resources>

@@ -8,7 +8,7 @@ sealed class FapInstalledScreenState {
     data class Loaded(
         val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>,
         val inProgress: Boolean,
-        val networkError: Throwable? = null
+        val networkError: InstalledNetworkErrorEnum? = null
     ) : FapInstalledScreenState()
 
     data class Error(

@@ -12,6 +12,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonSta
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledScreenState
 import com.flipperdevices.faphub.installedtab.impl.model.InstalledFapApp
+import com.flipperdevices.faphub.installedtab.impl.model.InstalledNetworkErrorEnum
 import com.flipperdevices.faphub.installedtab.impl.model.toButtonState
 import com.flipperdevices.faphub.installedtab.impl.model.toScreenState
 import kotlinx.collections.immutable.ImmutableList
@@ -143,7 +144,7 @@ sealed class FapInstalledInternalLoadingState {
     data class Loaded(
         val faps: ImmutableList<Pair<InstalledFapApp, FapInstalledInternalState>>,
         val inProgress: Boolean,
-        val networkError: Throwable? = null
+        val networkError: InstalledNetworkErrorEnum? = null
     ) : FapInstalledInternalLoadingState()
 
     data class Error(
