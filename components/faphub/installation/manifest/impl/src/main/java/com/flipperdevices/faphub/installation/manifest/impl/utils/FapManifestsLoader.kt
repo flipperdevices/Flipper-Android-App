@@ -5,35 +5,102 @@ import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
+import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
 import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.flatten
-import com.flipperdevices.core.ktx.jre.pmap
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
+import com.flipperdevices.faphub.installation.manifest.impl.model.FapManifestLoaderState
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.readRequest
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 import java.io.File
-import javax.inject.Inject
 
-class FapManifestsLoader @Inject constructor(
+class FapManifestsLoader @AssistedInject constructor(
+    @Assisted private val scope: CoroutineScope,
     private val flipperServiceProvider: FlipperServiceProvider,
     private val parser: FapManifestParser,
-    private val cacheLoader: FapManifestCacheLoader
+    private val cacheLoader: FapManifestCacheLoader,
+    private val flipperStorageInformationApi: FlipperStorageInformationApi,
 ) : LogTagProvider {
-
     override val TAG = "FapManifestsLoader"
+    private val manifestLoaderState = MutableStateFlow<FapManifestLoaderState>(
+        FapManifestLoaderState.Loaded(
+            items = persistentListOf(),
+            isLoading = true
+        )
+    )
 
-    suspend fun load(
+    private var job: Job? = null
+    private val jobInvalidateMutex = Mutex()
+
+    fun invalidate() = launchWithLock(jobInvalidateMutex, scope) {
+        val oldJob = job
+        job = scope.launch {
+            oldJob?.cancelAndJoin()
+            manifestLoaderState.emit(
+                FapManifestLoaderState.Loaded(
+                    items = persistentListOf(),
+                    isLoading = true
+                )
+            )
+            val serviceApi = flipperServiceProvider.getServiceApi()
+            flipperStorageInformationApi.invalidate(
+                scope = scope,
+                serviceApi = serviceApi
+            )
+            combine(
+                serviceApi.connectionInformationApi
+                    .getConnectionStateFlow(),
+                flipperStorageInformationApi
+                    .getStorageInformationFlow()
+            ) { connectionState, flipperStorageInformation ->
+                connectionState to flipperStorageInformation
+            }.collectLatest { (connectionState, flipperStorageInformation) ->
+                runCatching {
+                    loadInternal(
+                        connectionState = connectionState,
+                        storageInformation = flipperStorageInformation
+                    )
+                }.onFailure {
+                    if (it is CancellationException) {
+                        throw it
+                    } else {
+                        manifestLoaderState.emit(FapManifestLoaderState.Failed(it))
+                    }
+                }
+            }
+        }
+    }
+
+    fun getManifestLoaderState() = manifestLoaderState.asStateFlow()
+
+    private suspend fun loadInternal(
         connectionState: ConnectionState,
         storageInformation: FlipperStorageInformation
-    ): List<FapManifestItem> {
+    ) {
         val serviceApi = flipperServiceProvider.getServiceApi()
         if (!connectionState.isReady) {
             throw FlipperNotConnected()
@@ -46,20 +113,40 @@ class FapManifestsLoader @Inject constructor(
         info { "Start load manifests" }
         val cacheResult = cacheLoader.loadCache()
         info { "Cache load result is toLoad: ${cacheResult.toLoadNames}, cached: ${cacheResult.cachedNames}" }
-        val fapItemsFromFlipper = cacheResult.toLoadNames.pmap { name ->
+        val fapItemsList = mutableListOf<FapManifestItem>()
+        cacheResult.cachedNames.forEach { (file, name) ->
+            parser.parse(file.readBytes(), name)?.let { fapItemsList.add(it) }
+            manifestLoaderState.emit(
+                FapManifestLoaderState.Loaded(
+                    items = fapItemsList.toPersistentList(),
+                    isLoading = true
+                )
+            )
+        }
+        info { "Parsed ${fapItemsList.size} manifests from cache" }
+        cacheResult.toLoadNames.forEach { name ->
             val content = loadManifestFile(
                 requestApi = serviceApi.requestApi,
                 filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
-            ) ?: return@pmap null
-            parser.parse(content, name)
-        }.filterNotNull()
-        info { "Parsed ${fapItemsFromFlipper.size} manifests from flipper" }
-        val fapItemsFromCache = cacheResult.cachedNames.pmap { (file, name) ->
-            parser.parse(file.readBytes(), name)
-        }.filterNotNull()
-        info { "Parsed ${fapItemsFromCache.size} manifests from cache" }
+            )?.let { parser.parse(it, name) }
+            if (content != null) {
+                fapItemsList.add(content)
+                manifestLoaderState.emit(
+                    FapManifestLoaderState.Loaded(
+                        items = fapItemsList.toPersistentList(),
+                        isLoading = true
+                    )
+                )
+            }
+        }
+        info { "Parsed ${fapItemsList.size} manifests from flipper" }
 
-        return fapItemsFromFlipper + fapItemsFromCache
+        manifestLoaderState.emit(
+            FapManifestLoaderState.Loaded(
+                items = fapItemsList.toPersistentList(),
+                isLoading = false
+            )
+        )
     }
 
     private suspend fun loadManifestFile(
@@ -81,5 +168,10 @@ class FapManifestsLoader @Inject constructor(
         }.flatten()
 
         return responseBytes
+    }
+
+    @AssistedFactory
+    interface Factory {
+        operator fun invoke(scope: CoroutineScope): FapManifestsLoader
     }
 }

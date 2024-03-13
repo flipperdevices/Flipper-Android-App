@@ -7,6 +7,8 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -42,7 +44,7 @@ class FapInstallationQueueApiImpl @Inject constructor(
         }
     }
 
-    override fun getAllTasks(): Flow<List<FapQueueState>> {
+    override fun getAllTasks(): Flow<ImmutableList<FapQueueState>> {
         return combine(
             queueRunner.currentTaskFlow(),
             queueRunner.pendingTasksFlow()
@@ -53,7 +55,7 @@ class FapInstallationQueueApiImpl @Inject constructor(
             }
             toReturn.addAll(pendingTasks.map { FapQueueState.Pending(it) })
 
-            return@combine toReturn
+            return@combine toReturn.toPersistentList()
         }
     }
 

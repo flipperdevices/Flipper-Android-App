@@ -78,6 +78,8 @@ data class FlipperPallet(
     val accent: Color = Color(0xFFFF8200)
     val accentSecond: Color = Color(0xFF589DFF)
     val onError: Color = Color(0xFFF63F3F)
+    val onErrorBorder: Color = onError.copy(alpha = 0.3f)
+    val onErrorBackground: Color = onError.copy(alpha = 0.1f)
 
     val bottomBarSelected: Color = Color(0xFF303030)
     val bottomBarSelectedFlipperStatus: Color = Color(0xFF919191)

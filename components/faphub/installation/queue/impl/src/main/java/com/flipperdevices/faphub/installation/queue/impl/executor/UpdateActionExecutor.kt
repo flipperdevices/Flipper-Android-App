@@ -6,7 +6,6 @@ import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapActionUpload
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapIconDownloader
@@ -36,14 +35,11 @@ class UpdateActionExecutor @Inject constructor(
 
         fapManifestApi.add(
             pathToFap = path,
-            FapManifestEnrichedItem(
-                fapManifestItem = request.from.copy(
-                    fullName = request.applicationName,
-                    versionUid = request.toVersion.id,
-                    iconBase64 = iconBase64Request.getOrNull() ?: request.from.iconBase64,
-                    sdkApi = getSdkApi(request.applicationUid, request.toVersion)
-                ),
-                numberVersion = request.toVersion.version
+            fapManifestItem = request.from.copy(
+                fullName = request.applicationName,
+                versionUid = request.toVersion.id,
+                iconBase64 = iconBase64Request.getOrNull() ?: request.from.iconBase64,
+                sdkApi = getSdkApi(request.applicationUid, request.toVersion)
             )
         )
         info { "Fap manifest added by request $request" }

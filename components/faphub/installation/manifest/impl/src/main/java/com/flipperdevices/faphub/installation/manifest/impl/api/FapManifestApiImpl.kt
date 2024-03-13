@@ -1,130 +1,125 @@
 package com.flipperdevices.faphub.installation.manifest.impl.api
 
-import android.app.Application
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
-import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.faphub.dao.api.FapVersionApi
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestCacheLoader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestDeleter
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUploader
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
+import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, FapManifestApi::class)
 class FapManifestApiImpl @Inject constructor(
-    private val loader: FapManifestsLoader,
+    loaderFactory: FapManifestsLoader.Factory,
     private val manifestUploader: FapManifestUploader,
     private val manifestDeleter: FapManifestDeleter,
-    private val flipperServiceProvider: FlipperServiceProvider,
-    private val flipperStorageInformationApi: FlipperStorageInformationApi,
-    fapManifestCacheLoader: FapManifestCacheLoader,
-    fapVersionApi: FapVersionApi,
-    application: Application,
 ) : FapManifestApi, LogTagProvider {
     override val TAG = "FapManifestApi"
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val mutex = Mutex()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val loader = loaderFactory(scope)
 
-    private val enrichedHelper = FapManifestEnrichedHelper(
-        scope = scope,
-        versionApi = fapVersionApi,
-        application = application,
-        cacheLoader = fapManifestCacheLoader
+    private val fapManifestStateFlow = MutableStateFlow<FapManifestState>(
+        FapManifestState.Loaded(
+            items = persistentListOf(),
+            inProgress = true
+        )
     )
 
+    private val mutex = Mutex()
+
+    private var job: Job? = null
+    private val jobInvalidateMutex = Mutex()
+
     init {
-        scope.launch(Dispatchers.Default) {
-            val serviceApi = flipperServiceProvider
-                .getServiceApi()
-            flipperStorageInformationApi.invalidate(this, serviceApi)
-            combine(
-                flipperStorageInformationApi.getStorageInformationFlow(),
-                serviceApi.connectionInformationApi
-                    .getConnectionStateFlow()
-            ) { storageInformation, connectionState ->
-                storageInformation to connectionState
-            }.collectLatest { (storageStatus, connectionState) ->
-                info { "Call invalidate caused by changing $storageStatus or $connectionState" }
-                invalidate(connectionState, storageStatus)
-            }
-        }
+        invalidateAsync()
     }
 
-    override fun getManifestFlow(): StateFlow<FapManifestState> {
-        return enrichedHelper.getManifestState()
-    }
+    override fun getManifestFlow() = fapManifestStateFlow.asStateFlow()
 
     override suspend fun add(
         pathToFap: String,
-        fapManifestItem: FapManifestEnrichedItem
+        fapManifestItem: FapManifestItem
     ) = withLock(mutex, "add") {
-        manifestUploader.save(pathToFap, fapManifestItem.fapManifestItem)
-        enrichedHelper.onAdd(fapManifestItem)
+        info { "Add $pathToFap to $fapManifestItem " }
+
+        manifestUploader.save(pathToFap, fapManifestItem)
+        fapManifestStateFlow.update { fapManifestState ->
+            if (fapManifestState is FapManifestState.Loaded) {
+                fapManifestState.copy(
+                    items = fapManifestState
+                        .items
+                        .filter { it.uid != fapManifestItem.uid }
+                        .plus(fapManifestItem)
+                        .toPersistentList()
+                )
+            } else {
+                fapManifestState
+            }
+        }
     }
 
     override suspend fun remove(
         applicationUid: String
     ) = withLock(mutex, "remove") {
-        val toRemoveManifests = enrichedHelper.onDelete(applicationUid)
+        val toRemoveManifests = (fapManifestStateFlow.value as? FapManifestState.Loaded)
+            ?.items
+            ?.filter { it.uid == applicationUid }
         info { "On $applicationUid toRemoveManifests is $toRemoveManifests" }
+
+        if (toRemoveManifests.isNullOrEmpty()) {
+            return@withLock
+        }
+
+        fapManifestStateFlow.update { fapManifestState ->
+            if (fapManifestState is FapManifestState.Loaded) {
+                fapManifestState.copy(
+                    items = fapManifestState
+                        .items
+                        .minus(toRemoveManifests)
+                        .toPersistentList()
+                )
+            } else {
+                fapManifestState
+            }
+        }
         toRemoveManifests.forEach {
             manifestDeleter.delete(it)
         }
     }
 
-    override fun invalidateAsync() {
-        info { "Call invalidate async" }
-        scope.launch(Dispatchers.Default) {
-            val serviceApi = flipperServiceProvider
-                .getServiceApi()
-            invalidate(
-                connectionState = serviceApi.connectionInformationApi.getConnectionStateFlow()
-                    .first(),
-                storageInformation = flipperStorageInformationApi.getStorageInformationFlow()
-                    .first()
-            )
-        }
-    }
-
-    private suspend fun invalidate(
-        connectionState: ConnectionState,
-        storageInformation: FlipperStorageInformation
-    ) = withLock(mutex, "invalidate") {
-        runCatching {
-            enrichedHelper.onLoadFresh()
-            loader.load(
-                connectionState = connectionState,
-                storageInformation = storageInformation
-            )
-        }.onFailure {
-            error(it) { "Failed load manifests" }
-            enrichedHelper.onError(it)
-        }.onSuccess {
-            enrichedHelper.onUpdateManifests(it)
+    override fun invalidateAsync() = launchWithLock(jobInvalidateMutex, scope) {
+        val oldJob = job
+        job = scope.launch(Dispatchers.Default) {
+            oldJob?.cancelAndJoin()
+            loader.invalidate()
+            loader.getManifestLoaderState()
+                .collectLatest { manifestLoaderState ->
+                    withLock(mutex, "invalidate") {
+                        fapManifestStateFlow.emit(manifestLoaderState.toManifestState())
+                    }
+                }
         }
     }
 }

@@ -14,6 +14,7 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
@@ -33,14 +34,11 @@ class FapInstallationAllImpl @Inject constructor(
 
     override suspend fun installAll() = withContext(Dispatchers.Default) {
         info { "Start receive installed apps" }
-        val alreadyInstalledApps = manifestApi.getManifestFlow().mapNotNull { state ->
-            when (state) {
-                is FapManifestState.Loaded -> state.items.map { it.fapManifestItem }
-                is FapManifestState.LoadedOffline -> state.items
-                FapManifestState.Loading,
-                is FapManifestState.NotLoaded -> null
-            }
-        }.first()
+        val alreadyInstalledApps = manifestApi.getManifestFlow()
+            .filter { it is FapManifestState.Loaded && !it.inProgress }
+            .mapNotNull { state ->
+                (state as? FapManifestState.Loaded)?.items
+            }.first()
         info { "Received installed ${alreadyInstalledApps.size} apps" }
         val target = targetProviderApi.getFlipperTarget().filterNotNull().first()
         info { "Received target $target" }

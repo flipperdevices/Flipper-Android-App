@@ -22,9 +22,7 @@ class FapUpdatePendingCountApiImpl @Inject constructor(
         fapsStateProducer.refresh(force = false)
         return fapsStateProducer.getLoadedFapsFlow().map { loadingState ->
             when (loadingState) {
-                is FapInstalledInternalLoadingState.Error,
-                FapInstalledInternalLoadingState.Loading,
-                is FapInstalledInternalLoadingState.LoadedOffline -> 0
+                is FapInstalledInternalLoadingState.Error -> 0
 
                 is FapInstalledInternalLoadingState.Loaded -> loadingState.faps.count { (_, state) ->
                     state is FapInstalledInternalState.ReadyToUpdate

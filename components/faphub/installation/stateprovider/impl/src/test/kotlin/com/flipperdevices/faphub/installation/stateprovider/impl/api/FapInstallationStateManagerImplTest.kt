@@ -4,7 +4,6 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
-import com.flipperdevices.faphub.installation.manifest.model.FapManifestEnrichedItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
@@ -79,7 +78,12 @@ class FapInstallationStateManagerImplTest {
     @Before
     fun setUp() {
         fapManifestApi = mockk {
-            every { getManifestFlow() } returns MutableStateFlow(FapManifestState.Loading)
+            every { getManifestFlow() } returns MutableStateFlow(
+                FapManifestState.Loaded(
+                    items = persistentListOf(),
+                    inProgress = false
+                )
+            )
         }
         queueApi = mockk {
             every { getFlowById(any()) } returns flowOf(FapQueueState.NotFound)
@@ -240,20 +244,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = null,
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = null,
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -279,20 +281,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = null,
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(1, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = null,
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -330,20 +330,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = SemVer(32, 1),
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = SemVer(32, 1),
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -369,20 +367,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = SemVer(32, 1),
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = SemVer(32, 1),
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -408,20 +404,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = SemVer(32, 2),
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = SemVer(32, 2),
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -458,20 +452,18 @@ class FapInstallationStateManagerImplTest {
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
             FapManifestState.Loaded(
                 items = persistentListOf(
-                    FapManifestEnrichedItem(
-                        fapManifestItem = FapManifestItem(
-                            applicationAlias = "alias",
-                            uid = "test-app",
-                            versionUid = "",
-                            path = "",
-                            fullName = "",
-                            iconBase64 = null,
-                            sdkApi = null,
-                            sourceFileHash = null
-                        ),
-                        numberVersion = SemVer(0, 0)
+                    FapManifestItem(
+                        applicationAlias = "alias",
+                        uid = "test-app",
+                        versionUid = "",
+                        path = "",
+                        fullName = "",
+                        iconBase64 = null,
+                        sdkApi = null,
+                        sourceFileHash = null
                     )
-                )
+                ),
+                inProgress = false
             )
         )
 
@@ -500,47 +492,13 @@ class FapInstallationStateManagerImplTest {
     }
 
     @Test
-    fun `installed from offline manifest`() = runTest {
-        every { queueApi.getFlowById(eq("test-app")) } returns flowOf(FapQueueState.NotFound)
-        every { flipperTargetProviderApi.getFlipperTarget() } returns MutableStateFlow(
-            FlipperTarget.Received(target = "fTest", sdk = SemVer(99, 99))
-        )
-        every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
-            FapManifestState.LoadedOffline(
-                items = persistentListOf(
-                    FapManifestItem(
-                        applicationAlias = "alias",
-                        uid = "test-app",
-                        versionUid = "",
-                        path = "",
-                        fullName = "",
-                        iconBase64 = null,
-                        sdkApi = null,
-                        sourceFileHash = null
-                    )
-                )
-            )
-        )
-
-        val fapState = underTest.getFapStateFlow(
-            applicationUid = "test-app",
-            currentVersion = fapTestVersion
-        ).first()
-
-        Assert.assertEquals(
-            FapState.Installed,
-            fapState
-        )
-    }
-
-    @Test
     fun `retrieving when manifest not ready`() = runTest {
         every { queueApi.getFlowById(eq("test-app")) } returns flowOf(FapQueueState.NotFound)
         every { flipperTargetProviderApi.getFlipperTarget() } returns MutableStateFlow(
             FlipperTarget.Received(target = "fTest", sdk = SemVer(99, 99))
         )
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
-            FapManifestState.Loading
+            FapManifestState.Loaded(items = persistentListOf(), inProgress = true)
         )
 
         val fapState = underTest.getFapStateFlow(
@@ -561,7 +519,10 @@ class FapInstallationStateManagerImplTest {
             FlipperTarget.Received(target = "fTest", sdk = SemVer(99, 99))
         )
         every { fapManifestApi.getManifestFlow() } returns MutableStateFlow(
-            FapManifestState.Loaded(persistentListOf())
+            FapManifestState.Loaded(
+                items = persistentListOf(),
+                inProgress = false
+            )
         )
 
         val fapState = underTest.getFapStateFlow(
