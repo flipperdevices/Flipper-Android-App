@@ -70,6 +70,7 @@ class FapManifestApiImpl @Inject constructor(
                 fapManifestState.copy(
                     items = fapManifestState
                         .items
+                        .filter { it.uid != fapManifestItem.uid }
                         .plus(fapManifestItem)
                         .toPersistentList()
                 )

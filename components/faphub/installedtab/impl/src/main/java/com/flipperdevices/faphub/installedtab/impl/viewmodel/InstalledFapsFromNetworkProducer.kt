@@ -133,19 +133,20 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         val loadedFaps = loadedFapsResult.getOrElse { emptyList() }
         info { "Loaded ${loadedFaps.size} faps from network" }
         val networkError = loadedFapsResult.exceptionOrNull()
-        val readyFaps = installedState.faps.mapNotNull { installedFap ->
+        val readyFaps = mutableListOf<InstalledFapApp>()
+        installedState.faps.forEach { installedFap ->
             val fapFromNetwork = loadedFaps.find { it.id == installedFap.applicationUid }
             val alreadyLoadedFap = currentLoadedItems.find {
                 it.second.applicationUid == installedFap.applicationUid
             }
             if (fapFromNetwork != null) { // If app exist in network response
-                InstalledFapApp.OnlineFapApp(fapFromNetwork)
+                readyFaps.add(InstalledFapApp.OnlineFapApp(fapFromNetwork))
             } else if (alreadyLoadedFap != null) { // If app already loaded
-                alreadyLoadedFap.second
+                readyFaps.add(alreadyLoadedFap.second)
             } else {
                 when (installedFap) {
-                    is FapInstalledFromManifest.Offline -> installedFap.offlineFap
-                    is FapInstalledFromManifest.RawUid -> null
+                    is FapInstalledFromManifest.Offline -> readyFaps.add(installedFap.offlineFap)
+                    is FapInstalledFromManifest.RawUid -> {}
                 }
             }
         }
