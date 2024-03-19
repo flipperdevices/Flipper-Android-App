@@ -4,22 +4,24 @@ import com.flipperdevices.bridge.connection.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 
-class SerialApiFactory @AssistedInject constructor(
-    @Assisted private val scope: CoroutineScope,
-    private val unsafeApiImplFactory: FSerialUnsafeApiImpl.Factory
+class SerialApiFactory @Inject constructor(
+    private val unsafeApiImplFactory: FSerialUnsafeApiImpl.Factory,
+    private val throttlerApiFactory: FSerialOverflowThrottler.Factory
 ) : LogTagProvider {
     override val TAG = "SerialApiCombinedFactory"
     fun build(
         config: FBleDeviceSerialConfig,
-        services: ClientBleGattServices
+        services: ClientBleGattServices,
+        scope: CoroutineScope
     ): FSerialDeviceApi? {
-        var deviceApi: FSerialDeviceApi?
 
         val serialService = services.findService(config.serialServiceUuid)
         val rxCharacteristic = serialService?.findCharacteristic(config.rxServiceCharUuid)
@@ -31,19 +33,28 @@ class SerialApiFactory @AssistedInject constructor(
             }
             return null
         }
-        deviceApi = unsafeApiImplFactory(
+        var deviceApi: FSerialDeviceApi = unsafeApiImplFactory(
             rxCharacteristic = rxCharacteristic,
             txCharacteristic = txCharacteristic,
             scope = scope
         )
 
-        return deviceApi
-    }
+        val overflowControlConfig = config.overflowControl
+        if (overflowControlConfig != null) {
+            val overflowCharacteristic = serialService.findCharacteristic(
+                overflowControlConfig.overflowServiceUuid
+            )
+            if (overflowCharacteristic == null) {
+                info { "Can't build unsafe serial api, because can't find overflow characteristic " }
+                return null
+            }
+            deviceApi = throttlerApiFactory(
+                serialApi = deviceApi,
+                scope = scope,
+                overflowCharacteristic = overflowCharacteristic
+            )
+        }
 
-    @AssistedFactory
-    fun interface Factory {
-        operator fun invoke(
-            scope: CoroutineScope
-        ): SerialApiFactory
+        return deviceApi
     }
 }

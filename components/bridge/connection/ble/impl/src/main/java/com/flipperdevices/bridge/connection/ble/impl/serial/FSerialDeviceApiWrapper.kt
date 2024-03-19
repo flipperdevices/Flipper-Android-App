@@ -11,9 +11,13 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 
@@ -21,10 +25,10 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     @Assisted config: FBleDeviceSerialConfig,
     @Assisted serviceFlow: StateFlow<ClientBleGattServices?>,
-    serialApiFactoryBuilder: SerialApiFactory.Factory
+    serialApiFactory: SerialApiFactory
 ) : FSerialDeviceApi, LogTagProvider {
     override val TAG = "FSerialDeviceApiWrapper"
-    private val serialApiFactory = serialApiFactoryBuilder(scope)
+    private var serialApiScope: CoroutineScope? = null
     private var delegateSerialApi: FSerialDeviceApi? = null
     private val receiveByteFlow = MutableSharedFlow<ByteArray>()
     private val lock = WaitNotifyLock()
@@ -32,13 +36,22 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
     init {
         scope.launch {
             serviceFlow.collect { services ->
+                info { "Create new serial api because $services changed" }
+
+                serialApiScope?.cancel()
+                val newSerialApiScope = CoroutineScope(
+                    Dispatchers.Default + SupervisorJob(scope.coroutineContext.job)
+                ).also { serialApiScope = it }
+
                 val service = services?.findService(config.serialServiceUuid)
                 if (service == null) {
                     delegateSerialApi = null
                     info { "Set serial api to null because service is null, $services" }
                 } else {
                     val serialApi = serialApiFactory.build(
-                        config, services
+                        config = config,
+                        services = services,
+                        scope = newSerialApiScope
                     )
                     if (serialApi == null) {
                         delegateSerialApi = null
