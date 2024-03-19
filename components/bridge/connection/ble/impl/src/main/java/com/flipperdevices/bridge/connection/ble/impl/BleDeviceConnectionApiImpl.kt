@@ -30,7 +30,8 @@ import no.nordicsemi.android.kotlin.ble.scanner.BleScanner
 
 @ContributesBinding(AppGraph::class, BleDeviceConnectionApi::class)
 class BleDeviceConnectionApiImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val bleApiWithSerialFactory: FBleApiWithSerial.Factory
 ) : BleDeviceConnectionApi {
 
     override suspend fun connect(
@@ -66,6 +67,11 @@ class BleDeviceConnectionApiImpl @Inject constructor(
         device.requestMtu(BleConstants.MAX_MTU)
         device.discoverServices()
 
-        return FBleApiImpl(scope, device)
+        val serialConfig = config.serialConfig
+        return if (serialConfig == null) {
+            FBleApiImpl()
+        } else {
+            bleApiWithSerialFactory(scope = scope, config = serialConfig, client = device)
+        }
     }
 }

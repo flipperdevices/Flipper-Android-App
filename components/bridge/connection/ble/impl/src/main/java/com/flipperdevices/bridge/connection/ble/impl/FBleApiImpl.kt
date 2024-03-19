@@ -1,20 +1,36 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
 import com.flipperdevices.bridge.connection.ble.api.FBleApi
-import com.flipperdevices.bridge.connection.common.api.FSerialDeviceApi
+import com.flipperdevices.bridge.connection.ble.api.FBleDeviceSerialConfig
+import com.flipperdevices.bridge.connection.ble.impl.serial.FSerialDeviceApiWrapper
+import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 
-class FBleApiImpl(
-    private val scope: CoroutineScope,
-    private val client: ClientBleGatt
-) : FBleApi, FSerialDeviceApi {
-    override suspend fun getReceiveBytesFlow(): Flow<ByteArray> {
-        TODO("Not yet implemented")
-    }
+open class FBleApiImpl(
+) : FBleApi {
+}
 
-    override suspend fun sendBytes(data: ByteArray) {
-        TODO("Not yet implemented")
+open class FBleApiWithSerial @AssistedInject constructor(
+    @Assisted private val scope: CoroutineScope,
+    @Assisted private val client: ClientBleGatt,
+    @Assisted private val config: FBleDeviceSerialConfig,
+    serialDeviceApiWrapperFactory: FSerialDeviceApiWrapper.Factory
+) : FBleApiImpl(), FSerialDeviceApi by serialDeviceApiWrapperFactory(
+    scope = scope,
+    config = config,
+    services = client.services
+) {
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            scope: CoroutineScope,
+            client: ClientBleGatt,
+            config: FBleDeviceSerialConfig,
+        ): FBleApiWithSerial
     }
 }
