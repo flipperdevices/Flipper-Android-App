@@ -61,7 +61,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
                     updateRemainingBuffer(it)
                 }
         }
-        scope.launch(Dispatchers.Default) {
+        scope.launch {
             bufferSizeState.collectLatest { bufferSize ->
                 sendCommandsWhileBufferNotEnd(bufferSize)
             }
@@ -76,16 +76,13 @@ class FSerialOverflowThrottler @AssistedInject constructor(
         channel.send(data)
     }
 
-    @VisibleForTesting
-    fun updateRemainingBuffer(data: DataByteArray) {
+    private suspend fun updateRemainingBuffer(data: DataByteArray) {
         info { "Receive remaining buffer info" }
         val bytes = data.value
         val remainingInternal = ByteBuffer.wrap(bytes).int
         info { "Invalidate buffer size. New size: $remainingInternal" }
 
-        scope.launch(Dispatchers.Default) {
-            bufferSizeState.emit(remainingInternal)
-        }
+        bufferSizeState.emit(remainingInternal)
     }
 
     private suspend fun CoroutineScope.sendCommandsWhileBufferNotEnd(
@@ -99,13 +96,15 @@ class FSerialOverflowThrottler @AssistedInject constructor(
             remainingBufferSize -= pendingBytesToSend.size
 
             if (remainingBufferSize == 0) {
+                println("Sending only pending bytes (${pendingBytesToSend.size}) is $pendingBytesToSend")
                 info { "Sending only pending bytes" }
                 serialApi.sendBytes(pendingBytesToSend)
                 break
             }
 
             val (bytesToSend, pendingBytesInternal) = getPendingCommands(
-                remainingBufferSize
+                remainingBufferSize,
+                waitInfiniteForFirstRequest = pendingBytesToSend.isEmpty()
             )
             check(remainingBufferSize >= bytesToSend.size) {
                 "getPendingCommands can't return bytes (${bytesToSend.size}) " +
@@ -120,17 +119,22 @@ class FSerialOverflowThrottler @AssistedInject constructor(
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private suspend fun getPendingCommands(
-        maxReadBytes: Int
+        maxReadBytes: Int,
+        waitInfiniteForFirstRequest: Boolean
     ): Pair<ByteArray, ByteArray?> {
         var remainBufferSize = maxReadBytes
         val byteStream = ByteArrayOutputStream()
         var pendingBytes: ByteArray? = null
 
-        while (remainBufferSize > 0) {
-            val bytesToSend = withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
+        var bytesToSend = if (waitInfiniteForFirstRequest) {
+            channel.receive()
+        } else {
+            withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
                 channel.receive()
-            } ?: break
+            }
+        }
 
+        while (remainBufferSize > 0 && bytesToSend != null) {
             if (remainBufferSize >= bytesToSend.size) {
                 // Just send byte
                 remainBufferSize -= bytesToSend.size
@@ -140,6 +144,10 @@ class FSerialOverflowThrottler @AssistedInject constructor(
                 byteStream.write(bytesToSend.copyOf(remainBufferSize))
                 pendingBytes = bytesToSend.copyOfRange(remainBufferSize, bytesToSend.size)
                 remainBufferSize = 0 // here we end the while cycle
+            }
+
+            bytesToSend = withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
+                channel.receive()
             }
         }
 
