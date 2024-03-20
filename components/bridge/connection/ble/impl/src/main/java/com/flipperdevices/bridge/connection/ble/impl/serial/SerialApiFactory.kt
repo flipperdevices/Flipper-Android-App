@@ -5,12 +5,9 @@ import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
+import javax.inject.Inject
 
 class SerialApiFactory @Inject constructor(
     private val unsafeApiImplFactory: FSerialUnsafeApiImpl.Factory,
@@ -22,14 +19,13 @@ class SerialApiFactory @Inject constructor(
         services: ClientBleGattServices,
         scope: CoroutineScope
     ): FSerialDeviceApi? {
-
         val serialService = services.findService(config.serialServiceUuid)
         val rxCharacteristic = serialService?.findCharacteristic(config.rxServiceCharUuid)
         val txCharacteristic = serialService?.findCharacteristic(config.txServiceCharUuid)
         if (rxCharacteristic == null || txCharacteristic == null) {
             error {
                 "Can't build unsafe serial api, because can't find characteristic " +
-                        "for config $config and services $services"
+                    "for config $config and services $services"
             }
             return null
         }

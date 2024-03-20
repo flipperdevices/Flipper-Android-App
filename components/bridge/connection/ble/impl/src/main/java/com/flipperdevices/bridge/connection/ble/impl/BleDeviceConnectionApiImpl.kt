@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.connection.ble.impl
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.annotation.RequiresPermission
 import com.flipperdevices.bridge.connection.ble.api.BleDeviceConnectionApi
 import com.flipperdevices.bridge.connection.ble.api.FBleApi
 import com.flipperdevices.bridge.connection.ble.api.FBleDeviceConnectionConfig
@@ -11,22 +10,13 @@ import com.flipperdevices.bridge.connection.ble.impl.model.BLEConnectionPermissi
 import com.flipperdevices.bridge.connection.ble.impl.model.FailedConnectToDeviceException
 import com.flipperdevices.bridge.connection.ble.impl.utils.BleConstants
 import com.flipperdevices.bridge.connection.ble.impl.utils.TimberBleLogger
-import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
-import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Scope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
-import no.nordicsemi.android.kotlin.ble.core.BleDevice
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
-import no.nordicsemi.android.kotlin.ble.core.scanner.BleScanFilter
-import no.nordicsemi.android.kotlin.ble.core.scanner.BleScanMode
-import no.nordicsemi.android.kotlin.ble.core.scanner.BleScannerSettings
-import no.nordicsemi.android.kotlin.ble.scanner.BleScanner
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, BleDeviceConnectionApi::class)
 class BleDeviceConnectionApiImpl @Inject constructor(

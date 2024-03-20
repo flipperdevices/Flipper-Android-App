@@ -1,35 +1,23 @@
 package com.flipperdevices.bridge.connection.ble.impl.serial
 
-import androidx.annotation.VisibleForTesting
 import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
-import com.flipperdevices.bridge.connection.common.api.serial.FlipperSerialSpeed
-import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.log.verbose
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import java.nio.ByteBuffer
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
 import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
-
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
 
 // How much time we next command
 // Small size increase count of ble packet
@@ -96,7 +84,6 @@ class FSerialOverflowThrottler @AssistedInject constructor(
             remainingBufferSize -= pendingBytesToSend.size
 
             if (remainingBufferSize == 0) {
-                println("Sending only pending bytes (${pendingBytesToSend.size}) is $pendingBytesToSend")
                 info { "Sending only pending bytes" }
                 serialApi.sendBytes(pendingBytesToSend)
                 break
@@ -108,7 +95,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
             )
             check(remainingBufferSize >= bytesToSend.size) {
                 "getPendingCommands can't return bytes (${bytesToSend.size}) " +
-                        "more than buffer ($remainingBufferSize)"
+                    "more than buffer ($remainingBufferSize)"
             }
             remainingBufferSize -= bytesToSend.size
             pendingBytes = pendingBytesInternal
@@ -153,7 +140,6 @@ class FSerialOverflowThrottler @AssistedInject constructor(
 
         return byteStream.toByteArray() to pendingBytes
     }
-
 
     private fun getPendingBytesSafe(maxLength: Int): ByteArray {
         val pendingBytesInternal = pendingBytes ?: return byteArrayOf()

@@ -4,25 +4,21 @@ import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import java.nio.ByteBuffer
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
-import kotlinx.coroutines.withTimeoutOrNull
-import kotlinx.coroutines.yield
 import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.nio.ByteBuffer
 
 class FSerialOverflowThrottlerTest {
     private lateinit var overflowByteArrayFlow: MutableSharedFlow<DataByteArray>
@@ -225,7 +221,6 @@ class FSerialOverflowThrottlerTest {
         childScope.cancel()
     }
 
-
     @Test
     fun `send request larger than two buffer`() = runTest {
         val childScope = TestScope(this.testScheduler)
@@ -250,7 +245,6 @@ class FSerialOverflowThrottlerTest {
         childScope.advanceTimeBy(100L) // Timeout for reading buffer
         childScope.advanceUntilIdle()
 
-
         overflowByteArrayFlow.emit(DataByteArray(byteBuffer.array()))
 
         childScope.advanceUntilIdle()
@@ -269,5 +263,4 @@ class FSerialOverflowThrottlerTest {
 
         childScope.cancel()
     }
-
 }

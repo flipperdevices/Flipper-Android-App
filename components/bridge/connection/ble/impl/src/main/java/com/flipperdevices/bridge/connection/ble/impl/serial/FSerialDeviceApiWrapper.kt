@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.connection.ble.impl.serial
 
 import com.flipperdevices.bridge.connection.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
-import com.flipperdevices.bridge.connection.common.api.serial.FlipperSerialSpeed
 import com.flipperdevices.core.ktx.jre.WaitNotifyLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -64,7 +63,6 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
             }
         }
     }
-
 
     override suspend fun getSpeed() = waitForSerialApi().getSpeed()
 

@@ -8,7 +8,6 @@ data class FBleDeviceConnectionConfig(
     val serialConfig: FBleDeviceSerialConfig?
 ) : FDeviceConnectionConfig<FBleApi>()
 
-
 data class FBleDeviceSerialConfig(
     val serialServiceUuid: UUID,
     val rxServiceCharUuid: UUID,
