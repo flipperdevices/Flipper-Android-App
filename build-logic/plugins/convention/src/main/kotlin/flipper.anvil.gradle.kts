@@ -10,4 +10,6 @@ anvil {
 
 dependencies {
     "implementation"(libs.dagger)
+    "api"(libs.anvil.utils.annotations)
+    "anvil"(libs.anvil.utils.compiler)
 }

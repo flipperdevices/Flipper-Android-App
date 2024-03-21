@@ -13,11 +13,11 @@ import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, SettingsDecomposeComponent.Factory::class)
 class SettingsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
@@ -57,14 +57,5 @@ class SettingsDecomposeComponentImpl @AssistedInject constructor(
         )
 
         SettingsNavigationConfig.StressTest -> stressTestFactory(componentContext)
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, SettingsDecomposeComponent.Factory::class)
-    interface Factory : SettingsDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): SettingsDecomposeComponentImpl
     }
 }

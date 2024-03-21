@@ -5,13 +5,13 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.screenstreaming.api.ScreenStreamingDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 private data object MainScreen
 
+@ContributesAssistedFactory(AppGraph::class, ScreenStreamingDecomposeComponent.Factory::class)
 class ScreenStreamingDecomposeComponentNoop @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted
@@ -23,14 +23,5 @@ class ScreenStreamingDecomposeComponentNoop @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         // Noop
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, ScreenStreamingDecomposeComponent.Factory::class)
-    interface Factory : ScreenStreamingDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): ScreenStreamingDecomposeComponentNoop
     }
 }

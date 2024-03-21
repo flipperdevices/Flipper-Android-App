@@ -4,6 +4,9 @@
       <option name="PACKAGES_IMPORT_LAYOUT">
         <value>
           <package name="" alias="false" withSubpackages="true" />
+          <package name="kotlin" alias="false" withSubpackages="true" />
+          <package name="java" alias="false" withSubpackages="true" />
+          <package name="javax" alias="false" withSubpackages="true" />
         </value>
       </option>
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />

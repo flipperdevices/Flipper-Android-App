@@ -30,13 +30,13 @@ import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, RootDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class RootDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -154,16 +154,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             stack = childStack,
         ) {
             it.instance.Render()
-        }
-    }
 
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, RootDecomposeComponent.Factory::class)
-    interface Factory : RootDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter,
-            initialDeeplink: Deeplink?
-        ): RootDecomposeComponentImpl
+            Dispatchers.IO.limitedParallelism(2)
+        }
     }
 }

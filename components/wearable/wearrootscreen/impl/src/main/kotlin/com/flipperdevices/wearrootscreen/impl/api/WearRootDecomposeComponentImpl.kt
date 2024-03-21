@@ -13,11 +13,11 @@ import com.flipperdevices.wearable.emulate.api.WearEmulateDecomposeComponent
 import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
 import com.flipperdevices.wearrootscreen.api.WearRootDecomposeComponent
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, WearRootDecomposeComponent.Factory::class)
 class WearRootDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBackParameter: DecomposeOnBackParameter,
@@ -53,14 +53,5 @@ class WearRootDecomposeComponentImpl @AssistedInject constructor(
 
     override fun onBack() {
         navigation.popOr(onBackParameter::invoke)
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, WearRootDecomposeComponent.Factory::class)
-    interface Factory : WearRootDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): WearRootDecomposeComponentImpl
     }
 }

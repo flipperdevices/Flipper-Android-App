@@ -18,16 +18,16 @@ import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 import com.flipperdevices.nfc.mfkey32.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.nfc.mfkey32.screen.viewmodel.MfKey32ViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, MfKey32DecomposeComponent.Factory::class)
 class MfKey32DecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
@@ -92,14 +92,5 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
             onBack = { isBackPressHandledFlow.update { true } },
             flipperColor = flipperColor
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, MfKey32DecomposeComponent.Factory::class)
-    interface Factory : MfKey32DecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): MfKey32DecomposeComponentImpl
     }
 }

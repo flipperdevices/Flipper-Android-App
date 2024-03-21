@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -11,11 +10,11 @@ import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
@@ -62,14 +61,5 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
             config,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
-    interface Factory : FileManagerDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): FileManagerDecomposeComponentImpl
     }
 }

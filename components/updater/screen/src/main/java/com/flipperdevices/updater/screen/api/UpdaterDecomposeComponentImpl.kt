@@ -22,12 +22,12 @@ import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, UpdaterDecomposeComponent.Factory::class)
 class UpdaterDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val updateRequest: UpdateRequest?,
@@ -89,15 +89,5 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
                     )
             }
         }
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, UpdaterDecomposeComponent.Factory::class)
-    interface Factory : UpdaterDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            updateRequest: UpdateRequest?,
-            onBack: DecomposeOnBackParameter
-        ): UpdaterDecomposeComponentImpl
     }
 }
