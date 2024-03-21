@@ -46,6 +46,7 @@ include(
     ":components:bridge:connection:ble:impl",
     ":components:bridge:connection:common:api",
     ":components:bridge:connection:common:impl",
+    ":components:bridge:connection:sample",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",

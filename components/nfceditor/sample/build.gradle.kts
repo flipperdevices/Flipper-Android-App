@@ -5,7 +5,6 @@ plugins {
 }
 
 android.namespace = "com.flipperdevices.nfceditor.sample"
-anvil.generateDaggerFactories.set(false) // AppComponent
 
 android {
     buildFeatures.compose = true
