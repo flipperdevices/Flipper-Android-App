@@ -42,8 +42,7 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
                     Dispatchers.Default + SupervisorJob(scope.coroutineContext.job)
                 ).also { serialApiScope = it }
 
-                val service = services?.findService(config.serialServiceUuid)
-                if (service == null) {
+                if (services == null) {
                     delegateSerialApi = null
                     info { "Set serial api to null because service is null, $services" }
                 } else {
