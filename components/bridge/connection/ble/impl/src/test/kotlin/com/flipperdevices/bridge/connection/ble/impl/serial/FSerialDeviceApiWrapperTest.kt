@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import java.util.UUID
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -15,6 +14,7 @@ import kotlinx.coroutines.test.runTest
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 import org.junit.Before
 import org.junit.Test
+import java.util.UUID
 
 class FSerialDeviceApiWrapperTest {
     private lateinit var config: FBleDeviceSerialConfig
@@ -70,7 +70,6 @@ class FSerialDeviceApiWrapperTest {
 
         childScope.cancel()
     }
-
 
     @Test
     fun `wait if services not provided`() = runTest {
@@ -140,7 +139,6 @@ class FSerialDeviceApiWrapperTest {
         childScope.cancel()
     }
 
-
     @Test
     fun `wait until services provided`() = runTest {
         val childScope = TestScope(this.testScheduler)
@@ -176,7 +174,6 @@ class FSerialDeviceApiWrapperTest {
         childScope.advanceUntilIdle()
 
         coVerify { serialApi.sendBytes(eq("TEST".toByteArray())) }
-
 
         childScope.cancel()
     }
