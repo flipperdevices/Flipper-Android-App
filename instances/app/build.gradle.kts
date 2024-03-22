@@ -6,7 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("com.squareup.anvil")
+    id("flipper.anvil")
     id("kotlin-kapt")
     alias(libs.plugins.google.gms)
 }

@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
-    id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.impl"
