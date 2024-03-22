@@ -2,9 +2,12 @@ plugins {
     id("flipper.android-app")
     id("flipper.anvil")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection"
+// TODO remove it
+anvil.generateDaggerFactories = false
 
 android {
     buildFeatures.compose = true
@@ -24,8 +27,10 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.preference)
 
     implementation(libs.appcompat)
 
@@ -34,6 +39,11 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.timber)
+
+    implementation(libs.ble.kotlin.scanner)
+    implementation(libs.ble.kotlin.client)
+
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.activity)

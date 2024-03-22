@@ -4,6 +4,7 @@ import android.app.Application
 import com.flipperdevices.bridge.connection.di.AppComponent
 import com.flipperdevices.bridge.connection.di.DaggerAppComponent
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.di.ComponentHolder
 import timber.log.Timber
 
 class ConnectionTestApplication : Application() {
@@ -22,6 +23,8 @@ class ConnectionTestApplication : Application() {
                     version = "Sample"
                 )
             )
+
+        ComponentHolder.components += appComponent
 
         Timber.plant(Timber.DebugTree())
     }
