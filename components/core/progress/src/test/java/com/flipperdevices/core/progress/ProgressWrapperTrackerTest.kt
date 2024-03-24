@@ -2,11 +2,11 @@ package com.flipperdevices.core.progress
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import io.mockk.mockk
 
 class ProgressWrapperTrackerTest {
 
