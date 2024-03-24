@@ -1,22 +1,22 @@
 package com.flipperdevices.core.progress
 
+import io.mockk.coEvery
+import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.verify
-import org.mockito.kotlin.any
+import io.mockk.mockk
 
 class ProgressWrapperTrackerTest {
 
     private lateinit var subject: ProgressWrapperTracker
 
-    private val progressListener: ProgressListener = mock()
+    private val progressListener: ProgressListener = mockk()
 
     @Before
     fun setUp() {
+        coEvery { progressListener.onProgress(any()) } returns Unit
         subject = ProgressWrapperTracker(progressListener, 1f, 100F)
     }
 
@@ -25,7 +25,7 @@ class ProgressWrapperTrackerTest {
         subject = ProgressWrapperTracker(progressListener, 100f, 1f)
         subject.onProgress(1f)
 
-        verify(progressListener, never()).onProgress(any())
+        coVerify(exactly = 0) { progressListener.onProgress(any()) }
     }
 
     @Test
@@ -33,14 +33,14 @@ class ProgressWrapperTrackerTest {
         subject = ProgressWrapperTracker(progressListener, 0f, 10f)
         subject.onProgress(1f)
 
-        verify(progressListener).onProgress(any())
+        coVerify(exactly = 1) { progressListener.onProgress(any()) }
     }
 
     @Test
     fun report_whenCurrentIsBiggerThanMax_thenReturnDefaultMaxWithDebugException() = runTest {
         try {
             subject.report(10, 1)
-            verify(progressListener).onProgress(100f)
+            coVerify(exactly = 1) { progressListener.onProgress(100f) }
         } catch (e: Exception) {
             Assert.assertTrue(e is IllegalStateException)
         }
@@ -50,7 +50,7 @@ class ProgressWrapperTrackerTest {
     fun report_whenMaxIsEqualToZero_thenReturnDefaultMaxWithDebugException() = runTest {
         try {
             subject.report(10, 0)
-            verify(progressListener).onProgress(100f)
+            coVerify(exactly = 1) { progressListener.onProgress(100f) }
         } catch (e: Exception) {
             Assert.assertTrue(e is IllegalStateException)
         }
@@ -60,6 +60,6 @@ class ProgressWrapperTrackerTest {
     fun report_whenWithCorrectValues_thenCalculateValue() = runTest {
         subject.report(10, 20)
 
-        verify(progressListener).onProgress(1F)
+        coVerify(exactly = 1) { progressListener.onProgress(1f) }
     }
 }
