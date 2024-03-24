@@ -22,9 +22,7 @@ import com.flipperdevices.keyscreen.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +35,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
+@ContributesAssistedFactory(AppGraph::class, KeyStateHelperApi.Builder::class)
 @Suppress("LongParameterList")
 class KeyStateHelperImpl @AssistedInject constructor(
     @Assisted keyPath: FlipperKeyPath,
@@ -205,14 +205,5 @@ class KeyStateHelperImpl @AssistedInject constructor(
             keyPath = flipperKey.path,
             minEmulateTime = timeout,
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, KeyStateHelperApi.Builder::class)
-    interface Factory : KeyStateHelperApi.Builder {
-        override fun build(
-            flipperKeyPath: FlipperKeyPath,
-            scope: CoroutineScope
-        ): KeyStateHelperImpl
     }
 }

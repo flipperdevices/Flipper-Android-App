@@ -11,11 +11,11 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, CategoryDecomposeComponent.Factory::class)
 class CategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryType: CategoryType,
@@ -43,15 +43,5 @@ class CategoryDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, CategoryDecomposeComponent.Factory::class)
-    interface Factory : CategoryDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            categoryType: CategoryType,
-            onBack: DecomposeOnBackParameter
-        ): CategoryDecomposeComponentImpl
     }
 }

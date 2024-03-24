@@ -18,11 +18,11 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, ArchiveDecomposeComponent.Factory::class)
 class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ArchiveTab?,
@@ -76,15 +76,5 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
         if (instance is ResetTabDecomposeHandler) {
             instance.onResetTab()
         }
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, ArchiveDecomposeComponent.Factory::class)
-    interface Factory : ArchiveDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.ArchiveTab?,
-            onBack: DecomposeOnBackParameter
-        ): ArchiveDecomposeComponentImpl
     }
 }

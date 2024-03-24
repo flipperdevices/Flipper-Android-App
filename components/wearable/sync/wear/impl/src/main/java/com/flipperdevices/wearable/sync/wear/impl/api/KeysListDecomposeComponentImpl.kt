@@ -10,12 +10,12 @@ import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
 import com.flipperdevices.wearable.sync.wear.impl.composable.ComposableKeysList
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, KeysListDecomposeComponent.Factory::class)
 class KeysListDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<WearRootConfig>,
@@ -33,14 +33,5 @@ class KeysListDecomposeComponentImpl @AssistedInject constructor(
                 keysListViewModelProvider.get()
             }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, KeysListDecomposeComponent.Factory::class)
-    interface Factory : KeysListDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            navigation: StackNavigation<WearRootConfig>
-        ): KeysListDecomposeComponentImpl
     }
 }

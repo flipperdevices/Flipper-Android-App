@@ -9,6 +9,7 @@
 - [Feature] Per app loading in installed tab
 - [Refactor] Migrate to markdown renderer from upstream
 - [FIX] Replace decompose push to move safety push
+- [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 
 # 1.6.8
 

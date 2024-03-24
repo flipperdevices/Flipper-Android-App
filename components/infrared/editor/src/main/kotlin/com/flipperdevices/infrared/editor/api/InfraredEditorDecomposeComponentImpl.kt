@@ -13,15 +13,15 @@ import com.flipperdevices.infrared.api.InfraredEditorDecomposeComponent
 import com.flipperdevices.infrared.editor.compose.screen.ComposableInfraredEditorScreen
 import com.flipperdevices.infrared.editor.viewmodel.InfraredEditorViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, InfraredEditorDecomposeComponent.Factory::class)
 class InfraredEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val keyPath: FlipperKeyPath,
@@ -56,15 +56,5 @@ class InfraredEditorDecomposeComponentImpl @AssistedInject constructor(
             onBack = onBack::invoke,
             viewModel = viewModel
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, InfraredEditorDecomposeComponent.Factory::class)
-    interface Factory : InfraredEditorDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            keyPath: FlipperKeyPath,
-            onBack: DecomposeOnBackParameter
-        ): InfraredEditorDecomposeComponentImpl
     }
 }

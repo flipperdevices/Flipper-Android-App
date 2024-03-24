@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -15,11 +14,11 @@ import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, FapHubDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -84,15 +83,5 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         } else {
             listOf(FapHubNavigationConfig.Main(deeplink = null))
         }
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, FapHubDecomposeComponent.Factory::class)
-    interface Factory : FapHubDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub?,
-            onBack: DecomposeOnBackParameter
-        ): FapHubDecomposeComponentImpl
     }
 }
