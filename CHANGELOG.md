@@ -10,6 +10,7 @@
 - [Refactor] Migrate to markdown renderer from upstream
 - [FIX] Replace decompose push to move safety push
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
+- [Refactor] Add test for Progress Tracker logic
 
 # 1.6.8
 
