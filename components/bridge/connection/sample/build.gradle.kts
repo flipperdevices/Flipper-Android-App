@@ -32,6 +32,13 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
 
+    implementation(projects.components.bridge.connection.ble.api)
+    implementation(projects.components.bridge.connection.ble.impl)
+    implementation(projects.components.bridge.connection.common.impl)
+    implementation(projects.components.bridge.connection.common.api)
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.pbutils)
+
     implementation(libs.appcompat)
 
     // Dagger deps

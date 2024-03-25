@@ -8,6 +8,7 @@
 - [Feature] Add ready app updates popup and notification dot
 - [Feature] Per app loading in installed tab
 - [Refactor] Migrate to markdown renderer from upstream
+- [Refactor] Basic implementation of new transport ble 
 - [FIX] Replace decompose push to move safety push
 
 # 1.6.8
