@@ -40,6 +40,7 @@ lifecycle = "2.7.0" # https://developer.android.com/jetpack/androidx/releases/li
 fastutil = "8.5.13" # https://github.com/vigna/fastutil/tags
 ble = "2.7.2" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
+ble-kotlin = "1.0.15" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library/releases
 lottie = "6.3.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.11.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-alpha02" # https://developer.android.com/jetpack/androidx/releases/core
@@ -212,6 +213,8 @@ apache-codec = { module = "commons-codec:commons-codec", version.ref = "apache-c
 ble = { module = "no.nordicsemi.android:ble", version.ref = "ble" }
 ble-common = { module = "no.nordicsemi.android:ble-common", version.ref = "ble" }
 ble-scan = { module = "no.nordicsemi.android.support.v18:scanner", version.ref = "ble-scan" }
+ble-kotlin-scanner = { module = "no.nordicsemi.android.kotlin.ble:scanner", version.ref = "ble-kotlin" }
+ble-kotlin-client = { module = "no.nordicsemi.android.kotlin.ble:client", version.ref = "ble-kotlin" }
 
 # Images
 image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }

@@ -42,6 +42,11 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
+    ":components:bridge:connection:ble:api",
+    ":components:bridge:connection:ble:impl",
+    ":components:bridge:connection:common:api",
+    ":components:bridge:connection:common:impl",
+    ":components:bridge:connection:sample",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",

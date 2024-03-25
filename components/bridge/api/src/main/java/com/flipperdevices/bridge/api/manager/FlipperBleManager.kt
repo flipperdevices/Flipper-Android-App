@@ -11,10 +11,10 @@ interface FlipperBleManager {
     val connectionInformationApi: FlipperConnectionInformationApi
 
     // This section provide access to device apis
-    val informationApi: FlipperInformationApi
-    val flipperRequestApi: FlipperRequestApi
-    val flipperVersionApi: FlipperVersionApi
-    val restartRPCApi: RestartRPCApi
+    val informationApi: FlipperInformationApi // Use gatt
+    val flipperRequestApi: FlipperRequestApi // Use Serial
+    val flipperVersionApi: FlipperVersionApi // Use gatt
+    val restartRPCApi: RestartRPCApi // Use gatt
 
     fun isConnected(): Boolean
 
