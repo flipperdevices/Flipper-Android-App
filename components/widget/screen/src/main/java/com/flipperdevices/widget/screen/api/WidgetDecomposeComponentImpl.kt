@@ -1,6 +1,5 @@
 package com.flipperdevices.widget.screen.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -12,11 +11,11 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
 import com.flipperdevices.widget.screen.model.WidgetNavigationConfig
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, WidgetDecomposeComponent.Factory::class)
 class WidgetDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted widgetId: Int,
@@ -48,15 +47,5 @@ class WidgetDecomposeComponentImpl @AssistedInject constructor(
             widgetId = config.widgetId,
             navigation = navigation
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, WidgetDecomposeComponent.Factory::class)
-    interface Factory : WidgetDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            widgetId: Int,
-            onBack: DecomposeOnBackParameter
-        ): WidgetDecomposeComponentImpl
     }
 }

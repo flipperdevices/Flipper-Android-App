@@ -1,6 +1,5 @@
 package com.flipperdevices.keyscreen.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -16,11 +15,11 @@ import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, KeyScreenDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -76,14 +75,4 @@ class KeyScreenDecomposeComponentImpl @AssistedInject constructor(
     }
 
     private fun internalOnBack() = navigation.popOr(onBack::invoke)
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, KeyScreenDecomposeComponent.Factory::class)
-    fun interface Factory : KeyScreenDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            keyPath: FlipperKeyPath,
-            onBack: DecomposeOnBackParameter
-        ): KeyScreenDecomposeComponentImpl
-    }
 }

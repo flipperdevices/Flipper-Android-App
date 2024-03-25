@@ -11,11 +11,11 @@ import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollable
 import com.flipperdevices.wearable.emulate.api.WearEmulateDecomposeComponent
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, WearEmulateDecomposeComponent.Factory::class)
 class WearEmulateDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val flipperKeyPath: FlipperKeyPath,
@@ -38,15 +38,5 @@ class WearEmulateDecomposeComponentImpl @AssistedInject constructor(
                 )
             }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, WearEmulateDecomposeComponent.Factory::class)
-    interface Factory : WearEmulateDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            flipperKeyPath: FlipperKeyPath,
-            onBack: DecomposeOnBackParameter
-        ): WearEmulateDecomposeComponentImpl
     }
 }

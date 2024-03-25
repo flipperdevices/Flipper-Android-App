@@ -10,12 +10,12 @@ import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScr
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, ScreenStreamingDecomposeComponent.Factory::class)
 class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
@@ -38,14 +38,5 @@ class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
             screenshotViewModel = screenshotViewModel,
             onBack = onBack::invoke,
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, ScreenStreamingDecomposeComponent.Factory::class)
-    interface Factory : ScreenStreamingDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): ScreenStreamingDecomposeComponentImpl
     }
 }

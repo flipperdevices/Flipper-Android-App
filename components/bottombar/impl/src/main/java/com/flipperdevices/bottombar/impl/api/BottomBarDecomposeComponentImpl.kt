@@ -39,13 +39,13 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.runBlocking
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, BottomBarDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -195,15 +195,5 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
                 force = true
             )
         }
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, BottomBarDecomposeComponent.Factory::class)
-    fun interface Factory : BottomBarDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar?
-        ): BottomBarDecomposeComponentImpl
     }
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.nfceditor.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -13,11 +12,11 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, NfcEditorDecomposeComponent.Factory::class)
 class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val flipperKeyPath: FlipperKeyPath,
@@ -51,15 +50,5 @@ class NfcEditorDecomposeComponentImpl @AssistedInject constructor(
             notSavedFlipperKey = config.notSavedFlipperKey,
             title = config.title
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, NfcEditorDecomposeComponent.Factory::class)
-    interface Factory : NfcEditorDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            flipperKeyPath: FlipperKeyPath,
-            onBack: DecomposeOnBackParameter
-        ): NfcEditorDecomposeComponentImpl
     }
 }

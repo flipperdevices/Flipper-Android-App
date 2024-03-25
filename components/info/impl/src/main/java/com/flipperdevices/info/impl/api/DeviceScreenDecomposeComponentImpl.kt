@@ -1,6 +1,5 @@
 package com.flipperdevices.info.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -17,11 +16,11 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, DeviceScreenDecomposeComponent.Factory::class)
 class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.DeviceTab?,
@@ -83,15 +82,5 @@ class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(
                 DeviceScreenNavigationConfig.Update(deeplink)
             )
         }
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, DeviceScreenDecomposeComponent.Factory::class)
-    interface Factory : DeviceScreenDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.DeviceTab?,
-            onBack: DecomposeOnBackParameter
-        ): DeviceScreenDecomposeComponentImpl
     }
 }

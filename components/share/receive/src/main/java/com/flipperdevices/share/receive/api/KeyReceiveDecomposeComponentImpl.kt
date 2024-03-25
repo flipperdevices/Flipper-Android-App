@@ -12,11 +12,11 @@ import com.flipperdevices.share.api.KeyReceiveDecomposeComponent
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, KeyReceiveDecomposeComponent.Factory::class)
 class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val deeplink: Deeplink.RootLevel.SaveKey,
@@ -42,15 +42,5 @@ class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(
             onRetry = viewModel::onRetry,
             onSave = viewModel::onSave
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, KeyReceiveDecomposeComponent.Factory::class)
-    fun interface Factory : KeyReceiveDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.RootLevel.SaveKey,
-            onBack: DecomposeOnBackParameter
-        ): KeyReceiveDecomposeComponentImpl
     }
 }

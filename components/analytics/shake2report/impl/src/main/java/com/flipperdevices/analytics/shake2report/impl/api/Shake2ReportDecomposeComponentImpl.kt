@@ -8,12 +8,12 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, Shake2ReportDecomposeComponent.Factory::class)
 class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
@@ -28,14 +28,5 @@ class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
                 viewModelProvider.get()
             }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, Shake2ReportDecomposeComponent.Factory::class)
-    interface Factory : Shake2ReportDecomposeComponent.Factory {
-        override operator fun invoke(
-            componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
-        ): Shake2ReportDecomposeComponentImpl
     }
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.attack.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -13,11 +12,11 @@ import com.flipperdevices.nfc.mfkey32.api.MfKey32DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, NFCAttackDecomposeComponent.Factory::class)
 class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
@@ -54,15 +53,5 @@ class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, NFCAttackDecomposeComponent.Factory::class)
-    interface Factory : NFCAttackDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
-            onBack: DecomposeOnBackParameter
-        ): NFCAttackDecomposeComponentImpl
     }
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.fapscreen.impl.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -12,11 +11,11 @@ import com.flipperdevices.faphub.report.api.FapReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, FapScreenDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
 class FapScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -50,15 +49,5 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
             fapReportArgument = config.fapReportArgument,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, FapScreenDecomposeComponent.Factory::class)
-    interface Factory : FapScreenDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            id: String,
-            onBack: DecomposeOnBackParameter
-        ): FapScreenDecomposeComponentImpl
     }
 }

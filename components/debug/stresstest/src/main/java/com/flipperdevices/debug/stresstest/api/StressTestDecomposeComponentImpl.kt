@@ -7,12 +7,12 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.debug.api.StressTestDecomposeComponent
 import com.flipperdevices.debug.stresstest.composable.ComposableStressTestScreen
 import com.flipperdevices.debug.stresstest.viewmodel.StressTestViewModel
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@ContributesAssistedFactory(AppGraph::class, StressTestDecomposeComponent.Factory::class)
 class StressTestDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val stressTestViewModelProvider: Provider<StressTestViewModel>
@@ -26,13 +26,5 @@ class StressTestDecomposeComponentImpl @AssistedInject constructor(
         ComposableStressTestScreen(
             viewModel = stressTestViewModel
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, StressTestDecomposeComponent.Factory::class)
-    interface Factory : StressTestDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext
-        ): StressTestDecomposeComponentImpl
     }
 }

@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.search.api
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
@@ -12,11 +11,11 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, SearchDecomposeComponent.Factory::class)
 class SearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onItemSelected: SelectKeyPathListener?,
@@ -41,15 +40,5 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
             onItemSelected = config.onItemSelected,
             onBack = { navigation.popOr(onBack::invoke) }
         )
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, SearchDecomposeComponent.Factory::class)
-    interface Factory : SearchDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            onItemSelected: SelectKeyPathListener?,
-            onBack: DecomposeOnBackParameter
-        ): SearchDecomposeComponentImpl
     }
 }

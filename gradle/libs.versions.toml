@@ -6,6 +6,7 @@ kotlin-datetime = "0.5.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.9.22-1.0.17" # https://github.com/google/ksp/releases
 anvil = "2.4.9" # https://github.com/square/anvil/releases
+anvil-utils = "0.1.0" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.2.2" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "3.25.2" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
@@ -155,6 +156,9 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 # Dependency Injection
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-kapt = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+anvil-utils-annotations = { module = "me.gulya.anvil:annotations", version.ref = "anvil-utils" }
+anvil-utils-compiler = { module = "me.gulya.anvil:compiler", version.ref = "anvil-utils" }
 
 # Dependency Injection - Anvil
 square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }

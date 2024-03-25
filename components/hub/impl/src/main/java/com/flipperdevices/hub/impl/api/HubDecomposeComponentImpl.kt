@@ -17,11 +17,11 @@ import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@ContributesAssistedFactory(AppGraph::class, HubDecomposeComponent.Factory::class)
 class HubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab?,
@@ -68,15 +68,5 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
 
     override fun onResetTab() {
         navigation.popToRoot()
-    }
-
-    @AssistedFactory
-    @ContributesBinding(AppGraph::class, HubDecomposeComponent.Factory::class)
-    fun interface Factory : HubDecomposeComponent.Factory {
-        override fun invoke(
-            componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab?,
-            onBack: DecomposeOnBackParameter
-        ): HubDecomposeComponentImpl
     }
 }
