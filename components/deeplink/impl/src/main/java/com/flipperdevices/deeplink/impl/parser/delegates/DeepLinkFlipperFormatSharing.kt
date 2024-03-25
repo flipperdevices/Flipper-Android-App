@@ -3,6 +3,7 @@ package com.flipperdevices.deeplink.impl.parser.delegates
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
@@ -31,7 +32,7 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
     ): DeepLinkParserDelegatePriority? {
         val uri = intent.data ?: return null
         if (uri.scheme == SCHEME_FLIPPERKEY) {
-            DeepLinkParserDelegatePriority.HIGH
+            return DeepLinkParserDelegatePriority.HIGH
         }
 
         if (Constants.SUPPORTED_HOSTS.contains(intent.data?.host)) {
@@ -52,10 +53,29 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
             pureUri = Uri.parse(decodedQuery)
         }
 
-        val (path, content) = parser.parseUri(pureUri) ?: return null
+        return getUrlDeeplink(pureUri) ?: getCryptoFileDeeplink(pureUri)
+    }
+
+    private suspend fun getUrlDeeplink(uri: Uri): Deeplink? {
+        val (path, content) = parser.parseUri(uri) ?: return null
+
         return Deeplink.RootLevel.SaveKey.FlipperKey(
             path,
             DeeplinkContent.FFFContent(path.nameWithExtension, content)
+        )
+    }
+
+    private fun getCryptoFileDeeplink(uri: Uri): Deeplink? {
+        val flipperKeyCrypto = parser.parseUriToCryptoKeyData(uri) ?: return null
+
+        val path = flipperKeyCrypto.pathToKey
+        val flipperFilePath = FlipperFilePath(
+            folder = path.substringBeforeLast("/"),
+            nameWithExtension = path.substringAfterLast("/")
+        )
+        return Deeplink.RootLevel.SaveKey.FlipperKey(
+            path = flipperFilePath,
+            content = DeeplinkContent.FFFCryptoContent(key = flipperKeyCrypto)
         )
     }
 }
