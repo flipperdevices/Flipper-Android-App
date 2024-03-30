@@ -11,8 +11,7 @@ updates:
           - "*"  
     ignore:
       - dependency-name: "com.vladsch.flexmark:flexmark"
-      - dependency-name: "com.arkivanov.essenty:lifecycle"
-      - dependency-name: "com.arkivanov.essenty:lifecycle-coroutines"
+      - dependency-name: "com.arkivanov.essenty:*"
       - dependency-name: "com.arkivanov.decompose:*"
       - dependency-name: "com.squareup.anvil:*"
 
