@@ -7,5 +7,19 @@
   "rebaseLabel" : "rebase",
   "labels" : [
     "dependencies"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^com.squareup.anvil"
+      ],
+      "allowedVersions": "!/.*-1-8$/",
+    },
+    {
+      "matchPackagePatterns": [
+        "^com.vladsch.flexmark"
+      ],
+      "enabled": false
+    }
   ]
 }
