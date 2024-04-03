@@ -9,6 +9,7 @@
     <string name="infrared_options_share">Share Remote</string>
     <string name="infrared_options_how_to_use">How To Use</string>
     <string name="infrared_options_delete">Delete Remote</string>
+    <string name="infrared_buttons_empty">No buttons saved for this remote yet.\nUse your Flipper Zero to add some.</string>
 
     <string name="infrared_dialog_how_to_use_title">How To Use</string>
     <string name="infrared_dialog_how_to_use_text">Point Flipper Zero at the device. Tap or hold the button from your phone to send the signal remotely</string>
