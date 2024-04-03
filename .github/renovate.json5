@@ -1,31 +1,28 @@
 {
-  "$schema" : "https://docs.renovatebot.com/renovate-schema.json",
-  "extends" : [
-    "config:best-practices",
-    "group:all"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:best-practices',
+    'group:all',
   ],
-  "gradle": {
-    "enabled": false
+  gradle: {
+    enabled: true,
   },
-  "gradle-lite": {
-    "enabled": true
-  },
-  "rebaseLabel" : "rebase",
-  "labels" : [
-    "dependencies"
+  rebaseLabel: 'rebase',
+  labels: [
+    'dependencies',
   ],
-  "packageRules": [
+  packageRules: [
     {
-      "matchPackagePatterns": [
-        "^com.squareup.anvil"
+      matchPackagePatterns: [
+        '^com.squareup.anvil',
       ],
-      "allowedVersions": "!/.*-1-8$/",
+      allowedVersions: '!/.*-1-8$/',
     },
     {
-      "matchPackagePatterns": [
-        "^com.vladsch.flexmark"
+      matchPackagePatterns: [
+        '^com.vladsch.flexmark',
       ],
-      "enabled": false
-    }
-  ]
+      enabled: false,
+    },
+  ],
 }
