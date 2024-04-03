@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
-import fr.bipi.tressence.file.FileLoggerTree
+import fr.bipi.treessence.file.FileLoggerTree
 import io.sentry.Sentry
 import io.sentry.SentryLevel
 import io.sentry.android.core.SentryAndroid
