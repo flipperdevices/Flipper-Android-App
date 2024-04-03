@@ -4,6 +4,12 @@
     "config:best-practices",
     "group:all"
   ],
+  "gradle": {
+    "enabled": false
+  },
+  "gradle-lite": {
+    "enabled": true
+  },
   "rebaseLabel" : "rebase",
   "labels" : [
     "dependencies"
