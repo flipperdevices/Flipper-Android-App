@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 
+@Suppress("ModifierComposed") // MOB-1039
 fun Modifier.clickableRipple(
     bounded: Boolean = true,
     onClick: () -> Unit
