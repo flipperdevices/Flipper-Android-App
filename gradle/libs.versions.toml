@@ -134,6 +134,7 @@ compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperef
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
+compose-compiler = {module="androidx.compose.compiler:compiler", version.ref ="compose-compiler"} # Need for renovate
 
 # UI - Compose multiplatform
 compose-multiplatform-gradle = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }

@@ -68,7 +68,7 @@ jobs:
         with:
           files: CHANGELOG.md
       - name: Failed if changelog not changed
-        if: steps.changed-changelog.outputs.any_changed != 'true'
+        if: github.ref != 'refs/heads/renovate/all' && steps.changed-changelog.outputs.any_changed != 'true'
         uses: actions/github-script@v3
         with:
           script: core.setFailed('CHANGELOG.md has not changed! You need to write human-readable changes in each Pull Request')
