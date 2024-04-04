@@ -56,7 +56,7 @@ internal fun ComposableFadedInfraredRemotes(
     InfraredRemotesContent(
         remoteConfigs = remoteConfigs,
         keyEmulateContent = keyEmulateContent,
-        fadeOrientation = FadeOrientation.Bottom()
+        fadeOrientation = FadeOrientation.Bottom
             .takeIf { remoteConfigs.size >= FADE_LIST_THRESHOLD }
     )
 }

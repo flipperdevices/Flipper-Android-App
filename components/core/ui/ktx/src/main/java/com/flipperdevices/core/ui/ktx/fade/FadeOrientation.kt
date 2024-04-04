@@ -1,17 +1,13 @@
 package com.flipperdevices.core.ui.ktx.fade
 
-import androidx.annotation.FloatRange
-
 sealed interface FadeOrientation {
-    class Bottom(
-        @FloatRange(0.0, 1.0)
-        val threshold: Float = DEFAULT_FADE_THRESHOLD
-    ) : FadeOrientation
+    data object Bottom : FadeOrientation {
+        const val THRESHOLD: Float = DEFAULT_FADE_THRESHOLD
+    }
 
-    class Top(
-        @FloatRange(0.0, 1.0)
-        val threshold: Float = DEFAULT_FADE_THRESHOLD
-    ) : FadeOrientation
+    data object Top : FadeOrientation {
+        const val THRESHOLD: Float = DEFAULT_FADE_THRESHOLD
+    }
 
     companion object {
         private const val DEFAULT_FADE_THRESHOLD = 0.7f

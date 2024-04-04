@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
@@ -16,17 +18,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 
-fun Modifier.fadingEdge(orientation: FadeOrientation): Modifier {
-    val fillColor = Color.White
-    val brush = orientation.toBrush(fillColor)
-    return this.fadingEdge(brush)
-}
+fun Modifier.fadingEdge(orientation: FadeOrientation): Modifier = composed(
+    factory = {
+        val fillColor = Color.White
+        val brush = remember { orientation.toBrush(fillColor) }
+        this.fadingEdge(brush)
+    }
+)
 
 private fun FadeOrientation.toBrush(fillColor: Color) = when (this) {
     is FadeOrientation.Bottom -> {
         Brush.verticalGradient(
             0f to fillColor,
-            this.threshold to fillColor,
+            this.THRESHOLD to fillColor,
             1f to Color.Transparent
         )
     }
@@ -34,7 +38,7 @@ private fun FadeOrientation.toBrush(fillColor: Color) = when (this) {
     is FadeOrientation.Top -> {
         Brush.verticalGradient(
             0f to Color.Transparent,
-            this.threshold to fillColor
+            this.THRESHOLD to fillColor
         )
     }
 }
@@ -67,7 +71,7 @@ private fun FadePreviewColumn(
 private fun TopFadePreview() {
     FlipperThemeInternal {
         FadePreviewColumn(
-            modifier = Modifier.fadingEdge(FadeOrientation.Top()),
+            modifier = Modifier.fadingEdge(FadeOrientation.Top),
             itemsAmount = 4
         )
     }
@@ -78,7 +82,7 @@ private fun TopFadePreview() {
 private fun BottomFadePreview() {
     FlipperThemeInternal {
         FadePreviewColumn(
-            modifier = Modifier.fadingEdge(FadeOrientation.Bottom()),
+            modifier = Modifier.fadingEdge(FadeOrientation.Bottom),
             itemsAmount = 4
         )
     }
