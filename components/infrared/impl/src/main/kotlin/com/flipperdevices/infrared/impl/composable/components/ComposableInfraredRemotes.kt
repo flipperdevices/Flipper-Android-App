@@ -12,6 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.core.ui.ktx.fade.FadeOrientation
+import com.flipperdevices.core.ui.ktx.fade.fadingEdge
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.infrared.impl.R
@@ -25,7 +27,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 internal fun ComposableInfraredRemotes(
     state: KeyScreenState.Ready,
-    keyEmulateContent: @Composable (EmulateConfig) -> Unit
+    keyEmulateContent: @Composable (EmulateConfig) -> Unit,
 ) {
     val remoteConfigs = remember(state) { state.toEmulateConfigs() }
 
@@ -34,7 +36,45 @@ internal fun ComposableInfraredRemotes(
     } else {
         PopulatedInfraredRemotesContent(
             remoteConfigs = remoteConfigs,
-            keyEmulateContent = keyEmulateContent
+            keyEmulateContent = keyEmulateContent,
+        )
+    }
+}
+
+private const val FADE_LIST_THRESHOLD = 3
+
+@Composable
+internal fun ComposableFadedInfraredRemotes(
+    state: KeyScreenState.Ready,
+    keyEmulateContent: @Composable (EmulateConfig) -> Unit,
+) {
+    val remoteConfigs = remember(state) {
+        val allConfigs = state.toEmulateConfigs()
+        allConfigs.subList(0, FADE_LIST_THRESHOLD.coerceAtMost(allConfigs.size))
+    }
+
+    InfraredRemotesContent(
+        remoteConfigs = remoteConfigs,
+        keyEmulateContent = keyEmulateContent,
+        fadeOrientation = FadeOrientation.Bottom()
+            .takeIf { remoteConfigs.size >= FADE_LIST_THRESHOLD }
+    )
+}
+
+@Composable
+private fun InfraredRemotesContent(
+    remoteConfigs: ImmutableList<EmulateConfig>,
+    keyEmulateContent: @Composable (EmulateConfig) -> Unit,
+    fadeOrientation: FadeOrientation? = null
+) {
+    if (remoteConfigs.isEmpty()) {
+        EmptyInfraredRemotesContent()
+    } else {
+        PopulatedInfraredRemotesContent(
+            remoteConfigs = remoteConfigs,
+            keyEmulateContent = keyEmulateContent,
+            modifier = Modifier
+                .then(fadeOrientation?.let(Modifier::fadingEdge) ?: Modifier)
         )
     }
 }
@@ -42,9 +82,13 @@ internal fun ComposableInfraredRemotes(
 @Composable
 private fun PopulatedInfraredRemotesContent(
     remoteConfigs: ImmutableList<EmulateConfig>,
-    keyEmulateContent: @Composable (EmulateConfig) -> Unit
+    keyEmulateContent: @Composable (EmulateConfig) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
         items(
             items = remoteConfigs,
         ) { config ->
