@@ -17,7 +17,8 @@ internal fun ComposableInfraredScreenReady(
     emulateState: InfraredEmulateState?,
     keyCardContent: @Composable () -> Unit,
     keyEmulateContent: @Composable (EmulateConfig) -> Unit,
-    keyEmulateErrorContent: @Composable () -> Unit
+    keyEmulateErrorContent: @Composable () -> Unit,
+    keyEmulateSyncingContent: @Composable () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -29,7 +30,7 @@ internal fun ComposableInfraredScreenReady(
             InfraredEmulateState.UPDATE_FLIPPER,
             InfraredEmulateState.NOT_CONNECTED -> keyEmulateErrorContent()
             InfraredEmulateState.CONNECTING,
-            InfraredEmulateState.SYNCING,
+            InfraredEmulateState.SYNCING -> keyEmulateSyncingContent()
             InfraredEmulateState.ALL_GOOD, null -> ComposableInfraredRemotes(state, keyEmulateContent)
         }
     }

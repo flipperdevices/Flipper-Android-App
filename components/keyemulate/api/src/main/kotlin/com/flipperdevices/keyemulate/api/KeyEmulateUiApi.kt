@@ -32,4 +32,9 @@ interface KeyEmulateUiApi {
         color: Color,
         progressColor: Color
     )
+
+    @Composable
+    fun ComposableEmulatePlaceholderButton(
+        modifier: Modifier,
+    )
 }

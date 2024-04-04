@@ -21,6 +21,9 @@ import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyemulate.model.EmulateProgress
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
 
 private const val BUTTON_HEIGHT_DP = 56
 
@@ -68,6 +71,25 @@ fun ComposableEmulateButton(
         buttonContentModifier = buttonContentModifier,
         emulateProgress = emulateProgress,
         progressColor = progressColor
+    )
+}
+
+@Composable
+fun ComposableEmulatePlaceholder(modifier: Modifier = Modifier) {
+    val placeholderColor = LocalPallet.current.text8.copy(alpha = 0.2f)
+    Box(
+        modifier = modifier
+            .height(BUTTON_HEIGHT_DP.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .placeholder(
+                visible = true,
+                color = placeholderColor,
+                highlight = PlaceholderHighlight.shimmer(
+                    highlightColor = LocalPallet.current.placeholder
+                ),
+                shape = RoundedCornerShape(16.dp)
+            )
     )
 }
 

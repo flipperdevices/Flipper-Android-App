@@ -1,8 +1,10 @@
 package com.flipperdevices.infrared.impl.composable
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -86,9 +88,27 @@ internal fun ComposableInfraredScreen(
                     },
                     keyEmulateErrorContent = {
                         ComposableEmulateError(keyEmulateUiApi, emulateState)
+                    },
+                    keyEmulateSyncingContent = {
+                        ComposableEmulateSyncing(keyEmulateUiApi)
                     }
                 )
             }
+    }
+}
+
+private const val PLACEHOLDER_BUTTONS_AMOUNT = 3
+
+@Composable
+private fun ComposableEmulateSyncing(
+    keyEmulateUiApi: KeyEmulateUiApi
+) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        items(PLACEHOLDER_BUTTONS_AMOUNT) {
+            keyEmulateUiApi.ComposableEmulatePlaceholderButton(
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
+        }
     }
 }
 
