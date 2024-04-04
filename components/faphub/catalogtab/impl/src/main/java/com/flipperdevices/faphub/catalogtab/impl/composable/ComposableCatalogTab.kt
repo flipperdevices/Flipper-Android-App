@@ -13,12 +13,14 @@ import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.appcard.composable.paging.ComposableSortChoice
 import com.flipperdevices.faphub.catalogtab.impl.R
 import com.flipperdevices.faphub.catalogtab.impl.composable.categories.ComposableCategories
+import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.CategoriesViewModel
 import com.flipperdevices.faphub.catalogtab.impl.viewmodel.FapsListViewModel
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 
 @Composable
 fun ComposableCatalogTabScreen(
@@ -33,20 +35,21 @@ fun ComposableCatalogTabScreen(
     val fapsList = fapsListViewModel.getFapsFlow().collectAsLazyPagingItems()
     val sortType by fapsListViewModel.getSortTypeFlow().collectAsState()
     val categoriesLoadState by categoriesViewModel.getCategoriesLoadState().collectAsState()
+
+    val refreshAll = {
+        fapsListViewModel.refreshManifest()
+        fapsList.refresh()
+        categoriesViewModel.onRefresh()
+    }
+
     SwipeRefresh(
         modifier = modifier,
-        onRefresh = {
-            fapsListViewModel.refreshManifest()
-            fapsList.refresh()
-            categoriesViewModel.onRefresh()
-        }
+        onRefresh = refreshAll
     ) {
         LazyColumn {
             ComposableCategories(
                 loadState = categoriesLoadState,
                 onCategoryClick = onCategoryClick,
-                onRetry = categoriesViewModel::onRefresh,
-                errorsRenderer = errorsRenderer
             )
             if (fapsList.loadState.refresh !is LoadState.Error) {
                 item {
@@ -62,8 +65,23 @@ fun ComposableCatalogTabScreen(
                 onOpenFapItem = onOpenFapItem,
                 errorsRenderer = errorsRenderer,
                 installationButton = installationButton,
-                defaultFapErrorSize = FapErrorSize.IN_LIST
+                defaultFapErrorSize = FapErrorSize.IN_LIST,
+                shouldDisplayError = categoriesLoadState !is CategoriesLoadState.Error
             )
+
+            (categoriesLoadState as? CategoriesLoadState.Error)
+                ?.throwable
+                ?.toFapHubError()
+                ?.let { fapHubError ->
+                    with(errorsRenderer) {
+                        ComposableThrowableErrorListItem(
+                            modifier = Modifier,
+                            throwable = fapHubError,
+                            onRetry = refreshAll,
+                            fapErrorSize = FapErrorSize.FULLSCREEN
+                        )
+                    }
+                }
         }
     }
 }
