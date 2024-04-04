@@ -32,7 +32,7 @@ fun LazyListScope.ComposableFapsList(
     errorsRenderer: FapHubComposableErrorsRenderer,
     defaultFapErrorSize: FapErrorSize,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
-    shouldDisplayError: Boolean = false
+    shouldDisplayError: Boolean = true
 ) {
     val elementModifier = Modifier
         .fillMaxWidth()
