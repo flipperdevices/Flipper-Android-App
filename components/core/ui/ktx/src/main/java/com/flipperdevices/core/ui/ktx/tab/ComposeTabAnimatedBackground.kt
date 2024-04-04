@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 private const val ANIMATION_WIDTH_CHANGE_DURATION_MS = 250
 private const val ANIMATION_OFFSET_CHANGE_DURATION_MS = 150
 
+@Suppress("ModifierComposed") // MOB-1039
 fun Modifier.tabIndicatorOffset(
     currentTabPosition: TabPosition
 ): Modifier = composed(
