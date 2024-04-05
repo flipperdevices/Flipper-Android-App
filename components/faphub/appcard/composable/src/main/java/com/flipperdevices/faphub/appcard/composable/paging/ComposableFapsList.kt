@@ -25,13 +25,14 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "LongParameterList")
 fun LazyListScope.ComposableFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
     defaultFapErrorSize: FapErrorSize,
-    installationButton: @Composable (FapItemShort?, Modifier) -> Unit
+    installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
+    shouldDisplayError: Boolean = true
 ) {
     val elementModifier = Modifier
         .fillMaxWidth()
@@ -47,7 +48,7 @@ fun LazyListScope.ComposableFapsList(
             )
         }
         return
-    } else if (faps.loadState.refresh is LoadState.Error) {
+    } else if (faps.loadState.refresh is LoadState.Error && shouldDisplayError) {
         val loadState = faps.loadState.refresh as? LoadState.Error ?: return
         with(errorsRenderer) {
             ComposableThrowableErrorListItem(
