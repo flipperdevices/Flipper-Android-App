@@ -1,0 +1,25 @@
+name: Pull Request CI - Changelog
+
+on:
+  pull_request:
+    branches:
+      - 'dev'
+
+jobs:
+  changelog_changes:
+    name: "Checking that changelog has changed"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          submodules: 'recursive'
+      - name: Get change status for CHANGELOG.md
+        id: changed-changelog
+        uses: tj-actions/changed-files@58ae566dc69a926834e4798bcfe0436ff97c0599 # v26.1
+        with:
+          files: CHANGELOG.md
+      - name: Failed if changelog not changed
+        if: github.event.pull_request.user.login != 'renovate[bot]' && steps.changed-changelog.outputs.any_changed != 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        with:
+          script: core.setFailed('CHANGELOG.md has not changed! You need to write human-readable changes in each Pull Request')
