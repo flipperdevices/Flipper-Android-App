@@ -3,8 +3,6 @@ package com.flipperdevices.bridge.impl.scanner
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
-import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -35,7 +33,6 @@ import org.robolectric.util.ReflectionHelpers
 @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
 class FlipperScannerImplTest {
     private lateinit var scanner: BluetoothLeScannerCompat
-    private lateinit var bluetoothManager: BluetoothManager
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private lateinit var context: Context
     private lateinit var flipperScanner: FlipperScanner
@@ -49,7 +46,6 @@ class FlipperScannerImplTest {
         )
         scanner = mockk()
         mockkStatic("com.flipperdevices.bridge.impl.scanner.FlowScanCallbackKt")
-        bluetoothManager = mockk()
         bluetoothAdapter = mockk()
         context = mockk()
         every {
@@ -61,7 +57,6 @@ class FlipperScannerImplTest {
         } returns PackageManager.PERMISSION_GRANTED
         flipperScanner = FlipperScannerImpl(
             scanner,
-            bluetoothManager,
             bluetoothAdapter,
             context
         )
@@ -94,7 +89,7 @@ class FlipperScannerImplTest {
                 any()
             )
         } returns PackageManager.PERMISSION_DENIED
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         flipperScanner.findFlipperDevices()
     }
@@ -109,7 +104,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = flipperScanner.findFlipperDevices().first()
 
@@ -133,7 +128,7 @@ class FlipperScannerImplTest {
         val sr2 = ScanResult(secondBluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr, sr2)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = mutableListOf<Iterable<DiscoveredBluetoothDevice>>()
         val collectJob = launch(UnconfinedTestDispatcher()) {
@@ -159,7 +154,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = flipperScanner.findFlipperDevices().first()
 
@@ -178,7 +173,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = flipperScanner.findFlipperDevices().first()
 
@@ -197,7 +192,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = mutableListOf<Iterable<DiscoveredBluetoothDevice>>()
         val collectJob = launch(UnconfinedTestDispatcher()) {
@@ -219,7 +214,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = mutableListOf<Iterable<DiscoveredBluetoothDevice>>()
         val collectJob = launch(UnconfinedTestDispatcher()) {
@@ -241,7 +236,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = mutableListOf<Iterable<DiscoveredBluetoothDevice>>()
         val collectJob = launch(UnconfinedTestDispatcher()) {
@@ -263,7 +258,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
         every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
-        every { bluetoothManager.getConnectedDevices(any()) } returns emptyList()
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = mutableListOf<Iterable<DiscoveredBluetoothDevice>>()
         val collectJob = launch(UnconfinedTestDispatcher()) {
@@ -282,7 +277,7 @@ class FlipperScannerImplTest {
             every { address } returns "80:E1:26:A1:4C:2D"
         }
 
-        every { bluetoothManager.getConnectedDevices(BluetoothProfile.GATT) } returns listOf(
+        every { bluetoothAdapter.bondedDevices } returns setOf(
             alreadyConnectedBluetoothDevice
         )
 
@@ -302,7 +297,7 @@ class FlipperScannerImplTest {
             every { address } returns ""
         }
 
-        every { bluetoothManager.getConnectedDevices(BluetoothProfile.GATT) } returns listOf(
+        every { bluetoothAdapter.bondedDevices } returns setOf(
             alreadyConnectedBluetoothDevice
         )
 
@@ -322,7 +317,7 @@ class FlipperScannerImplTest {
             every { address } returns ""
         }
 
-        every { bluetoothManager.getConnectedDevices(BluetoothProfile.GATT) } returns listOf(
+        every { bluetoothAdapter.bondedDevices } returns setOf(
             alreadyConnectedBluetoothDevice
         )
 
