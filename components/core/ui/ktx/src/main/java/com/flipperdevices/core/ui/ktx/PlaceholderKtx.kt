@@ -13,6 +13,7 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 
+@Suppress("ModifierComposed") // MOB-1039
 fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
     this.then(
         placeholder(
@@ -26,6 +27,7 @@ fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
     )
 }
 
+@Suppress("ModifierComposed") // MOB-1039
 fun Modifier.placeholderByLocalProvider(
     defaultWidth: Dp? = null,
     defaultHeight: Dp? = null,

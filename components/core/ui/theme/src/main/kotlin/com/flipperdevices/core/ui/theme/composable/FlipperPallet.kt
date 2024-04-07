@@ -73,7 +73,9 @@ data class FlipperPallet(
     val screenStreamingBorderColor: Color,
     val screenStreamingNotConnectedColor: Color,
 
-    val keyScreenDisabled: Color
+    val keyScreenDisabled: Color,
+
+    val placeholder: Color
 ) {
     val accent: Color = Color(0xFFFF8200)
     val accentSecond: Color = Color(0xFF589DFF)
@@ -136,7 +138,6 @@ data class FlipperPallet(
     val onAppBar: Color = Color(0xFF000000)
     val disableBackgroundSwitch: Color = Color(0xFF616161)
 
-    val placeholder: Color = Color(0xFFDFDFDF)
     val nfcCardUIDColor: Color = Color(0xFF8A2BE2)
     val nfcCardKeyAColor: Color = Color(0xFF2ED832)
     val nfcCardAccessBitsColor: Color = Color(0xFFF63F3F)

@@ -38,7 +38,7 @@ internal fun ComposableInfraredEditorAppBar(
                 modifier = it,
                 text = stringResource(id = R.string.infrared_editor_save),
                 onClick = onSave,
-                color = LocalPallet.current.accentSecond
+                color = LocalPallet.current.text100
             )
         }
     )

@@ -11,6 +11,8 @@
 - [Refactor] Basic implementation of new transport ble 
 - [FIX] Replace decompose push to move safety push
 - [FIX] Add fallback for parse url from "Open in App" URI
+- [FIX] Multiple internet connection placeholders on Hub Apps screen
+- [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 - [Refactor] Add test for Progress Tracker logic
 

@@ -1,8 +1,6 @@
 package com.flipperdevices.faphub.catalogtab.impl.composable.categories
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
@@ -10,9 +8,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.model.FapCategory
-import com.flipperdevices.faphub.errors.api.FapErrorSize
-import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 
 private const val DEFAULT_CATEGORIES_SIZE = 12
 private const val COLUMN_COUNT = 3
@@ -21,8 +16,6 @@ private const val COLUMN_COUNT = 3
 fun LazyListScope.ComposableCategories(
     loadState: CategoriesLoadState,
     onCategoryClick: (FapCategory) -> Unit,
-    onRetry: () -> Unit,
-    errorsRenderer: FapHubComposableErrorsRenderer
 ) {
     when (loadState) {
         is CategoriesLoadState.Loaded -> ComposableCategoriesGridItems(
@@ -37,17 +30,7 @@ fun LazyListScope.ComposableCategories(
             onClick = onCategoryClick
         )
 
-        is CategoriesLoadState.Error -> with(errorsRenderer) {
-            ComposableThrowableErrorListItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 14.dp)
-                    .height(height = 250.dp),
-                throwable = loadState.throwable.toFapHubError(),
-                onRetry = onRetry,
-                fapErrorSize = FapErrorSize.IN_LIST
-            )
-        }
+        is CategoriesLoadState.Error -> Unit
     }
 }
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.image.Picture
+import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyemulate.model.EmulateProgress
@@ -68,6 +69,17 @@ fun ComposableEmulateButton(
         buttonContentModifier = buttonContentModifier,
         emulateProgress = emulateProgress,
         progressColor = progressColor
+    )
+}
+
+@Composable
+fun ComposableEmulatePlaceholder(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .height(BUTTON_HEIGHT_DP.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .placeholderConnecting(shape = 16)
     )
 }
 
