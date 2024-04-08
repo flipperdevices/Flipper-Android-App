@@ -44,6 +44,7 @@ class FapManifestsLoader @AssistedInject constructor(
     private val parser: FapManifestParser,
     private val cacheLoader: FapManifestCacheLoader,
     private val flipperStorageInformationApi: FlipperStorageInformationApi,
+    private val fapExistChecker: FapExistChecker
 ) : LogTagProvider {
     override val TAG = "FapManifestsLoader"
     private val manifestLoaderState = MutableStateFlow<FapManifestLoaderState>(
@@ -60,6 +61,7 @@ class FapManifestsLoader @AssistedInject constructor(
         val oldJob = job
         job = scope.launch {
             oldJob?.cancelAndJoin()
+            fapExistChecker.invalidate()
             manifestLoaderState.emit(
                 FapManifestLoaderState.Loaded(
                     items = persistentListOf(),
@@ -114,22 +116,30 @@ class FapManifestsLoader @AssistedInject constructor(
         val cacheResult = cacheLoader.loadCache()
         info { "Cache load result is toLoad: ${cacheResult.toLoadNames}, cached: ${cacheResult.cachedNames}" }
         val fapItemsList = mutableListOf<FapManifestItem>()
-        cacheResult.cachedNames.forEach { (file, name) ->
-            parser.parse(file.readBytes(), name)?.let { fapItemsList.add(it) }
-            manifestLoaderState.emit(
-                FapManifestLoaderState.Loaded(
-                    items = fapItemsList.toPersistentList(),
-                    isLoading = true
+        cacheResult.cachedNames.map { (file, name) ->
+            parser.parse(file.readBytes(), name)
+        }.filterNotNull()
+            .filter { fapExistChecker.checkExist(it.path) }
+            .forEach {
+                fapItemsList.add(it)
+                manifestLoaderState.emit(
+                    FapManifestLoaderState.Loaded(
+                        items = fapItemsList.toPersistentList(),
+                        isLoading = true
+                    )
                 )
-            )
-        }
+            }
         info { "Parsed ${fapItemsList.size} manifests from cache" }
-        cacheResult.toLoadNames.forEach { name ->
-            val content = loadManifestFile(
-                requestApi = serviceApi.requestApi,
-                filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
-            )?.let { parser.parse(it, name) }
-            if (content != null) {
+        cacheResult.toLoadNames
+            .map { name ->
+                loadManifestFile(
+                    requestApi = serviceApi.requestApi,
+                    filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
+                )?.let { parser.parse(it, name) }
+            }
+            .filterNotNull()
+            .filter { fapExistChecker.checkExist(it.path) }
+            .forEach { content ->
                 fapItemsList.add(content)
                 manifestLoaderState.emit(
                     FapManifestLoaderState.Loaded(
@@ -138,7 +148,6 @@ class FapManifestsLoader @AssistedInject constructor(
                     )
                 )
             }
-        }
         info { "Parsed ${fapItemsList.size} manifests from flipper" }
 
         manifestLoaderState.emit(
