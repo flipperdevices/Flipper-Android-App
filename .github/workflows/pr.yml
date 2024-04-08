@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Unit test
-        uses: gradle/gradle-build-action@29c0906b64b8fc82467890bfb7a0a7ef34bda89e # v3
+        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
         with:
           arguments: testDebug
   detekt:
@@ -36,7 +36,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: detekt
-        uses: gradle/gradle-build-action@29c0906b64b8fc82467890bfb7a0a7ef34bda89e # v3
+        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
         with:
           arguments: detekt
   android_lint:
@@ -52,6 +52,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Android lint
-        uses: gradle/gradle-build-action@29c0906b64b8fc82467890bfb7a0a7ef34bda89e # v3
+        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
         with:
           arguments: lint
