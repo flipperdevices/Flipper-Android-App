@@ -15,6 +15,7 @@
 - [FIX] Find already paired Flipper devices without state filter
 - [FIX] Update flipper is busy image
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
+- [Feature] Check app exist on apps catalog manifest loading
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 - [Refactor] Add test for Progress Tracker logic
 
