@@ -20,7 +20,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
       - name: Unit test
         uses: gradle/actions/setup-gradle@v3 # v3
         with:
@@ -38,7 +38,7 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
       - name: detekt
         uses: gradle/actions/setup-gradle@v3 # v3
         with:
@@ -56,9 +56,8 @@ jobs:
           distribution: "temurin"
           java-version: "17"
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
       - name: Android lint
         uses: gradle/actions/setup-gradle@v3 # v3
         with:
           arguments: lint
-
