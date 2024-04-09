@@ -46,6 +46,8 @@ include(
     ":components:bridge:connection:ble:impl",
     ":components:bridge:connection:orchestrator:api",
     ":components:bridge:connection:orchestrator:impl",
+    ":components:bridge:connection:connectionbuilder:api",
+    ":components:bridge:connection:connectionbuilder:impl",
     ":components:bridge:connection:common:api",
     ":components:bridge:connection:common:impl",
     ":components:bridge:connection:sample",
