@@ -17,10 +17,28 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FDeviceHolder<API : FConnectedDeviceApi> @AssistedInject constructor(
-    @Assisted private val config: FDeviceConnectionConfig<API>,
-    @Assisted private val listener: FTransportConnectionStatusListener,
-    @Assisted private val onConnectError: (Throwable) -> Unit,
+
+// Generics don't work with Anvil/Dagger
+class FDeviceHolderFactory @Inject constructor(
+    private val deviceConnectionHelper: FDeviceConfigToConnection
+) {
+    fun <API : FConnectedDeviceApi> build(
+        config: FDeviceConnectionConfig<API>,
+        listener: FTransportConnectionStatusListener,
+        onConnectError: (Throwable) -> Unit
+    ): FDeviceHolder<API> {
+        return FDeviceHolder(
+            config = config,
+            listener = listener,
+            onConnectError = onConnectError,
+            deviceConnectionHelper = deviceConnectionHelper
+        )
+    }
+}
+class FDeviceHolder<API : FConnectedDeviceApi>(
+    private val config: FDeviceConnectionConfig<API>,
+    private val listener: FTransportConnectionStatusListener,
+    private val onConnectError: (Throwable) -> Unit,
     private val deviceConnectionHelper: FDeviceConfigToConnection
 ) : LogTagProvider {
     override val TAG = "FDeviceHolder-$config"
@@ -42,14 +60,5 @@ class FDeviceHolder<API : FConnectedDeviceApi> @AssistedInject constructor(
         }
         info { "Cancel scope" }
         scope.cancel()
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun <API : FConnectedDeviceApi> build(
-            @Assisted config: FDeviceConnectionConfig<API>,
-            @Assisted listener: FTransportConnectionStatusListener,
-            @Assisted onConnectError: (Throwable) -> Unit
-        ): FDeviceHolder<API>
     }
 }
