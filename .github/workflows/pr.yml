@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: "Run unit tests"
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
@@ -25,7 +25,7 @@ jobs:
           arguments: testDebug
   detekt:
     name: "Check project by detekt"
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
@@ -41,7 +41,7 @@ jobs:
           arguments: detekt
   android_lint:
     name: "Check project by android`s lint"
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
