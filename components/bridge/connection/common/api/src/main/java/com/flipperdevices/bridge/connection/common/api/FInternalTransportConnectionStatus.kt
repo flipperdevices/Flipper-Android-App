@@ -7,4 +7,6 @@ sealed class FInternalTransportConnectionStatus {
 
     data object Connected : FInternalTransportConnectionStatus()
     data object Disconnecting : FInternalTransportConnectionStatus()
+
+    data class Error(val throwable: Throwable) : FInternalTransportConnectionStatus()
 }

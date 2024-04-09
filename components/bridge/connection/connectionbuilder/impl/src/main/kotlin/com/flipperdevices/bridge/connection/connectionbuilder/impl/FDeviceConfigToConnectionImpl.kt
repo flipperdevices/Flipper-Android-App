@@ -26,6 +26,7 @@ class FDeviceConfigToConnectionImpl @Inject constructor(
             )
         } ?: throw NotImplementedError("Can't find connection for config $config")
 
+        @Suppress("UNCHECKED_CAST")
         val connectionApi = connectionApiUntyped as? DeviceConnectionApi<API, CONFIG>
             ?: throw NotImplementedError("Can't map to connection api")
 
