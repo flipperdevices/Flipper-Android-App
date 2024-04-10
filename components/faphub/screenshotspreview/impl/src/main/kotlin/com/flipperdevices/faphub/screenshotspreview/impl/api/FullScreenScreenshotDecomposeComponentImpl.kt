@@ -11,7 +11,6 @@ import com.flipperdevices.faphub.screenshotspreview.impl.viewmodel.UrlImageShare
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.collections.immutable.toImmutableList
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
@@ -35,7 +34,7 @@ class FullScreenScreenshotDecomposeComponentImpl @AssistedInject constructor(
             onBack = onBack::invoke,
             title = param.title,
             selected = param.selected,
-            screenshots = param.screenshots.toImmutableList()
+            screenshots = param.screenshots
         )
     }
 }
