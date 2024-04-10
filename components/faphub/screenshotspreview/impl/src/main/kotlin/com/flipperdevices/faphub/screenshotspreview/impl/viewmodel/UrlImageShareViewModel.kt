@@ -31,7 +31,7 @@ class UrlImageShareViewModel @Inject constructor(
     private val applicationContext: Context
 ) : DecomposeViewModel() {
 
-    private fun shareScreenshot(bitmap: Bitmap) {
+    private suspend fun shareScreenshot(bitmap: Bitmap) {
         val date = SimpleDateFormat(TIMEFORMAT, Locale.US).format(Date())
         val filename = "$SCREENSHOT_FILE_PREFIX-$date.png"
         val sharableFile = SharableFile(applicationContext, filename)
@@ -39,23 +39,19 @@ class UrlImageShareViewModel @Inject constructor(
         sharableFile.outputStream().use { fis ->
             bitmap.compress(Bitmap.CompressFormat.PNG, QUALITY, fis)
         }
-        ShareHelper.shareFile(
-            applicationContext,
-            sharableFile,
-            R.string.screenshotspreview_export_title
-        )
+        withContext(Dispatchers.Main) {
+            ShareHelper.shareFile(
+                applicationContext,
+                sharableFile,
+                R.string.screenshotspreview_export_title
+            )
+        }
     }
 
     private fun URL.decodeBitmap(): Result<Bitmap> {
         return kotlin.runCatching {
             openStream().use(BitmapFactory::decodeStream)
         }
-    }
-
-    fun shareUrlImage(url: URL) = viewModelScope.launch(Dispatchers.IO) {
-        url.decodeBitmap()
-            .map { bitmap -> bitmap.fillBackground() }
-            .onSuccess { bitmap -> withContext(Dispatchers.Main) { shareScreenshot(bitmap) } }
     }
 
     // Images have transparent background thus we need to fill it with accent color
@@ -70,5 +66,11 @@ class UrlImageShareViewModel @Inject constructor(
         canvas.drawBitmap(this, 0F, 0F, noBlurPaint)
         recycle()
         return newBitmap
+    }
+
+    fun shareUrlImage(url: URL) = viewModelScope.launch(Dispatchers.IO) {
+        url.decodeBitmap()
+            .map { bitmap -> bitmap.fillBackground() }
+            .onSuccess { bitmap -> shareScreenshot(bitmap) }
     }
 }
