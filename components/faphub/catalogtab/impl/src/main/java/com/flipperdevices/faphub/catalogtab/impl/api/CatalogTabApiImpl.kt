@@ -14,6 +14,7 @@ import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 import javax.inject.Provider
@@ -30,7 +31,8 @@ class CatalogTabApiImpl @Inject constructor(
     override fun ComposableCatalogTab(
         componentContext: ComponentContext,
         onOpenFapItem: (FapItemShort) -> Unit,
-        onCategoryClick: (FapCategory) -> Unit
+        onCategoryClick: (FapCategory) -> Unit,
+        screenshotsClickListener: ScreenshotsClickListener
     ) {
         ComposableCatalogTabScreen(
             onOpenFapItem = onOpenFapItem,
@@ -49,7 +51,8 @@ class CatalogTabApiImpl @Inject constructor(
             },
             fapsListViewModel = componentContext.viewModelWithFactory(key = null) {
                 fapsListViewModelProvider.get()
-            }
+            },
+            screenshotsClickListener = screenshotsClickListener
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 
 @Immutable
 interface CatalogTabApi {
@@ -13,6 +14,7 @@ interface CatalogTabApi {
     fun ComposableCatalogTab(
         componentContext: ComponentContext,
         onOpenFapItem: (FapItemShort) -> Unit,
-        onCategoryClick: (FapCategory) -> Unit
+        onCategoryClick: (FapCategory) -> Unit,
+        screenshotsClickListener: ScreenshotsClickListener
     )
 }

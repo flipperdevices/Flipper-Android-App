@@ -12,6 +12,7 @@ import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.search.impl.composable.ComposableSearchScreen
 import com.flipperdevices.faphub.search.impl.model.FapHubSearchNavigationConfig
 import com.flipperdevices.faphub.search.impl.viewmodel.FapHubSearchViewModel
@@ -29,6 +30,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubSearchNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapInstallationUIApi: FapInstallationUIApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val metricApi: MetricApi,
@@ -61,7 +63,8 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             },
             fapsList = fapsList,
             onChangeText = searchViewModel::onChangeSearchText,
-            searchRequest = searchRequest
+            searchRequest = searchRequest,
+            screenshotsClickListener = screenshotsClickListener
         )
     }
 
@@ -70,7 +73,8 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubSearchNavigationConfig>,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
+            screenshotsClickListener: ScreenshotsClickListener
         ): SearchScreenDecomposeComponentImpl
     }
 }

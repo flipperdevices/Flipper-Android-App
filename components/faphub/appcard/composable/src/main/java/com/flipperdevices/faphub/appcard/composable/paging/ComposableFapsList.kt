@@ -21,6 +21,7 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val DEFAULT_FAP_COUNT = 20
@@ -29,6 +30,7 @@ private const val DEFAULT_FAP_COUNT = 20
 fun LazyListScope.ComposableFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
+    screenshotsClickListener: ScreenshotsClickListener,
     errorsRenderer: FapHubComposableErrorsRenderer,
     defaultFapErrorSize: FapErrorSize,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit,
@@ -42,6 +44,7 @@ fun LazyListScope.ComposableFapsList(
             AppCard(
                 modifier = elementModifier,
                 fapItem = null,
+                screenshotsClickListener = screenshotsClickListener,
                 installationButton = { modifier ->
                     installationButton(null, modifier)
                 }
@@ -71,7 +74,8 @@ fun LazyListScope.ComposableFapsList(
     ComposableLoadedFapsList(
         faps = faps,
         onOpenFapItem = onOpenFapItem,
-        installationButton = installationButton
+        installationButton = installationButton,
+        screenshotsClickListener = screenshotsClickListener
     )
     faps.loadState.append.let { loadState ->
         when (loadState) {
@@ -97,6 +101,7 @@ fun LazyListScope.ComposableFapsList(
 private fun LazyListScope.ComposableLoadedFapsList(
     faps: LazyPagingItems<FapItemShort>,
     onOpenFapItem: (FapItemShort) -> Unit,
+    screenshotsClickListener: ScreenshotsClickListener,
     installationButton: @Composable (FapItemShort?, Modifier) -> Unit
 ) {
     val lastIndex = faps.itemCount - 1
@@ -114,6 +119,7 @@ private fun LazyListScope.ComposableLoadedFapsList(
                     )
                     .padding(horizontal = 14.dp, vertical = 24.dp),
                 fapItem = it,
+                screenshotsClickListener = screenshotsClickListener,
                 installationButton = { modifier ->
                     installationButton(item, modifier)
                 }

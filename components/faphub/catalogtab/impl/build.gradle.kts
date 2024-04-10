@@ -6,6 +6,7 @@ plugins {
 android.namespace = "com.flipperdevices.faphub.catalogtab.impl"
 
 dependencies {
+    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.catalogtab.api)
 
     implementation(projects.components.core.di)

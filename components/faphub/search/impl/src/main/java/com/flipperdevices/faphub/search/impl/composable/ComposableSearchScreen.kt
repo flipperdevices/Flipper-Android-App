@@ -12,12 +12,14 @@ import com.flipperdevices.faphub.appcard.composable.paging.ComposableFapsList
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.search.impl.R
 import com.flipperdevices.faphub.search.impl.model.RequestTooSmallException
 
 @Composable
 fun ComposableSearchScreen(
     onBack: () -> Unit,
+    screenshotsClickListener: ScreenshotsClickListener,
     onFapItemClick: (FapItemShort) -> Unit,
     onChangeText: (text: String) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
@@ -52,7 +54,8 @@ fun ComposableSearchScreen(
                         onOpenFapItem = onFapItemClick,
                         installationButton = installationButton,
                         errorsRenderer = errorsRenderer,
-                        defaultFapErrorSize = FapErrorSize.FULLSCREEN
+                        defaultFapErrorSize = FapErrorSize.FULLSCREEN,
+                        screenshotsClickListener = screenshotsClickListener
                     )
                 }
             }

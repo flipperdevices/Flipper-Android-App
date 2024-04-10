@@ -16,6 +16,7 @@ import com.flipperdevices.faphub.fapscreen.impl.viewmodel.FapScreenViewModel
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -30,6 +31,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val id: String,
     @Assisted private val navigation: StackNavigation<FapScreenNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapScreenViewModelFactory: FapScreenViewModel.Factory,
     private val installationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
@@ -77,7 +79,8 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             },
             onOpenReport = {
                 navigation.pushToFront(fapScreenViewModel.getReportAppNavigationConfig(it))
-            }
+            },
+            screenshotsClickListener = screenshotsClickListener
         )
     }
 
@@ -87,7 +90,8 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext: ComponentContext,
             id: String,
             navigation: StackNavigation<FapScreenNavigationConfig>,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
+            screenshotsClickListener: ScreenshotsClickListener
         ): ScreenDecomposeComponentImpl
     }
 }

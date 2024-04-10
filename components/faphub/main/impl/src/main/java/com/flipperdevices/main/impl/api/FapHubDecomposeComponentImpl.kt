@@ -3,12 +3,14 @@ package com.flipperdevices.main.impl.api
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
@@ -31,6 +33,12 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
 ) : FapHubDecomposeComponent<FapHubNavigationConfig>(), ComponentContext by componentContext {
+
+    private val screenshotsClickListener: ScreenshotsClickListener = ScreenshotsClickListener { param ->
+        val config = FapHubNavigationConfig.ScreenshotsPreview(param)
+        navigation.pushNew(config)
+    }
+
     override val stack: Value<ChildStack<FapHubNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapHubNavigationConfig.serializer(),
@@ -53,18 +61,21 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            screenshotsClickListener = screenshotsClickListener
         )
 
         FapHubNavigationConfig.Search -> fapSearchFactory(
             componentContext = componentContext,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            screenshotsClickListener = screenshotsClickListener
         )
 
         is FapHubNavigationConfig.Category -> fapCategoryFactory(
             componentContext = componentContext,
             category = config.fapCategory,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            screenshotsClickListener = screenshotsClickListener
         )
 
         is FapHubNavigationConfig.ScreenshotsPreview -> screenshotsPreviewFactory(

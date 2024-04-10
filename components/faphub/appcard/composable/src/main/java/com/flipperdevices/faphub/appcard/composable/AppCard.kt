@@ -24,6 +24,8 @@ import com.flipperdevices.faphub.appcard.composable.components.AppCardScreenshot
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppCategory
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppIcon
 import com.flipperdevices.faphub.dao.api.model.FapItemShort
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
+import com.flipperdevices.faphub.screenshotspreview.api.model.ScreenshotsPreviewParam
 
 private val DEFAULT_NAME
     get() = String((Array(size = 10) { 'L' }).toCharArray())
@@ -33,6 +35,7 @@ private val DEFAULT_DESCRIPTION
 @Composable
 fun AppCard(
     fapItem: FapItemShort?,
+    screenshotsClickListener: ScreenshotsClickListener,
     modifier: Modifier = Modifier,
     installationButton: @Composable (Modifier) -> Unit
 ) {
@@ -52,6 +55,15 @@ fun AppCard(
         )
         AppCardScreenshots(
             screenshots = fapItem?.screenshots,
+            onScreenshotClicked = onScreenshotClicked@{ index ->
+                val requireFapItem = fapItem ?: return@onScreenshotClicked
+                val param = ScreenshotsPreviewParam(
+                    title = requireFapItem.name,
+                    screenshots = requireFapItem.screenshots,
+                    selected = index
+                )
+                screenshotsClickListener.onScreenshotClicked(param)
+            },
             modifier = Modifier.padding(top = 12.dp),
             screenshotModifier = Modifier
                 .padding(end = 6.dp)
@@ -106,6 +118,9 @@ private fun AppCardTop(
 @Composable
 private fun ComposableAppCardLoadingPreview() {
     FlipperThemeInternal {
-        AppCard(null) { }
+        AppCard(
+            fapItem = null,
+            screenshotsClickListener = {}
+        ) { }
     }
 }

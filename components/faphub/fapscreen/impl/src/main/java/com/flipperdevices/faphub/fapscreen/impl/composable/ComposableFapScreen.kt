@@ -32,10 +32,13 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.description.Composabl
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
+import com.flipperdevices.faphub.screenshotspreview.api.model.ScreenshotsPreviewParam
 
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
+    screenshotsClickListener: ScreenshotsClickListener,
     onOpenDeviceTab: () -> Unit,
     onRefresh: () -> Unit,
     onPressHide: (FapScreenLoadingState.Loaded) -> Unit,
@@ -69,7 +72,8 @@ fun ComposableFapScreen(
             onReportApp = { onOpenReport(loadingState) },
             onRefresh = onRefresh,
             isHidden = loadingState.isHidden,
-            onHideApp = { onPressHide(loadingState) }
+            onHideApp = { onPressHide(loadingState) },
+            screenshotsClickListener = screenshotsClickListener
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -84,7 +88,8 @@ fun ComposableFapScreen(
             onReportApp = {},
             onRefresh = onRefresh,
             isHidden = true,
-            onHideApp = {}
+            onHideApp = {},
+            screenshotsClickListener = screenshotsClickListener
         )
     }
 }
@@ -94,6 +99,7 @@ private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
     shareUrl: String?,
     onBack: () -> Unit,
+    screenshotsClickListener: ScreenshotsClickListener,
     controlState: FapDetailedControlState,
     uninstallButton: @Composable (Modifier) -> Unit,
     onOpenDeviceTab: () -> Unit,
@@ -125,6 +131,15 @@ private fun ComposableFapScreenInternal(
             AppCardScreenshots(
                 screenshots = fapItem?.screenshots,
                 modifier = Modifier.padding(top = 18.dp, start = 14.dp),
+                onScreenshotClicked = onScreenshotClicked@{ index ->
+                    val requireFapItem = fapItem ?: return@onScreenshotClicked
+                    val param = ScreenshotsPreviewParam(
+                        title = requireFapItem.name,
+                        screenshots = requireFapItem.screenshots,
+                        selected = index
+                    )
+                    screenshotsClickListener.onScreenshotClicked(param)
+                },
                 screenshotModifier = Modifier
                     .padding(end = 8.dp)
                     .size(width = 189.dp, height = 94.dp),
