@@ -7,7 +7,6 @@ plugins {
 android.namespace = "com.flipperdevices.faphub.category.impl"
 
 dependencies {
-    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.category.api)
 
     implementation(projects.components.core.di)

@@ -23,7 +23,6 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 
@@ -31,7 +30,6 @@ import kotlinx.coroutines.flow.map
 fun ComposableCatalogTabScreen(
     onOpenFapItem: (FapItemShort) -> Unit,
     onCategoryClick: (FapCategory) -> Unit,
-    screenshotsClickListener: ScreenshotsClickListener,
     errorsRenderer: FapHubComposableErrorsRenderer,
     fapsListViewModel: FapsListViewModel,
     categoriesViewModel: CategoriesViewModel,
@@ -79,7 +77,6 @@ fun ComposableCatalogTabScreen(
                 installationButton = installationButton,
                 defaultFapErrorSize = FapErrorSize.IN_LIST,
                 shouldDisplayError = categoriesFapHubError == null,
-                screenshotsClickListener = screenshotsClickListener
             )
 
             categoriesFapHubError?.let { categoriesFapHubError ->

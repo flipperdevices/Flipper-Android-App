@@ -31,13 +31,13 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.description.Composabl
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.screenshotspreview.api.model.ScreenshotsPreviewParam
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 fun ComposableFapScreen(
     onBack: () -> Unit,
-    screenshotsClickListener: ScreenshotsClickListener,
     onOpenDeviceTab: () -> Unit,
     onRefresh: () -> Unit,
     onPressHide: (FapScreenLoadingState.Loaded) -> Unit,
@@ -72,7 +72,6 @@ fun ComposableFapScreen(
             onRefresh = onRefresh,
             isHidden = loadingState.isHidden,
             onHideApp = { onPressHide(loadingState) },
-            screenshotsClickListener = screenshotsClickListener
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -88,7 +87,6 @@ fun ComposableFapScreen(
             onRefresh = onRefresh,
             isHidden = true,
             onHideApp = {},
-            screenshotsClickListener = screenshotsClickListener
         )
     }
 }
@@ -98,7 +96,6 @@ private fun ComposableFapScreenInternal(
     fapItem: FapItem?,
     shareUrl: String?,
     onBack: () -> Unit,
-    screenshotsClickListener: ScreenshotsClickListener,
     controlState: FapDetailedControlState,
     uninstallButton: @Composable (Modifier) -> Unit,
     onOpenDeviceTab: () -> Unit,
@@ -109,6 +106,7 @@ private fun ComposableFapScreenInternal(
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
+    val rootNavigation = LocalRootNavigation.current
     ComposableFapScreenBar(fapName = fapItem?.name, url = shareUrl, onBack = onBack)
     SwipeRefresh(onRefresh = onRefresh) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -137,7 +135,7 @@ private fun ComposableFapScreenInternal(
                         screenshotsUrls = requireFapItem.screenshots,
                         selected = index
                     )
-                    screenshotsClickListener.onScreenshotClicked(param)
+                    rootNavigation.push(RootScreenConfig.ScreenshotPreview(param))
                 },
                 screenshotModifier = Modifier
                     .padding(end = 8.dp)

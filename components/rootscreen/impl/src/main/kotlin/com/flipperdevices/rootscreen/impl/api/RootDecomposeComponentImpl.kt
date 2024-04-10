@@ -16,7 +16,6 @@ import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
@@ -74,10 +73,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.BottomBar -> bottomBarFactory(
             componentContext = componentContext,
             onBack = this::internalOnBack,
-            deeplink = config.bottomBarDeeplink,
-            screenshotsClickListener = ScreenshotsClickListener { param ->
-                navigation.pushToFront(RootScreenConfig.ScreenshotPreview(param))
-            }
+            deeplink = config.bottomBarDeeplink
         )
 
         is RootScreenConfig.FirstPair -> firstPairFactory(

@@ -16,7 +16,6 @@ import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -31,7 +30,6 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val fapCategory: FapCategory,
     @Assisted private val navigation: StackNavigation<FapCategoryNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val categoryViewModelFactory: FapHubCategoryViewModel.Factory,
     private val metricApi: MetricApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
@@ -69,7 +67,6 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
             onSelectSortType = categoryViewModel::onSelectSortType,
             fapsList = fapsList,
             sortType = sortType,
-            screenshotsClickListener = screenshotsClickListener
         )
     }
 
@@ -80,7 +77,6 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
             fapCategory: FapCategory,
             navigation: StackNavigation<FapCategoryNavigationConfig>,
             onBack: DecomposeOnBackParameter,
-            screenshotsClickListener: ScreenshotsClickListener
         ): FapHubCategoryScreenDecomposeComponentImpl
     }
 }

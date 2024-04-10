@@ -9,7 +9,6 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
@@ -25,7 +24,6 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab.FapHub?,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
@@ -49,27 +47,23 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) },
             deeplink = config.deeplink,
-            screenshotsClickListener = screenshotsClickListener
         )
 
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
 
         FapHubNavigationConfig.Search -> fapSearchFactory(
             componentContext = componentContext,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
 
         is FapHubNavigationConfig.Category -> fapCategoryFactory(
             componentContext = componentContext,
             category = config.fapCategory,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
     }
 

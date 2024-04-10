@@ -7,7 +7,6 @@ plugins {
 android.namespace = "com.flipperdevices.faphub.search.impl"
 
 dependencies {
-    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.search.api)
 
     implementation(projects.components.core.di)

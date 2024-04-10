@@ -14,8 +14,6 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
 
-    implementation(projects.components.core.share)
-
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)
     implementation(projects.components.core.log)

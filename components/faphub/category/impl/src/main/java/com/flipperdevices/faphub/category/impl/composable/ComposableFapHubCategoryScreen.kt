@@ -14,13 +14,11 @@ import com.flipperdevices.faphub.dao.api.model.FapItemShort
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFapHubCategory(
     onBack: () -> Unit,
-    screenshotsClickListener: ScreenshotsClickListener,
     onOpenSearch: () -> Unit,
     onOpenFapItem: (FapItemShort) -> Unit,
     errorsRenderer: FapHubComposableErrorsRenderer,
@@ -56,7 +54,6 @@ fun ComposableFapHubCategory(
                     installationButton = installationButton,
                     errorsRenderer = errorsRenderer,
                     defaultFapErrorSize = FapErrorSize.FULLSCREEN,
-                    screenshotsClickListener = screenshotsClickListener
                 )
             }
         }

@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.search.api
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
@@ -10,7 +9,6 @@ abstract class FapHubSearchDecomposeComponent<C : Any> : CompositeDecomposeCompo
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
-            screenshotsClickListener: ScreenshotsClickListener
         ): FapHubSearchDecomposeComponent<*>
     }
 }

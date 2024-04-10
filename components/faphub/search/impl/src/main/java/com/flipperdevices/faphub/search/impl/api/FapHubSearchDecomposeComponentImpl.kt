@@ -6,7 +6,6 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.faphub.search.impl.model.FapHubSearchNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
@@ -20,7 +19,6 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val searchScreenFactory: SearchScreenDecomposeComponentImpl.Factory
 ) : FapHubSearchDecomposeComponent<FapHubSearchNavigationConfig>(), ComponentContext by componentContext {
@@ -40,14 +38,12 @@ class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             id = config.id,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
 
         FapHubSearchNavigationConfig.SearchScreen -> searchScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
     }
 }

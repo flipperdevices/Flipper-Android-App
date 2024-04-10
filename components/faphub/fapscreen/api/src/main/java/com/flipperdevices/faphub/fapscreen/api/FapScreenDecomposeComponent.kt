@@ -1,7 +1,6 @@
 package com.flipperdevices.faphub.fapscreen.api
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
@@ -11,7 +10,6 @@ abstract class FapScreenDecomposeComponent<C : Any> : CompositeDecomposeComponen
             componentContext: ComponentContext,
             id: String,
             onBack: DecomposeOnBackParameter,
-            screenshotsClickListener: ScreenshotsClickListener
         ): FapScreenDecomposeComponent<*>
     }
 }

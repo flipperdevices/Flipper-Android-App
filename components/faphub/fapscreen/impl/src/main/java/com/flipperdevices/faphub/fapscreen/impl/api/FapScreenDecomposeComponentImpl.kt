@@ -8,7 +8,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenNavigationConfig
 import com.flipperdevices.faphub.report.api.FapReportDecomposeComponent
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
@@ -22,7 +21,6 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val id: String,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapReportFactory: FapReportDecomposeComponent.Factory,
     private val screenDecomposeFactory: ScreenDecomposeComponentImpl.Factory
 ) : FapScreenDecomposeComponent<FapScreenNavigationConfig>(), ComponentContext by componentContext {
@@ -44,7 +42,6 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
             id = config.id,
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) },
-            screenshotsClickListener = screenshotsClickListener
         )
 
         is FapScreenNavigationConfig.FapReport -> fapReportFactory(

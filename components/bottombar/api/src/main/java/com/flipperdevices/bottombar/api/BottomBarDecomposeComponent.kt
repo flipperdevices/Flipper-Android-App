@@ -2,7 +2,6 @@ package com.flipperdevices.bottombar.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
@@ -14,7 +13,6 @@ abstract class BottomBarDecomposeComponent<C : Any> : CompositeDecomposeComponen
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             deeplink: Deeplink.BottomBar?,
-            screenshotsClickListener: ScreenshotsClickListener
         ): BottomBarDecomposeComponent<*>
     }
 }
