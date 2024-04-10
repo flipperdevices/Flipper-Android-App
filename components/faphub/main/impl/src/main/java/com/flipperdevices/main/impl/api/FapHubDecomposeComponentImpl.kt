@@ -9,6 +9,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.category.api.FapHubCategoryDecomposeComponent
 import com.flipperdevices.faphub.fapscreen.api.FapScreenDecomposeComponent
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.faphub.search.api.FapHubSearchDecomposeComponent
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
@@ -27,7 +28,8 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
-    private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory
+    private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory,
+    private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
 ) : FapHubDecomposeComponent<FapHubNavigationConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<FapHubNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
@@ -62,6 +64,12 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         is FapHubNavigationConfig.Category -> fapCategoryFactory(
             componentContext = componentContext,
             category = config.fapCategory,
+            onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is FapHubNavigationConfig.ScreenshotsPreview -> screenshotsPreviewFactory(
+            componentContext = componentContext,
+            param = config.param,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }
