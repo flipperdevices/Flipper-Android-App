@@ -59,7 +59,7 @@ fun AppCard(
                 val requireFapItem = fapItem ?: return@onScreenshotClicked
                 val param = ScreenshotsPreviewParam(
                     title = requireFapItem.name,
-                    screenshots = requireFapItem.screenshots,
+                    screenshotsUrls = requireFapItem.screenshots,
                     selected = index
                 )
                 screenshotsClickListener.onScreenshotClicked(param)

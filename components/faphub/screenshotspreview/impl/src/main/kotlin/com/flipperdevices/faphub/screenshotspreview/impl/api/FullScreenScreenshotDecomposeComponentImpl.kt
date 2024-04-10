@@ -34,7 +34,7 @@ class FullScreenScreenshotDecomposeComponentImpl @AssistedInject constructor(
             onBack = onBack::invoke,
             title = param.title,
             selected = param.selected,
-            screenshots = param.screenshots
+            screenshots = param.screenshotsUrls
         )
     }
 }

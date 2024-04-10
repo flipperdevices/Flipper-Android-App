@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
@@ -62,7 +63,11 @@ class UrlImageShareViewModel @Inject constructor(
         val newBitmap = Bitmap.createBitmap(width, height, config)
         val canvas = Canvas(newBitmap)
         canvas.drawColor(Color.rgb(ACCENT_COLOR_R, ACCENT_COLOR_G, ACCENT_COLOR_B))
-        canvas.drawBitmap(this, 0F, 0F, null)
+        val noBlurPaint = Paint().apply {
+            this.isAntiAlias = false
+            this.isFilterBitmap = false
+        }
+        canvas.drawBitmap(this, 0F, 0F, noBlurPaint)
         recycle()
         return newBitmap
     }

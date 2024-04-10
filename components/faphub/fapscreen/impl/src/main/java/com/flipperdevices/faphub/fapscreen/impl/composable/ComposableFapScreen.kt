@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -135,7 +134,7 @@ private fun ComposableFapScreenInternal(
                     val requireFapItem = fapItem ?: return@onScreenshotClicked
                     val param = ScreenshotsPreviewParam(
                         title = requireFapItem.name,
-                        screenshots = requireFapItem.screenshots,
+                        screenshotsUrls = requireFapItem.screenshots,
                         selected = index
                     )
                     screenshotsClickListener.onScreenshotClicked(param)
