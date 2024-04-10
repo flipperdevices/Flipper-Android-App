@@ -64,4 +64,3 @@ jobs:
         uses: gradle/actions/setup-gradle@v3.2.1
         with:
           arguments: assembleInternal bundleInternal
-
