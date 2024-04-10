@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -50,11 +52,19 @@ internal fun ComposableFullScreenshotAppBar(
             contentDescription = null.orEmpty()
         )
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        ) {
             Text(
                 text = title,
                 color = LocalPallet.current.text88,
-                style = LocalTypography.current.titleEB18
+                style = LocalTypography.current.titleEB18,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
@@ -85,7 +95,10 @@ private fun FullScreenshotAppBar() {
     FlipperThemeInternal {
         ComposableFullScreenshotAppBar(
             onBack = {},
-            title = "Snake game",
+            title = """
+                A game where a very long snake is sneaking very slow and eating apples 
+                which is also red and blue and they actually changing colors
+            """.trimIndent(),
             itemsAmount = 5,
             selectedItemIndex = 2,
             onSaveClicked = {}
