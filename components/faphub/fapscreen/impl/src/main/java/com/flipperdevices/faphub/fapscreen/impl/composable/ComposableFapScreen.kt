@@ -71,7 +71,7 @@ fun ComposableFapScreen(
             onReportApp = { onOpenReport(loadingState) },
             onRefresh = onRefresh,
             isHidden = loadingState.isHidden,
-            onHideApp = { onPressHide(loadingState) },
+            onHideApp = { onPressHide(loadingState) }
         )
 
         FapScreenLoadingState.Loading -> ComposableFapScreenInternal(
@@ -86,7 +86,7 @@ fun ComposableFapScreen(
             onReportApp = {},
             onRefresh = onRefresh,
             isHidden = true,
-            onHideApp = {},
+            onHideApp = {}
         )
     }
 }

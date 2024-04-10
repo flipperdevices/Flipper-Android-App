@@ -53,7 +53,7 @@ fun ComposableFapHubCategory(
                     onOpenFapItem = onOpenFapItem,
                     installationButton = installationButton,
                     errorsRenderer = errorsRenderer,
-                    defaultFapErrorSize = FapErrorSize.FULLSCREEN,
+                    defaultFapErrorSize = FapErrorSize.FULLSCREEN
                 )
             }
         }

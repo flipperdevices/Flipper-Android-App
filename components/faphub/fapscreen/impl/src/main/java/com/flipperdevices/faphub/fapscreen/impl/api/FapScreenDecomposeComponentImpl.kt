@@ -41,7 +41,7 @@ class FapScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             id = config.id,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapScreenNavigationConfig.FapReport -> fapReportFactory(

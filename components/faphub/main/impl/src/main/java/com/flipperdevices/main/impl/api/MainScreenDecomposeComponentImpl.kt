@@ -32,6 +32,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     private val metricApi: MetricApi,
     private val mainViewModelFactory: MainViewModel.Factory
 ) : ScreenDecomposeComponent(componentContext) {
+
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
@@ -57,7 +58,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
                         metricApi.reportSimpleEvent(SimpleEvent.OPEN_FAPHUB_CATEGORY, it.name)
                         navigation.pushToFront(FapHubNavigationConfig.Category(it))
                     },
-                    componentContext = this,
+                    componentContext = this
                 )
             },
             installedTabComposable = {
@@ -85,7 +86,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubNavigationConfig>,
             onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
+            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
         ): MainScreenDecomposeComponentImpl
     }
 }

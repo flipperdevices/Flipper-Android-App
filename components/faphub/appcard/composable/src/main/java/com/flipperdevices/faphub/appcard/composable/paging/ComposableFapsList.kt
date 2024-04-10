@@ -44,7 +44,7 @@ fun LazyListScope.ComposableFapsList(
                 fapItem = null,
                 installationButton = { modifier ->
                     installationButton(null, modifier)
-                },
+                }
             )
         }
         return
@@ -71,7 +71,7 @@ fun LazyListScope.ComposableFapsList(
     ComposableLoadedFapsList(
         faps = faps,
         onOpenFapItem = onOpenFapItem,
-        installationButton = installationButton,
+        installationButton = installationButton
     )
     faps.loadState.append.let { loadState ->
         when (loadState) {
@@ -116,7 +116,7 @@ private fun LazyListScope.ComposableLoadedFapsList(
                 fapItem = it,
                 installationButton = { modifier ->
                     installationButton(item, modifier)
-                },
+                }
             )
             if (index != lastIndex) {
                 ComposableLoadingItemDivider()

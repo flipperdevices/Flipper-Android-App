@@ -8,7 +8,7 @@ abstract class FapHubSearchDecomposeComponent<C : Any> : CompositeDecomposeCompo
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter,
+            onBack: DecomposeOnBackParameter
         ): FapHubSearchDecomposeComponent<*>
     }
 }

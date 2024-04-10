@@ -77,7 +77,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             },
             onOpenReport = {
                 navigation.pushToFront(fapScreenViewModel.getReportAppNavigationConfig(it))
-            },
+            }
         )
     }
 
@@ -87,7 +87,7 @@ class ScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext: ComponentContext,
             id: String,
             navigation: StackNavigation<FapScreenNavigationConfig>,
-            onBack: DecomposeOnBackParameter,
+            onBack: DecomposeOnBackParameter
         ): ScreenDecomposeComponentImpl
     }
 }

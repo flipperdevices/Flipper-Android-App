@@ -66,7 +66,7 @@ class FapHubCategoryScreenDecomposeComponentImpl @AssistedInject constructor(
             categoryName = fapCategory.name,
             onSelectSortType = categoryViewModel::onSelectSortType,
             fapsList = fapsList,
-            sortType = sortType,
+            sortType = sortType
         )
     }
 

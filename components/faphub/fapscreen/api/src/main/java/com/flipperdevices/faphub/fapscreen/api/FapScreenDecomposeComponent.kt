@@ -9,7 +9,7 @@ abstract class FapScreenDecomposeComponent<C : Any> : CompositeDecomposeComponen
         operator fun invoke(
             componentContext: ComponentContext,
             id: String,
-            onBack: DecomposeOnBackParameter,
+            onBack: DecomposeOnBackParameter
         ): FapScreenDecomposeComponent<*>
     }
 }

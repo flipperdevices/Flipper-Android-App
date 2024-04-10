@@ -30,7 +30,7 @@ class CatalogTabApiImpl @Inject constructor(
     override fun ComposableCatalogTab(
         componentContext: ComponentContext,
         onOpenFapItem: (FapItemShort) -> Unit,
-        onCategoryClick: (FapCategory) -> Unit,
+        onCategoryClick: (FapCategory) -> Unit
     ) {
         ComposableCatalogTabScreen(
             onOpenFapItem = onOpenFapItem,
@@ -49,7 +49,7 @@ class CatalogTabApiImpl @Inject constructor(
             },
             fapsListViewModel = componentContext.viewModelWithFactory(key = null) {
                 fapsListViewModelProvider.get()
-            },
+            }
         )
     }
 }

@@ -10,7 +10,7 @@ abstract class FapHubDecomposeComponent<C : Any> : CompositeDecomposeComponent<C
         operator fun invoke(
             componentContext: ComponentContext,
             deeplink: Deeplink.BottomBar.HubTab.FapHub?,
-            onBack: DecomposeOnBackParameter,
+            onBack: DecomposeOnBackParameter
         ): FapHubDecomposeComponent<*>
     }
 }

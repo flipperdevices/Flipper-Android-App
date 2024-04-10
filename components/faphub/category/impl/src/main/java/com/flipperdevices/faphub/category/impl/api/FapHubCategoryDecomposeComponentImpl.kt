@@ -18,7 +18,6 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, FapHubCategoryDecomposeComponent.Factory::class)
-@Suppress("LongParameterList")
 class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val fapCategory: FapCategory,
@@ -43,18 +42,18 @@ class FapHubCategoryDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             fapCategory = config.fapCategory,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapCategoryNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapCategoryNavigationConfig.Search -> fapSearchFactory(
             componentContext = componentContext,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 }

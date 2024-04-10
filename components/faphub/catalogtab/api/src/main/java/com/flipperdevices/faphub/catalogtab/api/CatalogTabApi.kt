@@ -13,6 +13,6 @@ interface CatalogTabApi {
     fun ComposableCatalogTab(
         componentContext: ComponentContext,
         onOpenFapItem: (FapItemShort) -> Unit,
-        onCategoryClick: (FapCategory) -> Unit,
+        onCategoryClick: (FapCategory) -> Unit
     )
 }

@@ -133,7 +133,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         is BottomBarTabConfig.Hub -> hubScreenFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 

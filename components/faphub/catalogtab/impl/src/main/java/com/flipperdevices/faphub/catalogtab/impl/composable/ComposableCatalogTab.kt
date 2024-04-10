@@ -76,7 +76,7 @@ fun ComposableCatalogTabScreen(
                 errorsRenderer = errorsRenderer,
                 installationButton = installationButton,
                 defaultFapErrorSize = FapErrorSize.IN_LIST,
-                shouldDisplayError = categoriesFapHubError == null,
+                shouldDisplayError = categoriesFapHubError == null
             )
 
             categoriesFapHubError?.let { categoriesFapHubError ->

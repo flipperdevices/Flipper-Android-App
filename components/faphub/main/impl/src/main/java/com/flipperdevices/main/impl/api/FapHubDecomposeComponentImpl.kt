@@ -27,15 +27,14 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
     private val fapCategoryFactory: FapHubCategoryDecomposeComponent.Factory,
-    private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory,
+    private val mainScreenFactory: MainScreenDecomposeComponentImpl.Factory
 ) : FapHubDecomposeComponent<FapHubNavigationConfig>(), ComponentContext by componentContext {
-
     override val stack: Value<ChildStack<FapHubNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = FapHubNavigationConfig.serializer(),
         initialStack = { getInitialStack(deeplink) },
         handleBackButton = true,
-        childFactory = ::child,
+        childFactory = ::child
     )
 
     private fun child(
@@ -46,24 +45,24 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             navigation = navigation,
             onBack = { navigation.popOr(onBack::invoke) },
-            deeplink = config.deeplink,
+            deeplink = config.deeplink
         )
 
         is FapHubNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapHubNavigationConfig.Search -> fapSearchFactory(
             componentContext = componentContext,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         is FapHubNavigationConfig.Category -> fapCategoryFactory(
             componentContext = componentContext,
             category = config.fapCategory,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 

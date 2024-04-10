@@ -61,7 +61,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
             },
             fapsList = fapsList,
             onChangeText = searchViewModel::onChangeSearchText,
-            searchRequest = searchRequest,
+            searchRequest = searchRequest
         )
     }
 
@@ -70,7 +70,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubSearchNavigationConfig>,
-            onBack: DecomposeOnBackParameter,
+            onBack: DecomposeOnBackParameter
         ): SearchScreenDecomposeComponentImpl
     }
 }

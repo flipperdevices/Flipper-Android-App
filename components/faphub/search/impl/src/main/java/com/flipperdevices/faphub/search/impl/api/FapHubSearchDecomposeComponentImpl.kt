@@ -37,13 +37,13 @@ class FapHubSearchDecomposeComponentImpl @AssistedInject constructor(
         is FapHubSearchNavigationConfig.FapScreen -> fapScreenFactory(
             componentContext = componentContext,
             id = config.id,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         FapHubSearchNavigationConfig.SearchScreen -> searchScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 }

@@ -22,7 +22,6 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, HubDecomposeComponent.Factory::class)
-@Suppress("LongParameterList")
 class HubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab?,
@@ -48,7 +47,7 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
         is HubNavigationConfig.FapHub -> fapHubFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) },
+            onBack = { navigation.popOr(onBack::invoke) }
         )
 
         HubNavigationConfig.Main -> hubMainFactory(

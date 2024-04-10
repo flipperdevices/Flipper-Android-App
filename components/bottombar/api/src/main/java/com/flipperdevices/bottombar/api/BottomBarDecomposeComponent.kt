@@ -12,7 +12,7 @@ abstract class BottomBarDecomposeComponent<C : Any> : CompositeDecomposeComponen
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar?,
+            deeplink: Deeplink.BottomBar?
         ): BottomBarDecomposeComponent<*>
     }
 }
