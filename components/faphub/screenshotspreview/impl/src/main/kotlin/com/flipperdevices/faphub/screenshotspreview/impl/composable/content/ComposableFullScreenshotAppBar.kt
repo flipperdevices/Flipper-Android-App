@@ -49,7 +49,7 @@ internal fun ComposableFullScreenshotAppBar(
                 .size(24.dp)
                 .clickableRipple(bounded = false, onClick = onBack),
             painter = painterResource(DesignSystem.drawable.ic_back),
-            contentDescription = null.orEmpty()
+            contentDescription = stringResource(id = R.string.screenshotspreview_close)
         )
 
         Column(
