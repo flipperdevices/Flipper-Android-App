@@ -30,6 +30,7 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
@@ -51,6 +52,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar?,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val settingsDataStore: DataStore<Settings>,
     private val archiveScreenFactory: ArchiveDecomposeComponent.Factory,
     private val deviceScreenFactory: DeviceScreenDecomposeComponent.Factory,
@@ -133,7 +135,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         is BottomBarTabConfig.Hub -> hubScreenFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            screenshotsClickListener = screenshotsClickListener
         )
     }
 

@@ -9,6 +9,7 @@ import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.hub.api.HubDecomposeComponent
 import com.flipperdevices.hub.impl.model.HubNavigationConfig
 import com.flipperdevices.hub.impl.model.toConfigStack
@@ -22,10 +23,12 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, HubDecomposeComponent.Factory::class)
+@Suppress("LongParameterList")
 class HubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.HubTab?,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     private val fapHubFactory: FapHubDecomposeComponent.Factory,
     private val hubMainFactory: HubMainScreenDecomposeComponentImpl.Factory,
     private val nfcAttackFactory: NFCAttackDecomposeComponent.Factory
@@ -47,7 +50,8 @@ class HubDecomposeComponentImpl @AssistedInject constructor(
         is HubNavigationConfig.FapHub -> fapHubFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            screenshotsClickListener = screenshotsClickListener
         )
 
         HubNavigationConfig.Main -> hubMainFactory(

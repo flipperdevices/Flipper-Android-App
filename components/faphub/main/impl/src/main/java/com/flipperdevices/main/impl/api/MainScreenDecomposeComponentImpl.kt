@@ -10,6 +10,7 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.catalogtab.api.CatalogTabApi
 import com.flipperdevices.faphub.installedtab.api.FapInstalledApi
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsClickListener
 import com.flipperdevices.main.impl.composable.ComposableFapHubMainScreen
 import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
@@ -26,6 +27,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val screenshotsClickListener: ScreenshotsClickListener,
     @Assisted private val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
@@ -58,10 +60,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
                         navigation.pushToFront(FapHubNavigationConfig.Category(it))
                     },
                     componentContext = this,
-                    screenshotsClickListener = { param ->
-                        val config = FapHubNavigationConfig.ScreenshotsPreview(param)
-                        navigation.pushToFront(config)
-                    }
+                    screenshotsClickListener = screenshotsClickListener
                 )
             },
             installedTabComposable = {
@@ -89,7 +88,8 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubNavigationConfig>,
             onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
+            screenshotsClickListener: ScreenshotsClickListener
         ): MainScreenDecomposeComponentImpl
     }
 }

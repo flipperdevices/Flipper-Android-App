@@ -8,6 +8,7 @@ android.namespace = "com.flipperdevices.hub.impl"
 
 dependencies {
     implementation(projects.components.hub.api)
+    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.maincard.api)
     implementation(projects.components.faphub.main.api)
     implementation(projects.components.analytics.metric.api)

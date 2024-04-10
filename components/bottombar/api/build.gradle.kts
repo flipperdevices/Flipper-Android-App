@@ -5,6 +5,8 @@ plugins {
 android.namespace = "com.flipperdevices.bottombar.api"
 
 dependencies {
+    implementation(projects.components.faphub.screenshotspreview.api)
+
     implementation(libs.compose.ui)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.core.ui.decompose)
