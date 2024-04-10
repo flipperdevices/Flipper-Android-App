@@ -3,10 +3,10 @@ name: Check configuration change
 on:
   pull_request:
     paths:
-      - '**.gradle.kts'
-      - 'build-logic/**'
-      - 'gradle/**'
-      - 'gradle.properties'
+      - "**.gradle.kts"
+      - "build-logic/**"
+      - "gradle/**"
+      - "gradle.properties"
   merge_group:
 
 jobs:
@@ -14,47 +14,54 @@ jobs:
     name: "Build release"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@v4.1.1
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
       - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        uses: actions/setup-java@v4.2.1
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3.2.1
       - name: Build release
-        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
+        uses: gradle/actions/setup-gradle@v3.2.1
         with:
           arguments: assembleRelease bundleRelease
   debug_build:
     name: "Build debug"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@v4.1.1
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
       - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        uses: actions/setup-java@v4.2.1
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3.2.1
       - name: Build debug
-        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
+        uses: gradle/actions/setup-gradle@v3.2.1
         with:
           arguments: assembleDebug bundleDebug
   internal_build:
     name: "Build internal"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@v4.1.1
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
       - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        uses: actions/setup-java@v4.2.1
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3.2.1
       - name: Build internal
-        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3
+        uses: gradle/actions/setup-gradle@v3.2.1
         with:
           arguments: assembleInternal bundleInternal
+
