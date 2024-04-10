@@ -27,8 +27,6 @@ internal fun ComposableFullScreenshotScreen(
     screenshots: ImmutableList<String>,
     urlImageShareViewModel: UrlImageShareViewModel
 ) {
-    val itemsAmount = remember { screenshots.size }
-
     val pagerState = rememberPagerState(selected) {
         screenshots.size
     }
@@ -56,7 +54,7 @@ internal fun ComposableFullScreenshotScreen(
         ComposableFullScreenshotAppBar(
             onBack = onBack,
             title = title,
-            itemsAmount = itemsAmount,
+            itemsAmount = screenshots.size,
             selectedItemIndex = pagerState.currentPage,
             modifier = Modifier.align(Alignment.TopCenter),
             onSaveClicked = {
