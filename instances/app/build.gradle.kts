@@ -208,6 +208,9 @@ dependencies {
     implementation(projects.components.faphub.errors.api)
     implementation(projects.components.faphub.errors.impl)
 
+    implementation(projects.components.faphub.screenshotspreview.api)
+    implementation(projects.components.faphub.screenshotspreview.impl)
+
     implementation(projects.components.faphub.utils)
 
     implementation(projects.components.selfupdater.api)

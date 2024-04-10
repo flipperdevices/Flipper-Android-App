@@ -5,6 +5,9 @@ plugins {
 android.namespace = "com.flipperdevices.faphub.appcard.composable"
 
 dependencies {
+    implementation(projects.components.rootscreen.api)
+
+    implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.errors.api)
 
