@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
@@ -19,13 +18,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
 private const val QUALITY = 100
-private const val ACCENT_COLOR_R = 255
-private const val ACCENT_COLOR_G = 130
-private const val ACCENT_COLOR_B = 0
 
 class UrlImageShareViewModel @Inject constructor(
     private val applicationContext: Context
@@ -39,6 +36,7 @@ class UrlImageShareViewModel @Inject constructor(
         sharableFile.outputStream().use { fis ->
             bitmap.compress(Bitmap.CompressFormat.PNG, QUALITY, fis)
         }
+        applicationContext.getColor(com.flipperdevices.core.ui.res.R.color.accent)
         withContext(Dispatchers.Main) {
             ShareHelper.shareFile(
                 applicationContext,
@@ -58,7 +56,7 @@ class UrlImageShareViewModel @Inject constructor(
     private fun Bitmap.fillBackground(): Bitmap {
         val newBitmap = Bitmap.createBitmap(width, height, config)
         val canvas = Canvas(newBitmap)
-        canvas.drawColor(Color.rgb(ACCENT_COLOR_R, ACCENT_COLOR_G, ACCENT_COLOR_B))
+        canvas.drawColor(applicationContext.getColor(DesignSystem.color.accent))
         val noBlurPaint = Paint().apply {
             this.isAntiAlias = false
             this.isFilterBitmap = false
