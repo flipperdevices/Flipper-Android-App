@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -32,6 +31,9 @@ import com.flipperdevices.faphub.fapscreen.impl.composable.description.Composabl
 import com.flipperdevices.faphub.fapscreen.impl.composable.header.ComposableFapHeader
 import com.flipperdevices.faphub.fapscreen.impl.model.FapDetailedControlState
 import com.flipperdevices.faphub.fapscreen.impl.model.FapScreenLoadingState
+import com.flipperdevices.faphub.screenshotspreview.api.model.ScreenshotsPreviewParam
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 fun ComposableFapScreen(
@@ -104,6 +106,7 @@ private fun ComposableFapScreenInternal(
     installationButton: @Composable (FapItem?, Modifier) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(modifier) {
+    val rootNavigation = LocalRootNavigation.current
     ComposableFapScreenBar(fapName = fapItem?.name, url = shareUrl, onBack = onBack)
     SwipeRefresh(onRefresh = onRefresh) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -125,6 +128,15 @@ private fun ComposableFapScreenInternal(
             AppCardScreenshots(
                 screenshots = fapItem?.screenshots,
                 modifier = Modifier.padding(top = 18.dp, start = 14.dp),
+                onScreenshotClicked = onScreenshotClicked@{ index ->
+                    val requireFapItem = fapItem ?: return@onScreenshotClicked
+                    val param = ScreenshotsPreviewParam(
+                        title = requireFapItem.name,
+                        screenshotsUrls = requireFapItem.screenshots,
+                        selected = index
+                    )
+                    rootNavigation.push(RootScreenConfig.ScreenshotPreview(param))
+                },
                 screenshotModifier = Modifier
                     .padding(end = 8.dp)
                     .size(width = 189.dp, height = 94.dp),

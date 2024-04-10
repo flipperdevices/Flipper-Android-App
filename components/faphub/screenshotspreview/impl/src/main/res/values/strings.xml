@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="screenshotspreview_export_title">Share screenshot</string>
+    <string name="screenshotspreview_list_scroll_progress">%d/%d</string>
+    <string name="screenshotspreview_close">Close</string>
+</resources>

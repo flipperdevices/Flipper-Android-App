@@ -16,6 +16,7 @@ import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
@@ -50,7 +51,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val screenStreamingFactory: ScreenStreamingDecomposeComponent.Factory,
     private val widgetScreenFactory: WidgetDecomposeComponent.Factory,
     private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
-    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory
+    private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
+    private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(Dispatchers.Default)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -108,6 +110,12 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.OpenKey -> keyScreenFactory(
             componentContext = componentContext,
             keyPath = config.flipperKeyPath,
+            onBack = this::internalOnBack
+        )
+
+        is RootScreenConfig.ScreenshotPreview -> screenshotsPreviewFactory(
+            componentContext = componentContext,
+            param = config.param,
             onBack = this::internalOnBack
         )
     }
