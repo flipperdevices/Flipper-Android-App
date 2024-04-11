@@ -231,8 +231,8 @@ jobs:
           cp ${{steps.download-googleplay.outputs.download-path}}/* artifacts/
           cp ${{steps.download-wearos.outputs.download-path}}/* artifacts/
           echo "path=artifacts/" >> $GITHUB_OUTPUT
-      - name: Install zip
-        uses: montudor/action-zip@a8e75c9faefcd80fac3baf53ef40b9b119d5b702 # v1
+      #- name: Install zip
+      #  uses: montudor/action-zip@a8e75c9faefcd80fac3baf53ef40b9b119d5b702 # v1
       - name: Prepare mapping
         id: mappings
         run: |
