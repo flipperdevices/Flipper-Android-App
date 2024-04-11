@@ -56,6 +56,10 @@ class BleDeviceConnectionApiImpl(
         if (!device.isConnected) {
             throw FailedConnectToDeviceException()
         }
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Pairing)
+
+        device.waitForBonding(BleConstants.PAIR_TIME_MS)
+
         device.requestMtu(BleConstants.MAX_MTU)
         device.discoverServices()
 

@@ -5,6 +5,8 @@ sealed class FInternalTransportConnectionStatus {
 
     data object Connecting : FInternalTransportConnectionStatus()
 
+    data object Pairing : FInternalTransportConnectionStatus()
+
     data object Connected : FInternalTransportConnectionStatus()
     data object Disconnecting : FInternalTransportConnectionStatus()
 

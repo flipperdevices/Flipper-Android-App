@@ -1,10 +1,12 @@
 package com.flipperdevices.bridge.connection.screens.benchmark
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
@@ -26,15 +28,15 @@ class BenchmarkScreenDecomposeComponent @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        Row {
+        Column {
             Text(
                 modifier = Modifier.padding(16.dp),
                 text = address,
                 style = LocalTypography.current.titleB24
             )
-            val state = benchmarkViewModel.getState().collectAsState()
+            val state by benchmarkViewModel.getState().collectAsState()
 
-            Text(text = state.toString())
+            Text(text = "Current status is: $state")
         }
     }
 

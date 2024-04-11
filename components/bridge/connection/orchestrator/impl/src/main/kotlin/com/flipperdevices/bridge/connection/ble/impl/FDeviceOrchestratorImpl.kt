@@ -11,7 +11,9 @@ import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 @ContributesBinding(AppGraph::class, FDeviceOrchestrator::class)
 class FDeviceOrchestratorImpl @Inject constructor(
     private val deviceHolderFactory: FDeviceHolderFactory
@@ -24,7 +26,7 @@ class FDeviceOrchestratorImpl @Inject constructor(
     override suspend fun connect(config: FDeviceConnectionConfig<*>) = withLock(mutex, "connect") {
         info { "Request connect for config $config" }
 
-        disconnectCurrent()
+        disconnectInternalUnsafe()
 
         info { "Create new device" }
         currentDevice = deviceHolderFactory.build(

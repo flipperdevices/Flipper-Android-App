@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.connection.screens.benchmark.BenchmarkScreenDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
@@ -33,13 +34,17 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
             ConnectionRootConfig.NoPermission
         },
         childFactory = ::child,
+        handleBackButton = true
     )
 
     private fun child(
         config: ConnectionRootConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        is ConnectionRootConfig.Main -> searchDecomposeFactory(componentContext)
+        is ConnectionRootConfig.Main -> searchDecomposeFactory(
+            componentContext = componentContext,
+            onItemSelect = { navigation.push(ConnectionRootConfig.Benchmark(it)) })
+
         is ConnectionRootConfig.NoPermission ->
             ConnectionNoPermissionDecomposeComponent(componentContext)
 

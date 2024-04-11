@@ -6,6 +6,8 @@ import com.flipperdevices.bridge.connection.ble.impl.serial.FSerialDeviceApiWrap
 import com.flipperdevices.bridge.connection.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -20,11 +22,14 @@ open class FBleApiImpl(
     scope: CoroutineScope,
     private val client: ClientBleGatt,
     private val statusListener: FTransportConnectionStatusListener,
-) : FBleApi {
+) : FBleApi, LogTagProvider {
+    override val TAG = "FBleApi"
     init {
+        info { "Init ble api listener" }
         client.connectionStateWithStatus
             .filterNotNull()
             .onEach { (state, status) ->
+                info { "Receive state $state" }
                 statusListener.onStatusUpdate(
                     when (state) {
                         GattConnectionState.STATE_DISCONNECTED ->
