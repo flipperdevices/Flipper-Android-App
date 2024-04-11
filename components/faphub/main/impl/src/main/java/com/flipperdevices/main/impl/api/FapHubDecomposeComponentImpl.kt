@@ -34,7 +34,7 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         serializer = FapHubNavigationConfig.serializer(),
         initialStack = { getInitialStack(deeplink) },
         handleBackButton = true,
-        childFactory = ::child,
+        childFactory = ::child
     )
 
     private fun child(

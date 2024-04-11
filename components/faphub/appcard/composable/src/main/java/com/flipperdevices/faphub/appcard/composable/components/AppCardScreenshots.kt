@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.appcard.composable.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ private const val DEFAULT_SCREENSHOT_SIZE = 6
 @Composable
 fun AppCardScreenshots(
     screenshots: ImmutableList<String>?,
+    onScreenshotClicked: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     screenshotModifier: Modifier = Modifier,
 ) {
@@ -29,7 +31,9 @@ fun AppCardScreenshots(
         items(screenshots.size) { index ->
             val screenshotUrl = screenshots[index]
             ComposableAppScreenshot(
-                modifier = screenshotModifier,
+                modifier = screenshotModifier.clickable {
+                    onScreenshotClicked.invoke(index)
+                },
                 url = screenshotUrl
             )
         }

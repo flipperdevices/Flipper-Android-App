@@ -229,6 +229,8 @@ include(
     ":components:faphub:report:impl",
     ":components:faphub:errors:api",
     ":components:faphub:errors:impl",
+    ":components:faphub:screenshotspreview:api",
+    ":components:faphub:screenshotspreview:impl",
 
     ":components:selfupdater:api",
     ":components:selfupdater:impl",

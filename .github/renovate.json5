@@ -3,6 +3,7 @@
   extends: [
     'config:best-practices',
     'group:all',
+    'schedule:weekly'
   ],
   gradle: {
     enabled: true,

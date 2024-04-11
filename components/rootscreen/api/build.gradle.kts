@@ -6,6 +6,8 @@ plugins {
 android.namespace = "com.flipperdevices.rootscreen.api"
 
 dependencies {
+    implementation(projects.components.faphub.screenshotspreview.api)
+
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.updater.api)
