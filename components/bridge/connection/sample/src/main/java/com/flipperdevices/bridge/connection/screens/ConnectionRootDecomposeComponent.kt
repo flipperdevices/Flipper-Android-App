@@ -43,7 +43,8 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is ConnectionRootConfig.Main -> searchDecomposeFactory(
             componentContext = componentContext,
-            onItemSelect = { navigation.push(ConnectionRootConfig.Benchmark(it)) })
+            onItemSelect = { navigation.push(ConnectionRootConfig.Benchmark(it)) }
+        )
 
         is ConnectionRootConfig.NoPermission ->
             ConnectionNoPermissionDecomposeComponent(componentContext)

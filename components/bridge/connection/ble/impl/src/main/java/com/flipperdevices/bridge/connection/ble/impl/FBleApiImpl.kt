@@ -49,6 +49,7 @@ open class FBleApiImpl(
     }
     override suspend fun disconnect() {
         client.disconnect()
+        client.close()
     }
 }
 

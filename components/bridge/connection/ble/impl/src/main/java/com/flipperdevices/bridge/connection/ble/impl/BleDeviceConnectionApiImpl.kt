@@ -48,7 +48,7 @@ class BleDeviceConnectionApiImpl(
                 scope = scope,
                 options = BleGattConnectOptions(
                     autoConnect = true,
-                    closeOnDisconnect = true
+                    closeOnDisconnect = false
                 ),
                 logger = TimberBleLogger()
             )
@@ -58,7 +58,9 @@ class BleDeviceConnectionApiImpl(
         }
         listener.onStatusUpdate(FInternalTransportConnectionStatus.Pairing)
 
-        device.waitForBonding(BleConstants.PAIR_TIME_MS)
+        withTimeout(BleConstants.PAIR_TIME_MS) {
+            device.waitForBonding()
+        }
 
         device.requestMtu(BleConstants.MAX_MTU)
         device.discoverServices()

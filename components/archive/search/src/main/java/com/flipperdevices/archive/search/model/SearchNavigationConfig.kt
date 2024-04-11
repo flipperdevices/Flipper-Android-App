@@ -1,6 +1,5 @@
 package com.flipperdevices.archive.search.model
 
-import com.flipperdevices.archive.api.SelectKeyPathListener
 import kotlinx.serialization.Serializable
 
 @Serializable
