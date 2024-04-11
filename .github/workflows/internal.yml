@@ -38,12 +38,12 @@ jobs:
     steps:
       - name: Generate build number
         id: buildnumber
-        uses: onyxmueller/build-tag-number@4a0c81c9af350d967032d49204c83c38e6b0c8e4 # v1
+        uses: onyxmueller/build-tag-number@v1.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate build number for WearOS
         id: buildnumber_wearos
-        uses: onyxmueller/build-tag-number@4a0c81c9af350d967032d49204c83c38e6b0c8e4 # v1
+        uses: onyxmueller/build-tag-number@v1.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: "Set output for simple build"
@@ -90,7 +90,7 @@ jobs:
           ./gradlew :instances:app:assembleInternal :instances:app:bundleInternal
       - name: Sign AAB
         id: sign_aab
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/bundle/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -101,7 +101,7 @@ jobs:
           BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign APK
         id: sign_apk
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/app/build/outputs/apk/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -119,7 +119,7 @@ jobs:
           cp instances/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: artifacts-${{ matrix.target }}
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -154,7 +154,7 @@ jobs:
           ./gradlew :instances:wearable:assembleInternal :instances:wearable:bundleInternal
       - name: Sign Wear AAB
         id: sign_wear_aab
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/wearable/build/outputs/bundle/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -165,7 +165,7 @@ jobs:
           BUILD_TOOLS_VERSION: "34.0.0"
       - name: Sign Wear APK
         id: sign_wear_apk
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: instances/wearable/build/outputs/apk/internal
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -183,7 +183,7 @@ jobs:
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -196,22 +196,22 @@ jobs:
       - uses: actions/checkout@v4.1.1
         with:
           submodules: "recursive"
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-gh_gms
         with:
           name: artifacts-gh_gms
           path: download/gh_gms
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-gh_nogms
         with:
           name: artifacts-gh_nogms
           path: download/gh_nogms
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-googleplay
         with:
           name: artifacts-googleplay
           path: download/googleplay
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-wearos
         with:
           name: artifacts-wearos
@@ -231,8 +231,6 @@ jobs:
           cp ${{steps.download-googleplay.outputs.download-path}}/* artifacts/
           cp ${{steps.download-wearos.outputs.download-path}}/* artifacts/
           echo "path=artifacts/" >> $GITHUB_OUTPUT
-      #- name: Install zip
-      #  uses: montudor/action-zip@a8e75c9faefcd80fac3baf53ef40b9b119d5b702 # v1
       - name: Prepare mapping
         id: mappings
         run: |
@@ -275,12 +273,12 @@ jobs:
     runs-on: arc-runner-set
     needs: [build_internal_release]
     steps:
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-googleplay
         with:
           name: artifacts-googleplay
       - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
+        uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
@@ -292,12 +290,12 @@ jobs:
     runs-on: arc-runner-set
     needs: [build_internal_release_gms_wearos]
     steps:
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@v4.1.4
         id: download-wearos
         with:
           name: artifacts-wearos
       - name: Upload to Play Store Wear OS
-        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
+        uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
           packageName: com.flipperdevices.app
