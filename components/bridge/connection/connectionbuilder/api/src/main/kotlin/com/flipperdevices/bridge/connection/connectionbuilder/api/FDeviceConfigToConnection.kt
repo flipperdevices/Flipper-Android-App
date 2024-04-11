@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
 import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
 import kotlinx.coroutines.CoroutineScope
-import kotlin.reflect.KClass
 
 interface FDeviceConfigToConnection {
     suspend fun <API : FConnectedDeviceApi, CONFIG : FDeviceConnectionConfig<API>> connect(

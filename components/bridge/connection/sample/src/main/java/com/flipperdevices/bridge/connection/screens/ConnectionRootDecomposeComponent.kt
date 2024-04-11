@@ -48,7 +48,6 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
                 componentContext = componentContext,
                 address = config.address
             )
-
     }
 
     private fun isPermissionGranted(): Boolean {

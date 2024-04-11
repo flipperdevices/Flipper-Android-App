@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.connection.screens.models
 
-import com.flipperdevices.bridge.connection.screens.benchmark.BenchmarkScreenDecomposeComponent
 import kotlinx.serialization.Serializable
 
 @Serializable

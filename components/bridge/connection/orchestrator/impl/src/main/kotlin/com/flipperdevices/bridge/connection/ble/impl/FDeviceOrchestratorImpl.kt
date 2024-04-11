@@ -51,6 +51,4 @@ class FDeviceOrchestratorImpl @Inject constructor(
         }
         currentDevice = null
     }
-
-
 }

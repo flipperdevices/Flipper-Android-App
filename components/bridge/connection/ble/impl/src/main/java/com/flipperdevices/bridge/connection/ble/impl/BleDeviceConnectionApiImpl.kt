@@ -10,22 +10,14 @@ import com.flipperdevices.bridge.connection.ble.impl.model.BLEConnectionPermissi
 import com.flipperdevices.bridge.connection.ble.impl.model.FailedConnectToDeviceException
 import com.flipperdevices.bridge.connection.ble.impl.utils.BleConstants
 import com.flipperdevices.bridge.connection.ble.impl.utils.TimberBleLogger
-import com.flipperdevices.bridge.connection.common.api.DeviceConnectionApi
 import com.flipperdevices.bridge.connection.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
-import com.flipperdevices.bridge.connection.common.api.di.ConnectionConfigQualifier
-import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
-import javax.inject.Inject
 
-@ConnectionConfigQualifier(FBleDeviceConnectionConfig::class)
-@ContributesMultibinding(AppGraph::class, DeviceConnectionApi::class)
-class BleDeviceConnectionApiImpl @Inject constructor(
+class BleDeviceConnectionApiImpl(
     private val context: Context,
     private val bleApiWithSerialFactory: FBleApiWithSerial.Factory
 ) : BleDeviceConnectionApi {

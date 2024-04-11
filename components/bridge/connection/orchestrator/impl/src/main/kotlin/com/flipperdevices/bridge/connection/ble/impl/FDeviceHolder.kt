@@ -6,9 +6,6 @@ import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatu
 import com.flipperdevices.bridge.connection.connectionbuilder.api.FDeviceConfigToConnection
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,7 +13,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 // Generics don't work with Anvil/Dagger
 class FDeviceHolderFactory @Inject constructor(
