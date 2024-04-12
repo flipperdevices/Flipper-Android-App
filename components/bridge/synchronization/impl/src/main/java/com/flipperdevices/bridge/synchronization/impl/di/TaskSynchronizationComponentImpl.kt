@@ -20,7 +20,6 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMe
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepositoryImpl
-import com.flipperdevices.core.di.ComponentHolder
 
 class TaskSynchronizationComponentImpl(
     deps: TaskSynchronizationComponentDependencies,
@@ -104,8 +103,4 @@ class TaskSynchronizationComponentImpl(
         flipperStorage = flipperStorage,
         favoritesRepository = favoritesRepository
     )
-
-    init {
-        ComponentHolder.components.add(this)
-    }
 }

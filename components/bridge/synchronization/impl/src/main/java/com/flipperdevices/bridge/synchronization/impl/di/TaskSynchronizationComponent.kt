@@ -46,15 +46,12 @@ interface TaskSynchronizationComponent {
             deps: TaskSynchronizationComponentDependencies,
             requestApi: FlipperRequestApi,
             flipperVersionApi: FlipperVersionApi
-        ): TaskSynchronizationComponent {
-            return ComponentHolder.components
-                .filterIsInstance<TaskSynchronizationComponent>()
-                .firstOrNull()
-                ?: TaskSynchronizationComponentImpl(
-                    deps = deps,
-                    requestApi = requestApi,
-                    flipperVersionApi = flipperVersionApi
-                )
+        ): TaskSynchronizationComponent = ComponentHolder.getOrCreate {
+            TaskSynchronizationComponentImpl(
+                deps = deps,
+                requestApi = requestApi,
+                flipperVersionApi = flipperVersionApi
+            )
         }
     }
 }

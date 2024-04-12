@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.wearable.emulate.handheld.impl.di.DaggerWearServiceComponent
+import com.flipperdevices.wearable.emulate.handheld.impl.di.WearServiceComponent
 import com.google.android.gms.wearable.ChannelClient.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.plus
@@ -17,7 +17,7 @@ private const val NOTIFICATION_ID = 100
 
 class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinder, LogTagProvider {
     override val TAG = "WearRequestForegroundService-${hashCode()}"
-    private val wearServiceComponent = DaggerWearServiceComponent.factory().create(
+    private val wearServiceComponent = WearServiceComponent.ManualFactory.create(
         ComponentHolder.component(),
         lifecycleScope + Dispatchers.Default
     )
