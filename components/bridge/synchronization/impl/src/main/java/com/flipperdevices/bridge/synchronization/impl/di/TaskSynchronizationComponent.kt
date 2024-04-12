@@ -16,10 +16,8 @@ import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchroniza
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
-import com.squareup.anvil.annotations.MergeComponent
 
 @ContributesTo(AppGraph::class)
 interface TaskSynchronizationComponentDependencies {
@@ -34,8 +32,6 @@ interface TaskSynchronizationComponentDependencies {
     val flipperStorageApi: FlipperStorageApi
 }
 
-@SingleIn(TaskGraph::class)
-@MergeComponent(TaskGraph::class, dependencies = [TaskSynchronizationComponentDependencies::class])
 interface TaskSynchronizationComponent {
     val keysSynchronization: KeysSynchronization
     val favoriteSynchronization: FavoriteSynchronization
