@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-    id("flipper.anvil")
-    id("kotlin-kapt")
+//    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyemulate.api"
@@ -20,5 +19,4 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 }
