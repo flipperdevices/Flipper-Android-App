@@ -25,6 +25,7 @@ import javax.inject.Provider
 
 class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val onItemSelect: (String) -> Unit,
     private val searchViewModelProvider: Provider<ConnectionSearchViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
 
@@ -46,7 +47,7 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickableRipple { }
+                            .clickableRipple { onItemSelect(it.address) }
                             .padding(16.dp),
                         text = it.name ?: it.address
                     )
@@ -58,7 +59,8 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            componentContext: ComponentContext
+            componentContext: ComponentContext,
+            onItemSelect: (String) -> Unit
         ): ConnectionSearchDecomposeComponent
     }
 }

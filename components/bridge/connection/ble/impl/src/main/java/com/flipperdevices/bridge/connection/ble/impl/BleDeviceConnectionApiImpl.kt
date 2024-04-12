@@ -10,43 +10,45 @@ import com.flipperdevices.bridge.connection.ble.impl.model.BLEConnectionPermissi
 import com.flipperdevices.bridge.connection.ble.impl.model.FailedConnectToDeviceException
 import com.flipperdevices.bridge.connection.ble.impl.utils.BleConstants
 import com.flipperdevices.bridge.connection.ble.impl.utils.TimberBleLogger
-import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import com.flipperdevices.bridge.connection.common.api.FInternalTransportConnectionStatus
+import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
-import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, BleDeviceConnectionApi::class)
-class BleDeviceConnectionApiImpl @Inject constructor(
+class BleDeviceConnectionApiImpl(
     private val context: Context,
     private val bleApiWithSerialFactory: FBleApiWithSerial.Factory
 ) : BleDeviceConnectionApi {
 
     override suspend fun connect(
         scope: CoroutineScope,
-        config: FBleDeviceConnectionConfig
+        config: FBleDeviceConnectionConfig,
+        listener: FTransportConnectionStatusListener
     ): Result<FBleApi> = runCatching {
-        return@runCatching connectUnsafe(scope, config)
+        return@runCatching connectUnsafe(scope, config, listener)
     }
 
     private suspend fun connectUnsafe(
         scope: CoroutineScope,
-        config: FBleDeviceConnectionConfig
+        config: FBleDeviceConnectionConfig,
+        listener: FTransportConnectionStatusListener
     ): FBleApi {
         if (context.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED ||
             context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
         ) {
             throw BLEConnectionPermissionException()
         }
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
         val device = withTimeout(BleConstants.CONNECT_TIME_MS) {
             ClientBleGatt.connect(
                 context = context,
                 macAddress = config.macAddress,
                 scope = scope,
                 options = BleGattConnectOptions(
-                    autoConnect = true
+                    autoConnect = true,
+                    closeOnDisconnect = false
                 ),
                 logger = TimberBleLogger()
             )
@@ -54,14 +56,29 @@ class BleDeviceConnectionApiImpl @Inject constructor(
         if (!device.isConnected) {
             throw FailedConnectToDeviceException()
         }
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Pairing)
+
+        withTimeout(BleConstants.PAIR_TIME_MS) {
+            device.waitForBonding()
+        }
+
         device.requestMtu(BleConstants.MAX_MTU)
         device.discoverServices()
 
         val serialConfig = config.serialConfig
         return if (serialConfig == null) {
-            FBleApiImpl()
+            FBleApiImpl(
+                client = device,
+                scope = scope,
+                statusListener = listener
+            )
         } else {
-            bleApiWithSerialFactory(scope = scope, config = serialConfig, client = device)
+            bleApiWithSerialFactory(
+                scope = scope,
+                config = serialConfig,
+                client = device,
+                statusListener = listener
+            )
         }
     }
 }

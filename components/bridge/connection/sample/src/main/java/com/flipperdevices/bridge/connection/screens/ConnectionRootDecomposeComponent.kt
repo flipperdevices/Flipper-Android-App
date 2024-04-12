@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
+import com.flipperdevices.bridge.connection.screens.benchmark.BenchmarkScreenDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
 import com.flipperdevices.bridge.connection.screens.nopermission.ConnectionNoPermissionDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.search.ConnectionSearchDecomposeComponent
@@ -20,7 +22,8 @@ import dagger.assisted.AssistedInject
 class ConnectionRootDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val context: Context,
-    private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory
+    private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory,
+    private val benchmarkScreenDecomposeComponentFactory: BenchmarkScreenDecomposeComponent.Factory
 ) : CompositeDecomposeComponent<ConnectionRootConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<ConnectionRootConfig, DecomposeComponent>> = childStack(
         source = navigation,
@@ -31,15 +34,26 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
             ConnectionRootConfig.NoPermission
         },
         childFactory = ::child,
+        handleBackButton = true
     )
 
     private fun child(
         config: ConnectionRootConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        is ConnectionRootConfig.Main -> searchDecomposeFactory(componentContext)
+        is ConnectionRootConfig.Main -> searchDecomposeFactory(
+            componentContext = componentContext,
+            onItemSelect = { navigation.push(ConnectionRootConfig.Benchmark(it)) }
+        )
+
         is ConnectionRootConfig.NoPermission ->
             ConnectionNoPermissionDecomposeComponent(componentContext)
+
+        is ConnectionRootConfig.Benchmark ->
+            benchmarkScreenDecomposeComponentFactory(
+                componentContext = componentContext,
+                address = config.address
+            )
     }
 
     private fun isPermissionGranted(): Boolean {

@@ -9,4 +9,7 @@ sealed class ConnectionRootConfig {
 
     @Serializable
     data object NoPermission : ConnectionRootConfig()
+
+    @Serializable
+    data class Benchmark(val address: String) : ConnectionRootConfig()
 }

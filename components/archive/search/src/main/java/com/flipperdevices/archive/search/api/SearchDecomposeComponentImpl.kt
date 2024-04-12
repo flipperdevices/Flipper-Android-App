@@ -18,7 +18,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @ContributesAssistedFactory(AppGraph::class, SearchDecomposeComponent.Factory::class)
 class SearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted onItemSelected: SelectKeyPathListener?,
+    @Assisted private val onItemSelected: SelectKeyPathListener?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val searchScreenFactory: SearchScreenDecomposeComponentImpl.Factory
 ) : SearchDecomposeComponent<SearchNavigationConfig>(), ComponentContext by componentContext {
@@ -26,7 +26,7 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
     override val stack: Value<ChildStack<SearchNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = SearchNavigationConfig.serializer(),
-        initialConfiguration = SearchNavigationConfig.Search(onItemSelected),
+        initialConfiguration = SearchNavigationConfig.Search,
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -37,7 +37,7 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         is SearchNavigationConfig.Search -> searchScreenFactory(
             componentContext = componentContext,
-            onItemSelected = config.onItemSelected,
+            onItemSelected = onItemSelected,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }
