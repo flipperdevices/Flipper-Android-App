@@ -15,12 +15,11 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
-import dagger.Component
 
 @ContributesTo(AppGraph::class)
 interface TaskSynchronizationComponentDependencies {
@@ -42,12 +41,20 @@ interface TaskSynchronizationComponent {
     val favoriteSynchronization: FavoriteSynchronization
     val manifestRepository: ManifestRepository
 
-    @Component.Factory
-    interface Factory {
+    object ManualFactory {
         fun create(
             deps: TaskSynchronizationComponentDependencies,
-            @BindsInstance requestApi: FlipperRequestApi,
-            @BindsInstance flipperVersionApi: FlipperVersionApi
-        ): TaskSynchronizationComponent
+            requestApi: FlipperRequestApi,
+            flipperVersionApi: FlipperVersionApi
+        ): TaskSynchronizationComponent {
+            return ComponentHolder.components
+                .filterIsInstance<TaskSynchronizationComponent>()
+                .firstOrNull()
+                ?: TaskSynchronizationComponentImpl(
+                    deps = deps,
+                    requestApi = requestApi,
+                    flipperVersionApi = flipperVersionApi
+                )
+        }
     }
 }
