@@ -15,7 +15,6 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
 
@@ -42,12 +41,10 @@ interface TaskSynchronizationComponent {
             deps: TaskSynchronizationComponentDependencies,
             requestApi: FlipperRequestApi,
             flipperVersionApi: FlipperVersionApi
-        ): TaskSynchronizationComponent = ComponentHolder.getOrCreate {
-            TaskSynchronizationComponentImpl(
-                deps = deps,
-                requestApi = requestApi,
-                flipperVersionApi = flipperVersionApi
-            )
-        }
+        ): TaskSynchronizationComponent = TaskSynchronizationComponentImpl(
+            deps = deps,
+            requestApi = requestApi,
+            flipperVersionApi = flipperVersionApi
+        )
     }
 }
