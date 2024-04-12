@@ -34,6 +34,11 @@ interface FlipperBleServiceComponentDependencies {
 interface FlipperBleServiceComponent {
     val serviceApiImpl: Provider<FlipperServiceApiImpl>
 
+    /**
+     * This [ManualFactory] is required to escape from usage of kapt inside this module.
+     *
+     * [ManualFactory.create] will return manually created [FlipperBleServiceComponent] instance
+     */
     object ManualFactory {
         fun create(
             deps: FlipperBleServiceComponentDependencies,

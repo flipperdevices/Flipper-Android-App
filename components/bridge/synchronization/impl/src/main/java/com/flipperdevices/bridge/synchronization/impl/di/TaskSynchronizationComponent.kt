@@ -36,6 +36,11 @@ interface TaskSynchronizationComponent {
     val favoriteSynchronization: FavoriteSynchronization
     val manifestRepository: ManifestRepository
 
+    /**
+     * This [ManualFactory] is required to escape from usage of kapt inside this module.
+     *
+     * [ManualFactory.create] will return manually created [TaskSynchronizationComponent] instance
+     */
     object ManualFactory {
         fun create(
             deps: TaskSynchronizationComponentDependencies,

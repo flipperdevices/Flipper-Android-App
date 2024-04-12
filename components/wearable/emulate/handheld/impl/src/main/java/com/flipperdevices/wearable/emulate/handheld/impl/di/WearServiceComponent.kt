@@ -27,6 +27,11 @@ interface WearServiceComponent {
     val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>
     val commandProcessors: Set<WearableCommandProcessor>
 
+    /**
+     * This [ManualFactory] is required to escape from usage of kapt inside this module.
+     *
+     * [ManualFactory.create] will return manually created [WearServiceComponent] instance
+     */
     object ManualFactory {
         fun create(
             deps: WearServiceComponentDependencies,
