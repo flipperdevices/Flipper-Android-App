@@ -7,7 +7,7 @@ kotlinx = "1.8.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "1.9.23-1.0.20" # https://github.com/google/ksp/releases
 anvil = "2.4.9" # https://github.com/square/anvil/releases
 anvil-utils = "0.1.0" # https://github.com/IlyaGulya/anvil-utils/releases
-android-gradle = "8.3.1" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.3.2" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "4.26.1" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
 compose-material = "1.6.5" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -19,8 +19,8 @@ compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.6.1" # https://github.com/JetBrains/compose-multiplatform/releases
-horologist = "0.6.6" # https://github.com/google/horologist/releases
+compose-multiplatform = "1.6.2" # https://github.com/JetBrains/compose-multiplatform/releases
+horologist = "0.6.8" # https://github.com/google/horologist/releases
 serialization-json = "1.6.3" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "18.1.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google
@@ -64,7 +64,7 @@ essenty = "2.0.0-beta02" # https://github.com/arkivanov/Essenty/releases
 zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
-mockito = "5.2.1" # https://github.com/mockito/mockito/releases
+mockito = "5.3.1" # https://github.com/mockito/mockito/releases
 roboelectric = "4.12.1" # https://github.com/robolectric/robolectric/releases
 mockk = "1.13.10" # https://mockk.io/
 
