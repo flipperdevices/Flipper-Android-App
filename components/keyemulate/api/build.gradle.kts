@@ -1,6 +1,5 @@
 plugins {
     id("flipper.android-compose")
-//    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyemulate.api"
