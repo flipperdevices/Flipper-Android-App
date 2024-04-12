@@ -16,9 +16,4 @@ object ComponentHolder {
     inline fun <reified T> component(): T = components
         .filterIsInstance<T>()
         .single()
-
-    inline fun <reified T : Any> getOrCreate(factory: () -> T) = components
-        .filterIsInstance<T>()
-        .firstOrNull()
-        ?: factory.invoke().also(components::add)
 }

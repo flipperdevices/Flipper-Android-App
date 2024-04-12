@@ -9,7 +9,6 @@ import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.service.impl.FlipperServiceApiImpl
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.MetricApi
@@ -41,13 +40,11 @@ interface FlipperBleServiceComponent {
             context: Context,
             scope: CoroutineScope,
             serviceErrorListener: FlipperServiceErrorListener
-        ): FlipperBleServiceComponent = ComponentHolder.getOrCreate {
-            FlipperBleServiceComponentImpl(
-                deps = deps,
-                context = context,
-                scope = scope,
-                serviceErrorListener = serviceErrorListener
-            )
-        }
+        ): FlipperBleServiceComponent = FlipperBleServiceComponentImpl(
+            deps = deps,
+            context = context,
+            scope = scope,
+            serviceErrorListener = serviceErrorListener
+        )
     }
 }

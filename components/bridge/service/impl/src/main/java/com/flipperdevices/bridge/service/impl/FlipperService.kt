@@ -28,14 +28,12 @@ class FlipperService : LifecycleService(), LogTagProvider {
     private val listener = CompositeFlipperServiceErrorListenerImpl()
 
     private val bleServiceComponent: FlipperBleServiceComponent by lazy {
-        ComponentHolder.getOrCreate {
-            FlipperBleServiceComponent.ManualFactory.create(
-                deps = ComponentHolder.component(),
-                context = this,
-                scope = lifecycleScope + Dispatchers.Default,
-                serviceErrorListener = listener
-            )
-        }
+        FlipperBleServiceComponent.ManualFactory.create(
+            deps = ComponentHolder.component(),
+            context = this,
+            scope = lifecycleScope + Dispatchers.Default,
+            serviceErrorListener = listener
+        )
     }
     private val serviceApi by bleServiceComponent.serviceApiImpl
     private val binder by lazy { FlipperServiceBinder(serviceApi, listener) }

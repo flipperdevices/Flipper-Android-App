@@ -4,7 +4,6 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -32,11 +31,9 @@ interface WearServiceComponent {
         fun create(
             deps: WearServiceComponentDependencies,
             scope: CoroutineScope
-        ): WearServiceComponent = ComponentHolder.getOrCreate {
-            WearServiceComponentImpl(
-                deps = deps,
-                scope = scope
-            )
-        }
+        ): WearServiceComponent = WearServiceComponentImpl(
+            deps = deps,
+            scope = scope
+        )
     }
 }
