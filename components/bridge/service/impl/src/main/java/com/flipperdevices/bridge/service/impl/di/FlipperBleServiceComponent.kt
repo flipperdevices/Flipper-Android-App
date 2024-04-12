@@ -7,8 +7,10 @@ import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.api.manager.FlipperReadyListener
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
+import com.flipperdevices.bridge.impl.manager.service.FlipperVersionApiImpl
 import com.flipperdevices.bridge.service.impl.FlipperServiceApiImpl
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
@@ -17,8 +19,6 @@ import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
-import dagger.Component
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Provider
 
@@ -32,6 +32,7 @@ interface FlipperBleServiceComponentDependencies {
     val bluetoothAdapter: BluetoothAdapter
     val flipperReadyListeners: Set<FlipperReadyListener>
     val unhandledExceptionApi: UnhandledExceptionApi
+    val flipperVersionApiImpl: FlipperVersionApiImpl
 }
 
 @SingleIn(FlipperBleServiceGraph::class)
@@ -42,13 +43,19 @@ interface FlipperBleServiceComponentDependencies {
 interface FlipperBleServiceComponent : FlipperBleServiceComponentDependencies {
     val serviceApiImpl: Provider<FlipperServiceApiImpl>
 
-    @Component.Factory
-    interface Factory {
+    object ManualFactory {
         fun create(
             deps: FlipperBleServiceComponentDependencies,
-            @BindsInstance context: Context,
-            @BindsInstance scope: CoroutineScope,
-            @BindsInstance serviceErrorListener: FlipperServiceErrorListener
-        ): FlipperBleServiceComponent
+            context: Context,
+            scope: CoroutineScope,
+            serviceErrorListener: FlipperServiceErrorListener
+        ): FlipperBleServiceComponent = ComponentHolder.getOrCreate {
+            FlipperBleServiceComponentImpl(
+                deps = deps,
+                context = context,
+                scope = scope,
+                serviceErrorListener = serviceErrorListener
+            )
+        }
     }
 }
