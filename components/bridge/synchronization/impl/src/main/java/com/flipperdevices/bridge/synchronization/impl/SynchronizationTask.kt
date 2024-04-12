@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.bridge.synchronization.impl.di.DaggerTaskSynchronizationComponent
+import com.flipperdevices.bridge.synchronization.impl.di.TaskSynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
@@ -141,7 +141,7 @@ class SynchronizationTaskImpl(
         progressTracker: ProgressWrapperTracker
     ) = withContext(Dispatchers.Default) {
         val startSynchronizationTime = System.currentTimeMillis()
-        val taskComponent = DaggerTaskSynchronizationComponent.factory()
+        val taskComponent = TaskSynchronizationComponent.ManualFactory
             .create(
                 ComponentHolder.component(),
                 serviceApi.requestApi,

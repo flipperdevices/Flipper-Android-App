@@ -15,12 +15,8 @@ import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchro
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
-import dagger.Component
 
 @ContributesTo(AppGraph::class)
 interface TaskSynchronizationComponentDependencies {
@@ -35,19 +31,25 @@ interface TaskSynchronizationComponentDependencies {
     val flipperStorageApi: FlipperStorageApi
 }
 
-@SingleIn(TaskGraph::class)
-@MergeComponent(TaskGraph::class, dependencies = [TaskSynchronizationComponentDependencies::class])
 interface TaskSynchronizationComponent {
     val keysSynchronization: KeysSynchronization
     val favoriteSynchronization: FavoriteSynchronization
     val manifestRepository: ManifestRepository
 
-    @Component.Factory
-    interface Factory {
+    /**
+     * This [ManualFactory] is required to escape from usage of kapt inside this module.
+     *
+     * [ManualFactory.create] will return manually created [TaskSynchronizationComponent] instance
+     */
+    object ManualFactory {
         fun create(
             deps: TaskSynchronizationComponentDependencies,
-            @BindsInstance requestApi: FlipperRequestApi,
-            @BindsInstance flipperVersionApi: FlipperVersionApi
-        ): TaskSynchronizationComponent
+            requestApi: FlipperRequestApi,
+            flipperVersionApi: FlipperVersionApi
+        ): TaskSynchronizationComponent = TaskSynchronizationComponentImpl(
+            deps = deps,
+            requestApi = requestApi,
+            flipperVersionApi = flipperVersionApi
+        )
     }
 }

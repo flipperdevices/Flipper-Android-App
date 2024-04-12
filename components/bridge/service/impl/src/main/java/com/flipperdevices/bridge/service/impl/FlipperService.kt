@@ -5,7 +5,7 @@ import android.os.Binder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.impl.di.DaggerFlipperBleServiceComponent
+import com.flipperdevices.bridge.service.impl.di.FlipperBleServiceComponent
 import com.flipperdevices.bridge.service.impl.di.FlipperServiceComponent
 import com.flipperdevices.bridge.service.impl.notification.FLIPPER_NOTIFICATION_ID
 import com.flipperdevices.bridge.service.impl.notification.FlipperNotificationHelper
@@ -27,14 +27,13 @@ class FlipperService : LifecycleService(), LogTagProvider {
     override val TAG = "FlipperService-${hashCode()}"
     private val listener = CompositeFlipperServiceErrorListenerImpl()
 
-    private val bleServiceComponent by lazy {
-        DaggerFlipperBleServiceComponent.factory()
-            .create(
-                deps = ComponentHolder.component(),
-                context = this,
-                scope = lifecycleScope + Dispatchers.Default,
-                serviceErrorListener = listener
-            )
+    private val bleServiceComponent: FlipperBleServiceComponent by lazy {
+        FlipperBleServiceComponent.ManualFactory.create(
+            deps = ComponentHolder.component(),
+            context = this,
+            scope = lifecycleScope + Dispatchers.Default,
+            serviceErrorListener = listener
+        )
     }
     private val serviceApi by bleServiceComponent.serviceApiImpl
     private val binder by lazy { FlipperServiceBinder(serviceApi, listener) }
