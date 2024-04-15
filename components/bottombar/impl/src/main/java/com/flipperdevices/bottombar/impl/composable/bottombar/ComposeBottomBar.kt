@@ -71,7 +71,7 @@ private fun ComposeBottomBarInternal(
     var tabPositions by remember {
         mutableStateOf(emptyList<TabPosition>())
     }
-    var tabHeightPx by remember { mutableStateOf(0) }
+    var tabHeightPx by remember { mutableIntStateOf(0) }
     Box(
         modifier = modifier.background(LocalPallet.current.bottomBarBackground)
             .navigationBarsPadding()
