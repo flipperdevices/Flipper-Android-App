@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build release
-        uses: gradle/gradle-build-action@bdf99f9dada2506e990bac6de8ec5e3de34a04f1 # v3
+        uses: gradle/gradle-build-action@8baac4c8ef753599f92eeb509c246d09d6250fa6 # v3
         with:
           arguments: assembleRelease bundleRelease
   debug_build:
@@ -39,7 +39,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build debug
-        uses: gradle/gradle-build-action@bdf99f9dada2506e990bac6de8ec5e3de34a04f1 # v3
+        uses: gradle/gradle-build-action@8baac4c8ef753599f92eeb509c246d09d6250fa6 # v3
         with:
           arguments: assembleDebug bundleDebug
   internal_build:
@@ -55,6 +55,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build internal
-        uses: gradle/gradle-build-action@bdf99f9dada2506e990bac6de8ec5e3de34a04f1 # v3
+        uses: gradle/gradle-build-action@8baac4c8ef753599f92eeb509c246d09d6250fa6 # v3
         with:
           arguments: assembleInternal bundleInternal
