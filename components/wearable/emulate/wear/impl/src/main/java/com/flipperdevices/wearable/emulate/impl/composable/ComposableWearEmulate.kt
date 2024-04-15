@@ -1,6 +1,7 @@
 package com.flipperdevices.wearable.emulate.impl.composable
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,7 +14,6 @@ import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.helper.WearEmulateState
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
-import com.google.android.horologist.compose.layout.fillMaxRectangle
 
 @Composable
 @Suppress("LongMethod")
@@ -24,7 +24,7 @@ fun ComposableWearEmulate(
 ) {
     val state by emulateViewModel.getWearEmulateState().collectAsState()
     val modifier = Modifier
-        .fillMaxRectangle()
+        .fillMaxWidth()
         .padding(horizontal = 10.dp, vertical = 10.dp)
     when (state) {
         WearEmulateState.NotInitialized ->
