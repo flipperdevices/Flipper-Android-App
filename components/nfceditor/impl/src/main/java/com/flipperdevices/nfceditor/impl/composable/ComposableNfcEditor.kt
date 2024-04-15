@@ -13,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -86,8 +87,8 @@ private fun ComposableNfcEditor(
 ) {
     val lazyColumnState = rememberLazyListState()
 
-    var scrollOffset by remember { mutableStateOf(0) }
-    var offsetToCenter by remember { mutableStateOf(0) }
+    var scrollOffset by remember { mutableIntStateOf(0) }
+    var offsetToCenter by remember { mutableIntStateOf(0) }
     ScrollToActiveCell(
         lazyColumnState,
         currentActiveCell,
@@ -136,7 +137,7 @@ private fun ScrollToActiveCell(
     val scope = rememberCoroutineScope()
 
     var previousCell by remember { mutableStateOf<NfcEditorCellLocation?>(null) }
-    var previousOffset by remember { mutableStateOf(0) }
+    var previousOffset by remember { mutableIntStateOf(0) }
 
     @Suppress("ComplexCondition")
     if (currentActiveCell != null &&

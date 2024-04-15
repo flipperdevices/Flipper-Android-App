@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -100,7 +101,7 @@ private fun ComposableActiveStateEmulateInternal(
         }
     )
 
-    var positionYEmulateButton by remember { mutableStateOf(0) }
+    var positionYEmulateButton by remember { mutableIntStateOf(0) }
     ComposableActiveEmulateInternal(
         modifier = modifier.onGloballyPositioned {
             val coordinate = it.positionInRoot()
@@ -169,7 +170,7 @@ private fun ComposableActiveEmulateInternal(
 @Composable
 private fun ComposableHoldToSendWithButtonPreview() {
     FlipperThemeInternal {
-        var positionYEmulateButton by remember { mutableStateOf(0) }
+        var positionYEmulateButton by remember { mutableIntStateOf(0) }
         var isBubbleOpen by remember { mutableStateOf(false) }
 
         val buttonActiveModifier = Modifier.onHoldPress(

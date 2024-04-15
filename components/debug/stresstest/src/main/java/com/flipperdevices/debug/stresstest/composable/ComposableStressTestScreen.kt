@@ -17,7 +17,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -138,8 +138,8 @@ private fun ComposableButton(
 
 @Composable
 private fun ColumnScope.ComposableSpeed(speedState: FlipperSerialSpeed) {
-    var maxReceiveSpeed by remember { mutableStateOf(0L) }
-    var maxTransmitSpeed by remember { mutableStateOf(0L) }
+    var maxReceiveSpeed by remember { mutableLongStateOf(0L) }
+    var maxTransmitSpeed by remember { mutableLongStateOf(0L) }
 
     if (speedState.receiveBytesInSec > maxReceiveSpeed) {
         maxReceiveSpeed = speedState.receiveBytesInSec
