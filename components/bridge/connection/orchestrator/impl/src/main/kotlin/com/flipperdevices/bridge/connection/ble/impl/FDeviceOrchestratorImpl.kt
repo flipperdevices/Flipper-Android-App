@@ -33,7 +33,7 @@ class FDeviceOrchestratorImpl @Inject constructor(
             config = config,
             listener = transportListener,
             onConnectError = {
-                transportListener.onStatusUpdate(FInternalTransportConnectionStatus.Error(it))
+                transportListener.onErrorDuringConnect(it)
                 error(it) { "Failed connect" }
             }
         )

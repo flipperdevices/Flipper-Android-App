@@ -24,6 +24,7 @@ open class FBleApiImpl(
     private val statusListener: FTransportConnectionStatusListener,
 ) : FBleApi, LogTagProvider {
     override val TAG = "FBleApi"
+
     init {
         info { "Init ble api listener" }
         client.connectionStateWithStatus
@@ -39,7 +40,7 @@ open class FBleApiImpl(
                             FInternalTransportConnectionStatus.Connecting
 
                         GattConnectionState.STATE_CONNECTED ->
-                            FInternalTransportConnectionStatus.Connected
+                            FInternalTransportConnectionStatus.Connected(this)
 
                         GattConnectionState.STATE_DISCONNECTING ->
                             FInternalTransportConnectionStatus.Disconnecting
@@ -47,6 +48,7 @@ open class FBleApiImpl(
                 )
             }.launchIn(scope)
     }
+
     override suspend fun disconnect() {
         client.disconnect()
         client.close()

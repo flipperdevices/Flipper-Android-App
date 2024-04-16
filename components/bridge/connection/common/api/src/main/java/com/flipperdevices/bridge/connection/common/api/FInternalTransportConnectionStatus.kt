@@ -7,8 +7,9 @@ sealed class FInternalTransportConnectionStatus {
 
     data object Pairing : FInternalTransportConnectionStatus()
 
-    data object Connected : FInternalTransportConnectionStatus()
-    data object Disconnecting : FInternalTransportConnectionStatus()
+    data class Connected(
+        val deviceApi: FConnectedDeviceApi
+    ) : FInternalTransportConnectionStatus()
 
-    data class Error(val throwable: Throwable) : FInternalTransportConnectionStatus()
+    data object Disconnecting : FInternalTransportConnectionStatus()
 }
