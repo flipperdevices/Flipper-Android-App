@@ -29,7 +29,7 @@ class WearEmulateViewModel @AssistedInject constructor(
 
     private val keyToEmulate = KeyToEmulate(keyPath.path.pathToKey)
 
-    fun getWearEmulateState() = combineStates(
+    val wearEmulateState = combineStates(
         flow1 = channelClientHelper.getState(),
         flow2 = connectionHelper.getState(),
         flow3 = flipperStatusHelper.getState(),

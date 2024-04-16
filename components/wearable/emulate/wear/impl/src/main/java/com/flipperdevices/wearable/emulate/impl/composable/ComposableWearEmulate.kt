@@ -22,7 +22,7 @@ fun ComposableWearEmulate(
     onBack: () -> Unit,
     emulateViewModel: WearEmulateViewModel
 ) {
-    val state by emulateViewModel.getWearEmulateState().collectAsState()
+    val state by emulateViewModel.wearEmulateState.collectAsState()
     val modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 10.dp, vertical = 10.dp)
