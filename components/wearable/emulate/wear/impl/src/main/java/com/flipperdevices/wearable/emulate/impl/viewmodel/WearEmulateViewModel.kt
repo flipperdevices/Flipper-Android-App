@@ -2,7 +2,9 @@ package com.flipperdevices.wearable.emulate.impl.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.core.ktx.jre.combineStates
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.wearable.emulate.api.ChannelClientHelper
 import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
@@ -12,16 +14,14 @@ import com.flipperdevices.wearable.emulate.impl.helper.WearStateMachineHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
 import java.io.File
 
 class WearEmulateViewModel @AssistedInject constructor(
     @Assisted private val keyPath: FlipperKeyPath,
     private val wearStateMachineHelper: WearStateMachineHelper,
-    channelClientHelper: ChannelClientHelper,
-    connectionHelper: ConnectionHelper,
-    flipperStatusHelper: FlipperStatusHelper,
+    private val channelClientHelper: ChannelClientHelper,
+    private val connectionHelper: ConnectionHelper,
+    private val flipperStatusHelper: FlipperStatusHelper,
     private val emulateHelper: EmulateHelper
 ) : DecomposeViewModel(),
     LogTagProvider {
@@ -29,24 +29,22 @@ class WearEmulateViewModel @AssistedInject constructor(
 
     private val keyToEmulate = KeyToEmulate(keyPath.path.pathToKey)
 
-    init {
-        combine(
-            channelClientHelper.getState(),
-            connectionHelper.getState(),
-            flipperStatusHelper.getState(),
-            emulateHelper.getState()
-        ) { channelState, connectionState, flipperState, emulateState ->
-            wearStateMachineHelper.onStatesUpdated(
+    fun getWearEmulateState() = combineStates(
+        flow1 = channelClientHelper.getState(),
+        flow2 = connectionHelper.getState(),
+        flow3 = flipperStatusHelper.getState(),
+        flow4 = emulateHelper.getState(),
+        transform = { channelState, connectionState, flipperState, emulateState ->
+            info { "#combine $channelState $connectionState $flipperState $emulateState" }
+            wearStateMachineHelper.combineStates(
                 channelState,
                 connectionState,
                 flipperState,
                 emulateState,
-                keyToEmulate
+                keyToEmulate,
             )
-        }.launchIn(viewModelScope)
-    }
-
-    fun getWearEmulateState() = wearStateMachineHelper.getState()
+        }
+    )
 
     fun onClickEmulate() = emulateHelper.onClickEmulate(keyToEmulate)
 
