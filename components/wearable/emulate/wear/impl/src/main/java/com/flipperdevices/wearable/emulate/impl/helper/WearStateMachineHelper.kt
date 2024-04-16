@@ -12,17 +12,21 @@ import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
 import com.flipperdevices.wearable.emulate.model.ChannelClientState
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface WearStateMachineHelper {
-    fun combineStates(
+    fun getState(): StateFlow<WearEmulateState>
+
+    suspend fun onStatesUpdated(
         channelState: ChannelClientState,
         connectionState: ConnectionTesterState,
         flipperState: ConnectStatusOuterClass.ConnectStatus,
         emulateState: Emulate.EmulateStatus,
         keyToEmulate: KeyToEmulate
-    ): WearEmulateState
+    )
 }
 
 @Singleton
@@ -34,65 +38,66 @@ class WearStateMachineHelperImpl @Inject constructor(
 
     override val TAG: String = "WearStateMachineHelper"
 
-    private val lastState = MutableStateFlow<WearEmulateState>(WearEmulateState.NotInitialized)
+    private val state = MutableStateFlow<WearEmulateState>(WearEmulateState.NotInitialized)
+    override fun getState() = state.asStateFlow()
 
-    override fun combineStates(
+    override suspend fun onStatesUpdated(
         channelState: ChannelClientState,
         connectionState: ConnectionTesterState,
         flipperState: ConnectStatusOuterClass.ConnectStatus,
         emulateState: Emulate.EmulateStatus,
         keyToEmulate: KeyToEmulate
-    ): WearEmulateState {
+    ) {
         info { "#processStates $channelState $connectionState $flipperState $emulateState" }
 
         when (channelState) {
             ChannelClientState.DISCONNECTED -> {
-                lastState.value = WearEmulateState.NotInitialized
-                return lastState.value
+                state.emit(WearEmulateState.NotInitialized)
+                return
             }
             ChannelClientState.FINDING_NODE -> {
-                lastState.value = WearEmulateState.NodeFinding
-                return lastState.value
+                state.emit(WearEmulateState.NodeFinding)
+                return
             }
             ChannelClientState.NOT_FOUND_NODE -> {
-                lastState.value = WearEmulateState.NotFoundNode
-                return lastState.value
+                state.emit(WearEmulateState.NotFoundNode)
+                return
             }
             ChannelClientState.CONNECTING -> {
-                lastState.value = WearEmulateState.TestConnection
-                return lastState.value
+                state.emit(WearEmulateState.TestConnection)
+                return
             }
             ChannelClientState.OPENED -> {}
         }
 
         when (connectionState) {
             ConnectionTesterState.NOT_CONNECTED -> {
-                lastState.value = WearEmulateState.TestConnection
+                state.emit(WearEmulateState.TestConnection)
                 connectionHelper.testConnection()
-                return lastState.value
+                return
             }
             ConnectionTesterState.CONNECTED -> flipperStatusHelper.onSubscribe()
         }
 
         when (flipperState) {
             ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED -> {
-                lastState.value = WearEmulateState.UnsupportedFlipper
-                return lastState.value
+                state.emit(WearEmulateState.UnsupportedFlipper)
+                return
             }
             ConnectStatusOuterClass.ConnectStatus.READY ->
-                lastState.value = WearEmulateState.ReadyForEmulate(keyToEmulate.keyType)
+                state.emit(WearEmulateState.ReadyForEmulate(keyToEmulate.keyType))
             else -> {
-                lastState.value = WearEmulateState.ConnectingToFlipper
-                return lastState.value
+                state.emit(WearEmulateState.ConnectingToFlipper)
+                return
             }
         }
 
         when (emulateState) {
             Emulate.EmulateStatus.EMULATING -> {
-                lastState.value = WearEmulateState.Emulating(keyToEmulate.keyType, EmulateProgress.Infinite)
-                return lastState.value
+                state.emit(WearEmulateState.Emulating(keyToEmulate.keyType, EmulateProgress.Infinite))
+                return
             }
-            else -> return lastState.value
+            else -> return
         }
     }
 }
