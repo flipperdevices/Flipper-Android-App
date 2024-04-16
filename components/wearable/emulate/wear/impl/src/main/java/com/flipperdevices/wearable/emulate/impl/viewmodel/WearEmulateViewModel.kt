@@ -12,8 +12,10 @@ import com.flipperdevices.wearable.emulate.impl.helper.WearStateMachineHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 import java.io.File
 
 class WearEmulateViewModel @AssistedInject constructor(
@@ -30,20 +32,22 @@ class WearEmulateViewModel @AssistedInject constructor(
     private val keyToEmulate = KeyToEmulate(keyPath.path.pathToKey)
 
     init {
-        combine(
-            channelClientHelper.getState(),
-            connectionHelper.getState(),
-            flipperStatusHelper.getState(),
-            emulateHelper.getState()
-        ) { channelState, connectionState, flipperState, emulateState ->
-            wearStateMachineHelper.onStatesUpdated(
-                channelState,
-                connectionState,
-                flipperState,
-                emulateState,
-                keyToEmulate
-            )
-        }.launchIn(viewModelScope)
+        viewModelScope.launch(Dispatchers.IO) {
+            combine(
+                channelClientHelper.getState(),
+                connectionHelper.getState(),
+                flipperStatusHelper.getState(),
+                emulateHelper.getState()
+            ) { channelState, connectionState, flipperState, emulateState ->
+                wearStateMachineHelper.onStatesUpdated(
+                    channelState,
+                    connectionState,
+                    flipperState,
+                    emulateState,
+                    keyToEmulate
+                )
+            }.collect()
+        }
     }
 
     fun getWearEmulateState() = wearStateMachineHelper.getState()
