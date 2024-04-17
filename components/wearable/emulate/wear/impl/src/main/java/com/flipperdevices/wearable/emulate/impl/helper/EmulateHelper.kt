@@ -62,12 +62,14 @@ class EmulateHelperImpl @Inject constructor(
 
     @OptIn(FlipperThreadPoolDispatcher::class)
     override fun reset(scope: CoroutineScope) {
+        info { "#reset" }
         scope.launch(FlipperDispatchers.fixedThreadPool()) {
             state.emit(Emulate.EmulateStatus.UNRECOGNIZED)
         }
     }
 
     override fun onClickEmulate(keyToEmulate: KeyToEmulate) {
+        info { "#onClickEmulate" }
         commandOutputStream.send(
             mainRequest {
                 startEmulate = startEmulateRequest {
@@ -78,6 +80,7 @@ class EmulateHelperImpl @Inject constructor(
     }
 
     override fun onShortEmulate(keyToEmulate: KeyToEmulate) {
+        info { "#onShortEmulate" }
         commandOutputStream.send(
             mainRequest {
                 sendRequest = sendRequest {
@@ -88,6 +91,7 @@ class EmulateHelperImpl @Inject constructor(
     }
 
     override fun onStopEmulate() {
+        info { "#onStopEmulate" }
         commandOutputStream.send(
             mainRequest {
                 stopEmulate = stopEmulateRequest { }

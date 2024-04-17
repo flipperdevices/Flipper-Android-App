@@ -13,9 +13,9 @@ import com.google.protobuf.GeneratedMessageLite
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -59,6 +59,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
         queue.add(command)
     }
 
+    @OptIn(FlipperThreadPoolDispatcher::class)
     private suspend fun sendLoopJob(scope: CoroutineScope, outputStream: OutputStream) {
         while (scope.isActive) {
             try {
@@ -67,7 +68,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 }.getOrNull() ?: continue
                 info { "Receive $request" }
 
-                withContext(Dispatchers.IO) {
+                withContext(FlipperDispatchers.fixedThreadPool()) {
                     outputStream.write(request.toDelimitedBytes())
                 }
             } catch (ignored: CancellationException) {

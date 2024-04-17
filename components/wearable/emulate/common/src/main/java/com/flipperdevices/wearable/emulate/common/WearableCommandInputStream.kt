@@ -24,6 +24,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 private const val READ_TIMEOUT_MS = 100L
@@ -62,10 +63,13 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
         }
     }
 
+    @OptIn(FlipperThreadPoolDispatcher::class)
     private suspend fun parseLoopJob(scope: CoroutineScope, inputStream: InputStream) {
         while (scope.isActive) {
             try {
-                val main = parser(inputStream)
+                val main = withContext(FlipperDispatchers.fixedThreadPool()) {
+                    parser(inputStream)
+                }
                 if (main == null) {
                     delay(READ_TIMEOUT_MS)
                     continue
