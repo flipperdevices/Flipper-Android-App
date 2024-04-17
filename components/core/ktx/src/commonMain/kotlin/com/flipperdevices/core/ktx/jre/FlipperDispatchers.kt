@@ -11,11 +11,15 @@ import java.util.concurrent.Executors
 object FlipperDispatchers {
     fun getDefault() = Dispatchers.Default
 
+
+    private val WORK_STEALING_POOL by lazy {
+        Executors.newWorkStealingPool()
+    }
     /**
      * This dispatcher is used to bypass limitations of [Dispatchers.Default] on wearOS
      */
     @FlipperWorkStealingDispatcher
     fun workStealingDispatcher(): CoroutineDispatcher {
-        return Executors.newWorkStealingPool().asCoroutineDispatcher()
+        return WORK_STEALING_POOL.asCoroutineDispatcher()
     }
 }
