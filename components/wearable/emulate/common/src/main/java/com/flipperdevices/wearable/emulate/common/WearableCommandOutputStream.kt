@@ -1,6 +1,8 @@
 package com.flipperdevices.wearable.emulate.common
 
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -34,10 +36,11 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
     private val mutex = Mutex()
     private var sendJob: Job? = null
 
+    @OptIn(FlipperThreadPoolDispatcher::class)
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
         launchWithLock(mutex, scope, "open_channel") {
             sendJob?.cancelAndJoin()
-            sendJob = scope.launch(Dispatchers.Default) {
+            sendJob = scope.launch(FlipperDispatchers.fixedThreadPool()) {
                 channelClient.getOutputStream(channel).await().use {
                     sendLoopJob(this, it)
                 }
