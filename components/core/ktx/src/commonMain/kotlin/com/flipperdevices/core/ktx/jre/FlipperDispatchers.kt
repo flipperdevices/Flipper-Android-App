@@ -9,7 +9,7 @@ import java.util.concurrent.Executors
  * To be able to mock dispatchers
  */
 object FlipperDispatchers {
-    fun getDefault() = Dispatchers.IO
+    fun getDefault() = Dispatchers.Default
 
     private val AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors()
 
