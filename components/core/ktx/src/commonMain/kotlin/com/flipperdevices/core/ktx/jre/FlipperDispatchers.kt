@@ -11,13 +11,11 @@ import java.util.concurrent.Executors
 object FlipperDispatchers {
     fun getDefault() = Dispatchers.Default
 
-    private val AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors()
-
     /**
      * This dispatcher is used to bypass limitations of [Dispatchers.Default] on wearOS
      */
-    @FlipperThreadPoolDispatcher
-    fun fixedThreadPool(nThreads: Int = AVAILABLE_PROCESSORS): CoroutineDispatcher {
-        return Executors.newFixedThreadPool(nThreads).asCoroutineDispatcher()
+    @FlipperWorkStealingDispatcher
+    fun workStealingDispatcher(): CoroutineDispatcher {
+        return Executors.newWorkStealingPool().asCoroutineDispatcher()
     }
 }

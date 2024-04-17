@@ -2,7 +2,7 @@ package com.flipperdevices.wearable.emulate.impl.helper
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
+import com.flipperdevices.core.ktx.jre.FlipperWorkStealingDispatcher
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
@@ -49,10 +49,10 @@ class ConnectionHelperImpl @Inject constructor(
         }.launchIn(scope)
     }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     override fun reset(scope: CoroutineScope) {
         info { "reset" }
-        scope.launch(FlipperDispatchers.fixedThreadPool()) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher()) {
             state.emit(ConnectionTesterState.NOT_CONNECTED)
         }
     }

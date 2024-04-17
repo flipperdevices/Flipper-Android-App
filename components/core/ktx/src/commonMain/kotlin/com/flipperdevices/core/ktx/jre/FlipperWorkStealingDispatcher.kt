@@ -18,4 +18,4 @@ import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
     FUNCTION,
     PROPERTY_SETTER,
 )
-annotation class FlipperThreadPoolDispatcher
+annotation class FlipperWorkStealingDispatcher

@@ -2,7 +2,7 @@ package com.flipperdevices.wearable.emulate.common
 
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
+import com.flipperdevices.core.ktx.jre.FlipperWorkStealingDispatcher
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -35,11 +35,11 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
     private val mutex = Mutex()
     private var sendJob: Job? = null
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
         launchWithLock(mutex, scope, "open_channel") {
             sendJob?.cancelAndJoin()
-            sendJob = scope.launch(FlipperDispatchers.fixedThreadPool()) {
+            sendJob = scope.launch(FlipperDispatchers.workStealingDispatcher()) {
                 channelClient.getOutputStream(channel).await().use {
                     sendLoopJob(this, it)
                 }
@@ -58,7 +58,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
         queue.add(command)
     }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     private suspend fun sendLoopJob(scope: CoroutineScope, outputStream: OutputStream) {
         while (scope.isActive) {
             try {
@@ -67,7 +67,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 }.getOrNull() ?: continue
                 info { "Receive $request" }
 
-                withContext(FlipperDispatchers.fixedThreadPool()) {
+                withContext(FlipperDispatchers.workStealingDispatcher()) {
                     outputStream.write(request.toDelimitedBytes())
                 }
             } catch (ignored: CancellationException) {

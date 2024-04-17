@@ -1,7 +1,7 @@
 package com.flipperdevices.wearable.emulate.common
 
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
+import com.flipperdevices.core.ktx.jre.FlipperWorkStealingDispatcher
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -41,7 +41,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
 
     fun getRequestsFlow(): SharedFlow<T> = requests.asSharedFlow()
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
         requests.onEach {
             info { "onEach $it" }
@@ -49,7 +49,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
 
         launchWithLock(mutex, scope, "open_channel") {
             parserJob?.cancelAndJoin()
-            parserJob = scope.launch(FlipperDispatchers.fixedThreadPool()) {
+            parserJob = scope.launch(FlipperDispatchers.workStealingDispatcher()) {
                 channelClient.getInputStream(channel).await().use {
                     parseLoopJob(this, it)
                 }
@@ -63,11 +63,11 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
         }
     }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     private suspend fun parseLoopJob(scope: CoroutineScope, inputStream: InputStream) {
         while (scope.isActive) {
             try {
-                val main = withContext(FlipperDispatchers.fixedThreadPool()) {
+                val main = withContext(FlipperDispatchers.workStealingDispatcher()) {
                     parser(inputStream)
                 }
                 if (main == null) {

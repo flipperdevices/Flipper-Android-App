@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
+import com.flipperdevices.core.ktx.jre.FlipperWorkStealingDispatcher
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -32,7 +32,7 @@ class WearableFlipperStatusProcessor @Inject constructor(
 ) : WearableCommandProcessor, LogTagProvider {
     override val TAG: String = "WearableFlipperStatusProcessor-${hashCode()}"
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasSubscribeOnConnectStatus()) {
@@ -44,7 +44,7 @@ class WearableFlipperStatusProcessor @Inject constructor(
             }
         }.launchIn(scope)
 
-        scope.launch(FlipperDispatchers.fixedThreadPool()) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher()) {
             flipperServiceProvider
                 .getServiceApi()
                 .connectionInformationApi

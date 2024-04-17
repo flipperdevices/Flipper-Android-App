@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.FlipperThreadPoolDispatcher
+import com.flipperdevices.core.ktx.jre.FlipperWorkStealingDispatcher
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
@@ -49,7 +49,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
     private val channelClient: ChannelClient by lazy { Wearable.getChannelClient(this) }
     private val capabilityClient: CapabilityClient by lazy { Wearable.getCapabilityClient(this) }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     private val channelClientCallback = object : ChannelClient.ChannelCallback() {
         override fun onChannelClosed(
             channel: ChannelClient.Channel,
@@ -58,7 +58,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         ) {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
             info { "#channelClientCallback onChannelClosed $closeReason" }
-            lifecycleScope.launch(FlipperDispatchers.fixedThreadPool()) {
+            lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher()) {
                 activeChannel = if (closeReason == CLOSE_REASON_REMOTE_CLOSE) {
                     // Close service only, try reset
                     channelClientHelper.onChannelReset(lifecycleScope)
@@ -71,10 +71,10 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         }
     }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     private val capabilityClientCallback =
         CapabilityClient.OnCapabilityChangedListener { capabilityInfo ->
-            lifecycleScope.launch(FlipperDispatchers.fixedThreadPool()) {
+            lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher()) {
                 val successFindNode = capabilityUpdate(capabilityInfo)
                 if (successFindNode) {
                     // Success find phone, try to reopen channel
@@ -93,7 +93,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         return nodeId != null
     }
 
-    @OptIn(FlipperThreadPoolDispatcher::class)
+    @OptIn(FlipperWorkStealingDispatcher::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -104,7 +104,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         channelClient.registerChannelCallback(channelClientCallback)
         capabilityClient.addListener(capabilityClientCallback, CAPABILITY_PHONE_APP)
 
-        lifecycleScope.launch(FlipperDispatchers.fixedThreadPool()) {
+        lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher()) {
             val capabilityInfo = capabilityClient.getCapability(
                 CAPABILITY_PHONE_APP,
                 CapabilityClient.FILTER_ALL
