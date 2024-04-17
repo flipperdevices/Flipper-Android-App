@@ -111,7 +111,7 @@ class FapManifestApiImpl @Inject constructor(
 
     override fun invalidateAsync() = launchWithLock(jobInvalidateMutex, scope) {
         val oldJob = job
-        job = scope.launch(FlipperDispatchers.workStealingDispatcher) {
+        job = scope.launch {
             oldJob?.cancelAndJoin()
             loader.invalidate()
             loader.getManifestLoaderState()

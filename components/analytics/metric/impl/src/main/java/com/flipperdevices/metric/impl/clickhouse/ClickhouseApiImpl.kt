@@ -61,7 +61,7 @@ class ClickhouseApiImpl @Inject constructor(
 ) : ClickhouseApi, LogTagProvider {
     override val TAG = "ClickhouseApi"
 
-    private val scope = CoroutineScope(SupervisorJob())
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
     private val sessionUUID by lazy { UUID.randomUUID() }
 
     @Suppress("CyclomaticComplexMethod")
@@ -90,7 +90,7 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.HIDE_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.HIDE_FAPHUB_APP
         }
 
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
+        scope.launch {
             reportToServerSafe(
                 metricEventsCollection {
                     open = open {
@@ -216,7 +216,7 @@ class ClickhouseApiImpl @Inject constructor(
             error { "Can't process event $complexEvent" }
             return
         }
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
+        scope.launch {
             reportToServerSafe(event)
         }
     }

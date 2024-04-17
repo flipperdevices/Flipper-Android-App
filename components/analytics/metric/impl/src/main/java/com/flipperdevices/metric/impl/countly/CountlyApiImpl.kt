@@ -31,7 +31,7 @@ class CountlyApiImpl @Inject constructor(
 ) : CountlyApi, LogTagProvider {
     override val TAG = "CountlyApi"
 
-    private val scope = CoroutineScope(SupervisorJob())
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
 
     private val countly by lazy { initCountly() }
 
@@ -39,7 +39,7 @@ class CountlyApiImpl @Inject constructor(
         id: String,
         params: Map<String, Any?>?
     ) {
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
+        scope.launch {
             try {
                 reportEventUnsafe(id, params)
             } catch (e: Exception) {
