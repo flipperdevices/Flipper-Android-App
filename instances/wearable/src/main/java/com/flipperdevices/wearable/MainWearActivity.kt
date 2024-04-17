@@ -10,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
@@ -23,7 +24,6 @@ import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.CapabilityInfo
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -56,7 +56,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         ) {
             super.onChannelClosed(channel, closeReason, appSpecificErrorCode)
             info { "#channelClientCallback onChannelClosed $closeReason" }
-            lifecycleScope.launch(Dispatchers.Default) {
+            lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
                 activeChannel = if (closeReason == CLOSE_REASON_REMOTE_CLOSE) {
                     // Close service only, try reset
                     channelClientHelper.onChannelReset(lifecycleScope)
@@ -71,7 +71,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
 
     private val capabilityClientCallback =
         CapabilityClient.OnCapabilityChangedListener { capabilityInfo ->
-            lifecycleScope.launch(Dispatchers.Default) {
+            lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
                 val successFindNode = capabilityUpdate(capabilityInfo)
                 if (successFindNode) {
                     // Success find phone, try to reopen channel
@@ -100,7 +100,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
         channelClient.registerChannelCallback(channelClientCallback)
         capabilityClient.addListener(capabilityClientCallback, CAPABILITY_PHONE_APP)
 
-        lifecycleScope.launch(Dispatchers.Default) {
+        lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
             val capabilityInfo = capabilityClient.getCapability(
                 CAPABILITY_PHONE_APP,
                 CapabilityClient.FILTER_ALL
