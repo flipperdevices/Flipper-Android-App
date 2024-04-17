@@ -55,7 +55,7 @@ class BasicInfoViewModel @Inject constructor(
             when (it) {
                 is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
                     flipperStorageInformationApi.invalidate(
-                        viewModelScope + Dispatchers.Default,
+                        viewModelScope,
                         serviceApi,
                         force = true
                     )
@@ -70,7 +70,7 @@ class BasicInfoViewModel @Inject constructor(
 
         jobs += viewModelScope.launch {
             flipperStorageInformationApi.invalidate(
-                viewModelScope + Dispatchers.Default,
+                viewModelScope,
                 serviceApi
             )
         }

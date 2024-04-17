@@ -107,7 +107,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     private suspend fun invalidateUnsafe(serviceApi: FlipperServiceApi) {
         cardStateJob?.cancelAndJoin()
         cardStateJob = null
-        cardStateJob = viewModelScope.launch(Dispatchers.Default) {
+        cardStateJob = viewModelScope.launch {
             storageExistHelper.invalidate(this, serviceApi, force = false)
             val latestVersionAsync = async {
                 val result = runCatching { downloaderApi.getLatestVersion() }

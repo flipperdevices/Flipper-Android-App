@@ -32,7 +32,7 @@ class SearchViewModel @Inject constructor(
                 .collect {
                     searchState.emit(SearchState.Loaded(it.toImmutableList()))
                 }
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
     }
 
     fun getState(): StateFlow<SearchState> = searchState
@@ -41,7 +41,7 @@ class SearchViewModel @Inject constructor(
         synchronizationApi.getSynchronizationState()
 
     fun onChangeText(text: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             queryFlow.emit(text)
         }
     }

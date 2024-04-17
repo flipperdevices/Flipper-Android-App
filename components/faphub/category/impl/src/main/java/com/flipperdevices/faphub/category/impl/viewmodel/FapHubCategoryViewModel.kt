@@ -61,7 +61,7 @@ class FapHubCategoryViewModel @AssistedInject constructor(
     fun getFapsFlow() = faps
 
     fun onSelectSortType(sortType: SortType) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             dataStoreSettings.updateData {
                 it.toBuilder()
                     .setSelectedCatalogSort(sortType.toSelectedSortType())

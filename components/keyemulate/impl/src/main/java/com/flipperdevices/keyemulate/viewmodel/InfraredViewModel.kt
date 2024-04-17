@@ -56,7 +56,7 @@ class InfraredViewModel @Inject constructor(
         }
 
         serviceProvider.provideServiceApi(this) { serviceApi ->
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 processSinglePress(serviceApi, this, config)
             }
         }

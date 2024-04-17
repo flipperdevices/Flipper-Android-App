@@ -63,7 +63,7 @@ class FapsListViewModel @Inject constructor(
     fun getFapsFlow(): Flow<PagingData<FapItemShort>> = faps
 
     fun onSelectSortType(sortType: SortType) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             dataStoreSettings.updateData {
                 it.toBuilder()
                     .setSelectedCatalogSort(sortType.toSelectedSortType())

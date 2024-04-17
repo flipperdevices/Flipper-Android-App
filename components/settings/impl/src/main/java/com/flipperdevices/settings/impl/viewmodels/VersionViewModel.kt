@@ -30,7 +30,7 @@ class VersionViewModel @Inject constructor(
 
     fun onCheckUpdates() {
         info { "#onCheckUpdates" }
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val result = selfUpdaterApi.startCheckUpdate(manual = true)
             info { "#onCheckUpdates result: $result" }
             when (result) {
@@ -41,7 +41,7 @@ class VersionViewModel @Inject constructor(
     }
 
     fun dismissDialog() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             dialogFlow.emit(false)
         }
     }

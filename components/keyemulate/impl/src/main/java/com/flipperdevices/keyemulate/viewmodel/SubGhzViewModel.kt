@@ -67,7 +67,7 @@ class SubGhzViewModel @Inject constructor(
         }
 
         serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 startEmulateInternal(this, it, config)
             }
         }

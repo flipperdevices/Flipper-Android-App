@@ -39,7 +39,7 @@ class FapHubSearchViewModel @Inject constructor(
     fun getSearchRequest() = searchRequestFlow.asStateFlow()
 
     fun onChangeSearchText(text: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             searchRequestFlow.emit(text)
         }
     }

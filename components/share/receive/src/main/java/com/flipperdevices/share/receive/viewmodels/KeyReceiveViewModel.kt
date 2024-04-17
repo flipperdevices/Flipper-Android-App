@@ -48,7 +48,7 @@ class KeyReceiveViewModel @AssistedInject constructor(
     init {
         job = internalDeeplinkFlow.onEach {
             parseFlipperKey(it)
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun parseFlipperKey(deeplink: Deeplink.RootLevel.SaveKey) {
@@ -88,7 +88,7 @@ class KeyReceiveViewModel @AssistedInject constructor(
 
     fun onRetry() {
         val oldJob = job
-        job = viewModelScope.launch(Dispatchers.Default) {
+        job = viewModelScope.launch {
             oldJob?.cancelAndJoin()
             internalDeeplinkFlow.collect {
                 state.emit(ReceiveState.NotStarted)

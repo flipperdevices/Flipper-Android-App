@@ -37,7 +37,7 @@ class CategoriesViewModel @Inject constructor(
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
         refreshJob?.cancelAndJoin()
-        refreshJob = viewModelScope.launch(Dispatchers.Default) {
+        refreshJob = viewModelScope.launch {
             targetProviderApi.getFlipperTarget().collectLatest { target ->
                 if (target == null) {
                     categoriesLoadStateFlow.emit(CategoriesLoadState.Loading)

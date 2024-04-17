@@ -81,7 +81,7 @@ class MfKey32ViewModel @Inject constructor(
         viewModelScope.launch {
             mutex.withLock {
                 val localJob = stateJob
-                stateJob = viewModelScope.launch(Dispatchers.Default) {
+                stateJob = viewModelScope.launch {
                     localJob?.cancelAndJoin()
                     serviceApi
                         .connectionInformationApi

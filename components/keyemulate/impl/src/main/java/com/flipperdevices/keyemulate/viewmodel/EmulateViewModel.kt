@@ -75,7 +75,7 @@ abstract class EmulateViewModel(
         }
 
         serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 onStartEmulateInternal(this, it, config)
             }
         }
@@ -118,7 +118,7 @@ abstract class EmulateViewModel(
     fun onStopEmulate(force: Boolean = false) {
         info { "#onStopEmulate" }
         serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 if (force) {
                     emulateHelper.stopEmulateForce(it.requestApi)
                 } else {

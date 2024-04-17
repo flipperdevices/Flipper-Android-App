@@ -48,7 +48,7 @@ class WidgetSelectViewModel @AssistedInject constructor(
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()

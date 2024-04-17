@@ -30,7 +30,7 @@ class GeneralTabViewModel @Inject constructor(
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
@@ -38,10 +38,10 @@ class GeneralTabViewModel @Inject constructor(
                         keyList.filterNot { favoriteKeyPaths.contains(it.path) }
                     keys.emit(keysExceptFavorite.toImmutableList())
                     favoriteKeys.emit(favoriteKeysList.toImmutableList())
-                }.launchIn(viewModelScope + Dispatchers.Default)
+                }.launchIn(viewModelScope)
             synchronizationApi.getSynchronizationState().onEach {
                 synchronizationState.emit(it)
-            }.launchIn(viewModelScope + Dispatchers.Default)
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -54,7 +54,7 @@ class GeneralTabViewModel @Inject constructor(
     }
 
     fun cancelSynchronization() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             synchronizationApi.stop()
         }
     }

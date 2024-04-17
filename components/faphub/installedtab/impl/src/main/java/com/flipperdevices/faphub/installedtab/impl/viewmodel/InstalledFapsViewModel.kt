@@ -72,7 +72,7 @@ class InstalledFapsViewModel @Inject constructor(
 
     fun getFapBatchUpdateButtonState() = batchUpdateButtonState.asStateFlow()
 
-    fun updateAll() = viewModelScope.launch(Dispatchers.Default) {
+    fun updateAll() = viewModelScope.launch {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }
@@ -100,7 +100,7 @@ class InstalledFapsViewModel @Inject constructor(
         }
     }
 
-    fun cancelAll() = viewModelScope.launch(Dispatchers.Default) {
+    fun cancelAll() = viewModelScope.launch {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }

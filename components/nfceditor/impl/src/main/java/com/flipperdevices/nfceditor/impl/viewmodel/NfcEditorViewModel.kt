@@ -50,7 +50,7 @@ class NfcEditorViewModel @AssistedInject constructor(
     fun getCurrentActiveCellState() = textUpdaterHelper.getActiveCellState()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val flipperKey =
                 requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
             flipperKeyFlow.emit(flipperKey)

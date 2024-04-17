@@ -27,7 +27,7 @@ class ScreenshotViewModel @Inject constructor(
 ) : DecomposeViewModel() {
     fun shareScreenshot(
         screenShapshot: FlipperScreenState
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         val currentSnapshotState = screenShapshot as? FlipperScreenState.Ready ?: return@launch
         var currentSnapshot = currentSnapshotState.bitmap
         currentSnapshot = currentSnapshot.rescale()

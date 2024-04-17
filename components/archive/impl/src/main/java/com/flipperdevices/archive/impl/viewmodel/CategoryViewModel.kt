@@ -41,7 +41,7 @@ class CategoryViewModel @Inject constructor(
     )
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             subscribeOnCategoriesCount()
         }
         categoriesMapFlow.onEach {
@@ -63,7 +63,7 @@ class CategoryViewModel @Inject constructor(
                     categoryType = CategoryType.Deleted
                 )
             )
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
 
         FlipperKeyType.entries.forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
@@ -77,7 +77,7 @@ class CategoryViewModel @Inject constructor(
                     )
                     return@update mutableMap
                 }
-            }.launchIn(viewModelScope + Dispatchers.Default)
+            }.launchIn(viewModelScope)
         }
     }
 }

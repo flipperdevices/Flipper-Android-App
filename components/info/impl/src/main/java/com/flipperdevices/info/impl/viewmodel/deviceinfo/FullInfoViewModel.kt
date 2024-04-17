@@ -59,7 +59,7 @@ class FullInfoViewModel @Inject constructor(
             when (it) {
                 is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
                     flipperRpcInformationApi.invalidate(
-                        viewModelScope + Dispatchers.Default,
+                        viewModelScope,
                         serviceApi,
                         force = true
                     )
@@ -74,7 +74,7 @@ class FullInfoViewModel @Inject constructor(
 
         jobs += viewModelScope.launch {
             flipperRpcInformationApi.invalidate(
-                viewModelScope + Dispatchers.Default,
+                viewModelScope,
                 serviceApi
             )
         }

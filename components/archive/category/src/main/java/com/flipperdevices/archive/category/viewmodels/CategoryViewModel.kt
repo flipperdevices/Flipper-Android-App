@@ -27,7 +27,7 @@ class CategoryViewModel @AssistedInject constructor(
     private val categoryState = MutableStateFlow<CategoryState>(CategoryState.Loading)
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             when (categoryType) {
                 is CategoryType.ByFileType -> simpleKeyApi.getExistKeysAsFlow(categoryType.fileType)
                 CategoryType.Deleted -> deleteKeyApi.getDeletedKeyAsFlow()

@@ -18,7 +18,7 @@ class BottomBarViewModel @Inject constructor(
     init {
         hubApi.hasNotification(viewModelScope).onEach {
             hasNotificationHubStateFlow.emit(it)
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
     }
 
     fun hasNotificationHubState(): StateFlow<Boolean> = hasNotificationHubStateFlow
