@@ -11,11 +11,7 @@ import java.util.concurrent.Executors
 object FlipperDispatchers {
     fun getDefault() = Dispatchers.Default
 
-    fun createNewWorkStealingDispatcher(): CoroutineDispatcher {
-        return Executors.newWorkStealingPool().asCoroutineDispatcher()
-    }
-
     val workStealingDispatcher: CoroutineDispatcher by lazy {
-        createNewWorkStealingDispatcher()
+        Executors.newWorkStealingPool().asCoroutineDispatcher()
     }
 }
