@@ -30,7 +30,7 @@ class SyncWearableApiImpl @Inject constructor(
 
     private val dataClient by lazy { Wearable.getDataClient(application) }
 
-    override suspend fun updateWearableIndex() = withContext(FlipperDispatchers.workStealingDispatcherefault) {
+    override suspend fun updateWearableIndex() = withContext(FlipperDispatchers.workStealingDispatcher) {
         val flipperKeys = simpleKeyApi.getAllKeys()
         val itemsToSync = flipperKeys.map { flipperKey ->
             WearableSyncItem(
