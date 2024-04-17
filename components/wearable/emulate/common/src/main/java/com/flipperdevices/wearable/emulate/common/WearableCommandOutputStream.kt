@@ -1,6 +1,7 @@
 package com.flipperdevices.wearable.emulate.common
 
 import com.flipperdevices.bridge.protobuf.toDelimitedBytes
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -11,7 +12,6 @@ import com.google.protobuf.GeneratedMessageLite
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.isActive
@@ -37,7 +37,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
     fun onOpenChannel(scope: CoroutineScope, channel: Channel) {
         launchWithLock(mutex, scope, "open_channel") {
             sendJob?.cancelAndJoin()
-            sendJob = scope.launch(Dispatchers.Default) {
+            sendJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 channelClient.getOutputStream(channel).await().use {
                     sendLoopJob(this, it)
                 }
@@ -64,7 +64,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 }.getOrNull() ?: continue
                 info { "Receive $request" }
 
-                withContext(Dispatchers.IO) {
+                withContext(FlipperDispatchers.createNewWorkStealingDispatcher()) {
                     outputStream.write(request.toDelimitedBytes())
                 }
             } catch (ignored: CancellationException) {

@@ -1,5 +1,6 @@
 package com.flipperdevices.wearable.emulate.common
 
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -10,7 +11,6 @@ import com.google.protobuf.GeneratedMessageLite
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -23,6 +23,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 private const val READ_TIMEOUT_MS = 100L
@@ -46,7 +47,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
 
         launchWithLock(mutex, scope, "open_channel") {
             parserJob?.cancelAndJoin()
-            parserJob = scope.launch(Dispatchers.Default) {
+            parserJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 channelClient.getInputStream(channel).await().use {
                     parseLoopJob(this, it)
                 }
@@ -63,7 +64,9 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private suspend fun parseLoopJob(scope: CoroutineScope, inputStream: InputStream) {
         while (scope.isActive) {
             try {
-                val main = parser(inputStream)
+                val main = withContext(FlipperDispatchers.createNewWorkStealingDispatcher()) {
+                    parser(inputStream)
+                }
                 if (main == null) {
                     delay(READ_TIMEOUT_MS)
                     continue

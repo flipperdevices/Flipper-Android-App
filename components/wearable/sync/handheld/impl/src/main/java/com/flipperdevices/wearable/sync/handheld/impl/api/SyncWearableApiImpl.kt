@@ -5,6 +5,7 @@ import android.net.Uri
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -14,7 +15,6 @@ import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.google.android.gms.wearable.PutDataRequest
 import com.google.android.gms.wearable.Wearable
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -30,7 +30,7 @@ class SyncWearableApiImpl @Inject constructor(
 
     private val dataClient by lazy { Wearable.getDataClient(application) }
 
-    override suspend fun updateWearableIndex() = withContext(Dispatchers.Default) {
+    override suspend fun updateWearableIndex() = withContext(FlipperDispatchers.workStealingDispatcher) {
         val flipperKeys = simpleKeyApi.getAllKeys()
         val itemsToSync = flipperKeys.map { flipperKey ->
             WearableSyncItem(
