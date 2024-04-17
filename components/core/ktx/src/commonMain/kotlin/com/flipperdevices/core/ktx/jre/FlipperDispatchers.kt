@@ -15,9 +15,6 @@ object FlipperDispatchers {
         return Executors.newWorkStealingPool().asCoroutineDispatcher()
     }
 
-    /**
-     * This dispatcher is used to bypass limitations of [Dispatchers.Default] on wearOS
-     */
     val workStealingDispatcher: CoroutineDispatcher by lazy {
         createNewWorkStealingDispatcher()
     }
