@@ -10,8 +10,8 @@ import com.google.protobuf.GeneratedMessageLite
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,15 +23,20 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.InputStream
+import java.util.concurrent.Executors
 
 private const val READ_TIMEOUT_MS = 100L
+private const val POOL_THREADS_AMOUNT = 2
 
 class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private val channelClient: ChannelClient,
     private val parser: (InputStream) -> T?
 ) : LogTagProvider {
     override val TAG = "WearableCommandInputStream-${hashCode()}"
+
+    private val dispatcher = Executors.newFixedThreadPool(POOL_THREADS_AMOUNT).asCoroutineDispatcher()
 
     private val mutex = Mutex()
     private val requests = MutableSharedFlow<T>()
@@ -46,7 +51,7 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
 
         launchWithLock(mutex, scope, "open_channel") {
             parserJob?.cancelAndJoin()
-            parserJob = scope.launch(Dispatchers.Default) {
+            parserJob = scope.launch(dispatcher) {
                 channelClient.getInputStream(channel).await().use {
                     parseLoopJob(this, it)
                 }
@@ -63,7 +68,9 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
     private suspend fun parseLoopJob(scope: CoroutineScope, inputStream: InputStream) {
         while (scope.isActive) {
             try {
-                val main = parser(inputStream)
+                val main = withContext(dispatcher) {
+                    parser(inputStream)
+                }
                 if (main == null) {
                     delay(READ_TIMEOUT_MS)
                     continue
