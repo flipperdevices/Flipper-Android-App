@@ -16,7 +16,8 @@
 - [FIX] Multiple internet connection placeholders on Hub Apps screen
 - [FIX] Find already paired Flipper devices without state filter
 - [FIX] Update flipper is busy image
-- [FIX] Fixed ComposableWearEmulate narrow layout 
+- [FIX] Fixed ComposableWearEmulate narrow layout
+- [FIX] Replace Default dispatcher in wearos modules with workStealingPool dispatcher
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
