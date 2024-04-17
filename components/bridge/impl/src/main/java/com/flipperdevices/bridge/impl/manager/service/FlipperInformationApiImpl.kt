@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.PairSettings
@@ -15,7 +16,6 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperGattInfoEvent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -49,7 +49,7 @@ class FlipperInformationApiImpl @Inject constructor(
     init {
         informationState.onEach {
             shake2ReportApi.updateGattInformation(it)
-        }.launchIn(scope + Dispatchers.Default)
+        }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
     }
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
@@ -173,7 +173,7 @@ class FlipperInformationApiImpl @Inject constructor(
     }
 
     private fun onDeviceNameReceived(deviceName: String) {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             dataStoreFirstPair.updateData {
                 var deviceNameFormatted = deviceName.trim()
                 if (deviceNameFormatted.startsWith(Constants.DEVICENAME_PREFIX)) {

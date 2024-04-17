@@ -4,10 +4,10 @@ import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
 import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.connectionbuilder.api.FDeviceConfigToConnection
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
@@ -39,7 +39,7 @@ class FDeviceHolder<API : FConnectedDeviceApi>(
 ) : LogTagProvider {
     override val TAG = "FDeviceHolder-$config"
 
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(FlipperDispatchers.workStealingDispatcher)
     private var deviceApi: API? = null
     private val connectJob: Job = scope.launch {
         deviceApi = deviceConnectionHelper.connect(

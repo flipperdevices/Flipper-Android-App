@@ -17,6 +17,7 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.animation.LocalStackAnimationProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toFullString
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -34,7 +35,6 @@ import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.singleactivity.impl.di.SingleActivityComponent
 import com.flipperdevices.singleactivity.impl.utils.FlipperStackAnimationProvider
 import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -109,7 +109,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         if (intent == null) {
             return
         }
-        lifecycleScope.launch(Dispatchers.Default) {
+        lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
             deeplinkParser.parseOrLog(this@SingleActivity, intent)?.let {
                 rootDecomposeComponent?.handleDeeplink(it)
             }

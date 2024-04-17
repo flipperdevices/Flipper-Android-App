@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.metric.api.MetricApi
@@ -21,7 +22,6 @@ import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
 import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
@@ -54,7 +54,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
 
     override suspend fun provideAndUploadSubGhz(
         serviceApi: FlipperServiceApi
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         if (skipProvisioningHelper.shouldSkipProvisioning(serviceApi)) {
             info { "Skip provisioning" }
             return@withContext

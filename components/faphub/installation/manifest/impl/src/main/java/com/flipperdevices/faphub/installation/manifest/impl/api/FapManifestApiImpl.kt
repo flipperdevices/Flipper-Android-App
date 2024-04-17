@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.installation.manifest.impl.api
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -15,7 +16,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
@@ -37,7 +37,7 @@ class FapManifestApiImpl @Inject constructor(
 ) : FapManifestApi, LogTagProvider {
     override val TAG = "FapManifestApi"
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
     private val loader = loaderFactory(scope)
 
     private val fapManifestStateFlow = MutableStateFlow<FapManifestState>(
@@ -111,7 +111,7 @@ class FapManifestApiImpl @Inject constructor(
 
     override fun invalidateAsync() = launchWithLock(jobInvalidateMutex, scope) {
         val oldJob = job
-        job = scope.launch(Dispatchers.Default) {
+        job = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             oldJob?.cancelAndJoin()
             loader.invalidate()
             loader.getManifestLoaderState()

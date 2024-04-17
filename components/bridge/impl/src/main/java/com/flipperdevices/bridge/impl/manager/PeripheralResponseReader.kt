@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.impl.manager
 import com.flipperdevices.bridge.api.manager.service.RestartRPCApi
 import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.ByteEndlessInputStream
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -12,7 +13,6 @@ import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.google.protobuf.InvalidProtocolBufferException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class PeripheralResponseReader(
 
     suspend fun initialize() = withLock(mutex, "initialize") {
         responseReaderJob?.cancelAndJoin()
-        responseReaderJob = scope.launch(Dispatchers.Default) {
+        responseReaderJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             val byteInputStreamLocal = ByteEndlessInputStream(this)
             byteInputStream = byteInputStreamLocal
             parseLoopJob(byteInputStreamLocal)
@@ -65,7 +65,7 @@ class PeripheralResponseReader(
                 if (BLE_VLOG) {
                     info { "Receive $main response" }
                 }
-                scope.launch(Dispatchers.Default) {
+                scope.launch(FlipperDispatchers.workStealingDispatcher) {
                     responses.emit(main)
                 }
             } catch (ignored: CancellationException) {

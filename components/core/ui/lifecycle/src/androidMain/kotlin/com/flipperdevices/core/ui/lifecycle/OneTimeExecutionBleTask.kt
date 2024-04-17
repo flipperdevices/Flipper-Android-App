@@ -3,6 +3,7 @@ package com.flipperdevices.core.ui.lifecycle
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 abstract class OneTimeExecutionBleTask<INPUT, STATE>(
     private val serviceProvider: FlipperServiceProvider
 ) : TaskWithLifecycle(), LogTagProvider {
-    private val taskScope = coroutineScope(Dispatchers.Default)
+    private val taskScope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val mutex = Mutex()
     private var job: Job? = null
     private val isAlreadyLaunched = AtomicBoolean(false)
@@ -45,7 +46,7 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
             launchWithLock(mutex, taskScope) {
                 job?.cancelAndJoin()
                 job = null
-                job = taskScope.launch(Dispatchers.Default) {
+                job = taskScope.launch(FlipperDispatchers.workStealingDispatcher) {
                     val localScope = this
                     // Waiting to be connected to the flipper
                     try {
@@ -60,7 +61,7 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
             }
         }
         onStart()
-        taskScope.launch(Dispatchers.Default) {
+        taskScope.launch(FlipperDispatchers.workStealingDispatcher) {
             try {
                 awaitCancellation()
             } finally {

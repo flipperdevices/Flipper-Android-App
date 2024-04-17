@@ -28,7 +28,7 @@ data class NotSavedFlipperFile(
 
 suspend fun FlipperFile.toNotSavedFlipperFile(
     context: Context
-): NotSavedFlipperFile = withContext(Dispatchers.Default) {
+): NotSavedFlipperFile = withContext(Dispatchers.IO) {
     val localContent = content
     if (localContent is FlipperKeyContent.InternalFile) {
         return@withContext NotSavedFlipperFile(path, localContent)

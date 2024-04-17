@@ -1,6 +1,7 @@
 package com.flipperdevices.wearable.emulate.impl.helper
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
@@ -13,7 +14,6 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.subscribeO
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,7 +51,7 @@ class FlipperStatusHelperImpl @Inject constructor(
     }
 
     override fun reset(scope: CoroutineScope) {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             state.emit(ConnectStatusOuterClass.ConnectStatus.UNRECOGNIZED)
         }
     }

@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
@@ -10,7 +11,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +41,7 @@ class InstalledFapsUidsProducer @Inject constructor(
             fapManifestApi.invalidateAsync()
         }
         val oldJob = applicationUidJob
-        applicationUidJob = scope.launch(Dispatchers.Default) {
+        applicationUidJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             oldJob?.cancelAndJoin()
             if (force) {
                 applicationUidsStateFlow.emit(

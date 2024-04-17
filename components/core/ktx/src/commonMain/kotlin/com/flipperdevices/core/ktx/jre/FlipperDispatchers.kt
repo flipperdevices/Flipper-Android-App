@@ -1,7 +1,6 @@
 package com.flipperdevices.core.ktx.jre
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import java.util.concurrent.Executors
 

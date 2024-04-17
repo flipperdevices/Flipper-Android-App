@@ -9,11 +9,11 @@ import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
 import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrapper
 import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -87,7 +87,7 @@ class FlipperSerialOverflowThrottler(
         val remainingInternal = ByteBuffer.wrap(bytes).int
         info { "Invalidate buffer size. New size: $remainingInternal" }
 
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             bufferSizeState.emit(remainingInternal)
         }
     }
@@ -143,7 +143,7 @@ class FlipperSerialOverflowThrottler(
     }
 
     private fun getOverflowBufferJob(): Job {
-        return scope.launch(Dispatchers.Default) {
+        return scope.launch(FlipperDispatchers.workStealingDispatcher) {
             bufferSizeState.collectLatest { bufferSize ->
                 sendCommandsWhileBufferNotEnd(bufferSize)
             }

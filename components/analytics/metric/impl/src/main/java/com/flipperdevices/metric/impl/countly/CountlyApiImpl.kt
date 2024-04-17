@@ -3,6 +3,7 @@ package com.flipperdevices.metric.impl.countly
 import android.app.Application
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.toIntSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -13,7 +14,6 @@ import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.impl.BuildConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -39,7 +39,7 @@ class CountlyApiImpl @Inject constructor(
         id: String,
         params: Map<String, Any?>?
     ) {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             try {
                 reportEventUnsafe(id, params)
             } catch (e: Exception) {

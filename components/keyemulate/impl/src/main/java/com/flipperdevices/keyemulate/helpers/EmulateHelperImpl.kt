@@ -3,6 +3,7 @@ package com.flipperdevices.keyemulate.helpers
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
@@ -14,7 +15,6 @@ import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -95,7 +95,7 @@ class EmulateHelperImpl @Inject constructor(
             stopEmulateInternal(requestApi)
             return@withLock
         }
-        stopJob = scope.launch(Dispatchers.Default) {
+        stopJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             try {
                 while (TimeHelper.getNow() < stopEmulateTimeAllowedMs) {
                     val delayMs = max(0, stopEmulateTimeAllowedMs - TimeHelper.getNow())

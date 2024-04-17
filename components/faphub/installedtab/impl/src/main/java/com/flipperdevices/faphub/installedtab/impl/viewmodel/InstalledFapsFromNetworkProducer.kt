@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -19,7 +20,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
@@ -57,7 +57,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         info { "Call refresh $force" }
         installedFapsUidsProducer.refresh(globalScope, force)
         val oldJob = fetchFromNetworkJob
-        fetchFromNetworkJob = globalScope.launch(Dispatchers.Default) {
+        fetchFromNetworkJob = globalScope.launch(FlipperDispatchers.workStealingDispatcher) {
             oldJob?.cancelAndJoin()
             if (force) {
                 applicationFromNetworkStateFlow.emit(

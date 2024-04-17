@@ -6,7 +6,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

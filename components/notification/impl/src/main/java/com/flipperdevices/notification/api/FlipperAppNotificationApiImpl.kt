@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -25,7 +26,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,7 +91,7 @@ class FlipperAppNotificationApiImpl @Inject constructor(
         scope: CoroutineScope,
         withNotificationSuccess: Boolean
     ) {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             setSubscribeToUpdate(isSubscribe, onRetry = {
                 setSubscribeToUpdateAsync(isSubscribe, scope)
             }, withNotificationSuccess)

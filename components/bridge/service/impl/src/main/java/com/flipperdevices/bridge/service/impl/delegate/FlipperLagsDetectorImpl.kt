@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -17,7 +18,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -48,7 +48,7 @@ class FlipperLagsDetectorImpl @Inject constructor(
     private val pendingResponseCounter = AtomicInteger(0)
 
     init {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             combine(
                 flipperActionNotifier.getActionFlow(),
                 serviceApi.connectionInformationApi.getConnectionStateFlow()

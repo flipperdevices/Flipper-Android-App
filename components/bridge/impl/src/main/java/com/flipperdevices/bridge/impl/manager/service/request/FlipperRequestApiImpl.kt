@@ -17,6 +17,7 @@ import com.flipperdevices.bridge.impl.manager.service.BluetoothGattServiceWrappe
 import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -28,7 +29,6 @@ import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
@@ -153,7 +153,7 @@ class FlipperRequestApiImpl @Inject constructor(
                 error(it) { "Cancel send because flow is failed" }
                 commandAnswerJob.cancelAndJoin()
             }
-        }.launchIn(scope + Dispatchers.Default)
+        }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
 
         return@wrapPendingAction try {
             commandAnswerJob.await()
@@ -257,12 +257,12 @@ class FlipperRequestApiImpl @Inject constructor(
     }
 
     private fun subscribeToAnswers(scope: CoroutineScope) {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             serialApiUnsafe.receiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
             }
         }
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             reader.getResponses().collect {
                 val listener = requestListeners[it.commandId]
                 if (listener == null) {

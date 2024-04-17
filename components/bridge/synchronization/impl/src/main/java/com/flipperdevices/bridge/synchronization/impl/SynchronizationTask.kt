@@ -12,6 +12,7 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskSynchronizationComp
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -23,7 +24,6 @@ import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.filter
@@ -139,7 +139,7 @@ class SynchronizationTaskImpl(
     private suspend fun launch(
         serviceApi: FlipperServiceApi,
         progressTracker: ProgressWrapperTracker
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val startSynchronizationTime = System.currentTimeMillis()
         val taskComponent = TaskSynchronizationComponent.ManualFactory
             .create(
