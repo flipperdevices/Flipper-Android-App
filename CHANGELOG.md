@@ -18,6 +18,7 @@
 - [FIX] Update flipper is busy image
 - [FIX] Fixed ComposableWearEmulate narrow layout 
 - [FIX] Fixed wearOS blocking operations in WearableCommand streams
+- [FIX] Fixed wrong error display when turning off flipper during update
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
