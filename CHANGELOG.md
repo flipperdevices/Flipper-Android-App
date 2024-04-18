@@ -19,6 +19,7 @@
 - [FIX] Fixed ComposableWearEmulate narrow layout
 - [FIX] Fixed wearOS blocking operations in WearableCommand streams
 - [FIX] Replace Dispatchers.Default with java's work stealing pool dispatcher
+- [FIX] Fixed wrong error display when turning off flipper during update
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
