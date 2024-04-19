@@ -18,7 +18,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
-private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
+private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
 private const val QUALITY = 100
 private const val EXPORT_RESCALE_MULTIPLIER = 8f
 
