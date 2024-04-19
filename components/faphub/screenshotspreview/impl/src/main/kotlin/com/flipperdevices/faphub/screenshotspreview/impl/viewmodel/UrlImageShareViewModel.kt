@@ -21,7 +21,7 @@ import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
-private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
+private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
 private const val QUALITY = 100
 
 class UrlImageShareViewModel @Inject constructor(
