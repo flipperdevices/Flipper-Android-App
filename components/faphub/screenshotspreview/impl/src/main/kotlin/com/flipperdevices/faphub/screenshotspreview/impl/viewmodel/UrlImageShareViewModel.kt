@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.flipperdevices.core.ktx.android.BitmapKtx.rescale
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
@@ -23,6 +24,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
 private const val QUALITY = 100
+private const val EXPORT_RESCALE_MULTIPLIER = 8f
 
 class UrlImageShareViewModel @Inject constructor(
     private val applicationContext: Context
@@ -69,6 +71,7 @@ class UrlImageShareViewModel @Inject constructor(
     fun shareUrlImage(url: URL) = viewModelScope.launch(Dispatchers.IO) {
         url.decodeBitmap()
             .map { bitmap -> bitmap.fillBackground() }
+            .map { bitmap -> bitmap.rescale(EXPORT_RESCALE_MULTIPLIER) }
             .onSuccess { bitmap -> shareScreenshot(bitmap) }
     }
 }
