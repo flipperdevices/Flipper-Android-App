@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.ble.impl.serial
 
 import com.flipperdevices.bridge.connection.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.common.api.serial.FSerialDeviceApi
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.WaitNotifyLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -10,7 +11,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -39,7 +39,7 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
 
                 serialApiScope?.cancel()
                 val newSerialApiScope = CoroutineScope(
-                    Dispatchers.Default + SupervisorJob(scope.coroutineContext.job)
+                    FlipperDispatchers.workStealingDispatcher + SupervisorJob(scope.coroutineContext.job)
                 ).also { serialApiScope = it }
 
                 if (services == null) {

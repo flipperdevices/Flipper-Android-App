@@ -14,10 +14,10 @@ import com.flipperdevices.bridge.service.impl.provider.error.CompositeFlipperSer
 import com.flipperdevices.bridge.service.impl.provider.lifecycle.FlipperServiceLifecycleListener
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -31,7 +31,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
         FlipperBleServiceComponent.ManualFactory.create(
             deps = ComponentHolder.component(),
             context = this,
-            scope = lifecycleScope + Dispatchers.Default,
+            scope = lifecycleScope + FlipperDispatchers.workStealingDispatcher,
             serviceErrorListener = listener
         )
     }

@@ -29,7 +29,7 @@ class OpenFapViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             openFapHelper.loadFap(
                 config = config,
                 onResult = { processOpenFapResult(it, onOpenScreenStreaming) }

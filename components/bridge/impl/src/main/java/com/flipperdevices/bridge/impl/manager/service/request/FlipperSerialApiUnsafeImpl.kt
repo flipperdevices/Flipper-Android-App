@@ -12,11 +12,11 @@ import com.flipperdevices.bridge.impl.manager.service.getCharacteristicOrLog
 import com.flipperdevices.bridge.impl.manager.service.getServiceOrLog
 import com.flipperdevices.bridge.impl.utils.BridgeImplConfig.BLE_VLOG
 import com.flipperdevices.bridge.impl.utils.SpeedMeter
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -74,7 +74,7 @@ class FlipperSerialApiUnsafeImpl(
             }
             val bytes = data.value ?: return@with
             rxSpeed.onReceiveBytes(bytes.size)
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 receiveBytesFlow.emit(bytes)
             }
         }

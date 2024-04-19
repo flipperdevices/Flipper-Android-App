@@ -12,7 +12,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,7 +54,7 @@ class BasicInfoViewModel @Inject constructor(
             when (it) {
                 is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
                     flipperStorageInformationApi.invalidate(
-                        viewModelScope + Dispatchers.Default,
+                        viewModelScope,
                         serviceApi,
                         force = true
                     )
@@ -70,7 +69,7 @@ class BasicInfoViewModel @Inject constructor(
 
         jobs += viewModelScope.launch {
             flipperStorageInformationApi.invalidate(
-                viewModelScope + Dispatchers.Default,
+                viewModelScope,
                 serviceApi
             )
         }

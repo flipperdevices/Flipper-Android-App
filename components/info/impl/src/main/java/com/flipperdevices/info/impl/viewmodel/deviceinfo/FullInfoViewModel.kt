@@ -13,7 +13,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,7 +58,7 @@ class FullInfoViewModel @Inject constructor(
             when (it) {
                 is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
                     flipperRpcInformationApi.invalidate(
-                        viewModelScope + Dispatchers.Default,
+                        viewModelScope,
                         serviceApi,
                         force = true
                     )
@@ -74,7 +73,7 @@ class FullInfoViewModel @Inject constructor(
 
         jobs += viewModelScope.launch {
             flipperRpcInformationApi.invalidate(
-                viewModelScope + Dispatchers.Default,
+                viewModelScope,
                 serviceApi
             )
         }

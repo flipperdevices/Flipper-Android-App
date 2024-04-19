@@ -2,7 +2,6 @@ package com.flipperdevices.bottombar.impl.viewmodel
 
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.hub.api.HubApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -18,7 +17,7 @@ class BottomBarViewModel @Inject constructor(
     init {
         hubApi.hasNotification(viewModelScope).onEach {
             hasNotificationHubStateFlow.emit(it)
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
     }
 
     fun hasNotificationHubState(): StateFlow<Boolean> = hasNotificationHubStateFlow

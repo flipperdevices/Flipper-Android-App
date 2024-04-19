@@ -8,7 +8,6 @@ import com.flipperdevices.faphub.catalogtab.impl.model.CategoriesLoadState
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +36,7 @@ class CategoriesViewModel @Inject constructor(
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
         refreshJob?.cancelAndJoin()
-        refreshJob = viewModelScope.launch(Dispatchers.Default) {
+        refreshJob = viewModelScope.launch {
             targetProviderApi.getFlipperTarget().collectLatest { target ->
                 if (target == null) {
                     categoriesLoadStateFlow.emit(CategoriesLoadState.Loading)

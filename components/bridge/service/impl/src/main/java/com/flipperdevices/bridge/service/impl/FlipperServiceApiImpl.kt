@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -16,7 +17,6 @@ import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -60,7 +60,7 @@ class FlipperServiceApiImpl @Inject constructor(
         info { "Internal init and try connect" }
 
         var previousDeviceId: String? = null
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             pairSettingsStore.data.map { it.deviceId }.collectLatest { deviceId ->
                 withLock(mutex, "connect") {
                     if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&

@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.test.TimberRule
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.helpers.AppEmulateHelper
@@ -27,7 +28,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -119,7 +119,7 @@ class EmulateHelperTest {
                 responseOk
             }
         )
-        var startJob = launch(Dispatchers.Default) {
+        var startJob = launch(FlipperDispatchers.workStealingDispatcher) {
             mockAfterStart(this)
             underTest.startEmulate(
                 this,
@@ -128,7 +128,7 @@ class EmulateHelperTest {
             )
         }
         startJob.join()
-        startJob = launch(Dispatchers.Default) {
+        startJob = launch(FlipperDispatchers.workStealingDispatcher) {
             mockAfterStart(this)
             underTest.startEmulate(
                 this,
@@ -141,7 +141,7 @@ class EmulateHelperTest {
             underTest.stopEmulate(this@runTest, requestTestApi)
         }
         stopJob.join()
-        startJob = launch(Dispatchers.Default) {
+        startJob = launch(FlipperDispatchers.workStealingDispatcher) {
             mockAfterStart(this)
             underTest.startEmulate(
                 this,

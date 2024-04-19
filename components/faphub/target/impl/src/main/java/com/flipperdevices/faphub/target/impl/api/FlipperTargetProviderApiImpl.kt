@@ -3,6 +3,7 @@ package com.flipperdevices.faphub.target.impl.api
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
@@ -33,7 +34,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
     private val targetFlow = MutableStateFlow<FlipperTarget?>(null)
 
     init {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             subscribe()
         }
     }

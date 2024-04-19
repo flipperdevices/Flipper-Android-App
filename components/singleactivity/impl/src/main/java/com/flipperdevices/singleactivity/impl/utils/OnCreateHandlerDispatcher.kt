@@ -4,13 +4,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
@@ -36,7 +36,7 @@ class OnCreateHandlerDispatcher @Inject constructor(
             error(throwable) { "Failed init unhandledExceptionApi" }
         }
 
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
+        lifecycleOwner.lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 try {
                     selfUpdaterApiProvider.get().startCheckUpdate()

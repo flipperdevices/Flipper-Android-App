@@ -57,10 +57,10 @@ class ReceiveViewModel @AssistedInject constructor(
     fun getReceiveState(): StateFlow<ShareState> = receiveStateFlow
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             startUpload(serviceApi)
         }
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             serviceApi.requestApi.getSpeed().onEach { serialSpeed ->
                 receiveStateFlow.update {
                     it.copy(
@@ -69,7 +69,7 @@ class ReceiveViewModel @AssistedInject constructor(
                         )
                     )
                 }
-            }.launchIn(viewModelScope + Dispatchers.Default)
+            }.launchIn(viewModelScope)
         }
     }
 

@@ -11,7 +11,6 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +40,7 @@ class CategoryViewModel @Inject constructor(
     )
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             subscribeOnCategoriesCount()
         }
         categoriesMapFlow.onEach {
@@ -63,7 +62,7 @@ class CategoryViewModel @Inject constructor(
                     categoryType = CategoryType.Deleted
                 )
             )
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
 
         FlipperKeyType.entries.forEach { fileType ->
             simpleKeyApi.getExistKeysAsFlow(fileType).onEach { keys ->
@@ -77,7 +76,7 @@ class CategoryViewModel @Inject constructor(
                     )
                     return@update mutableMap
                 }
-            }.launchIn(viewModelScope + Dispatchers.Default)
+            }.launchIn(viewModelScope)
         }
     }
 }

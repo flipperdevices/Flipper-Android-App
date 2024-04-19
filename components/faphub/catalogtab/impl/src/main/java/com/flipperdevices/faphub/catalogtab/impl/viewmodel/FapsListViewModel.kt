@@ -15,7 +15,6 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.api.model.SortType.Companion.toSortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,7 +62,7 @@ class FapsListViewModel @Inject constructor(
     fun getFapsFlow(): Flow<PagingData<FapItemShort>> = faps
 
     fun onSelectSortType(sortType: SortType) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             dataStoreSettings.updateData {
                 it.toBuilder()
                     .setSelectedCatalogSort(sortType.toSelectedSortType())

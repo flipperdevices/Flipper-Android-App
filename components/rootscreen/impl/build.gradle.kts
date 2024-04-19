@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.core.di)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)

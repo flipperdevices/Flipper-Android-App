@@ -15,6 +15,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomposeComponent
 import com.flipperdevices.firstpair.api.FirstPairApi
@@ -54,7 +55,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
-    private val scope = coroutineScope(Dispatchers.Default)
+    private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
 
     private val stack: Value<ChildStack<RootScreenConfig, DecomposeComponent>> = childStack(

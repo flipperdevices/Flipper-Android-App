@@ -6,13 +6,13 @@ import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -28,7 +28,7 @@ class UploadFileHelper(private val contentResolver: ContentResolver) : LogTagPro
         deeplinkContent: DeeplinkContent,
         filePath: String,
         onUpdateIncrement: (Long?) -> Unit
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         deeplinkContent.openStream(contentResolver).use { fileStream ->
             val stream = fileStream ?: return@use
             val requestFlow = streamToCommandFlow(

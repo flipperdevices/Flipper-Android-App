@@ -10,7 +10,6 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -27,7 +26,7 @@ class ScreenshotViewModel @Inject constructor(
 ) : DecomposeViewModel() {
     fun shareScreenshot(
         screenShapshot: FlipperScreenState
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         val currentSnapshotState = screenShapshot as? FlipperScreenState.Ready ?: return@launch
         var currentSnapshot = currentSnapshotState.bitmap
         currentSnapshot = currentSnapshot.rescale()

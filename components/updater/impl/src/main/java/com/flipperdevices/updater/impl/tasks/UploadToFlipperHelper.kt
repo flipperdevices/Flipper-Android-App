@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -20,7 +21,6 @@ import com.flipperdevices.protobuf.system.updateRequest
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -52,7 +52,7 @@ class UploadToFlipperHelperImpl @Inject constructor(
             updaterFolder,
             flipperPath
         ) { percent ->
-            withContext(Dispatchers.Default) {
+            withContext(FlipperDispatchers.workStealingDispatcher) {
                 stateListener(
                     UpdatingState.UploadOnFlipper(
                         percent = percent

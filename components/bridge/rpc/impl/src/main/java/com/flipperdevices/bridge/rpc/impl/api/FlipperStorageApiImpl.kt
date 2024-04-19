@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.rpc.impl.delegates.FlipperUploadDelegate
 import com.flipperdevices.bridge.rpc.impl.delegates.MkDirDelegate
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
@@ -17,7 +18,6 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -33,12 +33,12 @@ class FlipperStorageApiImpl @Inject constructor(
 ) : FlipperStorageApi, LogTagProvider {
     override val TAG = "FlipperStorageApi"
 
-    override suspend fun mkdirs(path: String) = withContext(Dispatchers.Default) {
+    override suspend fun mkdirs(path: String) = withContext(FlipperDispatchers.workStealingDispatcher) {
         mkDirDelegate.mkdir(flipperServiceProvider.getServiceApi().requestApi, path)
     }
 
     override suspend fun delete(path: String, recursive: Boolean) =
-        withContext(Dispatchers.Default) {
+        withContext(FlipperDispatchers.workStealingDispatcher) {
             val requestApi = flipperServiceProvider.getServiceApi().requestApi
             val response = requestApi.request(
                 main {
@@ -59,7 +59,7 @@ class FlipperStorageApiImpl @Inject constructor(
         pathOnFlipper: String,
         fileOnAndroid: File,
         progressListener: ProgressListener
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         flipperDownloadDelegate.download(
             requestApi = flipperServiceProvider.getServiceApi().requestApi,
             pathOnFlipper = pathOnFlipper,
@@ -72,7 +72,7 @@ class FlipperStorageApiImpl @Inject constructor(
         pathOnFlipper: String,
         fileOnAndroid: File,
         progressListener: ProgressListener
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         flipperUploadDelegate.upload(
             requestApi = flipperServiceProvider.getServiceApi().requestApi,
             pathOnFlipper = pathOnFlipper,

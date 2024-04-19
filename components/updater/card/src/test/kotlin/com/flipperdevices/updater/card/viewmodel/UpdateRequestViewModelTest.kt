@@ -58,7 +58,7 @@ class UpdateRequestViewModelTest {
     @Before
     fun setup() {
         mockkObject(FlipperDispatchers)
-        every { FlipperDispatchers.getDefault() } returns Dispatchers.Main.immediate
+        every { FlipperDispatchers.workStealingDispatcher } returns Dispatchers.Main.immediate
         mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
 
         serviceProvider = mockk(relaxUnitFun = true)

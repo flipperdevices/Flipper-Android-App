@@ -14,7 +14,7 @@ abstract class DecomposeViewModel : InstanceKeeper.Instance, LifecycleOwner {
 
     protected val viewModelScope = DecomposeViewModelCoroutineScopeProvider.provideCoroutineScope(
         lifecycleOwner = this@DecomposeViewModel,
-        context = SupervisorJob() + FlipperDispatchers.getDefault()
+        context = SupervisorJob() + FlipperDispatchers.workStealingDispatcher
     )
 
     init {

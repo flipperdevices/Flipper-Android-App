@@ -45,7 +45,7 @@ class Shake2ReportViewModel @Inject constructor(
         name: String,
         description: String,
         addLogs: Boolean
-    ) = viewModelScope.launch(Dispatchers.Default) {
+    ) = viewModelScope.launch {
         if (shake2ReportStateFlow.value !is Shake2ReportState.Pending) {
             return@launch
         }
