@@ -20,7 +20,6 @@ import com.flipperdevices.nfceditor.impl.model.NfcEditorState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -50,7 +49,7 @@ class NfcEditorViewModel @AssistedInject constructor(
     fun getCurrentActiveCellState() = textUpdaterHelper.getActiveCellState()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val flipperKey =
                 requireNotNull(simpleKeyApi.getKey(flipperKeyPath)) { "Not find key by $flipperKeyPath" }
             flipperKeyFlow.emit(flipperKey)

@@ -61,7 +61,7 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setIgnoreUnsupportedVersion(ignored)
@@ -73,7 +73,7 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun onSwitchIgnoreUpdaterVersion(alwaysUpdate: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setAlwaysUpdate(alwaysUpdate)
@@ -83,7 +83,7 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setIgnoreSubghzProvisioningOnZeroRegion(ignoreSubGhzProvisioningOnZeroRegion)
@@ -93,7 +93,7 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun onSwitchSkipAutoSync(skipAutoSync: Boolean) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             settingsDataStore.updateData {
                 it.toBuilder()
                     .setSkipAutoSyncInDebug(skipAutoSync)

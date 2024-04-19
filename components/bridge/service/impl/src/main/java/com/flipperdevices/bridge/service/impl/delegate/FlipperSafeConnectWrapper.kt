@@ -3,12 +3,12 @@ package com.flipperdevices.bridge.service.impl.delegate
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.isActive
@@ -39,7 +39,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
         info { "Call cancel and join to current job" }
         currentConnectingJob?.cancelAndJoin()
         info { "Job canceled! Call connect again" }
-        currentConnectingJob = scope.launch(Dispatchers.Default) {
+        currentConnectingJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             var errorOnDeviceUpdate: Throwable?
             do {
                 errorOnDeviceUpdate = runCatching {

@@ -7,7 +7,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.ScanState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
@@ -52,7 +50,7 @@ class BLEDeviceViewModel @Inject constructor(
         }
     }
 
-    private suspend fun startBLEDiscover() = withContext(Dispatchers.Default) {
+    private suspend fun startBLEDiscover() {
         info { "Start ble scan" }
         state.emit(ScanState.Searching)
         scanner.findFlipperDevices()

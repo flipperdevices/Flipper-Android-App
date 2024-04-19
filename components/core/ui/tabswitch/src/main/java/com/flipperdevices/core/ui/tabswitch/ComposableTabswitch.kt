@@ -11,6 +11,7 @@ import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,7 +60,7 @@ private fun<Tab : Enum<Tab>> ComposableFapHubSwitchInternal(
     var tabPositions by remember {
         mutableStateOf(emptyList<TabPosition>())
     }
-    var tabHeightPx by remember { mutableStateOf(0) }
+    var tabHeightPx by remember { mutableIntStateOf(0) }
     if (tabPositions.size > tab.ordinal) {
         val currentTabPosition = tabPositions[tab.ordinal]
         val tabHeight = with(LocalDensity.current) { tabHeightPx.toDp() }

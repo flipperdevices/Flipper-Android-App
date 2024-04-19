@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.ProtobufConstants
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.split
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.debug.stresstest.model.LogLine
@@ -121,7 +122,7 @@ class StressTestViewModel @Inject constructor(
 
     private suspend fun sendBufferToFile(
         requestApi: FlipperRequestApi
-    ) = withContext(Dispatchers.Default) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val splittedBytes = byteBuffer
             .split(ProtobufConstants.MAX_FILE_DATA)
         val requests = splittedBytes

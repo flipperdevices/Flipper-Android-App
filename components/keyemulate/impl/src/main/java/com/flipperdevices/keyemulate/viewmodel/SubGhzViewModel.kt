@@ -16,7 +16,6 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -67,7 +66,7 @@ class SubGhzViewModel @Inject constructor(
         }
 
         serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 startEmulateInternal(this, it, config)
             }
         }

@@ -82,7 +82,6 @@ private fun ColumnScope.UpdaterScreenHeader(
 
     if (updaterScreenState is UpdaterScreenState.Failed) {
         when (updaterScreenState.failedReason) {
-            FailedReason.FAILED_SUB_GHZ_PROVISIONING,
             FailedReason.FAILED_INT_STORAGE -> ComposableFlipperMockup(
                 flipperColor = flipperColor,
                 isActive = false,

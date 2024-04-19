@@ -9,12 +9,18 @@
 - [Feature] Per app loading in installed tab
 - [Feature] Add ability to preview screenshots of fap entries
 - [Refactor] Migrate to markdown renderer from upstream
-- [Refactor] Basic implementation of new transport ble 
+- [Refactor] Basic implementation of new transport ble
+- [Refactor] Remove kapt from service modules
 - [FIX] Replace decompose push to move safety push
 - [FIX] Add fallback for parse url from "Open in App" URI
 - [FIX] Multiple internet connection placeholders on Hub Apps screen
 - [FIX] Find already paired Flipper devices without state filter
 - [FIX] Update flipper is busy image
+- [FIX] Fixed ComposableWearEmulate narrow layout
+- [FIX] Fixed wearOS blocking operations in WearableCommand streams
+- [FIX] Replace Dispatchers.Default with java's work stealing pool dispatcher
+- [FIX] Fixed wrong error display when turning off flipper during update
+- [FIX] Fixed serialization of ImmutableList in screenshotspreview
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator

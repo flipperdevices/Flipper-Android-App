@@ -16,7 +16,6 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -56,7 +55,7 @@ class InfraredViewModel @Inject constructor(
         }
 
         serviceProvider.provideServiceApi(this) { serviceApi ->
-            viewModelScope.launch(Dispatchers.Default) {
+            viewModelScope.launch {
                 processSinglePress(serviceApi, this, config)
             }
         }

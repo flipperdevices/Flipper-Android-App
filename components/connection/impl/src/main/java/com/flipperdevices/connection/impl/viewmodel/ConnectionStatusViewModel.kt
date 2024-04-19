@@ -66,7 +66,7 @@ class ConnectionStatusViewModel @Inject constructor(
             if (it is ConnectionStatusState.Synchronized &&
                 switchFromSynchronizedJob == null
             ) {
-                switchFromSynchronizedJob = viewModelScope.launch(Dispatchers.Default) {
+                switchFromSynchronizedJob = viewModelScope.launch {
                     delay(TIMEOUT_SYNCHRONIZED_STATUS_MS)
                     statusState.update {
                         if (it is ConnectionStatusState.Synchronized) {

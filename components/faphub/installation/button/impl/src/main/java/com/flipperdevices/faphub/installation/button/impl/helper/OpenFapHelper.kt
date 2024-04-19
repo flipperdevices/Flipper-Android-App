@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
@@ -70,7 +71,7 @@ class OpenFapHelperImpl @Inject constructor(
     }
 
     init {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             val serviceApi = serviceProvider.getServiceApi()
             serviceApi.flipperVersionApi.getVersionInformationFlow().collectLatest {
                 rpcVersionFlow.emit(it)

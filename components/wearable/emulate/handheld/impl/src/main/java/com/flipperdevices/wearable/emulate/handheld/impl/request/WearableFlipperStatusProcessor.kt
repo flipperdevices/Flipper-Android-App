@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -14,7 +15,6 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectSta
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -42,7 +42,7 @@ class WearableFlipperStatusProcessor @Inject constructor(
             }
         }.launchIn(scope)
 
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             flipperServiceProvider
                 .getServiceApi()
                 .connectionInformationApi

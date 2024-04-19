@@ -10,19 +10,19 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.singleactivity.impl.SingleActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
     override val TAG = "FlipperApplication"
 
-    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val applicationScope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
     override fun onCreate() {
         super.onCreate()
 

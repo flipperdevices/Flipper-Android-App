@@ -13,12 +13,10 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private const val CHUNK_RECEIVED_COUNT = 50
@@ -32,7 +30,7 @@ class FapInstallationAllImpl @Inject constructor(
 ) : FapInstallationAllApi, LogTagProvider {
     override val TAG = "FapInstallationAllApi"
 
-    override suspend fun installAll() = withContext(Dispatchers.Default) {
+    override suspend fun installAll() {
         info { "Start receive installed apps" }
         val alreadyInstalledApps = manifestApi.getManifestFlow()
             .filter { it is FapManifestState.Loaded && !it.inProgress }

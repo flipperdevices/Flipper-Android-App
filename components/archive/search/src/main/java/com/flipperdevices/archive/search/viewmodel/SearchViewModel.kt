@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -32,7 +31,7 @@ class SearchViewModel @Inject constructor(
                 .collect {
                     searchState.emit(SearchState.Loaded(it.toImmutableList()))
                 }
-        }.launchIn(viewModelScope + Dispatchers.Default)
+        }.launchIn(viewModelScope)
     }
 
     fun getState(): StateFlow<SearchState> = searchState
@@ -41,7 +40,7 @@ class SearchViewModel @Inject constructor(
         synchronizationApi.getSynchronizationState()
 
     fun onChangeText(text: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             queryFlow.emit(text)
         }
     }

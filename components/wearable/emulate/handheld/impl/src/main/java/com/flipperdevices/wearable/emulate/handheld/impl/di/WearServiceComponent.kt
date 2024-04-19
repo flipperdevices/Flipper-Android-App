@@ -4,7 +4,6 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -12,9 +11,6 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableCommandProcessor
 import com.squareup.anvil.annotations.ContributesTo
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
-import dagger.Component
 import kotlinx.coroutines.CoroutineScope
 
 @ContributesTo(AppGraph::class)
@@ -26,21 +22,23 @@ interface WearServiceComponentDependencies {
     val keyParser: KeyParser
 }
 
-@SingleIn(WearHandheldGraph::class)
-@MergeComponent(
-    WearHandheldGraph::class,
-    dependencies = [WearServiceComponentDependencies::class]
-)
-interface WearServiceComponent : WearServiceComponentDependencies {
+interface WearServiceComponent {
     val commandInputStream: WearableCommandInputStream<Main.MainRequest>
     val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>
     val commandProcessors: Set<WearableCommandProcessor>
 
-    @Component.Factory
-    interface Factory {
+    /**
+     * This [ManualFactory] is required to escape from usage of kapt inside this module.
+     *
+     * [ManualFactory.create] will return manually created [WearServiceComponent] instance
+     */
+    object ManualFactory {
         fun create(
             deps: WearServiceComponentDependencies,
-            @BindsInstance scope: CoroutineScope
-        ): WearServiceComponent
+            scope: CoroutineScope
+        ): WearServiceComponent = WearServiceComponentImpl(
+            deps = deps,
+            scope = scope
+        )
     }
 }

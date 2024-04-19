@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.ble.impl.serial
 
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ class SpeedMeter(scope: CoroutineScope) {
     private var bytesCollected = AtomicLong(0)
 
     init {
-        scope.launch(Dispatchers.Default) {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             calculateSpeedEachSecond()
         }
     }
@@ -29,7 +29,7 @@ class SpeedMeter(scope: CoroutineScope) {
         bytesCollected.addAndGet(bytesCount.toLong())
     }
 
-    private suspend fun calculateSpeedEachSecond() = withContext(Dispatchers.Default) {
+    private suspend fun calculateSpeedEachSecond() = withContext(FlipperDispatchers.workStealingDispatcher) {
         while (isActive) {
             delay(DELAY_MS)
             val totalBytes = bytesCollected.getAndSet(0)

@@ -88,10 +88,10 @@ fun ComposableUpdateContent(
             percent = null
         )
         is UpdaterScreenState.Failed -> when (updaterScreenState.failedReason) {
+            FailedReason.FAILED_SUB_GHZ_PROVISIONING,
             FailedReason.UPLOAD_ON_FLIPPER -> ComposableFailedUploadContent()
             FailedReason.DOWNLOAD_FROM_NETWORK -> ComposableFailedDownloadContent(onRetry)
             FailedReason.OUTDATED_APP -> ComposableOutdatedApp()
-            FailedReason.FAILED_SUB_GHZ_PROVISIONING,
             FailedReason.FAILED_INT_STORAGE -> ComposableInternalFlashFailed()
             FailedReason.FAILED_INTERNAL_UPDATE -> ComposableInternalUpdateFailed()
         }

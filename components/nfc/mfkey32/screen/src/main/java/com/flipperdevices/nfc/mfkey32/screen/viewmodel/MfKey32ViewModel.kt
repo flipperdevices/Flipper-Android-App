@@ -27,7 +27,6 @@ import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancelAndJoin
@@ -81,7 +80,7 @@ class MfKey32ViewModel @Inject constructor(
         viewModelScope.launch {
             mutex.withLock {
                 val localJob = stateJob
-                stateJob = viewModelScope.launch(Dispatchers.Default) {
+                stateJob = viewModelScope.launch {
                     localJob?.cancelAndJoin()
                     serviceApi
                         .connectionInformationApi

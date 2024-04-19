@@ -89,7 +89,7 @@ class FapScreenViewModel @AssistedInject constructor(
             SimpleEvent.HIDE_FAPHUB_APP,
             loadingState.fapItem.applicationAlias
         )
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             if (isHidden) {
                 fapHubHideApi.unHideItem(loadingState.fapItem.id)
             } else {
@@ -117,7 +117,7 @@ class FapScreenViewModel @AssistedInject constructor(
 
     fun onRefresh() = launchWithLock(mutex, viewModelScope, "refresh") {
         downloadFapJob?.cancelAndJoin()
-        downloadFapJob = viewModelScope.launch(Dispatchers.Default) {
+        downloadFapJob = viewModelScope.launch {
             fapScreenLoadingStateFlow.emit(FapScreenLoadingState.Loading)
             controlStateFlow.emit(FapDetailedControlState.Loading)
             targetProviderApi.getFlipperTarget().collectLatest { target ->
@@ -141,7 +141,7 @@ class FapScreenViewModel @AssistedInject constructor(
                         currentVersion = fapItem.upToDateVersion
                     ).onEach { state ->
                         controlStateFlow.emit(state.toControlState(fapItem))
-                    }.launchIn(viewModelScope + Dispatchers.Default)
+                    }.launchIn(viewModelScope)
                 }.onFailure {
                     error(it) { "Failed fetch single application" }
                     if (it !is CancellationException) {

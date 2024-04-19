@@ -1,11 +1,11 @@
 package com.flipperdevices.bridge.api.manager.observers
 
 import android.bluetooth.BluetoothDevice
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.observer.ConnectionObserver
 
@@ -37,7 +37,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceConnecting(device: BluetoothDevice) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceConnecting(device)
             }
         }
@@ -46,7 +46,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceConnected(device: BluetoothDevice) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceConnected(device)
             }
         }
@@ -55,7 +55,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceFailedToConnect(device, reason)
             }
         }
@@ -64,7 +64,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceReady(device: BluetoothDevice) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceReady(device)
             }
         }
@@ -73,7 +73,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceDisconnecting(device: BluetoothDevice) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceDisconnecting(device)
             }
         }
@@ -82,7 +82,7 @@ class ConnectionObserverComposite(
     @Synchronized
     override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
         observers.forEachIterable {
-            scope.launch(Dispatchers.Default) {
+            scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 it.onDeviceDisconnected(device, reason)
             }
         }

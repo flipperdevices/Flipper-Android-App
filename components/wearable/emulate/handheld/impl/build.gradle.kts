@@ -1,11 +1,9 @@
 plugins {
     id("flipper.android-lib")
     id("flipper.anvil")
-    id("kotlin-kapt")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.handheld.impl"
-anvil.generateDaggerFactories.set(false) // WearServiceComponent
 
 dependencies {
     implementation(projects.components.wearable.emulate.common)
@@ -28,7 +26,6 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
 
     implementation(libs.wear)
     implementation(libs.wear.gms)

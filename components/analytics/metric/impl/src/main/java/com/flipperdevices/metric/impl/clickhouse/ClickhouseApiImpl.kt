@@ -3,6 +3,7 @@ package com.flipperdevices.metric.impl.clickhouse
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
@@ -42,7 +43,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -61,7 +61,7 @@ class ClickhouseApiImpl @Inject constructor(
 ) : ClickhouseApi, LogTagProvider {
     override val TAG = "ClickhouseApi"
 
-    private val scope = CoroutineScope(SupervisorJob())
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
     private val sessionUUID by lazy { UUID.randomUUID() }
 
     @Suppress("CyclomaticComplexMethod")
@@ -90,7 +90,7 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.HIDE_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.HIDE_FAPHUB_APP
         }
 
-        scope.launch(Dispatchers.Default) {
+        scope.launch {
             reportToServerSafe(
                 metricEventsCollection {
                     open = open {
@@ -216,7 +216,7 @@ class ClickhouseApiImpl @Inject constructor(
             error { "Can't process event $complexEvent" }
             return
         }
-        scope.launch(Dispatchers.Default) {
+        scope.launch {
             reportToServerSafe(event)
         }
     }

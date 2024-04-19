@@ -9,7 +9,6 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -30,7 +29,7 @@ class GeneralTabViewModel @Inject constructor(
         MutableStateFlow<SynchronizationState>(SynchronizationState.NotStarted)
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             simpleKeyApi.getExistKeysAsFlow(null)
                 .combine(favoriteApi.getFavoritesFlow()) { keyList, favoriteKeysList ->
                     val favoriteKeyPaths = favoriteKeysList.map { it.path }.toSet()
@@ -38,10 +37,10 @@ class GeneralTabViewModel @Inject constructor(
                         keyList.filterNot { favoriteKeyPaths.contains(it.path) }
                     keys.emit(keysExceptFavorite.toImmutableList())
                     favoriteKeys.emit(favoriteKeysList.toImmutableList())
-                }.launchIn(viewModelScope + Dispatchers.Default)
+                }.launchIn(viewModelScope)
             synchronizationApi.getSynchronizationState().onEach {
                 synchronizationState.emit(it)
-            }.launchIn(viewModelScope + Dispatchers.Default)
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -54,7 +53,7 @@ class GeneralTabViewModel @Inject constructor(
     }
 
     fun cancelSynchronization() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             synchronizationApi.stop()
         }
     }

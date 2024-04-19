@@ -11,7 +11,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -27,7 +26,7 @@ class CategoryViewModel @AssistedInject constructor(
     private val categoryState = MutableStateFlow<CategoryState>(CategoryState.Loading)
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             when (categoryType) {
                 is CategoryType.ByFileType -> simpleKeyApi.getExistKeysAsFlow(categoryType.fileType)
                 CategoryType.Deleted -> deleteKeyApi.getDeletedKeyAsFlow()

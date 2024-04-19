@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.installedtab.impl.viewmodel
 
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -18,7 +19,6 @@ import com.flipperdevices.faphub.installedtab.impl.model.toScreenState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +72,7 @@ class InstalledFapsViewModel @Inject constructor(
 
     fun getFapBatchUpdateButtonState() = batchUpdateButtonState.asStateFlow()
 
-    fun updateAll() = viewModelScope.launch(Dispatchers.Default) {
+    fun updateAll() = viewModelScope.launch {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }
@@ -100,7 +100,7 @@ class InstalledFapsViewModel @Inject constructor(
         }
     }
 
-    fun cancelAll() = viewModelScope.launch(Dispatchers.Default) {
+    fun cancelAll() = viewModelScope.launch {
         val state = installedFapsStateFlow.first()
         if (state !is FapInstalledInternalLoadingState.Loaded) {
             info { "State is $state, so just return" }
@@ -115,7 +115,7 @@ class InstalledFapsViewModel @Inject constructor(
     fun refresh(force: Boolean) {
         fapsStateProducer.refresh(force)
         val oldJob = fetcherJob
-        fetcherJob = viewModelScope.launch(Dispatchers.Default) {
+        fetcherJob = viewModelScope.launch(FlipperDispatchers.workStealingDispatcher) {
             oldJob?.cancelAndJoin()
             installedFapsStateFlow.emit(
                 FapInstalledInternalLoadingState.Loaded(

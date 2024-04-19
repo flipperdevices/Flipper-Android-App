@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.screenshotspreview.api.model
 
+import com.flipperdevices.faphub.screenshotspreview.api.serialization.ImmutableListSerializer
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.serialization.Serializable
 
@@ -11,6 +12,7 @@ import kotlinx.serialization.Serializable
  */
 data class ScreenshotsPreviewParam(
     val title: String,
+    @Serializable(with = ImmutableListSerializer::class)
     val screenshotsUrls: ImmutableList<String>,
     val selected: Int,
 )
