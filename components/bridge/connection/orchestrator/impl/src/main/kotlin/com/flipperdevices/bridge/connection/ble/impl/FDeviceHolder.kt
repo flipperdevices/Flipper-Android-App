@@ -1,8 +1,8 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
-import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
-import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
-import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
+import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.FDeviceConnectionConfig
+import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.connectionbuilder.api.FDeviceConfigToConnection
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider

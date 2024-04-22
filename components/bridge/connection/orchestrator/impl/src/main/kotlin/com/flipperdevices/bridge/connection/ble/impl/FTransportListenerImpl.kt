@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
-import com.flipperdevices.bridge.connection.common.api.FInternalTransportConnectionStatus
-import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
+import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
+import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.orchestrator.api.model.ConnectingStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.DisconnectStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus

@@ -11,8 +11,8 @@ dependencies {
     implementation(projects.components.core.di)
 
     implementation(projects.components.bridge.connection.orchestrator.api)
-    implementation(projects.components.bridge.connection.ble.api)
-    implementation(projects.components.bridge.connection.common.api)
+    implementation(projects.components.bridge.connection.transport.ble.api)
+    implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.connectionbuilder.api)
 
     implementation(libs.kotlin.coroutines)

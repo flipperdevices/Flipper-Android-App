@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.orchestrator.api.model
 
-import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 
 sealed class FDeviceConnectStatus {
     data class Disconnected(val reason: DisconnectStatus) : FDeviceConnectStatus()

@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
-import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
-import com.flipperdevices.bridge.connection.common.api.FInternalTransportConnectionStatus
+import com.flipperdevices.bridge.connection.transport.common.api.FDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
