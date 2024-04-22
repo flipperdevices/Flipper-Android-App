@@ -7,6 +7,7 @@ object FlipperStorageProvider {
     private const val KEYS_DIR = "keysfiles/"
     internal const val DATASTORE_FILENAME_SETTINGS = "settings.pb"
     internal const val DATASTORE_FILENAME_PAIR_SETTINGS = "pair_settings.pb"
+    internal const val DATASTORE_FILENAME_PAIR_SETTINGS_V2 = "pair_settings_v2.pb"
 
     fun getTemporaryFile(context: Context): File {
         var index = 0

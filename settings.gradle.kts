@@ -51,6 +51,8 @@ include(
     ":components:bridge:connection:common:api",
     ":components:bridge:connection:common:impl",
     ":components:bridge:connection:sample",
+    ":components:bridge:connection:config:api",
+    ":components:bridge:connection:config:impl",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
