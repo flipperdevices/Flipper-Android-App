@@ -266,7 +266,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.profileinstaller)
-    baselineProfile(projects.components.baselineprofile)
+    baselineProfile(projects.instances.android.baselineprofile)
 }
 
 baselineProfile {
