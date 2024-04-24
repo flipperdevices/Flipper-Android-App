@@ -266,7 +266,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.profileinstaller)
-    "baselineProfile"(project(":components:baselineprofile"))
+    baselineProfile(projects.components.baselineprofile)
 }
 
 baselineProfile {
