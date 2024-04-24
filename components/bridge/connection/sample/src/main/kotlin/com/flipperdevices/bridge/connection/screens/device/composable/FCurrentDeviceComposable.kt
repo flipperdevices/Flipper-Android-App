@@ -9,8 +9,11 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 
 @Composable
-fun FCurrentDeviceComposable(deviceConnectStatus: FDeviceConnectStatus) {
-    Column(modifier = Modifier.padding(16.dp)) {
+fun FCurrentDeviceComposable(
+    deviceConnectStatus: FDeviceConnectStatus,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.padding(16.dp)) {
         Text("State: ${deviceConnectStatus.getHumanReadableName()}")
         Text("Name: ${deviceConnectStatus.currentDevice()?.humanReadableName}")
     }

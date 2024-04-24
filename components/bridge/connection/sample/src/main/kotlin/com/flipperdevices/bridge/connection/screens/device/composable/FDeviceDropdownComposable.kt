@@ -28,15 +28,17 @@ import com.flipperdevices.core.ui.res.R as DrawableRes
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+@Suppress("LongMethod")
 fun FDeviceDropdownComposable(
     devicesState: DevicesDropdownState,
     onDeviceSelect: (FDeviceBaseModel) -> Unit,
     onOpenSearch: () -> Unit,
-    onDisconnect: () -> Unit
+    onDisconnect: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
             .clickableRipple { expanded = true }

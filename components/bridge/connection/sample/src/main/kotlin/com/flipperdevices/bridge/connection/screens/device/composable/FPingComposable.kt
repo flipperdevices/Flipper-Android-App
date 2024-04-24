@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.connection.screens.device.composable
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,9 +17,10 @@ import kotlinx.collections.immutable.PersistentList
 @Composable
 fun FPingComposable(
     logs: PersistentList<String>,
-    onSendPing: () -> Unit
+    onSendPing: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier) {
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -41,5 +41,4 @@ fun FPingComposable(
             Text(text = "Send ping")
         }
     }
-
 }
