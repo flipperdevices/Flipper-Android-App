@@ -7,8 +7,10 @@ import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.connection.screens.device.composable.FCurrentDeviceComposable
 import com.flipperdevices.bridge.connection.screens.device.composable.FDeviceDropdownComposable
+import com.flipperdevices.bridge.connection.screens.device.composable.FPingComposable
 import com.flipperdevices.bridge.connection.screens.device.viewmodel.FCurrentDeviceViewModel
 import com.flipperdevices.bridge.connection.screens.device.viewmodel.FDevicesViewModel
+import com.flipperdevices.bridge.connection.screens.device.viewmodel.PingViewModel
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
@@ -20,13 +22,17 @@ class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onOpenSearch: () -> Unit,
     private val devicesViewModelProvider: Provider<FDevicesViewModel>,
-    private val currentDeviceViewModelProvider: Provider<FCurrentDeviceViewModel>
+    private val currentDeviceViewModelProvider: Provider<FCurrentDeviceViewModel>,
+    private val pingViewModelProvider: Provider<PingViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
     private val devicesViewModel = viewModelWithFactoryWithoutRemember(null) {
         devicesViewModelProvider.get()
     }
     private val currentDeviceViewModel = viewModelWithFactoryWithoutRemember(null) {
         currentDeviceViewModelProvider.get()
+    }
+    private val pingViewModel = viewModelWithFactoryWithoutRemember(null) {
+        pingViewModelProvider.get()
     }
 
     @Composable
@@ -41,6 +47,11 @@ class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
             )
             val currentDevice by currentDeviceViewModel.getState().collectAsState()
             FCurrentDeviceComposable(currentDevice)
+            val logs by pingViewModel.getLogLinesState().collectAsState()
+            FPingComposable(
+                logs = logs,
+                onSendPing = pingViewModel::sendPing
+            )
         }
     }
 
