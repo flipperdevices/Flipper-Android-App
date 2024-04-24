@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
+import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
-import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.orchestrator.api.model.ConnectingStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.DisconnectStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
@@ -11,44 +11,65 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class FTransportListenerImpl : FTransportConnectionStatusListener, LogTagProvider {
+class FTransportListenerImpl : LogTagProvider {
     override val TAG = "FTransportListener"
 
     private val state = MutableStateFlow<FDeviceConnectStatus>(
-        FDeviceConnectStatus.Disconnected(DisconnectStatus.NOT_INITIALIZED)
+        FDeviceConnectStatus.Disconnected(
+            device = null,
+            reason = DisconnectStatus.NOT_INITIALIZED
+        )
     )
 
     fun getState() = state.asStateFlow()
 
-    fun onErrorDuringConnect(throwable: Throwable) {
+    fun onErrorDuringConnect(device: FDeviceBaseModel, throwable: Throwable) {
         when (throwable) {
             else -> {
                 error(throwable) { "Unknown error from transport layer" }
-                state.update { FDeviceConnectStatus.Disconnected(DisconnectStatus.ERROR_UNKNOWN) }
+                state.update {
+                    FDeviceConnectStatus.Disconnected(
+                        device = device,
+                        reason = DisconnectStatus.ERROR_UNKNOWN
+                    )
+                }
             }
         }
     }
 
-    override fun onStatusUpdate(status: FInternalTransportConnectionStatus) {
+    fun onStatusUpdate(device: FDeviceBaseModel, status: FInternalTransportConnectionStatus) {
         state.update { currentStatus ->
             when (status) {
                 is FInternalTransportConnectionStatus.Connected -> FDeviceConnectStatus.Connected(
-                    status.deviceApi
+                    device = device,
+                    deviceApi = status.deviceApi
                 )
 
                 FInternalTransportConnectionStatus.Connecting ->
-                    FDeviceConnectStatus.Connecting(ConnectingStatus.CONNECTING)
+                    FDeviceConnectStatus.Connecting(
+                        device = device,
+                        status = ConnectingStatus.CONNECTING
+                    )
 
                 FInternalTransportConnectionStatus.Disconnected ->
                     if (currentStatus is FDeviceConnectStatus.Disconnected) {
                         currentStatus
                     } else {
-                        FDeviceConnectStatus.Disconnected(DisconnectStatus.REPORTED_BY_TRANSPORT)
+                        FDeviceConnectStatus.Disconnected(
+                            device = device,
+                            reason = DisconnectStatus.REPORTED_BY_TRANSPORT
+                        )
                     }
 
-                FInternalTransportConnectionStatus.Disconnecting -> FDeviceConnectStatus.Disconnecting
+                FInternalTransportConnectionStatus.Disconnecting -> FDeviceConnectStatus.Disconnecting(
+                    device
+                )
+
                 FInternalTransportConnectionStatus.Pairing ->
-                    FDeviceConnectStatus.Connecting(ConnectingStatus.INITIALIZING)
+                    FDeviceConnectStatus.Connecting(
+                        device = device,
+                        status = ConnectingStatus.INITIALIZING
+                    )
             }
         }
     }
