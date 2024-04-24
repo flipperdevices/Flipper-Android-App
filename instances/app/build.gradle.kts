@@ -273,5 +273,5 @@ baselineProfile {
     // Generate a single profile for each variants
     mergeIntoMain = false
     automaticGenerationDuringBuild = false
-    saveInSrc = false
+    saveInSrc = true
 }
