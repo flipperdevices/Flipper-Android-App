@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
@@ -12,16 +13,18 @@ import com.flipperdevices.core.preference.pb.SavedDevice
 import com.flipperdevices.core.preference.pb.SavedDevice.DataCase
 import com.flipperdevices.core.preference.pb.flipperZeroBle
 import com.flipperdevices.core.preference.pb.savedDevice
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+@ContributesBinding(AppGraph::class, FDevicePersistedStorage::class)
 class FDevicePersistedStorageImpl @Inject constructor(
     private val newPairSettings: DataStore<NewPairSettings>
 ) : FDevicePersistedStorage, LogTagProvider {
     override val TAG = "FDevicePersistedStorage"
 
-    override suspend fun getCurrentDevice(): Flow<FDeviceBaseModel?> {
+    override fun getCurrentDevice(): Flow<FDeviceBaseModel?> {
         return newPairSettings.data.map { settings ->
             val deviceId = settings.currentSelectedDeviceId
             if (deviceId.isNullOrBlank()) {
@@ -33,12 +36,33 @@ class FDevicePersistedStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun addDevice(device: FDeviceBaseModel) {
+    override suspend fun setCurrentDevice(id: String?) {
+        newPairSettings.updateData { settings ->
+            var builder = settings.toBuilder()
+            if (id == null) {
+                builder = builder
+                    .clearCurrentSelectedDeviceId()
+            } else if (settings.devicesList.find { it.id == id } == null) {
+                error("Can't find device with id $id")
+            } else {
+                builder = builder
+                    .setCurrentSelectedDeviceId(id)
+            }
+            builder.build()
+        }
+    }
+
+    override suspend fun addDevice(device: FDeviceBaseModel, isCurrentDevice: Boolean) {
         info { "Add device $device" }
         newPairSettings.updateData { settings ->
-            settings.toBuilder()
+            var builder = settings.toBuilder()
                 .addDevices(mapDeviceBaseModelToSavedDevice(device))
-                .build()
+
+            if (isCurrentDevice) {
+                builder = builder.setCurrentSelectedDeviceId(device.uniqueId)
+            }
+
+            builder.build()
         }
     }
 

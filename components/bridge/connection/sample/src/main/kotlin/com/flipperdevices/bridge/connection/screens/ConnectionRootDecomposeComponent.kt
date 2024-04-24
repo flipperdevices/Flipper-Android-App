@@ -9,7 +9,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
-import com.flipperdevices.bridge.connection.screens.benchmark.BenchmarkScreenDecomposeComponent
+import com.flipperdevices.bridge.connection.screens.device.ConnectionDeviceScreenDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
 import com.flipperdevices.bridge.connection.screens.nopermission.ConnectionNoPermissionDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.search.ConnectionSearchDecomposeComponent
@@ -23,13 +23,13 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val context: Context,
     private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory,
-    private val benchmarkScreenDecomposeComponentFactory: BenchmarkScreenDecomposeComponent.Factory
+    private val connectionDeviceScreenDecomposeComponentFactory: ConnectionDeviceScreenDecomposeComponent.Factory
 ) : CompositeDecomposeComponent<ConnectionRootConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<ConnectionRootConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = ConnectionRootConfig.serializer(),
         initialConfiguration = if (isPermissionGranted()) {
-            ConnectionRootConfig.Main
+            ConnectionRootConfig.Device
         } else {
             ConnectionRootConfig.NoPermission
         },
@@ -41,18 +41,17 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
         config: ConnectionRootConfig,
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
-        is ConnectionRootConfig.Main -> searchDecomposeFactory(
-            componentContext = componentContext,
-            onItemSelect = { navigation.push(ConnectionRootConfig.Benchmark(it)) }
+        is ConnectionRootConfig.Search -> searchDecomposeFactory(
+            componentContext = componentContext
         )
 
         is ConnectionRootConfig.NoPermission ->
             ConnectionNoPermissionDecomposeComponent(componentContext)
 
-        is ConnectionRootConfig.Benchmark ->
-            benchmarkScreenDecomposeComponentFactory(
+        is ConnectionRootConfig.Device ->
+            connectionDeviceScreenDecomposeComponentFactory(
                 componentContext = componentContext,
-                address = config.address
+                onOpenSearch = { navigation.push(ConnectionRootConfig.Search) }
             )
     }
 

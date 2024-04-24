@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class ConnectionRootConfig {
     @Serializable
-    data object Main : ConnectionRootConfig()
+    data object Search : ConnectionRootConfig()
 
     @Serializable
     data object NoPermission : ConnectionRootConfig()
 
     @Serializable
-    data class Benchmark(val address: String) : ConnectionRootConfig()
+    data object Device : ConnectionRootConfig()
 }

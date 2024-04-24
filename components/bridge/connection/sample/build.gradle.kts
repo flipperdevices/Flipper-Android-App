@@ -38,6 +38,10 @@ dependencies {
     implementation(projects.components.bridge.connection.orchestrator.impl)
     implementation(projects.components.bridge.connection.connectionbuilder.api)
     implementation(projects.components.bridge.connection.connectionbuilder.impl)
+    implementation(projects.components.bridge.connection.config.api)
+    implementation(projects.components.bridge.connection.config.impl)
+    implementation(projects.components.bridge.connection.transportconfigbuilder.api)
+    implementation(projects.components.bridge.connection.transportconfigbuilder.impl)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
 

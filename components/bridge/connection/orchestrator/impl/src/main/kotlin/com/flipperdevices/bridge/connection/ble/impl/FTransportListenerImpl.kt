@@ -1,10 +1,10 @@
 package com.flipperdevices.bridge.connection.ble.impl
 
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
-import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.ConnectingStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.DisconnectStatus
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
+import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import kotlinx.coroutines.flow.MutableStateFlow

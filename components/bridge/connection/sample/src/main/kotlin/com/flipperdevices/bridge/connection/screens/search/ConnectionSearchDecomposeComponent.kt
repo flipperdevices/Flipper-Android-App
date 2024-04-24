@@ -1,10 +1,12 @@
 package com.flipperdevices.bridge.connection.screens.search
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.connection.R
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
@@ -25,7 +28,6 @@ import javax.inject.Provider
 
 class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val onItemSelect: (String) -> Unit,
     private val searchViewModelProvider: Provider<ConnectionSearchViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
 
@@ -43,14 +45,39 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
                 style = LocalTypography.current.titleB24
             )
             LazyColumn {
-                items(devices, key = { it.address }) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickableRipple { onItemSelect(it.address) }
-                            .padding(16.dp),
-                        text = it.name ?: it.address
-                    )
+                items(
+                    devices,
+                    key = { (device, _) -> device.address }
+                ) { (device, savedDeviceModel) ->
+                    Row {
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(16.dp),
+                            text = device.name ?: device.address
+                        )
+
+                        Icon(
+                            modifier = Modifier
+                                .clickableRipple {
+                                    if (savedDeviceModel == null) {
+                                        searchViewModel.onAddDevice(device)
+                                    } else {
+                                        searchViewModel.onDeleteDevice(savedDeviceModel)
+                                    }
+                                }
+                                .padding(16.dp)
+                                .size(24.dp),
+                            painter = painterResourceByKey(
+                                if (savedDeviceModel == null) {
+                                    android.R.drawable.ic_menu_add
+                                } else {
+                                    android.R.drawable.ic_menu_delete
+                                }
+                            ),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
         }
@@ -59,8 +86,7 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            componentContext: ComponentContext,
-            onItemSelect: (String) -> Unit
+            componentContext: ComponentContext
         ): ConnectionSearchDecomposeComponent
     }
 }
