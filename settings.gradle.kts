@@ -249,4 +249,6 @@ include(
 
     ":components:rootscreen:api",
     ":components:rootscreen:impl",
+
+    ":components:baselineprofile"
 )

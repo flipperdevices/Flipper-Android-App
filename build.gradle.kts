@@ -8,4 +8,6 @@ plugins {
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.google.gms) apply false
     id("flipper.lint")
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
