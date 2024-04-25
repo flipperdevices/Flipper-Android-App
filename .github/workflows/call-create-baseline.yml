@@ -33,9 +33,6 @@ jobs:
           distribution: 'adopt'
           java-version: 17
 
-      - name: Give gradle permission
-        run: chmod +x gradlew
-
       # Make kvm able to launch emulator
       - name: Enable KVM group perms
         run: |
