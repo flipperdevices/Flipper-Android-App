@@ -3,6 +3,7 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import com.flipperdevices.core.ktx.android.BitmapKtx.rescale
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
@@ -17,7 +18,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
-private const val TIMEFORMAT = "yyyy-MM-dd-HH:mm:ss"
+private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
 private const val QUALITY = 100
 private const val EXPORT_RESCALE_MULTIPLIER = 8f
 
@@ -29,7 +30,7 @@ class ScreenshotViewModel @Inject constructor(
     ) = viewModelScope.launch {
         val currentSnapshotState = screenShapshot as? FlipperScreenState.Ready ?: return@launch
         var currentSnapshot = currentSnapshotState.bitmap
-        currentSnapshot = currentSnapshot.rescale()
+        currentSnapshot = currentSnapshot.rescale(EXPORT_RESCALE_MULTIPLIER)
         currentSnapshot = when (screenShapshot.orientation) {
             ScreenOrientationEnum.VERTICAL,
             ScreenOrientationEnum.VERTICAL_FLIP -> currentSnapshot.rotate(angel = 90f)
@@ -45,20 +46,6 @@ class ScreenshotViewModel @Inject constructor(
         }
         ShareHelper.shareFile(application, sharableFile, R.string.screenshot_export_title)
     }
-}
-
-private fun Bitmap.rescale(): Bitmap {
-    val matrix = Matrix()
-    matrix.postScale(EXPORT_RESCALE_MULTIPLIER, EXPORT_RESCALE_MULTIPLIER)
-    return Bitmap.createBitmap(
-        this,
-        0,
-        0,
-        width,
-        height,
-        matrix,
-        false
-    )
 }
 
 private fun Bitmap.rotate(angel: Float): Bitmap {
