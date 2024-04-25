@@ -34,10 +34,9 @@ jobs:
           echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   create_release_baseline:
     needs: build_number
-    uses: ./.github/workflows/calls/create-baseline-call.yml
+    uses: ./.github/workflows/call-create-baseline.yml
     with:
       BUILD_VARIANT_NAME: "release"
-      BUILD_VARIANT_NAME_UPPERCASE: "Release"
   build_release:
     name: Build Release AAB and APK
     runs-on: ubuntu-latest
@@ -55,10 +54,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - uses: actions/download-artifact@master
-        name: "Download release baseline file"
+        name: "Download ${{ needs.create_release_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
         with:
-          name: baseline_profile_file_release
-          path: ./instances/app/src/release/generated/baselineProfiles/baseline-prof.txt
+          name: ${{ needs.create_release_baseline.outputs.BASELINE_FILE_ID }}
+          path: ${{ needs.create_release_baseline.outputs.BASELINE_FILE_PATH }}
       - name: 'Set variables'
         id: vars
         run: |

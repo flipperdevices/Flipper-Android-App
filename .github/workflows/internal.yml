@@ -53,10 +53,9 @@ jobs:
           echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   create_internal_baseline:
     needs: build_number
-    uses: ./.github/workflows/calls/create-baseline-call.yml
+    uses: ./.github/workflows/call-create-baseline.yml
     with:
       BUILD_VARIANT_NAME: "internal"
-      BUILD_VARIANT_NAME_UPPERCASE: "Internal"
   build_internal_release:
     name: Build Internal AAB and APK
     runs-on: ubuntu-latest
@@ -69,10 +68,10 @@ jobs:
         with:
           submodules: 'recursive'
       - uses: actions/download-artifact@master
-        name: "Download internal baseline file"
+        name: "Download ${{ needs.create_internal_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
         with:
-          name: baseline_profile_file_internal
-          path: ./instances/app/src/internal/generated/baselineProfiles/baseline-prof.txt
+          name: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_ID }}
+          path: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_PATH }}
       - name: Set up JDK 1.17
         uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
         with:
