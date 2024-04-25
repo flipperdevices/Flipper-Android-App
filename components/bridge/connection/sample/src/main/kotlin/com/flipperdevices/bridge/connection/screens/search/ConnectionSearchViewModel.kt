@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
-import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.PersistentList
@@ -30,10 +29,9 @@ class ConnectionSearchViewModel @Inject constructor(
     private val persistedStorage: FDevicePersistedStorage
 ) : DecomposeViewModel() {
     private val aggregator = BleScanResultAggregator()
-    private val devicesFlow =
-        MutableStateFlow<PersistentList<Pair<ServerDevice, FDeviceBaseModel?>>>(
-            persistentListOf()
-        )
+    private val devicesFlow = MutableStateFlow<PersistentList<ConnectionSearchItem>>(
+        persistentListOf()
+    )
 
     init {
         combine(
@@ -49,22 +47,25 @@ class ConnectionSearchViewModel @Inject constructor(
             val existedMacAddresses = savedDevices
                 .filterIsInstance<FDeviceFlipperZeroBleModel>()
                 .associateBy { it.address }
-            searchDevices.map { it to existedMacAddresses[it.address] }
+            searchDevices.map {
+                ConnectionSearchItem(
+                    device = it,
+                    savedDeviceModel = existedMacAddresses[it.address]
+                )
+            }
         }.onEach { devicesFlow.emit(it.toPersistentList()) }
             .launchIn(viewModelScope)
     }
 
     fun getDevicesFlow() = devicesFlow.asStateFlow()
 
-    fun onAddDevice(serverDevice: ServerDevice) {
+    fun onDeviceClicked(searchItem: ConnectionSearchItem) {
         viewModelScope.launch {
-            persistedStorage.addDevice(serverDevice.toFDeviceFlipperZeroBleModel())
-        }
-    }
-
-    fun onDeleteDevice(deviceSaved: FDeviceBaseModel) {
-        viewModelScope.launch {
-            persistedStorage.removeDevice(deviceSaved.uniqueId)
+            if (searchItem.savedDeviceModel == null) {
+                persistedStorage.addDevice(searchItem.device.toFDeviceFlipperZeroBleModel())
+            } else {
+                persistedStorage.removeDevice(searchItem.savedDeviceModel.uniqueId)
+            }
         }
     }
 }

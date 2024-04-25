@@ -48,28 +48,22 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
                 items(
                     devices,
                     key = { (device, _) -> device.address }
-                ) { (device, savedDeviceModel) ->
+                ) { searchItem ->
                     Row {
                         Text(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(16.dp),
-                            text = device.name ?: device.address
+                            text = searchItem.device.name ?: searchItem.device.address
                         )
 
                         Icon(
                             modifier = Modifier
-                                .clickableRipple {
-                                    if (savedDeviceModel == null) {
-                                        searchViewModel.onAddDevice(device)
-                                    } else {
-                                        searchViewModel.onDeleteDevice(savedDeviceModel)
-                                    }
-                                }
+                                .clickableRipple { searchViewModel.onDeviceClicked(searchItem) }
                                 .padding(16.dp)
                                 .size(24.dp),
                             painter = painterResourceByKey(
-                                if (savedDeviceModel == null) {
+                                if (searchItem.savedDeviceModel == null) {
                                     android.R.drawable.ic_menu_add
                                 } else {
                                     android.R.drawable.ic_menu_delete

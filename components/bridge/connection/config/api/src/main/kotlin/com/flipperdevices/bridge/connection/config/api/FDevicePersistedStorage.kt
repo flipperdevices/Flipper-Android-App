@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface FDevicePersistedStorage {
     fun getCurrentDevice(): Flow<FDeviceBaseModel?>
     suspend fun setCurrentDevice(id: String?)
-    suspend fun addDevice(device: FDeviceBaseModel, isCurrentDevice: Boolean = false)
+    suspend fun addDevice(device: FDeviceBaseModel)
     suspend fun removeDevice(id: String)
     fun getAllDevices(): Flow<List<FDeviceBaseModel>>
 }

@@ -52,17 +52,12 @@ class FDevicePersistedStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun addDevice(device: FDeviceBaseModel, isCurrentDevice: Boolean) {
+    override suspend fun addDevice(device: FDeviceBaseModel) {
         info { "Add device $device" }
         newPairSettings.updateData { settings ->
-            var builder = settings.toBuilder()
+            settings.toBuilder()
                 .addDevices(mapDeviceBaseModelToSavedDevice(device))
-
-            if (isCurrentDevice) {
-                builder = builder.setCurrentSelectedDeviceId(device.uniqueId)
-            }
-
-            builder.build()
+                .build()
         }
     }
 
