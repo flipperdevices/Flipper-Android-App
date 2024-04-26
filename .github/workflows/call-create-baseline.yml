@@ -61,7 +61,7 @@ jobs:
       - id: create_baseline_file_path
         run: |
           build_variant=${{ inputs.BUILD_VARIANT_NAME }}
-          baseline_file_path="./instances/androidApp/src/${build_variant}/generated/baselineProfiles/baseline-prof.txt"
+          baseline_file_path="./instances/android/app/src/${build_variant}/generated/baselineProfiles/baseline-prof.txt"
           echo "BASELINE_FILE_PATH=${baseline_file_path}" >> $GITHUB_OUTPUT
 
       # steps.create_baseline_task.outputs.BASELINE_TASK
