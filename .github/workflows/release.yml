@@ -33,6 +33,7 @@ jobs:
         run: |
           echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
   create_release_baseline:
+    name: "Create baseline profile"
     needs: build_number
     uses: ./.github/workflows/call-create-baseline.yml
     with:
