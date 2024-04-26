@@ -53,14 +53,15 @@ jobs:
       # steps.create_baseline_file_id.outputs.BASELINE_FILE_ID
       - id: create_baseline_file_id
         run: |
-          baseline_file_id=baseline_profile_file_${{ inputs.BUILD_VARIANT_NAME }}
+          build_variant=${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME }}
+          baseline_file_id="baseline_profile_file_${build_variant}"
           echo "BASELINE_FILE_ID=${baseline_file_id}" >> $GITHUB_OUTPUT
       
 
       # steps.create_baseline_file_path.outputs.BASELINE_FILE_PATH
       - id: create_baseline_file_path
         run: |
-          build_variant=${{ inputs.BUILD_VARIANT_NAME }}
+          build_variant=${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME }}
           baseline_file_path="./instances/android/app/src/${build_variant}/generated/baselineProfiles/baseline-prof.txt"
           echo "BASELINE_FILE_PATH=${baseline_file_path}" >> $GITHUB_OUTPUT
 
@@ -85,9 +86,8 @@ jobs:
           echo "BASELINE_TASK ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}"
 
       - name: Run baseline profiles
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}
+        run: |
+          ./gradlew ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}
 
       - uses: actions/upload-artifact@master
         name: "Upload baseline file"
