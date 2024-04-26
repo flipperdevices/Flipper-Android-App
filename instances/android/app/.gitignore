@@ -1,0 +1,7 @@
+/build
+
+internal/
+
+src/release/generated/baselineProfiles/*
+src/internal/generated/baselineProfiles/*
+src/debug/generated/baselineProfiles/*

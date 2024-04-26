@@ -8,6 +8,7 @@
 - [Feature] Add ready app updates popup and notification dot
 - [Feature] Per app loading in installed tab
 - [Feature] Add ability to preview screenshots of fap entries
+- [Feature] Add Baseline Profiles generation
 - [Refactor] Migrate to markdown renderer from upstream
 - [Refactor] Basic implementation of new transport ble
 - [Refactor] Remove kapt from service modules

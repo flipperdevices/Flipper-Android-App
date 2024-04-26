@@ -9,6 +9,7 @@ plugins {
     id("flipper.anvil")
     id("kotlin-kapt")
     alias(libs.plugins.google.gms)
+    alias(libs.plugins.baselineprofile)
 }
 
 android.namespace = "com.flipperdevices.app"
@@ -263,4 +264,14 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.timber)
+
+    implementation(libs.profileinstaller)
+    baselineProfile(projects.instances.android.baselineprofile)
+}
+
+baselineProfile {
+    // Generate a single profile for each variants
+    mergeIntoMain = false
+    automaticGenerationDuringBuild = false
+    saveInSrc = true
 }

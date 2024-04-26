@@ -32,10 +32,15 @@ jobs:
         id: wearos_out
         run: |
           echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
+  create_release_baseline:
+    needs: build_number
+    uses: ./.github/workflows/call-create-baseline.yml
+    with:
+      BUILD_VARIANT_NAME: "release"
   build_release:
     name: Build Release AAB and APK
     runs-on: ubuntu-latest
-    needs: build_number
+    needs: create_release_baseline
     strategy:
       matrix:
         target: [ "gh_gms", "gh_nogms", "googleplay" ]
@@ -48,6 +53,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - uses: actions/download-artifact@master
+        name: "Download ${{ needs.create_release_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
+        with:
+          name: ${{ needs.create_release_baseline.outputs.BASELINE_FILE_ID }}
+          path: ${{ needs.create_release_baseline.outputs.BASELINE_FILE_PATH }}
       - name: 'Set variables'
         id: vars
         run: |
