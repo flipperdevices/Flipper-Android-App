@@ -1,11 +1,11 @@
 package com.flipperdevices.bridge.connection.connectionbuilder.impl
 
-import com.flipperdevices.bridge.connection.common.api.DeviceConnectionApi
-import com.flipperdevices.bridge.connection.common.api.FConnectedDeviceApi
-import com.flipperdevices.bridge.connection.common.api.FDeviceConnectionConfig
-import com.flipperdevices.bridge.connection.common.api.FTransportConnectionStatusListener
-import com.flipperdevices.bridge.connection.common.api.di.DeviceConnectionApiHolder
 import com.flipperdevices.bridge.connection.connectionbuilder.api.FDeviceConfigToConnection
+import com.flipperdevices.bridge.connection.transport.common.api.DeviceConnectionApi
+import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.FDeviceConnectionConfig
+import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
+import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnectionApiHolder
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
