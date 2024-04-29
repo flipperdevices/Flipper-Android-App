@@ -14,8 +14,8 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
-import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
+import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test

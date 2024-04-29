@@ -43,7 +43,7 @@ ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Comp
 ble-kotlin = "1.0.16" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library/releases
 # don't update to 2.x, unless the ble-kotlin is also updated. PR: https://github.com/arcao/slf4j-timber/pull/12
 slf4j = "1.7.36" # https://github.com/qos-ch/slf4j/tags
-slf4j-timber = "3.1"
+slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
 lottie = "6.4.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.11.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
