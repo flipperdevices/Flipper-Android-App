@@ -13,7 +13,7 @@ jobs:
     name: Update gradle cache
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build internal
-        uses: gradle/gradle-build-action@8baac4c8ef753599f92eeb509c246d09d6250fa6 # v3
+        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
         with:
           cache-read-only: false
           arguments: testDebug detekt lint
@@ -65,7 +65,7 @@ jobs:
       matrix:
         target: [ "gh_gms", "gh_nogms", "googleplay" ]
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
       - uses: actions/download-artifact@master
@@ -125,7 +125,7 @@ jobs:
           cp instances/android/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: artifacts-${{ matrix.target }}
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -134,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -187,7 +187,7 @@ jobs:
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -196,25 +196,25 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build_internal_release, build_internal_release_gms_wearos, build_number ]
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-gh_gms
         with:
           name: artifacts-gh_gms
           path: download/gh_gms
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-gh_nogms
         with:
           name: artifacts-gh_nogms
           path: download/gh_nogms
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-googleplay
         with:
           name: artifacts-googleplay
           path: download/googleplay
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-wearos
         with:
           name: artifacts-wearos
@@ -278,7 +278,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build_internal_release ]
     steps:
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-googleplay
         with:
           name: artifacts-googleplay
@@ -295,7 +295,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ build_internal_release_gms_wearos ]
     steps:
-      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4
+      - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
         id: download-wearos
         with:
           name: artifacts-wearos
