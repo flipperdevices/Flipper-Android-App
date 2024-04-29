@@ -47,7 +47,8 @@ fun markdownColors(
     linkText = link,
     codeBackground = backgroundCode,
     inlineCodeBackground = backgroundCode,
-    dividerColor = dividerColor
+    dividerColor = dividerColor,
+    inlineCodeText = backgroundCode
 )
 
 @Composable

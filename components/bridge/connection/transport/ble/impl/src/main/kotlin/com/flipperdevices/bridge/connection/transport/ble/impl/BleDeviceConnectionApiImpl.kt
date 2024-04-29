@@ -9,7 +9,6 @@ import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceConnecti
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.FailedConnectToDeviceException
 import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BleConstants
-import com.flipperdevices.bridge.connection.transport.ble.impl.utils.TimberBleLogger
 import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import kotlinx.coroutines.CoroutineScope
@@ -49,8 +48,7 @@ class BleDeviceConnectionApiImpl(
                 options = BleGattConnectOptions(
                     autoConnect = true,
                     closeOnDisconnect = false
-                ),
-                logger = TimberBleLogger()
+                )
             )
         }
         if (!device.isConnected) {

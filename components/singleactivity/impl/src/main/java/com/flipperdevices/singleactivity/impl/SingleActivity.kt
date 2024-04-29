@@ -103,7 +103,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         info { "Receive new intent: ${intent?.toFullString()}" }
         if (intent == null) {

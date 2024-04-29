@@ -41,6 +41,9 @@ fastutil = "8.5.13" # https://github.com/vigna/fastutil/tags
 ble = "2.7.4" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 ble-kotlin = "1.0.16" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library/releases
+# don't update to 2.x, unless the ble-kotlin is also updated. PR: https://github.com/arcao/slf4j-timber/pull/12
+slf4j = "1.7.36" # https://github.com/qos-ch/slf4j/tags
+slf4j-timber = "3.1"
 lottie = "6.4.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.11.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
@@ -48,8 +51,8 @@ annotations = "1.7.1" # https://developer.android.com/jetpack/androidx/releases/
 appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 datastore = "1.1.0" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
-flexmark = "0.42.14"
-markdown = "0.16.0" # https://github.com/Programistich/multiplatform-markdown-renderer
+flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
+markdown = "0.16.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
 ktor = "2.3.10" # https://ktor.io/
 apache-compress = "1.26.1" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.17.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -58,7 +61,8 @@ grgit-gradle = "8d818b74b9"
 work = "2.9.0" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.6.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
-ktorfit = "1.14.0" # https://github.com/Foso/Ktorfit/releases
+# don't upgrade to 1.14+ until Kotlin is upgraded to 2.0. https://github.com/Foso/Ktorfit/releases/tag/1.14.0
+ktorfit = "1.13.0" # https://github.com/Foso/Ktorfit/releases
 decompose = "3.0.0-beta01" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.0.0" # https://github.com/arkivanov/Essenty/releases
 zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
@@ -183,6 +187,8 @@ sentry-gradle = { module = "io.sentry:sentry-android-gradle-plugin", version.ref
 sentry-timber = { module = "io.sentry:sentry-android-timber", version.ref = "sentry-runtime" }
 zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
 countly = { module = "ly.count.android:sdk", version.ref = "countly" }
+slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+slf4j-timber = { group = "com.arcao", name = "slf4j-timber", version.ref = "slf4j-timber" }
 
 # KTX
 ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -281,4 +287,3 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
 square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
-

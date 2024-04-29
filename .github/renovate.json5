@@ -22,6 +22,8 @@
     {
       matchPackagePatterns: [
         '^com.vladsch.flexmark',
+        '^org.slf4j',
+        '^de.jensklingenberg.ktorfit'
       ],
       enabled: false,
     },
