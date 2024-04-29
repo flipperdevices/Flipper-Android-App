@@ -23,7 +23,8 @@
       matchPackagePatterns: [
         '^com.vladsch.flexmark',
         '^org.slf4j',
-        '^de.jensklingenberg.ktorfit'
+        '^de.jensklingenberg.ktorfit',
+        '^io.sentry:sentry-android-gradle-plugin'
       ],
       enabled: false,
     },
