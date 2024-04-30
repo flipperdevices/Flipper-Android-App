@@ -13,9 +13,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
@@ -29,7 +27,6 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
     override val TAG = "FSerialDeviceApiWrapper"
     private var serialApiScope: CoroutineScope? = null
     private var delegateSerialApi: FSerialDeviceApi? = null
-    private val receiveByteFlow = MutableSharedFlow<ByteArray>()
     private val lock = WaitNotifyLock()
 
     init {
@@ -65,7 +62,7 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
 
     override suspend fun getSpeed() = waitForSerialApi().getSpeed()
 
-    override suspend fun getReceiveBytesFlow() = receiveByteFlow.asSharedFlow()
+    override suspend fun getReceiveBytesFlow() = waitForSerialApi().getReceiveBytesFlow()
 
     override suspend fun sendBytes(data: ByteArray) {
         waitForSerialApi().sendBytes(data)

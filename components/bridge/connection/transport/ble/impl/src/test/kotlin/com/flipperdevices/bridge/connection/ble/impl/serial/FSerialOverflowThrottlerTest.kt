@@ -1,9 +1,12 @@
 package com.flipperdevices.bridge.connection.ble.impl.serial
 
+import android.content.Context
+import android.content.pm.PackageManager
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialOverflowThrottler
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancel
@@ -25,6 +28,7 @@ class FSerialOverflowThrottlerTest {
     private lateinit var overflowByteArrayFlow: MutableSharedFlow<DataByteArray>
     private lateinit var overflowCharacteristic: ClientBleGattCharacteristic
     private lateinit var serialApi: FSerialDeviceApi
+    private lateinit var context: Context
 
     @Before
     fun setUp() {
@@ -32,6 +36,10 @@ class FSerialOverflowThrottlerTest {
         overflowByteArrayFlow = MutableSharedFlow(replay = 1)
         overflowCharacteristic = mockk(relaxUnitFun = true) {
             coEvery { getNotifications(any(), any()) } returns overflowByteArrayFlow
+            coEvery { read() } returns DataByteArray()
+        }
+        context = mockk {
+            every { checkSelfPermission(any()) } returns PackageManager.PERMISSION_GRANTED
         }
     }
 
@@ -41,11 +49,14 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
         overflowByteArrayFlow.emit(DataByteArray(byteBuffer.array()))
+
+        childScope.advanceUntilIdle()
 
         underTest.sendBytes("TEST".toByteArray())
 
@@ -64,7 +75,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
 
         val result = runCatching {
@@ -90,7 +102,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -126,7 +139,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -149,7 +163,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -184,7 +199,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -228,7 +244,8 @@ class FSerialOverflowThrottlerTest {
         val underTest = FSerialOverflowThrottler(
             scope = childScope,
             serialApi = serialApi,
-            overflowCharacteristic = overflowCharacteristic
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
