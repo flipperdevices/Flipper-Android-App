@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,6 +37,9 @@ class FDeviceOrchestratorImpl @Inject constructor(
             onConnectError = {
                 transportListener.onErrorDuringConnect(config, it)
                 error(it) { "Failed connect" }
+            },
+            exceptionHandler = CoroutineExceptionHandler { _, exception ->
+                transportListener.onErrorDuringConnect(config, exception)
             }
         )
     }

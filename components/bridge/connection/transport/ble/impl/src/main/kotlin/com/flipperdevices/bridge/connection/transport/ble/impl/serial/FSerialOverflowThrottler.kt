@@ -1,5 +1,9 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -27,7 +31,8 @@ private const val SERIAL_SEND_WAIT_TIMEOUT_MS = 100L
 class FSerialOverflowThrottler @AssistedInject constructor(
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val scope: CoroutineScope,
-    @Assisted private val overflowCharacteristic: ClientBleGattCharacteristic
+    @Assisted private val overflowCharacteristic: ClientBleGattCharacteristic,
+    private val context: Context
 ) : FSerialDeviceApi,
     LogTagProvider {
     override val TAG = "FlipperSerialOverflowThrottler"
@@ -43,6 +48,13 @@ class FSerialOverflowThrottler @AssistedInject constructor(
 
     init {
         scope.launch {
+            if (
+                context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                throw BLEConnectionPermissionException()
+            }
+            updateRemainingBuffer(overflowCharacteristic.read())
             overflowCharacteristic
                 .getNotifications(bufferOverflow = BufferOverflow.SUSPEND)
                 .collect {
@@ -66,6 +78,10 @@ class FSerialOverflowThrottler @AssistedInject constructor(
 
     private suspend fun updateRemainingBuffer(data: DataByteArray) {
         info { "Receive remaining buffer info" }
+        if (data.size == 0) {
+            info { "Data is empty, so empty invalidate buffer" }
+            return
+        }
         val bytes = data.value
         val remainingInternal = ByteBuffer.wrap(bytes).int
         info { "Invalidate buffer size. New size: $remainingInternal" }

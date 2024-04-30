@@ -1,16 +1,10 @@
-package com.flipperdevices.bridge.connection.transport.ble.impl
+package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleApi
-import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
-import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialDeviceApiWrapper
 import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
-import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
@@ -52,29 +46,5 @@ open class FBleApiImpl(
     override suspend fun disconnect() {
         client.disconnect()
         client.close()
-    }
-}
-
-open class FBleApiWithSerial @AssistedInject constructor(
-    @Assisted private val scope: CoroutineScope,
-    @Assisted private val client: ClientBleGatt,
-    @Assisted private val config: FBleDeviceSerialConfig,
-    @Assisted private val statusListener: FTransportConnectionStatusListener,
-    serialDeviceApiWrapperFactory: FSerialDeviceApiWrapper.Factory
-) : FBleApiImpl(scope, client, statusListener),
-    FSerialDeviceApi by serialDeviceApiWrapperFactory(
-        scope = scope,
-        config = config,
-        services = client.services
-    ) {
-
-    @AssistedFactory
-    fun interface Factory {
-        operator fun invoke(
-            scope: CoroutineScope,
-            client: ClientBleGatt,
-            config: FBleDeviceSerialConfig,
-            statusListener: FTransportConnectionStatusListener
-        ): FBleApiWithSerial
     }
 }

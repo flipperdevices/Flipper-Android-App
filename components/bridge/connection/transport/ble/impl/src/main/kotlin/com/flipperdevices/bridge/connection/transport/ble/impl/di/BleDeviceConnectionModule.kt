@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.connection.transport.ble.impl.di
 import android.content.Context
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.ble.impl.BleDeviceConnectionApiImpl
-import com.flipperdevices.bridge.connection.transport.ble.impl.FBleApiWithSerial
+import com.flipperdevices.bridge.connection.transport.ble.impl.api.FBleApiWithSerialFactory
 import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnectionApiHolder
 import com.flipperdevices.bridge.connection.transport.common.api.di.toHolder
 import com.flipperdevices.core.di.AppGraph
@@ -22,7 +22,7 @@ class BleDeviceConnectionModule {
     @ClassKey(FBleDeviceConnectionConfig::class)
     fun provideBleDeviceConnectionApi(
         context: Context,
-        bleApiWithSerialFactory: FBleApiWithSerial.Factory
+        bleApiWithSerialFactory: FBleApiWithSerialFactory
     ): DeviceConnectionApiHolder = BleDeviceConnectionApiImpl(
         context = context,
         bleApiWithSerialFactory = bleApiWithSerialFactory
