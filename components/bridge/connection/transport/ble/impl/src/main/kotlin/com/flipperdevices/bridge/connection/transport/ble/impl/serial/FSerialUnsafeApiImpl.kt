@@ -6,11 +6,13 @@ import android.content.pm.PackageManager
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
+import com.flipperdevices.core.log.LogTagProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,12 +26,15 @@ import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
 private const val DAGGER_ID_CHARACTERISTIC_RX = "rx_service"
 private const val DAGGER_ID_CHARACTERISTIC_TX = "tx_service"
 
+@OptIn(ExperimentalStdlibApi::class)
 class FSerialUnsafeApiImpl @AssistedInject constructor(
     @Assisted(DAGGER_ID_CHARACTERISTIC_RX) val rxCharacteristic: ClientBleGattCharacteristic,
     @Assisted(DAGGER_ID_CHARACTERISTIC_TX) val txCharacteristic: ClientBleGattCharacteristic,
     @Assisted scope: CoroutineScope,
     private val context: Context
-) : FSerialDeviceApi {
+) : FSerialDeviceApi, LogTagProvider {
+    override val TAG = "FSerialUnsafeApiImpl"
+
     private val receiverByteFlow = MutableSharedFlow<ByteArray>()
 
     private val txSpeed = SpeedMeter(scope)
@@ -57,8 +62,11 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
 
     override suspend fun getSpeed() = speedFlowState.asStateFlow()
 
-    override suspend fun getReceiveBytesFlow() = receiverByteFlow.asSharedFlow()
+    override suspend fun getReceiveBytesFlow(): Flow<ByteArray> {
+        return receiverByteFlow.asSharedFlow()
+    }
 
+    @OptIn(ExperimentalStdlibApi::class)
     override suspend fun sendBytes(data: ByteArray) {
         if (context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             throw BLEConnectionPermissionException()

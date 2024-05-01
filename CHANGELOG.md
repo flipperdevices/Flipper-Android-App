@@ -25,6 +25,7 @@
 - [FIX] Fixed wrong format of saved images on screenshotspreview and remote control
 - [FIX] Fixed low resolution of saved screenshots
 - [FIX] Update sentry gradle to 4.5.1
+- [FIX] Ping-pong request on new ble sample
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator

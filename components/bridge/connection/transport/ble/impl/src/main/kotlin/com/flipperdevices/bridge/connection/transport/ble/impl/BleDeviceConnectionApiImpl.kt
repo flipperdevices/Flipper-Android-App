@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import com.flipperdevices.bridge.connection.transport.ble.api.BleDeviceConnectionApi
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleApi
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceConnectionConfig
+import com.flipperdevices.bridge.connection.transport.ble.impl.api.FBleApiImpl
+import com.flipperdevices.bridge.connection.transport.ble.impl.api.FBleApiWithSerialFactory
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.FailedConnectToDeviceException
 import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BleConstants
@@ -18,7 +20,7 @@ import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
 
 class BleDeviceConnectionApiImpl(
     private val context: Context,
-    private val bleApiWithSerialFactory: FBleApiWithSerial.Factory
+    private val bleApiWithSerialFactory: FBleApiWithSerialFactory
 ) : BleDeviceConnectionApi {
 
     override suspend fun connect(
@@ -71,7 +73,7 @@ class BleDeviceConnectionApiImpl(
                 statusListener = listener
             )
         } else {
-            bleApiWithSerialFactory(
+            bleApiWithSerialFactory.build(
                 scope = scope,
                 config = serialConfig,
                 client = device,

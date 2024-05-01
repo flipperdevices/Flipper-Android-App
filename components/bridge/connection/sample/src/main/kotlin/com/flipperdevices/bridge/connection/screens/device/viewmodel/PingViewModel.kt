@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,19 +26,23 @@ class PingViewModel @Inject constructor(
     private val logLines = MutableStateFlow(persistentListOf("Init PingViewModel"))
 
     init {
-        orchestrator.getState()
-            .filterIsInstance<FDeviceConnectStatus.Connected>()
-            .flatMapLatest { device ->
-                log("Receive connected status, subscribe on bytes")
-                val serialDeviceApi = device.deviceApi as? FSerialDeviceApi
-                if (serialDeviceApi == null) {
-                    log("Device api don't support serial, so skip subscribe on bytes")
-                    return@flatMapLatest flowOf(byteArrayOf())
+        viewModelScope.launch {
+
+            orchestrator.getState()
+                .filterIsInstance<FDeviceConnectStatus.Connected>()
+                .flatMapLatest { device ->
+                    log("Receive connected status, subscribe on bytes")
+                    val serialDeviceApi = device.deviceApi as? FSerialDeviceApi
+                    if (serialDeviceApi == null) {
+                        log("Device api don't support serial, so skip subscribe on bytes")
+                        return@flatMapLatest flowOf(byteArrayOf())
+                    }
+                    log("Subscribe to receive bytes flow")
+                    serialDeviceApi.getReceiveBytesFlow()
+                }.collect {
+                    log("Receive bytes: ${it.toHexString()} ")
                 }
-                serialDeviceApi.getReceiveBytesFlow()
-            }.onEach {
-                log("Receive bytes: ${it.toHexString()} ")
-            }.launchIn(viewModelScope)
+        }
     }
 
     fun getLogLinesState() = logLines.asStateFlow()
@@ -63,6 +65,7 @@ class PingViewModel @Inject constructor(
         }.toDelimitedBytes()
         log("Send ping request ${bytes.size} bytes (${bytes.toHexString()})")
         serialDeviceApi.sendBytes(bytes)
+        log("Sended")
     }
 
     private fun log(text: String) {
