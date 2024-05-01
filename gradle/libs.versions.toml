@@ -31,8 +31,7 @@ dagger = "2.51.1" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.1.2" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "7.8.0" # https://github.com/getsentry/sentry-java/releases
-# Don't update until this fixed https://github.com/getsentry/sentry-android-gradle-plugin/issues/697
-sentry-gradle = "4.5.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
+sentry-gradle = "4.5.1" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.13.0" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-activity = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/activity
