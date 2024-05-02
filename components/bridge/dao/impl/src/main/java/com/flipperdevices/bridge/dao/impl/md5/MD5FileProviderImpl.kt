@@ -8,7 +8,7 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import java.io.File
 
-class MD5FileProviderImpl(
+internal class MD5FileProviderImpl(
     private val context: Context,
     private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context),
     private val md5Converter: MD5Converter,

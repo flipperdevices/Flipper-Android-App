@@ -8,6 +8,8 @@ import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.LambdaMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
+import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
+import com.flipperdevices.bridge.dao.impl.thread.StubMainThreadChecker
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -46,6 +48,7 @@ class DatabaseKeyContentConverterTest {
         val md5Converter = LambdaMD5Converter { md5 }
         return DatabaseKeyContentConverter(
             md5Converter = md5Converter,
+            mainThreadChecker = StubMainThreadChecker,
             mD5FileProvider = MD5FileProviderImpl(
                 context = context,
                 fileComparator = DefaultFileComparator,
@@ -72,11 +75,13 @@ class DatabaseKeyContentConverterTest {
             getRandomFolder().delete()
             val path1 = createFilledFile("CONTENT_1").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { createDatabaseKeyConverter("ONE_MD").keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { createDatabaseKeyConverter("ONE_MD").keyContentToPath(it) }
 
             val path2 = createFilledFile("CONTENT_2").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { createDatabaseKeyConverter("TWO_MD").keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { createDatabaseKeyConverter("TWO_MD").keyContentToPath(it) }
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -89,11 +94,13 @@ class DatabaseKeyContentConverterTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
             val path1 = createFilledFile("CONTENT_1").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             val path2 = createFilledFile("CONTENT_2").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -106,11 +113,13 @@ class DatabaseKeyContentConverterTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
             val path1 = createFilledFile("CONTENT_1").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             val path2 = createFilledFile("CONTENT_1").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             Assert.assertEquals(path1, path2)
         }
@@ -122,11 +131,13 @@ class DatabaseKeyContentConverterTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
             val path1 = File("FILE_1").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             val path2 = File("FILE_2").path
                 .let(FlipperKeyContent::InternalFile)
-                .let { databaseKeyContentConverter.keyContentToPathInternal(it) }
+                .let(::DatabaseKeyContent)
+                .let { databaseKeyContentConverter.keyContentToPath(it) }
 
             Assert.assertEquals(path1, path2)
         }
