@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
-import com.flipperdevices.bridge.dao.impl.converters.MD5Converter
+import com.flipperdevices.bridge.dao.impl.converters.LambdaMD5Converter
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -44,7 +44,7 @@ class DatabaseKeyContentConverterTest {
     private fun createDatabaseKeyConverter(md5: String): DatabaseKeyContentConverter {
         return DatabaseKeyContentConverter(
             context = context,
-            md5Converter = MD5Converter.Lambda { md5 },
+            md5Converter = LambdaMD5Converter { md5 },
             fileComparator = DefaultFileComparator,
             keyFolder = getRandomFolder()
         )

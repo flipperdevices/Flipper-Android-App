@@ -11,10 +11,4 @@ interface MD5Converter {
             return istream.md5()
         }
     }
-
-    class Lambda(private val block: suspend (istream: InputStream) -> String) : MD5Converter {
-        override suspend fun convert(istream: InputStream): String {
-            return block.invoke(istream)
-        }
-    }
 }
