@@ -57,11 +57,9 @@ class RoomDatabaseModule {
     @Provides
     fun provideMD5FileProvider(
         context: Context,
-        md5Converter: MD5Converter,
         fileComparator: FileComparator
     ): MD5FileProvider = MD5FileProviderImpl(
         context = context,
-        md5Converter = md5Converter,
         fileComparator = fileComparator
     )
 

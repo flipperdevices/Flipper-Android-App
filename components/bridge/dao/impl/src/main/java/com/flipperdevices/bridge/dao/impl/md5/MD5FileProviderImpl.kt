@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.dao.impl.md5
 import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
-import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
 import java.io.File
@@ -11,8 +10,7 @@ import java.io.File
 internal class MD5FileProviderImpl(
     private val context: Context,
     private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context),
-    private val md5Converter: MD5Converter,
-    private val fileComparator: FileComparator
+    private val fileComparator: FileComparator,
 ) : MD5FileProvider {
     /**
      * @return list of files with same MD5 signature
@@ -51,23 +49,17 @@ internal class MD5FileProviderImpl(
         )
     }
 
-    private suspend fun checkMd5FileSignature(file: File, expectedMd5: String) {
-        val fileMd5 = md5Converter.convert(file.inputStream())
-        check(fileMd5 == expectedMd5) {
-            "File $file has wrong signature (expected: $expectedMd5, actual: $fileMd5)"
-        }
-    }
-
     override suspend fun getPathToFile(contentMd5: String, keyContent: FlipperKeyContent): File {
-        val sameContentFile = getSameContentFile(contentMd5, keyContent)
-        if (sameContentFile != null) return sameContentFile
-
         val pathToFile = File(keyFolder, contentMd5)
         if (!pathToFile.exists()) return pathToFile
-        verbose { "Already find file with hash $contentMd5" }
-        if (BuildConfig.DEBUG) {
-            checkMd5FileSignature(pathToFile, contentMd5)
+
+        val sameContentFile = getSameContentFile(contentMd5, keyContent)
+        if (sameContentFile != null) {
+            verbose { "Already find file with hash $contentMd5" }
+            return sameContentFile
         }
+
+        verbose { "Already find file with hash $contentMd5" }
         val index = getMaxMD5FileIndex(contentMd5) + 1
         return File(keyFolder, contentMd5 + "_$index")
     }

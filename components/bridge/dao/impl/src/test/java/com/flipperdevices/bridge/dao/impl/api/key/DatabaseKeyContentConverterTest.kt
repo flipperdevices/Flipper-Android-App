@@ -53,7 +53,6 @@ class DatabaseKeyContentConverterTest {
                 context = context,
                 fileComparator = DefaultFileComparator,
                 keyFolder = getRandomFolder(),
-                md5Converter = md5Converter
             )
         )
     }
