@@ -6,7 +6,10 @@ import com.flipperdevices.bridge.dao.impl.AppDatabase
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
-import com.flipperdevices.bridge.dao.impl.converters.MD5Converter
+import com.flipperdevices.bridge.dao.impl.md5.MD5Converter
+import com.flipperdevices.bridge.dao.impl.md5.MD5ConverterImpl
+import com.flipperdevices.bridge.dao.impl.md5.MD5FileProvider
+import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
@@ -31,22 +34,36 @@ class RoomDatabaseModule {
     @Singleton
     fun provideRoom(
         context: Context,
-        md5Converter: MD5Converter,
-        fileComparator: FileComparator
+        databaseKeyContentConverter: DatabaseKeyContentConverter
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             DATABASE_NAME
-        ).addTypeConverter(DatabaseKeyContentConverter(context, md5Converter, fileComparator))
+        ).addTypeConverter(databaseKeyContentConverter)
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
-    fun provideAdditionFileDao(database: AppDatabase): AdditionalFileDao {
-        return database.additionalFileDao()
-    }
+    fun provideDatabaseKeyContentConverter(
+        md5Converter: MD5Converter,
+        mD5FileProvider: MD5FileProvider
+    ): DatabaseKeyContentConverter = DatabaseKeyContentConverter(
+        md5Converter = md5Converter,
+        mD5FileProvider = mD5FileProvider
+    )
+
+    @Provides
+    fun provideMD5FileProvider(
+        context: Context,
+        md5Converter: MD5Converter,
+        fileComparator: FileComparator
+    ): MD5FileProvider = MD5FileProviderImpl(
+        context = context,
+        md5Converter = md5Converter,
+        fileComparator = fileComparator
+    )
 
     @Provides
     fun provideFileComparator(): FileComparator {
@@ -55,7 +72,12 @@ class RoomDatabaseModule {
 
     @Provides
     fun provideMD5Converter(): MD5Converter {
-        return MD5Converter.Default
+        return MD5ConverterImpl()
+    }
+
+    @Provides
+    fun provideAdditionFileDao(database: AppDatabase): AdditionalFileDao {
+        return database.additionalFileDao()
     }
 
     @Provides

@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.LambdaMD5Converter
+import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -42,11 +43,15 @@ class DatabaseKeyContentConverterTest {
     }
 
     private fun createDatabaseKeyConverter(md5: String): DatabaseKeyContentConverter {
+        val md5Converter = LambdaMD5Converter { md5 }
         return DatabaseKeyContentConverter(
-            context = context,
-            md5Converter = LambdaMD5Converter { md5 },
-            fileComparator = DefaultFileComparator,
-            keyFolder = getRandomFolder()
+            md5Converter = md5Converter,
+            mD5FileProvider = MD5FileProviderImpl(
+                context = context,
+                fileComparator = DefaultFileComparator,
+                keyFolder = getRandomFolder(),
+                md5Converter = md5Converter
+            )
         )
     }
 
