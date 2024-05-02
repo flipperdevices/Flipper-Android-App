@@ -5,21 +5,26 @@ import android.os.Looper
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
-import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import org.jetbrains.annotations.TestOnly
 import java.io.File
+import java.util.UUID
 
 @ProvidedTypeConverter
-class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
+class DatabaseKeyContentConverter(
+    context: Context,
+    private val md5Converter: MD5Converter,
+    private val fileComparator: FileComparator,
+    private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context)
+) : LogTagProvider {
     override val TAG = "DatabaseKeyContentConverter"
-
-    private val keyFolder = FlipperStorageProvider.getKeyFolder(context)
 
     @TypeConverter
     fun pathToKeyContent(path: String?): DatabaseKeyContent? {
@@ -40,15 +45,24 @@ class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
         }
     }
 
-    private suspend fun keyContentToPathInternal(keyContent: FlipperKeyContent): String {
-        val contentMd5 = keyContent.openStream().md5()
-        val pathToFile = File(keyFolder, contentMd5)
+    @TestOnly
+    suspend fun keyContentToPathInternal(keyContent: FlipperKeyContent): String {
+        val contentMd5 = md5Converter.convert(keyContent.openStream())
+        var pathToFile = File(keyFolder, contentMd5)
         if (pathToFile.exists()) {
             verbose { "Already find file with hash $contentMd5" }
             if (BuildConfig.DEBUG) {
                 checkMd5FileSignature(pathToFile, contentMd5)
             }
-            return pathToFile.absolutePath
+            val isSameContent = fileComparator.isSameContent(
+                keyContent.openStream(),
+                pathToFile.inputStream()
+            )
+            if (isSameContent) {
+                return pathToFile.absolutePath
+            } else {
+                pathToFile = File(keyFolder, contentMd5 + "_${UUID.randomUUID()}")
+            }
         }
         pathToFile.createNewFileWithMkDirs()
         verbose { "Create new file with hash $contentMd5" }
@@ -62,7 +76,7 @@ class DatabaseKeyContentConverter(context: Context) : LogTagProvider {
     }
 
     private suspend fun checkMd5FileSignature(file: File, expectedMd5: String) {
-        val fileMd5 = file.inputStream().md5()
+        val fileMd5 = md5Converter.convert(file.inputStream())
         check(fileMd5 == expectedMd5) {
             "File $file has wrong signature (expected: $expectedMd5, actual: $fileMd5)"
         }

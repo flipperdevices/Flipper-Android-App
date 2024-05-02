@@ -24,8 +24,10 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 
+    // Testing
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.ktx.testing)
     testImplementation(libs.roboelectric)
