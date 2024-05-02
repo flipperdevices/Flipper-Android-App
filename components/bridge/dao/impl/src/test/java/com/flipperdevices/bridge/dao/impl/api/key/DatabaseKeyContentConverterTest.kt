@@ -4,9 +4,10 @@ import android.content.Context
 import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.bridge.dao.impl.FileExt
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
-import com.flipperdevices.bridge.dao.impl.converters.LambdaMD5Converter
+import com.flipperdevices.bridge.dao.impl.converters.StubMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.thread.StubMainThreadChecker
@@ -19,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import java.io.File
-import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
@@ -30,57 +30,36 @@ class DatabaseKeyContentConverterTest {
     @Before
     fun setUp() {
         context = mockk()
-        every {
-            context.filesDir
-        } returns File.createTempFile(UUID.randomUUID().toString(), ".txt").parentFile
+        every { context.filesDir } returns FileExt.tempDir
     }
 
-    private fun getRandomFolder(): File {
-        val parentFolder = File.createTempFile(UUID.randomUUID().toString(), ".txt").parentFile
-        val folderName = UUID.randomUUID().toString()
-        val childFolder = File(parentFolder, "./$folderName")
-        if (childFolder.exists()) childFolder.delete()
-        childFolder.mkdirs()
-        return childFolder
-    }
-
-    private fun createDatabaseKeyConverter(md5: String): DatabaseKeyContentConverter {
-        val md5Converter = LambdaMD5Converter { md5 }
+    private fun createDatabaseKeyConverter(): DatabaseKeyContentConverter {
         return DatabaseKeyContentConverter(
-            md5Converter = md5Converter,
+            md5Converter = StubMD5Converter,
             mainThreadChecker = StubMainThreadChecker,
             mD5FileProvider = MD5FileProviderImpl(
                 context = context,
                 fileComparator = DefaultFileComparator,
-                keyFolder = getRandomFolder(),
+                keyFolder = FileExt.getRandomFolder(),
             )
         )
     }
 
-    /**
-     * Create temp file filled with [content]
-     */
-    private fun createFilledFile(content: String): File {
-        val parentFolder = getRandomFolder()
-        val fileName = UUID.randomUUID().toString()
-        return File(parentFolder, fileName).apply {
-            writeText(content)
-        }
+    private fun File.toKeyContentPath(converter: DatabaseKeyContentConverter): String? {
+        val fkContent = FlipperKeyContent.InternalFile(path)
+        val dkContent = DatabaseKeyContent(fkContent)
+        return converter.keyContentToPath(dkContent)
     }
 
     @Test
     fun GIVEN_different_content_WHEN_different_md_5_THEN_different_path() {
         runTest {
-            getRandomFolder().delete()
-            val path1 = createFilledFile("CONTENT_1").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { createDatabaseKeyConverter("ONE_MD").keyContentToPath(it) }
+            FileExt.getRandomFolder().delete()
+            val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(createDatabaseKeyConverter())
 
-            val path2 = createFilledFile("CONTENT_2").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { createDatabaseKeyConverter("TWO_MD").keyContentToPath(it) }
+            val path2 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(createDatabaseKeyConverter())
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -89,17 +68,13 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_different_content_WHEN_same_md_5_THEN_different_path() {
         runTest {
-            getRandomFolder().delete()
-            val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
-            val path1 = createFilledFile("CONTENT_1").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            FileExt.getRandomFolder().delete()
+            val databaseKeyContentConverter = createDatabaseKeyConverter()
+            val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = createFilledFile("CONTENT_2").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            val path2 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -108,17 +83,13 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_same_content_WHEN_same_md_5_THEN_same_path() {
         runTest {
-            getRandomFolder().delete()
-            val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
-            val path1 = createFilledFile("CONTENT_1").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            FileExt.getRandomFolder().delete()
+            val databaseKeyContentConverter = createDatabaseKeyConverter()
+            val path1 = FileExt.createFilledFile(FileExt.DEFAULT_TEXT)
+                .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = createFilledFile("CONTENT_1").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            val path2 = FileExt.createFilledFile(FileExt.DEFAULT_TEXT)
+                .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertEquals(path1, path2)
         }
@@ -127,16 +98,12 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_not_existing_files_WHEN_same_md_5_THEN_same_path() {
         runTest {
-            val databaseKeyContentConverter = createDatabaseKeyConverter("SAME_MD")
-            val path1 = File("FILE_1").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            val databaseKeyContentConverter = createDatabaseKeyConverter()
+            val path1 = File(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = File("FILE_2").path
-                .let(FlipperKeyContent::InternalFile)
-                .let(::DatabaseKeyContent)
-                .let { databaseKeyContentConverter.keyContentToPath(it) }
+            val path2 = File(FileExt.RANDOM_FILE_NAME)
+                .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertEquals(path1, path2)
         }
