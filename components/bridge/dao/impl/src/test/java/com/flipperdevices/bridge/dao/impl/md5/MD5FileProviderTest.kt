@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.md5
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
@@ -10,17 +11,24 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
+import org.junit.runner.RunWith
 import java.io.File
 
+@RunWith(AndroidJUnit4::class)
 class MD5FileProviderTest {
     private lateinit var context: Context
+
+    @get:Rule
+    val folder: TemporaryFolder = TemporaryFolder()
     private lateinit var tempFolder: File
 
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
+        tempFolder = folder.newFolder()
         every { context.filesDir } returns tempFolder
     }
 

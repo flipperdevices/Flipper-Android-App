@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparatorExt.isSameContent
@@ -7,18 +8,25 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
+import org.junit.runner.RunWith
 import java.io.File
 import java.io.InputStream
 
+@RunWith(AndroidJUnit4::class)
 class FileComparatorTest {
     private lateinit var fileComparator: FileComparator
+
+    @get:Rule
+    val folder: TemporaryFolder = TemporaryFolder()
     private lateinit var tempFolder: File
 
     @Before
     fun setUp() {
+        tempFolder = folder.newFolder()
         fileComparator = DefaultFileComparator()
-        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
     }
 
     @After

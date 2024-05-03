@@ -18,7 +18,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.robolectric.Shadows
@@ -31,12 +33,15 @@ import java.io.File
 class DatabaseKeyContentConverterTest {
 
     private lateinit var context: Context
+
+    @get:Rule
+    val folder: TemporaryFolder = TemporaryFolder()
     private lateinit var tempFolder: File
 
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
+        tempFolder = folder.newFolder()
         every { context.filesDir } returns tempFolder
 
         mockkStatic(Looper::class)
