@@ -65,7 +65,6 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_different_content_WHEN_different_md_5_THEN_different_path() {
         runTest {
-            FileExt.getRandomFolder().delete()
             val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
                 .toKeyContentPath(createDatabaseKeyConverter())
 
@@ -79,7 +78,6 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_different_content_WHEN_same_md_5_THEN_different_path() {
         runTest {
-            FileExt.getRandomFolder().delete()
             val databaseKeyContentConverter = createDatabaseKeyConverter()
             val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
                 .toKeyContentPath(databaseKeyContentConverter)
@@ -94,7 +92,6 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_same_content_WHEN_same_md_5_THEN_same_path() {
         runTest {
-            FileExt.getRandomFolder().delete()
             val databaseKeyContentConverter = createDatabaseKeyConverter()
             val path1 = FileExt.createFilledFile(FileExt.DEFAULT_TEXT)
                 .toKeyContentPath(databaseKeyContentConverter)

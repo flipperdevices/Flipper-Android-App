@@ -22,7 +22,7 @@ class FileComparatorTest {
     /**
      * Create empty [InputStream] for non-existing files
      */
-    private inline fun File.inputStreamOrEmpty(): InputStream {
+    private fun File.inputStreamOrEmpty(): InputStream {
         return if (exists()) {
             inputStream()
         } else {

@@ -36,15 +36,16 @@ class MD5FileProviderTest {
             val file1 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.STUB_MD5,
                 keyContent = emptyKeyContent
-            ).also { file ->
-                file.createNewFile()
-                file.writeBytes(emptyKeyContent.bytes)
-            }.path
-            val file2 = md5FileProvider.getPathToFile(
+            )
+            file1.createNewFile()
+            file1.writeBytes(emptyKeyContent.bytes)
+            val path1 = file1.path
+
+            val path2 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.STUB_MD5,
                 keyContent = emptyKeyContent
             ).path
-            Assert.assertEquals(file1, file2)
+            Assert.assertEquals(path1, path2)
         }
     }
 
@@ -56,15 +57,16 @@ class MD5FileProviderTest {
             val file1 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.STUB_MD5,
                 keyContent = emptyKeyContent
-            ).also { file ->
-                file.createNewFile()
-                file.writeBytes(emptyKeyContent.bytes)
-            }.path
-            val file2 = md5FileProvider.getPathToFile(
+            )
+            file1.createNewFile()
+            file1.writeBytes(emptyKeyContent.bytes)
+            val path1 = file1.path
+
+            val path2 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.STUB_MD5,
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
             ).path
-            Assert.assertNotEquals(file1, file2)
+            Assert.assertNotEquals(path1, path2)
         }
     }
 
@@ -76,15 +78,16 @@ class MD5FileProviderTest {
             val file1 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.RANDOM_MD5,
                 keyContent = emptyKeyContent
-            ).also { file ->
-                file.createNewFile()
-                file.writeBytes(emptyKeyContent.bytes)
-            }.path
-            val file2 = md5FileProvider.getPathToFile(
+            )
+            file1.createNewFile()
+            file1.writeBytes(emptyKeyContent.bytes)
+            val path1 = file1.path
+
+            val path2 = md5FileProvider.getPathToFile(
                 contentMd5 = FileExt.RANDOM_MD5,
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
             ).path
-            Assert.assertNotEquals(file1, file2)
+            Assert.assertNotEquals(path1, path2)
         }
     }
 }
