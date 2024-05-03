@@ -5,12 +5,12 @@ import android.os.Build
 import android.os.Looper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.impl.FileExt
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.StubMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
+import com.flipperdevices.bridge.dao.impl.util.TempFolderProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -36,7 +36,7 @@ class DatabaseKeyContentConverterTest {
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = FileExt.provideTempFolder()
+        tempFolder = TempFolderProvider.provide()
         every { context.filesDir } returns tempFolder
 
         mockkStatic(Looper::class)
@@ -72,11 +72,13 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_different_content_WHEN_different_md_5_THEN_different_path() {
         runTest {
-            val path1 = FileExt.createFilledFile("FILLED_CONTENT_FIRST", tempFolder)
-                .toKeyContentPath(createDatabaseKeyConverter())
+            val path1 = File(tempFolder, "FILE_1").apply {
+                writeText("FILLED_CONTENT_1")
+            }.toKeyContentPath(createDatabaseKeyConverter())
 
-            val path2 = FileExt.createFilledFile("FILLED_CONTENT_SECOND", tempFolder)
-                .toKeyContentPath(createDatabaseKeyConverter())
+            val path2 = File(tempFolder, "FILE_2").apply {
+                writeText("FILLED_CONTENT_2")
+            }.toKeyContentPath(createDatabaseKeyConverter())
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -86,11 +88,13 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_different_content_WHEN_same_md_5_THEN_different_path() {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
-            val path1 = FileExt.createFilledFile("FILLED_CONTENT_FIRST", tempFolder)
-                .toKeyContentPath(databaseKeyContentConverter)
+            val path1 = File(tempFolder, "FILE_1").apply {
+                writeText("FILLED_CONTENT_1")
+            }.toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = FileExt.createFilledFile("FILLED_CONTENT_SECOND", tempFolder)
-                .toKeyContentPath(databaseKeyContentConverter)
+            val path2 = File(tempFolder, "FILE_2").apply {
+                writeText("FILLED_CONTENT_2")
+            }.toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertNotEquals(path1, path2)
         }
@@ -100,11 +104,13 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_same_content_WHEN_same_md_5_THEN_same_path() {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
-            val path1 = FileExt.createFilledFile("FILLED_TEXT", tempFolder)
-                .toKeyContentPath(databaseKeyContentConverter)
+            val path1 = File(tempFolder, "FILE_1").apply {
+                writeText("SAME_TEXT")
+            }.toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = FileExt.createFilledFile("FILLED_TEXT", tempFolder)
-                .toKeyContentPath(databaseKeyContentConverter)
+            val path2 = File(tempFolder, "FILE_2").apply {
+                writeText("SAME_TEXT")
+            }.toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertEquals(path1, path2)
         }

@@ -1,9 +1,9 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
-import com.flipperdevices.bridge.dao.impl.FileExt
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparatorExt.isSameContent
+import com.flipperdevices.bridge.dao.impl.util.TempFolderProvider
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
@@ -19,7 +19,7 @@ class FileComparatorTest {
     @Before
     fun setUp() {
         fileComparator = DefaultFileComparator()
-        tempFolder = FileExt.provideTempFolder()
+        tempFolder = TempFolderProvider.provide()
     }
 
     @After
@@ -57,7 +57,9 @@ class FileComparatorTest {
     @Test
     fun GIVEN_not_existing_and_existing_file_WHEN_is_equal_THEN_false() {
         runTest {
-            val file1 = FileExt.createFilledFile("SOME_RANDOM_CONTENT", tempFolder)
+            val file1 = File(tempFolder, "FILE_1").apply {
+                writeText("RANDOM_CONTENT")
+            }
             val file2 = File("ANOTHER_RANDOM_NAME")
             fileComparator.isSameContent(
                 file1.inputStreamOrEmpty(),
@@ -73,8 +75,12 @@ class FileComparatorTest {
     @Test
     fun GIVEN_two_same_content_files_WHEN_is_equal_THEN_true() {
         runTest {
-            val file1 = FileExt.createFilledFile("STUB_CONTENT", tempFolder)
-            val file2 = FileExt.createFilledFile("STUB_CONTENT", tempFolder)
+            val file1 = File(tempFolder, "FILE_1").apply {
+                writeText("STUB_CONTENT")
+            }
+            val file2 = File(tempFolder, "FILE_2").apply {
+                writeText("STUB_CONTENT")
+            }
             fileComparator.isSameContent(
                 file1.inputStreamOrEmpty(),
                 file2.inputStreamOrEmpty(),
@@ -89,8 +95,12 @@ class FileComparatorTest {
     @Test
     fun GIVEN_two_different_content_files_WHEN_is_equal_THEN_false() {
         runTest {
-            val file1 = FileExt.createFilledFile("FILE_CONTENT_1", tempFolder)
-            val file2 = FileExt.createFilledFile("FILE_CONTENT_2", tempFolder)
+            val file1 = File(tempFolder, "FILE_1").apply {
+                writeText("FILLED_CONTENT_1")
+            }
+            val file2 = File(tempFolder, "FILE_2").apply {
+                writeText("FILLED_CONTENT_2")
+            }
             fileComparator.isSameContent(
                 file1.inputStreamOrEmpty(),
                 file2.inputStreamOrEmpty(),
