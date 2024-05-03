@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.dao.impl.api.key
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparatorExt.isSameContent
-import com.flipperdevices.bridge.dao.impl.util.TempFolderProvider
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
@@ -19,7 +18,7 @@ class FileComparatorTest {
     @Before
     fun setUp() {
         fileComparator = DefaultFileComparator()
-        tempFolder = TempFolderProvider.provide()
+        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
     }
 
     @After

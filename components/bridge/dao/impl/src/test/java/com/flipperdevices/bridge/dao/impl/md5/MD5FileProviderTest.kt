@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.dao.impl.md5
 import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
-import com.flipperdevices.bridge.dao.impl.util.TempFolderProvider
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import io.mockk.every
 import io.mockk.mockk
@@ -21,7 +20,7 @@ class MD5FileProviderTest {
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = TempFolderProvider.provide()
+        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
         every { context.filesDir } returns tempFolder
     }
 

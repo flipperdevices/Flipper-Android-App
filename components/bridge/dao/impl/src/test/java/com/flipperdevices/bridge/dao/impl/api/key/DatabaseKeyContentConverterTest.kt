@@ -10,7 +10,6 @@ import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.StubMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
-import com.flipperdevices.bridge.dao.impl.util.TempFolderProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -36,7 +35,7 @@ class DatabaseKeyContentConverterTest {
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = TempFolderProvider.provide()
+        tempFolder = File(System.getProperty("java.io.tmpdir"), "TEMP_DIR")
         every { context.filesDir } returns tempFolder
 
         mockkStatic(Looper::class)
