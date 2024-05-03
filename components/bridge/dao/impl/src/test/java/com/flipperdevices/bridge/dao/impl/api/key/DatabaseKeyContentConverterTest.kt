@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.StubMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
+import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -72,10 +73,12 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_different_content_WHEN_different_md_5_THEN_different_path() {
         runTest {
             val path1 = File(tempFolder, "FILE_1").apply {
+                createNewFileWithMkDirs()
                 writeText("FILLED_CONTENT_1")
             }.toKeyContentPath(createDatabaseKeyConverter())
 
             val path2 = File(tempFolder, "FILE_2").apply {
+                createNewFileWithMkDirs()
                 writeText("FILLED_CONTENT_2")
             }.toKeyContentPath(createDatabaseKeyConverter())
 
@@ -88,10 +91,12 @@ class DatabaseKeyContentConverterTest {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
             val path1 = File(tempFolder, "FILE_1").apply {
+                createNewFileWithMkDirs()
                 writeText("FILLED_CONTENT_1")
             }.toKeyContentPath(databaseKeyContentConverter)
 
             val path2 = File(tempFolder, "FILE_2").apply {
+                createNewFileWithMkDirs()
                 writeText("FILLED_CONTENT_2")
             }.toKeyContentPath(databaseKeyContentConverter)
 
@@ -104,10 +109,12 @@ class DatabaseKeyContentConverterTest {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
             val path1 = File(tempFolder, "FILE_1").apply {
+                createNewFileWithMkDirs()
                 writeText("SAME_TEXT")
             }.toKeyContentPath(databaseKeyContentConverter)
 
             val path2 = File(tempFolder, "FILE_2").apply {
+                createNewFileWithMkDirs()
                 writeText("SAME_TEXT")
             }.toKeyContentPath(databaseKeyContentConverter)
 
