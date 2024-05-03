@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.dao.impl.api.key
 
 import android.content.Context
 import android.os.Build
+import android.os.Looper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.FileExt
@@ -10,15 +11,18 @@ import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
 import com.flipperdevices.bridge.dao.impl.converters.StubMD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
-import com.flipperdevices.bridge.dao.impl.thread.StubMainThreadChecker
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.robolectric.Shadows
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowLooper
 import java.io.File
 
 @RunWith(AndroidJUnit4::class)
@@ -31,12 +35,19 @@ class DatabaseKeyContentConverterTest {
     fun setUp() {
         context = mockk()
         every { context.filesDir } returns FileExt.tempDir
+
+        mockkStatic(Looper::class)
+        every { Looper.myLooper() } returns mock<Looper>()
+        every { Looper.getMainLooper() } returns mock<Looper>()
+
+        mockkStatic(ShadowLooper::class)
+        every { Shadows.shadowOf(Looper.myLooper()) } returns mock<ShadowLooper>()
+        every { Shadows.shadowOf(Looper.getMainLooper()) } returns mock<ShadowLooper>()
     }
 
     private fun createDatabaseKeyConverter(): DatabaseKeyContentConverter {
         return DatabaseKeyContentConverter(
             md5Converter = StubMD5Converter,
-            mainThreadChecker = StubMainThreadChecker,
             mD5FileProvider = MD5FileProviderImpl(
                 context = context,
                 fileComparator = DefaultFileComparator,

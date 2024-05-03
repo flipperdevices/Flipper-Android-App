@@ -25,7 +25,7 @@ internal object FileExt {
         get() = File.createTempFile(RANDOM_FILE_NAME, TXT_EXTENSION_WITH_DOT)
             .parentFile ?: error("Could not get temp dir")
 
-    fun File.child(other: String) = File(this, other)
+    private fun File.child(other: String) = File(this, other)
 
     fun getRandomFolder(): File {
         val parentFolder = tempDir
