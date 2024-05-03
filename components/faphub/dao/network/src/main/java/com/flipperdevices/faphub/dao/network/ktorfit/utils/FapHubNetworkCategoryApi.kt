@@ -18,6 +18,7 @@ class FapHubNetworkCategoryApi(
     private val mutex = Mutex()
     private var currentTarget: FlipperTarget? = null
     private var categories: Map<String, KtorfitCategory>? = null
+    private var categoriesReceivedError: Throwable? = null
 
     suspend fun get(target: FlipperTarget, id: String): FapCategory? {
         invalidateIfNeed(target)
@@ -26,13 +27,16 @@ class FapHubNetworkCategoryApi(
 
     suspend fun getAll(target: FlipperTarget): List<KtorfitCategory> {
         invalidateIfNeed(target)
-        return categories?.map { it.value } ?: error("Failed receive categories")
+        return categories?.map { it.value }
+            ?: categoriesReceivedError?.let { throw it }
+            ?: error("Failed receive categories")
     }
 
     private suspend fun invalidateIfNeed(target: FlipperTarget) = withLock(mutex, "invalidate") {
         if (!shouldInvalidate(target)) {
             return@withLock
         }
+        categoriesReceivedError = null
         var categoriesReceived = try {
             categoryApi.getAll(
                 sdkApi = when (target) {
@@ -48,6 +52,7 @@ class FapHubNetworkCategoryApi(
             )
         } catch (ex: Exception) {
             error(ex) { "Failed get categories" }
+            categoriesReceivedError = ex
             return@withLock
         }
         if (target is FlipperTarget.Unsupported) {
