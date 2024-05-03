@@ -1,10 +1,14 @@
 package com.flipperdevices.bridge.dao.impl.comparator
 
+import com.flipperdevices.core.di.AppGraph
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
+import javax.inject.Inject
 
-object DefaultFileComparator : FileComparator {
+@ContributesBinding(AppGraph::class, FileComparator::class)
+class DefaultFileComparator @Inject constructor() : FileComparator {
     override suspend fun isSameContent(
         istream1: InputStream,
         istream2: InputStream

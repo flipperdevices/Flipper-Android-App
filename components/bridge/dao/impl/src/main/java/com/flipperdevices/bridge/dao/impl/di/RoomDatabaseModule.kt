@@ -3,13 +3,7 @@ package com.flipperdevices.bridge.dao.impl.di
 import android.content.Context
 import androidx.room.Room
 import com.flipperdevices.bridge.dao.impl.AppDatabase
-import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
-import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.bridge.dao.impl.converters.DatabaseKeyContentConverter
-import com.flipperdevices.bridge.dao.impl.md5.MD5Converter
-import com.flipperdevices.bridge.dao.impl.md5.MD5ConverterImpl
-import com.flipperdevices.bridge.dao.impl.md5.MD5FileProvider
-import com.flipperdevices.bridge.dao.impl.md5.MD5FileProviderImpl
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
@@ -34,7 +28,7 @@ class RoomDatabaseModule {
     @Singleton
     fun provideRoom(
         context: Context,
-        databaseKeyContentConverter: DatabaseKeyContentConverter
+        databaseKeyContentConverter: DatabaseKeyContentConverter,
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
@@ -43,34 +37,6 @@ class RoomDatabaseModule {
         ).addTypeConverter(databaseKeyContentConverter)
             .fallbackToDestructiveMigration()
             .build()
-    }
-
-    @Provides
-    fun provideDatabaseKeyContentConverter(
-        md5Converter: MD5Converter,
-        mD5FileProvider: MD5FileProvider
-    ): DatabaseKeyContentConverter = DatabaseKeyContentConverter(
-        md5Converter = md5Converter,
-        mD5FileProvider = mD5FileProvider
-    )
-
-    @Provides
-    fun provideMD5FileProvider(
-        context: Context,
-        fileComparator: FileComparator
-    ): MD5FileProvider = MD5FileProviderImpl(
-        context = context,
-        fileComparator = fileComparator
-    )
-
-    @Provides
-    fun provideFileComparator(): FileComparator {
-        return DefaultFileComparator
-    }
-
-    @Provides
-    fun provideMD5Converter(): MD5Converter {
-        return MD5ConverterImpl()
     }
 
     @Provides

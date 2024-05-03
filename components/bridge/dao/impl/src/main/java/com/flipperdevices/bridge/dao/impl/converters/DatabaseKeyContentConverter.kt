@@ -12,9 +12,10 @@ import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
+import javax.inject.Inject
 
 @ProvidedTypeConverter
-class DatabaseKeyContentConverter(
+class DatabaseKeyContentConverter @Inject constructor(
     private val md5Converter: MD5Converter,
     private val mD5FileProvider: MD5FileProvider,
 ) : LogTagProvider {

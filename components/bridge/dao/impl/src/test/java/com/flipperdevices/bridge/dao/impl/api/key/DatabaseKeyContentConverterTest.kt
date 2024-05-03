@@ -15,6 +15,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -30,11 +31,13 @@ import java.io.File
 class DatabaseKeyContentConverterTest {
 
     private lateinit var context: Context
+    private lateinit var tempFolder: File
 
     @Before
     fun setUp() {
         context = mockk()
-        every { context.filesDir } returns FileExt.tempDir
+        tempFolder = FileExt.provideTempFolder()
+        every { context.filesDir } returns tempFolder
 
         mockkStatic(Looper::class)
         every { Looper.myLooper() } returns mock<Looper>()
@@ -45,13 +48,17 @@ class DatabaseKeyContentConverterTest {
         every { Shadows.shadowOf(Looper.getMainLooper()) } returns mock<ShadowLooper>()
     }
 
+    @After
+    fun onStop() {
+        tempFolder.delete()
+    }
+
     private fun createDatabaseKeyConverter(): DatabaseKeyContentConverter {
         return DatabaseKeyContentConverter(
             md5Converter = StubMD5Converter,
             mD5FileProvider = MD5FileProviderImpl(
                 context = context,
-                fileComparator = DefaultFileComparator,
-                keyFolder = FileExt.getRandomFolder(),
+                fileComparator = DefaultFileComparator(),
             )
         )
     }
@@ -65,10 +72,10 @@ class DatabaseKeyContentConverterTest {
     @Test
     fun GIVEN_different_content_WHEN_different_md_5_THEN_different_path() {
         runTest {
-            val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+            val path1 = FileExt.createFilledFile("FILLED_CONTENT_FIRST", tempFolder)
                 .toKeyContentPath(createDatabaseKeyConverter())
 
-            val path2 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+            val path2 = FileExt.createFilledFile("FILLED_CONTENT_SECOND", tempFolder)
                 .toKeyContentPath(createDatabaseKeyConverter())
 
             Assert.assertNotEquals(path1, path2)
@@ -79,10 +86,10 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_different_content_WHEN_same_md_5_THEN_different_path() {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
-            val path1 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+            val path1 = FileExt.createFilledFile("FILLED_CONTENT_FIRST", tempFolder)
                 .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = FileExt.createFilledFile(FileExt.RANDOM_FILE_NAME)
+            val path2 = FileExt.createFilledFile("FILLED_CONTENT_SECOND", tempFolder)
                 .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertNotEquals(path1, path2)
@@ -93,10 +100,10 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_same_content_WHEN_same_md_5_THEN_same_path() {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
-            val path1 = FileExt.createFilledFile(FileExt.DEFAULT_TEXT)
+            val path1 = FileExt.createFilledFile("FILLED_TEXT", tempFolder)
                 .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = FileExt.createFilledFile(FileExt.DEFAULT_TEXT)
+            val path2 = FileExt.createFilledFile("FILLED_TEXT", tempFolder)
                 .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertEquals(path1, path2)
@@ -107,10 +114,10 @@ class DatabaseKeyContentConverterTest {
     fun GIVEN_not_existing_files_WHEN_same_md_5_THEN_same_path() {
         runTest {
             val databaseKeyContentConverter = createDatabaseKeyConverter()
-            val path1 = File(FileExt.RANDOM_FILE_NAME)
+            val path1 = File("FILE_CONTENT_1")
                 .toKeyContentPath(databaseKeyContentConverter)
 
-            val path2 = File(FileExt.RANDOM_FILE_NAME)
+            val path2 = File("FILE_CONTENT_2")
                 .toKeyContentPath(databaseKeyContentConverter)
 
             Assert.assertEquals(path1, path2)

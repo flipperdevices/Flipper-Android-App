@@ -3,22 +3,27 @@ package com.flipperdevices.bridge.dao.impl.md5
 import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
+import javax.inject.Inject
 
-internal class MD5FileProviderImpl(
-    private val context: Context,
-    private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context),
+@ContributesBinding(AppGraph::class, MD5FileProvider::class)
+class MD5FileProviderImpl @Inject constructor(
+    context: Context,
     private val fileComparator: FileComparator,
 ) : MD5FileProvider {
+    private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context)
+
     /**
      * @return list of files with same MD5 signature
      */
     private fun getSameMd5Files(md5: String): List<File> {
         return keyFolder.listFiles()
             ?.filterNotNull()
-            ?.filter { file -> file.name.contains(md5) }
+            ?.filter { file -> file.name.startsWith(md5) }
             .orEmpty()
     }
 

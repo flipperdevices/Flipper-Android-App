@@ -267,6 +267,9 @@ dependencies {
 
     implementation(libs.profileinstaller)
     baselineProfile(projects.instances.android.baselineprofile)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
 }
 
 baselineProfile {

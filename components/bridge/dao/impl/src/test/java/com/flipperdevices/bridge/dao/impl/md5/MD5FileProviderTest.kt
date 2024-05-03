@@ -4,27 +4,36 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.FileExt
 import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
+import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.io.File
 
 class MD5FileProviderTest {
     private lateinit var context: Context
+    private lateinit var tempFolder: File
 
     @Before
     fun setUp() {
         context = mockk()
-        every { context.filesDir } returns FileExt.tempDir
+        tempFolder = FileExt.provideTempFolder()
+        every { context.filesDir } returns tempFolder
+    }
+
+    @After
+    fun onStop() {
+        tempFolder.delete()
     }
 
     private fun createMD5FileProvider(): MD5FileProviderImpl {
         return MD5FileProviderImpl(
             context = context,
-            keyFolder = FileExt.tempDir,
-            fileComparator = DefaultFileComparator
+            fileComparator = DefaultFileComparator()
         )
     }
 
@@ -34,15 +43,15 @@ class MD5FileProviderTest {
             val emptyKeyContent = FlipperKeyContent.RawData(byteArrayOf(0))
             val md5FileProvider = createMD5FileProvider()
             val file1 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.STUB_MD5,
+                contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFile()
+            file1.createNewFileWithMkDirs()
             file1.writeBytes(emptyKeyContent.bytes)
             val path1 = file1.path
 
             val path2 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.STUB_MD5,
+                contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
             ).path
             Assert.assertEquals(path1, path2)
@@ -55,15 +64,15 @@ class MD5FileProviderTest {
             val emptyKeyContent = FlipperKeyContent.RawData(byteArrayOf(0))
             val md5FileProvider = createMD5FileProvider()
             val file1 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.STUB_MD5,
+                contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFile()
+            file1.createNewFileWithMkDirs()
             file1.writeBytes(emptyKeyContent.bytes)
             val path1 = file1.path
 
             val path2 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.STUB_MD5,
+                contentMd5 = "STUB_MD5",
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
             ).path
             Assert.assertNotEquals(path1, path2)
@@ -76,15 +85,15 @@ class MD5FileProviderTest {
             val emptyKeyContent = FlipperKeyContent.RawData(byteArrayOf(0))
             val md5FileProvider = createMD5FileProvider()
             val file1 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.RANDOM_MD5,
+                contentMd5 = "FIRST_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFile()
+            file1.createNewFileWithMkDirs()
             file1.writeBytes(emptyKeyContent.bytes)
             val path1 = file1.path
 
             val path2 = md5FileProvider.getPathToFile(
-                contentMd5 = FileExt.RANDOM_MD5,
+                contentMd5 = "SECOND_MD5",
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
             ).path
             Assert.assertNotEquals(path1, path2)
