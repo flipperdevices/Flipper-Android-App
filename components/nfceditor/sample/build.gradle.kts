@@ -64,4 +64,8 @@ dependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
 }
