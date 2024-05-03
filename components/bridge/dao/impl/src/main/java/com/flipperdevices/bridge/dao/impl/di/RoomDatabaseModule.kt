@@ -22,15 +22,19 @@ private const val DATABASE_NAME = "flipper.db"
 
 @Module
 @ContributesTo(AppGraph::class)
+@Suppress("TooManyFunctions")
 class RoomDatabaseModule {
     @Provides
     @Singleton
-    fun provideRoom(context: Context): AppDatabase {
+    fun provideRoom(
+        context: Context,
+        databaseKeyContentConverter: DatabaseKeyContentConverter,
+    ): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             DATABASE_NAME
-        ).addTypeConverter(DatabaseKeyContentConverter(context))
+        ).addTypeConverter(databaseKeyContentConverter)
             .fallbackToDestructiveMigration()
             .build()
     }
