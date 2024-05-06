@@ -54,8 +54,8 @@ fun<Tab : Enum<Tab>> ComposableTabSwitch(
 private fun<Tab : Enum<Tab>> ComposableFapHubSwitchInternal(
     tab: Tab,
     activeColor: Color,
-    content: @Composable (Tab) -> Unit,
     tabs: Array<Tab>,
+    content: @Composable (Tab) -> Unit,
 ) {
     var tabPositions by remember {
         mutableStateOf(emptyList<TabPosition>())

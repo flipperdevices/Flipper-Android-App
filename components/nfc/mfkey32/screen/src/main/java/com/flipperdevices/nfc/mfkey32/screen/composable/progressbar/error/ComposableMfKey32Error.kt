@@ -37,8 +37,8 @@ fun ComposableMfKey32ErrorContent(
     mockupImage: ComposableFlipperMockupImage,
     isActive: Boolean,
     flipperColor: HardwareColor,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
-    modifier: Modifier = Modifier
 ) = Column(
     modifier = modifier.fillMaxHeight(),
     horizontalAlignment = Alignment.CenterHorizontally
