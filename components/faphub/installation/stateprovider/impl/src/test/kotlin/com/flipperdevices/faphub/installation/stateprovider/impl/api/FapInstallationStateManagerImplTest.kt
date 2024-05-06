@@ -65,7 +65,8 @@ private val fapActionRequestUpdateMock = FapActionRequest.Update(
         fullName = "",
         iconBase64 = null,
         sdkApi = null,
-        sourceFileHash = null
+        sourceFileHash = null,
+        isDevCatalog = false
     )
 )
 
@@ -252,7 +253,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = null,
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -289,7 +291,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = null,
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -314,7 +317,8 @@ class FapInstallationStateManagerImplTest {
                     fullName = "",
                     iconBase64 = null,
                     sdkApi = null,
-                    sourceFileHash = null
+                    sourceFileHash = null,
+                    isDevCatalog = false
                 )
             ),
             fapState
@@ -338,7 +342,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = SemVer(32, 1),
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -375,7 +380,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = SemVer(32, 1),
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -412,7 +418,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = SemVer(32, 2),
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -436,7 +443,8 @@ class FapInstallationStateManagerImplTest {
                     fullName = "",
                     iconBase64 = null,
                     sdkApi = SemVer(32, 2),
-                    sourceFileHash = null
+                    sourceFileHash = null,
+                    isDevCatalog = false
                 )
             ),
             fapState
@@ -460,7 +468,8 @@ class FapInstallationStateManagerImplTest {
                         fullName = "",
                         iconBase64 = null,
                         sdkApi = null,
-                        sourceFileHash = null
+                        sourceFileHash = null,
+                        isDevCatalog = false
                     )
                 ),
                 inProgress = false
@@ -484,7 +493,8 @@ class FapInstallationStateManagerImplTest {
                     fullName = "",
                     iconBase64 = null,
                     sdkApi = null,
-                    sourceFileHash = null
+                    sourceFileHash = null,
+                    isDevCatalog = false
                 )
             ),
             fapState

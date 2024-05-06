@@ -13,6 +13,9 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.progress)
+    implementation(projects.components.core.preference)
+
+    implementation(projects.components.settings.api)
 
     implementation(projects.components.faphub.utils)
     implementation(projects.components.faphub.dao.api)
