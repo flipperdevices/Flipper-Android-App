@@ -64,8 +64,8 @@ fun ComposableDeviceInfoRowWithText(
 fun ComposableDeviceInfoRow(
     text: String,
     inProgress: Boolean,
+    modifier: Modifier = Modifier,
     content: (@Composable (Modifier) -> Unit)?,
-    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -95,10 +95,10 @@ fun ComposableDeviceInfoRow(
 fun ComposableDeviceInfoRow(
     @StringRes titleId: Int,
     inProgress: Boolean,
+    modifier: Modifier = Modifier,
     content: (@Composable (Modifier) -> Unit)?,
-    modifier: Modifier = Modifier
 ) {
-    ComposableDeviceInfoRow(stringResource(titleId), inProgress, content, modifier)
+    ComposableDeviceInfoRow(stringResource(titleId), inProgress, modifier, content)
 }
 
 @Composable

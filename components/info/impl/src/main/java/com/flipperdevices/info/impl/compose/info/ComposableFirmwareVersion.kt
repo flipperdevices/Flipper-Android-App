@@ -27,8 +27,8 @@ fun ComposableFirmwareVersion(
         ComposableDeviceInfoRow(
             R.string.info_device_info_version,
             firmwareVersionInProgress,
-            null,
-            modifier
+            modifier,
+            null
         )
         return
     }
@@ -55,8 +55,8 @@ fun ComposableFirmwareBuildDate(
         ComposableDeviceInfoRow(
             R.string.info_device_info_build_date,
             firmwareVersionInProgress,
+            modifier,
             null,
-            modifier
         )
         return
     }
