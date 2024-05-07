@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.impl.composable.bar
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -16,7 +17,7 @@ fun ComposableEditorTopBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.statusBarsPadding(),
         title = {
             ComposableEllipsizeStartText(
                 text = path
