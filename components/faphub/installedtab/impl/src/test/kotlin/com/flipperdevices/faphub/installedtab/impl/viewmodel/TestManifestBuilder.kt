@@ -17,7 +17,8 @@ internal fun getTestManifest(uid: String) = FapManifestItem(
     fullName = "",
     iconBase64 = null,
     sdkApi = null,
-    sourceFileHash = null
+    sourceFileHash = null,
+    isDevCatalog = false
 )
 
 internal fun getTestFapItemShort(uid: String, name: String = "") = FapItemShort(

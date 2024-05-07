@@ -1,5 +1,6 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -14,6 +15,7 @@ import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
 import com.flipperdevices.faphub.installation.manifest.impl.model.FapManifestLoaderState
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
@@ -33,15 +35,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import java.io.File
 
+@Suppress("LongParameterList")
 class FapManifestsLoader @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     private val flipperServiceProvider: FlipperServiceProvider,
     private val parser: FapManifestParser,
+    private val dataStoreSettings: DataStore<Settings>,
     private val cacheLoader: FapManifestCacheLoader,
     private val flipperStorageInformationApi: FlipperStorageInformationApi,
     private val fapExistChecker: FapExistChecker
@@ -103,6 +108,7 @@ class FapManifestsLoader @AssistedInject constructor(
         connectionState: ConnectionState,
         storageInformation: FlipperStorageInformation
     ) {
+        val isUseDevCatalog = dataStoreSettings.data.first().useDevCatalog
         val serviceApi = flipperServiceProvider.getServiceApi()
         if (!connectionState.isReady) {
             throw FlipperNotConnected()
@@ -120,6 +126,7 @@ class FapManifestsLoader @AssistedInject constructor(
             parser.parse(file.readBytes(), name)
         }.filterNotNull()
             .filter { fapExistChecker.checkExist(it.path) }
+            .filter { it.isDevCatalog == isUseDevCatalog }
             .forEach {
                 fapItemsList.add(it)
                 manifestLoaderState.emit(
@@ -139,6 +146,7 @@ class FapManifestsLoader @AssistedInject constructor(
             }
             .filterNotNull()
             .filter { fapExistChecker.checkExist(it.path) }
+            .filter { it.isDevCatalog == isUseDevCatalog }
             .forEach { content ->
                 fapItemsList.add(content)
                 manifestLoaderState.emit(
