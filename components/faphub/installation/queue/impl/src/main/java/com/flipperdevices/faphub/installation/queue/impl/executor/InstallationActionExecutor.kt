@@ -1,8 +1,10 @@
 package com.flipperdevices.faphub.installation.queue.impl.executor
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
@@ -13,6 +15,7 @@ import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapAct
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapIconDownloader
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.flipperdevices.faphub.utils.FapHubConstants.FLIPPER_APPS_FOLDER
+import kotlinx.coroutines.flow.first
 import java.io.File
 import javax.inject.Inject
 
@@ -20,6 +23,7 @@ class InstallationActionExecutor @Inject constructor(
     fapDownloadApi: FapDownloadApi,
     fapUploadAction: FapActionUpload,
     fapNetworkApi: FapNetworkApi,
+    private val dataStoreSettings: DataStore<Settings>,
     private val fapManifestApi: FapManifestApi,
     private val fapIconDownloader: FapIconDownloader
 ) : PrepareFapActionExecutor(fapDownloadApi, fapUploadAction, fapNetworkApi), LogTagProvider {
@@ -48,7 +52,8 @@ class InstallationActionExecutor @Inject constructor(
                 path = finalFapPath,
                 fullName = request.applicationName,
                 iconBase64 = iconBase64Request.getOrNull(),
-                sdkApi = getSdkApi(request.applicationUid, request.toVersion)
+                sdkApi = getSdkApi(request.applicationUid, request.toVersion),
+                isDevCatalog = dataStoreSettings.data.first().useDevCatalog
             )
         )
         info { "Fap manifest added by request $request" }

@@ -18,6 +18,7 @@ private const val FAP_MANIFEST_PATH_KEY = "Path"
 private const val FAP_MANIFEST_FULL_NAME_KEY = "Full Name"
 private const val FAP_MANIFEST_ICON_KEY = "Icon"
 private const val FAP_MANIFEST_API_KEY = "Version Build API"
+private const val FAP_MANIFEST_DEV_CATALOG = "DevCatalog"
 
 class FapManifestParser @Inject constructor() {
     fun parse(fileContent: ByteArray, name: String): FapManifestItem? {
@@ -33,7 +34,8 @@ class FapManifestParser @Inject constructor() {
             fullName = dict[FAP_MANIFEST_FULL_NAME_KEY] ?: applicationAlias,
             iconBase64 = dict[FAP_MANIFEST_ICON_KEY],
             sdkApi = dict[FAP_MANIFEST_API_KEY]?.let { SemVer.fromString(it) },
-            sourceFileHash = fileContent.md5()
+            sourceFileHash = fileContent.md5(),
+            isDevCatalog = dict[FAP_MANIFEST_DEV_CATALOG]?.toBooleanStrictOrNull() ?: false
         )
     }
 
@@ -54,6 +56,9 @@ class FapManifestParser @Inject constructor() {
         orderedDict.add(FAP_MANIFEST_UID_KEY to fapItem.uid)
         orderedDict.add(FAP_MANIFEST_VERSION_UID_KEY to fapItem.versionUid)
         orderedDict.add(FAP_MANIFEST_PATH_KEY to fapItem.path)
+        if (fapItem.isDevCatalog) {
+            orderedDict.add(FAP_MANIFEST_DEV_CATALOG to fapItem.isDevCatalog.toString())
+        }
 
         return FlipperFileFormat(orderedDict)
     }
