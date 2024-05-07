@@ -6,6 +6,11 @@ object ApkConfig {
     const val APPLICATION_ID = "com.flipperdevices.app"
 
     const val MIN_SDK_VERSION = 26
+
+    /**
+     * Don't update until Google Play allows uploading WearOS apps with target sdk greater than 33
+     * https://developer.android.com/google/play/requirements/target-sdk
+     */
     const val TARGET_SDK_VERSION = 33
     const val COMPILE_SDK_VERSION = 34
 
