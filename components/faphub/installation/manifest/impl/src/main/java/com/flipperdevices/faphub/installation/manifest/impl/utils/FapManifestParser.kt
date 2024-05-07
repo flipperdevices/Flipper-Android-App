@@ -56,8 +56,9 @@ class FapManifestParser @Inject constructor() {
         orderedDict.add(FAP_MANIFEST_UID_KEY to fapItem.uid)
         orderedDict.add(FAP_MANIFEST_VERSION_UID_KEY to fapItem.versionUid)
         orderedDict.add(FAP_MANIFEST_PATH_KEY to fapItem.path)
-
-        orderedDict.add(FAP_MANIFEST_DEV_CATALOG to fapItem.isDevCatalog.toString())
+        if (fapItem.isDevCatalog) {
+            orderedDict.add(FAP_MANIFEST_DEV_CATALOG to fapItem.isDevCatalog.toString())
+        }
 
         return FlipperFileFormat(orderedDict)
     }
