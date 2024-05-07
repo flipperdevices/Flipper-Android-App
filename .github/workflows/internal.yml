@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'dev'
+      - 'ci/try_fix_baseline'
 
 concurrency:
   group: "deploy"

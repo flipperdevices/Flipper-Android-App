@@ -24,8 +24,8 @@ android {
     testOptions.managedDevices.devices {
         create<ManagedVirtualDevice>("pixel6Api31") {
             device = "Pixel 6"
-            apiLevel = 31
-            systemImageSource = "aosp"
+            apiLevel = 34
+            systemImageSource = "aosp-atd"
         }
     }
 }
