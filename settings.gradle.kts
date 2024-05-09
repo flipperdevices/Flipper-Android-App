@@ -42,6 +42,7 @@ include(
     ":components:bridge:synchronization:ui",
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
+
     ":components:bridge:connection:transport:ble:api",
     ":components:bridge:connection:transport:ble:impl",
     ":components:bridge:connection:transport:common:api",
@@ -55,6 +56,14 @@ include(
     ":components:bridge:connection:config:impl",
     ":components:bridge:connection:transportconfigbuilder:api",
     ":components:bridge:connection:transportconfigbuilder:impl",
+    ":components:bridge:connection:device:common:api",
+    ":components:bridge:connection:device:fzero:api",
+    ":components:bridge:connection:device:fzero:impl",
+    ":components:bridge:connection:feature:common:api",
+    ":components:bridge:connection:feature:provider:api",
+    ":components:bridge:connection:feature:provider:impl",
+    ":components:bridge:connection:feature:rpc:api",
+    ":components:bridge:connection:feature:rpc:impl",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -256,3 +265,5 @@ include(
 
     ":instances:android:baselineprofile"
 )
+include(":rpc")
+project(":rpc").projectDir = settingsDir.resolve("components/bridge/connection/feature/rpc")
