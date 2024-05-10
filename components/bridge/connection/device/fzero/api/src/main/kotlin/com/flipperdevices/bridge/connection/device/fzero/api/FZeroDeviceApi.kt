@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDevic
 import kotlinx.coroutines.CoroutineScope
 
 interface FZeroDeviceApi : FDeviceApi {
+
     fun interface Factory {
         operator fun invoke(
             scope: CoroutineScope,

@@ -64,6 +64,12 @@ include(
     ":components:bridge:connection:feature:provider:impl",
     ":components:bridge:connection:feature:rpc:api",
     ":components:bridge:connection:feature:rpc:impl",
+    ":components:bridge:connection:feature:restartrpc:api",
+    ":components:bridge:connection:feature:restartrpc:impl",
+    ":components:bridge:connection:feature:lagsdetector:api",
+    ":components:bridge:connection:feature:lagsdetector:impl",
+    ":components:bridge:connection:feature:serialspeed:api",
+    ":components:bridge:connection:feature:serialspeed:impl",
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
@@ -265,5 +271,3 @@ include(
 
     ":instances:android:baselineprofile"
 )
-include(":rpc")
-project(":rpc").projectDir = settingsDir.resolve("components/bridge/connection/feature/rpc")

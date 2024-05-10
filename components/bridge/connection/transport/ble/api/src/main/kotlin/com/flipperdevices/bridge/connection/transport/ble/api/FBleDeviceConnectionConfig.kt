@@ -13,7 +13,7 @@ data class FBleDeviceSerialConfig(
     val rxServiceCharUuid: UUID,
     val txServiceCharUuid: UUID,
     val overflowControl: OverflowControlConfig?,
-    val resetServiceUUID: UUID?
+    val resetCharUUID: UUID
 )
 
 data class OverflowControlConfig(

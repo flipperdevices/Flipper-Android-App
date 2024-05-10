@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.impl.utils.FDeviceConnectStatusToDeviceApi
-import com.flipperdevices.bridge.connection.feature.provider.impl.utils.FeatureClassToEnumMapper
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.core.di.AppGraph
@@ -48,15 +47,9 @@ class FFeatureProviderImpl constructor(
             return@map if (deviceApi == null) {
                 FFeatureStatus.Retrieving()
             } else {
-                val featureEnum =
-                    FeatureClassToEnumMapper.get(clazz) ?: return@map FFeatureStatus.NotFound()
-                val feature = deviceApi.getFeatureApi(featureEnum)
+                val feature = deviceApi.get(clazz)
                     ?: return@map FFeatureStatus.Unsupported<T>()
-                if (!clazz.isInstance(feature)) {
-                    return@map FFeatureStatus.Unsupported<T>()
-                }
-                @Suppress("UNCHECKED_CAST")
-                return@map FFeatureStatus.Supported<T>(feature as T)
+                return@map FFeatureStatus.Supported<T>(feature)
             }
         }
     }
