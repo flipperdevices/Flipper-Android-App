@@ -1,5 +1,63 @@
 package com.flipperdevices.bridge.connection.feature.provider.impl.api
 
+import com.flipperdevices.bridge.connection.device.common.api.FDeviceApi
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.impl.utils.FDeviceConnectStatusToDeviceApi
+import com.flipperdevices.bridge.connection.feature.provider.impl.utils.FeatureClassToEnumMapper
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
+import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Singleton
+import kotlin.reflect.KClass
 
-class FFeatureProviderImpl : FFeatureProvider
+@Singleton
+@ContributesBinding(AppGraph::class, FFeatureProvider::class)
+class FFeatureProviderImpl constructor(
+    private val orchestrator: FDeviceOrchestrator,
+    private val deviceApiMapper: FDeviceConnectStatusToDeviceApi
+) : FFeatureProvider {
+    private val scope = CoroutineScope(FlipperDispatchers.workStealingDispatcher)
+
+    private val deviceStateFlow = MutableStateFlow<FDeviceApi?>(null)
+
+    init {
+        orchestrator.getState().map { status ->
+            when (status) {
+                is FDeviceConnectStatus.Connected -> deviceApiMapper.get(status)
+                is FDeviceConnectStatus.Connecting,
+                is FDeviceConnectStatus.Disconnecting,
+                is FDeviceConnectStatus.Disconnected -> null
+            }
+        }.onEach {
+            deviceStateFlow.emit(it)
+        }.launchIn(scope)
+    }
+
+    override fun <T : FDeviceFeatureApi> get(clazz: KClass<T>): Flow<FFeatureStatus<T>> {
+        return deviceStateFlow.map { deviceApi ->
+            return@map if (deviceApi == null) {
+                FFeatureStatus.Retrieving()
+            } else {
+                val featureEnum =
+                    FeatureClassToEnumMapper.get(clazz) ?: return@map FFeatureStatus.NotFound()
+                val feature = deviceApi.getFeatureApi(featureEnum)
+                    ?: return@map FFeatureStatus.Unsupported<T>()
+                if (!clazz.isInstance(feature)) {
+                    return@map FFeatureStatus.Unsupported<T>()
+                }
+                @Suppress("UNCHECKED_CAST")
+                return@map FFeatureStatus.Supported<T>(feature as T)
+            }
+        }
+    }
+}
