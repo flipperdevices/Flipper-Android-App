@@ -30,6 +30,7 @@
 - [FIX] Wrong error display on categories screen when no internet connection
 - [FIX] Using third-party Github Action Setup Android SDK for baseline profile generation
 - [FIX] Manifest dev catalog flag on installed apps
+- [FIX] Padding for self update in-app notification
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
