@@ -37,10 +37,14 @@ class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuild
 
     override fun buildFirmwareVersionFromString(
         firmwareVersion: String
-    ): FirmwareVersion? {
+    ): FirmwareVersion {
         val unparsedArray = firmwareVersion.split(" ").filterNot { it.isBlank() }
         if (unparsedArray.size < DEVICE_VERSION_PART_COUNT) {
-            return null
+            return FirmwareVersion(
+                channel = FirmwareChannel.UNKNOWN,
+                version = firmwareVersion,
+                buildDate = null
+            )
         }
         val hash = unparsedArray[DEVICE_VERSION_COMMIT_INDEX]
         val typeVersion = unparsedArray[DEVICE_VERSION_TYPE_INDEX]
