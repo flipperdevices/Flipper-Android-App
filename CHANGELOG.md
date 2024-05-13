@@ -34,6 +34,7 @@
 - [FIX] Settings status bar overflow content
 - [FIX] Fix TopBar above system bar in file manager file edit screen
 - [FIX] Fix custom version detection
+- [FIX] Text overflow on apps card
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
