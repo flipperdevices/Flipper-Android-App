@@ -58,7 +58,11 @@ class FirmwareVersionBuildHelperTest(
             ),
             arrayOf(
                 "532082f3 1784 10-07-2022",
-                null
+                FirmwareVersion(
+                    channel = FirmwareChannel.UNKNOWN,
+                    version = "532082f3 1784 10-07-2022",
+                    buildDate = null
+                )
             )
         )
     }
