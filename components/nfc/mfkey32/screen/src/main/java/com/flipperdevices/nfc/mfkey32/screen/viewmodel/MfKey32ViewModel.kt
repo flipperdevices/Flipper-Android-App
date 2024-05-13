@@ -142,6 +142,13 @@ class MfKey32ViewModel @Inject constructor(
 
     private suspend fun prepare(): Boolean {
         info { "Flipper connected" }
+
+        if (flipperStorageApi.listingDirectory(PATH_NONCE_LOG).isEmpty()) {
+            info { "Not found $PATH_NONCE_LOG" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
+            return false
+        }
+
         mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(0f))
 
         try {
