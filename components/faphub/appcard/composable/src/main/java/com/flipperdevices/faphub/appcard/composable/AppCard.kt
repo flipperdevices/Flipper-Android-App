@@ -100,7 +100,9 @@ private fun AppCardTop(
                 modifier = if (fapItem == null) Modifier.placeholderConnecting() else Modifier,
                 text = fapItem?.name ?: DEFAULT_NAME,
                 style = LocalTypography.current.buttonM16,
-                color = LocalPallet.current.text100
+                color = LocalPallet.current.text100,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             ComposableAppCategory(
                 category = fapItem?.category,
