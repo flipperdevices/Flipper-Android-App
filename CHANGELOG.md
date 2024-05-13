@@ -31,6 +31,7 @@
 - [FIX] Using third-party Github Action Setup Android SDK for baseline profile generation
 - [FIX] Manifest dev catalog flag on installed apps
 - [FIX] Settings status bar overflow content
+- [FIX] Fix TopBar above system bar in file manager file edit screen
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
