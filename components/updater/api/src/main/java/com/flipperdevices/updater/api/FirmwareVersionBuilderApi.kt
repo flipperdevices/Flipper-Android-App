@@ -5,5 +5,5 @@ import com.flipperdevices.updater.model.FirmwareVersion
 
 interface FirmwareVersionBuilderApi {
     fun getFirmwareChannel(branch: String): FirmwareChannel
-    fun buildFirmwareVersionFromString(firmwareVersion: String): FirmwareVersion?
+    fun buildFirmwareVersionFromString(firmwareVersion: String): FirmwareVersion
 }

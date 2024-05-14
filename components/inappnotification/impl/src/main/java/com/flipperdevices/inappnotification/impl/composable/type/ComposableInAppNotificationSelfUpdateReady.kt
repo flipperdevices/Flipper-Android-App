@@ -21,6 +21,7 @@ internal fun ComposableInAppNotificationSelfUpdateReady(
 ) {
     ComposableInAppNotificationBase(
         icon = null,
+        modifier = Modifier.padding(horizontal = 12.dp),
         titleId = R.string.ready_update_title,
         descId = R.string.ready_update_desc,
         actionButton = {
