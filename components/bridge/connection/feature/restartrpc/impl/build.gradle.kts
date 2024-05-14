@@ -12,4 +12,5 @@ dependencies {
     implementation(projects.components.bridge.connection.transport.common.api)
 
     implementation(projects.components.core.di)
+    implementation(libs.kotlin.coroutines)
 }

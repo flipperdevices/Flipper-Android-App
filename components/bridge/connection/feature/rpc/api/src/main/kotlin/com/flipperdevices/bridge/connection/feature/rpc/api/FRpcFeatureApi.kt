@@ -1,10 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.rpc.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
-import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.protobuf.Flipper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface FRpcFeatureApi : FDeviceFeatureApi {
@@ -31,11 +28,5 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
 
-    fun interface Factory {
-        operator fun invoke(
-            scope: CoroutineScope,
-            serialApi: FSerialDeviceApi,
-            lagsDetector: FLagsDetectorFeature
-        ): FRpcFeatureApi
-    }
+    fun interface Factory : FDeviceFeatureApi.Factory
 }

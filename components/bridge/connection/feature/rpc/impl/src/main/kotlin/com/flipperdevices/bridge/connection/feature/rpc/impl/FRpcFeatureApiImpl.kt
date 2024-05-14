@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
@@ -16,6 +15,7 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
@@ -32,13 +32,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import me.gulya.anvil.assisted.ContributesAssistedFactory
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
-@ContributesAssistedFactory(AppGraph::class, FRpcFeatureApi.Factory::class)
 class FRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val serialApi: FSerialDeviceApi,
@@ -220,5 +218,14 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    @AssistedFactory
+    fun interface InternalFactory {
+        operator fun invoke(
+            scope: CoroutineScope,
+            serialApi: FSerialDeviceApi,
+            lagsDetector: FLagsDetectorFeature
+        ): FRpcFeatureApiImpl
     }
 }

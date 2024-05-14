@@ -1,9 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
-import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -25,10 +23,5 @@ interface FLagsDetectorFeature : FDeviceFeatureApi {
 
     fun notifyAboutAction()
 
-    fun interface Factory {
-        operator fun invoke(
-            scope: CoroutineScope,
-            restartRpcFeatureApi: FRestartRpcFeatureApi
-        ): FLagsDetectorFeature
-    }
+    fun interface Factory : FDeviceFeatureApi.Factory
 }

@@ -3,13 +3,13 @@ package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -19,13 +19,11 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import me.gulya.anvil.assisted.ContributesAssistedFactory
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 private const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
 
-@ContributesAssistedFactory(AppGraph::class, FLagsDetectorFeature.Factory::class)
 class FLagsDetectorFeatureImpl @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi,
@@ -103,5 +101,13 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
         flipperActionNotifier.notifyAboutAction()
         val pendingCount = pendingResponseCounter.getAndIncrement()
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }
+    }
+
+    @AssistedFactory
+    fun interface InternalFactory {
+        operator fun invoke(
+            scope: CoroutineScope,
+            restartRpcFeatureApi: FRestartRpcFeatureApi,
+        ): FLagsDetectorFeatureImpl
     }
 }
