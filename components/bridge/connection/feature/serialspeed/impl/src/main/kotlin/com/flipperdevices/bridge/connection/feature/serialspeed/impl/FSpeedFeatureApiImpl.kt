@@ -19,6 +19,6 @@ class FSpeedFeatureApiImpl @AssistedInject constructor(
     fun interface InternalFactory {
         operator fun invoke(
             serialApi: FSerialDeviceApi
-        ): FSpeedFeatureApi
+        ): FSpeedFeatureApiImpl
     }
 }

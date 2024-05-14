@@ -64,6 +64,7 @@ include(
     ":components:bridge:connection:feature:provider:impl",
     ":components:bridge:connection:feature:rpc:api",
     ":components:bridge:connection:feature:rpc:impl",
+    ":components:bridge:connection:feature:rpc:model",
     ":components:bridge:connection:feature:restartrpc:api",
     ":components:bridge:connection:feature:restartrpc:impl",
     ":components:bridge:connection:feature:lagsdetector:api",

@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider

@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpc.storage
 
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.util.concurrent.PriorityBlockingQueue

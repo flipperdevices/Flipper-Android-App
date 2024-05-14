@@ -5,6 +5,8 @@ plugins {
 android.namespace = "com.flipperdevices.bridge.connection.feature.rpc.api"
 
 dependencies {
+    api(projects.components.bridge.connection.feature.rpc.model)
+
     implementation(projects.components.core.ktx)
 
     implementation(projects.components.bridge.connection.feature.common.api)

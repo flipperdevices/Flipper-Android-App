@@ -13,6 +13,7 @@ import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDevic
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -21,7 +22,7 @@ import java.util.EnumMap
 import kotlin.reflect.KClass
 
 @ContributesAssistedFactory(AppGraph::class, FZeroDeviceApi.Factory::class)
-class FZeroDeviceApiImpl(
+class FZeroDeviceApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val connectedDevice: FConnectedDeviceApi,
     private val rpcFeatureFactory: FRpcFeatureApi.Factory,

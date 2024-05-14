@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import kotlinx.coroutines.flow.Flow
 
 /**

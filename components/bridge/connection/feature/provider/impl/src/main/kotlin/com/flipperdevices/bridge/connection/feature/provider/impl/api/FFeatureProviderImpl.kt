@@ -13,15 +13,18 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Singleton
 import kotlin.reflect.KClass
+import javax.inject.Inject
 
 @Singleton
 @ContributesBinding(AppGraph::class, FFeatureProvider::class)
-class FFeatureProviderImpl constructor(
+class FFeatureProviderImpl @Inject constructor(
     private val orchestrator: FDeviceOrchestrator,
     private val deviceApiMapper: FDeviceConnectStatusToDeviceApi
 ) : FFeatureProvider {
@@ -52,5 +55,18 @@ class FFeatureProviderImpl constructor(
                 return@map FFeatureStatus.Supported<T>(feature)
             }
         }
+    }
+
+    override suspend fun <T : FDeviceFeatureApi> getSync(clazz: KClass<T>): T? {
+        return get(clazz)
+            .filter { it !is FFeatureStatus.Retrieving }
+            .map { featureStatus ->
+                when (featureStatus) {
+                    is FFeatureStatus.Supported -> featureStatus.featureApi
+                    is FFeatureStatus.NotFound,
+                    is FFeatureStatus.Unsupported -> null
+                    is FFeatureStatus.Retrieving -> error("Impossible situation")
+                }
+            }.first()
     }
 }

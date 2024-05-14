@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpc.storage
 
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 
 private const val GREATER = 1
 private const val EQUALS = 0

@@ -2,7 +2,7 @@ package com.flipperdevices.bridge.connection.feature.rpc.impl
 
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.reader.PeripheralResponseReader
 import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
@@ -64,21 +64,6 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
 
     init {
         subscribeToAnswers(scope)
-        scope.launch {
-            try {
-                awaitCancellation()
-            } finally {
-                withContext(NonCancellable) { onClose() }
-            }
-        }
-        scope.launch {
-            while (isActive) {
-                val request = requestStorage.getNextRequest()
-                if (request != null) {
-                    serialApi.sendBytes(request.data.toDelimitedBytes())
-                }
-            }
-        }
     }
 
     override fun notificationFlow(): Flow<Flipper.Main> {
@@ -237,6 +222,22 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
                     notificationMutableFlow.emit(it)
                 } else {
                     listener.invoke(it)
+                }
+            }
+        }
+
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
+            try {
+                awaitCancellation()
+            } finally {
+                withContext(NonCancellable) { onClose() }
+            }
+        }
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
+            while (isActive) {
+                val request = requestStorage.getNextRequest()
+                if (request != null) {
+                    serialApi.sendBytes(request.data.toDelimitedBytes())
                 }
             }
         }

@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.orchestrator.api)
+    implementation(projects.components.bridge.connection.transport.common.api)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.coroutines)

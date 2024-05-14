@@ -1,8 +1,8 @@
 package com.flipperdevices.bridge.connection.feature.rpc.storage
 
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
-import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequestPriority
-import com.flipperdevices.bridge.connection.feature.rpc.api.wrapToRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
+import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.protobuf.main
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

@@ -18,11 +18,12 @@ import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattService
 import no.nordicsemi.android.kotlin.ble.core.data.BleWriteType
 import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
 import java.util.UUID
+import javax.inject.Named
 
 class FSerialRestartApiImpl @AssistedInject constructor(
     @Assisted private val services: StateFlow<ClientBleGattServices?>,
-    @Assisted private val serialServiceUuid: UUID,
-    @Assisted private val resetCharUUID: UUID,
+    @Assisted("service") private val serialServiceUuid: UUID,
+    @Assisted("characteristic") private val resetCharUUID: UUID,
     private val context: Context
 ) : FSerialRestartApi, LogTagProvider {
     override val TAG = "FSerialRestartApi"
@@ -44,8 +45,8 @@ class FSerialRestartApiImpl @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             services: StateFlow<ClientBleGattServices?>,
-            serialServiceUuid: UUID,
-            resetCharUUID: UUID
+            @Assisted("service") serialServiceUuid: UUID,
+            @Assisted("characteristic") resetCharUUID: UUID
         ): FSerialRestartApiImpl
     }
 }

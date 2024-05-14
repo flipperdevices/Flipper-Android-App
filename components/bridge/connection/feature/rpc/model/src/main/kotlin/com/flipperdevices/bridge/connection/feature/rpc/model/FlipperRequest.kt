@@ -1,7 +1,5 @@
-package com.flipperdevices.bridge.connection.feature.rpc.api
+package com.flipperdevices.bridge.connection.feature.rpc.model
 
-import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
-import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.protobuf.Flipper
 

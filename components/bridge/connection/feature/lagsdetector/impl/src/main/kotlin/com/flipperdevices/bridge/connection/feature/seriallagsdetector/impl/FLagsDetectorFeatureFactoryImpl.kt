@@ -8,9 +8,10 @@ import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDevic
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FLagsDetectorFeature.Factory::class)
-class FLagsDetectorFeatureFactoryImpl constructor(
+class FLagsDetectorFeatureFactoryImpl @Inject constructor(
     private val lagsDetectorFeatureFactory: FLagsDetectorFeatureImpl.InternalFactory
 ) : FLagsDetectorFeature.Factory {
     override fun invoke(

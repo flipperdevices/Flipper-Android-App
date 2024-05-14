@@ -5,6 +5,7 @@ import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.verbose
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.google.protobuf.InvalidProtocolBufferException
@@ -32,7 +33,13 @@ class PeripheralResponseReader @AssistedInject constructor(
     private val responses = MutableSharedFlow<Flipper.Main>()
     private var responseReaderJob: Job? = null
 
-    suspend fun initialize() = withLock(mutex, "initialize") {
+    init {
+        scope.launch {
+            initialize()
+        }
+    }
+
+    private suspend fun initialize() = withLock(mutex, "initialize") {
         responseReaderJob?.cancelAndJoin()
         responseReaderJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
             val byteInputStreamLocal = ByteEndlessInputStream(this)

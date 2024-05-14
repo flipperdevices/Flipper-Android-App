@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.rpc.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.protobuf.Flipper
 import kotlinx.coroutines.flow.Flow
 
