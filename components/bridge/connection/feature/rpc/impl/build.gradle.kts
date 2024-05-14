@@ -14,9 +14,16 @@ dependencies {
 
     implementation(projects.components.bridge.pbutils)
 
+
+    implementation(projects.components.analytics.shake2report.api)
+
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
+    implementation(projects.components.bridge.connection.feature.restartrpc.api)
     implementation(projects.components.bridge.connection.transport.common.api)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.fastutil)
+
+    testImplementation(libs.junit)
 }

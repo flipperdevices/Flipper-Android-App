@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val QUEUE_INITIAL_CAPACITY = 11
+private const val REQUEST_POOL_TIMEOUT_MS = 100L
 
 class FRequestStorage @Inject constructor() : LogTagProvider {
     override val TAG = "FlipperRequestStorage"
@@ -47,7 +48,7 @@ class FRequestStorage @Inject constructor() : LogTagProvider {
         }
     }
 
-    suspend fun getNextRequest(timeout: Long): FlipperRequest? {
+    suspend fun getNextRequest(timeout: Long = REQUEST_POOL_TIMEOUT_MS): FlipperRequest? {
         val request = runCatching {
             queue.poll(timeout, TimeUnit.MILLISECONDS)
         }.getOrNull()

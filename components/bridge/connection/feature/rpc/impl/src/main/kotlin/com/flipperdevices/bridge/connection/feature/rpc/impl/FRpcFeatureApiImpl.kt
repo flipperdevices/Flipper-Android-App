@@ -1,9 +1,13 @@
 package com.flipperdevices.bridge.connection.feature.rpc.impl
 
+import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FlipperRequest
+import com.flipperdevices.bridge.connection.feature.rpc.reader.PeripheralResponseReader
+import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
+import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
@@ -20,6 +24,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +33,7 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -40,7 +46,9 @@ private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 class FRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val serialApi: FSerialDeviceApi,
-    @Assisted private val lagsDetector: FLagsDetectorFeature
+    @Assisted private val lagsDetector: FLagsDetectorFeature,
+    @Assisted private val restartApiFeature: FRestartRpcFeatureApi,
+    private val readerFactory: PeripheralResponseReader.Factory
 ) : FRpcFeatureApi, LogTagProvider {
     override val TAG = "FlipperRequestApi"
 
@@ -48,9 +56,29 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
     private var idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
+    private val requestStorage: FRequestStorage = FRequestStorage()
+    private val reader = readerFactory(
+        scope = scope,
+        restartRPCApi = restartApiFeature
+    )
 
     init {
         subscribeToAnswers(scope)
+        scope.launch {
+            try {
+                awaitCancellation()
+            } finally {
+                withContext(NonCancellable) { onClose() }
+            }
+        }
+        scope.launch {
+            while (isActive) {
+                val request = requestStorage.getNextRequest()
+                if (request != null) {
+                    serialApi.sendBytes(request.data.toDelimitedBytes())
+                }
+            }
+        }
     }
 
     override fun notificationFlow(): Flow<Flipper.Main> {
@@ -173,14 +201,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         }
     }
 
-    override suspend fun reset(bleManager: UnsafeBleManager) {
-        // Remove all elements from request listeners
-        serialApiUnsafe.reset(bleManager)
-        info { "Serial api unsafe reset done" }
-        serialApi.reset(bleManager)
-        info { "Serial api reset done" }
-        reader.reset()
-        info { "Reader reset done" }
+    private suspend fun onClose() {
         var counter = 0
         info { "Found ${requestListeners.size} request, start clean" }
         while (requestListeners.isNotEmpty()) {
@@ -198,12 +219,13 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
                 )
             }
         }
+
         info { "Complete reset and finish $counter tasks" }
     }
 
     private fun subscribeToAnswers(scope: CoroutineScope) {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            serialApiUnsafe.receiveBytesFlow().collect {
+            serialApi.getReceiveBytesFlow().collect {
                 reader.onReceiveBytes(it)
             }
         }
@@ -225,7 +247,8 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         operator fun invoke(
             scope: CoroutineScope,
             serialApi: FSerialDeviceApi,
-            lagsDetector: FLagsDetectorFeature
+            lagsDetector: FLagsDetectorFeature,
+            restartApiFeature: FRestartRpcFeatureApi
         ): FRpcFeatureApiImpl
     }
 }
