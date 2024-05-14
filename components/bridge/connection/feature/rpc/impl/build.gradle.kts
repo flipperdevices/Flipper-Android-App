@@ -14,7 +14,6 @@ dependencies {
 
     implementation(projects.components.bridge.pbutils)
 
-
     implementation(projects.components.analytics.shake2report.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)

@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.reflect.KClass
-import javax.inject.Inject
 
 @Singleton
 @ContributesBinding(AppGraph::class, FFeatureProvider::class)

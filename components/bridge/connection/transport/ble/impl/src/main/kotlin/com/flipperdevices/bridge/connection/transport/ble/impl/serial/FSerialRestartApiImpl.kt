@@ -18,7 +18,6 @@ import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattService
 import no.nordicsemi.android.kotlin.ble.core.data.BleWriteType
 import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
 import java.util.UUID
-import javax.inject.Named
 
 class FSerialRestartApiImpl @AssistedInject constructor(
     @Assisted private val services: StateFlow<ClientBleGattServices?>,

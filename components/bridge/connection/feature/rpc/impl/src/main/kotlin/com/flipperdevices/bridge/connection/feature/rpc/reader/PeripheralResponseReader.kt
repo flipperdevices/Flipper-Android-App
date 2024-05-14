@@ -5,7 +5,6 @@ import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.log.verbose
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import com.google.protobuf.InvalidProtocolBufferException

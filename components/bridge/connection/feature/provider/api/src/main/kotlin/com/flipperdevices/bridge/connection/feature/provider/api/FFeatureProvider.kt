@@ -17,4 +17,3 @@ inline fun <reified T : FDeviceFeatureApi> FFeatureProvider.get(): Flow<FFeature
 suspend inline fun <reified T : FDeviceFeatureApi> FFeatureProvider.getSync(): T? {
     return getSync(T::class)
 }
-
