@@ -30,7 +30,7 @@ class FSerialDeviceApiWrapperTest {
             rxServiceCharUuid = UUID.fromString("00000000-0000-0000-0000-000000000002"),
             txServiceCharUuid = UUID.fromString("00000000-0000-0000-0000-000000000003"),
             overflowControl = null,
-            resetServiceUUID = UUID.fromString("00000000-0000-0000-0000-000000000004")
+            resetCharUUID = UUID.fromString("00000000-0000-0000-0000-000000000004")
         )
         serviceFlow = MutableStateFlow(null)
         serialApiFactory = mockk {
