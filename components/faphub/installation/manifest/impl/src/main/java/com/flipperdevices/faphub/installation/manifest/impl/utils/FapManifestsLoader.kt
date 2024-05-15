@@ -104,6 +104,7 @@ class FapManifestsLoader @AssistedInject constructor(
 
     fun getManifestLoaderState() = manifestLoaderState.asStateFlow()
 
+    @Suppress("LongMethod")
     private suspend fun loadInternal(
         connectionState: ConnectionState,
         storageInformation: FlipperStorageInformation
@@ -118,6 +119,12 @@ class FapManifestsLoader @AssistedInject constructor(
         if (externalStorageStatus == null || externalStorageStatus.data !is StorageStats.Loaded) {
             throw NoSdCardException()
         }
+        manifestLoaderState.emit(
+            FapManifestLoaderState.Loaded(
+                items = persistentListOf(),
+                isLoading = true
+            )
+        )
         info { "Start load manifests" }
         val cacheResult = cacheLoader.loadCache()
         info { "Cache load result is toLoad: ${cacheResult.toLoadNames}, cached: ${cacheResult.cachedNames}" }
