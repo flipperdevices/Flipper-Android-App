@@ -9,18 +9,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.faphub.appcard.composable.components.ComposableAppScreenshot
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.launch
 
 private const val MAX_SCALE = 1.35f
 private const val MIN_SCALE = 1f
@@ -56,19 +53,19 @@ private fun IndicatorItem(
 @Composable
 internal fun ComposableScreenshotsList(
     screenshots: ImmutableList<String>,
-    pagerState: PagerState,
-    modifier: Modifier = Modifier
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+    onImageSelected: (Int) -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val lazyRowState = rememberLazyListState()
-    LaunchedEffect(pagerState.currentPage) {
+    LaunchedEffect(currentPage) {
         val firstVisibleItemIndex = lazyRowState.firstVisibleItemIndex
         val lastVisibleItemIndex = lazyRowState.layoutInfo.visibleItemsInfo
             .lastOrNull()?.index ?: return@LaunchedEffect
-        if (pagerState.currentPage >= lastVisibleItemIndex) {
-            lazyRowState.animateScrollToItem(pagerState.currentPage)
-        } else if (pagerState.currentPage <= firstVisibleItemIndex) {
-            lazyRowState.animateScrollToItem(pagerState.currentPage)
+        if (currentPage >= lastVisibleItemIndex) {
+            lazyRowState.animateScrollToItem(currentPage)
+        } else if (currentPage <= firstVisibleItemIndex) {
+            lazyRowState.animateScrollToItem(currentPage)
         }
     }
     LazyRow(
@@ -80,11 +77,13 @@ internal fun ComposableScreenshotsList(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(screenshots) { index, item ->
+            val isSelected = index == currentPage
             IndicatorItem(
                 screenshotUrl = item,
-                isSelected = index == pagerState.currentPage,
-                onClicked = {
-                    coroutineScope.launch { pagerState.animateScrollToPage(index) }
+                isSelected = isSelected,
+                onClicked = onClicked@{
+                    if (isSelected) return@onClicked
+                    onImageSelected.invoke(index)
                 }
             )
         }
