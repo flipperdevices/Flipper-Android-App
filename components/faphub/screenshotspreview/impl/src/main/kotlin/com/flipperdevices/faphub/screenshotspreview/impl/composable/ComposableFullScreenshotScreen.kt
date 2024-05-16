@@ -13,6 +13,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.faphub.screenshotspreview.impl.composable.content.ComposableFullScreenshotAppBar
 import com.flipperdevices.faphub.screenshotspreview.impl.composable.content.ComposableScreenshotsList
 import com.flipperdevices.faphub.screenshotspreview.impl.composable.content.ComposableScreenshotsPager
+import com.flipperdevices.faphub.screenshotspreview.impl.viewmodel.ImageSelectViewModel
 import com.flipperdevices.faphub.screenshotspreview.impl.viewmodel.UrlImageShareViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -24,7 +25,8 @@ internal fun ComposableFullScreenshotScreen(
     title: String,
     selected: Int,
     screenshots: ImmutableList<String>,
-    urlImageShareViewModel: UrlImageShareViewModel
+    urlImageShareViewModel: UrlImageShareViewModel,
+    imageSelectViewModel: ImageSelectViewModel
 ) {
     val pagerState = rememberPagerState(selected) {
         screenshots.size
@@ -41,13 +43,15 @@ internal fun ComposableFullScreenshotScreen(
             pagerState = pagerState,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .align(Alignment.Center),
+            imageSelectViewModel = imageSelectViewModel
         )
 
         ComposableScreenshotsList(
             screenshots = screenshots,
-            pagerState = pagerState,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            currentPage = pagerState.currentPage,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onImageSelected = imageSelectViewModel::onImageSelected
         )
 
         ComposableFullScreenshotAppBar(
@@ -77,7 +81,8 @@ private fun FullScreenshotScreenPreview() {
             selected = 3,
             urlImageShareViewModel = UrlImageShareViewModel(
                 applicationContext = LocalContext.current.applicationContext
-            )
+            ),
+            imageSelectViewModel = ImageSelectViewModel()
         )
     }
 }
