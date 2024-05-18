@@ -1,10 +1,10 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
-kotlin-general = "1.9.23" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "1.9.24" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
-kotlin-datetime = "0.5.0" # https://github.com/Kotlin/kotlinx-datetime/releases
-kotlinx = "1.8.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "1.9.23-1.0.20" # https://github.com/google/ksp/releases
+kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
+kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
+ksp = "1.9.24-1.0.20" # https://github.com/google/ksp/releases
 anvil = "2.4.9" # https://github.com/square/anvil/releases
 anvil-utils = "0.1.0" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.4.0" # https://developer.android.com/studio/releases/gradle-plugin
@@ -14,13 +14,13 @@ compose-material = "1.6.7" # https://developer.android.com/jetpack/androidx/rele
 compose-foundation = "1.6.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-ui = "1.6.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
-compose-compiler = "1.5.13" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-compiler = "1.5.14" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
-compose-paging = "3.2.1" # https://developer.android.com/jetpack/androidx/releases/paging
+compose-paging = "3.3.0" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.6.2" # https://github.com/JetBrains/compose-multiplatform/releases
-horologist = "0.6.10" # https://github.com/google/horologist/releases
+compose-multiplatform = "1.6.10" # https://github.com/JetBrains/compose-multiplatform/releases
+horologist = "0.6.11" # https://github.com/google/horologist/releases
 serialization-json = "1.6.3" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "18.1.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google
@@ -30,13 +30,13 @@ room = "2.6.1" # https://developer.android.com/jetpack/androidx/releases/room
 dagger = "2.51.1" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.1.2" # https://github.com/bastienpaulfr/Treessence/tags
-sentry-runtime = "7.8.0" # https://github.com/getsentry/sentry-java/releases
-sentry-gradle = "4.5.1" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
+sentry-runtime = "7.9.0" # https://github.com/getsentry/sentry-java/releases
+sentry-gradle = "4.6.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
 ktx-activity = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.1.5" # https://developer.android.com/jetpack/androidx/releases/test
-lifecycle = "2.7.0" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+lifecycle = "2.8.0" # https://developer.android.com/jetpack/androidx/releases/lifecycle
 fastutil = "8.5.13" # https://github.com/vigna/fastutil/tags
 ble = "2.7.5" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
@@ -47,13 +47,13 @@ slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
 lottie = "6.4.0" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.12.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
-annotations = "1.7.1" # https://developer.android.com/jetpack/androidx/releases/annotation
+annotations = "1.8.0" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.6.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 datastore = "1.1.1" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
 markdown = "0.16.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
-ktor = "2.3.10" # https://ktor.io/
+ktor = "2.3.11" # https://ktor.io/
 apache-compress = "1.26.1" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.17.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "24.4.0" # https://github.com/Countly/countly-sdk-android/releases
@@ -69,8 +69,8 @@ zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
 mockito = "5.3.1" # https://github.com/mockito/mockito/releases
-roboelectric = "4.12.1" # https://github.com/robolectric/robolectric/releases
-mockk = "1.13.10" # https://mockk.io/
+roboelectric = "4.12.2" # https://github.com/robolectric/robolectric/releases
+mockk = "1.13.11" # https://mockk.io/
 
 # Testing UI
 espresso-core = "3.5.1" # https://github.com/android/android-test
@@ -83,7 +83,7 @@ profileinstaller = "1.3.1" # https://developer.android.com/topic/performance/bas
 detekt = "1.23.6" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.4" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
-detekt-ruleset-compose = "0.3.20" # https://github.com/mrmans0n/compose-rules/releases
+detekt-ruleset-compose = "0.4.1" # https://github.com/mrmans0n/compose-rules/releases
 
 # Firebase
 google-gms-gradle = "4.4.1" # https://developers.google.com/android/guides/google-services-plugin
