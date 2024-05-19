@@ -16,6 +16,10 @@ import javax.inject.Singleton
 @Singleton
 @ContributesBinding(AppGraph::class, MfKey32Api::class)
 class MfKey32ApiImpl @Inject constructor() : MfKey32Api {
+    private var _isBruteforceFileExist: Boolean = false
+    override val isBruteforceFileExist: Boolean
+        get() = _isBruteforceFileExist
+
     private val hasNotificationFlow = MutableStateFlow(false)
     override fun hasNotification() = hasNotificationFlow
 
@@ -30,8 +34,10 @@ class MfKey32ApiImpl @Inject constructor() : MfKey32Api {
             }.wrapToRequest()
         ).first()
         if (response.hasStorageMd5SumResponse()) {
+            _isBruteforceFileExist = true
             hasNotificationFlow.emit(true)
         } else {
+            _isBruteforceFileExist = false
             hasNotificationFlow.emit(false)
         }
     }

@@ -27,6 +27,7 @@ import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancelAndJoin
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.math.BigInteger
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -78,17 +80,25 @@ class MfKey32ViewModel @Inject constructor(
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
         viewModelScope.launch {
-            mutex.withLock {
-                val localJob = stateJob
-                stateJob = viewModelScope.launch {
-                    localJob?.cancelAndJoin()
-                    serviceApi
-                        .connectionInformationApi
-                        .getConnectionStateFlow()
-                        .collectLatest { connectionState ->
-                            startCalculation(serviceApi, connectionState)
-                        }
-                }
+            startCalculationJob(serviceApi)
+            withContext(Dispatchers.IO) {
+                mfKey32Api.checkBruteforceFileExist(serviceApi.requestApi)
+            }
+            if (mfKey32Api.isBruteforceFileExist) startCalculationJob(serviceApi)
+        }
+    }
+
+    private suspend fun startCalculationJob(serviceApi: FlipperServiceApi) {
+        mutex.withLock {
+            val localJob = stateJob
+            stateJob = viewModelScope.launch {
+                localJob?.cancelAndJoin()
+                serviceApi
+                    .connectionInformationApi
+                    .getConnectionStateFlow()
+                    .collectLatest { connectionState ->
+                        startCalculation(serviceApi, connectionState)
+                    }
             }
         }
     }
@@ -143,7 +153,7 @@ class MfKey32ViewModel @Inject constructor(
     private suspend fun prepare(): Boolean {
         info { "Flipper connected" }
 
-        if (flipperStorageApi.listingDirectory(PATH_NONCE_LOG).isEmpty()) {
+        if (!mfKey32Api.isBruteforceFileExist) {
             info { "Not found $PATH_NONCE_LOG" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
             return false
