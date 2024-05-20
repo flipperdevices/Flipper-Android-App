@@ -116,7 +116,7 @@ class MfKey32ViewModel @Inject constructor(
             is ConnectionState.Ready -> {}
         }
 
-        if (!prepare()) {
+        if (!prepare(serviceApi)) {
             info { "Failed prepare" }
             return
         }
@@ -140,8 +140,20 @@ class MfKey32ViewModel @Inject constructor(
         mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
     }
 
-    private suspend fun prepare(): Boolean {
+    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
         info { "Flipper connected" }
+
+        if (!mfKey32Api.isBruteforceFileExist) {
+            info { "Not found $PATH_NONCE_LOG" }
+            mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
+        }
+
+        mfKey32Api.checkBruteforceFileExist(serviceApi.requestApi)
+
+        if (!mfKey32Api.isBruteforceFileExist) {
+            return false
+        }
+
         mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(0f))
 
         try {
