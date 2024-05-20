@@ -11,6 +11,8 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.awaitCancellation
@@ -20,7 +22,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FProtobufMessageCollector(
+class FProtobufMessageCollector @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     @Assisted restartApiFeature: FRestartRpcFeatureApi,
     @Assisted private val serialApi: FSerialDeviceApi,
@@ -96,6 +98,7 @@ class FProtobufMessageCollector(
         info { "Complete reset and finish $counter tasks" }
     }
 
+    @AssistedFactory
     fun interface Factory {
         operator fun invoke(
             @Assisted scope: CoroutineScope,

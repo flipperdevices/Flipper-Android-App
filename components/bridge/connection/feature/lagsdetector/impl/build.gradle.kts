@@ -19,4 +19,8 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.restartrpc.api)
 
     implementation(libs.kotlin.coroutines)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.coroutines.test)
 }
