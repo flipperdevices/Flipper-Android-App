@@ -37,6 +37,7 @@
 - [FIX] Text overflow on apps card
 - [FIX] SD Card error on installed screen
 - [FIX] Scrolling of zoomed screenshots in app image preview
+- [FIX] Display MfKey32 loading progress when no keys available 
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
