@@ -25,4 +25,5 @@ dependencies {
     implementation(libs.fastutil)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
 }

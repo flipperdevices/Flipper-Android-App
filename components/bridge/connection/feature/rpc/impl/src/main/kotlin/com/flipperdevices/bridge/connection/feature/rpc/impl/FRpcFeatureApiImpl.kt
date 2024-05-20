@@ -3,72 +3,60 @@ package com.flipperdevices.bridge.connection.feature.rpc.impl
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
-import com.flipperdevices.bridge.connection.feature.rpc.reader.PeripheralResponseReader
 import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
-import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.updateAndGetSafe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.copy
-import com.flipperdevices.protobuf.main
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-private typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
+internal typealias OnReceiveResponse = suspend (Flipper.Main) -> Unit
 
 class FRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val lagsDetector: FLagsDetectorFeature,
     @Assisted private val restartApiFeature: FRestartRpcFeatureApi,
-    private val readerFactory: PeripheralResponseReader.Factory
+    private val messageProtobufParserFactory: FProtobufMessageCollector.Factory
 ) : FRpcFeatureApi, LogTagProvider {
     override val TAG = "FlipperRequestApi"
 
     // Start from 1 because 0 is default in protobuf
     private var idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
-    private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
     private val requestStorage: FRequestStorage = FRequestStorage()
-    private val reader = readerFactory(
-        scope = scope,
-        restartRPCApi = restartApiFeature
+    private val messageProtobufParser = messageProtobufParserFactory(
+        serialApi = serialApi,
+        requestListeners = requestListeners,
+        requestStorage = requestStorage,
+        restartApiFeature = restartApiFeature,
+        scope = scope
     )
 
-    init {
-        subscribeToAnswers(scope)
-    }
-
-    override fun notificationFlow(): Flow<Flipper.Main> {
-        return notificationMutableFlow
-    }
+    override fun notificationFlow() = messageProtobufParser.notificationFlow
 
     override fun request(
         command: FlipperRequest
@@ -113,7 +101,6 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         // This is dirty way to understand if request is finished correctly with response
         var isFinished = false
 
-        @Suppress("SuspendFunctionOnCoroutineScope")
         val commandAnswerJob = scope.async {
             val result = awaitCommandAnswer(uniqueId)
             isFinished = true
@@ -186,62 +173,6 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         }
     }
 
-    private suspend fun onClose() {
-        var counter = 0
-        info { "Found ${requestListeners.size} request, start clean" }
-        while (requestListeners.isNotEmpty()) {
-            info { "Start iteration for clean ${requestListeners.size} requests" }
-            val listeners = ArrayList(requestListeners.keys)
-            listeners.forEach { id ->
-                counter++
-                val listener = requestListeners.remove(id)
-                info { "Invoke close for $listener" }
-                listener?.invoke(
-                    main {
-                        commandStatus = Flipper.CommandStatus.ERROR
-                        hasNext = false
-                    }
-                )
-            }
-        }
-
-        info { "Complete reset and finish $counter tasks" }
-    }
-
-    private fun subscribeToAnswers(scope: CoroutineScope) {
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            serialApi.getReceiveBytesFlow().collect {
-                reader.onReceiveBytes(it)
-            }
-        }
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            reader.getResponses().collect {
-                val listener = requestListeners[it.commandId]
-                if (listener == null) {
-                    warn { "Receive package without id $it" }
-                    notificationMutableFlow.emit(it)
-                } else {
-                    listener.invoke(it)
-                }
-            }
-        }
-
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            try {
-                awaitCancellation()
-            } finally {
-                withContext(NonCancellable) { onClose() }
-            }
-        }
-        scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            while (isActive) {
-                val request = requestStorage.getNextRequest()
-                if (request != null) {
-                    serialApi.sendBytes(request.data.toDelimitedBytes())
-                }
-            }
-        }
-    }
 
     @AssistedFactory
     fun interface InternalFactory {
