@@ -1,4 +1,4 @@
-package com.flipperdevices.ui.decompose.util
+package com.flipperdevices.ui.decompose.internal
 
 import com.flipperdevices.ui.decompose.AndroidWindowDecorator
 
