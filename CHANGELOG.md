@@ -5,6 +5,7 @@
 - [KMP] Migration core:test, core:ktx, core:ui:lifecycle
 - [KMP] Migration core:data
 - [KMP] Migration core:log
+- [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add ready app updates popup and notification dot
 - [Feature] Per app loading in installed tab
 - [Feature] Add ability to preview screenshots of fap entries
