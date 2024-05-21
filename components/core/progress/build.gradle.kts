@@ -1,13 +1,18 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.progress"
 
-dependencies {
-
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlin.coroutines.test)
+kotlin {
+    sourceSets {
+        val commonTest by getting  {
+            dependencies {
+                // Testing
+                implementation(libs.junit)
+                implementation(libs.mockk)
+                implementation(libs.kotlin.coroutines.test)
+            }
+        }
+    }
 }
