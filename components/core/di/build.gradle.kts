@@ -1,9 +1,15 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.di"
 
-dependencies {
-    implementation(libs.dagger)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.dagger)
+            }
+        }
+    }
 }
