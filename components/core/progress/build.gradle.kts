@@ -6,7 +6,7 @@ android.namespace = "com.flipperdevices.core.progress"
 
 kotlin {
     sourceSets {
-        val commonTest by getting  {
+        commonTest {
             dependencies {
                 // Testing
                 implementation(libs.junit)
