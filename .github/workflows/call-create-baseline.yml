@@ -35,7 +35,7 @@ jobs:
           distribution: 'adopt'
           java-version: 17
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@00854ea68c109d98c75d956347303bf7c45b0277 # v3
       - run: sdkmanager --list
       # Make kvm able to launch emulator
       - name: Enable KVM group perms
