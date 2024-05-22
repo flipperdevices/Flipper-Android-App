@@ -39,6 +39,8 @@
 - [FIX] Scrolling of zoomed screenshots in app image preview
 - [FIX] Display MfKey32 loading progress when no keys available 
 - [FIX] Infrared editor screen bottom navigation padding
+- [FIX] Display MfKey32 loading progress when no keys available
+- [FIX] Return baseline profiles
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
