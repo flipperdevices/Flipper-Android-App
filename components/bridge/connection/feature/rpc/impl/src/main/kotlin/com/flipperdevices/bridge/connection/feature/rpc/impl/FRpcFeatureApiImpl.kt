@@ -173,7 +173,6 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         }
     }
 
-
     @AssistedFactory
     fun interface InternalFactory {
         operator fun invoke(

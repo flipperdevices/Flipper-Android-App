@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-
 class FLagsDetectorFeatureImpl @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi,
@@ -39,13 +38,12 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
                 if (pendingResponseCounter.hasPendingRequests()) {
                     error {
                         "We have pending commands, but flipper not respond " +
-                                "${PendingResponseCounter.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms"
+                            "${PendingResponseCounter.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms"
                     }
                     info { "Start restart RPC" }
 
                     restartRpcFeatureApi.restartRpc()
                 }
-
             }
         }
     }
@@ -74,7 +72,6 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
             pendingResponseCounter.forgetAction(request)
         }
     }
-
 
     @AssistedFactory
     fun interface InternalFactory {
