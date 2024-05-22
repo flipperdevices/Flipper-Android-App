@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import gradle.kotlin.dsl.accessors._089327967f8e17bf02e7a1b7ad8a66b0.sourceSets
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -21,7 +22,14 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        val desktopMain by getting
+        val jvmMain by creating
+
+        val androidMain by getting {
+            dependsOn(jvmMain)
+        }
+        val desktopMain by getting {
+            dependsOn(jvmMain)
+        }
 
         androidMain.dependencies {
             implementation(libs.compose.tooling)

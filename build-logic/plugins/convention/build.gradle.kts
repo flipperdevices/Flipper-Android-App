@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    id("java-gradle-plugin")
 }
 
 dependencies {
@@ -16,4 +17,13 @@ dependencies {
     implementation(libs.kotlin.jvm.gradle)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+}
+
+gradlePlugin {
+    plugins {
+        create("flipper.multiplatform-dependencies") {
+            id = name
+            implementationClass = "com.flipperdevices.buildlogic.plugin.FlipperMultiplatformDependenciesPlugin"
+        }
+    }
 }

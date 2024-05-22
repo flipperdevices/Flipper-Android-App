@@ -20,7 +20,14 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        val desktopMain by getting
+        val jvmMain by creating
+
+        val androidMain by getting {
+            dependsOn(jvmMain)
+        }
+        val desktopMain by getting {
+            dependsOn(jvmMain)
+        }
 
         androidMain.dependencies {
         }

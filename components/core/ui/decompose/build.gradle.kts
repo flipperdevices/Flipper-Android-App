@@ -1,30 +1,24 @@
 plugins {
     id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.ui.decompose"
 
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(projects.components.core.activityholder)
+commonMainDependencies {
+    implementation(projects.components.core.activityholder)
 
-                implementation(libs.compose.ui)
-                implementation(libs.compose.foundation)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.foundation)
 
-                implementation(libs.bundles.decompose)
-                implementation(libs.essenty.lifecycle.coroutines)
-                implementation(libs.kotlin.serialization.json)
-            }
-        }
-        androidMain {
-            dependencies {
-                implementation(libs.compose.activity)
+    implementation(libs.bundles.decompose)
+    implementation(libs.essenty.lifecycle.coroutines)
+    implementation(libs.kotlin.serialization.json)
+}
 
-                implementation(libs.lifecycle.runtime.ktx)
-                implementation(libs.lifecycle.viewmodel.ktx)
-            }
-        }
-    }
+androidMainDependencies {
+    implementation(libs.compose.activity)
+
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 }
