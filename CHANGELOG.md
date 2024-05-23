@@ -37,13 +37,16 @@
 - [FIX] Text overflow on apps card
 - [FIX] SD Card error on installed screen
 - [FIX] Scrolling of zoomed screenshots in app image preview
+- [FIX] Infrared editor screen bottom navigation padding
 - [FIX] Display MfKey32 loading progress when no keys available
 - [FIX] Return baseline profiles
+- [FIX] Markdown code blocks background color
 - [Feature] Add not connected, empty and syncing states to emulation button on key screen
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
 - [Feature] Add sample for flipper reconnecting
 - [Feature] Add new feature provider with rpc feature
+- [Feature] Cancel previous pipelines on Github CI after push new commits to PR 
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 - [Refactor] Add test for Progress Tracker logic
 
