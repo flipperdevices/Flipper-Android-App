@@ -5,6 +5,19 @@ on:
     branches:
       - 'dev'
 
+# Concurrency strategy:
+#   github.workflow: distinguish this workflow from others
+#   github.event_name: distinguish `push` event from `pull_request` event
+#   github.ref_name: distinguish branch
+#   github.repository: distinguish owner+repository
+#
+# Reference:
+#   https://docs.github.com/en/actions/using-jobs/using-concurrency
+#   https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{github.ref_name}}-${{github.repository}}
+  cancel-in-progress: true
+
 jobs:
   changelog_changes:
     name: "Checking that changelog has changed"
