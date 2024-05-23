@@ -48,10 +48,10 @@ class FFeatureProviderImpl @Inject constructor(
     override fun <T : FDeviceFeatureApi> get(clazz: KClass<T>): Flow<FFeatureStatus<T>> {
         return deviceStateFlow.map { deviceApi ->
             return@map if (deviceApi == null) {
-                FFeatureStatus.Retrieving()
+                FFeatureStatus.Retrieving
             } else {
                 val feature = deviceApi.get(clazz)
-                    ?: return@map FFeatureStatus.Unsupported<T>()
+                    ?: return@map FFeatureStatus.Unsupported
                 return@map FFeatureStatus.Supported<T>(feature)
             }
         }
@@ -63,9 +63,10 @@ class FFeatureProviderImpl @Inject constructor(
             .map { featureStatus ->
                 when (featureStatus) {
                     is FFeatureStatus.Supported -> featureStatus.featureApi
-                    is FFeatureStatus.NotFound,
-                    is FFeatureStatus.Unsupported -> null
-                    is FFeatureStatus.Retrieving -> error("Impossible situation")
+                    FFeatureStatus.NotFound,
+                    FFeatureStatus.Unsupported -> null
+
+                    FFeatureStatus.Retrieving -> error("Impossible situation")
                 }
             }.first()
     }

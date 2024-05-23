@@ -2,14 +2,14 @@ package com.flipperdevices.bridge.connection.feature.provider.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 
-sealed class FFeatureStatus<T : FDeviceFeatureApi> {
+sealed class FFeatureStatus<out T : FDeviceFeatureApi> {
     class Supported<T : FDeviceFeatureApi>(
         val featureApi: T
     ) : FFeatureStatus<T>()
 
-    class Unsupported<T : FDeviceFeatureApi> : FFeatureStatus<T>()
+    data object Unsupported : FFeatureStatus<Nothing>()
 
-    class Retrieving<T : FDeviceFeatureApi> : FFeatureStatus<T>()
+    data object Retrieving : FFeatureStatus<Nothing>()
 
-    class NotFound<T : FDeviceFeatureApi> : FFeatureStatus<T>()
+    data object NotFound : FFeatureStatus<Nothing>()
 }
