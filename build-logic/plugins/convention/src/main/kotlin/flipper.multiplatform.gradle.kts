@@ -26,15 +26,15 @@ kotlin {
          * As an example - jvm() target will create sourceSet jvmMain - and we would have conflicts
          * with our create jvmMain sourceSet
          *
-         * This is the reason to name it `sharedJvmMain`
+         * This is the reason to name it `jvmSharedMain`
          */
-        val sharedJvmMain by creating
+        val jvmSharedMain by creating
 
         val androidMain by getting {
-            dependsOn(sharedJvmMain)
+            dependsOn(jvmSharedMain)
         }
         val desktopMain by getting {
-            dependsOn(sharedJvmMain)
+            dependsOn(jvmSharedMain)
         }
 
         androidMain.dependencies {

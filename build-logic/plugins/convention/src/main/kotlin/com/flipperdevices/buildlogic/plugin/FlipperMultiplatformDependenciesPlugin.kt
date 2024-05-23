@@ -14,7 +14,9 @@ class FlipperMultiplatformDependenciesPlugin : Plugin<Project> {
                     oldValue = MAIN_SOURCE_SET_POSTFIX,
                     newValue = ""
                 )
-            } else fullSourceSetName
+            } else {
+                fullSourceSetName
+            }
 
             target.extensions.create(
                 "${noMainSourceSetName}Dependencies",
