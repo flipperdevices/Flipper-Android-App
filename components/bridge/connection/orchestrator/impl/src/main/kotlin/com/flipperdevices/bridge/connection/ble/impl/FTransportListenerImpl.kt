@@ -42,7 +42,8 @@ class FTransportListenerImpl : LogTagProvider {
             when (status) {
                 is FInternalTransportConnectionStatus.Connected -> FDeviceConnectStatus.Connected(
                     device = device,
-                    deviceApi = status.deviceApi
+                    deviceApi = status.deviceApi,
+                    scope = status.scope
                 )
 
                 FInternalTransportConnectionStatus.Connecting ->

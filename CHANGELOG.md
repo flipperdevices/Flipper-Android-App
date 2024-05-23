@@ -45,6 +45,7 @@
 - [Feature] Check app exist on apps catalog manifest loading
 - [Feature] First version of device orchestrator
 - [Feature] Add sample for flipper reconnecting
+- [Feature] Add new feature provider with rpc feature
 - [Feature] Cancel previous pipelines on Github CI after push new commits to PR 
 - [Refactor] Use https://github.com/IlyaGulya/anvil-utils to automatically generate and contribute assisted factories.
 - [Refactor] Add test for Progress Tracker logic

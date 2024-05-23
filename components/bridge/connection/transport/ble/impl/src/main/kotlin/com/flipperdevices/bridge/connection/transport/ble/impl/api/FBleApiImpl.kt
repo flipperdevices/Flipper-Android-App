@@ -34,7 +34,10 @@ open class FBleApiImpl(
                             FInternalTransportConnectionStatus.Connecting
 
                         GattConnectionState.STATE_CONNECTED ->
-                            FInternalTransportConnectionStatus.Connected(this)
+                            FInternalTransportConnectionStatus.Connected(
+                                scope = scope,
+                                deviceApi = this
+                            )
 
                         GattConnectionState.STATE_DISCONNECTING ->
                             FInternalTransportConnectionStatus.Disconnecting

@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.orchestrator.api.model
 
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import kotlinx.coroutines.CoroutineScope
 
 sealed class FDeviceConnectStatus {
     data class Disconnected(
@@ -18,7 +19,8 @@ sealed class FDeviceConnectStatus {
         val device: FDeviceBaseModel
     ) : FDeviceConnectStatus()
 
-    data class Connected(
+    class Connected(
+        val scope: CoroutineScope,
         val device: FDeviceBaseModel,
         val deviceApi: FConnectedDeviceApi
     ) : FDeviceConnectStatus()
