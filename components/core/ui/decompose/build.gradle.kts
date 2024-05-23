@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.ui.decompose"
 
-commonMainDependencies {
+commonDependencies {
     implementation(projects.components.core.activityholder)
 
     implementation(libs.compose.ui)
@@ -16,7 +16,7 @@ commonMainDependencies {
     implementation(libs.kotlin.serialization.json)
 }
 
-androidMainDependencies {
+androidDependencies {
     implementation(libs.compose.activity)
 
     implementation(libs.lifecycle.runtime.ktx)

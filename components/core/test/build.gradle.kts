@@ -5,14 +5,14 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.test"
 
-commonMainDependencies {
+commonDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.mockk)
 
     implementation(projects.components.core.ui.lifecycle)
 }
 
-androidMainDependencies {
+androidDependencies {
     implementation(libs.junit)
     implementation(libs.timber)
     implementation(libs.roboelectric)

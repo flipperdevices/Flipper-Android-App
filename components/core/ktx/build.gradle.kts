@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.ktx"
 
-commonMainDependencies {
+commonDependencies {
     implementation(projects.components.core.log)
 
     implementation(libs.appcompat)

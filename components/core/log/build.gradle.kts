@@ -5,6 +5,6 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.log"
 
-androidMainDependencies {
+androidDependencies {
     implementation(libs.timber)
 }

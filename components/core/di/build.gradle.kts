@@ -5,6 +5,6 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.di"
 
-commonMainDependencies {
+commonDependencies {
     implementation(libs.dagger)
 }

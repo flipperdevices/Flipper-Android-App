@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.ui.lifecycle"
 
-commonMainDependencies {
+commonDependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
 
@@ -19,7 +19,7 @@ commonMainDependencies {
     implementation(libs.essenty.lifecycle.coroutines)
 }
 
-androidMainDependencies {
+androidDependencies {
     implementation(projects.components.bridge.service.api)
     implementation(libs.annotations)
 }

@@ -1,19 +1,34 @@
 package com.flipperdevices.buildlogic.plugin
 
-import gradle.kotlin.dsl.accessors._089327967f8e17bf02e7a1b7ad8a66b0.kotlin
+import com.flipperdevices.buildlogic.util.ProjectExt.kotlin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
 
 class FlipperMultiplatformDependenciesPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.kotlin.sourceSets.forEach {
+        target.kotlin.sourceSets.forEach { sourceSet ->
+            val fullSourceSetName = sourceSet.name
+            val noMainSourceSetName = if (fullSourceSetName.endsWith(MAIN_SOURCE_SET_POSTFIX)) {
+                fullSourceSetName.replace(
+                    oldValue = MAIN_SOURCE_SET_POSTFIX,
+                    newValue = ""
+                )
+            } else fullSourceSetName
+
             target.extensions.create(
-                "${it.name}Dependencies",
+                "${noMainSourceSetName}Dependencies",
                 FlipperMultiplatformDependenciesScope::class,
                 target,
-                it.name
+                fullSourceSetName
             )
         }
+    }
+
+    companion object {
+        /**
+         * The postfix of default source set naming aka commonMain, androidMain etc
+         */
+        private const val MAIN_SOURCE_SET_POSTFIX = "Main"
     }
 }

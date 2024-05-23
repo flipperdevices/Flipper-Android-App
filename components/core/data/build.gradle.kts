@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.core.data"
 
-commonMainDependencies {
+commonDependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.compose.ui)
 }
