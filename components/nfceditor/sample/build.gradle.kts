@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
 }
 

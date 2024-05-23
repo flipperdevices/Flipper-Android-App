@@ -1,15 +1,17 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.squareup.anvil")
 }
 
 anvil {
-    generateDaggerFactories.set(true)
+    useKsp(contributesAndFactoryGeneration = true)
 }
 
 pluginManager.withPlugin("kotlin-kapt") {
-    anvil {
-        generateDaggerFactories.set(false)
-    }
+    error("Please, use `id(\"flipper.anvil.kapt\")` instead")
 }
 
 dependencies {
