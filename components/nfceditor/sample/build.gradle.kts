@@ -8,9 +8,6 @@ android.namespace = "com.flipperdevices.nfceditor.sample"
 
 android {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 android {

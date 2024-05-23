@@ -9,9 +9,6 @@ android.namespace = "com.flipperdevices.bridge.connection"
 
 android {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 android {

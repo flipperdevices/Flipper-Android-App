@@ -7,7 +7,9 @@ plugins {
     alias(libs.plugins.square.anvil) apply false
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.google.gms) apply false
-    id("flipper.lint")
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
+    id("flipper.lint")
+    id("flipper.android-compose") apply false
+    id("flipper.multiplatform-compose") apply false
 }
