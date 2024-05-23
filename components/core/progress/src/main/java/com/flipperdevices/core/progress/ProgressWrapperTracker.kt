@@ -1,6 +1,6 @@
 package com.flipperdevices.core.progress
 
-import kotlin.math.min
+import java.lang.Float.min
 
 private const val MAX_PERCENT = 1.0f
 private const val MIN_PERCENT = 0f

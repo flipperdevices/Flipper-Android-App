@@ -8,3 +8,8 @@ plugins {
 configure<BaseExtension> {
     commonAndroid(project)
 }
+
+tasks.register("allTests") {
+    val androidUnitTests = tasks.findByName("testDebugUnitTest")
+    dependsOn(androidUnitTests)
+}
