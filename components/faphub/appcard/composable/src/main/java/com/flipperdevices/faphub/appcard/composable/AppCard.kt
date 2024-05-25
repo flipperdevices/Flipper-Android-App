@@ -77,7 +77,7 @@ fun AppCard(
 private fun AppCardTop(
     fapItem: FapItemShort?,
     modifier: Modifier = Modifier,
-    installationButton: @Composable (modifier: Modifier) -> Unit
+    installationButton: @Composable (Modifier) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -110,7 +110,7 @@ private fun AppCardTop(
             )
         }
         installationButton(
-            modifier = Modifier
+             Modifier
                 .fillMaxHeight()
                 .padding(vertical = 4.dp)
         )

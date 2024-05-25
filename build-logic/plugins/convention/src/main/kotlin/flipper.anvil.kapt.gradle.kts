@@ -6,9 +6,6 @@ plugins {
     id("com.squareup.anvil")
 }
 
-anvil {
-    useKsp(contributesAndFactoryGeneration = false)
-}
 tasks.withType<KaptGenerateStubsTask>().configureEach {
     // TODO necessary until anvil supports something for K2 contribution merging
     compilerOptions {
