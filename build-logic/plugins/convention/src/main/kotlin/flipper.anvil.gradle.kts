@@ -1,13 +1,10 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.squareup.anvil")
 }
 
 anvil {
     useKsp(contributesAndFactoryGeneration = true)
+    generateDaggerFactories = true
 }
 
 pluginManager.withPlugin("kotlin-kapt") {
@@ -17,5 +14,5 @@ pluginManager.withPlugin("kotlin-kapt") {
 dependencies {
     "implementation"(libs.dagger)
     "implementation"(libs.anvil.utils.annotations)
-    "anvil"(libs.anvil.utils.compiler)
+    "ksp"(libs.anvil.utils.compiler)
 }
