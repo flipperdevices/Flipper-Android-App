@@ -3,7 +3,7 @@
 
 # 1.6.10 - In Progress
 
-- 
+- [Refactor] Update to Kotlin 2.0
 
 # 1.6.9
 
