@@ -1,3 +1,5 @@
+import com.flipperdevices.buildlogic.ApkConfig.CURRENT_FLAVOR_TYPE
+import com.flipperdevices.buildlogic.model.FlavorType
 import com.github.gmazzo.buildconfig.BuildConfigExtension
 
 plugins {
@@ -10,22 +12,12 @@ group = "com.flipperdevices.core.buildkonfig"
 
 android.namespace = "$group"
 
-/**
- * This value can be placed inside gradle.properties `IS_LOG_ENABLED=false` or passed
- * via ci as ORG_GRADLE_PROJECT_IS_LOG_ENABLED
- */
 fun BuildConfigExtension.buildConfigIsLogEnabledField() {
     val key = "IS_LOG_ENABLED"
     buildConfigField(
         type = Boolean::class.java,
         name = key,
-        value = provider {
-            val isLogEnabled = providers.gradleProperty(key).orNull
-            if (isLogEnabled == null) {
-                logger.warn("Key $key is not present in gradle.properties or Environment")
-            }
-            isLogEnabled ?: true
-        }
+        value = provider { CURRENT_FLAVOR_TYPE == FlavorType.DEV }
     )
 }
 
