@@ -10,11 +10,5 @@ plugins {
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
     id("flipper.lint")
-    id("flipper.android-app") apply false
-    id("flipper.android-compose") apply false
-    id("flipper.android-lib") apply false
-    id("flipper.anvil") apply false
-    id("flipper.anvil.kapt") apply false
-    id("flipper.multiplatform") apply false
-    id("flipper.multiplatform-compose") apply false
+    alias(libs.plugins.compose) apply false
 }

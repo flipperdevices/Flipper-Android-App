@@ -286,3 +286,4 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
 square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-general" }
