@@ -45,7 +45,7 @@ jobs:
       - name: Unit test
         uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
         with:
-          arguments: testDebug
+          arguments: allTests
   detekt:
     name: "Check project by detekt"
     runs-on: ubuntu-latest

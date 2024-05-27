@@ -16,6 +16,7 @@ configure<BaseExtension> {
  * which will run testDebugUnitTest
  */
 tasks.register("allTests") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
     val androidUnitTests = tasks.findByName("testDebugUnitTest")
     dependsOn(androidUnitTests)
 }
