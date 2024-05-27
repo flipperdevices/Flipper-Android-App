@@ -1,1 +1,9 @@
-Massive amount of bugfixes
+Apps:
+- No more broken apps: catalog ignores all apps deleted from Flipper Zero
+- Improved performance: faster app loading, better sorting, fixed crashes and statuses
+- Enhanced screenshots: view and export app screenshots in full screen
+- New notifications on available updates for your installed apps
+Other:
+- Wear OS fix: app functions on your watch as before
+- Fixed connection issue and repeated key import
+- Up to 40% faster loading and smoother UX with Baseline Profile integration
