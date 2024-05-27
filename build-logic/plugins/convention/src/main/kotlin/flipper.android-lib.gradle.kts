@@ -17,6 +17,6 @@ configure<BaseExtension> {
  */
 tasks.register("allTests") {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
-    val androidUnitTests = tasks.findByName("testDebugUnitTest")
+    val androidUnitTests = tasks.findByName("testDebug")
     dependsOn(androidUnitTests)
 }
