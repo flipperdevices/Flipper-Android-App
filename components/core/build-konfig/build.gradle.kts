@@ -10,10 +10,6 @@ group = "com.flipperdevices.core.buildkonfig"
 
 android.namespace = "$group"
 
-commonDependencies {
-    implementation(libs.timber)
-}
-
 /**
  * This value can be placed inside gradle.properties `IS_LOG_ENABLED=false` or passed
  * via ci as ORG_GRADLE_PROJECT_IS_LOG_ENABLED
