@@ -1,5 +1,6 @@
 package com.flipperdevices.core.progress
 
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import java.lang.Float.min
 
 private const val MAX_PERCENT = 1.0f
@@ -24,14 +25,14 @@ class ProgressWrapperTracker(
     suspend fun report(current: Long, max: Long) {
         if (current > max) {
             onProgress(MAX_PERCENT)
-            if (BuildConfig.DEBUG) {
+            if (BuildKonfig.IS_LOG_ENABLED) {
                 error("Current larger then max (current: $current, max: $max)")
             }
             return
         }
         if (max == 0L) {
             onProgress(MAX_PERCENT)
-            if (BuildConfig.DEBUG) {
+            if (BuildKonfig.IS_LOG_ENABLED) {
                 error("Max is zero")
             }
             return

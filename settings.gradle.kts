@@ -80,6 +80,7 @@ include(
     ":components:core:log",
     ":components:core:preference",
     ":components:core:data",
+    ":components:core:build-konfig",
     ":components:core:ui:ktx",
     ":components:core:ui:res",
     ":components:core:ui:dialog",
