@@ -1,4 +1,4 @@
-package com.flipperdevices.core.ktx.jre
+package com.flipperdevices.core.ktx.android
 
 import android.content.ContentResolver
 import android.net.Uri

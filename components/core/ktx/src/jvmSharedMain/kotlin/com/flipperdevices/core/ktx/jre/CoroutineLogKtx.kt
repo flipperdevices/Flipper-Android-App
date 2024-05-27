@@ -1,6 +1,6 @@
 package com.flipperdevices.core.ktx.jre
 
-import com.flipperdevices.core.log.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
@@ -15,7 +15,7 @@ fun <T> LogTagProvider.runBlockingWithLog(
     block: suspend CoroutineScope.() -> T
 ): T {
     var startTime: Long = 0
-    if (BuildConfig.INTERNAL) {
+    if (BuildKonfig.IS_LOG_ENABLED) {
         startTime = System.currentTimeMillis()
     }
     return runBlocking {
