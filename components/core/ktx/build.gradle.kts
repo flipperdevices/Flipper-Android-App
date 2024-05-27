@@ -12,6 +12,10 @@ commonDependencies {
     implementation(libs.kotlin.coroutines)
 }
 
+androidDependencies {
+    implementation(libs.appcompat)
+}
+
 commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
