@@ -15,8 +15,9 @@ configure<BaseExtension> {
  * When KMP setup is not available at flipper.android-lib, we can create here custom task
  * which will run testDebugUnitTest
  */
-tasks.register("allTests") {
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-    val androidUnitTests = tasks.findByName("testDebug")
-    dependsOn(androidUnitTests)
+tasks.findByName("testDebug")?.let { androidUnitTests ->
+    tasks.register("allTests") {
+        group = LifecycleBasePlugin.VERIFICATION_GROUP
+        dependsOn(androidUnitTests)
+    }
 }
