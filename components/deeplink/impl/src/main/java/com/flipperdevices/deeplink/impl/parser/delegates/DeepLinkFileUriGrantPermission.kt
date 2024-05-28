@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.filename
-import com.flipperdevices.core.ktx.jre.length
+import com.flipperdevices.core.ktx.android.filename
+import com.flipperdevices.core.ktx.android.length
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink

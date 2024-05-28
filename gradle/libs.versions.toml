@@ -88,6 +88,9 @@ detekt-ruleset-compose = "0.4.1" # https://github.com/mrmans0n/compose-rules/rel
 google-gms-gradle = "4.4.1" # https://developers.google.com/android/guides/google-services-plugin
 google-gms-firebase = "24.0.0" # https://firebase.google.com/docs/android/setup#kotlin:~:text=com.google.firebase%3Afirebase%2Dmessaging
 
+# Build Config
+buildkonfig = "5.3.5"
+
 [libraries]
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
@@ -286,4 +289,8 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
 square-anvil = { id = "com.squareup.anvil", version.ref = "anvil" }
 google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+<<<<<<< feature/k2
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-general" }
+=======
+buildkonfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildkonfig" }
+>>>>>>> dev

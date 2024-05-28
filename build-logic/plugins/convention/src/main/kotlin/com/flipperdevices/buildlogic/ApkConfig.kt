@@ -1,5 +1,6 @@
 package com.flipperdevices.buildlogic
 
+import com.flipperdevices.buildlogic.model.FlavorType
 import org.gradle.api.Project
 
 object ApkConfig {
@@ -49,6 +50,21 @@ object ApkConfig {
 
     val Project.IS_SENTRY_ENABLED
         get() = prop("is_metric_enabled", true).toBoolean()
+
+    val Project.CURRENT_FLAVOR_TYPE: FlavorType
+        get() {
+            val default = FlavorType.DEV
+            val key = "CURRENT_FLAVOR_TYPE"
+            val propValue = propOrNull(key)
+            if (propValue == null) {
+                logger.warn("Property $key was not found, writing default $default")
+            }
+            return FlavorType.values().find { it.name == propValue } ?: default
+        }
+}
+
+internal fun Project.propOrNull(key: String): String? {
+    return providers.gradleProperty(key).orNull
 }
 
 internal fun Project.prop(key: String, default: Any): String {

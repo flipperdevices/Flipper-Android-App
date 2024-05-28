@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.filename
+import com.flipperdevices.core.ktx.android.filename
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate

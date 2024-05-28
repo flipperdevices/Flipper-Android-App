@@ -25,7 +25,7 @@ jobs:
         uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
         with:
           cache-read-only: false
-          arguments: testDebug detekt lint
+          arguments: testDebugUnitTest desktopTest detekt lint
   build_number:
     name: Generate build number
     runs-on: ubuntu-latest

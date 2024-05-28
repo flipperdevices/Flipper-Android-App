@@ -10,9 +10,9 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.ktx.android.filename
+import com.flipperdevices.core.ktx.android.length
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.ktx.jre.filename
-import com.flipperdevices.core.ktx.jre.length
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.card.model.SyncingState
 import com.flipperdevices.updater.card.model.UpdatePending
@@ -59,7 +59,7 @@ class UpdateRequestViewModelTest {
     fun setup() {
         mockkObject(FlipperDispatchers)
         every { FlipperDispatchers.workStealingDispatcher } returns Dispatchers.Main.immediate
-        mockkStatic("com.flipperdevices.core.ktx.jre.UriKtxKt")
+        mockkStatic("com.flipperdevices.core.ktx.android.UriKtxKt")
 
         serviceProvider = mockk(relaxUnitFun = true)
         serviceApi = mockk(relaxUnitFun = true)
