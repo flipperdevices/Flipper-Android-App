@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.core.ktx.jre.filename
-import com.flipperdevices.core.ktx.jre.length
+import com.flipperdevices.core.ktx.android.filename
+import com.flipperdevices.core.ktx.android.length
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.card.model.BatteryState
 import com.flipperdevices.updater.card.model.SyncingState

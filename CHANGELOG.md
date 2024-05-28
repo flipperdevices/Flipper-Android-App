@@ -3,7 +3,7 @@
 
 # 1.6.10 - In Progress
 
-- 
+- [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 
 # 1.6.9
 

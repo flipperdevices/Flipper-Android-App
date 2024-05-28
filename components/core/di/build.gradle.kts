@@ -1,9 +1,15 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.core.di"
 
-dependencies {
+commonDependencies {
     implementation(libs.dagger)
+}
+
+jvmSharedTestDependencies {
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
 }

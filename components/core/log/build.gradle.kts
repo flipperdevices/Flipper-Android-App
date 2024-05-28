@@ -1,15 +1,10 @@
 plugins {
     id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.core.log"
 
-kotlin {
-    sourceSets {
-        commonMain.dependencies {
-        }
-        androidMain.dependencies {
-            implementation(libs.timber)
-        }
-    }
+androidDependencies {
+    implementation(libs.timber)
 }
