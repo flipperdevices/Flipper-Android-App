@@ -3,11 +3,8 @@
 
 # 1.6.10 - In Progress
 
-<<<<<<< feature/k2
 - [Refactor] Update to Kotlin 2.0
-=======
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
->>>>>>> dev
 
 # 1.6.9
 

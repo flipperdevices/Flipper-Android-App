@@ -9,10 +9,7 @@ plugins {
     alias(libs.plugins.google.gms) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
-<<<<<<< feature/k2
     id("flipper.lint")
     alias(libs.plugins.compose) apply false
-=======
     alias(libs.plugins.buildkonfig) apply false
->>>>>>> dev
 }
