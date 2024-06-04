@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun InfoElementCard(
     modifier: Modifier = Modifier,
+    endContent: (@Composable RowScope.() -> Unit)? = null,
     @StringRes titleId: Int? = null,
     isSelectionArea: Boolean = false,
     content: @Composable ColumnScope.() -> Unit

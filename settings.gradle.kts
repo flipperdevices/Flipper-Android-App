@@ -170,6 +170,9 @@ include(
     ":components:settings:api",
     ":components:settings:impl",
 
+    ":components:changelog:api",
+    ":components:changelog:impl",
+
     ":components:updater:api",
     ":components:updater:impl",
     ":components:updater:screen",

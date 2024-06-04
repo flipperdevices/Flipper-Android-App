@@ -26,15 +26,7 @@ internal fun ComposableUpdaterCardInternal(
     onStartUpdateRequest: (UpdateRequest) -> Unit = {},
 ) {
     val updateState by updateStateViewModel.getUpdateState().collectAsState()
-    val localDeviceStatus = updateState
-    // Not use when, because internal Jetpack Compose crash. ¯\_(ツ)_/¯
-    // https://gist.github.com/LionZXY/609fa537747782d01e8f4cbdcdc882cf
-    if (updateState == FlipperUpdateState.Updating) {
-        ComposableUpdaterReboot(modifier)
-        return
-    }
-
-    when (localDeviceStatus) {
+    when (val localDeviceStatus = updateState) {
         is FlipperUpdateState.Complete -> ComposableSuccessfulUpdate(
             localDeviceStatus.version,
             updateStateViewModel::onDismissUpdateDialog
@@ -50,7 +42,10 @@ internal fun ComposableUpdaterCardInternal(
         }
 
         FlipperUpdateState.NotConnected -> return
-        else -> error("Can't find this device status")
+        FlipperUpdateState.Updating -> {
+            ComposableUpdaterReboot(modifier)
+            return
+        }
     }
 
     val cardState by updateCardViewModel.getUpdateCardState().collectAsState()
