@@ -2,11 +2,9 @@ package com.flipperdevices.core.ui.theme.composable
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.preference.pb.SelectedTheme
-import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 /**
  * Please, use LocalPallet instead
@@ -15,29 +13,18 @@ import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
  */
 @Composable
 fun getThemedFlipperPallet(isLight: Boolean): FlipperPallet {
-    return if (isLight) lightPallet else darkPallet
-}
-
-@Composable
-fun getThemedFlipperPallet(
-    theme: SelectedTheme,
-    isLight: Boolean = !isSystemInDarkTheme()
-): FlipperPallet {
-    return when (theme) {
-        SelectedTheme.LIGHT -> lightPallet
-        SelectedTheme.DARK -> darkPallet
-        SelectedTheme.UNRECOGNIZED,
-        SelectedTheme.SYSTEM -> getThemedFlipperPallet(isLight)
+    return if (isLight) {
+        lightPallet
+    } else {
+        darkPallet
     }.toAnimatePallet()
 }
 
 @Composable
 internal fun isLight(
-    themeViewModel: ThemeViewModel,
+    theme: SelectedTheme,
     systemIsDark: Boolean = isSystemInDarkTheme()
 ): Boolean {
-    val theme by themeViewModel.getAppTheme().collectAsState()
-
     return when (theme) {
         SelectedTheme.LIGHT -> true
         SelectedTheme.DARK -> false
