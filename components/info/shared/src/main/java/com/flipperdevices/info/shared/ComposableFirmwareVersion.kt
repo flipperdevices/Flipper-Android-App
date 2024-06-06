@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 
@@ -49,10 +50,10 @@ fun getTextByVersion(version: FirmwareVersion): String {
 @Composable
 fun getColorByChannel(channel: FirmwareChannel): Color {
     return when (channel) {
-        FirmwareChannel.DEV -> LocalPallet.current.channelFirmwareDev
-        FirmwareChannel.RELEASE_CANDIDATE -> LocalPallet.current.channelFirmwareReleaseCandidate
-        FirmwareChannel.RELEASE -> LocalPallet.current.channelFirmwareRelease
+        FirmwareChannel.DEV -> LocalPalletV2.current.action.brunchDev.text.default
+        FirmwareChannel.RELEASE_CANDIDATE -> LocalPalletV2.current.action.brunchRc.text.default
+        FirmwareChannel.RELEASE -> LocalPalletV2.current.action.brunchRelease.text.default
         FirmwareChannel.UNKNOWN -> LocalPallet.current.channelFirmwareUnknown
-        FirmwareChannel.CUSTOM -> LocalPallet.current.channelFirmwareUnknown
+        FirmwareChannel.CUSTOM -> LocalPalletV2.current.action.brunchCustom.text.default
     }
 }

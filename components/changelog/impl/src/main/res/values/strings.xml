@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whatsnew_title">What’s New</string>
+    <string name="whatsnew_empty">Empty changelog</string>
+    <string name="whatsnew_btn_install">INSTALL</string>
+    <string name="whatsnew_btn_update">UPDATE</string>
+</resources>

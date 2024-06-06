@@ -90,6 +90,7 @@ include(
     ":components:core:ui:hexkeyboard",
     ":components:core:ui:tabswitch",
     ":components:core:ui:flippermockup",
+    ":components:core:ui:scrollbar",
     ":components:core:ui:decompose",
     ":components:core:test",
     ":components:core:markdown",

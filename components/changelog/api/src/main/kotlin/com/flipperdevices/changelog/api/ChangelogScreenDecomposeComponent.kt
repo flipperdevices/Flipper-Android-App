@@ -12,7 +12,7 @@ abstract class ChangelogScreenDecomposeComponent(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            updateRequest: UpdateRequest?,
+            updateRequest: UpdateRequest,
             onBack: DecomposeOnBackParameter
         ): ChangelogScreenDecomposeComponent
     }

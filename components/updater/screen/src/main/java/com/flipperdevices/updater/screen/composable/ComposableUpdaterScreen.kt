@@ -30,6 +30,7 @@ import com.flipperdevices.updater.screen.model.UpdaterScreenState
 fun ComposableUpdaterScreen(
     updaterScreenState: UpdaterScreenState,
     flipperColor: HardwareColor,
+    changelog: String?,
     onCancel: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
@@ -50,7 +51,6 @@ fun ComposableUpdaterScreen(
                 flipperColor = flipperColor
             )
             ComposableUpdateContent(updaterScreenState, onRetry)
-            val changelog = updaterScreenState.updateRequest?.changelog
             if (changelog != null) {
                 ComposableChangelog(changelog)
             }
