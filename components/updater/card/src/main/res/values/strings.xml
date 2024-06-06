@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="updater_card_updater_title">Firmware Update</string>
+    <string name="updater_card_updater_title_whatsnew">What’s New</string>
     <string name="updater_card_updater_channel">Update Channel</string>
     <string name="updater_card_updater_error_retry">Retry</string>
     <string name="updater_card_updater_button_no_updates">NO UPDATES</string>

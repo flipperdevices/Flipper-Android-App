@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
     implementation(projects.components.info.shared)
+    implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.rpcinfo.api)

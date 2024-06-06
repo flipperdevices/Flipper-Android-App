@@ -70,7 +70,12 @@ private fun ComposableUpdaterCard(
 ) {
     InfoElementCard(
         modifier = modifier,
-        titleId = R.string.updater_card_updater_title
+        titleId = R.string.updater_card_updater_title,
+        endContent = {
+            if (cardStateLocal is UpdateCardState.UpdateAvailable) {
+                ComposableWhatsNew(cardStateLocal.update)
+            }
+        }
     ) {
         when (cardStateLocal) {
             is UpdateCardState.Error -> ComposableFirmwareUpdaterError(

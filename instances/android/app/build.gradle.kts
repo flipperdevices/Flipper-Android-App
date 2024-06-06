@@ -99,6 +99,9 @@ dependencies {
     implementation(projects.components.updater.card)
     implementation(projects.components.updater.subghz)
 
+    implementation(projects.components.changelog.api)
+    implementation(projects.components.changelog.impl)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.rpc.api)

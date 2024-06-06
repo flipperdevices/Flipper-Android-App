@@ -31,4 +31,7 @@ sealed class RootScreenConfig {
 
     @Serializable
     data class ScreenshotPreview(val param: ScreenshotsPreviewParam) : RootScreenConfig()
+
+    @Serializable
+    data class Changelog(val updateRequest: UpdateRequest) : RootScreenConfig()
 }
