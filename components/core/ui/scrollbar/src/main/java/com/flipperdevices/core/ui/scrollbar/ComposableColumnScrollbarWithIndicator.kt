@@ -45,7 +45,6 @@ fun ComposableColumnScrollbarWithIndicator(
     )
 }
 
-
 @Suppress("LongParameterList")
 fun Modifier.verticalScrollbar(
     color: Color,

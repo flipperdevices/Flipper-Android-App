@@ -13,7 +13,6 @@ private const val REGEX_GITHUB_NICKNAME = "(^| )@(\\S+)"
 private const val NUMBER_MATCH_FIRST = 2
 private const val NUMBER_MATCH_SECOND = 3
 
-
 @Reusable
 @ContributesBinding(AppGraph::class, ChangelogFormatterApi::class)
 class ChangelogFormatterImpl @Inject constructor() : ChangelogFormatterApi {

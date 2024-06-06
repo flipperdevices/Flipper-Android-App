@@ -14,12 +14,9 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.info.shared.getColorByChannel
 import com.flipperdevices.info.shared.getTextByVersion
 import com.flipperdevices.keyscreen.shared.bar.ComposableBarCancelIcon
-import com.flipperdevices.keyscreen.shared.bar.ComposableBarSimpleText
-import com.flipperdevices.keyscreen.shared.bar.ComposableBarTitleWithName
 import com.flipperdevices.keyscreen.shared.bar.ComposableKeyScreenAppBar
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-
 
 @Composable
 fun ChangelogScreenBarComposable(

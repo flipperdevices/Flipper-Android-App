@@ -3,7 +3,6 @@ package com.flipperdevices.changelog.api
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.updater.model.UpdateRequest
 
 abstract class ChangelogScreenDecomposeComponent(

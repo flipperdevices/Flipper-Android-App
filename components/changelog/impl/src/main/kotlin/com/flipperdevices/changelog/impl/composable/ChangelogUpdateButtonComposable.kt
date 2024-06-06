@@ -21,6 +21,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ChangelogUpdateButtonComposable(
     isUpdate: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     val buttonColor = if (isUpdate) {
@@ -29,7 +30,7 @@ fun ChangelogUpdateButtonComposable(
         LocalPalletV2.current.action.fwInstall.background.primary.default
     }
     Text(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 14.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(9.dp))
@@ -42,7 +43,7 @@ fun ChangelogUpdateButtonComposable(
             stringResource(R.string.whatsnew_btn_install)
         },
         textAlign = TextAlign.Center,
-        style = LocalTypography.current.updateButton32,
+        style = LocalTypography.current.updateButton40,
         color = if (isUpdate) {
             LocalPalletV2.current.action.fwUpdate.text.onColor
         } else {

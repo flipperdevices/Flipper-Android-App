@@ -136,8 +136,8 @@ data class FlipperTypography(
         fontFamily = robotoFamily,
         fontWeight = FontWeight.W700
     ),
-    val updateButton32: TextStyle = TextStyle(
-        fontSize = 32.sp,
+    val updateButton40: TextStyle = TextStyle(
+        fontSize = 40.sp,
         fontFamily = FontFamily(Font(R.font.flipper_bold)),
         fontWeight = FontWeight.W500
     ),

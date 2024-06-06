@@ -82,7 +82,9 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
                 remember(changelog) {
                     changelogFormatterApi.format(changelog)
                 }
-            } else null
+            } else {
+                null
+            }
         )
         if (isCancelDialogOpen) {
             when (updaterScreenState) {

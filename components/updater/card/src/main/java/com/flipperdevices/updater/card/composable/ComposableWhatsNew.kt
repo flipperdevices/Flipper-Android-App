@@ -24,13 +24,16 @@ import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
-fun ComposableWhatsNew(update: UpdateRequest) {
+fun ComposableWhatsNew(
+    update: UpdateRequest,
+    modifier: Modifier = Modifier
+) {
     if (update.changelog == null) {
         return
     }
     val rootNavigation = LocalRootNavigation.current
     ComposableWhatsNewButton(
-        modifier = Modifier.padding(top = 12.dp, end = 8.dp),
+        modifier = modifier.padding(top = 12.dp, end = 8.dp),
         onClick = {
             rootNavigation.push(RootScreenConfig.Changelog(update))
         }
@@ -39,7 +42,7 @@ fun ComposableWhatsNew(update: UpdateRequest) {
 
 @Composable
 private fun ComposableWhatsNewButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Row(

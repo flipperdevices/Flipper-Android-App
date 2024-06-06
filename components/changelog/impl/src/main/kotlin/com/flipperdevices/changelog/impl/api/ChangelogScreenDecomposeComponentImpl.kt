@@ -13,7 +13,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
-
 @ContributesAssistedFactory(AppGraph::class, ChangelogScreenDecomposeComponent.Factory::class)
 class ChangelogScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -29,7 +28,9 @@ class ChangelogScreenDecomposeComponentImpl @AssistedInject constructor(
             changelog = remember(changelog) {
                 if (changelog != null) {
                     changelogFormatter.format(changelog)
-                } else null
+                } else {
+                    null
+                }
             },
             onBack = onBack::invoke
         )
