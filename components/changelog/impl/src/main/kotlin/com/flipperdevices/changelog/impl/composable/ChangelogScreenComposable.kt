@@ -2,6 +2,7 @@ package com.flipperdevices.changelog.impl.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,7 +29,10 @@ fun ChangelogScreenComposable(
     onBack: () -> Unit
 ) {
     val rootNavigation = LocalRootNavigation.current
-    Column {
+    Column(
+        Modifier.fillMaxSize()
+            .navigationBarsPadding()
+    ) {
         ChangelogScreenBarComposable(
             firmwareVersion = updateRequest.updateTo,
             onBack = onBack
