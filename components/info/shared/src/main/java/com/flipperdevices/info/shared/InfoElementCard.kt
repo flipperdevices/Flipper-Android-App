@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 fun InfoElementCard(
     modifier: Modifier = Modifier,
     @StringRes titleId: Int? = null,
+    endContent: (@Composable RowScope.() -> Unit)? = null,
     isSelectionArea: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -34,10 +37,10 @@ fun InfoElementCard(
     ) {
         if (isSelectionArea) {
             SelectionContainer {
-                InfoElementCardInternal(titleId, content)
+                InfoElementCardInternal(titleId, endContent, content)
             }
         } else {
-            InfoElementCardInternal(titleId, content)
+            InfoElementCardInternal(titleId, endContent, content)
         }
     }
 }
@@ -45,21 +48,28 @@ fun InfoElementCard(
 @Composable
 private fun InfoElementCardInternal(
     @StringRes titleId: Int? = null,
+    endContent: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(verticalArrangement = Arrangement.SpaceBetween) {
-        if (titleId != null) {
-            Text(
-                modifier = Modifier.padding(
-                    start = 12.dp,
-                    end = 12.dp,
-                    top = 12.dp,
-                    bottom = 6.dp
-                ),
-                text = stringResource(titleId),
-                style = LocalTypography.current.buttonB16
-            )
+        Row {
+            if (titleId != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 6.dp
+                        )
+                        .weight(1f),
+                    text = stringResource(titleId),
+                    style = LocalTypography.current.buttonB16
+                )
+            }
+            endContent?.invoke(this)
         }
+
         content()
     }
 }

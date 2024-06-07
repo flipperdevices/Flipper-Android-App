@@ -27,9 +27,6 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
-    implementation(libs.markdown.renderer) {
-        exclude(libs.fastutil.get().group)
-    }
 
     // ViewModel
     implementation(libs.lifecycle.compose)

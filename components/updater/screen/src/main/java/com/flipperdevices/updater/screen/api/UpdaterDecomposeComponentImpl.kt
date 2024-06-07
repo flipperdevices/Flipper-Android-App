@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.changelog.api.ChangelogFormatterApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -33,7 +34,8 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val updateRequest: UpdateRequest?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val flipperColorViewModelProvider: Provider<FlipperColorViewModel>,
-    private val updaterViewModelProvider: Provider<UpdaterViewModel>
+    private val updaterViewModelProvider: Provider<UpdaterViewModel>,
+    private val changelogFormatterApi: ChangelogFormatterApi
 ) : UpdaterDecomposeComponent(componentContext) {
 
     @Composable
@@ -70,11 +72,19 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
 
         val onAbortUpdate = updaterViewModel::cancelUpdate
         var isCancelDialogOpen by remember { mutableStateOf(false) }
+        val changelog = updateRequest?.changelog
         ComposableUpdaterScreen(
             updaterScreenState = updaterScreenState,
             flipperColor = flipperColor,
             onCancel = { isCancelDialogOpen = true },
-            onRetry = { updaterViewModel.retry(updateRequest) }
+            onRetry = { updaterViewModel.retry(updateRequest) },
+            changelog = remember(changelog) {
+                if (changelog != null) {
+                    changelogFormatterApi.format(changelog)
+                } else {
+                    null
+                }
+            }
         )
         if (isCancelDialogOpen) {
             when (updaterScreenState) {

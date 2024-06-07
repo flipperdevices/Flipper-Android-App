@@ -129,7 +129,7 @@ fun ComposableUpdateButtonContent(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                modifier = Modifier.padding(vertical = 4.dp),
+                modifier = Modifier.padding(vertical = 6.dp),
                 text = stringResource(textId),
                 textAlign = TextAlign.Center,
                 style = LocalTypography.current.updateButton40,

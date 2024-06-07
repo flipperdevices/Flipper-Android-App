@@ -36,7 +36,8 @@ private fun ComposableUpdaterScreenNotStartedPreview() {
             updaterScreenState = UpdaterScreenState.NotStarted,
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -52,7 +53,8 @@ private fun ComposableUpdaterScreenCancelingSynchronizationPreview() {
             updaterScreenState = UpdaterScreenState.CancelingSynchronization(updateRequest),
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -71,7 +73,8 @@ private fun ComposableUpdaterScreenDownloadingFromNetworkPreview() {
             ),
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -88,7 +91,8 @@ private fun ComposableUpdaterScreenUploadOnFlipperPreview() {
             UpdaterScreenState.UploadOnFlipper(updateRequest = updateRequest, percent = 0.5f),
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -104,7 +108,8 @@ private fun ComposableUpdaterScreenFailedNetworkPreview() {
             updaterScreenState = UpdaterScreenState.Failed(FailedReason.DOWNLOAD_FROM_NETWORK),
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -120,7 +125,8 @@ private fun ComposableUpdaterScreenFailedOnFlipperPreview() {
             updaterScreenState = UpdaterScreenState.Failed(FailedReason.UPLOAD_ON_FLIPPER),
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -136,7 +142,8 @@ private fun ComposableUpdaterScreenRebootingPreview() {
             updaterScreenState = UpdaterScreenState.Rebooting,
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -152,7 +159,8 @@ private fun ComposableUpdaterScreenCancelingUpdatePreview() {
             updaterScreenState = UpdaterScreenState.CancelingUpdate,
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }
@@ -168,7 +176,8 @@ private fun ComposableUpdaterScreenFinishPreview() {
             updaterScreenState = UpdaterScreenState.Finish,
             flipperColor = HardwareColor.BLACK,
             onCancel = {},
-            onRetry = {}
+            onRetry = {},
+            changelog = null
         )
     }
 }

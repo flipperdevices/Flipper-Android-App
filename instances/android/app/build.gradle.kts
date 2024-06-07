@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.scrollbar)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
@@ -98,6 +99,9 @@ dependencies {
     implementation(projects.components.updater.screen)
     implementation(projects.components.updater.card)
     implementation(projects.components.updater.subghz)
+
+    implementation(projects.components.changelog.api)
+    implementation(projects.components.changelog.impl)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)

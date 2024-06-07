@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.changelog.api)
 
     // Compose
     implementation(libs.compose.ui)
