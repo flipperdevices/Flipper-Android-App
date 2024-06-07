@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.scrollbar)
     implementation(projects.components.core.markdown)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.updater.api)
     implementation(projects.components.info.shared)
