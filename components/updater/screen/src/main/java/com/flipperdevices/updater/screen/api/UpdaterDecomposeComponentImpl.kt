@@ -78,12 +78,12 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
             flipperColor = flipperColor,
             onCancel = { isCancelDialogOpen = true },
             onRetry = { updaterViewModel.retry(updateRequest) },
-            changelog = if (changelog != null) {
-                remember(changelog) {
+            changelog = remember(changelog) {
+                if (changelog != null) {
                     changelogFormatterApi.format(changelog)
+                } else {
+                    null
                 }
-            } else {
-                null
             }
         )
         if (isCancelDialogOpen) {
