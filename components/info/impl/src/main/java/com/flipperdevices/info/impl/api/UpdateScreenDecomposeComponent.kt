@@ -48,7 +48,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
 ) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
-    @Suppress("NonSkippableComposable")
+    @Suppress("NonSkippableComposable", "LongMethod")
     @Composable
     override fun Render() {
         val rootNavigation = LocalRootNavigation.current

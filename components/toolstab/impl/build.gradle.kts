@@ -25,7 +25,6 @@ dependencies {
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.info.shared)
 
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

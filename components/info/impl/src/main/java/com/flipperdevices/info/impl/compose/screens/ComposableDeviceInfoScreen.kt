@@ -35,7 +35,7 @@ import com.flipperdevices.updater.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
-@Suppress("NonSkippableComposable")
+@Suppress("NonSkippableComposable", "LongMethod")
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
     componentContext: ComponentContext,
