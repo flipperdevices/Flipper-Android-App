@@ -1,4 +1,4 @@
-package com.flipperdevices.toolstab.impl.composable.elements
+package com.flipperdevices.info.shared
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -26,7 +26,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun ComposableHubElement(
+fun ComposableOneRowCard(
     @DrawableRes iconId: Int,
     @StringRes titleId: Int,
     @StringRes descriptionId: Int,
@@ -102,7 +102,9 @@ private fun ComposableHubElementHead(
         }
     }
     Icon(
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+        modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp)
+            .size(14.dp),
         painter = painterResource(id = R.drawable.ic_navigate),
         contentDescription = stringResource(titleId),
         tint = LocalPallet.current.iconTint30

@@ -56,7 +56,7 @@ class BasicInfoViewModel @Inject constructor(
                     flipperStorageInformationApi.invalidate(
                         viewModelScope,
                         serviceApi,
-                        force = true
+                        force = false
                     )
                 }
                 else -> flipperStorageInformationApi.reset()

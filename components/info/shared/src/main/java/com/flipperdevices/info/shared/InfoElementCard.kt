@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,9 +31,10 @@ fun InfoElementCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 14.dp),
+            .padding(horizontal = 14.dp)
+            .then(modifier),
         shape = RoundedCornerShape(size = 10.dp)
     ) {
         if (isSelectionArea) {
@@ -52,7 +54,7 @@ private fun InfoElementCardInternal(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(verticalArrangement = Arrangement.SpaceBetween) {
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             if (titleId != null) {
                 Text(
                     modifier = Modifier

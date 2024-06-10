@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
     implementation(projects.components.rootscreen.api)
+    implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)

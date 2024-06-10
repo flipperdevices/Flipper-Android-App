@@ -45,7 +45,22 @@ fun ComposableInfoCard(
         firmwareUpdateState != FlipperSupportedState.READY
     }
 
-    InfoElementCard(modifier, isSelectionArea = true, titleId = R.string.info_device_info_title) {
+    InfoElementCard(
+        modifier.clickableRipple(onClick = onOpenFullDeviceInfo),
+        isSelectionArea = true,
+        titleId = R.string.info_device_info_title,
+        endContent = {
+            if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .size(14.dp),
+                    painter = painterResource(DesignSystem.drawable.ic_navigate),
+                    contentDescription = stringResource(R.string.info_device_info_more_information)
+                )
+            }
+        }
+    ) {
         if (updateState is FlipperUpdateState.Updating) {
             ComposableWaitingFlipper()
             return@InfoElementCard
@@ -55,9 +70,6 @@ fun ComposableInfoCard(
             deviceStatus = deviceStatus,
             deviceInfo = deviceInfo
         )
-        if (deviceStatus is DeviceStatus.Connected && !isUnsupported) {
-            ComposableFullInfoButton(onOpenFullDeviceInfo)
-        }
     }
 }
 
@@ -83,36 +95,5 @@ fun ComposableWaitingFlipper(
             style = LocalTypography.current.bodyR14,
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@Composable
-private fun ComposableFullInfoButton(
-    onOpenFullDeviceInfo: () -> Unit = {}
-) {
-    // Disable selection because not copy FullInfo button
-    DisableSelection {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickableRipple(onClick = onOpenFullDeviceInfo)
-                .padding(all = 12.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.info_device_info_more_information),
-                color = LocalPallet.current.text16,
-                style = LocalTypography.current.bodyM14
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(start = 1.dp)
-                    .size(size = 12.dp),
-                painter = painterResource(DesignSystem.drawable.ic_forward),
-                contentDescription = stringResource(R.string.info_device_info_more_information),
-                tint = LocalPallet.current.iconTint16
-            )
-        }
     }
 }

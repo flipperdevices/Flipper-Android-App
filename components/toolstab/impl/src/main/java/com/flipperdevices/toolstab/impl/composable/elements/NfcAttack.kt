@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.toolstab.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.info.shared.ComposableOneRowCard
 
 @Composable
 fun NfcAttack(
@@ -11,7 +12,7 @@ fun NfcAttack(
     notificationCount: Int,
     modifier: Modifier = Modifier
 ) {
-    ComposableHubElement(
+    ComposableOneRowCard(
         iconId = DesignSystem.drawable.ic_fileformat_nfc,
         onOpen = onOpenAttack,
         titleId = R.string.toolstab_hfc_title,
