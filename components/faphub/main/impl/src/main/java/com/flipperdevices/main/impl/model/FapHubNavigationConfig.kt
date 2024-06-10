@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 sealed class FapHubNavigationConfig {
     @Serializable
     data class Main(
-        val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+        val deeplink: Deeplink.BottomBar.AppsTab.MainScreen?
     ) : FapHubNavigationConfig()
 
     @Serializable

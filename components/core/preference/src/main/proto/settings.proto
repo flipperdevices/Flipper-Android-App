@@ -6,7 +6,8 @@ option java_multiple_files = true;
 enum SelectedTab {
   DEVICE = 0;
   ARCHIVE = 1;
-  HUB = 2;
+  TOOLS = 2;
+  APPS = 3;
 }
 
 enum SelectedChannel {

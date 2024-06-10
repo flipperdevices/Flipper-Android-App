@@ -26,7 +26,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
+    @Assisted private val deeplink: Deeplink.BottomBar.AppsTab.MainScreen?,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi,
@@ -86,7 +86,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubNavigationConfig>,
             onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+            deeplink: Deeplink.BottomBar.AppsTab.MainScreen?
         ): MainScreenDecomposeComponentImpl
     }
 }

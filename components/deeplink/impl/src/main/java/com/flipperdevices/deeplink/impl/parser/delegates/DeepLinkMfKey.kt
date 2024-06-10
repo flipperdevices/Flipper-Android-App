@@ -32,5 +32,5 @@ class DeepLinkMfKey @Inject constructor() : DeepLinkParserDelegate, LogTagProvid
         }
     }
 
-    override suspend fun fromIntent(context: Context, intent: Intent) = Deeplink.BottomBar.HubTab.OpenMfKey
+    override suspend fun fromIntent(context: Context, intent: Intent) = Deeplink.BottomBar.ToolsTab.OpenMfKey
 }

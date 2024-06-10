@@ -45,6 +45,6 @@ class DeepLinkFap @Inject constructor() : DeepLinkParserDelegate, LogTagProvider
         }
         val pathSegment = intent.data?.pathSegments ?: return null
         val fapId = pathSegment[1] ?: return null
-        return Deeplink.BottomBar.HubTab.FapHub.Fap(fapId)
+        return Deeplink.BottomBar.AppsTab.Fap(fapId)
     }
 }

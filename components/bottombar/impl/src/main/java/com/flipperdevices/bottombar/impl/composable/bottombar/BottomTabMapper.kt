@@ -23,10 +23,19 @@ fun getTabStateFromFlipperBottomTab(
             unselectedColor = LocalPallet.current.bottomBarUnselected
         )
 
-        BottomBarTabEnum.HUB -> TabState.Static(
+        BottomBarTabEnum.APPS -> TabState.Static(
             selectedIcon = R.drawable.ic_hub_filled,
             notSelectedIcon = R.drawable.ic_hub,
-            text = stringResource(R.string.bar_title_hub),
+            text = stringResource(R.string.bar_title_apps),
+            selectedColor = LocalPallet.current.bottomBarSelected,
+            unselectedColor = LocalPallet.current.bottomBarUnselected,
+            notificationDotActive = hubHasNotification
+        )
+
+        BottomBarTabEnum.TOOLS -> TabState.Static(
+            selectedIcon = R.drawable.ic_hub_filled,
+            notSelectedIcon = R.drawable.ic_hub,
+            text = stringResource(R.string.bar_title_tools),
             selectedColor = LocalPallet.current.bottomBarSelected,
             unselectedColor = LocalPallet.current.bottomBarUnselected,
             notificationDotActive = hubHasNotification
