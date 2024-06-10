@@ -45,7 +45,6 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         is FapHubNavigationConfig.Main -> mainScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) },
             deeplink = config.deeplink
         )
 

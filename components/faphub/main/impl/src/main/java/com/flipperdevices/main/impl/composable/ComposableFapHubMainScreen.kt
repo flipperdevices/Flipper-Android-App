@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,7 +15,6 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 
 @Composable
 fun ComposableFapHubMainScreen(
-    onBack: () -> Unit,
     catalogTabComposable: @Composable () -> Unit,
     installedTabComposable: @Composable () -> Unit,
     onOpenSearch: () -> Unit,
@@ -31,7 +31,6 @@ fun ComposableFapHubMainScreen(
             fapHubTabEnum = selectedTab,
             onSelect = onSelect,
             installedNotificationCount = installedNotificationCount,
-            onBack = onBack,
             onEndClick = onOpenSearch
         )
         Spacer(

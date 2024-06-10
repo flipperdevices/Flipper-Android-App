@@ -33,15 +33,11 @@ class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
         }
         val notificationCount by nfcAttackViewModel.getNfcAttackNotificationCountState()
             .collectAsState()
-        val rootNavigation = LocalRootNavigation.current
 
         ComposableHub(
             notificationCount = notificationCount,
             onOpenAttack = {
                 navigation.pushToFront(ToolsNavigationConfig.NfcAttack(null))
-            },
-            onOpenRemoteControl = {
-                rootNavigation.push(RootScreenConfig.ScreenStreaming)
             }
         )
     }

@@ -14,8 +14,8 @@ fun NfcAttack(
     ComposableHubElement(
         iconId = DesignSystem.drawable.ic_fileformat_nfc,
         onOpen = onOpenAttack,
-        titleId = R.string.hub_hfc_title,
-        descriptionId = R.string.hub_hfc_desc,
+        titleId = R.string.toolstab_hfc_title,
+        descriptionId = R.string.toolstab_hfc_desc,
         notificationCount = notificationCount,
         modifier = modifier
     )

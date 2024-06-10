@@ -48,9 +48,12 @@ fun ComposableHubElement(
                 titleId = titleId,
                 notificationCount = notificationCount
             )
-            ComposableHubElementDescription(
-                titleId = titleId,
-                descriptionId = descriptionId
+            Text(
+                modifier = Modifier
+                    .padding(all = 12.dp),
+                text = stringResource(descriptionId),
+                style = LocalTypography.current.subtitleR12,
+                color = LocalPallet.current.text30
             )
         }
     }
@@ -64,14 +67,24 @@ private fun ComposableHubElementHead(
 ) = Row(
     verticalAlignment = Alignment.CenterVertically
 ) {
-    Box(Modifier.weight(1f)) {
+    Row(
+        modifier = Modifier
+            .weight(1f)
+            .padding(top = 12.dp, start = 12.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Icon(
             modifier = Modifier
-                .padding(top = 12.dp, start = 12.dp, end = 12.dp, bottom = 2.dp)
                 .size(30.dp),
             painter = painterResource(iconId),
             contentDescription = stringResource(titleId),
             tint = LocalPallet.current.text100
+        )
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            text = stringResource(titleId),
+            style = LocalTypography.current.buttonB16,
+            color = LocalPallet.current.text100
         )
     }
     if (notificationCount > 0) {
@@ -94,31 +107,5 @@ private fun ComposableHubElementHead(
         painter = painterResource(id = R.drawable.ic_navigate),
         contentDescription = stringResource(titleId),
         tint = LocalPallet.current.iconTint30
-    )
-}
-
-@Composable
-private fun ColumnScope.ComposableHubElementDescription(
-    @StringRes titleId: Int,
-    @StringRes descriptionId: Int
-) {
-    Text(
-        modifier = Modifier.padding(
-            top = 12.dp,
-            start = 12.dp,
-            end = 12.dp,
-            bottom = 4.dp
-        ),
-        text = stringResource(titleId),
-        style = LocalTypography.current.buttonM16,
-        color = LocalPallet.current.text100
-    )
-
-    Text(
-        modifier = Modifier
-            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-        text = stringResource(descriptionId),
-        style = LocalTypography.current.subtitleR12,
-        color = LocalPallet.current.text30
     )
 }

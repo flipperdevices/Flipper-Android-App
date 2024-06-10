@@ -50,17 +50,15 @@ fun ComposeMaterialYouTab(
                         ComposableTabIcon(tabState, selected)
                     }
                 }
-                var indicationDotModifier = Modifier
-                    .padding(bottom = 14.dp, end = 4.dp)
-                    .size(12.dp)
-                if (tabState.notificationDotActive) {
-                    indicationDotModifier = indicationDotModifier
-                        .clip(CircleShape)
-                        .background(LocalPallet.current.updateProgressGreen)
+                tabState.notificationDot?.let { notificationDot ->
+                    Box(
+                        modifier = Modifier
+                            .padding(bottom = 14.dp, end = notificationDot.notificationDotPaddingEnd)
+                            .size(12.dp)
+                            .clip(CircleShape)
+                            .background(LocalPallet.current.updateProgressGreen)
+                    )
                 }
-                Box(
-                    modifier = indicationDotModifier
-                )
             }
             Box {
                 TabTransition(

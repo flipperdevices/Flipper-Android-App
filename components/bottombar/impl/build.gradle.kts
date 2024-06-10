@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.toolstab.api)
     implementation(projects.components.faphub.main.api)
+    implementation(projects.components.faphub.installedtab.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.unhandledexception.api)
     implementation(projects.components.notification.api)

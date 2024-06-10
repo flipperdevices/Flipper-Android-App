@@ -13,40 +13,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.toolstab.impl.R
-import com.flipperdevices.toolstab.impl.composable.elements.ComposableRemoteControl
 import com.flipperdevices.toolstab.impl.composable.elements.NfcAttack
 
 @Composable
 fun ComposableHub(
     notificationCount: Int,
     onOpenAttack: () -> Unit,
-    onOpenRemoteControl: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
         OrangeAppBar(
-            titleId = R.string.hub_title
+            titleId = R.string.toolstab_title
         )
-        Row(
+        NfcAttack(
             modifier = Modifier
                 .padding(14.dp)
-                .height(IntrinsicSize.Min)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            ComposableRemoteControl(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                onOpen = onOpenRemoteControl
-            )
-            NfcAttack(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                onOpenAttack = onOpenAttack,
-                notificationCount = notificationCount
-            )
-        }
+            onOpenAttack = onOpenAttack,
+            notificationCount = notificationCount
+        )
     }
 }
