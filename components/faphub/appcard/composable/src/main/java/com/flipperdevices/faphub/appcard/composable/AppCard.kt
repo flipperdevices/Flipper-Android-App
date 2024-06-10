@@ -110,7 +110,7 @@ private fun AppCardTop(
             )
         }
         installationButton(
-             Modifier
+            Modifier
                 .fillMaxHeight()
                 .padding(vertical = 4.dp)
         )

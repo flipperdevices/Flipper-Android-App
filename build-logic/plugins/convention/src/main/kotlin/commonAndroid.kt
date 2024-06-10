@@ -10,7 +10,6 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.add
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -104,7 +103,7 @@ private fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {
-                jvmTarget = JvmTarget.JVM_11
+                jvmTarget.set(JvmTarget.JVM_11)
 
                 optIn.addAll(
                     "com.google.accompanist.pager.ExperimentalPagerApi",
