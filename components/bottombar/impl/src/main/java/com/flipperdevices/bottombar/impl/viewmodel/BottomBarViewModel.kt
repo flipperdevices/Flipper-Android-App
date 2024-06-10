@@ -4,12 +4,10 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.installedtab.api.FapUpdatePendingCountApi
 import com.flipperdevices.toolstab.api.ToolsApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
-import javax.inject.Provider
 
 class BottomBarViewModel @Inject constructor(
     toolsApi: ToolsApi,
@@ -25,7 +23,6 @@ class BottomBarViewModel @Inject constructor(
         fapUpdatePendingCountApi.getUpdatePendingCount().onEach {
             hasNotificationAppsStateFlow.emit(it > 0)
         }.launchIn(viewModelScope)
-
     }
 
     fun hasNotificationHubState() = hasNotificationToolsStateFlow.asStateFlow()

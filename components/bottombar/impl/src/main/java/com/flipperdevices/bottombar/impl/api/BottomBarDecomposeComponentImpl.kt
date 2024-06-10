@@ -31,10 +31,10 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
-import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
+import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -190,7 +190,6 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
                     instance.handleDeeplink(deeplink)
                 }
             }
-
 
             is Deeplink.BottomBar.ToolsTab -> {
                 val instance = stack.findComponentByConfig(BottomBarTabConfig.Tools::class)

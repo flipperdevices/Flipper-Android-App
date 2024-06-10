@@ -8,7 +8,6 @@ android.namespace = "com.flipperdevices.toolstab.impl"
 
 dependencies {
     implementation(projects.components.toolstab.api)
-    implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.preference)

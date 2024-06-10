@@ -10,9 +10,6 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.toolstab.impl.composable.ComposableHub
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
 import com.flipperdevices.toolstab.impl.viewmodel.NfcAttackViewModel
-import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -22,7 +19,6 @@ import javax.inject.Provider
 class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<ToolsNavigationConfig>,
-    private val metricApi: MetricApi,
     private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
     @Composable

@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.composable.switch
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,7 +42,7 @@ fun ComposableFapHubNewSwitch(
             currentTab = fapHubTabEnum,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 52.dp /* 14*2+24 */)
+                .padding(start = 52.dp) // 14*2+24
         ) {
             ComposableFapHubTab(
                 hubTabEnum = it,

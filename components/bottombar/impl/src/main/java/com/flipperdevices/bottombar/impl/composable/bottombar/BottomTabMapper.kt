@@ -34,7 +34,9 @@ fun getTabStateFromFlipperBottomTab(
             unselectedColor = LocalPallet.current.bottomBarUnselected,
             notificationDot = if (appsHasNotification) {
                 NotificationDot(notificationDotPaddingEnd = 7.dp)
-            } else null
+            } else {
+                null
+            }
         )
 
         BottomBarTabEnum.TOOLS -> TabState.Static(
@@ -45,7 +47,9 @@ fun getTabStateFromFlipperBottomTab(
             unselectedColor = LocalPallet.current.bottomBarUnselected,
             notificationDot = if (toolsHasNotification) {
                 NotificationDot(notificationDotPaddingEnd = 1.dp)
-            } else null
+            } else {
+                null
+            }
         )
     }
 }

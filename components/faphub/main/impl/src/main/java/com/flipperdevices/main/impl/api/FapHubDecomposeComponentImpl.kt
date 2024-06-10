@@ -70,7 +70,6 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         navigation.navigate { getInitialStack(deeplink) }
     }
 
-
     private fun getInitialStack(deeplink: Deeplink.BottomBar.AppsTab?): List<FapHubNavigationConfig> {
         return if (deeplink is Deeplink.BottomBar.AppsTab) {
             when (deeplink) {

@@ -66,17 +66,18 @@ sealed interface Deeplink {
 
         @Serializable
         sealed interface AppsTab : BottomBar {
-                @Serializable
-                data class Fap(
-                    val appId: String,
-                ) : AppsTab
+            @Serializable
+            data class Fap(
+                val appId: String,
+            ) : AppsTab
 
+            @Serializable
+            sealed class MainScreen : AppsTab {
                 @Serializable
-                sealed class MainScreen : AppsTab {
-                    @Serializable
-                    data object InstalledTab : MainScreen()
-                }
+                data object InstalledTab : MainScreen()
+            }
         }
+
         @Serializable
         sealed interface ToolsTab : BottomBar {
 

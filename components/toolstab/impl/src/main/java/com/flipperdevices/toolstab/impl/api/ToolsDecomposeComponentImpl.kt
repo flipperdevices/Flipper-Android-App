@@ -8,10 +8,10 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
 import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
 import com.flipperdevices.toolstab.impl.model.toConfigStack
-import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
