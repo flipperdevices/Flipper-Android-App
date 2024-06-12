@@ -3,6 +3,7 @@ package com.flipperdevices.main.impl.api
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.navigate
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
@@ -22,7 +23,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @Suppress("LongParameterList")
 class FapHubDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted deeplink: Deeplink.BottomBar.HubTab.FapHub?,
+    @Assisted deeplink: Deeplink.BottomBar.AppsTab?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val fapScreenFactory: FapScreenDecomposeComponent.Factory,
     private val fapSearchFactory: FapHubSearchDecomposeComponent.Factory,
@@ -44,7 +45,6 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         is FapHubNavigationConfig.Main -> mainScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
-            onBack = { navigation.popOr(onBack::invoke) },
             deeplink = config.deeplink
         )
 
@@ -66,15 +66,19 @@ class FapHubDecomposeComponentImpl @AssistedInject constructor(
         )
     }
 
-    private fun getInitialStack(deeplink: Deeplink.BottomBar.HubTab.FapHub?): List<FapHubNavigationConfig> {
-        return if (deeplink is Deeplink.BottomBar.HubTab.FapHub) {
+    override fun handleDeeplink(deeplink: Deeplink.BottomBar.AppsTab) {
+        navigation.navigate { getInitialStack(deeplink) }
+    }
+
+    private fun getInitialStack(deeplink: Deeplink.BottomBar.AppsTab?): List<FapHubNavigationConfig> {
+        return if (deeplink is Deeplink.BottomBar.AppsTab) {
             when (deeplink) {
-                is Deeplink.BottomBar.HubTab.FapHub.Fap -> listOf(
+                is Deeplink.BottomBar.AppsTab.Fap -> listOf(
                     FapHubNavigationConfig.Main(deeplink = null),
                     FapHubNavigationConfig.FapScreen(deeplink.appId)
                 )
 
-                is Deeplink.BottomBar.HubTab.FapHub.MainScreen -> listOf(
+                is Deeplink.BottomBar.AppsTab.MainScreen -> listOf(
                     FapHubNavigationConfig.Main(
                         deeplink
                     )

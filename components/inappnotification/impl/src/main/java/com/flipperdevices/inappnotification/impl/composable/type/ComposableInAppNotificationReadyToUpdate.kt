@@ -31,7 +31,7 @@ internal fun ComposableInAppNotificationReadyToUpdate(
             ComposableInAppNotificationBaseActionText(
                 titleId = R.string.ready_to_update_btn,
                 onClick = {
-                    deeplinkHandler.handleDeeplink(Deeplink.BottomBar.HubTab.FapHub.MainScreen.InstalledTab)
+                    deeplinkHandler.handleDeeplink(Deeplink.BottomBar.AppsTab.MainScreen.InstalledTab)
                     onAction()
                 }
             )

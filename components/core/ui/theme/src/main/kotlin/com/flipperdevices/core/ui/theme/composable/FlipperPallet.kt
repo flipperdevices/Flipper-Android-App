@@ -32,6 +32,7 @@ data class FlipperPallet(
     val iconTint16: Color,
 
     val bottomBarBackground: Color,
+    val bottomBarSelected: Color,
 
     val channelFirmwareReleaseCandidate: Color,
 
@@ -83,7 +84,6 @@ data class FlipperPallet(
     val onErrorBorder: Color = onError.copy(alpha = 0.3f)
     val onErrorBackground: Color = onError.copy(alpha = 0.1f)
 
-    val bottomBarSelected: Color = Color(0xFF303030)
     val bottomBarSelectedFlipperStatus: Color = Color(0xFF919191)
     val bottomBarUnselected: Color = Color(0xFFAAAAAA)
     val bottomBarTabBackground: Color = Color(0xFFE9E9E9)

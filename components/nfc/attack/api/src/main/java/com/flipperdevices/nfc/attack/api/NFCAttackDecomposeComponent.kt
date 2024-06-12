@@ -9,7 +9,7 @@ abstract class NFCAttackDecomposeComponent<C : Any> : CompositeDecomposeComponen
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
+            deeplink: Deeplink.BottomBar.ToolsTab.OpenMfKey?,
             onBack: DecomposeOnBackParameter
         ): NFCAttackDecomposeComponent<*>
     }

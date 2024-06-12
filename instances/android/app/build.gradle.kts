@@ -152,8 +152,8 @@ dependencies {
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.nfc.tools.impl)
 
-    implementation(projects.components.hub.api)
-    implementation(projects.components.hub.impl)
+    implementation(projects.components.toolstab.api)
+    implementation(projects.components.toolstab.impl)
 
     implementation(projects.components.widget.api)
     implementation(projects.components.widget.impl)
@@ -161,9 +161,6 @@ dependencies {
 
     implementation(projects.components.faphub.appcard.api)
     implementation(projects.components.faphub.appcard.composable)
-
-    implementation(projects.components.faphub.maincard.api)
-    implementation(projects.components.faphub.maincard.impl)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.dao.network)

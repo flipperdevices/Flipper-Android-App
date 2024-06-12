@@ -1,6 +1,5 @@
 package com.flipperdevices.main.impl.composable.switch
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,30 +27,22 @@ fun ComposableFapHubNewSwitch(
     onSelect: (FapHubTabEnum) -> Unit,
     installedNotificationCount: Int,
     onEndClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(LocalPallet.current.accent)
+            .padding(vertical = 4.dp)
             .statusBarsPadding(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onBack != null) {
-            Image(
-                modifier = Modifier
-                    .padding(top = 11.dp, bottom = 11.dp, start = 16.dp, end = 2.dp)
-                    .size(20.dp)
-                    .clickableRipple(onClick = onBack),
-                painter = painterResource(DesignSystem.drawable.ic_back),
-                contentDescription = null
-            )
-        }
         ComposableTabSwitch(
             typeTab = FapHubTabEnum::class.java,
             currentTab = fapHubTabEnum,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 52.dp) // 14*2+24
         ) {
             ComposableFapHubTab(
                 hubTabEnum = it,

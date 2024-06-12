@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toolstab_title">Tools</string>
+    <string name="toolstab_hfc_title">NFC Tools</string>
+    <string name="toolstab_hfc_desc">Calculate MIFARE Classic card keys using Flipper Zero</string>
+</resources>

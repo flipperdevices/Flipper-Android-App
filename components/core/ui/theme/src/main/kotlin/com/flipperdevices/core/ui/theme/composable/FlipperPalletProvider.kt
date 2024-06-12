@@ -59,6 +59,7 @@ private val lightPallet = FlipperPallet(
 
     divider12 = Color(0xFFDFDFDF),
     channelFirmwareReleaseCandidate = Color(0xFF8A2BE2),
+    bottomBarSelected = Color(0xFF000000),
     bottomBarBackground = Color(0xFFFFFFFF),
     disableSwitch = Color(0xFFDFDFDF),
     backgroundDialog = Color(0xFFFFFFFF),
@@ -127,6 +128,7 @@ private val darkPallet = FlipperPallet(
 
     divider12 = Color(0xFF616161),
     channelFirmwareReleaseCandidate = Color(0xFFAA69FA),
+    bottomBarSelected = Color(0xFFE5E5E5),
     bottomBarBackground = Color(0xFF1C1C1C),
     disableSwitch = Color(0xFF616161),
     backgroundDialog = Color(0xFF303030),

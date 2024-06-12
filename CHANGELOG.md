@@ -6,6 +6,8 @@
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add new FlipperPallet
 - [Feature] Add changelog screen
+- [Feature] Add apps tab to bottom tab
+- [Feature] Move remote control to device tab
 
 # 1.6.9
 

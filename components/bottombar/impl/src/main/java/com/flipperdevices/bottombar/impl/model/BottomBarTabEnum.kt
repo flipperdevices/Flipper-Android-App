@@ -8,13 +8,15 @@ import kotlinx.serialization.Serializable
 enum class BottomBarTabEnum(val protobufRepresentation: SelectedTab) {
     DEVICE(SelectedTab.DEVICE),
     ARCHIVE(SelectedTab.ARCHIVE),
-    HUB(SelectedTab.HUB)
+    APPS(SelectedTab.APPS),
+    TOOLS(SelectedTab.TOOLS)
 }
 
 fun DeeplinkBottomBarTab.toBottomBarTabEnum(): BottomBarTabEnum {
     return when (this) {
         DeeplinkBottomBarTab.DEVICE -> BottomBarTabEnum.DEVICE
         DeeplinkBottomBarTab.ARCHIVE -> BottomBarTabEnum.ARCHIVE
-        DeeplinkBottomBarTab.HUB -> BottomBarTabEnum.HUB
+        DeeplinkBottomBarTab.APPS -> BottomBarTabEnum.APPS
+        DeeplinkBottomBarTab.TOOLS -> BottomBarTabEnum.TOOLS
     }
 }

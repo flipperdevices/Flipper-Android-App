@@ -19,7 +19,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @ContributesAssistedFactory(AppGraph::class, NFCAttackDecomposeComponent.Factory::class)
 class NFCAttackDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted deeplink: Deeplink.BottomBar.HubTab.OpenMfKey?,
+    @Assisted deeplink: Deeplink.BottomBar.ToolsTab.OpenMfKey?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val nfcAttackFactory: NFCAttackScreenDecomposeComponentImpl.Factory,
     private val mfKey32Factory: MfKey32DecomposeComponent.Factory
