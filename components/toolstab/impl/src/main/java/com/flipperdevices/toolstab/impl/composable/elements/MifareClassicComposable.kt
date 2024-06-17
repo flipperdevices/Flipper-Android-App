@@ -109,6 +109,9 @@ private fun MifareClassicMfKey32(
             modifier = Modifier
                 .size(16.dp)
                 .clip(CircleShape)
+                .background(LocalPalletV2.current.action.blackAndWhite.border.whiteOnColor)
+                .padding(1.dp)
+                .clip(CircleShape)
                 .background(LocalPallet.current.accent),
             contentAlignment = Alignment.Center
         ) {
