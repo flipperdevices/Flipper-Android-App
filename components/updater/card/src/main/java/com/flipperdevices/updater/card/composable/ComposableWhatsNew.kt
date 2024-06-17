@@ -69,7 +69,7 @@ private fun ComposableWhatsNewButton(
             modifier = Modifier.padding(top = 6.dp, bottom = 6.dp, end = 8.dp),
             text = stringResource(R.string.updater_card_updater_title_whatsnew),
             color = LocalPalletV2.current.action.neutral.icon.secondary.default,
-            style = LocalTypography.current.subtitleM10
+            style = LocalTypography.current.subtitleM12
         )
     }
 }
