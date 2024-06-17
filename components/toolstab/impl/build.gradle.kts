@@ -19,7 +19,7 @@ dependencies {
 
     implementation(libs.appcompat)
 
-    implementation(projects.components.nfc.attack.api)
+    implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bottombar.api)
     implementation(projects.components.rootscreen.api)

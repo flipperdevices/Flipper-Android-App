@@ -1,4 +1,4 @@
-package com.flipperdevices.nfc.attack.impl.composable.elements
+package com.flipperdevices.toolstab.impl.composable.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.nfc.attack.impl.R
+import com.flipperdevices.toolstab.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable

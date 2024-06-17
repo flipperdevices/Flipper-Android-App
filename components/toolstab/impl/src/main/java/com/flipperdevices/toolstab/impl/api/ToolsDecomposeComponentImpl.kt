@@ -8,7 +8,7 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.nfc.attack.api.NFCAttackDecomposeComponent
+import com.flipperdevices.nfc.mfkey32.api.MfKey32DecomposeComponent
 import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
 import com.flipperdevices.toolstab.impl.model.toConfigStack
@@ -26,7 +26,7 @@ class ToolsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted deeplink: Deeplink.BottomBar.ToolsTab?,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val hubMainFactory: ToolsMainScreenDecomposeComponentImpl.Factory,
-    private val nfcAttackFactory: NFCAttackDecomposeComponent.Factory
+    private val mfKey32Factory: MfKey32DecomposeComponent.Factory
 ) : ToolsDecomposeComponent<ToolsNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -47,9 +47,8 @@ class ToolsDecomposeComponentImpl @AssistedInject constructor(
             navigation = navigation
         )
 
-        is ToolsNavigationConfig.NfcAttack -> nfcAttackFactory(
+        ToolsNavigationConfig.MfKey32 -> mfKey32Factory(
             componentContext = componentContext,
-            deeplink = config.deeplink,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }
