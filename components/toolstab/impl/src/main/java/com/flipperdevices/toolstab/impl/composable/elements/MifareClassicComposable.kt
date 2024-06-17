@@ -14,7 +14,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.toolstab.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -112,15 +112,8 @@ private fun MifareClassicMfKey32(
                 .background(LocalPalletV2.current.action.blackAndWhite.border.whiteOnColor)
                 .padding(1.dp)
                 .clip(CircleShape)
-                .background(LocalPallet.current.accent),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "!",
-                style = LocalTypography.current.monoSpaceM10,
-                color = LocalPallet.current.onFlipperButton
-            )
-        }
+                .background(LocalPalletV2.current.action.fwUpdate.background.primary.default),
+        )
     }
 
     Icon(
