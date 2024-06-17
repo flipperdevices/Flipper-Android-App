@@ -9,7 +9,7 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.toolstab.impl.composable.ComposableHub
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
-import com.flipperdevices.toolstab.impl.viewmodel.NfcAttackViewModel
+import com.flipperdevices.toolstab.impl.viewmodel.ToolsNotificationViewModel
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -19,21 +19,20 @@ import javax.inject.Provider
 class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<ToolsNavigationConfig>,
-    private val nfcAttackViewModelProvider: Provider<NfcAttackViewModel>
+    private val toolsNotificationViewModelProvider: Provider<ToolsNotificationViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val nfcAttackViewModel = viewModelWithFactory(key = null) {
-            nfcAttackViewModelProvider.get()
+            toolsNotificationViewModelProvider.get()
         }
-        val notificationCount by nfcAttackViewModel.getNfcAttackNotificationCountState()
-            .collectAsState()
+        val hasNotification by nfcAttackViewModel.hasNotificationStateFlow.collectAsState()
 
         ComposableHub(
-            notificationCount = notificationCount,
-            onOpenAttack = {
-                navigation.pushToFront(ToolsNavigationConfig.NfcAttack(null))
+            hasNotification = hasNotification,
+            onOpenMfKey32 = {
+                navigation.pushToFront(ToolsNavigationConfig.MfKey32)
             }
         )
     }

@@ -8,6 +8,9 @@
 - [Feature] Add changelog screen
 - [Feature] Add apps tab to bottom tab
 - [Feature] Move remote control to device tab
+- [Feature] Move MfKey to tools tab
+- [FIX] Fix color of connection tab icon
+- [FIX] Fix badge outline on tab and MfKey
 
 # 1.6.9
 

@@ -211,8 +211,6 @@ include(
     ":components:nfc:mfkey32:screen",
     ":components:nfc:tools:api",
     ":components:nfc:tools:impl",
-    ":components:nfc:attack:api",
-    ":components:nfc:attack:impl",
 
     ":components:toolstab:api",
     ":components:toolstab:impl",

@@ -147,8 +147,6 @@ dependencies {
 
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.mfkey32.screen)
-    implementation(projects.components.nfc.attack.api)
-    implementation(projects.components.nfc.attack.impl)
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.nfc.tools.impl)
 

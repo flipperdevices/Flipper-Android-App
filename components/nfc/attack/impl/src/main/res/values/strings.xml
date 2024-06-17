@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="nfcattack_title">NFC Tools</string>
-    <string name="nfcattack_mifare_classic_title">MIFARE Classic</string>
-    <string name="nfcattack_mifare_classic_mfkey32_title">Mfkey32 (Detect Reader)</string>
-    <string name="nfcattack_mifare_classic_mfkey32_desc">Calculate keys from Detect Reader</string>
-</resources>

@@ -9,13 +9,13 @@ sealed class ToolsNavigationConfig {
     data object Main : ToolsNavigationConfig()
 
     @Serializable
-    data class NfcAttack(val deeplink: Deeplink.BottomBar.ToolsTab.OpenMfKey?) : ToolsNavigationConfig()
+    data object MfKey32 : ToolsNavigationConfig()
 }
 
 fun Deeplink.BottomBar.ToolsTab?.toConfigStack(): List<ToolsNavigationConfig> {
     val stack = mutableListOf<ToolsNavigationConfig>(ToolsNavigationConfig.Main)
     when (this) {
-        is Deeplink.BottomBar.ToolsTab.OpenMfKey -> stack.add(ToolsNavigationConfig.NfcAttack(this))
+        is Deeplink.BottomBar.ToolsTab.OpenMfKey -> stack.add(ToolsNavigationConfig.MfKey32)
         null -> {}
     }
     return stack

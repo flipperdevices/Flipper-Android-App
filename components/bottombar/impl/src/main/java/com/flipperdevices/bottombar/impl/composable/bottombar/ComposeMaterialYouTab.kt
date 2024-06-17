@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bottombar.model.TabState
 import com.flipperdevices.core.ui.ktx.tab.TabTransition
 import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 
 @Composable
 fun ComposeMaterialYouTab(
@@ -26,7 +27,7 @@ fun ComposeMaterialYouTab(
 ) {
     Box(
         modifier.clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.BottomCenter
     ) {
         Column(
             Modifier.padding(top = 6.dp, bottom = 8.dp),
@@ -55,6 +56,9 @@ fun ComposeMaterialYouTab(
                         modifier = Modifier
                             .padding(bottom = 14.dp, end = notificationDot.notificationDotPaddingEnd)
                             .size(12.dp)
+                            .clip(CircleShape)
+                            .background(LocalPalletV2.current.action.blackAndWhite.border.whiteOnColor)
+                            .padding(1.dp)
                             .clip(CircleShape)
                             .background(LocalPallet.current.updateProgressGreen)
                     )
