@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
 
     implementation(projects.components.filemanager.api)
+    implementation(projects.components.fmsearch.api)
 
     implementation(libs.kotlin.serialization.json)
 

@@ -53,6 +53,9 @@ class FileManagerListingComponent @AssistedInject constructor(
                         deeplinkContent = content
                     )
                 )
+            },
+            onClickToSearch = {
+                navigation.pushToFront(FileManagerNavigationConfig.Search(config.path))
             }
         )
     }

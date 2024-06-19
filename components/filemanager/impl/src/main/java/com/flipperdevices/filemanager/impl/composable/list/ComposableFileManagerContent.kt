@@ -52,7 +52,7 @@ fun ComposableFileManagerContent(
 private fun ComposableFileManagerPreview() {
     ComposableFileManagerContent(
         fileManagerState = FileManagerState(
-            "/",
+            "/Test",
             persistentSetOf(
                 FileItem.DUMMY_FOLDER,
                 FileItem.DUMMY_FILE

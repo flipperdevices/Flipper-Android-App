@@ -22,4 +22,9 @@ sealed class FileManagerNavigationConfig {
         val path: String,
         val shareFile: ShareFile
     ) : FileManagerNavigationConfig()
+
+    @Serializable
+    data class Search(
+        val path: String
+    ) : FileManagerNavigationConfig()
 }
