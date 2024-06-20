@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.service.impl.delegate
 
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -34,7 +35,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
     private val connectDelegate by connectDelegateProvider
 
     suspend fun onActiveDeviceUpdate(
-        deviceId: String?
+        connectionInfo: SavedFlipperConnectionInfo?
     ) = launchWithLock(mutex, scope, "onActiveDeviceUpdate") {
         info { "Call cancel and join to current job" }
         currentConnectingJob?.cancelAndJoin()
@@ -43,7 +44,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
             var errorOnDeviceUpdate: Throwable?
             do {
                 errorOnDeviceUpdate = runCatching {
-                    onActiveDeviceUpdateInternal(deviceId)
+                    onActiveDeviceUpdateInternal(connectionInfo)
                 }.exceptionOrNull()
                 if (errorOnDeviceUpdate != null) {
                     error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
@@ -54,15 +55,17 @@ class FlipperSafeConnectWrapper @Inject constructor(
 
     fun isTryingConnected() = currentConnectingJob?.isActive ?: false
 
-    private suspend fun onActiveDeviceUpdateInternal(deviceId: String?) {
-        if (deviceId.isNullOrBlank()) {
+    private suspend fun onActiveDeviceUpdateInternal(
+        connectionInfo: SavedFlipperConnectionInfo?
+    ) {
+        if (connectionInfo == null || connectionInfo.id.isBlank()) {
             error { "Flipper id not found in storage" }
             connectDelegate.disconnect()
             return
         }
 
         try {
-            connectDelegate.reconnect(deviceId)
+            connectDelegate.reconnect(connectionInfo)
         } catch (securityException: SecurityException) {
             serviceErrorListener.onError(FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION)
             error(securityException) { "On initial connect to device" }

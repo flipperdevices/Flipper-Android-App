@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
+import no.nordicsemi.android.ble.Request
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -98,6 +99,7 @@ class FlipperBleManagerImpl @Inject constructor(
     }
 
     override suspend fun connectToDevice(device: BluetoothDevice) {
+        info { "Schedule to connect: $device" }
         withLock(bleMutex, "connect") {
             val connectRequestLocal = connect(device).retry(
                 Constants.BLE.RECONNECT_COUNT,

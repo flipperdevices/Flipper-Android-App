@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
+import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -61,16 +62,23 @@ class FlipperServiceApiImpl @Inject constructor(
 
         var previousDeviceId: String? = null
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            pairSettingsStore.data.map { it.deviceId }.collectLatest { deviceId ->
-                withLock(mutex, "connect") {
-                    if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&
-                        deviceId != previousDeviceId
-                    ) {
-                        previousDeviceId = deviceId
-                        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+            pairSettingsStore.data
+                .collectLatest { pairSettings ->
+                    withLock(mutex, "connect") {
+                        if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&
+                            pairSettings.deviceId != previousDeviceId
+                        ) {
+                            previousDeviceId = pairSettings.deviceId
+                            flipperSafeConnectWrapper.onActiveDeviceUpdate(
+                                if (pairSettings.deviceId == null) {
+                                    null
+                                } else {
+                                    SavedFlipperConnectionInfo.build(pairSettings)
+                                }
+                            )
+                        }
                     }
                 }
-            }
         }
     }
 
@@ -85,8 +93,10 @@ class FlipperServiceApiImpl @Inject constructor(
         if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
             return@launchWithLock
         }
-        val deviceId = pairSettingsStore.data.first().deviceId
-        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+        val pairSetting = pairSettingsStore.data.first()
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(
+            SavedFlipperConnectionInfo.build(pairSetting)
+        )
     }
 
     override suspend fun disconnect(isForce: Boolean) = withLock(mutex, "disconnect") {
@@ -97,8 +107,11 @@ class FlipperServiceApiImpl @Inject constructor(
     }
 
     override suspend fun reconnect() = withLock(mutex, "reconnect") {
-        val deviceId = pairSettingsStore.data.first().deviceId
-        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+        val pairSetting = pairSettingsStore.data.first()
+
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(
+            SavedFlipperConnectionInfo.build(pairSetting)
+        )
     }
 
     suspend fun close() = withLock(mutex, "close") {
