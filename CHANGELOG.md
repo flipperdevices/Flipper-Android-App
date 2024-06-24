@@ -2,7 +2,7 @@
 
 # 1.7.1 - In Progress
 
-
+- Fix for a vulnerability causing write access to internal application files
 
 # 1.7.0
 
