@@ -1,7 +1,10 @@
 # Changelog
 
+# 1.7.1 - In Progress
 
-# 1.6.10 - In Progress
+
+
+# 1.7.0
 
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add new FlipperPallet
