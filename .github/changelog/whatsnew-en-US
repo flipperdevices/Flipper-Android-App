@@ -1,2 +1,3 @@
 - Bottom Bar redesign: We’ve divided Hub into two different tabs: Apps and Tools. Access these features faster with just one tap
 - Updater: Check what’s new before updating firmware
+- Fix for a vulnerability causing write access to internal application files (kudos to @LiveOverflow)
