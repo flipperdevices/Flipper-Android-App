@@ -6,10 +6,12 @@ import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
 abstract class FapHubDecomposeComponent<C : Any> : CompositeDecomposeComponent<C>() {
+    abstract fun handleDeeplink(deeplink: Deeplink.BottomBar.AppsTab)
+
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub?,
+            deeplink: Deeplink.BottomBar.AppsTab?,
             onBack: DecomposeOnBackParameter
         ): FapHubDecomposeComponent<*>
     }

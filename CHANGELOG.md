@@ -1,11 +1,19 @@
 # Changelog
 
+# 1.7.1 - In Progress
 
-# 1.6.10 - In Progress
+
+
+# 1.7.0
 
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add new FlipperPallet
 - [Feature] Add changelog screen
+- [Feature] Add apps tab to bottom tab
+- [Feature] Move remote control to device tab
+- [Feature] Move MfKey to tools tab
+- [FIX] Fix color of connection tab icon
+- [FIX] Fix badge outline on tab and MfKey
 
 # 1.6.9
 

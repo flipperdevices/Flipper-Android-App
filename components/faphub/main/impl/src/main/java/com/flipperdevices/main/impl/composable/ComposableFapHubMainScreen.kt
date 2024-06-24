@@ -14,7 +14,6 @@ import com.flipperdevices.main.impl.model.FapHubTabEnum
 
 @Composable
 fun ComposableFapHubMainScreen(
-    onBack: () -> Unit,
     catalogTabComposable: @Composable () -> Unit,
     installedTabComposable: @Composable () -> Unit,
     onOpenSearch: () -> Unit,
@@ -31,7 +30,6 @@ fun ComposableFapHubMainScreen(
             fapHubTabEnum = selectedTab,
             onSelect = onSelect,
             installedNotificationCount = installedNotificationCount,
-            onBack = onBack,
             onEndClick = onOpenSearch
         )
         Spacer(

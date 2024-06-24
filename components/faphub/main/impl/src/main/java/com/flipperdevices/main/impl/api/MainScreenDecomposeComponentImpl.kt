@@ -15,7 +15,6 @@ import com.flipperdevices.main.impl.model.FapHubNavigationConfig
 import com.flipperdevices.main.impl.viewmodel.MainViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -25,8 +24,7 @@ import dagger.assisted.AssistedInject
 class MainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<FapHubNavigationConfig>,
-    @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?,
+    @Assisted private val deeplink: Deeplink.BottomBar.AppsTab.MainScreen?,
     private val catalogTabApi: CatalogTabApi,
     private val installedApi: FapInstalledApi,
     private val metricApi: MetricApi,
@@ -44,7 +42,6 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
         val readyToUpdateCount = installedApi.getUpdatePendingCount(this)
 
         ComposableFapHubMainScreen(
-            onBack = onBack::invoke,
             catalogTabComposable = {
                 catalogTabApi.ComposableCatalogTab(
                     onOpenFapItem = {
@@ -85,8 +82,7 @@ class MainScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             navigation: StackNavigation<FapHubNavigationConfig>,
-            onBack: DecomposeOnBackParameter,
-            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+            deeplink: Deeplink.BottomBar.AppsTab.MainScreen?
         ): MainScreenDecomposeComponentImpl
     }
 }

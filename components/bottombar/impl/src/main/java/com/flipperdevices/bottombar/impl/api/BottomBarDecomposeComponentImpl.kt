@@ -30,10 +30,11 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.hub.api.HubDecomposeComponent
+import com.flipperdevices.faphub.main.api.FapHubDecomposeComponent
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.info.api.screen.DeviceScreenDecomposeComponent
 import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
+import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -54,7 +55,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val settingsDataStore: DataStore<Settings>,
     private val archiveScreenFactory: ArchiveDecomposeComponent.Factory,
     private val deviceScreenFactory: DeviceScreenDecomposeComponent.Factory,
-    private val hubScreenFactory: HubDecomposeComponent.Factory,
+    private val toolsScreenFactory: ToolsDecomposeComponent.Factory,
+    private val fapHubScreenFactory: FapHubDecomposeComponent.Factory,
     private val connectionApi: ConnectionApi,
     private val notificationRenderer: InAppNotificationRenderer,
     private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
@@ -93,7 +95,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         val bottomBarViewModel: BottomBarViewModel = viewModelWithFactory(key = null) {
             bottomBarViewModelProvider.get()
         }
-        val hubHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
+        val toolsHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
+        val appsHasNotification by bottomBarViewModel.hasNotificationAppsState().collectAsState()
 
         ComposableMainScreen(
             notificationViewModel = notificationViewModel,
@@ -102,7 +105,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             connectionTabState = connectionTabState,
             onTabClick = ::goToTab,
             modifier = Modifier.fillMaxSize(),
-            hubHasNotification = hubHasNotification
+            toolsHasNotification = toolsHasNotification,
+            appsHasNotification = appsHasNotification
         )
 
         connectionApi.CheckAndShowUnsupportedDialog(
@@ -130,7 +134,13 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             onBack = { navigation.popOr(onBack::invoke) }
         )
 
-        is BottomBarTabConfig.Hub -> hubScreenFactory(
+        is BottomBarTabConfig.Tools -> toolsScreenFactory(
+            componentContext = componentContext,
+            deeplink = config.deeplink,
+            onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is BottomBarTabConfig.Apps -> fapHubScreenFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
             onBack = { navigation.popOr(onBack::invoke) }
@@ -173,7 +183,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             }
 
             is Deeplink.BottomBar.DeviceTab -> {
-                val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Device::class)
                 if (instance == null || instance !is DeviceScreenDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Device(deeplink))
                 } else {
@@ -181,10 +191,19 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
                 }
             }
 
-            is Deeplink.BottomBar.HubTab -> {
-                val instance = stack.findComponentByConfig(BottomBarTabConfig.Hub::class)
-                if (instance == null || instance !is HubDecomposeComponent<*>) {
-                    navigation.bringToFront(BottomBarTabConfig.Hub(deeplink))
+            is Deeplink.BottomBar.ToolsTab -> {
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Tools::class)
+                if (instance == null || instance !is ToolsDecomposeComponent<*>) {
+                    navigation.bringToFront(BottomBarTabConfig.Tools(deeplink))
+                } else {
+                    instance.handleDeeplink(deeplink)
+                }
+            }
+
+            is Deeplink.BottomBar.AppsTab -> {
+                val instance = stack.findComponentByConfig(BottomBarTabConfig.Apps::class)
+                if (instance == null || instance !is FapHubDecomposeComponent<*>) {
+                    navigation.bringToFront(BottomBarTabConfig.Apps(deeplink))
                 } else {
                     instance.handleDeeplink(deeplink)
                 }

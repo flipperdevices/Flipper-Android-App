@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="maincard_title">Apps</string>
-    <string name="maincard_fallback_text">Discover and install apps you like on your Flipper Zero</string>
-    <string name="maincard_update_available">Updates Available</string>
-</resources>

@@ -27,10 +27,17 @@ sealed interface BottomBarTabConfig {
     }
 
     @Serializable
-    data class Hub(
-        val deeplink: Deeplink.BottomBar.HubTab?
+    data class Apps(
+        val deeplink: Deeplink.BottomBar.AppsTab?
     ) : BottomBarTabConfig {
-        override val enum: BottomBarTabEnum = BottomBarTabEnum.HUB
+        override val enum: BottomBarTabEnum = BottomBarTabEnum.APPS
+    }
+
+    @Serializable
+    data class Tools(
+        val deeplink: Deeplink.BottomBar.ToolsTab?
+    ) : BottomBarTabConfig {
+        override val enum: BottomBarTabEnum = BottomBarTabEnum.TOOLS
     }
 
     companion object {
@@ -42,7 +49,8 @@ sealed interface BottomBarTabConfig {
                 return when (deeplink) {
                     is Deeplink.BottomBar.ArchiveTab -> Archive(deeplink)
                     is Deeplink.BottomBar.DeviceTab -> Device(deeplink)
-                    is Deeplink.BottomBar.HubTab -> Hub(deeplink)
+                    is Deeplink.BottomBar.ToolsTab -> Tools(deeplink)
+                    is Deeplink.BottomBar.AppsTab -> Apps(deeplink)
                     is Deeplink.BottomBar.OpenTab -> deeplink.bottomTab.toBottomBarTabEnum()
                         .toConfig()
                 }
@@ -54,7 +62,8 @@ sealed interface BottomBarTabConfig {
                     SelectedTab.UNRECOGNIZED -> Device(null)
 
                     SelectedTab.ARCHIVE -> Archive(null)
-                    SelectedTab.HUB -> Hub(null)
+                    SelectedTab.APPS -> Apps(null)
+                    SelectedTab.TOOLS -> Tools(null)
                 }
             }
         }
@@ -65,6 +74,7 @@ fun BottomBarTabEnum.toConfig(): BottomBarTabConfig {
     return when (this) {
         BottomBarTabEnum.DEVICE -> BottomBarTabConfig.Device(null)
         BottomBarTabEnum.ARCHIVE -> BottomBarTabConfig.Archive(null)
-        BottomBarTabEnum.HUB -> BottomBarTabConfig.Hub(null)
+        BottomBarTabEnum.APPS -> BottomBarTabConfig.Apps(null)
+        BottomBarTabEnum.TOOLS -> BottomBarTabConfig.Tools(null)
     }
 }

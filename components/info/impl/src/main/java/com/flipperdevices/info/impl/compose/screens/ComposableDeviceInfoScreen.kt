@@ -25,6 +25,7 @@ import com.flipperdevices.info.impl.compose.elements.ComposableConnectedDeviceAc
 import com.flipperdevices.info.impl.compose.elements.ComposableFirmwareUpdate
 import com.flipperdevices.info.impl.compose.elements.ComposableOptionsCard
 import com.flipperdevices.info.impl.compose.elements.ComposablePairDeviceActionCard
+import com.flipperdevices.info.impl.compose.elements.ComposableScreenStreamingCard
 import com.flipperdevices.info.impl.compose.info.ComposableInfoCard
 import com.flipperdevices.info.impl.model.DeviceStatus
 import com.flipperdevices.info.impl.model.FlipperBasicInfo
@@ -34,7 +35,7 @@ import com.flipperdevices.updater.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdateRequest
 
 @Composable
-@Suppress("NonSkippableComposable")
+@Suppress("NonSkippableComposable", "LongMethod")
 fun ComposableDeviceInfoScreen(
     updaterCardApi: UpdaterCardApi,
     componentContext: ComponentContext,
@@ -49,6 +50,7 @@ fun ComposableDeviceInfoScreen(
     onOpenFullDeviceInfo: () -> Unit,
     onOpenOptions: () -> Unit,
     alarmOnFlipper: () -> Unit,
+    onOpenRemoteControl: () -> Unit,
     onStartUpdateRequest: (UpdateRequest) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,6 +90,13 @@ fun ComposableDeviceInfoScreen(
                 firmwareUpdateState = supportedState,
                 deviceInfo = deviceInfo
             )
+            if (deviceStatus is DeviceStatus.Connected) {
+                ComposableScreenStreamingCard(
+                    modifier = Modifier
+                        .padding(top = 14.dp),
+                    onOpen = onOpenRemoteControl
+                )
+            }
             ComposableOptionsCard(
                 modifier = Modifier
                     .padding(top = 14.dp),
