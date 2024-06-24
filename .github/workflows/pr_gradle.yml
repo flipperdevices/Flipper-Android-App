@@ -27,7 +27,7 @@ jobs:
     name: "Build release"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -36,14 +36,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build release
-        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        uses: gradle/gradle-build-action@66535aaf56f831b35e3a8481c9c99b665b84dd45 # v3
         with:
           arguments: assembleRelease bundleRelease
   debug_build:
     name: "Build debug"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -52,14 +52,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build debug
-        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        uses: gradle/gradle-build-action@66535aaf56f831b35e3a8481c9c99b665b84dd45 # v3
         with:
           arguments: assembleDebug bundleDebug
   internal_build:
     name: "Build internal"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
@@ -68,6 +68,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build internal
-        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        uses: gradle/gradle-build-action@66535aaf56f831b35e3a8481c9c99b665b84dd45 # v3
         with:
           arguments: assembleInternal bundleInternal
