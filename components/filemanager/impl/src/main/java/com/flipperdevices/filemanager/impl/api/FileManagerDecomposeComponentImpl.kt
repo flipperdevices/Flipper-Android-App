@@ -7,6 +7,7 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.api.navigation.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.fmsearch.api.FMSearchDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
@@ -14,6 +15,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
 class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -21,7 +23,8 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     private val fileManagerListingFactory: FileManagerListingComponent.Factory,
     private val fileManagerUploadingFactory: FileManagerUploadingComponent.Factory,
     private val fileManagerEditingFactory: FileManagerEditingComponent.Factory,
-    private val fileManagerDownloadFactory: FileManagerDownloadComponent.Factory
+    private val fileManagerDownloadFactory: FileManagerDownloadComponent.Factory,
+    private val searchFileManagerFactory: FMSearchDecomposeComponent.Factory
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -60,6 +63,12 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
             componentContext,
             config,
             onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is FileManagerNavigationConfig.Search -> searchFileManagerFactory(
+            componentContext = componentContext,
+            onBackParameter = { navigation.popOr(onBack::invoke) },
+            path = config.path
         )
     }
 }

@@ -19,6 +19,7 @@ fun ComposableFileManagerTopBar(
     path: String,
     onClickUploadButton: () -> Unit,
     onClickAddButton: () -> Unit,
+    onClickToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -32,8 +33,8 @@ fun ComposableFileManagerTopBar(
             )
         },
         actions = {
-            if (isAbleToSave(path)) {
-                Row {
+            Row {
+                if (isAbleToSave(path)) {
                     IconButton(onClick = onClickAddButton) {
                         Icon(
                             painter = painterResource(
@@ -52,6 +53,14 @@ fun ComposableFileManagerTopBar(
                             contentDescription = stringResource(
                                 R.string.filemanager_upload_action
                             )
+                        )
+                    }
+                }
+                if (path != "/") {
+                    IconButton(onClick = onClickToSearch) {
+                        Icon(
+                            painter = painterResource(DesignSystem.drawable.ic_search),
+                            contentDescription = null
                         )
                     }
                 }
