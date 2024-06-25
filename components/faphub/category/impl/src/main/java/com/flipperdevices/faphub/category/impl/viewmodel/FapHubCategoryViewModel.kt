@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
+import com.flipperdevices.core.pager.distinctBy
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -34,10 +35,9 @@ class FapHubCategoryViewModel @AssistedInject constructor(
     private val sortStateFlow = MutableStateFlow(SortType.UPDATE_AT_DESC)
 
     init {
-        dataStoreSettings.data
-            .onEach {
-                sortStateFlow.emit(it.selectedCatalogSort.toSortType())
-            }.launchIn(viewModelScope)
+        dataStoreSettings.data.onEach {
+            sortStateFlow.emit(it.selectedCatalogSort.toSortType())
+        }.launchIn(viewModelScope)
     }
 
     fun getSortTypeFlow() = sortStateFlow.asStateFlow()
@@ -55,16 +55,14 @@ class FapHubCategoryViewModel @AssistedInject constructor(
         ) {
             FapsCategoryPagingSource(fapNetworkApi, category, sortType, target, hiddenItems)
         }.flow
-    }.flatMapLatest { it }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
 
     fun getFapsFlow() = faps
 
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedCatalogSort(sortType.toSelectedSortType())
-                    .build()
+                it.toBuilder().setSelectedCatalogSort(sortType.toSelectedSortType()).build()
             }
         }
     }

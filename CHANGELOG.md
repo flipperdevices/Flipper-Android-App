@@ -2,6 +2,8 @@
 
 # 1.7.2 - In Progress
 
+- [FIX] Distinct fap items by id in paging sources
+
 # 1.7.1
 
 - Fix for a vulnerability causing write access to internal application files
