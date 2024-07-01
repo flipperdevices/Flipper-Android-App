@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
+import com.flipperdevices.core.pager.distinctBy
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.dao.api.FapNetworkApi
@@ -33,7 +34,7 @@ class FapHubSearchViewModel @Inject constructor(
         Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {
             FapsSearchPagingSource(fapNetworkApi, searchRequest, target, hiddenItems)
         }.flow
-    }.flatMapLatest { it }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
 
     fun getSearchRequest() = searchRequestFlow.asStateFlow()
 

@@ -3,6 +3,7 @@ package com.flipperdevices.core.ktx.android
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
+import java.io.File
 import java.io.FileNotFoundException
 
 private const val FILE_DESCRIPTOR_FAILED_SIZE = -1L
@@ -60,10 +61,10 @@ fun Uri.filename(contentResolver: ContentResolver): String? {
     } else {
         null
     }
+    val fileName = nameFromResolver ?: path?.substringAfterLast(File.separatorChar)
 
-    if (nameFromResolver != null) {
-        return nameFromResolver
+    if (fileName != null) {
+        return File(fileName).name // Bypass for path traversal
     }
-
-    return path?.substringAfterLast("/")
+    return null
 }

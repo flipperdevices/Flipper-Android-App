@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.flipperdevices.bridge.dao.api.FapHubHideItemApi
+import com.flipperdevices.core.pager.distinctBy
 import com.flipperdevices.core.pager.loadingPagingDataFlow
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -57,7 +58,7 @@ class FapsListViewModel @Inject constructor(
         ) {
             FapsPagingSource(fapNetworkApi, sortType, target, hiddenItems)
         }.flow
-    }.flatMapLatest { it }.cachedIn(viewModelScope)
+    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
 
     fun getFapsFlow(): Flow<PagingData<FapItemShort>> = faps
 
