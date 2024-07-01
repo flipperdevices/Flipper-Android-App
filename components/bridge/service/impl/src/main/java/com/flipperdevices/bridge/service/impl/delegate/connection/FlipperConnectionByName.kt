@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 /**
  * It's a fallback if the user's MAC address has changed, but the flipper is the same.
@@ -46,7 +44,7 @@ class FlipperConnectionByName @Inject constructor(
 
         val devices = scanner.findFlipperByName(connectionInfo.name).filter {
             it.address != connectionInfo.id
-        }.timeout(Constants.BLE.CONNECT_TIME_MS.toDuration(DurationUnit.MILLISECONDS))
+        }.timeout(Constants.BLE.CONNECT_TIME)
             .catch { exception ->
                 if (exception !is TimeoutCancellationException) {
                     // Throw other exceptions.
@@ -58,7 +56,7 @@ class FlipperConnectionByName @Inject constructor(
         for (device in devices) {
             info { "Connect to ${device.address}..." }
             val result = runCatching {
-                withTimeout(Constants.BLE.CONNECT_TIME_MS) {
+                withTimeout(Constants.BLE.NEW_CONNECT_TIME) {
                     bleManager.connectToDevice(device.device)
                 }
             }

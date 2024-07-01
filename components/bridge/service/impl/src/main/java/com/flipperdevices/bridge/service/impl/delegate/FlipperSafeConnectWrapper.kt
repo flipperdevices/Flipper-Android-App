@@ -46,33 +46,38 @@ class FlipperSafeConnectWrapper @Inject constructor(
     fun isConnectingFlow() = isConnectingMutableStateFlow.asStateFlow()
 
     suspend fun onActiveDeviceUpdate(
-        connectionInfo: SavedFlipperConnectionInfo?
-    ) = launchWithLock(mutex, scope, "onActiveDeviceUpdate") {
-        info { "Call cancel and join to current job" }
-        currentConnectingJob?.cancelAndJoin()
-        info { "Job canceled! Call connect again" }
-        currentConnectingJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            var jobCompleted = false
-            isConnectingMutableStateFlow.emit(true)
-            do {
-                val deviceUpdateResult = runCatching {
-                    onActiveDeviceUpdateInternal(connectionInfo)
+        connectionInfo: SavedFlipperConnectionInfo?,
+        force: Boolean
+    ) {
+        launchWithLock(mutex, scope, "onActiveDeviceUpdate") {
+            if (force.not() && currentConnectingJob?.isActive == true) {
+                info { "onActiveDeviceUpdate called without force, so skip reinvalidate job" }
+                return@launchWithLock
+            }
+            info { "Call cancel and join to current job" }
+            currentConnectingJob?.cancelAndJoin()
+            info { "Job canceled! Call connect again" }
+            currentConnectingJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
+                var jobCompleted = false
+                isConnectingMutableStateFlow.emit(true)
+                do {
+                    val deviceUpdateResult = runCatching {
+                        onActiveDeviceUpdateInternal(connectionInfo)
+                    }
+                    val errorOnDeviceUpdate = deviceUpdateResult.exceptionOrNull()
+                    if (errorOnDeviceUpdate != null) {
+                        error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
+                    }
+                    if (deviceUpdateResult.getOrNull() == true) {
+                        jobCompleted = true
+                    }
+                } while (isActive && jobCompleted.not())
+                if (jobCompleted) {
+                    isConnectingMutableStateFlow.emit(false)
                 }
-                val errorOnDeviceUpdate = deviceUpdateResult.exceptionOrNull()
-                if (errorOnDeviceUpdate != null) {
-                    error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
-                }
-                if (deviceUpdateResult.getOrNull() == true) {
-                    jobCompleted = true
-                }
-            } while (isActive && jobCompleted.not())
-            if (jobCompleted) {
-                isConnectingMutableStateFlow.emit(false)
             }
         }
     }
-
-    fun isTryingConnected() = currentConnectingJob?.isActive ?: false
 
     private suspend fun onActiveDeviceUpdateInternal(
         connectionInfo: SavedFlipperConnectionInfo?

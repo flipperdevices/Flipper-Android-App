@@ -10,7 +10,10 @@ data class SavedFlipperConnectionInfo private constructor(
     companion object {
         fun build(
             pairSettings: PairSettings
-        ): SavedFlipperConnectionInfo {
+        ): SavedFlipperConnectionInfo? {
+            if (pairSettings.deviceId == null) {
+                return null
+            }
             val flipperName = if (pairSettings.deviceName.startsWith(Constants.DEVICENAME_PREFIX)) {
                 pairSettings.deviceName
             } else {

@@ -73,12 +73,9 @@ class FlipperServiceApiImpl @Inject constructor(
                     .getConnectionStateFlow(),
                 pairSettingsStore.data
             ) { connectionState, pairSetting ->
-                val connectionInfo = if (pairSetting.deviceId != null) {
-                    SavedFlipperConnectionInfo.build(pairSetting)
-                } else {
-                    null
-                }
-                (connectionState is ConnectionState.Disconnected) to connectionInfo
+                (connectionState is ConnectionState.Disconnected) to SavedFlipperConnectionInfo.build(
+                    pairSetting
+                )
             }.collect { (isDeviceDisconnected, connectionInfo) ->
                 withLock(mutex, "connect") {
                     if (unhandledExceptionApi.isBleConnectionForbiddenFlow().first()) {
@@ -87,11 +84,17 @@ class FlipperServiceApiImpl @Inject constructor(
 
                     if (previousDeviceId != connectionInfo?.id) { // Reconnect
                         info { "Reconnect because device id changed" }
-                        flipperSafeConnectWrapper.onActiveDeviceUpdate(connectionInfo)
+                        flipperSafeConnectWrapper.onActiveDeviceUpdate(
+                            connectionInfo,
+                            force = true
+                        )
                         previousDeviceId = connectionInfo?.id
                     } else if (isDeviceDisconnected && !disconnectForced) { // Autoreconnect
                         info { "Reconnect because device is disconnected, but not forced" }
-                        flipperSafeConnectWrapper.onActiveDeviceUpdate(connectionInfo)
+                        flipperSafeConnectWrapper.onActiveDeviceUpdate(
+                            connectionInfo,
+                            force = false
+                        )
                         previousDeviceId = connectionInfo?.id
                     }
                 }
@@ -107,20 +110,23 @@ class FlipperServiceApiImpl @Inject constructor(
             info { "Failed soft connect, because ble connection forbidden" }
             return@launchWithLock
         }
-        if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
+        if (bleManager.isConnected() || flipperSafeConnectWrapper.isConnectingFlow().first()) {
+            info { "Skip soft connect because device already in connecting or connected stage" }
             return@launchWithLock
         }
+
         val pairSetting = pairSettingsStore.data.first()
-        flipperSafeConnectWrapper.onActiveDeviceUpdate(
-            SavedFlipperConnectionInfo.build(pairSetting)
-        )
+        val connectionInfo = SavedFlipperConnectionInfo.build(pairSetting)
+        info { "Start soft connect to $connectionInfo" }
+
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(connectionInfo, force = true)
     }
 
     override suspend fun disconnect(isForce: Boolean) = withLock(mutex, "disconnect") {
         if (isForce) {
             disconnectForced = true
         }
-        flipperSafeConnectWrapper.onActiveDeviceUpdate(null)
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(null, force = true)
     }
 
     override suspend fun reconnect() = withLock(mutex, "reconnect") {
@@ -128,7 +134,8 @@ class FlipperServiceApiImpl @Inject constructor(
         val pairSetting = pairSettingsStore.data.first()
 
         flipperSafeConnectWrapper.onActiveDeviceUpdate(
-            SavedFlipperConnectionInfo.build(pairSetting)
+            SavedFlipperConnectionInfo.build(pairSetting),
+            force = true
         )
     }
 
