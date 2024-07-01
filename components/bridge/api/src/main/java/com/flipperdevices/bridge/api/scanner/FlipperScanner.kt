@@ -17,7 +17,7 @@ interface FlipperScanner {
     suspend fun findFlipperById(deviceId: String): Flow<DiscoveredBluetoothDevice>
 
     /**
-     * @return flipper by id
+     * @return flipper by name
      */
     fun findFlipperByName(deviceName: String): Flow<DiscoveredBluetoothDevice>
 }
