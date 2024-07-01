@@ -60,7 +60,6 @@ class FlipperConnectionByName @Inject constructor(
                     bleManager.connectToDevice(device.device)
                 }
             }
-            info { "Connect to ${device.address} ${if (result.isSuccess) "SUCCESS" else "FAILED"}" }
             if (result.isSuccess) {
                 info { "Connect to ${device.address} SUCCESS" }
 
