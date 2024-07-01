@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel @AssistedInject constructor(
-    @Assisted deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+    @Assisted deeplink: Deeplink.BottomBar.AppsTab.MainScreen?
 ) : DecomposeViewModel() {
     private val tabFlow = MutableStateFlow(
         when (deeplink) {
-            Deeplink.BottomBar.HubTab.FapHub.MainScreen.InstalledTab -> FapHubTabEnum.INSTALLED
+            Deeplink.BottomBar.AppsTab.MainScreen.InstalledTab -> FapHubTabEnum.INSTALLED
             null -> FapHubTabEnum.APPS
         }
     )
@@ -31,7 +31,7 @@ class MainViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         operator fun invoke(
-            deeplink: Deeplink.BottomBar.HubTab.FapHub.MainScreen?
+            deeplink: Deeplink.BottomBar.AppsTab.MainScreen?
         ): MainViewModel
     }
 }

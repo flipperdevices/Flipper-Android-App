@@ -14,6 +14,7 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
+import com.flipperdevices.changelog.api.ChangelogScreenDecomposeComponent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.deeplink.model.Deeplink
@@ -53,7 +54,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val widgetScreenFactory: WidgetDecomposeComponent.Factory,
     private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
-    private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory
+    private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
+    private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -117,6 +119,12 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.ScreenshotPreview -> screenshotsPreviewFactory(
             componentContext = componentContext,
             param = config.param,
+            onBack = this::internalOnBack
+        )
+
+        is RootScreenConfig.Changelog -> changelogScreenDecomposeFactory(
+            componentContext = componentContext,
+            updateRequest = config.updateRequest,
             onBack = this::internalOnBack
         )
     }

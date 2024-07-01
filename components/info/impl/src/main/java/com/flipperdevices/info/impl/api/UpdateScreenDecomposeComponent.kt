@@ -19,6 +19,8 @@ import com.flipperdevices.info.impl.viewmodel.DeviceStatusViewModel
 import com.flipperdevices.info.impl.viewmodel.FirmwareUpdateViewModel
 import com.flipperdevices.info.impl.viewmodel.FlipperColorViewModel
 import com.flipperdevices.info.impl.viewmodel.deviceinfo.BasicInfoViewModel
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
@@ -41,11 +43,12 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     private val flipperColorProvider: Provider<FlipperColorViewModel>,
     private val firmwareUpdateViewModelProvider: Provider<FirmwareUpdateViewModel>,
     private val alarmViewModelProvider: Provider<AlarmViewModel>,
-    private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>
+    private val basicInfoViewModelProvider: Provider<BasicInfoViewModel>,
+    private val metricApi: MetricApi
 ) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
-    @Suppress("NonSkippableComposable")
+    @Suppress("NonSkippableComposable", "LongMethod")
     @Composable
     override fun Render() {
         val rootNavigation = LocalRootNavigation.current
@@ -102,7 +105,11 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
             alarmOnFlipper = alarmViewModel::alarmOnFlipper,
             deviceInfo = basicInfo,
             scrollState = scrollState,
-            componentContext = this
+            componentContext = this,
+            onOpenRemoteControl = {
+                metricApi.reportSimpleEvent(SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING)
+                rootNavigation.push(RootScreenConfig.ScreenStreaming)
+            }
         )
     }
 

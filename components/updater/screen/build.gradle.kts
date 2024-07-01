@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.flippermockup)
+    implementation(projects.components.core.ui.scrollbar)
 
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
@@ -31,12 +32,10 @@ dependencies {
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.deeplink.api)
     implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.changelog.api)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.markdown.renderer) {
-        exclude(libs.fastutil.get().group)
-    }
 
     // Compose
     implementation(libs.compose.ui)

@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.scrollbar)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
@@ -99,6 +100,9 @@ dependencies {
     implementation(projects.components.updater.card)
     implementation(projects.components.updater.subghz)
 
+    implementation(projects.components.changelog.api)
+    implementation(projects.components.changelog.impl)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.dao.impl)
     implementation(projects.components.bridge.rpc.api)
@@ -143,13 +147,11 @@ dependencies {
 
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.mfkey32.screen)
-    implementation(projects.components.nfc.attack.api)
-    implementation(projects.components.nfc.attack.impl)
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.nfc.tools.impl)
 
-    implementation(projects.components.hub.api)
-    implementation(projects.components.hub.impl)
+    implementation(projects.components.toolstab.api)
+    implementation(projects.components.toolstab.impl)
 
     implementation(projects.components.widget.api)
     implementation(projects.components.widget.impl)
@@ -157,9 +159,6 @@ dependencies {
 
     implementation(projects.components.faphub.appcard.api)
     implementation(projects.components.faphub.appcard.composable)
-
-    implementation(projects.components.faphub.maincard.api)
-    implementation(projects.components.faphub.maincard.impl)
 
     implementation(projects.components.faphub.dao.api)
     implementation(projects.components.faphub.dao.network)

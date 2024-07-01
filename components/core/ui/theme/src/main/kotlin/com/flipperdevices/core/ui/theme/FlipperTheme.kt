@@ -23,11 +23,14 @@ import com.flipperdevices.core.ui.theme.composable.FlipperTypography
 import com.flipperdevices.core.ui.theme.composable.getThemedFlipperPallet
 import com.flipperdevices.core.ui.theme.composable.getTypography
 import com.flipperdevices.core.ui.theme.composable.isLight
+import com.flipperdevices.core.ui.theme.composable.pallet.generated.FlipperPalletV2
+import com.flipperdevices.core.ui.theme.composable.pallet.getThemedFlipperPalletV2
 import com.flipperdevices.core.ui.theme.composable.toMaterialColors
 import com.flipperdevices.core.ui.theme.composable.toTextSelectionColors
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 
 val LocalPallet = compositionLocalOf<FlipperPallet> { error("No local pallet") }
+val LocalPalletV2 = compositionLocalOf<FlipperPalletV2> { error("No local pallet") }
 val LocalTypography = compositionLocalOf<FlipperTypography> { error("No local typography") }
 
 @Composable
@@ -38,12 +41,13 @@ fun FlipperTheme(
     val theme by themeViewModel.getAppTheme().collectAsState()
     val isLight = isLight(
         systemIsDark = isSystemInDarkTheme(),
-        themeViewModel = themeViewModel
+        theme = theme
     )
-    val pallet = getThemedFlipperPallet(theme, isLight)
+    val pallet = getThemedFlipperPallet(isLight)
     FlipperTheme(
         content = content,
         pallet = pallet,
+        palletV2 = getThemedFlipperPalletV2(isLight),
         isLight = isLight
     )
 }
@@ -51,7 +55,8 @@ fun FlipperTheme(
 @Composable
 private fun FlipperTheme(
     pallet: FlipperPallet,
-    isLight: Boolean = !isSystemInDarkTheme(),
+    palletV2: FlipperPalletV2,
+    isLight: Boolean,
     content: @Composable () -> Unit
 ) {
     val colors = pallet.toMaterialColors(isLight)
@@ -63,6 +68,7 @@ private fun FlipperTheme(
     ) {
         CompositionLocalProvider(
             LocalPallet provides pallet,
+            LocalPalletV2 provides palletV2,
             LocalTypography provides getTypography(),
             LocalContentColor provides colors.contentColorFor(backgroundColor = pallet.background),
             LocalTextSelectionColors provides pallet.toTextSelectionColors(),
@@ -79,7 +85,9 @@ fun FlipperThemeInternal(
 ) {
     FlipperTheme(
         pallet = getThemedFlipperPallet(!isSystemInDarkTheme()),
-        content = content
+        palletV2 = getThemedFlipperPalletV2(!isSystemInDarkTheme()),
+        content = content,
+        isLight = !isSystemInDarkTheme()
     )
 }
 

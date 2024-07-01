@@ -13,7 +13,7 @@ sealed interface TabState {
     val unselectedColor: Color
     val unselectedColorIcon: Color
     val textDotsAnimated: Boolean
-    val notificationDotActive: Boolean
+    val notificationDot: NotificationDot?
 
     @Immutable
     @Suppress("LongParameterList")
@@ -26,7 +26,7 @@ sealed interface TabState {
         override val unselectedColor: Color,
         override val unselectedColorIcon: Color = unselectedColor,
         override val textDotsAnimated: Boolean = false,
-        override val notificationDotActive: Boolean = false
+        override val notificationDot: NotificationDot? = null
     ) : TabState
 
     @Immutable
@@ -42,6 +42,6 @@ sealed interface TabState {
         override val unselectedColor: Color,
         override val unselectedColorIcon: Color = unselectedColor,
         override val textDotsAnimated: Boolean = false,
-        override val notificationDotActive: Boolean = false,
+        override val notificationDot: NotificationDot? = null,
     ) : TabState
 }

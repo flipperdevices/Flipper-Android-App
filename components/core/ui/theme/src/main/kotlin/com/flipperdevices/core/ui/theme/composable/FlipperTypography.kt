@@ -139,7 +139,7 @@ data class FlipperTypography(
     val updateButton40: TextStyle = TextStyle(
         fontSize = 40.sp,
         fontFamily = FontFamily(Font(R.font.flipper_bold)),
-        fontWeight = FontWeight.W400
+        fontWeight = FontWeight.W500
     ),
     val updateText40: TextStyle = TextStyle(
         fontSize = 40.sp,

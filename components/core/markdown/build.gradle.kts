@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.compose.material)
 
     implementation(libs.flexmark.core)
-    implementation(libs.markdown.renderer) {
+    api(libs.markdown.renderer) {
         exclude(libs.fastutil.get().group)
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bar_title_archive">Archive</string>
-    <string name="bar_title_hub">Hub</string>
+    <string name="bar_title_apps">Apps</string>
+    <string name="bar_title_tools">Tools</string>
 </resources>

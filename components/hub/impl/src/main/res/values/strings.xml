@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="hub_title">Hub</string>
-    <string name="hub_hfc_title">NFC Tools</string>
-    <string name="hub_hfc_desc">Calculate MIFARE Classic card keys using Flipper Zero</string>
-    <string name="hub_remote_control_title">Remote Control</string>
-    <string name="hub_remote_control_desc">Control your Flipper Zero remotely via mobile phone</string>
-</resources>

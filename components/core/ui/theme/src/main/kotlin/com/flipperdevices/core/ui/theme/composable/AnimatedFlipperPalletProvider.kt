@@ -40,6 +40,7 @@ internal fun FlipperPallet.toAnimatePallet() = FlipperPallet(
 
     divider12 = animateColor(divider12),
     channelFirmwareReleaseCandidate = animateColor(channelFirmwareReleaseCandidate),
+    bottomBarSelected = animateColor(bottomBarSelected),
     bottomBarBackground = animateColor(bottomBarBackground),
     disableSwitch = animateColor(disableSwitch),
     backgroundDialog = animateColor(backgroundDialog),

@@ -26,7 +26,8 @@ fun ComposableMainScreen(
     notificationRenderer: InAppNotificationRenderer,
     childStack: ChildStack<BottomBarTabConfig, DecomposeComponent>,
     connectionTabState: TabState,
-    hubHasNotification: Boolean,
+    toolsHasNotification: Boolean,
+    appsHasNotification: Boolean,
     onTabClick: (tab: BottomBarTabEnum, force: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -37,7 +38,8 @@ fun ComposableMainScreen(
             ComposeBottomBar(
                 connectionTabState = connectionTabState,
                 selectedItem = selectedTab.enum,
-                hubHasNotification = hubHasNotification,
+                toolsHasNotification = toolsHasNotification,
+                appsHasNotification = appsHasNotification,
                 onBottomBarClick = {
                     onTabClick(it, selectedTab.enum == it)
                 }
