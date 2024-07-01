@@ -7,9 +7,13 @@ import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.api.utils.PermissionHelper
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByMac
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByName
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionDelegate
 import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.withLock
+import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -25,8 +29,9 @@ import javax.inject.Provider
 class FlipperServiceConnectDelegate @Inject constructor(
     bleManagerProvider: Provider<FlipperBleManager>,
     contextProvider: Provider<Context>,
-    scannerProvider: Provider<FlipperScanner>,
-    adapterProvider: Provider<BluetoothAdapter>
+    adapterProvider: Provider<BluetoothAdapter>,
+    flipperConnectionByMac: Provider<FlipperConnectionByMac>,
+    flipperConnectionByName: Provider<FlipperConnectionByName>
 ) : LogTagProvider {
     override val TAG = "FlipperServiceConnectDelegate"
 
@@ -34,12 +39,16 @@ class FlipperServiceConnectDelegate @Inject constructor(
 
     private val bleManager by bleManagerProvider
     private val context by contextProvider
-    private val scanner by scannerProvider
     private val adapter by adapterProvider
+
+    private val connectionDelegates = listOf<FlipperConnectionDelegate>(
+        flipperConnectionByMac.get(),
+        flipperConnectionByName.get()
+    )
 
     suspend fun reconnect(
         connectionInfo: SavedFlipperConnectionInfo
-    ) = withLock(mutex, "reconnect") {
+    ): Boolean = withLockResult(mutex, "reconnect") {
         // If we already connected to device, just ignore it
         disconnectInternal()
 
@@ -62,7 +71,7 @@ class FlipperServiceConnectDelegate @Inject constructor(
         }
 
         // We try find device in manual mode and connect with it
-        findAndConnectToDeviceInternal(connectionInfo)
+        return@withLockResult findAndConnectToDeviceInternal(connectionInfo)
     }
 
     suspend fun disconnect() = withLock(mutex, "disconnect") {
@@ -86,53 +95,12 @@ class FlipperServiceConnectDelegate @Inject constructor(
     @SuppressLint("MissingPermission")
     private suspend fun findAndConnectToDeviceInternal(
         connectionInfo: SavedFlipperConnectionInfo
-    ) {
-        var device = adapter.bondedDevices.find { it.address == connectionInfo.id }
-
-        if (device == null) {
-            device = withTimeout(Constants.BLE.CONNECT_TIME_MS) {
-                scanner.findFlipperById(connectionInfo.id).first()
-            }.device
-        }
-
-        val connectWithTimeout = runCatching {
-            withTimeout(Constants.BLE.CONNECT_TIME_MS) {
-                bleManager.connectToDevice(device)
+    ): Boolean {
+        for (delegate in connectionDelegates) {
+            if (delegate.connect(connectionInfo)) {
+                return true
             }
         }
-        val exception = connectWithTimeout.exceptionOrNull()
-        if (exception != null) {
-            fallbackConnectByName(connectionInfo, exception)
-        }
-    }
-
-    /**
-     * It's a fallback if the user's MAC address has changed, but the flipper is the same.
-     * This can happen in two cases:
-     * - Changing official firmware to custom firmware (and back again)
-     * - Updating official firmware after PR https://github.com/flipperdevices/flipperzero-firmware/pull/3723
-     */
-    private suspend fun fallbackConnectByName(
-        connectionInfo: SavedFlipperConnectionInfo,
-        exception: Throwable
-    ) {
-        if (connectionInfo.name == null) {
-            error(exception) { "Failed connect by ID and flipper name is unknown" }
-            throw exception
-        }
-
-        val device = withTimeout(Constants.BLE.CONNECT_TIME_MS * 10) {
-            scanner.findFlipperByName(connectionInfo.name).filter {
-                it.address != connectionInfo.id
-            }.first()
-        }.device
-        info { "Found: $device" }
-
-        //RemoveBondHelper.removeBand(device)
-        bleManager.disconnectDevice()
-
-        withTimeout(Constants.BLE.CONNECT_TIME_MS * 10) {
-            bleManager.connectToDevice(device)
-        }
+        return false
     }
 }

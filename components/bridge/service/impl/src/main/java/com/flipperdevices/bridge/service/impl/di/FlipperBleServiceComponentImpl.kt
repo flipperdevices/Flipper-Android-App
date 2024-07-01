@@ -12,6 +12,8 @@ import com.flipperdevices.bridge.service.impl.delegate.FlipperActionNotifierImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByMac
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByName
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Provider
 
@@ -75,12 +77,27 @@ class FlipperBleServiceComponentImpl(
         )
     }
 
+    private val flipperConnectionByMac by lazy {
+        FlipperConnectionByMac(
+            bleManagerProvider = { flipperBleManagerImpl },
+            adapterProvider = { bluetoothAdapter },
+            scannerProvider = { bluetoothScanner }
+        )
+    }
+    private val flipperConnectionByName by lazy {
+        FlipperConnectionByName(
+            bleManagerProvider = { flipperBleManagerImpl },
+            scannerProvider = { bluetoothScanner }
+        )
+    }
+
     private val flipperServiceConnectDelegate by lazy {
         FlipperServiceConnectDelegate(
             bleManagerProvider = { flipperBleManagerImpl },
             contextProvider = { context },
-            scannerProvider = { bluetoothScanner },
-            adapterProvider = { bluetoothAdapter }
+            adapterProvider = { bluetoothAdapter },
+            flipperConnectionByMac = { flipperConnectionByMac },
+            flipperConnectionByName = { flipperConnectionByName }
         )
     }
 
@@ -88,7 +105,8 @@ class FlipperBleServiceComponentImpl(
         FlipperSafeConnectWrapper(
             scopeProvider = { scope },
             serviceErrorListenerProvider = { serviceErrorListener },
-            connectDelegateProvider = { flipperServiceConnectDelegate }
+            connectDelegateProvider = { flipperServiceConnectDelegate },
+            dataStoreProvider = { pairSettingsStore }
         )
     }
 

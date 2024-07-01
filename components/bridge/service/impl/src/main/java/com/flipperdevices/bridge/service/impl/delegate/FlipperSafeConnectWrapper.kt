@@ -1,7 +1,9 @@
 package com.flipperdevices.bridge.service.impl.delegate
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
+import com.flipperdevices.bridge.service.impl.model.DeviceChangedMacException
 import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -9,9 +11,13 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.preference.pb.copy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -22,9 +28,12 @@ import javax.inject.Provider
 class FlipperSafeConnectWrapper @Inject constructor(
     scopeProvider: Provider<CoroutineScope>,
     serviceErrorListenerProvider: Provider<FlipperServiceErrorListener>,
-    connectDelegateProvider: Provider<FlipperServiceConnectDelegate>
+    connectDelegateProvider: Provider<FlipperServiceConnectDelegate>,
+    dataStoreProvider: Provider<DataStore<PairSettings>>
 ) : LogTagProvider {
     override val TAG = "FlipperSafeConnectWrapper"
+
+    private val isConnectingMutableStateFlow = MutableStateFlow(false)
 
     // It makes sure that we don't change the currentConnectingJob variable in different threads
     private val mutex = Mutex()
@@ -33,6 +42,9 @@ class FlipperSafeConnectWrapper @Inject constructor(
     private val scope by scopeProvider
     private val serviceErrorListener by serviceErrorListenerProvider
     private val connectDelegate by connectDelegateProvider
+    private val dataStore by dataStoreProvider
+
+    fun isConnectingFlow() = isConnectingMutableStateFlow.asStateFlow()
 
     suspend fun onActiveDeviceUpdate(
         connectionInfo: SavedFlipperConnectionInfo?
@@ -41,15 +53,21 @@ class FlipperSafeConnectWrapper @Inject constructor(
         currentConnectingJob?.cancelAndJoin()
         info { "Job canceled! Call connect again" }
         currentConnectingJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            var errorOnDeviceUpdate: Throwable?
+            var jobCompleted = false
+            isConnectingMutableStateFlow.emit(true)
             do {
-                errorOnDeviceUpdate = runCatching {
+                val deviceUpdateResult = runCatching {
                     onActiveDeviceUpdateInternal(connectionInfo)
-                }.exceptionOrNull()
+                }
+                val errorOnDeviceUpdate = deviceUpdateResult.exceptionOrNull()
                 if (errorOnDeviceUpdate != null) {
                     error(errorOnDeviceUpdate) { "Unexpected error on activeDeviceUpdate" }
                 }
-            } while (isActive && errorOnDeviceUpdate != null)
+                if (deviceUpdateResult.getOrNull() == true) {
+                    jobCompleted = true
+                }
+            } while (isActive && jobCompleted.not())
+            isConnectingMutableStateFlow.emit(false)
         }
     }
 
@@ -57,21 +75,39 @@ class FlipperSafeConnectWrapper @Inject constructor(
 
     private suspend fun onActiveDeviceUpdateInternal(
         connectionInfo: SavedFlipperConnectionInfo?
-    ) {
+    ): Boolean {
         if (connectionInfo == null || connectionInfo.id.isBlank()) {
             error { "Flipper id not found in storage" }
             connectDelegate.disconnect()
-            return
+            return true
         }
 
         try {
-            connectDelegate.reconnect(connectionInfo)
+            return connectDelegate.reconnect(connectionInfo)
         } catch (securityException: SecurityException) {
             serviceErrorListener.onError(FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION)
             error(securityException) { "On initial connect to device" }
+
+            return true
         } catch (bleDisabled: BluetoothDisabledException) {
             serviceErrorListener.onError(FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED)
             error(bleDisabled) { "On initial connect to device" }
+
+            return true
+        } catch (changedMac: DeviceChangedMacException) {
+            error(changedMac) { "Mac changed from ${changedMac.oldMacAddress} to ${changedMac.newMacAddress}" }
+            dataStore.updateData { data ->
+                if (data.deviceId == changedMac.oldMacAddress) {
+                    return@updateData data.toBuilder()
+                        .setDeviceId(changedMac.newMacAddress)
+                        .build()
+                } else {
+                    error { "Wrong device id for mac address change request" }
+                    return@updateData data
+                }
+            }
+
+            return false
         }
     }
 }

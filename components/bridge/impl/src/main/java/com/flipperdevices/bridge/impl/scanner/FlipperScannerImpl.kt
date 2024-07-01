@@ -94,16 +94,15 @@ class FlipperScannerImpl @Inject constructor(
 
     @SuppressLint("MissingPermission")
     override fun findFlipperByName(
-        deviceName: String
+        deviceName: String,
     ): Flow<DiscoveredBluetoothDevice> = flow {
-        /*getAlreadyBondedDevices().filter {
+        getAlreadyBondedDevices().filter {
             it.name == deviceName
         }.forEach {
             emit(it)
-        }*/
+        }
 
         scanner.scanFlow(provideSettings(), provideFilterForDefaultScan())
-            .onEach { info { "Found: ${it.device.name} (name to found is $deviceName), isTrue: ${it.device.name == deviceName}" } }
             .filter { it.device.name == deviceName }
             .map { DiscoveredBluetoothDevice(it) }
             .collect {

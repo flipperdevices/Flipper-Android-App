@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.di.FlipperBleServiceGraph
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionInformationApiWrapper
 import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.di.provideDelegate
@@ -48,7 +49,12 @@ class FlipperServiceApiImpl @Inject constructor(
     private val mutex = Mutex()
     private var disconnectForced = false
 
-    override val connectionInformationApi = bleManager.connectionInformationApi
+    override val connectionInformationApi by lazy {
+        FlipperConnectionInformationApiWrapper(
+            flipperConnectionSource = bleManager.connectionInformationApi,
+            safeConnectWrapper = flipperSafeConnectWrapper
+        )
+    }
     override val requestApi = bleManager.flipperRequestApi
     override val flipperInformationApi = bleManager.informationApi
     override val flipperVersionApi = bleManager.flipperVersionApi
