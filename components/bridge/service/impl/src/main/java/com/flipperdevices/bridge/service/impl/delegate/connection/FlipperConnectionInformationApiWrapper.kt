@@ -3,6 +3,8 @@ package com.flipperdevices.bridge.service.impl.delegate.connection
 import com.flipperdevices.bridge.api.manager.delegates.FlipperConnectionInformationApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -10,6 +12,7 @@ class FlipperConnectionInformationApiWrapper(
     private val flipperConnectionSource: FlipperConnectionInformationApi,
     private val safeConnectWrapper: FlipperSafeConnectWrapper
 ) : FlipperConnectionInformationApi {
+
     override fun isDeviceConnected() = flipperConnectionSource.isDeviceConnected()
 
     override fun getConnectionStateFlow(): Flow<ConnectionState> {

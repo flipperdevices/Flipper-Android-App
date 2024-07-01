@@ -67,7 +67,9 @@ class FlipperSafeConnectWrapper @Inject constructor(
                     jobCompleted = true
                 }
             } while (isActive && jobCompleted.not())
-            isConnectingMutableStateFlow.emit(false)
+            if (jobCompleted) {
+                isConnectingMutableStateFlow.emit(false)
+            }
         }
     }
 

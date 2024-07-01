@@ -106,7 +106,7 @@ class FlipperBleManagerImpl @Inject constructor(
             val connectRequestLocal = connect(device).retry(
                 Constants.BLE.RECONNECT_COUNT,
                 Constants.BLE.RECONNECT_TIME_MS.toInt()
-            ).useAutoConnect(true)
+            )
 
             connectRequestLocal.enqueue()
 
