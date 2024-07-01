@@ -26,7 +26,6 @@ class FlipperConnectionByMac @Inject constructor(
     private val scanner by scannerProvider
     private val adapter by adapterProvider
 
-
     @SuppressLint("MissingPermission")
     override suspend fun connect(connectionInfo: SavedFlipperConnectionInfo): Boolean {
         info { "Start connection by $connectionInfo" }
@@ -56,5 +55,4 @@ class FlipperConnectionByMac @Inject constructor(
         }
         return true
     }
-
 }

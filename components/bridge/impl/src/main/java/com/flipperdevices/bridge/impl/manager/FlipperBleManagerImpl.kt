@@ -43,7 +43,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import no.nordicsemi.android.ble.ConnectRequest
 import no.nordicsemi.android.ble.ConnectionPriorityRequest
-import no.nordicsemi.android.ble.Request
 import javax.inject.Inject
 import javax.inject.Provider
 

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
-import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByMac
@@ -16,10 +15,7 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.log.info
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException
@@ -86,7 +82,7 @@ class FlipperServiceConnectDelegate @Inject constructor(
         } catch (timeout: TimeoutCancellationException) {
             error(timeout.cause) {
                 "Can't disconnect device with timeout" +
-                        " ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
+                    " ${Constants.BLE.DISCONNECT_TIMEOUT_MS}"
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.service.impl.delegate.connection
 
-import android.bluetooth.BluetoothAdapter
 import com.flipperdevices.bridge.api.manager.FlipperBleManager
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
 import com.flipperdevices.bridge.api.utils.Constants
@@ -14,15 +13,13 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withTimeout
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 import javax.inject.Inject
 import javax.inject.Provider
-
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 /**
  * It's a fallback if the user's MAC address has changed, but the flipper is the same.
@@ -36,10 +33,8 @@ class FlipperConnectionByName @Inject constructor(
 ) : FlipperConnectionDelegate, LogTagProvider {
     override val TAG = "FlipperConnectionByName"
 
-
     private val bleManager by bleManagerProvider
     private val scanner by scannerProvider
-
 
     @OptIn(FlowPreview::class)
     override suspend fun connect(connectionInfo: SavedFlipperConnectionInfo): Boolean {

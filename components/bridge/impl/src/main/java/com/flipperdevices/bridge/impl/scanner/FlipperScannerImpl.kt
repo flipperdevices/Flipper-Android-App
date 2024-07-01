@@ -15,14 +15,12 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
@@ -59,7 +57,7 @@ class FlipperScannerImpl @Inject constructor(
             }
         ).filter {
             it.address.startsWith(Constants.MAC_PREFIX) ||
-                    it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map { discoveredBluetoothDevice ->
             var mutableDevicesList: List<DiscoveredBluetoothDevice> = emptyList()
             mutex.withLock {
@@ -122,7 +120,7 @@ class FlipperScannerImpl @Inject constructor(
 
         return bluetoothAdapter.bondedDevices.filter {
             it.address?.startsWith(Constants.MAC_PREFIX) == true ||
-                    it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
+                it.name?.startsWith(Constants.DEVICENAME_PREFIX) == true
         }.map {
             DiscoveredBluetoothDevice(
                 device = it,
@@ -147,9 +145,5 @@ class FlipperScannerImpl @Inject constructor(
 
     private fun provideFilterForFindById(deviceId: String): List<ScanFilter> {
         return listOf(ScanFilter.Builder().setDeviceAddress(deviceId).build())
-    }
-
-    private fun provideFilterForFindByName(deviceName: String): List<ScanFilter> {
-        return listOf(ScanFilter.Builder().setDeviceAddress(deviceName).build())
     }
 }

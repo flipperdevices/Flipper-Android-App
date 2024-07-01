@@ -13,7 +13,9 @@ data class SavedFlipperConnectionInfo private constructor(
         ): SavedFlipperConnectionInfo {
             val flipperName = if (pairSettings.deviceName.startsWith(Constants.DEVICENAME_PREFIX)) {
                 pairSettings.deviceName
-            } else "${Constants.DEVICENAME_PREFIX} ${pairSettings.deviceName}"
+            } else {
+                "${Constants.DEVICENAME_PREFIX} ${pairSettings.deviceName}"
+            }
 
             return SavedFlipperConnectionInfo(
                 id = pairSettings.deviceId,
