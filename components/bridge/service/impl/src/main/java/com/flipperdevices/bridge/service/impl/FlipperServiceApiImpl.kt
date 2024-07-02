@@ -89,7 +89,7 @@ class FlipperServiceApiImpl @Inject constructor(
                             force = true
                         )
                         previousDeviceId = connectionInfo?.id
-                    } else if (isDeviceDisconnected && !disconnectForced) { // Autoreconnect
+                    } else if (isDeviceDisconnected && !disconnectForced && connectionInfo != null) { // Autoreconnect
                         info { "Reconnect because device is disconnected, but not forced" }
                         flipperSafeConnectWrapper.onActiveDeviceUpdate(
                             connectionInfo,

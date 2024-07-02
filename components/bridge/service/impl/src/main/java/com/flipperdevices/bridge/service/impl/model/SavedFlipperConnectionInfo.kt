@@ -11,7 +11,7 @@ data class SavedFlipperConnectionInfo private constructor(
         fun build(
             pairSettings: PairSettings
         ): SavedFlipperConnectionInfo? {
-            if (pairSettings.deviceId == null) {
+            if (pairSettings.deviceId.isNullOrBlank()) {
                 return null
             }
             val flipperName = if (pairSettings.deviceName.startsWith(Constants.DEVICENAME_PREFIX)) {

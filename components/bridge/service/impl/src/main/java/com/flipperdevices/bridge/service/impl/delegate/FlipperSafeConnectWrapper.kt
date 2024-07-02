@@ -59,7 +59,6 @@ class FlipperSafeConnectWrapper @Inject constructor(
             info { "Job canceled! Call connect again" }
             currentConnectingJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
                 var jobCompleted = false
-                isConnectingMutableStateFlow.emit(true)
                 do {
                     val deviceUpdateResult = runCatching {
                         onActiveDeviceUpdateInternal(connectionInfo)
@@ -79,7 +78,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
         }
     }
 
-    private suspend fun onActiveDeviceUpdateInternal(
+    private suspend fun  onActiveDeviceUpdateInternal(
         connectionInfo: SavedFlipperConnectionInfo?
     ): Boolean {
         if (connectionInfo == null || connectionInfo.id.isBlank()) {
@@ -87,6 +86,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
             connectDelegate.disconnect()
             return true
         }
+        isConnectingMutableStateFlow.emit(true)
 
         try {
             return connectDelegate.reconnect(connectionInfo)
