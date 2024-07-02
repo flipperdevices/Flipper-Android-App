@@ -11,6 +11,7 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.singleactivity.impl.SingleActivity"
@@ -101,21 +102,21 @@ private fun BaseExtension.configureCompileOptions() {
 private fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
-            kotlinOptions {
-                jvmTarget = "11"
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_11)
 
-                freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
-                    "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-                    "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-                    "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
-                    "-Xopt-in=kotlin.time.ExperimentalTime",
-                    "-Xopt-in=kotlin.RequiresOptIn",
-                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
-                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
-                    "-Xopt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
+                optIn.addAll(
+                    "com.google.accompanist.pager.ExperimentalPagerApi",
+                    "androidx.compose.ui.ExperimentalComposeUiApi",
+                    "androidx.compose.foundation.ExperimentalFoundationApi",
+                    "kotlinx.serialization.ExperimentalSerializationApi",
+                    "kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "com.squareup.anvil.annotations.ExperimentalAnvilApi",
+                    "kotlin.time.ExperimentalTime",
+                    "kotlin.RequiresOptIn",
+                    "androidx.compose.animation.ExperimentalAnimationApi",
+                    "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
+                    "androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }
         }

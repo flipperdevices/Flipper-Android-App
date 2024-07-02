@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
 }
 
@@ -8,9 +8,6 @@ android.namespace = "com.flipperdevices.nfceditor.sample"
 
 android {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 android {

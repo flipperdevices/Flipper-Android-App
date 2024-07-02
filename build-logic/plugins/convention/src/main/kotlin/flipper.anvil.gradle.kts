@@ -3,17 +3,16 @@ plugins {
 }
 
 anvil {
-    generateDaggerFactories.set(true)
+    useKsp(contributesAndFactoryGeneration = true)
+    generateDaggerFactories = true
 }
 
 pluginManager.withPlugin("kotlin-kapt") {
-    anvil {
-        generateDaggerFactories.set(false)
-    }
+    error("Please, use `id(\"flipper.anvil.kapt\")` instead")
 }
 
 dependencies {
     "implementation"(libs.dagger)
     "implementation"(libs.anvil.utils.annotations)
-    "anvil"(libs.anvil.utils.compiler)
+    "ksp"(libs.anvil.utils.compiler)
 }

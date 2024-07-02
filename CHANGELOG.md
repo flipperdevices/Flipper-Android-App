@@ -10,6 +10,7 @@
 
 # 1.7.0
 
+- [Refactor] Update to Kotlin 2.0
 - [KMP] Migration core:activityholder, core:di, core:progpress, core:ui:decompose
 - [Feature] Add new FlipperPallet
 - [Feature] Add changelog screen
