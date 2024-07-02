@@ -14,6 +14,7 @@ import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
 import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByMac
 import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByName
+import com.flipperdevices.bridge.service.impl.utils.RemoveBondHelper
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Provider
 
@@ -101,12 +102,19 @@ class FlipperBleServiceComponentImpl(
         )
     }
 
+    private val removeBondHelper by lazy {
+        RemoveBondHelper(
+            adapterProvider = { bluetoothAdapter }
+        )
+    }
+
     private val flipperSafeConnectWrapper by lazy {
         FlipperSafeConnectWrapper(
             scopeProvider = { scope },
             serviceErrorListenerProvider = { serviceErrorListener },
             connectDelegateProvider = { flipperServiceConnectDelegate },
-            dataStoreProvider = { pairSettingsStore }
+            dataStoreProvider = { pairSettingsStore },
+            removeBondHelperProvider = { removeBondHelper }
         )
     }
 

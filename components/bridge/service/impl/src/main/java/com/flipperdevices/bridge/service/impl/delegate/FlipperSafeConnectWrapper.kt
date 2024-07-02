@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.error.FlipperBleServiceError
 import com.flipperdevices.bridge.api.error.FlipperServiceErrorListener
 import com.flipperdevices.bridge.service.impl.model.DeviceChangedMacException
 import com.flipperdevices.bridge.service.impl.model.SavedFlipperConnectionInfo
+import com.flipperdevices.bridge.service.impl.utils.RemoveBondHelper
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -28,7 +29,8 @@ class FlipperSafeConnectWrapper @Inject constructor(
     scopeProvider: Provider<CoroutineScope>,
     serviceErrorListenerProvider: Provider<FlipperServiceErrorListener>,
     connectDelegateProvider: Provider<FlipperServiceConnectDelegate>,
-    dataStoreProvider: Provider<DataStore<PairSettings>>
+    dataStoreProvider: Provider<DataStore<PairSettings>>,
+    removeBondHelperProvider: Provider<RemoveBondHelper>
 ) : LogTagProvider {
     override val TAG = "FlipperSafeConnectWrapper"
 
@@ -42,6 +44,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
     private val serviceErrorListener by serviceErrorListenerProvider
     private val connectDelegate by connectDelegateProvider
     private val dataStore by dataStoreProvider
+    private val removeBondHelper by removeBondHelperProvider
 
     fun isConnectingFlow() = isConnectingMutableStateFlow.asStateFlow()
 
@@ -78,7 +81,7 @@ class FlipperSafeConnectWrapper @Inject constructor(
         }
     }
 
-    private suspend fun  onActiveDeviceUpdateInternal(
+    private suspend fun onActiveDeviceUpdateInternal(
         connectionInfo: SavedFlipperConnectionInfo?
     ): Boolean {
         if (connectionInfo == null || connectionInfo.id.isBlank()) {
@@ -101,8 +104,9 @@ class FlipperSafeConnectWrapper @Inject constructor(
 
             return true
         } catch (changedMac: DeviceChangedMacException) {
-            error(changedMac) { "Mac changed from ${changedMac.oldMacAddress} to ${changedMac.newMacAddress}" }
-            dataStore.updateData { data ->
+            info { "Mac changed from ${changedMac.oldMacAddress} to ${changedMac.newMacAddress}" }
+
+            val newAddress = dataStore.updateData { data ->
                 if (data.deviceId == changedMac.oldMacAddress) {
                     return@updateData data.toBuilder()
                         .setDeviceId(changedMac.newMacAddress)
@@ -110,6 +114,16 @@ class FlipperSafeConnectWrapper @Inject constructor(
                 } else {
                     error { "Wrong device id for mac address change request" }
                     return@updateData data
+                }
+            }
+
+            if (newAddress.deviceId == changedMac.newMacAddress &&
+                changedMac.newMacAddress != changedMac.oldMacAddress
+            ) {
+                if (removeBondHelper.removeBond(changedMac.oldMacAddress).not()) {
+                    error { "Failed remove bond for ${changedMac.oldMacAddress}" }
+                } else {
+                    info { "Remove bond for ${changedMac.oldMacAddress}" }
                 }
             }
 
