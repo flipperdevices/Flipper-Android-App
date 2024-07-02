@@ -33,7 +33,7 @@ class FlipperConnectionByMac @Inject constructor(
 
         if (device == null) {
             device = runCatching {
-                withTimeout(Constants.BLE.CONNECT_TIME_MS) {
+                withTimeout(Constants.BLE.CONNECT_TIME) {
                     scanner.findFlipperById(connectionInfo.id).first()
                 }.device
             }.getOrNull()
@@ -43,7 +43,7 @@ class FlipperConnectionByMac @Inject constructor(
         }
 
         val connectWithTimeout = runCatching {
-            withTimeout(Constants.BLE.CONNECT_TIME_MS) {
+            withTimeout(Constants.BLE.CONNECT_TIME) {
                 bleManager.connectToDevice(device)
             }
         }
