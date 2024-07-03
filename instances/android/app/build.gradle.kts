@@ -42,6 +42,9 @@ dependencies {
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
 
+    implementation(projects.components.remoteControls.deviceSelect.api)
+    implementation(projects.components.remoteControls.deviceSelect.impl)
+
     implementation(projects.components.screenstreaming.api)
     implementation(projects.components.screenstreaming.impl)
 

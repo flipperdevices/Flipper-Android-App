@@ -267,6 +267,12 @@ include(
     ":components:notification:impl",
     ":components:notification:noop",
 
+    ":components:remote-controls:api-backend",
+    ":components:remote-controls:core-model",
+    ":components:remote-controls:core-ui",
+    ":components:remote-controls:device-select:impl",
+    ":components:remote-controls:device-select:api",
+
     ":components:rootscreen:api",
     ":components:rootscreen:impl",
 

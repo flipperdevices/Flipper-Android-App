@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Settings-->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error_title">Error</string>
+    <string name="error_action">Reload</string>
+    <string name="not_found_signal">Not found signal for your preferences</string>
+    <string name="point_flipper">Point Flipper Zero at the %s and tap the button</string>
+    <string name="setup_title">Set Up Remote</string>
+    <string name="setup_subtitle">Add remote</string>
+    <string name="categories_title">Select Device</string>
+    <string name="categories_subtitle">Add remote</string>
+    <string name="brands_title">Select Brand</string>
+    <string name="brands_subtitle">Add remote</string>
+</resources>
