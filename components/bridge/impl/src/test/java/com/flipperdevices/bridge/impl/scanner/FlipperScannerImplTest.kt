@@ -215,7 +215,7 @@ class FlipperScannerImplTest {
         val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
         val srWrong = ScanResult(wrongBluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
 
-        every { scanner.scanFlow(any(), any()) } returns flowOf(sr,srWrong)
+        every { scanner.scanFlow(any(), any()) } returns flowOf(sr, srWrong)
         every { bluetoothAdapter.bondedDevices } returns emptySet()
 
         val flipperDevices = flipperScanner.findFlipperByName("Flipper Dumper").toList()
