@@ -1,10 +1,12 @@
 package com.flipperdevices.remotecontrols.impl.api
 
+import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
@@ -22,11 +24,15 @@ import  com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigatio
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    private val serviceProvider: FlipperServiceProvider,
+    private val context: Context
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
     private val module = SelectDeviceRootModule.Default(
-        apiBackendModule = ApiBackendModule.Default()
+        apiBackendModule = ApiBackendModule.Default(),
+        context = context,
+        serviceProvider = serviceProvider
     )
 
     override val stack = childStack(

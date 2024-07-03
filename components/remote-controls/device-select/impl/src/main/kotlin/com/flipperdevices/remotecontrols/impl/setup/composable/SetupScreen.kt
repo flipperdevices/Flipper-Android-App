@@ -56,8 +56,8 @@ internal fun SetupScreen(setupComponent: SetupComponent) {
                     )
                 }
 
-                SetupComponent.Model.Loading -> {
-                    LoadingComposable()
+                is SetupComponent.Model.Loading -> {
+                    LoadingComposable(progress = model.progress)
                 }
             }
         }

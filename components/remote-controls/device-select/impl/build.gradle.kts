@@ -17,6 +17,12 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
 
+    implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.deeplink.api)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.api)
+
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)

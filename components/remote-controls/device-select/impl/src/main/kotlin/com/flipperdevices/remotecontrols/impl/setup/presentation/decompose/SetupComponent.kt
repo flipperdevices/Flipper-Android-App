@@ -24,7 +24,7 @@ internal interface SetupComponent {
     fun onFileFound(ifrFileModel: IfrFileModel)
 
     sealed interface Model {
-        data object Loading : Model
+        data class Loading(val progress: Float) : Model
         data class Loaded(val response: SignalResponseModel) : Model
 
         data object Error : Model

@@ -14,7 +14,8 @@ import kotlinx.coroutines.withContext
 
 internal class CurrentSignalViewModel(
     private val apiBackend: ApiBackend,
-    private val param: SetupScreenDecomposeComponent.Param
+    private val param: SetupScreenDecomposeComponent.Param,
+    private val onLoaded: (SignalResponseModel) -> Unit
 ) : DecomposeViewModel() {
     val state = MutableStateFlow<State>(State.Loading)
 
@@ -39,6 +40,7 @@ internal class CurrentSignalViewModel(
             .onFailure { state.value = State.Error }
             .onFailure(Throwable::printStackTrace)
             .onSuccess { state.value = State.Loaded(it) }
+            .onSuccess(onLoaded)
     }
 
     init {

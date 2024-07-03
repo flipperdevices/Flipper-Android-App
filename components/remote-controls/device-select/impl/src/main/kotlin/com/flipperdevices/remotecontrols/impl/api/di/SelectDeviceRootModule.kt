@@ -1,5 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.api.di
 
+import android.content.Context
+import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
 import com.flipperdevices.remotecontrols.impl.grid.di.ControllerModule
 import com.flipperdevices.remotecontrols.impl.brands.di.BrandsModule
@@ -17,7 +19,9 @@ interface SelectDeviceRootModule {
     fun createGridModule(): ControllerModule
 
     class Default(
-        private val apiBackendModule: ApiBackendModule
+        private val apiBackendModule: ApiBackendModule,
+        private val serviceProvider: FlipperServiceProvider,
+        private val context: Context
     ) : SelectDeviceRootModule {
 
         override fun createDeviceCategoriesModule(): DeviceCategoriesModule {
@@ -33,7 +37,11 @@ interface SelectDeviceRootModule {
         }
 
         override fun createSetupModule(): SetupModule {
-            return SetupModule.Default(apiBackendModule = apiBackendModule)
+            return SetupModule.Default(
+                apiBackendModule = apiBackendModule,
+                serviceProvider = serviceProvider,
+                context = context
+            )
         }
 
         override fun createGridModule(): ControllerModule {
