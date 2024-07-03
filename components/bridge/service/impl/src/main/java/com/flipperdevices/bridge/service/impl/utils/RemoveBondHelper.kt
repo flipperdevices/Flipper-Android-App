@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.service.impl.utils
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import com.flipperdevices.core.di.provideDelegate
@@ -16,6 +17,7 @@ class RemoveBondHelper @Inject constructor(
 
     private val adapter by adapterProvider
 
+    @SuppressLint("MissingPermission")
     fun removeBond(id: String): Boolean {
         info { "Request remove bond for $id" }
         val pairedDevices = adapter.bondedDevices.filter { it.address == id }
