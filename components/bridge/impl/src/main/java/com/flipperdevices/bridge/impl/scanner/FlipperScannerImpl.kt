@@ -101,6 +101,7 @@ class FlipperScannerImpl @Inject constructor(
         }
 
         scanner.scanFlow(provideSettings(), provideFilterForDefaultScan())
+            .filter { it.device.name == deviceName }
             .map { DiscoveredBluetoothDevice(it) }
             .collect {
                 emit(it)

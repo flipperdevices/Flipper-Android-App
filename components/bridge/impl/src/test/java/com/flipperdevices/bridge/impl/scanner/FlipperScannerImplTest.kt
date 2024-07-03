@@ -183,6 +183,49 @@ class FlipperScannerImplTest {
     }
 
     @Test
+    fun `filter device by name filter`() = runTest {
+        val bluetoothDevice = mockk<BluetoothDevice> {
+            every { name } returns "Flipper Dumper"
+            every { address } returns ""
+        }
+
+        val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
+
+        every { scanner.scanFlow(any(), any()) } returns flowOf(sr)
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
+
+        val flipperDevices = flipperScanner.findFlipperByName("Flipper Dumper").first()
+
+        val foundDevice = flipperDevices
+        Assert.assertNotNull(foundDevice)
+        Assert.assertEquals(bluetoothDevice, foundDevice.device)
+    }
+
+    @Test
+    fun `filter device by name filter and return only this one`() = runTest {
+        val bluetoothDevice = mockk<BluetoothDevice> {
+            every { name } returns "Flipper Dumper"
+            every { address } returns ""
+        }
+        val wrongBluetoothDevice = mockk<BluetoothDevice> {
+            every { name } returns "Flipper Wrong"
+            every { address } returns ""
+        }
+
+        val sr = ScanResult(bluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
+        val srWrong = ScanResult(wrongBluetoothDevice, 0, 0, 0, 0, 0, 0, 0, null, 0L)
+
+        every { scanner.scanFlow(any(), any()) } returns flowOf(sr,srWrong)
+        every { bluetoothAdapter.bondedDevices } returns emptySet()
+
+        val flipperDevices = flipperScanner.findFlipperByName("Flipper Dumper").toList()
+        Assert.assertEquals(flipperDevices.size, 1)
+        val foundDevice = flipperDevices.first()
+        Assert.assertNotNull(foundDevice)
+        Assert.assertEquals(bluetoothDevice, foundDevice.device)
+    }
+
+    @Test
     fun `block device with incorrect name`() = runTest {
         val bluetoothDevice = mockk<BluetoothDevice> {
             every { name } returns "Dupper"
