@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import com.flipperdevices.remotecontrols.impl.categories.composable.DeviceCategoriesScreen
+import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 
 class CategoriesScreenDecomposeComponentImpl(
     componentContext: ComponentContext,

@@ -11,9 +11,9 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
-import androidx.compose.ui.res.stringResource
 
 @Composable
 internal fun ErrorComposable(

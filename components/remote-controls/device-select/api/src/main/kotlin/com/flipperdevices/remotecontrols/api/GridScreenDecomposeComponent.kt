@@ -11,7 +11,7 @@ abstract class GridScreenDecomposeComponent(
         fun create(
             componentContext: ComponentContext,
             param: Param,
-            onPopClicked: ()-> Unit
+            onPopClicked: () -> Unit
         ): GridScreenDecomposeComponent
     }
 

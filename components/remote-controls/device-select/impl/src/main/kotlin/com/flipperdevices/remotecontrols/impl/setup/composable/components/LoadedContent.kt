@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,15 +10,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
-import android.content.res.Configuration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.ErrorComposable
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
+import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 
 @Composable
 internal fun LoadedContent(

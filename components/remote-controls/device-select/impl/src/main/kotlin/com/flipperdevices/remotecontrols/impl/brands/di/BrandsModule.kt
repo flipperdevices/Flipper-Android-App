@@ -2,11 +2,11 @@ package com.flipperdevices.remotecontrols.impl.brands.di
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
+import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.data.BackendBrandsRepository
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
-import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.internal.BrandsScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.internal.BrandsDecomposeComponentImpl
+import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.internal.BrandsScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.BrandsListViewModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.QueryViewModel
 import kotlinx.coroutines.Dispatchers

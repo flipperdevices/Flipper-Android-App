@@ -23,7 +23,7 @@ internal interface GridComponent {
         fun create(
             componentContext: ComponentContext,
             param: GridScreenDecomposeComponent.Param,
-            onPopClicked: ()-> Unit
+            onPopClicked: () -> Unit
         ): GridComponent
     }
 }

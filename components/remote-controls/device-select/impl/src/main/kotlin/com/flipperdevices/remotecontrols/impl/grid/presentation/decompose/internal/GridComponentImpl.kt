@@ -2,10 +2,10 @@ package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.inter
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
-import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
+import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import kotlinx.coroutines.flow.asStateFlow
 
 internal class GridComponentImpl(

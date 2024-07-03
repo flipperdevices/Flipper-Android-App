@@ -34,7 +34,6 @@ interface ControllerModule {
                     }
                 )
             }
-
         }
         override val gridComponentFactory = GridScreenDecomposeComponent.Factory { componentContext, param, onPopClicked ->
             GridScreenDecomposeComponentImpl(

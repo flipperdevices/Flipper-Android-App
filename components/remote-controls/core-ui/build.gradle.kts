@@ -16,7 +16,6 @@ dependencies {
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
 
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)

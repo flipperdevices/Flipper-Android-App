@@ -17,12 +17,15 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 fun DoubleButton(
     onFirstClicked: () -> Unit,
     onLastClicked: () -> Unit,
-    text: String? = null,
     firstText: String,
-    lastText: String
+    lastText: String,
+    modifier: Modifier = Modifier,
+    text: String? = null,
 ) {
     Column(
-        modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Color(0xFF303030)),
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(Color(0xFF303030)),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -51,27 +54,31 @@ fun DoubleButton(
 @Composable
 fun VolumeButton(
     onAddClicked: () -> Unit,
-    onReduceClicked: () -> Unit
+    onReduceClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     DoubleButton(
         onFirstClicked = onAddClicked,
         onLastClicked = onReduceClicked,
         text = "VOL",
         firstText = "+",
-        lastText = "-"
+        lastText = "-",
+        modifier = Modifier
     )
 }
 
 @Composable
 fun ChannelButton(
     onNextClicked: () -> Unit,
-    onPrevClicked: () -> Unit
+    onPrevClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     DoubleButton(
         onFirstClicked = onNextClicked,
         onLastClicked = onPrevClicked,
         text = "CH",
         firstText = "+",
-        lastText = "-"
+        lastText = "-",
+        modifier = modifier
     )
 }

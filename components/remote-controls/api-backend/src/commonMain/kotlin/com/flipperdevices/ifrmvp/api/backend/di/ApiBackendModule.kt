@@ -41,7 +41,7 @@ interface ApiBackendModule {
                 httpClient = httpClient,
                 backendUrlHost = "192.168.0.100:8080",
 
-                )
+            )
         }
     }
 }

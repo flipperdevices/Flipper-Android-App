@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,7 +55,7 @@ internal fun AlphabetSearchComposable(
         )
 
         val offsets = remember { mutableStateMapOf<Int, Float>() }
-        var selectedHeaderIndex by remember { mutableStateOf(0) }
+        var selectedHeaderIndex by remember { mutableIntStateOf(0) }
         var isScrollingToIndex by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
 

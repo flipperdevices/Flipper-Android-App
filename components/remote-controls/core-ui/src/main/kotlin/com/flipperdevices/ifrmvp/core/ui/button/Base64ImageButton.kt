@@ -3,6 +3,7 @@ package com.flipperdevices.ifrmvp.core.ui.button
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -31,7 +32,8 @@ private fun resolveImage(imgBase64: String?): ByteArray? {
 }
 
 private fun imageBitmapFromBytes(encodedImageData: ByteArray): ImageBitmap? {
-    return BitmapFactory.decodeByteArray(encodedImageData, 0, encodedImageData.size)?.asImageBitmap()
+    return BitmapFactory.decodeByteArray(encodedImageData, 0, encodedImageData.size)
+        ?.asImageBitmap()
 }
 
 private fun toImageBitmap(base64Icon: String): ImageBitmap? {
@@ -46,14 +48,19 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 }
 
 @Composable
-fun Base64ImageButton(base64Icon: String, onClick: () -> Unit) {
+fun Base64ImageButton(
+    base64Icon: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val imageBitmap = rememberImageBitmap(base64Icon)
     if (imageBitmap != null) {
         SquareImageButton(
             onClick = onClick,
             background = Color(0xFF303030),
             bitmap = imageBitmap,
-            iconTint = Color.Unspecified
+            iconTint = Color.Unspecified,
+            modifier = modifier
         )
     }
 }

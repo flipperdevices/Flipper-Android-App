@@ -3,9 +3,9 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.inte
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
-import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.composable.SetupScreen
+import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 
 internal class SetupScreenDecomposeComponentImpl(
     componentContext: ComponentContext,

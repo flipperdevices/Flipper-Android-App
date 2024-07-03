@@ -26,17 +26,18 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 @Suppress("LongMethod")
 @Composable
 fun NavigationButton(
-    background: Color = Color(0xFF303030),
-    iconTint: Color = MaterialTheme.colors.onPrimary,
-    textColor: Color = MaterialTheme.colors.onPrimary,
     onUpClicked: () -> Unit,
     onRightClicked: () -> Unit,
     onDownClicked: () -> Unit,
     onLeftClicked: () -> Unit,
-    onOkClicked: () -> Unit
+    onOkClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    background: Color = Color(0xFF303030),
+    iconTint: Color = MaterialTheme.colors.onPrimary,
+    textColor: Color = MaterialTheme.colors.onPrimary,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(GridConstants.DEFAULT_BUTTON_SIZE * 4)
             .clip(CircleShape)
             .background(background),
@@ -46,7 +47,8 @@ fun NavigationButton(
             painter = rememberVectorPainter(Icons.Filled.KeyboardArrowUp),
             tint = iconTint,
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
                 .clip(CircleShape)
                 .clickable(onClick = onUpClicked)
                 .align(Alignment.TopCenter)
@@ -55,7 +57,8 @@ fun NavigationButton(
             painter = rememberVectorPainter(Icons.AutoMirrored.Filled.KeyboardArrowLeft),
             tint = iconTint,
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
                 .clip(CircleShape)
                 .clickable(onClick = onLeftClicked)
                 .align(Alignment.CenterStart)
@@ -85,7 +88,8 @@ fun NavigationButton(
             painter = rememberVectorPainter(Icons.AutoMirrored.Filled.KeyboardArrowRight),
             tint = iconTint,
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
                 .clip(CircleShape)
                 .clickable(onClick = onRightClicked)
                 .align(Alignment.CenterEnd)
@@ -95,7 +99,8 @@ fun NavigationButton(
             painter = rememberVectorPainter(Icons.Filled.KeyboardArrowDown),
             tint = iconTint,
             contentDescription = null,
-            modifier = Modifier.size(32.dp)
+            modifier = Modifier
+                .size(32.dp)
                 .clip(CircleShape)
                 .clickable(onClick = onDownClicked)
                 .align(Alignment.BottomCenter)

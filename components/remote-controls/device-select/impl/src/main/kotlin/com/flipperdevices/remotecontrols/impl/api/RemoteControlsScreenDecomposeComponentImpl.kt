@@ -9,30 +9,33 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.impl.api.di.SelectDeviceRootModule
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.api.di.SelectDeviceRootModule
+import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import  com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 
 @ContributesAssistedFactory(AppGraph::class, RemoteControlsScreenDecomposeComponent.Factory::class)
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val serviceProvider: FlipperServiceProvider,
-    private val context: Context
+    private val context: Context,
+    private val emulateHelper: EmulateHelper
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
     private val module = SelectDeviceRootModule.Default(
         apiBackendModule = ApiBackendModule.Default(),
         context = context,
-        serviceProvider = serviceProvider
+        serviceProvider = serviceProvider,
+        emulateHelper = emulateHelper
     )
 
     override val stack = childStack(

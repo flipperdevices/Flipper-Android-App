@@ -4,11 +4,13 @@ import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
-import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
+import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.SetupComponentImpl
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.SetupScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.DispatchSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
 
@@ -18,7 +20,8 @@ interface SetupModule {
     class Default(
         apiBackendModule: ApiBackendModule,
         serviceProvider: FlipperServiceProvider,
-        context: Context
+        context: Context,
+        emulateHelper: EmulateHelper
     ) : SetupModule {
         private val setupComponentFactory = object : SetupComponent.Factory {
             override fun createSetupComponent(
@@ -45,6 +48,12 @@ interface SetupModule {
                     createSaveSignalViewModel = {
                         SaveSignalViewModel(
                             context = context,
+                            serviceProvider = serviceProvider
+                        )
+                    },
+                    createDispatchSignalViewModel = {
+                        DispatchSignalViewModel(
+                            emulateHelper = emulateHelper,
                             serviceProvider = serviceProvider
                         )
                     }

@@ -18,11 +18,11 @@ import com.flipperdevices.ifrmvp.model.IfrButton
 @Composable
 fun BoxWithConstraintsScope.GridItemComposable(
     position: IfrButton.Position,
+    modifier: Modifier = Modifier,
     maxRows: Int = GridConstants.MAX_ROWS,
     maxColumns: Int = GridConstants.MAX_COLUMNS,
     maxWidth: Dp = GridConstants.MAX_WIDTH,
     maxHeight: Dp = GridConstants.MAX_HEIGHT,
-    modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
     val offset = rememberDpOffset(

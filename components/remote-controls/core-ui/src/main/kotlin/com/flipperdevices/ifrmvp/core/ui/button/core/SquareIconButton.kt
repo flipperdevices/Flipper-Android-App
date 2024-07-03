@@ -19,8 +19,8 @@ fun SquareIconButton(
     painter: Painter,
     background: Color,
     iconTint: Color,
-    contentDescription: String? = null,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,
@@ -42,8 +42,8 @@ fun SquareImageButton(
     bitmap: ImageBitmap,
     background: Color,
     iconTint: Color,
-    contentDescription: String? = null,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,

@@ -1,6 +1,5 @@
 package com.flipperdevices.ifrmvp.core.ui.button.core
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,11 +11,11 @@ import androidx.compose.ui.unit.TextUnit
 
 @Composable
 fun TextButton(
+    text: String,
+    modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.onPrimary,
     fontSize: TextUnit = MaterialTheme.typography.caption.fontSize,
-    modifier: Modifier = Modifier,
-    text: String,
     onClick: (() -> Unit)?
 ) {
     SquareButton(

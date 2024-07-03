@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -56,11 +57,13 @@ class SaveSignalViewModel(
     }
 
     fun save(signalModel: SignalModel) = viewModelScope.launch(Dispatchers.Main) {
-        val type = FlipperKeyType.INFRARED
         val fff = signalModel.toFFF()
-        val deeplinkContent = DeeplinkContent.FFFContent("temp.ir", fff)
+        val deeplinkContent = DeeplinkContent.FFFContent("ifr_temp.ir", fff)
+        val ffPath = FlipperFilePath(
+            FlipperKeyType.INFRARED.flipperDir,
+            "ifr_temp.ir"
+        )
         val contentResolver = context.contentResolver
-        val filePath = "/ext/infrared/ifr_temp.ir"
         val messageSize = fff.length()
         state.value = State.Uploading(0, messageSize)
         serviceProvider.provideServiceApi(
@@ -77,7 +80,7 @@ class SaveSignalViewModel(
                             deeplinkContent.length()
                         ) { chunkData ->
                             storageWriteRequest = writeRequest {
-                                path = filePath
+                                path = ffPath.getPathOnFlipper()
                                 file = file { data = chunkData }
                             }
                         }.map { message ->
@@ -105,7 +108,7 @@ class SaveSignalViewModel(
                                         commandId = id
                                         hasNext = false
                                         storageWriteRequest = writeRequest {
-                                            path = filePath
+                                            path = ffPath.getPathOnFlipper()
                                         }
                                     }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
                                 ).collect()

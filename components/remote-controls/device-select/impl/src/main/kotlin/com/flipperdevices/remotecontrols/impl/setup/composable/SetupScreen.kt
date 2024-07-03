@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable
 
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -19,6 +18,7 @@ import com.flipperdevices.remotecontrols.impl.setup.composable.components.Loaded
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 
 @Composable
 internal fun SetupScreen(setupComponent: SetupComponent) {

@@ -4,10 +4,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
+import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.DispatchSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
-import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ internal class SetupComponentImpl(
     createCurrentSignalViewModel: (onLoaded: (SignalResponseModel) -> Unit) -> CurrentSignalViewModel,
     createHistoryViewModel: () -> HistoryViewModel,
     createSaveSignalViewModel: () -> SaveSignalViewModel,
+    createDispatchSignalViewModel: () -> DispatchSignalViewModel
 ) : SetupComponent, ComponentContext by componentContext {
     private val saveFileViewModel = instanceKeeper.getOrCreate {
         createSaveSignalViewModel.invoke()
@@ -39,6 +41,9 @@ internal class SetupComponentImpl(
     private val historyFeature = instanceKeeper.getOrCreate {
         createHistoryViewModel.invoke()
     }
+    private val dispatchSignalViewModel = instanceKeeper.getOrCreate {
+        createDispatchSignalViewModel.invoke()
+    }
     private val modelFlow = combine(
         signalFeature.state,
         saveFileViewModel.state,
@@ -46,13 +51,20 @@ internal class SetupComponentImpl(
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
-                    when(saveState) {
+                    when (saveState) {
                         SaveSignalViewModel.State.Error -> SetupComponent.Model.Error
-                        SaveSignalViewModel.State.Pending -> SetupComponent.Model.Loaded(response = signalState.response)
-                        SaveSignalViewModel.State.Uploaded -> SetupComponent.Model.Loaded(response = signalState.response)
-                        is SaveSignalViewModel.State.Uploading -> SetupComponent.Model.Loading(saveState.progress)
+                        SaveSignalViewModel.State.Pending -> SetupComponent.Model.Loaded(
+                            response = signalState.response
+                        )
+                        SaveSignalViewModel.State.Uploaded -> SetupComponent.Model.Loaded(
+                            response = signalState.response
+                        )
+                        is SaveSignalViewModel.State.Uploading -> SetupComponent.Model.Loading(
+                            saveState.progress
+                        )
                     }
                 }
+
                 CurrentSignalViewModel.State.Loading -> SetupComponent.Model.Loading(0f)
             }
         }
@@ -60,7 +72,6 @@ internal class SetupComponentImpl(
 
     override fun model(coroutineScope: CoroutineScope) = modelFlow
         .stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.Model.Loading(0f))
-
 
     override val remoteFoundFlow: Flow<IfrFileModel> = modelFlow
         .filterIsInstance<SetupComponent.Model.Loaded>()
@@ -92,8 +103,12 @@ internal class SetupComponentImpl(
         tryLoad()
     }
 
-    // todo
-    override fun dispatchSignal() = Unit
+    override fun dispatchSignal() {
+        val state = signalFeature.state.value
+        val loadedState = state as? CurrentSignalViewModel.State.Loaded ?: return
+        val signalModel = loadedState.response.signalResponse?.signalModel ?: return
+        dispatchSignalViewModel.dispatch(signalModel)
+    }
 
     override fun onBackClicked() = onBackClicked.invoke()
 }

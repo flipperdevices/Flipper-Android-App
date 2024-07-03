@@ -1,8 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.categories.di
 
 import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
-import com.flipperdevices.remotecontrols.impl.categories.presentation.data.BackendDeviceCategoriesRepository
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.categories.presentation.data.BackendDeviceCategoriesRepository
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.internal.CategoriesScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.internal.DeviceCategoriesComponentImpl

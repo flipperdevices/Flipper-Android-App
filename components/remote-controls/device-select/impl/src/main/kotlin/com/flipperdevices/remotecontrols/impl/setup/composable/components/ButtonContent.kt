@@ -1,31 +1,29 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.backend.model.SignalResponse
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.size
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.ifrmvp.backend.model.SignalModel
+import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.core.ui.button.UnknownButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
+import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 
 @Composable
 private fun SignalResponseButton(
@@ -63,9 +61,9 @@ private fun SignalResponseButton(
 @Composable
 internal fun ButtonContent(
     onClicked: () -> Unit,
-    modifier: Modifier = Modifier,
     data: SignalResponse.Data,
-    categoryName: String
+    categoryName: String,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),

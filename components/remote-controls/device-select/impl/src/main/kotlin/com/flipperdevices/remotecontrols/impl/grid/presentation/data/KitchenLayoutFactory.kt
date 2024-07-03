@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.flipperdevices.remotecontrols.impl.grid.presentation.data
 
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants

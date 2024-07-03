@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.api)
+    implementation(projects.components.keyemulate.api)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
@@ -46,4 +47,3 @@ dependencies {
 
     implementation(libs.bundles.decompose)
 }
-

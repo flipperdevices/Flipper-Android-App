@@ -7,14 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 import androidx.compose.ui.res.stringResource
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.DeviceCategoriesLoadedContent
-import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.ErrorComposable
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.LoadingComposable
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.SharedTopBar
+import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
+import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 
 @Composable
 internal fun DeviceCategoriesScreen(deviceCategoriesComponent: DeviceCategoriesComponent) {
