@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
+import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
@@ -15,9 +16,13 @@ internal interface GridComponent {
     fun pop()
 
     sealed interface Model {
-        data class Loading(val progress: Float) : Model
+        data class Loading(
+            val progress: Float,
+        ) : Model
+
         data class Loaded(
             val pagesLayout: PagesLayout,
+            val remotes: List<InfraredRemote>
         ) : Model
 
         data object Error : Model

@@ -6,8 +6,11 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.backend.model.SignalModel
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel.State
@@ -27,6 +30,7 @@ class DispatchSignalViewModel(
         state.value = State.Pending
     }
 
+
     fun dispatch(signalModel: SignalModel) {
         val ffPath = FlipperFilePath(
             FlipperKeyType.INFRARED.flipperDir,
@@ -38,6 +42,10 @@ class DispatchSignalViewModel(
             args = signalModel.name,
             index = 0
         )
+        dispatch(config)
+    }
+
+    private fun dispatch(config: EmulateConfig) {
         serviceProvider.provideServiceApi(
             lifecycleOwner = this,
             onError = { state.value = State.Error },
@@ -60,6 +68,32 @@ class DispatchSignalViewModel(
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
+
+    fun dispatch(
+        identifier: IfrKeyIdentifier,
+        remotes: List<InfraredRemote>,
+        fileName: String
+    ) {
+        val i = remotes.indexOfFirst { remote ->
+            when (identifier) {
+                is IfrKeyIdentifier.Name -> remote.name == identifier.name
+                is IfrKeyIdentifier.Sha256 -> TODO()
+            }
+        }
+        if (i == -1) error { "Not found!" }
+        val remote = remotes[i]
+        val ffPath = FlipperFilePath(
+            FlipperKeyType.INFRARED.flipperDir,
+            fileName
+        )
+        val config = EmulateConfig(
+            keyPath = ffPath,
+            keyType = FlipperKeyType.INFRARED,
+            args = remote.name,
+            index = i
+        )
+        dispatch(config)
+    }
 
     sealed interface State {
         data object Pending : State

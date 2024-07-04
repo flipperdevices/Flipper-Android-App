@@ -11,6 +11,7 @@ import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridCo
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.internal.GridComponentImpl
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.internal.GridScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.DispatchSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
 
 interface ControllerModule {
@@ -45,6 +46,12 @@ interface ControllerModule {
                     createSaveSignalViewModel = {
                         SaveSignalViewModel(
                             context = context,
+                            serviceProvider = serviceProvider
+                        )
+                    },
+                    createDispatchSignalViewModel = {
+                        DispatchSignalViewModel(
+                            emulateHelper = emulateHelper,
                             serviceProvider = serviceProvider
                         )
                     }
