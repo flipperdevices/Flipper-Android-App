@@ -14,7 +14,7 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.categories.impl.R as CategoriesR
 
 @Composable
 internal fun DeviceCategoriesScreen(deviceCategoriesComponent: DeviceCategoriesComponent) {
@@ -22,8 +22,8 @@ internal fun DeviceCategoriesScreen(deviceCategoriesComponent: DeviceCategoriesC
     Scaffold(
         topBar = {
             SharedTopBar(
-                title = stringResource(RemoteSetupR.string.categories_title),
-                subtitle = stringResource(RemoteSetupR.string.categories_subtitle),
+                title = stringResource(CategoriesR.string.categories_title),
+                subtitle = stringResource(CategoriesR.string.categories_subtitle),
                 onBackClicked = deviceCategoriesComponent::onBackClicked
             )
         },
