@@ -12,15 +12,17 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.remotecontrols.impl.categories.composable.components.LoadingComposable
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 
 @Composable
 internal fun GridComposable(gridComponent: GridComponent) {
-    val model by gridComponent.model.collectAsState()
+    val model by gridComponent.model(rememberCoroutineScope()).collectAsState()
     val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
@@ -61,21 +63,11 @@ internal fun GridComposable(gridComponent: GridComponent) {
                         )
                     }
 
-                    GridComponent.Model.Loading -> {
-                        LoadingView()
+                    is GridComponent.Model.Loading -> {
+                        LoadingComposable(model.progress)
                     }
                 }
             }
         }
     )
-}
-
-@Composable
-fun LoadingView(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
 }

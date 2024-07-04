@@ -6,18 +6,49 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
-import kotlinx.coroutines.flow.asStateFlow
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 internal class GridComponentImpl(
     componentContext: ComponentContext,
     param: GridScreenDecomposeComponent.Param,
-    createGridViewModel: (param: GridScreenDecomposeComponent.Param) -> GridViewModel,
+    createGridViewModel: (onIrFileLoaded: (String) -> Unit) -> GridViewModel,
+    createSaveSignalViewModel: () -> SaveSignalViewModel,
     private val onPopClicked: () -> Unit
 ) : GridComponent, ComponentContext by componentContext {
-    private val gridFeature = instanceKeeper.getOrCreate {
-        createGridViewModel.invoke(param)
+    private val saveSignalViewModel = instanceKeeper.getOrCreate {
+        createSaveSignalViewModel.invoke()
     }
-    override val model = gridFeature.model.asStateFlow()
+    private val gridFeature = instanceKeeper.getOrCreate {
+        createGridViewModel.invoke { content ->
+            saveSignalViewModel.save(content, "${param.ifrFileId}.ir")
+        }
+    }
+
+    override fun model(coroutineScope: CoroutineScope) = combine(
+        saveSignalViewModel.state,
+        gridFeature.state,
+        transform = { saveState, gridState ->
+            when (gridState) {
+                GridViewModel.State.Error -> GridComponent.Model.Error
+                is GridViewModel.State.Loaded -> {
+                    when (saveState) {
+                        SaveSignalViewModel.State.Error -> GridComponent.Model.Error
+                        SaveSignalViewModel.State.Uploaded, SaveSignalViewModel.State.Pending -> {
+                            GridComponent.Model.Loaded(pagesLayout = gridState.pagesLayout)
+                        }
+
+                        is SaveSignalViewModel.State.Uploading -> GridComponent.Model.Loading(saveState.progress)
+                    }
+                }
+
+                GridViewModel.State.Loading -> GridComponent.Model.Error
+            }
+        }
+    ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading(0f))
 
     override fun onButtonClicked(identifier: IfrKeyIdentifier) {
     }

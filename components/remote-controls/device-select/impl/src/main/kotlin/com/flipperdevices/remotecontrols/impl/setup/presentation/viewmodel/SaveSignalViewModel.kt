@@ -56,12 +56,21 @@ class SaveSignalViewModel(
         state.value = State.Pending
     }
 
-    fun save(signalModel: SignalModel) = viewModelScope.launch(Dispatchers.Main) {
+    fun save(signalModel: SignalModel, path: String) = viewModelScope.launch(Dispatchers.Main) {
         val fff = signalModel.toFFF()
-        val deeplinkContent = DeeplinkContent.FFFContent("ifr_temp.ir", fff)
+        save(fff, path)
+    }
+
+    fun save(rawString: String, path: String) = viewModelScope.launch(Dispatchers.Main) {
+        val fff = FlipperFileFormat.fromFileContent(rawString)
+        save(fff, path)
+    }
+
+    private suspend fun save(fff: FlipperFileFormat, filePath: String) {
+        val deeplinkContent = DeeplinkContent.FFFContent(filePath, fff)
         val ffPath = FlipperFilePath(
             FlipperKeyType.INFRARED.flipperDir,
-            "ifr_temp.ir"
+            filePath
         )
         val contentResolver = context.contentResolver
         val messageSize = fff.length()

@@ -30,7 +30,7 @@ class DispatchSignalViewModel(
     fun dispatch(signalModel: SignalModel) {
         val ffPath = FlipperFilePath(
             FlipperKeyType.INFRARED.flipperDir,
-            "ifr_temp.ir"
+            "ir_temp.ir"
         )
         val config = EmulateConfig(
             keyPath = ffPath,

@@ -17,6 +17,6 @@ internal class BackendPagesRepository(
     override suspend fun fetchKeyContent(
         ifrFileId: Long
     ): Result<String> = kotlin.runCatching {
-        ""
+        apiBackend.getIfrFileContent(ifrFileId)
     }
 }

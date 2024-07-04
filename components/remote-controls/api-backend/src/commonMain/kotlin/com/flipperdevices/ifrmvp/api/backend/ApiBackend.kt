@@ -18,6 +18,7 @@ interface ApiBackend {
     suspend fun getCategories(): CategoriesResponse
     suspend fun getManufacturers(categoryId: Long): BrandsResponse
     suspend fun getSignal(request: SignalRequestModel): SignalResponseModel
+    suspend fun getIfrFileContent(ifrFileId: Long): String
 }
 
 internal class ApiBackendImpl(
@@ -45,6 +46,14 @@ internal class ApiBackendImpl(
             url(host = backendUrlHost, path = "signal")
             contentType(ContentType.Application.Json)
             setBody(request)
+        }.body()
+    }
+
+    override suspend fun getIfrFileContent(ifrFileId: Long): String {
+        return httpClient.post {
+            url(host = backendUrlHost, path = "key")
+            contentType(ContentType.Application.Json)
+            parameter("ifr_file_id", ifrFileId)
         }.body()
     }
 }

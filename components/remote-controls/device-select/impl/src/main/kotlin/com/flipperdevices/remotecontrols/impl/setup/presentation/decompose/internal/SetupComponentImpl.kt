@@ -35,7 +35,9 @@ internal class SetupComponentImpl(
     }
     private val signalFeature = instanceKeeper.getOrCreate {
         createCurrentSignalViewModel.invoke {
-            it.signalResponse?.signalModel?.run(saveFileViewModel::save)
+            it.signalResponse?.signalModel?.let { signalModel ->
+                saveFileViewModel.save(signalModel, "ir_temp.ir")
+            }
         }
     }
     private val historyFeature = instanceKeeper.getOrCreate {
@@ -56,9 +58,11 @@ internal class SetupComponentImpl(
                         SaveSignalViewModel.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response
                         )
+
                         SaveSignalViewModel.State.Uploaded -> SetupComponent.Model.Loaded(
                             response = signalState.response
                         )
+
                         is SaveSignalViewModel.State.Uploading -> SetupComponent.Model.Loading(
                             saveState.progress
                         )

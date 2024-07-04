@@ -48,7 +48,12 @@ interface SelectDeviceRootModule {
         }
 
         override fun createGridModule(): ControllerModule {
-            return ControllerModule.Default(apiBackendModule = apiBackendModule)
+            return ControllerModule.Default(
+                apiBackendModule = apiBackendModule,
+                serviceProvider = serviceProvider,
+                context = context,
+                emulateHelper = emulateHelper
+            )
         }
     }
 }

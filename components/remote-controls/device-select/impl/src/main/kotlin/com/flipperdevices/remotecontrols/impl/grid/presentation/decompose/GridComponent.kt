@@ -4,18 +4,22 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface GridComponent {
-    val model: StateFlow<Model>
+    fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClicked(identifier: IfrKeyIdentifier)
     fun tryLoad()
     fun pop()
 
     sealed interface Model {
-        data object Loading : Model
-        data class Loaded(val pagesLayout: PagesLayout) : Model
+        data class Loading(val progress: Float) : Model
+        data class Loaded(
+            val pagesLayout: PagesLayout,
+        ) : Model
+
         data object Error : Model
     }
 
