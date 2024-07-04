@@ -11,9 +11,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.ErrorComposable
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.LoadingComposable
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.SharedTopBar
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import kotlinx.coroutines.flow.launchIn

@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.DeviceCategoriesLoadedContent
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.ErrorComposable
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.LoadingComposable
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.SharedTopBar
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 

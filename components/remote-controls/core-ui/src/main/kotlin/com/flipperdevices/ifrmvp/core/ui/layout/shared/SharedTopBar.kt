@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.categories.composable.components
+package com.flipperdevices.ifrmvp.core.ui.layout.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,12 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R
+import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-internal fun SharedTopBar(
+fun SharedTopBar(
     title: String,
     subtitle: String,
     onBackClicked: () -> Unit,
@@ -42,7 +42,7 @@ internal fun SharedTopBar(
             modifier = Modifier
                 .size(24.dp)
                 .clickableRipple(bounded = false, onClick = onBackClicked),
-            painter = painterResource(R.drawable.ic_back),
+            painter = painterResource(DesignSystem.drawable.ic_back),
             contentDescription = null,
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
         )

@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.categories.composable.components
+package com.flipperdevices.ifrmvp.core.ui.layout.shared
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-internal fun LoadingComposable(progress: Float = 0f) {
+fun LoadingComposable(progress: Float = 0f) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,

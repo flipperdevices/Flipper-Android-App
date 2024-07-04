@@ -28,6 +28,7 @@ dependencies {
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
+    implementation(projects.components.remoteControls.grid.api)
 
     // Compose
     implementation(libs.compose.ui)

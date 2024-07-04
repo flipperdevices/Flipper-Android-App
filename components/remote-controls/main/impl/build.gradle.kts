@@ -30,9 +30,13 @@ dependencies {
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.main.api)
     implementation(projects.components.remoteControls.brands.api)
+    implementation(projects.components.remoteControls.brands.impl)
     implementation(projects.components.remoteControls.categories.api)
+    implementation(projects.components.remoteControls.categories.impl)
     implementation(projects.components.remoteControls.grid.api)
+    implementation(projects.components.remoteControls.grid.impl)
     implementation(projects.components.remoteControls.setup.api)
+    implementation(projects.components.remoteControls.setup.impl)
 
     // Compose
     implementation(libs.compose.ui)

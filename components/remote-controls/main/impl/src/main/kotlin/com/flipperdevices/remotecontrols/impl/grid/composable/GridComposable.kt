@@ -1,11 +1,9 @@
 package com.flipperdevices.remotecontrols.impl.grid.composable
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -16,8 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.LoadingComposable
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.SharedTopBar
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 
 @Composable

@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.categories.composable.components
+package com.flipperdevices.ifrmvp.core.ui.layout.shared
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
-internal fun ErrorComposable(
+fun ErrorComposable(
     desc: String? = null,
     onReload: (() -> Unit)? = null
 ) {
@@ -30,7 +30,7 @@ internal fun ErrorComposable(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(RemoteSetupR.string.error_title),
+                    text = stringResource(RemoteControlsR.string.error_title),
                     style = MaterialTheme.typography.subtitle2,
                     color = LocalPalletV2.current.text.title.primary
                 )
@@ -46,7 +46,7 @@ internal fun ErrorComposable(
                 onReload?.let {
                     TextButton(onClick = onReload) {
                         Text(
-                            text = stringResource(RemoteSetupR.string.error_action),
+                            text = stringResource(RemoteControlsR.string.error_action),
                             style = MaterialTheme.typography.subtitle2,
                             color = LocalPalletV2.current.action.blue.text.default
                         )

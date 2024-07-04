@@ -3,12 +3,14 @@ package com.flipperdevices.remotecontrols.impl.grid.composable
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.flipperdevices.ifrmvp.core.ui.button.ButtonItemComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.core.GridItemComposable
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
-import com.flipperdevices.remotecontrols.impl.categories.composable.components.ErrorComposable
+import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
 
 @Composable
 internal fun BoxWithConstraintsScope.ButtonsComposable(
