@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class HistoryViewModel @Inject constructor(): DecomposeViewModel() {
+class HistoryViewModel @Inject constructor() : DecomposeViewModel() {
     val state = MutableStateFlow(State())
 
     fun rememberSuccessful(signalModel: SignalModel) {

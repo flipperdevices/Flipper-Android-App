@@ -86,7 +86,6 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         }
 
         is RemoteControlsNavigationConfig.Grid -> {
-
             gridScreenDecomposeComponentFactory
                 .invoke(
                     componentContext = componentContext,

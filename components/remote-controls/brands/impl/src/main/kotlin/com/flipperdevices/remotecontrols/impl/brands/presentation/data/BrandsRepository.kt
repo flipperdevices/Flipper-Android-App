@@ -6,9 +6,7 @@ import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 interface BrandsRepository {
     suspend fun fetchBrands(categoryId: Long): Result<List<BrandModel>>

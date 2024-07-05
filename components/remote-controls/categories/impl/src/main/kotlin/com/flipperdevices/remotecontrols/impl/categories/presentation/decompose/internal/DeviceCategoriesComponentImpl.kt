@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
-import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import com.flipperdevices.remotecontrols.impl.categories.presentation.viewmodel.DeviceCategoryListViewModel
 import dagger.assisted.Assisted

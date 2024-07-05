@@ -6,6 +6,7 @@ import com.flipperdevices.ifrmvp.backend.model.CategoriesResponse
 import com.flipperdevices.ifrmvp.backend.model.IfrFileContentResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
+import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -17,7 +18,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import javax.inject.Inject
-import com.squareup.anvil.annotations.ContributesBinding
 
 interface ApiBackend {
     suspend fun getCategories(): CategoriesResponse
@@ -26,7 +26,7 @@ interface ApiBackend {
     suspend fun getIfrFileContent(ifrFileId: Long): IfrFileContentResponse
     suspend fun getUiFile(ifrFileId: Long): String
 }
-private const val HOST = "192.168.0.100:8080"
+private const val HOST = "192.168.0.103:8080"
 
 @ContributesBinding(AppGraph::class, ApiBackend::class)
 class ApiBackendImpl @Inject constructor(

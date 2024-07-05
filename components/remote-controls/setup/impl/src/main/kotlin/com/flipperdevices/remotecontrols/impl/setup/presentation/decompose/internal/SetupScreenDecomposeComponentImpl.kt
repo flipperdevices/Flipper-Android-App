@@ -14,7 +14,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @ContributesAssistedFactory(AppGraph::class, SetupScreenDecomposeComponent.Factory::class)
 class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted  param: SetupScreenDecomposeComponent.Param,
+    @Assisted param: SetupScreenDecomposeComponent.Param,
     @Assisted onBack: () -> Unit,
     @Assisted onIfrFileFound: (ifrFileId: Long) -> Unit,
     setupComponentFactory: SetupComponent.Factory,

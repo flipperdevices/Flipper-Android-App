@@ -9,7 +9,6 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class BrandsListViewModel @AssistedInject constructor(
     private val brandsRepository: BrandsRepository,

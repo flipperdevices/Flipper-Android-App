@@ -14,13 +14,12 @@ import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
-import com.flipperdevices.remotecontrols.api.SaveSignalApi
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @ContributesBinding(AppGraph::class, DispatchSignalApi::class)
 class DispatchSignalViewModel @Inject constructor(
@@ -39,25 +38,27 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     override fun dispatch(config: EmulateConfig) {
-        serviceProvider.provideServiceApi(
-            lifecycleOwner = this,
-            onError = { state.value = DispatchSignalApi.State.Error },
-            onBleManager = { serviceApi ->
-                viewModelScope.launch {
-                    state.value = DispatchSignalApi.State.Emulating
-                    kotlin.runCatching {
-                        emulateHelper.startEmulate(
-                            scope = this,
-                            serviceApi = serviceApi,
-                            config = config
-                        )
-                        delay(500L)
-                        emulateHelper.stopEmulate(this, serviceApi.requestApi)
-                    }.onFailure(Throwable::printStackTrace) // todo
-                    reset()
+        viewModelScope.launch(Dispatchers.Main) {
+            serviceProvider.provideServiceApi(
+                lifecycleOwner = this@DispatchSignalViewModel,
+                onError = { state.value = DispatchSignalApi.State.Error },
+                onBleManager = { serviceApi ->
+                    viewModelScope.launch {
+                        state.value = DispatchSignalApi.State.Emulating
+                        kotlin.runCatching {
+                            emulateHelper.startEmulate(
+                                scope = this,
+                                serviceApi = serviceApi,
+                                config = config
+                            )
+                            delay(500L)
+                            emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                        }.onFailure(Throwable::printStackTrace) // todo
+                        reset()
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     override fun dispatch(
@@ -71,8 +72,10 @@ class DispatchSignalViewModel @Inject constructor(
                 is IfrKeyIdentifier.Sha256 -> TODO()
             }
         }
-        if (i == -1) error { "Not found!" }
-        val remote = remotes[i]
+        val remote = remotes.getOrNull(i) ?: run {
+            error { "Not found!" }
+            return
+        }
         val ffPath = FlipperFilePath(
             FlipperKeyType.INFRARED.flipperDir,
             fileName

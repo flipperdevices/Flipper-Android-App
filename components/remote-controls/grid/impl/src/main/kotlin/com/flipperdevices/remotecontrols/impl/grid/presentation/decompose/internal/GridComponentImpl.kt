@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
-
 @ContributesAssistedFactory(AppGraph::class, GridComponent.Factory::class)
 class GridComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
