@@ -8,7 +8,7 @@ import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-internal interface GridComponent {
+interface GridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClicked(identifier: IfrKeyIdentifier)
@@ -29,7 +29,7 @@ internal interface GridComponent {
     }
 
     fun interface Factory {
-        fun create(
+        fun invoke(
             componentContext: ComponentContext,
             param: GridScreenDecomposeComponent.Param,
             onPopClicked: () -> Unit

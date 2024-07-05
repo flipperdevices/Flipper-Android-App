@@ -30,7 +30,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
-internal fun ConfirmContent(
+fun ConfirmContent(
     text: String,
     onPositiveClicked: () -> Unit,
     onNegativeClicked: () -> Unit,

@@ -2,10 +2,13 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.int
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.BrandsListViewModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.QueryViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,19 +16,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import me.gulya.anvil.assisted.ContributesAssistedFactory
+import javax.inject.Provider
 
-internal class BrandsDecomposeComponentImpl(
-    componentContext: ComponentContext,
-    private val onBackClicked: () -> Unit,
-    private val onBrandClicked: (brandId: Long) -> Unit,
-    createBrandsListViewModel: () -> BrandsListViewModel,
-    createQueryViewModel: () -> QueryViewModel
+@ContributesAssistedFactory(AppGraph::class, BrandsDecomposeComponent.Factory::class)
+class BrandsDecomposeComponentImpl @AssistedInject constructor(
+    @Assisted componentContext: ComponentContext,
+    @Assisted private val onBackClicked: () -> Unit,
+    @Assisted private val onBrandClicked: (brandId: Long) -> Unit,
+    @Assisted categoryId: Long,
+    createBrandsListViewModel: BrandsListViewModel.Factory,
+    createQueryViewModel: Provider<QueryViewModel>
 ) : BrandsDecomposeComponent, ComponentContext by componentContext {
     private val brandsListFeature = instanceKeeper.getOrCreate {
-        createBrandsListViewModel.invoke()
+        createBrandsListViewModel.invoke(categoryId)
     }
     private val queryFeature = instanceKeeper.getOrCreate {
-        createQueryViewModel.invoke()
+        createQueryViewModel.get()
     }
     override fun model(coroutineScope: CoroutineScope): StateFlow<BrandsDecomposeComponent.Model> = combine(
         flow = queryFeature.query,

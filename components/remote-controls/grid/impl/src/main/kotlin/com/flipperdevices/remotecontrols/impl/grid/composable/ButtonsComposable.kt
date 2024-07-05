@@ -11,7 +11,7 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
 
 @Composable
-internal fun BoxWithConstraintsScope.ButtonsComposable(
+fun BoxWithConstraintsScope.ButtonsComposable(
     pageLayout: PageLayout,
     onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
 ) {

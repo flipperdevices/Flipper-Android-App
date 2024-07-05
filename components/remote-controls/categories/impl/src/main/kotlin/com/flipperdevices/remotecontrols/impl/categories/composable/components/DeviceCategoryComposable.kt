@@ -28,7 +28,7 @@ import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
 import com.flipperdevices.ifrmvp.core.ui.button.rememberImageBitmap
 
 @Composable
-internal fun DeviceCategoryComposable(
+fun DeviceCategoryComposable(
     deviceCategory: DeviceCategory,
     onClicked: () -> Unit
 ) {

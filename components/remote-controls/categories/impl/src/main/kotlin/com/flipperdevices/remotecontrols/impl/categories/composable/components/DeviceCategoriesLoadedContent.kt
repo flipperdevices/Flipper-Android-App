@@ -12,7 +12,7 @@ import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 
 @Composable
-internal fun DeviceCategoriesLoadedContent(
+fun DeviceCategoriesLoadedContent(
     model: DeviceCategoriesComponent.Model.Loaded,
     onCategoryClicked: (DeviceCategory) -> Unit,
     modifier: Modifier = Modifier

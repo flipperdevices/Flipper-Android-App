@@ -20,7 +20,7 @@ interface DeviceCategoriesComponent {
     }
 
     fun interface Factory {
-        fun create(
+        fun invoke(
             componentContext: ComponentContext,
             onBackClicked: () -> Unit,
             onCategoryClicked: (categoryId: Long) -> Unit

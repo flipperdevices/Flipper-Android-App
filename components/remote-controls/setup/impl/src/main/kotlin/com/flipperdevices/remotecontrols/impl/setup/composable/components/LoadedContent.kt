@@ -20,7 +20,7 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.Setup
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
-internal fun LoadedContent(
+fun LoadedContent(
     model: SetupComponent.Model.Loaded,
     onPositiveClicked: () -> Unit,
     onNegativeClicked: () -> Unit,

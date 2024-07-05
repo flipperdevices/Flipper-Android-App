@@ -24,7 +24,7 @@ import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.ModelExt.charSection
 
 @Composable
-internal fun BrandsList(
+fun BrandsList(
     brands: List<BrandModel>,
     onBrandClicked: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,

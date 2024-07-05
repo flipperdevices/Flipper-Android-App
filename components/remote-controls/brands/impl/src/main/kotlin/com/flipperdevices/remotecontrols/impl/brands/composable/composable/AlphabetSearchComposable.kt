@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
-internal fun AlphabetSearchComposable(
+fun AlphabetSearchComposable(
     model: BrandsDecomposeComponent.Model.Loaded,
     modifier: Modifier = Modifier,
     onBrandClicked: (BrandModel) -> Unit

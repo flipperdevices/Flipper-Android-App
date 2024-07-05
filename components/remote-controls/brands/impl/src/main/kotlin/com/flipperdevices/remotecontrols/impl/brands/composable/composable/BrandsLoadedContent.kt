@@ -6,7 +6,7 @@ import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 
 @Composable
-internal fun BrandsLoadedContent(
+fun BrandsLoadedContent(
     model: BrandsDecomposeComponent.Model.Loaded,
     onBrandClicked: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,

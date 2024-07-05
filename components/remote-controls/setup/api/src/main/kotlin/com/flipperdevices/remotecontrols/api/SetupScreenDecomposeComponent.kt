@@ -8,7 +8,7 @@ abstract class SetupScreenDecomposeComponent(
 ) : ScreenDecomposeComponent(componentContext) {
 
     interface Factory {
-        fun createSetupComponent(
+        fun invoke(
             componentContext: ComponentContext,
             param: Param,
             onBack: () -> Unit,

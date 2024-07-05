@@ -1,19 +1,16 @@
 package com.flipperdevices.remotecontrols.impl.api
 
-import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.ifrmvp.api.backend.di.ApiBackendModule
-import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.impl.api.di.SelectDeviceRootModule
 import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -25,18 +22,12 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    private val serviceProvider: FlipperServiceProvider,
-    private val context: Context,
-    private val emulateHelper: EmulateHelper
+    private val categoriesScreenDecomposeComponentFactory: CategoriesScreenDecomposeComponent.Factory,
+    private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
+    private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
+    private val gridScreenDecomposeComponentFactory: GridScreenDecomposeComponent.Factory
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
-
-    private val module = SelectDeviceRootModule.Default(
-        apiBackendModule = ApiBackendModule.Default(),
-        context = context,
-        serviceProvider = serviceProvider,
-        emulateHelper = emulateHelper
-    )
 
     override val stack = childStack(
         source = navigation,
@@ -51,10 +42,8 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is RemoteControlsNavigationConfig.SelectCategory -> {
-            module
-                .createDeviceCategoriesModule()
-                .categoriesScreenDecomposeComponentFactory
-                .create(
+            categoriesScreenDecomposeComponentFactory
+                .invoke(
                     componentContext = componentContext,
                     onBackClicked = { onBack.invoke() },
                     onCategoryClicked = { deviceCategoryId ->
@@ -65,9 +54,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         }
 
         is RemoteControlsNavigationConfig.Brands -> {
-            module
-                .createBrandsModule()
-                .brandsScreenDecomposeComponentFactory
+            brandsScreenDecomposeComponentFactory
                 .createBrandsComponent(
                     componentContext = componentContext,
                     onBackClicked = navigation::pop,
@@ -83,10 +70,8 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         }
 
         is RemoteControlsNavigationConfig.Setup -> {
-            module
-                .createSetupModule()
-                .setupScreenDecomposeComponentFactory
-                .createSetupComponent(
+            setupScreenDecomposeComponentFactory
+                .invoke(
                     componentContext = componentContext,
                     param = SetupScreenDecomposeComponent.Param(
                         brandId = config.brandId,
@@ -101,10 +86,9 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         }
 
         is RemoteControlsNavigationConfig.Grid -> {
-            module
-                .createGridModule()
-                .gridScreenDecomposeComponentFactory
-                .create(
+
+            gridScreenDecomposeComponentFactory
+                .invoke(
                     componentContext = componentContext,
                     param = GridScreenDecomposeComponent.Param(
                         ifrFileId = config.ifrFileId,

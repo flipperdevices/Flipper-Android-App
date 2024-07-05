@@ -17,7 +17,7 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.
 import com.flipperdevices.remotecontrols.categories.impl.R as CategoriesR
 
 @Composable
-internal fun DeviceCategoriesScreen(deviceCategoriesComponent: DeviceCategoriesComponent) {
+fun DeviceCategoriesScreen(deviceCategoriesComponent: DeviceCategoriesComponent) {
     val model by deviceCategoriesComponent.model.collectAsState()
     Scaffold(
         topBar = {

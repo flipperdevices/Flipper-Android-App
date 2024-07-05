@@ -19,7 +19,7 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 
 @Composable
-internal fun GridComposable(gridComponent: GridComponent) {
+fun GridComposable(gridComponent: GridComponent) {
     val model by gridComponent.model(rememberCoroutineScope()).collectAsState()
     val scaffoldState = rememberScaffoldState()
     Scaffold(

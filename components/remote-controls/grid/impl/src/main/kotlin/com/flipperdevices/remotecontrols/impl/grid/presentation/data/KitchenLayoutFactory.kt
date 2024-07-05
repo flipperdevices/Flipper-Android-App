@@ -14,7 +14,7 @@ import com.flipperdevices.ifrmvp.model.buttondata.NavigationButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
 
-internal object KitchenLayoutFactory {
+object KitchenLayoutFactory {
     const val FILE_NAME: String = "KitchenLayout"
 
     @Suppress("LongMethod")

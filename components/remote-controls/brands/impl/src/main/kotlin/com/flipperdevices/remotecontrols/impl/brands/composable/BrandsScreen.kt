@@ -17,7 +17,7 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.Bran
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
 
 @Composable
-internal fun BrandsScreen(brandsDecomposeComponent: BrandsDecomposeComponent) {
+fun BrandsScreen(brandsDecomposeComponent: BrandsDecomposeComponent) {
     val model by brandsDecomposeComponent.model(rememberCoroutineScope()).collectAsState()
     Scaffold(
         topBar = {

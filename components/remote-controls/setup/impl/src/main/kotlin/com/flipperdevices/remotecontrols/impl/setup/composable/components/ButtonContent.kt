@@ -59,7 +59,7 @@ private fun SignalResponseButton(
 }
 
 @Composable
-internal fun ButtonContent(
+fun ButtonContent(
     onClicked: () -> Unit,
     data: SignalResponse.Data,
     categoryName: String,

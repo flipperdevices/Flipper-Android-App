@@ -13,7 +13,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 
-internal class ButtonDataEncoder(private val json: Json) {
+class ButtonDataEncoder(private val json: Json) {
     fun encodeToJsonObject(buttonData: ButtonData): JsonObject {
         return when (buttonData.type) {
             ButtonData.ButtonType.UNKNOWN -> {

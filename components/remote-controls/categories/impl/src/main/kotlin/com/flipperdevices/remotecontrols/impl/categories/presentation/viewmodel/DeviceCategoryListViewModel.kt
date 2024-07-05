@@ -5,18 +5,22 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.data.Devic
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-internal class DeviceCategoryListViewModel(
+class DeviceCategoryListViewModel @Inject constructor(
     private val deviceCategoriesRepository: DeviceCategoriesRepository
 ) : DecomposeViewModel() {
-    val model = MutableStateFlow<DeviceCategoriesComponent.Model>(DeviceCategoriesComponent.Model.Loading)
+    val model =
+        MutableStateFlow<DeviceCategoriesComponent.Model>(DeviceCategoriesComponent.Model.Loading)
 
     fun tryLoad() = viewModelScope.launch {
         model.value = DeviceCategoriesComponent.Model.Loading
         deviceCategoriesRepository.fetchCategories()
             .onFailure { model.value = DeviceCategoriesComponent.Model.Error }
             .onFailure(Throwable::printStackTrace)
-            .onSuccess { categories -> model.value = DeviceCategoriesComponent.Model.Loaded(categories) }
+            .onSuccess { categories ->
+                model.value = DeviceCategoriesComponent.Model.Loaded(categories)
+            }
     }
 
     init {

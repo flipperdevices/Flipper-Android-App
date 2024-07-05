@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -13,11 +14,16 @@ import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.api.SaveSignalApi
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-internal class DispatchSignalViewModel(
+
+@ContributesBinding(AppGraph::class, DispatchSignalApi::class)
+class DispatchSignalViewModel @Inject constructor(
     private val emulateHelper: EmulateHelper,
     private val serviceProvider: FlipperServiceProvider
 ) : DecomposeViewModel(),

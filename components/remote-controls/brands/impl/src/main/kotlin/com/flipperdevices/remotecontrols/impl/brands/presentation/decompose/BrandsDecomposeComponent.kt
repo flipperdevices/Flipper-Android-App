@@ -6,7 +6,7 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.util.ModelExt.
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-internal interface BrandsDecomposeComponent {
+interface BrandsDecomposeComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onQueryChanged(query: String)

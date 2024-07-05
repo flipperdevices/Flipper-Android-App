@@ -3,16 +3,21 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.int
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.composable.BrandsScreen
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import me.gulya.anvil.assisted.ContributesAssistedFactory
 
-internal class BrandsScreenDecomposeComponentImpl(
-    componentContext: ComponentContext,
+@ContributesAssistedFactory(AppGraph::class, BrandsScreenDecomposeComponent.Factory::class)
+class BrandsScreenDecomposeComponentImpl @AssistedInject constructor(
+    @Assisted componentContext: ComponentContext,
+    @Assisted categoryId: Long,
+    @Assisted onBackClicked: () -> Unit,
+    @Assisted onBrandClicked: (brandId: Long) -> Unit,
     brandsDecomposeComponentFactory: BrandsDecomposeComponent.Factory,
-    categoryId: Long,
-    onBackClicked: () -> Unit,
-    onBrandClicked: (brandId: Long) -> Unit
 ) : BrandsScreenDecomposeComponent(componentContext) {
     private val brandsComponent = brandsDecomposeComponentFactory.createBrandsComponent(
         componentContext = childContext("BrandsComponent"),

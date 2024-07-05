@@ -5,8 +5,8 @@ import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
-import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveSignalApi
@@ -14,6 +14,8 @@ import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,28 +25,31 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
+import me.gulya.anvil.assisted.ContributesAssistedFactory
+import javax.inject.Provider
 
-internal class SetupComponentImpl(
-    componentContext: ComponentContext,
-    override val param: SetupScreenDecomposeComponent.Param,
-    private val onBackClicked: () -> Unit,
-    private val onIfrFileFound: (ifrFileId: Long) -> Unit,
-    createCurrentSignalViewModel: (onLoaded: (SignalResponseModel) -> Unit) -> CurrentSignalViewModel,
-    createHistoryViewModel: () -> HistoryViewModel,
-    createSaveSignalApi: () -> SaveSignalApi,
-    createDispatchSignalApi: () -> DispatchSignalApi
+@ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
+class SetupComponentImpl @AssistedInject constructor(
+    @Assisted componentContext: ComponentContext,
+    @Assisted override val param: SetupScreenDecomposeComponent.Param,
+    @Assisted private val onBackClicked: () -> Unit,
+    @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
+    currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
+    createHistoryViewModel: Provider<HistoryViewModel>,
+    createSaveSignalApi: Provider<SaveSignalApi>,
+    createDispatchSignalApi: Provider<DispatchSignalApi>
 ) : SetupComponent, ComponentContext by componentContext {
     private val saveSignalApi = instanceKeeper.getOrCreate {
-        createSaveSignalApi.invoke()
+        createSaveSignalApi.get()
     }
     private val historyViewModel = instanceKeeper.getOrCreate {
-        createHistoryViewModel.invoke()
+        createHistoryViewModel.get()
     }
     private val dispatchSignalApi = instanceKeeper.getOrCreate {
-        createDispatchSignalApi.invoke()
+        createDispatchSignalApi.get()
     }
     private val createCurrentSignalViewModel = instanceKeeper.getOrCreate {
-        createCurrentSignalViewModel.invoke {
+        currentSignalViewModelFactory.invoke(param) {
             it.signalResponse?.signalModel?.let { signalModel ->
                 val fff = FlipperFileFormat(
                     orderedDict = listOf(

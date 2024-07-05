@@ -6,16 +6,19 @@ import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel.SignalResultData
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-internal class CurrentSignalViewModel(
+class CurrentSignalViewModel @AssistedInject constructor(
     private val apiBackend: ApiBackend,
-    private val param: SetupScreenDecomposeComponent.Param,
-    private val onLoaded: (SignalResponseModel) -> Unit
+    @Assisted private val param: SetupScreenDecomposeComponent.Param,
+    @Assisted private val onLoaded: (SignalResponseModel) -> Unit
 ) : DecomposeViewModel() {
     val state = MutableStateFlow<State>(State.Loading)
 
@@ -51,5 +54,13 @@ internal class CurrentSignalViewModel(
         data object Loading : State
         data object Error : State
         data class Loaded(val response: SignalResponseModel) : State
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            param: SetupScreenDecomposeComponent.Param,
+            onLoaded: (SignalResponseModel) -> Unit
+        ): CurrentSignalViewModel
     }
 }

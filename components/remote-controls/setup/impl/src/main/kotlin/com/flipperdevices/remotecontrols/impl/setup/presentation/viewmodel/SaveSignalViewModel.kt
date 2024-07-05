@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -21,13 +22,17 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.remotecontrols.api.SaveSignalApi
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-internal class SaveSignalViewModel(
+@ContributesBinding(AppGraph::class, SaveSignalApi::class)
+class SaveSignalViewModel @Inject constructor(
     private val context: Context,
     private val serviceProvider: FlipperServiceProvider
 ) : DecomposeViewModel(),

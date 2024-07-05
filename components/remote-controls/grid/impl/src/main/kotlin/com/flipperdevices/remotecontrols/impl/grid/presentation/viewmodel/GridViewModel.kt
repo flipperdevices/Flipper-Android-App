@@ -7,13 +7,16 @@ import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.infrared.editor.viewmodel.InfraredKeyParser
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.data.PagesRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-internal class GridViewModel(
+class GridViewModel @AssistedInject constructor(
     private val pagesRepository: PagesRepository,
-    private val param: GridScreenDecomposeComponent.Param,
-    private val onIrFileLoaded: (String) -> Unit
+    @Assisted private val param: GridScreenDecomposeComponent.Param,
+    @Assisted private val onIrFileLoaded: (String) -> Unit
 ) : DecomposeViewModel() {
     val state = MutableStateFlow<State>(State.Loading)
 
@@ -55,5 +58,13 @@ internal class GridViewModel(
             val pagesLayout: PagesLayout,
             val remotes: List<InfraredRemote>
         ) : State
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        operator fun invoke(
+            param: GridScreenDecomposeComponent.Param,
+            onIrFileLoaded: (String) -> Unit
+        ): GridViewModel
     }
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-internal interface SetupComponent {
+interface SetupComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
     val remoteFoundFlow: Flow<IfrFileModel>
     val param: SetupScreenDecomposeComponent.Param

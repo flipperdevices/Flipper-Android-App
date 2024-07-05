@@ -8,7 +8,7 @@ abstract class GridScreenDecomposeComponent(
 ) : ScreenDecomposeComponent(componentContext) {
 
     fun interface Factory {
-        fun create(
+        fun invoke(
             componentContext: ComponentContext,
             param: Param,
             onPopClicked: () -> Unit

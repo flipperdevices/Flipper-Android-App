@@ -2,8 +2,9 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel
 
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-internal class QueryViewModel : DecomposeViewModel() {
+class QueryViewModel @Inject constructor() : DecomposeViewModel() {
     val query = MutableStateFlow("")
 
     fun onQueryChanged(value: String) {

@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
-internal fun SetupScreen(setupComponent: SetupComponent) {
+fun SetupScreen(setupComponent: SetupComponent) {
     val model by setupComponent.model(rememberCoroutineScope()).collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow
