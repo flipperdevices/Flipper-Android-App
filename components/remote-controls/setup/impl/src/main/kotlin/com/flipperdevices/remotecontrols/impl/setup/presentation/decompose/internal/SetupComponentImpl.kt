@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 private const val TEMP_FILE_NAME = "temp.ir"
+
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
 class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

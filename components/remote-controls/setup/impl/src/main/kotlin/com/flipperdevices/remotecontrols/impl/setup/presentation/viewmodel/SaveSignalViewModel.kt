@@ -1,13 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
-import android.content.Context
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -15,27 +10,24 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.writeRequest
 import com.flipperdevices.remotecontrols.api.SaveSignalApi
+import com.flipperdevices.remotecontrols.impl.setup.api.save.file.SaveFileApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SaveSignalApi::class)
 class SaveSignalViewModel @Inject constructor(
-    private val context: Context,
-    private val serviceProvider: FlipperServiceProvider
+    private val serviceProvider: FlipperServiceProvider,
+    private val saveFileApi: SaveFileApi
 ) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider,
@@ -45,70 +37,30 @@ class SaveSignalViewModel @Inject constructor(
     override val state = MutableStateFlow<SaveSignalApi.State>(SaveSignalApi.State.Pending)
 
     override fun save(fff: FlipperFileFormat, filePath: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            val deeplinkContent = DeeplinkContent.FFFContent(filePath, fff)
-            val ffPath = FlipperFilePath(
-                FlipperKeyType.INFRARED.flipperDir,
-                filePath
+        val deeplinkContent = DeeplinkContent.FFFContent(filePath, fff)
+        val ffPath = FlipperFilePath(
+            FlipperKeyType.INFRARED.flipperDir,
+            filePath
+        )
+        launchWithLock(mutex, viewModelScope, "load") {
+            val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }
+            val saveFileFlow = saveFileApi.save(
+                requestApi = serviceApi.requestApi,
+                deeplinkContent = deeplinkContent,
+                ffPath = ffPath
             )
-            val contentResolver = context.contentResolver
-            val messageSize = fff.length()
-            state.value = SaveSignalApi.State.Uploading(0, messageSize)
-            serviceProvider.provideServiceApi(
-                lifecycleOwner = this@SaveSignalViewModel,
-                onError = { state.value = SaveSignalApi.State.Error }
-            ) { serviceApi ->
-                launchWithLock(mutex, viewModelScope, "load") {
-                    val requestApi = serviceApi.requestApi
-                    withContext(FlipperDispatchers.workStealingDispatcher) {
-                        deeplinkContent.openStream(contentResolver).use { fileStream ->
-                            val stream = fileStream ?: return@use
-                            val requestFlow = streamToCommandFlow(
-                                stream,
-                                deeplinkContent.length()
-                            ) { chunkData ->
-                                storageWriteRequest = writeRequest {
-                                    path = ffPath.getPathOnFlipper()
-                                    file = file { data = chunkData }
-                                }
-                            }.map { message ->
-                                FlipperRequest(
-                                    data = message,
-                                    priority = FlipperRequestPriority.FOREGROUND,
-                                    onSendCallback = {
-                                        val size = message.storageWriteRequest.file.data.size().toLong()
-                                        state.value = when (val state = state.value) {
-                                            is SaveSignalApi.State.Uploading -> {
-                                                val progressInternal = state.progressInternal + size
-                                                state.copy(progressInternal = progressInternal)
-                                            }
-
-                                            else -> SaveSignalApi.State.Uploading(size, messageSize)
-                                        }
-                                    }
-                                )
-                            }
-                            val response = requestApi.request(
-                                commandFlow = requestFlow,
-                                onCancel = { id ->
-                                    requestApi.request(
-                                        main {
-                                            commandId = id
-                                            hasNext = false
-                                            storageWriteRequest = writeRequest {
-                                                path = ffPath.getPathOnFlipper()
-                                            }
-                                        }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
-                                    ).collect()
-                                    state.value = SaveSignalApi.State.Uploaded
-                                }
-                            )
-                            info { "File send with response $response" }
-                        }
-                        state.value = SaveSignalApi.State.Uploaded
+            saveFileFlow
+                .flowOn(FlipperDispatchers.workStealingDispatcher)
+                .onEach {
+                    when (it) {
+                        SaveFileApi.Status.Finished -> SaveSignalApi.State.Uploaded
+                        is SaveFileApi.Status.Saving -> SaveSignalApi.State.Uploading(
+                            it.uploaded,
+                            it.size
+                        )
                     }
                 }
-            }
+                .launchIn(this)
         }
     }
 
