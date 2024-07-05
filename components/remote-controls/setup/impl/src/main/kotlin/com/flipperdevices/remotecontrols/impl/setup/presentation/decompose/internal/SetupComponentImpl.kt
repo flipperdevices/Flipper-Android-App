@@ -2,14 +2,18 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.inte
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
+import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.api.SaveSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
-import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.DispatchSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
-import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,43 +31,57 @@ internal class SetupComponentImpl(
     private val onIfrFileFound: (ifrFileId: Long) -> Unit,
     createCurrentSignalViewModel: (onLoaded: (SignalResponseModel) -> Unit) -> CurrentSignalViewModel,
     createHistoryViewModel: () -> HistoryViewModel,
-    createSaveSignalViewModel: () -> SaveSignalViewModel,
-    createDispatchSignalViewModel: () -> DispatchSignalViewModel
+    createSaveSignalApi: () -> SaveSignalApi,
+    createDispatchSignalApi: () -> DispatchSignalApi
 ) : SetupComponent, ComponentContext by componentContext {
-    private val saveFileViewModel = instanceKeeper.getOrCreate {
-        createSaveSignalViewModel.invoke()
+    private val saveSignalApi = instanceKeeper.getOrCreate {
+        createSaveSignalApi.invoke()
     }
-    private val signalFeature = instanceKeeper.getOrCreate {
+    private val historyViewModel = instanceKeeper.getOrCreate {
+        createHistoryViewModel.invoke()
+    }
+    private val dispatchSignalApi = instanceKeeper.getOrCreate {
+        createDispatchSignalApi.invoke()
+    }
+    private val createCurrentSignalViewModel = instanceKeeper.getOrCreate {
         createCurrentSignalViewModel.invoke {
             it.signalResponse?.signalModel?.let { signalModel ->
-                saveFileViewModel.save(signalModel, "ir_temp.ir")
+                val fff = FlipperFileFormat(
+                    orderedDict = listOf(
+                        ("Filetype" to "IR signals file"),
+                        ("Version" to "1"),
+                        ("name" to signalModel.name),
+                        ("type" to signalModel.type),
+                        ("frequency" to signalModel.frequency),
+                        ("duty_cycle" to signalModel.dutyCycle),
+                        ("data" to signalModel.data),
+                        ("protocol" to signalModel.protocol),
+                        ("address" to signalModel.address),
+                        ("command" to signalModel.command),
+                    ).mapNotNull { (k, v) -> if (v == null) null else k to v }
+                )
+                saveSignalApi.save(fff, "ir_temp.ir")
             }
         }
     }
-    private val historyFeature = instanceKeeper.getOrCreate {
-        createHistoryViewModel.invoke()
-    }
-    private val dispatchSignalViewModel = instanceKeeper.getOrCreate {
-        createDispatchSignalViewModel.invoke()
-    }
     private val modelFlow = combine(
-        signalFeature.state,
-        saveFileViewModel.state,
+        this.createCurrentSignalViewModel.state,
+        saveSignalApi.state,
         transform = { signalState, saveState ->
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
                     when (saveState) {
-                        SaveSignalViewModel.State.Error -> SetupComponent.Model.Error
-                        SaveSignalViewModel.State.Pending -> SetupComponent.Model.Loaded(
+                        SaveSignalApi.State.Error -> SetupComponent.Model.Error
+                        SaveSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response
                         )
 
-                        SaveSignalViewModel.State.Uploaded -> SetupComponent.Model.Loaded(
+                        SaveSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
                             response = signalState.response
                         )
 
-                        is SaveSignalViewModel.State.Uploading -> SetupComponent.Model.Loading(
+                        is SaveSignalApi.State.Uploading -> SetupComponent.Model.Loading(
                             saveState.progress
                         )
                     }
@@ -82,10 +100,9 @@ internal class SetupComponentImpl(
         .mapNotNull { it.response.ifrFileModel }
 
     override fun tryLoad() {
-        saveFileViewModel.reset()
-        signalFeature.load(
-            successResults = historyFeature.state.value.successfulSignals,
-            failedResults = historyFeature.state.value.failedSignals
+        createCurrentSignalViewModel.load(
+            successResults = historyViewModel.state.value.successfulSignals,
+            failedResults = historyViewModel.state.value.failedSignals
         )
     }
 
@@ -94,24 +111,33 @@ internal class SetupComponentImpl(
     }
 
     override fun onSuccessClicked() {
-        val state = signalFeature.state.value as CurrentSignalViewModel.State.Loaded ?: return
+        val state = createCurrentSignalViewModel.state.value as CurrentSignalViewModel.State.Loaded ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
-        historyFeature.rememberSuccessful(signalModel)
+        historyViewModel.rememberSuccessful(signalModel)
         tryLoad()
     }
 
     override fun onFailedClicked() {
-        val state = signalFeature.state.value as CurrentSignalViewModel.State.Loaded ?: return
+        val state = createCurrentSignalViewModel.state.value as CurrentSignalViewModel.State.Loaded ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
-        historyFeature.rememberFailed(signalModel)
+        historyViewModel.rememberFailed(signalModel)
         tryLoad()
     }
 
     override fun dispatchSignal() {
-        val state = signalFeature.state.value
+        val state = createCurrentSignalViewModel.state.value
         val loadedState = state as? CurrentSignalViewModel.State.Loaded ?: return
         val signalModel = loadedState.response.signalResponse?.signalModel ?: return
-        dispatchSignalViewModel.dispatch(signalModel)
+        val config = EmulateConfig(
+            keyPath = FlipperFilePath(
+                FlipperKeyType.INFRARED.flipperDir,
+                "ir_temp.ir"
+            ),
+            keyType = FlipperKeyType.INFRARED,
+            args = signalModel.name,
+            index = 0
+        )
+        dispatchSignalApi.dispatch(config)
     }
 
     override fun onBackClicked() = onBackClicked.invoke()

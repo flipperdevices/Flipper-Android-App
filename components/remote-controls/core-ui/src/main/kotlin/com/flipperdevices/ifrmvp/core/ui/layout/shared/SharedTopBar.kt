@@ -18,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun SharedTopBar(

@@ -27,7 +27,7 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
 internal fun ConfirmContent(
@@ -70,7 +70,7 @@ internal fun ConfirmContent(
                         .padding(vertical = 42.dp, horizontal = 38.dp)
                 ) {
                     Text(
-                        text = stringResource(RemoteSetupR.string.no),
+                        text = stringResource(SetupR.string.no),
                         style = LocalTypography.current.buttonB16,
                         color = LocalPalletV2.current.action.blue.text.default,
                         textAlign = TextAlign.Center,
@@ -80,7 +80,7 @@ internal fun ConfirmContent(
                             .padding(vertical = 12.dp, horizontal = 36.dp),
                     )
                     ComposableFlipperButton(
-                        text = stringResource(RemoteSetupR.string.yes),
+                        text = stringResource(SetupR.string.yes),
                         onClick = onPositiveClicked
                     )
                 }

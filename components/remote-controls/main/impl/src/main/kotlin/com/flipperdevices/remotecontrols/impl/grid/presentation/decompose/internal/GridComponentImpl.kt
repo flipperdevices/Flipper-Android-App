@@ -2,12 +2,13 @@ package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.inter
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.SaveSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
-import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.DispatchSignalViewModel
-import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -17,8 +18,8 @@ internal class GridComponentImpl(
     componentContext: ComponentContext,
     private val param: GridScreenDecomposeComponent.Param,
     createGridViewModel: (onIrFileLoaded: (String) -> Unit) -> GridViewModel,
-    createSaveSignalViewModel: () -> SaveSignalViewModel,
-    createDispatchSignalViewModel: () -> DispatchSignalViewModel,
+    createSaveSignalViewModel: () -> SaveSignalApi,
+    createDispatchSignalViewModel: () -> DispatchSignalApi,
     private val onPopClicked: () -> Unit
 ) : GridComponent, ComponentContext by componentContext {
     private val saveSignalViewModel = instanceKeeper.getOrCreate {
@@ -29,7 +30,8 @@ internal class GridComponentImpl(
     }
     private val gridFeature = instanceKeeper.getOrCreate {
         createGridViewModel.invoke { content ->
-            saveSignalViewModel.save(content, "${param.ifrFileId}.ir")
+            val fff = FlipperFileFormat.fromFileContent(content)
+            saveSignalViewModel.save(fff, "${param.ifrFileId}.ir")
         }
     }
 
@@ -41,15 +43,15 @@ internal class GridComponentImpl(
                 GridViewModel.State.Error -> GridComponent.Model.Error
                 is GridViewModel.State.Loaded -> {
                     when (saveState) {
-                        SaveSignalViewModel.State.Error -> GridComponent.Model.Error
-                        SaveSignalViewModel.State.Uploaded, SaveSignalViewModel.State.Pending -> {
+                        SaveSignalApi.State.Error -> GridComponent.Model.Error
+                        SaveSignalApi.State.Uploaded, SaveSignalApi.State.Pending -> {
                             GridComponent.Model.Loaded(
                                 pagesLayout = gridState.pagesLayout,
                                 remotes = gridState.remotes
                             )
                         }
 
-                        is SaveSignalViewModel.State.Uploading -> GridComponent.Model.Loading(
+                        is SaveSignalApi.State.Uploading -> GridComponent.Model.Loading(
                             saveState.progress
                         )
                     }

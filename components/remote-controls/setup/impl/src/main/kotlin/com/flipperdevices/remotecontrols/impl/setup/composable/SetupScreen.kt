@@ -18,7 +18,7 @@ import com.flipperdevices.remotecontrols.impl.setup.composable.components.Loaded
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
 internal fun SetupScreen(setupComponent: SetupComponent) {
@@ -32,8 +32,8 @@ internal fun SetupScreen(setupComponent: SetupComponent) {
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
         topBar = {
             SharedTopBar(
-                title = stringResource(RemoteSetupR.string.setup_title),
-                subtitle = stringResource(RemoteSetupR.string.setup_subtitle),
+                title = stringResource(SetupR.string.setup_title),
+                subtitle = stringResource(SetupR.string.setup_subtitle),
                 onBackClicked = setupComponent::onBackClicked
             )
         }

@@ -103,7 +103,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         is RemoteControlsNavigationConfig.Grid -> {
             module
                 .createGridModule()
-                .gridComponentFactory
+                .gridScreenDecomposeComponentFactory
                 .create(
                     componentContext = componentContext,
                     param = GridScreenDecomposeComponent.Param(

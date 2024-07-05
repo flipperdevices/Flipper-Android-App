@@ -17,7 +17,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
 internal fun LoadedContent(
@@ -66,7 +66,7 @@ internal fun LoadedContent(
 
             else -> {
                 ErrorComposable(
-                    desc = stringResource(RemoteSetupR.string.not_found_signal),
+                    desc = stringResource(SetupR.string.not_found_signal),
                 )
             }
         }

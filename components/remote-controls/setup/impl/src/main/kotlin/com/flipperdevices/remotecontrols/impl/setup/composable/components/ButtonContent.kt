@@ -23,7 +23,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.UnknownButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
-import com.flipperdevices.remotecontrols.device.select.impl.R as RemoteSetupR
+import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
 private fun SignalResponseButton(
@@ -73,7 +73,7 @@ internal fun ButtonContent(
         SignalResponseButton(data = data, onClick = onClicked)
         Spacer(modifier = Modifier.height(14.dp))
         Text(
-            text = stringResource(RemoteSetupR.string.point_flipper)
+            text = stringResource(SetupR.string.point_flipper)
                 .format(categoryName),
             style = LocalTypography.current.bodyM14,
             color = LocalPalletV2.current.text.body.secondary,

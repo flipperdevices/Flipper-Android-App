@@ -8,50 +8,37 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.ifrmvp.backend.model.SignalModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
-import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.SaveSignalViewModel.State
+import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class DispatchSignalViewModel(
+internal class DispatchSignalViewModel(
     private val emulateHelper: EmulateHelper,
     private val serviceProvider: FlipperServiceProvider
-) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(),
+    FlipperBleServiceConsumer,
+    LogTagProvider,
+    DispatchSignalApi {
     override val TAG: String = "DispatchSignalViewModel"
 
-    val state = MutableStateFlow<State>(State.Pending)
+    override val state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
 
-    fun reset() {
-        state.value = State.Pending
+    override fun reset() {
+        state.value = DispatchSignalApi.State.Pending
     }
 
-
-    fun dispatch(signalModel: SignalModel) {
-        val ffPath = FlipperFilePath(
-            FlipperKeyType.INFRARED.flipperDir,
-            "ir_temp.ir"
-        )
-        val config = EmulateConfig(
-            keyPath = ffPath,
-            keyType = FlipperKeyType.INFRARED,
-            args = signalModel.name,
-            index = 0
-        )
-        dispatch(config)
-    }
-
-    private fun dispatch(config: EmulateConfig) {
+    override fun dispatch(config: EmulateConfig) {
         serviceProvider.provideServiceApi(
             lifecycleOwner = this,
-            onError = { state.value = State.Error },
+            onError = { state.value = DispatchSignalApi.State.Error },
             onBleManager = { serviceApi ->
                 viewModelScope.launch {
-                    state.value = State.Emulating
+                    state.value = DispatchSignalApi.State.Emulating
                     kotlin.runCatching {
                         emulateHelper.startEmulate(
                             scope = this,
@@ -67,9 +54,7 @@ class DispatchSignalViewModel(
         )
     }
 
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
-
-    fun dispatch(
+    override fun dispatch(
         identifier: IfrKeyIdentifier,
         remotes: List<InfraredRemote>,
         fileName: String
@@ -95,9 +80,5 @@ class DispatchSignalViewModel(
         dispatch(config)
     }
 
-    sealed interface State {
-        data object Pending : State
-        data object Emulating : State
-        data object Error : State
-    }
+    override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
 }

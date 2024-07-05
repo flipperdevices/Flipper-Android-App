@@ -1,11 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.data
 
-import android.util.Log
 import com.flipperdevices.ifrmvp.api.backend.ApiBackend
 import com.flipperdevices.ifrmvp.model.PagesLayout
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
 
 internal class BackendPagesRepository(
     private val apiBackend: ApiBackend

@@ -17,56 +17,28 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.ifrmvp.backend.model.SignalModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.Dispatchers
+import com.flipperdevices.remotecontrols.api.SaveSignalApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
-class SaveSignalViewModel(
+internal class SaveSignalViewModel(
     private val context: Context,
     private val serviceProvider: FlipperServiceProvider
-) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
+) : DecomposeViewModel(),
+    FlipperBleServiceConsumer,
+    LogTagProvider,
+    SaveSignalApi {
     private val mutex = Mutex()
     override val TAG: String = "SaveFileViewModel"
-    val state = MutableStateFlow<State>(State.Pending)
+    override val state = MutableStateFlow<SaveSignalApi.State>(SaveSignalApi.State.Pending)
 
-    private fun SignalModel.toFFF() = FlipperFileFormat(
-        orderedDict = listOf(
-            ("Filetype" to "IR signals file"),
-            ("Version" to "1"),
-            ("name" to name),
-            ("type" to type),
-            ("frequency" to frequency),
-            ("duty_cycle" to dutyCycle),
-            ("data" to data),
-            ("protocol" to protocol),
-            ("address" to address),
-            ("command" to command),
-        ).mapNotNull { (k, v) -> if (v == null) null else k to v }
-    )
-
-    fun reset() {
-        state.value = State.Pending
-    }
-
-    fun save(signalModel: SignalModel, path: String) = viewModelScope.launch(Dispatchers.Main) {
-        val fff = signalModel.toFFF()
-        save(fff, path)
-    }
-
-    fun save(rawString: String, path: String) = viewModelScope.launch(Dispatchers.Main) {
-        val fff = FlipperFileFormat.fromFileContent(rawString)
-        save(fff, path)
-    }
-
-    private suspend fun save(fff: FlipperFileFormat, filePath: String) {
+    override fun save(fff: FlipperFileFormat, filePath: String) {
         val deeplinkContent = DeeplinkContent.FFFContent(filePath, fff)
         val ffPath = FlipperFilePath(
             FlipperKeyType.INFRARED.flipperDir,
@@ -74,10 +46,10 @@ class SaveSignalViewModel(
         )
         val contentResolver = context.contentResolver
         val messageSize = fff.length()
-        state.value = State.Uploading(0, messageSize)
+        state.value = SaveSignalApi.State.Uploading(0, messageSize)
         serviceProvider.provideServiceApi(
             lifecycleOwner = this@SaveSignalViewModel,
-            onError = { state.value = State.Error }
+            onError = { state.value = SaveSignalApi.State.Error }
         ) { serviceApi ->
             launchWithLock(mutex, viewModelScope, "load") {
                 val requestApi = serviceApi.requestApi
@@ -99,12 +71,12 @@ class SaveSignalViewModel(
                                 onSendCallback = {
                                     val size = message.storageWriteRequest.file.data.size().toLong()
                                     state.value = when (val state = state.value) {
-                                        is State.Uploading -> {
+                                        is SaveSignalApi.State.Uploading -> {
                                             val progressInternal = state.progressInternal + size
                                             state.copy(progressInternal = progressInternal)
                                         }
 
-                                        else -> State.Uploading(size, messageSize)
+                                        else -> SaveSignalApi.State.Uploading(size, messageSize)
                                     }
                                 }
                             )
@@ -121,26 +93,16 @@ class SaveSignalViewModel(
                                         }
                                     }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
                                 ).collect()
-                                state.value = State.Uploaded
+                                state.value = SaveSignalApi.State.Uploaded
                             }
                         )
                         info { "File send with response $response" }
                     }
-                    state.value = State.Uploaded
+                    state.value = SaveSignalApi.State.Uploaded
                 }
             }
         }
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
-
-    sealed interface State {
-        data object Pending : State
-        data object Error : State
-        data class Uploading(val progressInternal: Long, val total: Long) : State {
-            val progress: Float = if (total == 0L) 0f else progressInternal / total.toFloat()
-        }
-
-        data object Uploaded : State
-    }
 }

@@ -15,7 +15,6 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.serialization.json.JsonObject
 
 interface ApiBackend {
     suspend fun getCategories(): CategoriesResponse
