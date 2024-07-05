@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
-
+private const val TEMP_FILE_NAME = "temp.ir"
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
 class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -65,7 +65,7 @@ class SetupComponentImpl @AssistedInject constructor(
                         ("command" to signalModel.command),
                     ).mapNotNull { (k, v) -> if (v == null) null else k to v }
                 )
-                saveSignalApi.save(fff, "ir_temp.ir")
+                saveSignalApi.save(fff, TEMP_FILE_NAME)
             }
         }
     }
@@ -136,7 +136,7 @@ class SetupComponentImpl @AssistedInject constructor(
         val config = EmulateConfig(
             keyPath = FlipperFilePath(
                 FlipperKeyType.INFRARED.flipperDir,
-                "ir_temp.ir"
+                TEMP_FILE_NAME
             ),
             keyType = FlipperKeyType.INFRARED,
             args = signalModel.name,
