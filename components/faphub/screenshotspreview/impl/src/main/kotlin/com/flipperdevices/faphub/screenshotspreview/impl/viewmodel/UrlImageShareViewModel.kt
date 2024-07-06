@@ -20,6 +20,7 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
@@ -68,7 +69,7 @@ class UrlImageShareViewModel @Inject constructor(
         return newBitmap
     }
 
-    fun shareUrlImage(url: URL) = viewModelScope.launch(Dispatchers.IO) {
+    fun shareUrlImage(url: URL) = viewModelScope.launch(FlipperDispatchers.workStealingDispatcher) {
         url.decodeBitmap()
             .map { bitmap -> bitmap.fillBackground() }
             .map { bitmap -> bitmap.rescale(EXPORT_RESCALE_MULTIPLIER) }

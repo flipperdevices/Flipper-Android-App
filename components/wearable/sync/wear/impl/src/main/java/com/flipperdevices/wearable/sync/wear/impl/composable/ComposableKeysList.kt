@@ -28,6 +28,7 @@ import com.flipperdevices.wearable.sync.wear.impl.model.KeysListState
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.wear.tooling.preview.devices.WearDevices
 
 @Composable
 fun ComposableKeysList(
@@ -61,7 +62,7 @@ private fun ComposableKeysListLoading() {
 @Preview(
     showSystemUi = true,
     showBackground = true,
-    device = Devices.WEAR_OS_LARGE_ROUND
+    device = WearDevices.LARGE_ROUND
 )
 private fun ComposableKeysListEmpty() {
     ComposableWearOsScrollableColumn {

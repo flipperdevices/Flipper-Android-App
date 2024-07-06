@@ -14,6 +14,7 @@ compose-material = "1.6.7" # https://developer.android.com/jetpack/androidx/rele
 compose-foundation = "1.6.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-ui = "1.6.7" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
+compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
 compose-compiler = "1.5.14" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "1.1.3" # https://github.com/fornewid/placeholder/releases
@@ -141,6 +142,7 @@ compose-material = { module = "androidx.compose.material:material", version.ref 
 # UI - Wear
 compose-wear-material = { module = "androidx.wear.compose:compose-material", version.ref = "compose-wear" }
 compose-wear-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "compose-wear" }
+compose-wear-preview = { module = "androidx.wear:wear-tooling-preview", version.ref = "compose-wear-preview" }
 horologist-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 
 # UI - Compose Extension

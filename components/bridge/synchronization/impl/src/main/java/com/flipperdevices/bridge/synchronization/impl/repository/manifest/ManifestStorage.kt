@@ -13,6 +13,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
@@ -47,6 +48,7 @@ class ManifestStorageImpl @Inject constructor(
         return@withLockResult loadInternal()
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     private suspend fun saveInternal(manifestFile: ManifestFile) = withContext(Dispatchers.IO) {
         file.delete()
         var os: FileOutputStream? = null

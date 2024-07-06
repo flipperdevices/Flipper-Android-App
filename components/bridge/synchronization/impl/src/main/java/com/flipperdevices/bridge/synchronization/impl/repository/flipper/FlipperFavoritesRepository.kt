@@ -11,6 +11,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 import java.nio.charset.Charset
 import javax.inject.Inject
 

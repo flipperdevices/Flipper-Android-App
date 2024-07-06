@@ -47,7 +47,7 @@ class OpenFapHelperImpl @Inject constructor(
     private val currentOpenAppFlow = MutableStateFlow<FapButtonConfig?>(null)
     private val rpcVersionFlow = MutableStateFlow<SemVer?>(null)
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
 
     override fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState> {
         return combine(
