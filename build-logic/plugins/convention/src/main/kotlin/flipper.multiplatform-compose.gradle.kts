@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("flipper.lint")
 }
 
 configure<BaseExtension> {

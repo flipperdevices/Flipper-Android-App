@@ -84,6 +84,7 @@ detekt = "1.23.6" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.4" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
 detekt-ruleset-compose = "0.4.1" # https://github.com/mrmans0n/compose-rules/releases
+detekt-ruleset-decompose = "0.3" # https://github.com/LionZXY/detekt-decompose-rule/releases
 
 # Firebase
 google-gms-gradle = "4.4.1" # https://developers.google.com/android/guides/google-services-plugin
@@ -125,6 +126,7 @@ detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", v
 detekt-ruleset-compiler = { module = "com.braisgabin.detekt:kotlin-compiler-wrapper", version.ref = "detekt-ruleset-compiler" }
 detekt-ruleset-ktlint = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-ruleset-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-ruleset-compose" }
+detekt-ruleset-decompose = { module = "uk.kulikov.detekt.decompose:decompose-detekt-rules", version.ref = "detekt-ruleset-decompose" }
 
 # UI
 splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
