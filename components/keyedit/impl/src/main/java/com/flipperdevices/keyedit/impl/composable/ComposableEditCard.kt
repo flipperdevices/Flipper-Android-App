@@ -61,7 +61,7 @@ private fun ColumnScope.ComposableCardContent(
         modifier = Modifier.padding(horizontal = 12.dp),
         title = stringResource(R.string.keyedit_name_title),
         label = stringResource(R.string.keyedit_name_hint),
-        text = name ?: "",
+        text = name.orEmpty(),
         onTextChange = onNameChange,
         keyboardType = KeyboardType.Ascii,
         enabled = enabled
@@ -70,7 +70,7 @@ private fun ColumnScope.ComposableCardContent(
         modifier = Modifier.padding(horizontal = 12.dp),
         title = stringResource(R.string.keyedit_notes_title),
         label = stringResource(R.string.keyedit_notes_hint),
-        text = notes ?: "",
+        text = notes.orEmpty(),
         onTextChange = onNoteChange,
         keyboardType = KeyboardType.Text,
         enabled = enabled

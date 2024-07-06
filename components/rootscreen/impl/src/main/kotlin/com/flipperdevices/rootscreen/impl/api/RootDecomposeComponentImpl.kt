@@ -171,8 +171,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             stack = childStack,
         ) {
             it.instance.Render()
-
-            Dispatchers.IO.limitedParallelism(2)
         }
     }
 }

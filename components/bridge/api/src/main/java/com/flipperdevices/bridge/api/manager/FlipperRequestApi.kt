@@ -41,5 +41,5 @@ interface FlipperRequestApi {
     /**
      * Method for connection break debug - put random bytes into session
      */
-    suspend fun sendTrashBytesAndBrokeSession()
+    fun sendTrashBytesAndBrokeSession()
 }

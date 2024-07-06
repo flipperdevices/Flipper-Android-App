@@ -15,7 +15,7 @@ private const val MS_IN_SEC = 1000L
 
 class SpeedMeter(scope: CoroutineScope) {
     private val bytesPerSecond = MutableStateFlow(0L)
-    private var bytesCollected = AtomicLong(0)
+    private val bytesCollected = AtomicLong(0)
 
     init {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {

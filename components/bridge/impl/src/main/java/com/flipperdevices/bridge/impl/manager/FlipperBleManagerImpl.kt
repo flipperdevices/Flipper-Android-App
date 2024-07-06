@@ -171,11 +171,11 @@ class FlipperBleManagerImpl @Inject constructor(
             error(it) { "Error while initialize RTC" }
         }
 
-        flipperReadyListeners.forEach {
+        flipperReadyListeners.forEach { listener ->
             runCatching {
-                it.onFlipperReady(scope)
-            }.onFailure {
-                error(it) { "Failed notify flipper ready listener" }
+                listener.onFlipperReady(scope)
+            }.onFailure { error ->
+                error(error) { "Failed notify flipper ready listener" }
             }
         }
 

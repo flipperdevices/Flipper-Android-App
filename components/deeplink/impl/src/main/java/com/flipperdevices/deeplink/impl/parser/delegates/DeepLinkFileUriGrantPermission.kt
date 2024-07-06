@@ -7,12 +7,12 @@ import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.filename
 import com.flipperdevices.core.ktx.android.length
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class DeepLinkFileUriGrantPermission @Inject constructor() : DeepLinkParserDeleg
     private suspend fun buildExternalUri(
         contentResolver: ContentResolver,
         uri: Uri
-    ): DeeplinkContent = withContext(Dispatchers.IO) {
+    ): DeeplinkContent = withContext(FlipperDispatchers.workStealingDispatcher) {
         return@withContext DeeplinkContent.ExternalUri(
             filename = uri.filename(contentResolver),
             size = uri.length(contentResolver),

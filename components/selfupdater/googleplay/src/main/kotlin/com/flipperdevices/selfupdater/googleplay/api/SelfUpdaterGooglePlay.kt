@@ -89,6 +89,6 @@ class SelfUpdaterGooglePlay @Inject constructor(
 
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {
         return appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
     }
 }

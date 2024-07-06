@@ -31,7 +31,7 @@ class KeyEditViewModel @AssistedInject constructor(
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
 
-    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     private val lengthFilter = LengthFilter(context)
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)

@@ -4,11 +4,11 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.share.SharableFile
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -27,7 +27,7 @@ class ExportKeysHelperImpl @Inject constructor(
 ) : ExportKeysHelper, LogTagProvider {
     override val TAG = "ExportKeysHelper"
 
-    override suspend fun createBackupArchive() = withContext(Dispatchers.IO) {
+    override suspend fun createBackupArchive() = withContext(FlipperDispatchers.workStealingDispatcher) {
         val keysZip = SharableFile(context, KEYS_ARCHIVE_NAME).apply {
             createClearNewFileWithMkDirs()
         }
@@ -52,7 +52,7 @@ class ExportKeysHelperImpl @Inject constructor(
     private suspend fun insert(
         flipperFile: FlipperFile,
         outputStream: ZipOutputStream
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val entry = ZipEntry(flipperFile.path.pathToKey)
         outputStream.putNextEntry(entry)
         flipperFile.content.openStream().use {

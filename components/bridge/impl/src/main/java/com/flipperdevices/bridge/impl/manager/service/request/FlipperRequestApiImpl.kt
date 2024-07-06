@@ -72,7 +72,7 @@ class FlipperRequestApiImpl @Inject constructor(
     private val sentryApi by sentryApiProvider
 
     // Start from 1 because 0 is default in protobuf
-    private var idCounter = AtomicInteger(1)
+    private val idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
@@ -208,7 +208,9 @@ class FlipperRequestApiImpl @Inject constructor(
         }
 
         cont.invokeOnCancellation {
-            requestStorage.removeIf { it.data.commandId == uniqueId }
+            requestStorage.removeIf { request ->
+                request.data.commandId == uniqueId
+            }
             requestListeners.remove(uniqueId)
         }
     }
@@ -254,7 +256,7 @@ class FlipperRequestApiImpl @Inject constructor(
         info { "Complete reset and finish $counter tasks" }
     }
 
-    override suspend fun sendTrashBytesAndBrokeSession() {
+    override fun sendTrashBytesAndBrokeSession() {
         serialApi.sendTrashBytesAndBrokeSession()
     }
 
