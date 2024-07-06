@@ -35,6 +35,6 @@ data class Key(
         get() {
             val pathNotNull = path
             val file = File(pathNotNull)
-            return FlipperFilePath(file.parent ?: "", file.name)
+            return FlipperFilePath(file.parent.orEmpty(), file.name)
         }
 }

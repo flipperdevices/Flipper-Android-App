@@ -16,10 +16,10 @@ import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -55,7 +55,7 @@ class DeleteKeyApiImpl @Inject constructor(
 
     override suspend fun deleteMarkedDeleted(
         keyPath: FlipperFilePath
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         database.withTransaction {
             val key = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
             if (key != null) {
@@ -69,7 +69,9 @@ class DeleteKeyApiImpl @Inject constructor(
         cleaner.deleteUnusedFiles()
     }
 
-    override suspend fun markDeleted(keyPath: FlipperFilePath) = withContext(Dispatchers.IO) {
+    override suspend fun markDeleted(keyPath: FlipperFilePath) = withContext(
+        FlipperDispatchers.workStealingDispatcher
+    ) {
         val existKey = simpleKeyDao.getByPath(keyPath.pathToKey, deleted = true)
         if (existKey != null) {
             deleteMarkedDeleted(keyPath)
@@ -79,7 +81,7 @@ class DeleteKeyApiImpl @Inject constructor(
 
     override suspend fun restore(
         keyPath: FlipperFilePath
-    ): Unit = withContext(Dispatchers.IO) {
+    ): Unit = withContext(FlipperDispatchers.workStealingDispatcher) {
         database.withTransaction {
             var newPath = keyPath.pathToKey
             val existKey = simpleKeyDao.getByPath(newPath, deleted = false)

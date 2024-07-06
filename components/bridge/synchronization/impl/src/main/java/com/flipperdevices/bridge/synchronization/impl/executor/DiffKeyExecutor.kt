@@ -63,7 +63,11 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
     ) {
         val path = diff.newHash.keyPath
         val folder = when (path.fileType) {
-            FlipperFileType.KEY -> path.keyType!!.flipperDir
+            FlipperFileType.KEY -> {
+                @Suppress("UnsafeCallOnNullableType")
+                path.keyType!!.flipperDir
+            }
+
             FlipperFileType.SHADOW_NFC -> FlipperKeyType.NFC.flipperDir
             FlipperFileType.OTHER -> error("Don't support file with this type")
         }
@@ -77,10 +81,12 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
                 val content = source.loadFile(path)
                 target.saveFile(targetPath, content)
             }
+
             KeyAction.MODIFIED -> {
                 val content = source.loadFile(path)
                 target.modify(targetPath, content)
             }
+
             KeyAction.DELETED -> target.deleteFile(targetPath)
         }
     }

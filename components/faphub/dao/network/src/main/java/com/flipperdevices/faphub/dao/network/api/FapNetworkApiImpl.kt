@@ -16,7 +16,6 @@ import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

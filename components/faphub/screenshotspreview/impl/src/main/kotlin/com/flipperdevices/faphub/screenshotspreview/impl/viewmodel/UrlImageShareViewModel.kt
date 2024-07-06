@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.flipperdevices.core.ktx.android.BitmapKtx.rescale
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
@@ -20,7 +21,6 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"

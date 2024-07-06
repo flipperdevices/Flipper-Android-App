@@ -42,7 +42,7 @@ class FDevicePersistedStorageImpl @Inject constructor(
             if (id == null) {
                 builder = builder
                     .clearCurrentSelectedDeviceId()
-            } else if (settings.devicesList.find { it.id == id } == null) {
+            } else if (settings.devicesList.none { it.id == id }) {
                 error("Can't find device with id $id")
             } else {
                 builder = builder
@@ -93,7 +93,8 @@ class FDevicePersistedStorageImpl @Inject constructor(
                 )
             }
 
-            DataCase.DATA_NOT_SET -> null
+            DataCase.DATA_NOT_SET,
+            null -> null
         }
     }
 

@@ -61,7 +61,7 @@ jobs:
       - name: detekt
         uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
         with:
-          arguments: detekt
+          arguments: detektMain
   android_lint:
     name: "Check project by android`s lint"
     runs-on: ubuntu-latest

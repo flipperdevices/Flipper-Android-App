@@ -193,7 +193,7 @@ coroutines:
   SuspendFunWithCoroutineScopeReceiver:
     active: false
   SuspendFunWithFlowReturnType:
-    active: true
+    active: false
 
 empty-blocks:
   active: true

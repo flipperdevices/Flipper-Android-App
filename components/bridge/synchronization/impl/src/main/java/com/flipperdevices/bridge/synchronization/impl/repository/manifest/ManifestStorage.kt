@@ -5,12 +5,12 @@ import android.util.AtomicFile
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
 import com.flipperdevices.core.di.SingleIn
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -49,7 +49,9 @@ class ManifestStorageImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    private suspend fun saveInternal(manifestFile: ManifestFile) = withContext(Dispatchers.IO) {
+    private suspend fun saveInternal(manifestFile: ManifestFile) = withContext(
+        FlipperDispatchers.workStealingDispatcher
+    ) {
         file.delete()
         var os: FileOutputStream? = null
         try {
@@ -64,7 +66,8 @@ class ManifestStorageImpl @Inject constructor(
         }
     }
 
-    private suspend fun loadInternal(): ManifestFile? = withContext(Dispatchers.IO) {
+    @OptIn(ExperimentalSerializationApi::class)
+    private suspend fun loadInternal(): ManifestFile? = withContext(FlipperDispatchers.workStealingDispatcher) {
         if (!file.baseFile.exists()) {
             return@withContext null
         }

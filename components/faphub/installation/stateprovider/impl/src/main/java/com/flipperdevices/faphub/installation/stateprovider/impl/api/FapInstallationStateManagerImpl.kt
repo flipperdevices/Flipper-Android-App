@@ -39,7 +39,7 @@ class FapInstallationStateManagerImpl @Inject constructor(
     }
 
     @Suppress("UnusedPrivateMember")
-    private suspend fun getState(
+    private fun getState(
         manifest: FapManifestState,
         applicationUid: String,
         queueState: FapQueueState,
