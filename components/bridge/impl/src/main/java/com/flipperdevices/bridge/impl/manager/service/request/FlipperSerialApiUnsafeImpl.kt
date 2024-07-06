@@ -94,7 +94,7 @@ class FlipperSerialApiUnsafeImpl(
     }
 
     override fun receiveBytesFlow() = receiveBytesFlow
-    override suspend fun getSpeed() = speedFlowState.asStateFlow()
+    override fun getSpeed() = speedFlowState.asStateFlow()
 
     override fun sendBytes(data: ByteArray) {
         if (data.isEmpty()) {

@@ -16,6 +16,7 @@ compose-ui = "1.6.7" # https://developer.android.com/jetpack/androidx/releases/c
 compose-wear = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-compiler = "1.5.14" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
+compose-placeholder = "1.1.3" # https://github.com/fornewid/placeholder/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
 compose-paging = "3.3.0" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
@@ -145,7 +146,7 @@ horologist-layout = { module = "com.google.android.horologist:horologist-compose
 # UI - Compose Extension
 compose-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "compose-accompanist" }
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
-compose-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "compose-accompanist" }
+compose-placeholder = { module = "io.github.fornewid:placeholder-foundation", version.ref = "compose-placeholder" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }

@@ -10,9 +10,9 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.LoadingState
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
+import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
+import io.github.fornewid.placeholder.foundation.placeholder
+import io.github.fornewid.placeholder.foundation.shimmer
 
 @Composable
 fun ComposableActionLoading(

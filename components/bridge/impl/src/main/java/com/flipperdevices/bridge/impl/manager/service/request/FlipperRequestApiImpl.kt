@@ -29,6 +29,7 @@ import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
@@ -173,7 +174,7 @@ class FlipperRequestApiImpl @Inject constructor(
         requestStorage.sendRequest(*commands)
     }
 
-    override suspend fun getSpeed(): StateFlow<FlipperSerialSpeed> {
+    override fun getSpeed(): StateFlow<FlipperSerialSpeed> {
         return serialApiUnsafe.getSpeed()
     }
 
@@ -195,6 +196,7 @@ class FlipperRequestApiImpl @Inject constructor(
         return counter
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun awaitCommandAnswer(
         uniqueId: Int
     ): Flipper.Main = suspendCancellableCoroutine { cont ->

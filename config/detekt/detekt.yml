@@ -779,3 +779,6 @@ Compose:
     active: false
   ModifierNotUsedAtRoot:
     active: true
+  DecomposeRule:
+    PushForbiddenRule:
+      active: true
