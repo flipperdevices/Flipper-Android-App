@@ -13,10 +13,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.ifrmvp.model.IfrButton
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.ifrmvp.model.PagesLayout
+import com.flipperdevices.remotecontrols.impl.grid.presentation.data.KitchenLayoutFactory
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
+
+@Composable
+private fun LoadedContent(
+    pagesLayout: PagesLayout,
+    onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    BoxWithConstraints(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopStart,
+        content = {
+            ButtonsComposable(
+                pageLayout = pagesLayout.pages.first(),
+                onButtonClicked = onButtonClicked,
+            )
+        }
+    )
+}
 
 @Composable
 fun GridComposable(
@@ -51,17 +74,11 @@ fun GridComposable(
                     }
 
                     is GridComponent.Model.Loaded -> {
-                        BoxWithConstraints(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.TopStart,
-                            content = {
-                                ButtonsComposable(
-                                    pageLayout = model.pagesLayout.pages.first(),
-                                    onButtonClicked = { button, keyIdentifier ->
-                                        gridComponent.onButtonClicked(keyIdentifier)
-                                    },
-                                )
-                            }
+                        LoadedContent(
+                            pagesLayout = model.pagesLayout,
+                            onButtonClicked = { button, keyIdentifier ->
+                                gridComponent.onButtonClicked(keyIdentifier)
+                            },
                         )
                     }
 
@@ -71,5 +88,18 @@ fun GridComposable(
                 }
             }
         }
+    )
+}
+
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun LoadedContentPreview() {
+    LoadedContent(
+        pagesLayout = KitchenLayoutFactory.create(),
+        onButtonClicked = { _, _ -> }
     )
 }
