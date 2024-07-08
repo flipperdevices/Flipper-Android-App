@@ -10,7 +10,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,7 +34,6 @@ class CurrentSignalViewModel @AssistedInject constructor(
                 brandId = param.brandId,
             )
             withContext(Dispatchers.IO) {
-                delay(1000L)
                 apiBackend.getSignal(request)
             }
         }

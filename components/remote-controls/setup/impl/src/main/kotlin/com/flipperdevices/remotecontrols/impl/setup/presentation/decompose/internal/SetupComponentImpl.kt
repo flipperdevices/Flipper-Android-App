@@ -27,8 +27,8 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
-private const val TEMP_FILE_NAME = "temp.ir"
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
 class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -148,3 +148,5 @@ class SetupComponentImpl @AssistedInject constructor(
 
     override fun onBackClicked() = onBackClicked.invoke()
 }
+
+private const val TEMP_FILE_NAME = "temp.ir"
