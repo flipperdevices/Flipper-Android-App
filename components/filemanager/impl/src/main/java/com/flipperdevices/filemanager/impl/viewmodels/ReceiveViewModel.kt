@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -15,7 +16,6 @@ import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -73,7 +73,9 @@ class ReceiveViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun startUpload(serviceApi: FlipperServiceApi) = withContext(Dispatchers.IO) {
+    private suspend fun startUpload(
+        serviceApi: FlipperServiceApi
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         if (!uploadStarted.compareAndSet(false, true)) {
             info { "Upload file $deeplinkContent in $path already started" }
             return@withContext

@@ -51,8 +51,14 @@ internal fun ComposableKeyContent(
             modifier = Modifier.padding(vertical = 18.dp),
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
-            lines.filter { it.second != null }.map { it.first to it.second!! }.forEach {
-                ComposableKeyItem(it.first, it.second)
+            lines.mapNotNull { (name, value) ->
+                if (value == null) {
+                    null
+                } else {
+                    name to value
+                }
+            }.forEach { (name, value) ->
+                ComposableKeyItem(name, value)
             }
         }
     }

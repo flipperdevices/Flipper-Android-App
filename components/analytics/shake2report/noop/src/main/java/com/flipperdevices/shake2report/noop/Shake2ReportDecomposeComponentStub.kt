@@ -13,6 +13,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @Suppress("UnusedPrivateProperty")
 class Shake2ReportDecomposeComponentStub @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
+    @Suppress("UNUSED_PARAMETER")
     @Assisted onBack: DecomposeOnBackParameter
 ) : Shake2ReportDecomposeComponent(componentContext) {
     @Composable

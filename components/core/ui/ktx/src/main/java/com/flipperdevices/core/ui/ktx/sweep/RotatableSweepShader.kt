@@ -13,7 +13,7 @@ class RotatableSweepShader(
     colorsSteps: FloatArray?,
     angel: Float
 ) : SweepGradient(centerX, centerY, colorsInt, colorsSteps) {
-    private var gradientMatrix = Matrix()
+    private val gradientMatrix = Matrix()
 
     init {
         gradientMatrix.postRotate(angel, centerX, centerY)

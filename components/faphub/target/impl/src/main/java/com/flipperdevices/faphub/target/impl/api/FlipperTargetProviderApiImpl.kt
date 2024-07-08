@@ -12,7 +12,6 @@ import com.flipperdevices.faphub.target.impl.utils.FlipperSdkFetcher
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +29,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
 ) : FlipperTargetProviderApi, LogTagProvider {
     override val TAG = "FlipperTargetProviderApi"
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
     private val targetFlow = MutableStateFlow<FlipperTarget?>(null)
 
     init {

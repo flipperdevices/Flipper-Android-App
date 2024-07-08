@@ -23,7 +23,6 @@ import com.google.protobuf.ByteString
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,7 +104,7 @@ class StressTestViewModel @Inject constructor(
 
     private suspend fun removeTemporaryFile(
         requestApi: FlipperRequestApi
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         requestApi.request(
             main {
                 storageDeleteRequest = deleteRequest {
@@ -116,7 +115,7 @@ class StressTestViewModel @Inject constructor(
         writeToLog("Remove $TEST_FILE")
     }
 
-    private suspend fun fillBuffer() = withContext(Dispatchers.IO) {
+    private suspend fun fillBuffer() = withContext(FlipperDispatchers.workStealingDispatcher) {
         byteBuffer = Random.nextBytes(byteBuffer)
     }
 
@@ -154,7 +153,7 @@ class StressTestViewModel @Inject constructor(
 
     private suspend fun receiveBufferFromFileAndCheck(
         requestApi: FlipperRequestApi
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val receiveBytes = ByteBuffer.allocate(byteBuffer.size)
         var bytesCount = 0L
         requestApi.request(

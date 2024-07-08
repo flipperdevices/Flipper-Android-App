@@ -36,10 +36,10 @@ interface FlipperRequestApi {
     /**
      * Contains state about average serial speed
      */
-    suspend fun getSpeed(): StateFlow<FlipperSerialSpeed>
+    fun getSpeed(): StateFlow<FlipperSerialSpeed>
 
     /**
      * Method for connection break debug - put random bytes into session
      */
-    suspend fun sendTrashBytesAndBrokeSession()
+    fun sendTrashBytesAndBrokeSession()
 }

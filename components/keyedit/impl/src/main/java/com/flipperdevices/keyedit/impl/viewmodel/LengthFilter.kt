@@ -10,7 +10,7 @@ private const val MAX_NOTE_LENGTH = 1024
 private const val VIBRATOR_TIME_MS = 500L
 
 class LengthFilter(context: Context) {
-    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
 
     fun nameLengthFilter(name: String, result: (String) -> Unit) {
         maxLengthFilter(name, MAX_NAME_LENGTH, result)

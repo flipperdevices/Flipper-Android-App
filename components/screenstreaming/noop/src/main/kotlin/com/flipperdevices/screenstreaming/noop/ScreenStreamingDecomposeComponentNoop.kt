@@ -15,7 +15,7 @@ private data object MainScreen
 class ScreenStreamingDecomposeComponentNoop @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted
-    @Suppress("UnusedPrivateProperty")
+    @Suppress("UnusedPrivateProperty", "UNUSED_PARAMETER")
     onBack: DecomposeOnBackParameter
 ) : ScreenStreamingDecomposeComponent(componentContext) {
 

@@ -108,14 +108,14 @@ private fun LazyListScope.ComposableInstalledTabScreenState(
         is FapInstalledScreenState.Error -> {}
         is FapInstalledScreenState.Loaded -> if (screenState.faps.isEmpty()) {
             if (screenState.inProgress) {
-                items(DEFAULT_FAP_COUNT) {
+                items(DEFAULT_FAP_COUNT) { _ ->
                     ComposableOnlineFapApp(
                         modifier = Modifier.padding(vertical = 12.dp),
                         fapItem = null,
                         installationButton = { modifier ->
                             installationButton(null, modifier)
                         },
-                        uninstallButton = { Box(it.placeholderConnecting()) }
+                        uninstallButton = { modifier -> Box(modifier.placeholderConnecting()) }
                     )
                 }
             } else {

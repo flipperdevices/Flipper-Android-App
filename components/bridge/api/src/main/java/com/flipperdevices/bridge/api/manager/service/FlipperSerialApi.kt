@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.StateFlow
 interface FlipperSerialApi {
     fun receiveBytesFlow(): Flow<ByteArray>
     fun sendBytes(data: ByteArray)
-    suspend fun getSpeed(): StateFlow<FlipperSerialSpeed>
+    fun getSpeed(): StateFlow<FlipperSerialSpeed>
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.impl.utils.Constants
@@ -13,7 +14,6 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.keyparser.api.KeyParser
 import com.squareup.anvil.annotations.ContributesMultibinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.URLDecoder
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class DeepLinkFlipperFormatSharing @Inject constructor(
 
         if (pureUri.scheme == SCHEME_FLIPPERKEY) {
             val query = pureUri.query
-            val decodedQuery = withContext(Dispatchers.IO) {
+            val decodedQuery = withContext(FlipperDispatchers.workStealingDispatcher) {
                 URLDecoder.decode(query, "UTF-8")
             }
             pureUri = Uri.parse(decodedQuery)

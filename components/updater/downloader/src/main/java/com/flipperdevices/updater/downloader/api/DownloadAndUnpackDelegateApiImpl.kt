@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.downloader.api
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
@@ -12,7 +13,6 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyAndClose
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
@@ -34,7 +34,7 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
         distributionFile: DistributionFile,
         target: File,
         onProgress: (suspend (Long, Long) -> Unit)?
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         var tryCount = 0
         var isSuccess = false
         while (!isSuccess) {
@@ -82,7 +82,7 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
         source.inputStream().use {
             val tarInputStream = TarArchiveInputStream(GzipCompressorInputStream(it))
 
-            var entry: TarArchiveEntry? = tarInputStream.nextTarEntry ?: return
+            var entry: TarArchiveEntry? = tarInputStream.nextEntry ?: return
             do {
                 if (entry != null) {
                     val entryFile = File(target, entry.name)
@@ -93,7 +93,7 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
                         tarInputStream.copyTo(entryFile.outputStream())
                     }
                 }
-                entry = tarInputStream.nextTarEntry
+                entry = tarInputStream.nextEntry
             } while (entry != null)
         }
     }

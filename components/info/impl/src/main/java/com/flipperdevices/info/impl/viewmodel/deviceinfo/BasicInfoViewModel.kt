@@ -29,7 +29,7 @@ class BasicInfoViewModel @Inject constructor(
 ) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "DeviceInfoViewModel"
     private val flipperBasicInfoState = MutableStateFlow(FlipperBasicInfo())
-    private var jobs = mutableListOf<Job>()
+    private val jobs = mutableListOf<Job>()
 
     init {
         serviceProvider.provideServiceApi(this, this)

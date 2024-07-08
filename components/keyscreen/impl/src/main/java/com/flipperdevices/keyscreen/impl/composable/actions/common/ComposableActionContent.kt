@@ -100,14 +100,14 @@ private fun ComposableActionContent(
 ) {
     val descriptionText = stringResource(descriptionId)
 
-    if (isProgress) {
+    if (isProgress || iconId == null) {
         CircularProgressIndicator(
             modifier = Modifier.size(size = 24.dp)
         )
     } else {
         Icon(
             modifier = Modifier.size(size = 24.dp),
-            painter = painterResourceByKey(iconId!!),
+            painter = painterResourceByKey(iconId),
             contentDescription = descriptionText,
             tint = if (isActive) {
                 tint
