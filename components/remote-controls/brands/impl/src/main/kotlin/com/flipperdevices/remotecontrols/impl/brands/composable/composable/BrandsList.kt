@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
-import com.flipperdevices.remotecontrols.impl.brands.presentation.util.ModelExt.charSection
+import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -37,8 +37,8 @@ fun BrandsList(
         modifier = modifier.padding(end = 14.dp)
     ) {
         itemsIndexed(brands) { i, brand ->
-            val charSection = remember { brand.charSection() }
-            val needDisplayTag = remember {
+            val charSection = remember(i) { brand.charSection() }
+            val needDisplayTag = remember(i) {
                 charSection != brands.getOrNull(i - 1)?.charSection()
             }
             if (needDisplayTag) {

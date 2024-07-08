@@ -64,6 +64,7 @@ class InfraredBackendApiImpl @Inject constructor(
     }
 
     companion object {
+        // TODO change when backend host created
         private const val HOST = "192.168.0.109:8080"
     }
 }

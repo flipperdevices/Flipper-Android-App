@@ -34,19 +34,7 @@ fun LoadedContent(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         when {
-            ifrFileModel != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                    content = {
-                        Text(
-                            text = "Yappie! Found your remote!",
-                            style = MaterialTheme.typography.subtitle2,
-                            color = LocalPalletV2.current.text.title.primary
-                        )
-                    }
-                )
-            }
+            ifrFileModel != null -> Unit
 
             signalResponse != null -> {
                 Box(modifier = Modifier)

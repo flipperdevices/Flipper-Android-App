@@ -7,6 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import com.flipperdevices.core.log.TaggedLogger
+import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareImageButton
 import kotlin.io.encoding.Base64
@@ -17,6 +20,7 @@ private const val HEADER_LENGTH = 20
 
 @OptIn(ExperimentalEncodingApi::class)
 private fun resolveImage(imgBase64: String?): ByteArray? {
+    val logger = TaggedLogger("Base64ImageButton")
     if (imgBase64 == null) return null
     return runCatching {
         when {
@@ -26,11 +30,13 @@ private fun resolveImage(imgBase64: String?): ByteArray? {
             }
 
             else -> {
-                println("Unknown image format: '${imgBase64.take(HEADER_LENGTH)}'")
+                logger.warn { "#resolveImage Unknown image format: '${imgBase64.take(HEADER_LENGTH)}'" }
                 Base64.Default.decode(imgBase64)
             }
         }
-    }.onFailure { error("Could not resolve image from base 64 string.") }.getOrNull()
+    }
+        .onFailure { throwable -> logger.error(throwable) { "#resolveImage Could not resolve image from base 64 string." } }
+        .getOrNull()
 }
 
 private fun imageBitmapFromBytes(encodedImageData: ByteArray): ImageBitmap? {
@@ -46,7 +52,7 @@ private fun toImageBitmap(base64Icon: String): ImageBitmap? {
 @Composable
 fun rememberImageBitmap(base64Image: String): ImageBitmap? {
     if (base64Image.isBlank()) return null
-    return remember { toImageBitmap(base64Image) }
+    return remember(base64Image) { toImageBitmap(base64Image) }
 }
 
 @Composable

@@ -24,7 +24,7 @@ class DeviceCategoriesComponentImpl @AssistedInject constructor(
         createDeviceCategoryListViewModel.get()
     }
 
-    override val model = deviceCategoryListFeature.model.asStateFlow()
+    override val model = deviceCategoryListFeature.model
 
     override fun onCategoryClicked(category: DeviceCategory) {
         onCategoryClicked.invoke(category.id)

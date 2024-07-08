@@ -44,7 +44,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
             categoriesScreenDecomposeComponentFactory
                 .invoke(
                     componentContext = componentContext,
-                    onBackClicked = { onBack.invoke() },
+                    onBackClicked = onBack::invoke,
                     onCategoryClicked = { deviceCategoryId ->
                         val configuration = RemoteControlsNavigationConfig.Brands(deviceCategoryId)
                         navigation.push(configuration)

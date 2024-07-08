@@ -16,8 +16,11 @@ import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,11 +33,10 @@ class DispatchSignalViewModel @Inject constructor(
     LogTagProvider,
     DispatchSignalApi {
     override val TAG: String = "DispatchSignalViewModel"
-    override val state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
 
-    override fun reset() {
-        state.value = DispatchSignalApi.State.Pending
-    }
+    private val _state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
+    override val state = _state.asStateFlow()
+    private var latestDispatchJob: Job? = null
 
     override fun dispatch(
         identifier: IfrKeyIdentifier,
@@ -61,14 +63,17 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     override fun dispatch(config: EmulateConfig) {
-        viewModelScope.launch(Dispatchers.Main) {
+        val oldJob = latestDispatchJob
+        latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
+            oldJob?.cancelAndJoin()
+            _state.emit(DispatchSignalApi.State.Pending)
             serviceProvider.provideServiceApi(
                 lifecycleOwner = this@DispatchSignalViewModel,
-                onError = { state.value = DispatchSignalApi.State.Error },
+                onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
-                    viewModelScope.launch {
-                        state.value = DispatchSignalApi.State.Emulating
-                        kotlin.runCatching {
+                    launch {
+                        _state.emit(DispatchSignalApi.State.Emulating)
+                        runCatching {
                             emulateHelper.startEmulate(
                                 scope = this,
                                 serviceApi = serviceApi,
@@ -76,8 +81,9 @@ class DispatchSignalViewModel @Inject constructor(
                             )
                             delay(DEFAULT_SIGNAL_DELAY)
                             emulateHelper.stopEmulate(this, serviceApi.requestApi)
-                        }.onFailure { throwable -> error(throwable) { "#tryLoad could not dispatch signal" } }
-                        reset()
+                        }
+                            .onFailure { throwable -> error(throwable) { "#tryLoad could not dispatch signal" } }
+                        _state.emit(DispatchSignalApi.State.Pending)
                     }
                 }
             )

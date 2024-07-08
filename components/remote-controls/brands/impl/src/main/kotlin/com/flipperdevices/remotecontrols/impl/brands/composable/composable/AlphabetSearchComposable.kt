@@ -108,7 +108,7 @@ fun AlphabetSearchComposable(
             model.headers.forEachIndexed { i, header ->
                 HeaderContent(
                     isSelected = i == selectedHeaderIndex,
-                    text = "$header",
+                    text = header.toString(),
                     onGloballyPositioned = {
                         offsets[i] = it.boundsInParent().center.y
                     }

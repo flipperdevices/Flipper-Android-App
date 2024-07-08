@@ -22,12 +22,12 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
-import com.flipperdevices.remotecontrols.impl.grid.presentation.data.KitchenLayoutFactory
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.grid.impl.R as GridR
+import androidx.compose.runtime.remember
 
 @Composable
-private fun LoadedContent(
+internal fun LoadedContent(
     pagesLayout: PagesLayout,
     onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
     onReload: () -> Unit,
@@ -51,7 +51,10 @@ fun GridComposable(
     gridComponent: GridComponent,
     modifier: Modifier = Modifier
 ) {
-    val model by gridComponent.model(rememberCoroutineScope()).collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val model by remember(gridComponent, coroutineScope) {
+        gridComponent.model(coroutineScope)
+    }.collectAsState()
     val scaffoldState = rememberScaffoldState()
     Scaffold(
         modifier = modifier,
@@ -94,21 +97,6 @@ fun GridComposable(
             }
         }
     )
-}
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Composable
-private fun LoadedContentPreview() {
-    FlipperThemeInternal {
-        LoadedContent(
-            pagesLayout = KitchenLayoutFactory.create(),
-            onButtonClicked = { _, _ -> },
-            onReload = {}
-        )
-    }
 }
 
 @Preview(

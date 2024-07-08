@@ -40,7 +40,7 @@ class UpdateContentDownloaderInternalStorage @Inject constructor(
         }
 
         if (deeplinkContent is DeeplinkContent.InternalStorageFile) {
-            kotlin.runCatching {
+            runCatching {
                 downloadAndUnpackDelegateApi.unpack(deeplinkContent.file, updaterFolder)
             }.onFailure { throw UpdateContentException() }
         } else {

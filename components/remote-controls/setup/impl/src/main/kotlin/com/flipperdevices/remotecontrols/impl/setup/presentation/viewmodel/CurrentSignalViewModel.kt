@@ -13,6 +13,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,14 +23,15 @@ class CurrentSignalViewModel @AssistedInject constructor(
     @Assisted private val onLoaded: (SignalResponseModel) -> Unit
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "CurrentSignalViewModel"
-    val state = MutableStateFlow<State>(State.Loading)
+    private val _state = MutableStateFlow<State>(State.Loading)
+    val state = _state.asStateFlow()
 
     fun load(
         successResults: List<SignalResultData>,
         failedResults: List<SignalResultData>
     ) = viewModelScope.launch {
-        state.value = State.Loading
-        val result = kotlin.runCatching {
+        _state.emit(State.Loading)
+        val result = runCatching {
             val request = SignalRequestModel(
                 successResults = successResults,
                 failedResults = failedResults,
@@ -41,9 +43,9 @@ class CurrentSignalViewModel @AssistedInject constructor(
             }
         }
         result
-            .onFailure { state.value = State.Error }
+            .onFailure { _state.emit(State.Error) }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not load signal model" } }
-            .onSuccess { state.value = State.Loaded(it) }
+            .onSuccess { _state.emit(State.Loaded(it)) }
             .onSuccess(onLoaded)
     }
 

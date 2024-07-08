@@ -6,12 +6,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
+import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
 import dagger.assisted.Assisted
@@ -61,24 +63,12 @@ class SetupComponentImpl @AssistedInject constructor(
     private val createCurrentSignalViewModel = instanceKeeper.getOrCreate(
         key = "SetupComponent_createCurrentSignalViewModel_${param.brandId}_${param.categoryId}",
         factory = {
-            currentSignalViewModelFactory.invoke(param) {
-                it.signalResponse?.signalModel?.let { signalModel ->
-                    val fff = FlipperFileFormat(
-                        orderedDict = listOf(
-                            ("Filetype" to "IR signals file"),
-                            ("Version" to "1"),
-                            ("name" to signalModel.name),
-                            ("type" to signalModel.type),
-                            ("frequency" to signalModel.frequency),
-                            ("duty_cycle" to signalModel.dutyCycle),
-                            ("data" to signalModel.data),
-                            ("protocol" to signalModel.protocol),
-                            ("address" to signalModel.address),
-                            ("command" to signalModel.command),
-                        ).mapNotNull { (k, v) -> if (v == null) null else k to v }
-                    )
-                    saveSignalApi.saveTempFile(fff, TEMP_FILE_NAME)
-                }
+            currentSignalViewModelFactory.invoke(param) { responseModel ->
+                val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
+                saveSignalApi.saveTempFile(
+                    fff = signalModel.toFFFormat(),
+                    nameWithExtension = TEMP_FILE_NAME
+                )
             }
         }
     )
@@ -108,7 +98,7 @@ class SetupComponentImpl @AssistedInject constructor(
                 CurrentSignalViewModel.State.Loading -> SetupComponent.Model.Loading(0f)
             }
         }
-    ).flowOn(Dispatchers.IO)
+    ).flowOn(FlipperDispatchers.workStealingDispatcher)
 
     override fun model(coroutineScope: CoroutineScope) = modelFlow
         .stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.Model.Loading(0f))

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.backend.model.CategoryManifest
@@ -36,7 +37,7 @@ fun DeviceCategoryComposable(
     val image = rememberImageBitmap(deviceCategory.meta.iconPngBase64)
     Card(
         modifier = modifier
-            .clickable { onClicked.invoke() },
+            .clickableRipple(onClick = onClicked),
         backgroundColor = LocalPalletV2.current.surface.contentCard.body.default,
         shape = RoundedCornerShape(12.dp),
         content = {

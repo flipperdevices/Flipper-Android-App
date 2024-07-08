@@ -24,6 +24,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import androidx.compose.runtime.remember
 
 @Composable
 private fun SignalResponseButton(
@@ -31,7 +32,9 @@ private fun SignalResponseButton(
     onClick: () -> Unit
 ) {
     val text = data.text
-    val iconType = IconButtonData.IconType.entries.firstOrNull { it.name == data.iconId }
+    val iconType = remember(data.iconId) {
+        IconButtonData.IconType.entries.firstOrNull { it.name == data.iconId }
+    }
     when {
         text != null -> {
             TextButton(

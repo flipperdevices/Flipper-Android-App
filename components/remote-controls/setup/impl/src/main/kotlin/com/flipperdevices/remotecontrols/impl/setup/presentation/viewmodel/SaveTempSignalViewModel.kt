@@ -20,6 +20,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,7 +39,9 @@ class SaveTempSignalViewModel @Inject constructor(
     SaveTempSignalApi {
     private val mutex = Mutex()
     override val TAG: String = "SaveFileViewModel"
-    override val state = MutableStateFlow<SaveTempSignalApi.State>(SaveTempSignalApi.State.Pending)
+    private val _state = MutableStateFlow<SaveTempSignalApi.State>(SaveTempSignalApi.State.Pending)
+    override val state = _state.asStateFlow()
+
 
     override fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String) {
         launchWithLock(mutex, viewModelScope, "load") {
@@ -69,7 +72,7 @@ class SaveTempSignalViewModel @Inject constructor(
         saveFileFlow
             .flowOn(FlipperDispatchers.workStealingDispatcher)
             .onEach {
-                when (it) {
+                _state.value = when (it) {
                     SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
                     is SaveFileApi.Status.Saving -> SaveTempSignalApi.State.Uploading(
                         it.uploaded,

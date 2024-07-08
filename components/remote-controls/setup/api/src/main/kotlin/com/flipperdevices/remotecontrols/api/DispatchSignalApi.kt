@@ -11,11 +11,6 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     val state: StateFlow<State>
 
     /**
-     * Reset current state and stop emulate
-     */
-    fun reset()
-
-    /**
      * Dispatch key from temporal file which contains only one key
      */
     fun dispatch(config: EmulateConfig)

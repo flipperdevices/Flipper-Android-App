@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.int
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.BrandsListViewModel
@@ -29,36 +30,44 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
     createBrandsListViewModel: BrandsListViewModel.Factory,
     createQueryViewModel: Provider<QueryViewModel>
 ) : BrandsDecomposeComponent, ComponentContext by componentContext {
-    private val brandsListFeature = instanceKeeper.getOrCreate {
-        createBrandsListViewModel.invoke(categoryId)
-    }
-    private val queryFeature = instanceKeeper.getOrCreate {
-        createQueryViewModel.get()
-    }
-    override fun model(coroutineScope: CoroutineScope): StateFlow<BrandsDecomposeComponent.Model> = combine(
-        flow = queryFeature.query,
-        flow2 = brandsListFeature.state,
-        transform = { query, pagingState ->
-            when (pagingState) {
-                is BrandsListViewModel.State.Loading -> {
-                    BrandsDecomposeComponent.Model.Loading
-                }
-
-                is BrandsListViewModel.State.Loaded -> {
-                    BrandsDecomposeComponent.Model.Loaded(
-                        brands = pagingState.brands.toImmutableList(),
-                        query = query
-                    )
-                }
-
-                is BrandsListViewModel.State.Error -> {
-                    BrandsDecomposeComponent.Model.Error
-                }
-            }
+    private val brandsListFeature = instanceKeeper.getOrCreate(
+        key = "BrandsDecomposeComponent_${categoryId}_brandsListFeature",
+        factory = {
+            createBrandsListViewModel.invoke(categoryId)
         }
     )
-        .flowOn(Dispatchers.IO)
-        .stateIn(coroutineScope, SharingStarted.Eagerly, BrandsDecomposeComponent.Model.Loading)
+    private val queryFeature = instanceKeeper.getOrCreate(
+        key = "BrandsDecomposeComponent_${categoryId}_queryFeature",
+        factory = {
+            createQueryViewModel.get()
+        }
+    )
+
+    override fun model(coroutineScope: CoroutineScope): StateFlow<BrandsDecomposeComponent.Model> =
+        combine(
+            flow = queryFeature.query,
+            flow2 = brandsListFeature.state,
+            transform = { query, pagingState ->
+                when (pagingState) {
+                    is BrandsListViewModel.State.Loading -> {
+                        BrandsDecomposeComponent.Model.Loading
+                    }
+
+                    is BrandsListViewModel.State.Loaded -> {
+                        BrandsDecomposeComponent.Model.Loaded(
+                            brands = pagingState.brands.toImmutableList(),
+                            query = query
+                        )
+                    }
+
+                    is BrandsListViewModel.State.Error -> {
+                        BrandsDecomposeComponent.Model.Error
+                    }
+                }
+            }
+        )
+            .flowOn(FlipperDispatchers.workStealingDispatcher)
+            .stateIn(coroutineScope, SharingStarted.Eagerly, BrandsDecomposeComponent.Model.Loading)
 
     override fun onBackClicked() {
         onBackClicked.invoke()

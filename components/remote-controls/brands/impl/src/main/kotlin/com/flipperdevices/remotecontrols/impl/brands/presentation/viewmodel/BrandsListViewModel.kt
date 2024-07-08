@@ -11,6 +11,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,13 +20,14 @@ class BrandsListViewModel @AssistedInject constructor(
     @Assisted private val categoryId: Long
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "BrandsListViewModel"
-    val state = MutableStateFlow<State>(State.Loading)
+    private val _state = MutableStateFlow<State>(State.Loading)
+    val state = _state.asStateFlow()
 
     fun tryLoad() = viewModelScope.launch {
-        state.update { State.Loading }
+        _state.update { State.Loading }
         brandsRepository.fetchBrands(categoryId)
-            .onSuccess { state.value = State.Loaded(it.toImmutableList()) }
-            .onFailure { state.value = State.Error }
+            .onSuccess { _state.emit(State.Loaded(it.toImmutableList())) }
+            .onFailure { _state.emit(State.Error) }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not load brands" } }
     }
 

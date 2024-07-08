@@ -19,13 +19,17 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.Setup
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import androidx.compose.runtime.remember
 
 @Composable
 fun SetupScreen(
     setupComponent: SetupComponent,
     modifier: Modifier = Modifier
 ) {
-    val model by setupComponent.model(rememberCoroutineScope()).collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val model by remember(setupComponent, coroutineScope) {
+        setupComponent.model(coroutineScope)
+    }.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow
             .onEach { setupComponent.onFileFound(it) }
@@ -45,9 +49,7 @@ fun SetupScreen(
         Crossfade(model) { model ->
             when (model) {
                 SetupComponent.Model.Error -> {
-                    ErrorComposable {
-                        setupComponent.onSuccessClicked()
-                    }
+                    ErrorComposable(onReload = setupComponent::onSuccessClicked)
                 }
 
                 is SetupComponent.Model.Loaded -> {

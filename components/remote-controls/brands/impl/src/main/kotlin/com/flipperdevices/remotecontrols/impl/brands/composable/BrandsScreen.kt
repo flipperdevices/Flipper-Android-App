@@ -15,13 +15,17 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsLoadedContent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
+import androidx.compose.runtime.remember
 
 @Composable
 fun BrandsScreen(
     brandsDecomposeComponent: BrandsDecomposeComponent,
     modifier: Modifier = Modifier
 ) {
-    val model by brandsDecomposeComponent.model(rememberCoroutineScope()).collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val model by remember(brandsDecomposeComponent, coroutineScope) {
+        brandsDecomposeComponent.model(coroutineScope)
+    }.collectAsState()
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -35,9 +39,7 @@ fun BrandsScreen(
         Crossfade(targetState = model) { model ->
             when (model) {
                 BrandsDecomposeComponent.Model.Error -> {
-                    ErrorComposable {
-                        brandsDecomposeComponent.tryLoad()
-                    }
+                    ErrorComposable(onReload = brandsDecomposeComponent::tryLoad)
                 }
 
                 is BrandsDecomposeComponent.Model.Loaded -> {

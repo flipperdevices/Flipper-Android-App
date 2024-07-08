@@ -15,6 +15,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class GridViewModel @AssistedInject constructor(
@@ -23,11 +24,12 @@ class GridViewModel @AssistedInject constructor(
     @Assisted private val onIrFileLoaded: (String) -> Unit
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "GridViewModel"
-    val state = MutableStateFlow<State>(State.Loading)
+    private val _state = MutableStateFlow<State>(State.Loading)
+    val state = _state.asStateFlow()
 
     private suspend fun loadIrFileContent(): List<InfraredRemote> {
         return pagesRepository.fetchKeyContent(param.ifrFileId)
-            .onFailure { state.value = State.Error }
+            .onFailure { _state.emit(State.Error) }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
             .onSuccess(onIrFileLoaded)
             .map(FlipperFileFormat::fromFileContent)
@@ -43,12 +45,14 @@ class GridViewModel @AssistedInject constructor(
                 ifrFileId = param.ifrFileId,
             )
             pagesLayoutResult
-                .onFailure { state.value = State.Error }
+                .onFailure { _state.emit(State.Error) }
                 .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                 .onSuccess { pagesLayout ->
-                    state.value = State.Loaded(
-                        pagesLayout = pagesLayout,
-                        remotes = remotes.toImmutableList()
+                    _state.emit(
+                        State.Loaded(
+                            pagesLayout = pagesLayout,
+                            remotes = remotes.toImmutableList()
+                        )
                     )
                 }
         }

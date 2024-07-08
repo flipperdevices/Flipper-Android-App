@@ -7,6 +7,7 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.data.Devic
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,17 +15,18 @@ class DeviceCategoryListViewModel @Inject constructor(
     private val deviceCategoriesRepository: DeviceCategoriesRepository
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "DeviceCategoryListViewModel"
-    val model = MutableStateFlow<DeviceCategoriesComponent.Model>(
+    private val _model = MutableStateFlow<DeviceCategoriesComponent.Model>(
         value = DeviceCategoriesComponent.Model.Loading
     )
+    val model = _model.asStateFlow()
 
     fun tryLoad() = viewModelScope.launch {
-        model.value = DeviceCategoriesComponent.Model.Loading
+        _model.emit(DeviceCategoriesComponent.Model.Loading)
         deviceCategoriesRepository.fetchCategories()
-            .onFailure { model.value = DeviceCategoriesComponent.Model.Error }
+            .onFailure { _model.emit(DeviceCategoriesComponent.Model.Error) }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not fetch categories" } }
             .onSuccess { categories ->
-                model.value = DeviceCategoriesComponent.Model.Loaded(categories.toImmutableList())
+                _model.emit(DeviceCategoriesComponent.Model.Loaded(categories.toImmutableList()))
             }
     }
 

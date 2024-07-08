@@ -24,9 +24,9 @@ dependencies {
     implementation(libs.compose.material.icons.core)
     implementation(libs.compose.material.icons.extended)
 
-    api(libs.decompose)
+    implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)
-    api(libs.essenty.lifecycle)
+    implementation(libs.essenty.lifecycle)
     implementation(libs.essenty.lifecycle.coroutines)
 
     implementation(libs.bundles.decompose)

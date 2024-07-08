@@ -3,8 +3,7 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-group = "com.flipperdevices.remotecontrols.categories.impl"
-android.namespace = "$group"
+android.namespace = "com.flipperdevices.remotecontrols.categories.impl"
 
 dependencies {
     implementation(projects.components.core.di)
@@ -42,9 +41,9 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)
 
-    api(libs.decompose)
+    implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)
-    api(libs.essenty.lifecycle)
+    implementation(libs.essenty.lifecycle)
     implementation(libs.essenty.lifecycle.coroutines)
 
     implementation(libs.bundles.decompose)

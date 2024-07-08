@@ -1,22 +1,18 @@
 @file:Suppress("MagicNumber")
 
-package com.flipperdevices.remotecontrols.impl.grid.presentation.data
+package com.flipperdevices.remotecontrols.impl.grid.composable.preview
 
-import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
 import com.flipperdevices.ifrmvp.model.PagesLayout
-import com.flipperdevices.ifrmvp.model.buttondata.Base64ImageButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.ChannelButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.NavigationButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
 
-object KitchenLayoutFactory {
-    const val FILE_NAME: String = "KitchenLayout"
-
+internal object KitchenLayoutFactory {
     @Suppress("LongMethod")
     fun create(): PagesLayout {
         return PagesLayout(
@@ -60,16 +56,6 @@ object KitchenLayoutFactory {
                                 text = "MENU"
                             ),
                             position = IfrButton.Position(0, 2)
-                        ).run(::add)
-                        IfrButton(
-                            data = Base64ImageButtonData(
-                                keyIdentifier = IfrKeyIdentifier.Sha256(
-                                    name = "power",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
-                                ),
-                                pngBase64 = GridConstants.TEMP_BASE64_IMAGE
-                            ),
-                            position = IfrButton.Position(2, 0, zIndex = 10f)
                         ).run(::add)
                         IfrButton(
                             data = TextButtonData(
@@ -153,7 +139,7 @@ object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                        ).run(::add)
+                            ).run(::add)
                         // Channel Volume
                         IfrButton(
                             data = ChannelButtonData(
@@ -173,7 +159,7 @@ object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                        ).run(::add)
+                            ).run(::add)
                         IfrButton(
                             data = VolumeButtonData(
                                 addKeyIdentifier = IfrKeyIdentifier.Sha256(
@@ -192,7 +178,7 @@ object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                        ).run(::add)
+                            ).run(::add)
                         // Bottom Button
                         IfrButton(
                             data = TextButtonData(
