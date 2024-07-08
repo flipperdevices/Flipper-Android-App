@@ -51,9 +51,9 @@ class DispatchSignalViewModel @Inject constructor(
                                 serviceApi = serviceApi,
                                 config = config
                             )
-                            delay(500L)
+                            delay(DEFAULT_SIGNAL_DELAY)
                             emulateHelper.stopEmulate(this, serviceApi.requestApi)
-                        }.onFailure(Throwable::printStackTrace) // todo
+                        }.onFailure { throwable -> error(throwable) { "#tryLoad could not dispatch signal" } }
                         reset()
                     }
                 }
@@ -90,4 +90,8 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
+
+    companion object {
+        private const val DEFAULT_SIGNAL_DELAY = 500L
+    }
 }

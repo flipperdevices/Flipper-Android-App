@@ -1,11 +1,15 @@
 package com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel
 
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.data.BrandsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -13,15 +17,16 @@ import kotlinx.coroutines.launch
 class BrandsListViewModel @AssistedInject constructor(
     private val brandsRepository: BrandsRepository,
     @Assisted private val categoryId: Long
-) : DecomposeViewModel() {
+) : DecomposeViewModel(), LogTagProvider {
+    override val TAG: String = "BrandsListViewModel"
     val state = MutableStateFlow<State>(State.Loading)
 
     fun tryLoad() = viewModelScope.launch {
         state.update { State.Loading }
         brandsRepository.fetchBrands(categoryId)
-            .onSuccess { state.value = State.Loaded(it) }
+            .onSuccess { state.value = State.Loaded(it.toImmutableList()) }
             .onFailure { state.value = State.Error }
-            .onFailure(Throwable::printStackTrace)
+            .onFailure { throwable -> error(throwable) { "#tryLoad could not load brands" } }
     }
 
     init {
@@ -30,7 +35,7 @@ class BrandsListViewModel @AssistedInject constructor(
 
     sealed interface State {
         data object Loading : State
-        data class Loaded(val brands: List<BrandModel>) : State
+        data class Loaded(val brands: ImmutableList<BrandModel>) : State
         data object Error : State
     }
 

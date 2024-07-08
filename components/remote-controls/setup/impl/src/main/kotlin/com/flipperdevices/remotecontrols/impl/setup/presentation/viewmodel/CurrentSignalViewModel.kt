@@ -1,5 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.api.backend.ApiBackend
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
@@ -18,7 +20,8 @@ class CurrentSignalViewModel @AssistedInject constructor(
     private val apiBackend: ApiBackend,
     @Assisted private val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onLoaded: (SignalResponseModel) -> Unit
-) : DecomposeViewModel() {
+) : DecomposeViewModel(), LogTagProvider {
+    override val TAG: String = "CurrentSignalViewModel"
     val state = MutableStateFlow<State>(State.Loading)
 
     fun load(
@@ -39,7 +42,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
         }
         result
             .onFailure { state.value = State.Error }
-            .onFailure(Throwable::printStackTrace)
+            .onFailure { throwable -> error(throwable) { "#tryLoad could not load signal model" } }
             .onSuccess { state.value = State.Loaded(it) }
             .onSuccess(onLoaded)
     }

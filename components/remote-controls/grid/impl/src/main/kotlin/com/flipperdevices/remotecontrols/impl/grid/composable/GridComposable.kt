@@ -19,10 +19,14 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 
 @Composable
-fun GridComposable(gridComponent: GridComponent) {
+fun GridComposable(
+    gridComponent: GridComponent,
+    modifier: Modifier = Modifier
+) {
     val model by gridComponent.model(rememberCoroutineScope()).collectAsState()
     val scaffoldState = rememberScaffoldState()
     Scaffold(
+        modifier = modifier,
         topBar = {
             SharedTopBar(
                 title = "",
@@ -62,7 +66,7 @@ fun GridComposable(gridComponent: GridComponent) {
                     }
 
                     is GridComponent.Model.Loading -> {
-                        LoadingComposable(model.progress)
+                        LoadingComposable(progress = model.progress)
                     }
                 }
             }

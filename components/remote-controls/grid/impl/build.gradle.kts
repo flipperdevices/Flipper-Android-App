@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.compose.material.icons.core)
     implementation(libs.compose.material.icons.extended)
 
+    implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)
 

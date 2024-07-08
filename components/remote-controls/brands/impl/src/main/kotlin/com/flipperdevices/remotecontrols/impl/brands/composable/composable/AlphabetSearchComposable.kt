@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.style.TextAlign
@@ -42,22 +43,24 @@ fun AlphabetSearchComposable(
     modifier: Modifier = Modifier,
     onBrandClicked: (BrandModel) -> Unit
 ) {
+    val offsets = remember { mutableStateMapOf<Int, Float>() }
+    var selectedHeaderIndex by remember { mutableIntStateOf(0) }
+    var isScrollingToIndex by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        val listState = rememberLazyListState()
         BrandsList(
             modifier = Modifier.weight(1f),
             listState = listState,
-            brands = model.groupedBrands.flatMap { it.second },
+            brands = model.sortedBrands,
             onBrandClicked = onBrandClicked
         )
-
-        val offsets = remember { mutableStateMapOf<Int, Float>() }
-        var selectedHeaderIndex by remember { mutableIntStateOf(0) }
-        var isScrollingToIndex by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
 
         fun updateSelectedIndexIfNeeded(offset: Float) {
             if (listState.isScrollInProgress) return
@@ -96,40 +99,51 @@ fun AlphabetSearchComposable(
             modifier = Modifier
                 .fillMaxHeight()
                 .pointerInput(Unit) {
-                    detectTapGestures {
-                        updateSelectedIndexIfNeeded(it.y)
-                    }
+                    detectTapGestures { updateSelectedIndexIfNeeded(it.y) }
                 }
                 .pointerInput(Unit) {
-                    detectVerticalDragGestures { change, _ ->
-                        updateSelectedIndexIfNeeded(change.position.y)
-                    }
+                    detectVerticalDragGestures { change, _ -> updateSelectedIndexIfNeeded(change.position.y) }
                 }
         ) {
             model.headers.forEachIndexed { i, header ->
-                val isSelected = i == selectedHeaderIndex
-                val scale by animateFloatAsState(
-                    targetValue = when (isSelected) {
-                        true -> 1.5f
-                        false -> 1f
-                    }
-                )
-                val textColor by animateColorAsState(
-                    targetValue = when {
-                        isSelected -> LocalPalletV2.current.text.body.primary
-                        else -> LocalPalletV2.current.text.body.secondary
-                    }
-                )
-                Text(
+                HeaderContent(
+                    isSelected = i == selectedHeaderIndex,
                     text = "$header",
-                    modifier = Modifier.onGloballyPositioned {
+                    onGloballyPositioned = {
                         offsets[i] = it.boundsInParent().center.y
-                    }.scale(scale),
-                    textAlign = TextAlign.Center,
-                    style = LocalTypography.current.subtitleM12,
-                    color = textColor
+                    }
                 )
             }
         }
     }
+}
+
+@Composable
+fun HeaderContent(
+    isSelected: Boolean,
+    text: String,
+    onGloballyPositioned: (LayoutCoordinates) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scale by animateFloatAsState(
+        targetValue = when (isSelected) {
+            true -> 1.5f
+            false -> 1f
+        }
+    )
+    val textColor by animateColorAsState(
+        targetValue = when {
+            isSelected -> LocalPalletV2.current.text.body.primary
+            else -> LocalPalletV2.current.text.body.secondary
+        }
+    )
+    Text(
+        text = text,
+        modifier = modifier
+            .onGloballyPositioned(onGloballyPositioned)
+            .scale(scale),
+        textAlign = TextAlign.Center,
+        style = LocalTypography.current.subtitleM12,
+        color = textColor
+    )
 }

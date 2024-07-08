@@ -5,6 +5,7 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -22,7 +23,7 @@ interface GridComponent {
 
         data class Loaded(
             val pagesLayout: PagesLayout,
-            val remotes: List<InfraredRemote>
+            val remotes: ImmutableList<InfraredRemote>
         ) : Model
 
         data object Error : Model

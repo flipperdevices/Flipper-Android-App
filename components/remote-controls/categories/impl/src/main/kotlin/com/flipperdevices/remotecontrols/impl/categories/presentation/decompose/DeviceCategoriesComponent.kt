@@ -2,6 +2,7 @@ package com.flipperdevices.remotecontrols.impl.categories.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.StateFlow
 
 interface DeviceCategoriesComponent {
@@ -15,7 +16,7 @@ interface DeviceCategoriesComponent {
 
     sealed interface Model {
         data object Loading : Model
-        class Loaded(val deviceTypes: List<DeviceCategory>) : Model
+        class Loaded(val deviceTypes: ImmutableList<DeviceCategory>) : Model
         data object Error : Model
     }
 

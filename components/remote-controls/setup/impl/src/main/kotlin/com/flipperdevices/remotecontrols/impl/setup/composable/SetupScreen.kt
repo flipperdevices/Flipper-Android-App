@@ -21,7 +21,10 @@ import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
-fun SetupScreen(setupComponent: SetupComponent) {
+fun SetupScreen(
+    setupComponent: SetupComponent,
+    modifier: Modifier = Modifier
+) {
     val model by setupComponent.model(rememberCoroutineScope()).collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow
@@ -29,6 +32,7 @@ fun SetupScreen(setupComponent: SetupComponent) {
             .launchIn(this)
     }
     Scaffold(
+        modifier = modifier,
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
         topBar = {
             SharedTopBar(

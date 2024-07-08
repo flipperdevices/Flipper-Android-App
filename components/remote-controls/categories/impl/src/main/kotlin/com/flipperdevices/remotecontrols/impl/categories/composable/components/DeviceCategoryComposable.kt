@@ -30,11 +30,12 @@ import com.flipperdevices.ifrmvp.core.ui.button.rememberImageBitmap
 @Composable
 fun DeviceCategoryComposable(
     deviceCategory: DeviceCategory,
-    onClicked: () -> Unit
+    onClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val image = rememberImageBitmap(deviceCategory.meta.iconPngBase64)
     Card(
-        modifier = Modifier
+        modifier = modifier
             .clickable { onClicked.invoke() },
         backgroundColor = LocalPalletV2.current.surface.contentCard.body.default,
         shape = RoundedCornerShape(12.dp),

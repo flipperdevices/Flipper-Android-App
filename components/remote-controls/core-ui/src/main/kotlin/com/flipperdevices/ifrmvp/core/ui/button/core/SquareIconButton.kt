@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.ext.asPainter
 import com.flipperdevices.ifrmvp.core.ui.ext.tintFor
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
@@ -69,7 +70,7 @@ fun SquareIconButton(
     SquareButton(
         modifier = modifier,
         onClick = onClick,
-        background = Color(0xFF303030)
+        background = LocalPalletV2.current.surface.menu.body.dufault
     ) {
         Icon(
             painter = iconType.asPainter(),

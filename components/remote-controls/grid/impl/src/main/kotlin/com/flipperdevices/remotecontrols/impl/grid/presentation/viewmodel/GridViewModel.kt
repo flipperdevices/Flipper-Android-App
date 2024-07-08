@@ -1,6 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.model.InfraredRemote
@@ -10,6 +12,8 @@ import com.flipperdevices.remotecontrols.impl.grid.presentation.data.PagesReposi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -17,12 +21,14 @@ class GridViewModel @AssistedInject constructor(
     private val pagesRepository: PagesRepository,
     @Assisted private val param: GridScreenDecomposeComponent.Param,
     @Assisted private val onIrFileLoaded: (String) -> Unit
-) : DecomposeViewModel() {
+) : DecomposeViewModel(), LogTagProvider {
+    override val TAG: String = "GridViewModel"
     val state = MutableStateFlow<State>(State.Loading)
 
     private suspend fun loadIrFileContent(): List<InfraredRemote> {
         return pagesRepository.fetchKeyContent(param.ifrFileId)
             .onFailure { state.value = State.Error }
+            .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
             .onSuccess(onIrFileLoaded)
             .map(FlipperFileFormat::fromFileContent)
             .map(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
@@ -38,10 +44,11 @@ class GridViewModel @AssistedInject constructor(
             )
             pagesLayoutResult
                 .onFailure { state.value = State.Error }
+                .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                 .onSuccess { pagesLayout ->
                     state.value = State.Loaded(
                         pagesLayout = pagesLayout,
-                        remotes = remotes
+                        remotes = remotes.toImmutableList()
                     )
                 }
         }
@@ -56,7 +63,7 @@ class GridViewModel @AssistedInject constructor(
         data object Error : State
         data class Loaded(
             val pagesLayout: PagesLayout,
-            val remotes: List<InfraredRemote>
+            val remotes: ImmutableList<InfraredRemote>
         ) : State
     }
 

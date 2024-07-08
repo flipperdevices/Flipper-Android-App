@@ -9,6 +9,7 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.Bran
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.QueryViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -45,7 +46,7 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
 
                 is BrandsListViewModel.State.Loaded -> {
                     BrandsDecomposeComponent.Model.Loaded(
-                        brands = pagingState.brands,
+                        brands = pagingState.brands.toImmutableList(),
                         query = query
                     )
                 }

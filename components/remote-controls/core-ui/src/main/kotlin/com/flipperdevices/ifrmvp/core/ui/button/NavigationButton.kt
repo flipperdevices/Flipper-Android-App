@@ -21,7 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
+
+private const val NAV_BUTTON_SCALE = 4
 
 @Suppress("LongMethod")
 @Composable
@@ -32,13 +35,13 @@ fun NavigationButton(
     onLeftClicked: () -> Unit,
     onOkClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    background: Color = Color(0xFF303030),
+    background: Color = LocalPalletV2.current.surface.menu.body.dufault,
     iconTint: Color = MaterialTheme.colors.onPrimary,
     textColor: Color = MaterialTheme.colors.onPrimary,
 ) {
     Box(
         modifier = modifier
-            .size(GridConstants.DEFAULT_BUTTON_SIZE * 4)
+            .size(GridConstants.DEFAULT_BUTTON_SIZE * NAV_BUTTON_SCALE)
             .clip(CircleShape)
             .background(background),
         contentAlignment = Alignment.Center
@@ -70,7 +73,7 @@ fun NavigationButton(
                 .background(MaterialTheme.colors.primaryVariant)
                 .padding(4.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF616161))
+                .background(LocalPalletV2.current.surface.menu.separator.default)
                 .clip(CircleShape)
                 .clickable(onClick = onOkClicked)
                 .align(Alignment.Center),

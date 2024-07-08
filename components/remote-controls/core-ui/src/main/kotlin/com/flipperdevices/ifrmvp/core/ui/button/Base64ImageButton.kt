@@ -7,11 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareImageButton
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 private const val PNG_BASE64_HEADER = "data:image/png;base64,"
+private const val HEADER_LENGTH = 20
 
 @OptIn(ExperimentalEncodingApi::class)
 private fun resolveImage(imgBase64: String?): ByteArray? {
@@ -24,7 +26,7 @@ private fun resolveImage(imgBase64: String?): ByteArray? {
             }
 
             else -> {
-                println("Unknown image format: '${imgBase64.take(20)}'")
+                println("Unknown image format: '${imgBase64.take(HEADER_LENGTH)}'")
                 Base64.Default.decode(imgBase64)
             }
         }
@@ -57,7 +59,7 @@ fun Base64ImageButton(
     if (imageBitmap != null) {
         SquareImageButton(
             onClick = onClick,
-            background = Color(0xFF303030),
+            background = LocalPalletV2.current.surface.menu.body.dufault,
             bitmap = imageBitmap,
             iconTint = Color.Unspecified,
             modifier = modifier

@@ -14,6 +14,7 @@ import com.flipperdevices.ifrmvp.model.PageLayout
 fun BoxWithConstraintsScope.ButtonsComposable(
     pageLayout: PageLayout,
     onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     if (pageLayout.buttons.isEmpty()) {
         ErrorComposable(desc = "Страница пустая")
@@ -21,7 +22,7 @@ fun BoxWithConstraintsScope.ButtonsComposable(
     pageLayout.buttons
         .forEach { button ->
             GridItemComposable(
-                modifier = Modifier,
+                modifier = modifier,
                 position = button.position,
                 content = {
                     ButtonItemComposable(

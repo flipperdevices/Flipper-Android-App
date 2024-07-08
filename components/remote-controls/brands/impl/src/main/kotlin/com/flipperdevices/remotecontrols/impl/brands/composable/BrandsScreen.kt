@@ -17,9 +17,13 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.Bran
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
 
 @Composable
-fun BrandsScreen(brandsDecomposeComponent: BrandsDecomposeComponent) {
+fun BrandsScreen(
+    brandsDecomposeComponent: BrandsDecomposeComponent,
+    modifier: Modifier = Modifier
+) {
     val model by brandsDecomposeComponent.model(rememberCoroutineScope()).collectAsState()
     Scaffold(
+        modifier = modifier,
         topBar = {
             SharedTopBar(
                 title = stringResource(BrandsR.string.brands_title),

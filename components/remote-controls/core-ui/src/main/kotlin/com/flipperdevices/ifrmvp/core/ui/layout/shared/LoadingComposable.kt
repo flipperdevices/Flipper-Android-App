@@ -15,9 +15,12 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
-fun LoadingComposable(progress: Float = 0f) {
+fun LoadingComposable(
+    modifier: Modifier = Modifier,
+    progress: Float = 0f
+) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
         content = {
             Column {

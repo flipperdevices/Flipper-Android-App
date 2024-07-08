@@ -2,7 +2,7 @@ package com.flipperdevices.ifrmvp.core.ui.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
@@ -61,7 +61,7 @@ fun ButtonItemComposable(
             TextButton(
                 onClick = { onKeyDataClicked.invoke(buttonData.keyIdentifier) },
                 text = buttonData.text,
-                background = Color(0xFF303030),
+                background = LocalPalletV2.current.surface.menu.body.dufault,
                 modifier = modifier,
             )
         }

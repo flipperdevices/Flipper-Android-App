@@ -3,6 +3,8 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.ModelExt.charSection
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -23,12 +25,13 @@ interface BrandsDecomposeComponent {
         data object Loading : Model
         data object Error : Model
         class Loaded(
-            val brands: List<BrandModel>,
+            val brands: ImmutableList<BrandModel>,
             val query: String
         ) : Model {
             val groupedBrands = brands.groupBy { brandModel ->
                 brandModel.charSection()
             }.toList().sortedBy { it.first }
+            val sortedBrands = groupedBrands.flatMap { it.second }.toImmutableList()
 
             val headers = groupedBrands.map { group -> group.first }
         }

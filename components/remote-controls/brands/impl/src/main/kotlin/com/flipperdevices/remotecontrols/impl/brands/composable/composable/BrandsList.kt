@@ -19,13 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.ModelExt.charSection
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun BrandsList(
-    brands: List<BrandModel>,
+    brands: ImmutableList<BrandModel>,
     onBrandClicked: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
@@ -62,7 +64,7 @@ fun BrandsList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .background(MaterialTheme.colors.onPrimary.copy(0.2f))
+                        .background(LocalPalletV2.current.surface.backgroundMain.separator)
                 )
             }
         }

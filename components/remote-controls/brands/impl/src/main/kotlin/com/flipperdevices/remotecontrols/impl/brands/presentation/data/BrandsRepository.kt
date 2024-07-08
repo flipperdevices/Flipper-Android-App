@@ -19,8 +19,6 @@ class BackendBrandsRepository @Inject constructor(
     override suspend fun fetchBrands(
         categoryId: Long
     ): Result<List<BrandModel>> = withContext(Dispatchers.IO) {
-        runCatching {
-            apiBackend.getManufacturers(categoryId).brands
-        }
+        runCatching { apiBackend.getManufacturers(categoryId).brands }
     }
 }

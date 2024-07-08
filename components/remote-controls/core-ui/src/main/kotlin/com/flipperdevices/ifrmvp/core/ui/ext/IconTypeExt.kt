@@ -12,8 +12,8 @@ import androidx.compose.material.icons.filled.SevereCold
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 
 @Composable
@@ -40,5 +40,5 @@ fun IconButtonData.IconType.tintFor() = when (this) {
     IconButtonData.IconType.MORE,
     IconButtonData.IconType.MUTE -> MaterialTheme.colors.onPrimary
 
-    IconButtonData.IconType.POWER -> Color(0xFFF63F3F)
+    IconButtonData.IconType.POWER -> LocalPalletV2.current.icon.danger.primary
 }

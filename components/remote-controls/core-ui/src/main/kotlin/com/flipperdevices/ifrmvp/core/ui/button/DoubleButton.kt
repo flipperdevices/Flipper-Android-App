@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 
 @Composable
@@ -25,27 +25,27 @@ fun DoubleButton(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFF303030)),
+            .background(LocalPalletV2.current.surface.menu.body.dufault),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextButton(
             onClick = onFirstClicked,
             text = firstText,
-            background = Color(0xFF303030),
+            background = LocalPalletV2.current.surface.menu.body.dufault,
             fontSize = 24.sp
         )
         text?.let {
             TextButton(
                 onClick = null,
                 text = text,
-                background = Color(0xFF303030)
+                background = LocalPalletV2.current.surface.menu.body.dufault
             )
         }
         TextButton(
             onClick = onLastClicked,
             text = lastText,
-            background = Color(0xFF303030),
+            background = LocalPalletV2.current.surface.menu.body.dufault,
             fontSize = 24.sp
         )
     }
@@ -63,7 +63,7 @@ fun VolumeButton(
         text = "VOL",
         firstText = "+",
         lastText = "-",
-        modifier = Modifier
+        modifier = modifier
     )
 }
 

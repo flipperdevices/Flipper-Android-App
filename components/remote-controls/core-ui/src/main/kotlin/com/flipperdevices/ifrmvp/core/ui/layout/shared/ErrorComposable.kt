@@ -17,11 +17,12 @@ import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 fun ErrorComposable(
+    modifier: Modifier = Modifier,
     desc: String? = null,
     onReload: (() -> Unit)? = null
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
         content = {
             Column(

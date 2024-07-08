@@ -11,6 +11,7 @@ commonDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)
     implementation(projects.components.core.di)
+    implementation(projects.components.remoteControls.coreModel)
 
     implementation(libs.dagger)
     implementation(libs.square.anvil.annotations)

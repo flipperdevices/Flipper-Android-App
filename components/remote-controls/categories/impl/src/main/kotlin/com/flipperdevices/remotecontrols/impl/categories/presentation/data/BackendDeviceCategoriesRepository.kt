@@ -17,5 +17,5 @@ class BackendDeviceCategoriesRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             apiBackend.getCategories().categories
         }
-    }.onFailure(Throwable::printStackTrace)
+    }
 }
