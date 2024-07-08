@@ -3,11 +3,13 @@ package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.inter
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.SaveSignalApi
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import dagger.assisted.Assisted
@@ -25,19 +27,28 @@ class GridComponentImpl @AssistedInject constructor(
     @Assisted private val param: GridScreenDecomposeComponent.Param,
     @Assisted private val onPopClicked: () -> Unit,
     createGridViewModel: GridViewModel.Factory,
-    createSaveSignalViewModel: Provider<SaveSignalApi>,
+    createSaveSignalViewModel: Provider<SaveTempSignalApi>,
     createDispatchSignalViewModel: Provider<DispatchSignalApi>
 ) : GridComponent, ComponentContext by componentContext {
-    private val saveSignalViewModel = instanceKeeper.getOrCreate {
+    private val saveSignalViewModel = instanceKeeper.getOrCreate(
+        "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}"
+    ) {
         createSaveSignalViewModel.get()
     }
-    private val dispatchSignalViewModel = instanceKeeper.getOrCreate {
+    private val dispatchSignalViewModel = instanceKeeper.getOrCreate(
+        "GridComponent_dispatchSignalViewModel_${param.ifrFileId}_${param.uiFileId}"
+    ) {
         createDispatchSignalViewModel.get()
     }
-    private val gridFeature = instanceKeeper.getOrCreate {
+    private val gridFeature = instanceKeeper.getOrCreate(
+        "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}"
+    ) {
         createGridViewModel.invoke(param) { content ->
             val fff = FlipperFileFormat.fromFileContent(content)
-            saveSignalViewModel.save(fff, "${param.ifrFileId}.ir")
+            saveSignalViewModel.saveTempFile(
+                fff = fff,
+                nameWithExtension = "${param.ifrFileId}.ir"
+            )
         }
     }
 
@@ -49,15 +60,15 @@ class GridComponentImpl @AssistedInject constructor(
                 GridViewModel.State.Error -> GridComponent.Model.Error
                 is GridViewModel.State.Loaded -> {
                     when (saveState) {
-                        SaveSignalApi.State.Error -> GridComponent.Model.Error
-                        SaveSignalApi.State.Uploaded, SaveSignalApi.State.Pending -> {
+                        SaveTempSignalApi.State.Error -> GridComponent.Model.Error
+                        SaveTempSignalApi.State.Uploaded, SaveTempSignalApi.State.Pending -> {
                             GridComponent.Model.Loaded(
                                 pagesLayout = gridState.pagesLayout,
                                 remotes = gridState.remotes
                             )
                         }
 
-                        is SaveSignalApi.State.Uploading -> GridComponent.Model.Loading(
+                        is SaveTempSignalApi.State.Uploading -> GridComponent.Model.Loading(
                             saveState.progress
                         )
                     }
@@ -71,9 +82,18 @@ class GridComponentImpl @AssistedInject constructor(
     override fun onButtonClicked(identifier: IfrKeyIdentifier) {
         val gridLoadedState = (gridFeature.state.value as? GridViewModel.State.Loaded) ?: return
         val remotes = gridLoadedState.remotes
-        dispatchSignalViewModel.dispatch(identifier, remotes, "${param.ifrFileId}.ir")
+        dispatchSignalViewModel.dispatch(
+            identifier = identifier,
+            remotes = remotes,
+            ffPath = FlipperFilePath(
+                folder = FLIPPER_TEMP_FOLDER,
+                nameWithExtension = "${param.ifrFileId}.ir"
+            )
+        )
     }
 
     override fun tryLoad() = gridFeature.tryLoad()
     override fun pop() = onPopClicked.invoke()
 }
+
+private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"

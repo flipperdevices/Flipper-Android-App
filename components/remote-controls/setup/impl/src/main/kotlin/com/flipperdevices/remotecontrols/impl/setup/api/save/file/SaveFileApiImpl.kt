@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -29,7 +28,7 @@ class SaveFileApiImpl @Inject constructor(
     override fun save(
         requestApi: FlipperRequestApi,
         deeplinkContent: DeeplinkContent,
-        ffPath: FlipperFilePath
+        absolutePath: String
     ): Flow<SaveFileApi.Status> = channelFlow {
         val totalSize = deeplinkContent.length() ?: 0
         var progressInternal = 0L
@@ -38,10 +37,10 @@ class SaveFileApiImpl @Inject constructor(
             val stream = fileStream ?: return@use
             val commandFlow = streamToCommandFlow(
                 stream,
-                deeplinkContent.length(),
+                totalSize,
                 requestWrapper = { chunkData ->
                     storageWriteRequest = writeRequest {
-                        path = ffPath.getPathOnFlipper()
+                        path = absolutePath
                         file = file { data = chunkData }
                     }
                 }
@@ -69,7 +68,7 @@ class SaveFileApiImpl @Inject constructor(
                             commandId = id
                             hasNext = false
                             storageWriteRequest = writeRequest {
-                                path = ffPath.getPathOnFlipper()
+                                path = absolutePath
                             }
                         }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
                     ).collect()

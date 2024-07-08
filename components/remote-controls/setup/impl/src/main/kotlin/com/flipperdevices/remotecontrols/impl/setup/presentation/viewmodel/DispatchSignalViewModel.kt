@@ -30,11 +30,34 @@ class DispatchSignalViewModel @Inject constructor(
     LogTagProvider,
     DispatchSignalApi {
     override val TAG: String = "DispatchSignalViewModel"
-
     override val state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
 
     override fun reset() {
         state.value = DispatchSignalApi.State.Pending
+    }
+
+    override fun dispatch(
+        identifier: IfrKeyIdentifier,
+        remotes: List<InfraredRemote>,
+        ffPath: FlipperFilePath
+    ) {
+        val i = remotes.indexOfFirst { remote ->
+            when (identifier) {
+                is IfrKeyIdentifier.Name -> remote.name == identifier.name
+                is IfrKeyIdentifier.Sha256 -> TODO()
+            }
+        }
+        val remote = remotes.getOrNull(i) ?: run {
+            error { "Not found!" }
+            return
+        }
+        val config = EmulateConfig(
+            keyPath = ffPath,
+            keyType = FlipperKeyType.INFRARED,
+            args = remote.name,
+            index = i
+        )
+        dispatch(config)
     }
 
     override fun dispatch(config: EmulateConfig) {
@@ -59,34 +82,6 @@ class DispatchSignalViewModel @Inject constructor(
                 }
             )
         }
-    }
-
-    override fun dispatch(
-        identifier: IfrKeyIdentifier,
-        remotes: List<InfraredRemote>,
-        fileName: String
-    ) {
-        val i = remotes.indexOfFirst { remote ->
-            when (identifier) {
-                is IfrKeyIdentifier.Name -> remote.name == identifier.name
-                is IfrKeyIdentifier.Sha256 -> TODO()
-            }
-        }
-        val remote = remotes.getOrNull(i) ?: run {
-            error { "Not found!" }
-            return
-        }
-        val ffPath = FlipperFilePath(
-            FlipperKeyType.INFRARED.flipperDir,
-            fileName
-        )
-        val config = EmulateConfig(
-            keyPath = ffPath,
-            keyType = FlipperKeyType.INFRARED,
-            args = remote.name,
-            index = i
-        )
-        dispatch(config)
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit

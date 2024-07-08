@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.model.InfraredRemote
 import com.flipperdevices.keyemulate.model.EmulateConfig
@@ -25,7 +26,7 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     fun dispatch(
         identifier: IfrKeyIdentifier,
         remotes: List<InfraredRemote>,
-        fileName: String
+        ffPath: FlipperFilePath
     )
 
     sealed interface State {
