@@ -31,26 +31,29 @@ class GridComponentImpl @AssistedInject constructor(
     createDispatchSignalViewModel: Provider<DispatchSignalApi>
 ) : GridComponent, ComponentContext by componentContext {
     private val saveSignalViewModel = instanceKeeper.getOrCreate(
-        "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}"
-    ) {
-        createSaveSignalViewModel.get()
-    }
-    private val dispatchSignalViewModel = instanceKeeper.getOrCreate(
-        "GridComponent_dispatchSignalViewModel_${param.ifrFileId}_${param.uiFileId}"
-    ) {
-        createDispatchSignalViewModel.get()
-    }
-    private val gridFeature = instanceKeeper.getOrCreate(
-        "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}"
-    ) {
-        createGridViewModel.invoke(param) { content ->
-            val fff = FlipperFileFormat.fromFileContent(content)
-            saveSignalViewModel.saveTempFile(
-                fff = fff,
-                nameWithExtension = "${param.ifrFileId}.ir"
-            )
+        key = "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
+        factory = {
+            createSaveSignalViewModel.get()
         }
-    }
+    )
+    private val dispatchSignalViewModel = instanceKeeper.getOrCreate(
+        key = "GridComponent_dispatchSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
+        factory = {
+            createDispatchSignalViewModel.get()
+        }
+    )
+    private val gridFeature = instanceKeeper.getOrCreate(
+        key = "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}",
+        factory = {
+            createGridViewModel.invoke(param) { content ->
+                val fff = FlipperFileFormat.fromFileContent(content)
+                saveSignalViewModel.saveTempFile(
+                    fff = fff,
+                    nameWithExtension = "${param.ifrFileId}.ir"
+                )
+            }
+        }
+    )
 
     override fun model(coroutineScope: CoroutineScope) = combine(
         saveSignalViewModel.state,

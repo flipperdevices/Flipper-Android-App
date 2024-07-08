@@ -41,43 +41,47 @@ class SetupComponentImpl @AssistedInject constructor(
     createDispatchSignalApi: Provider<DispatchSignalApi>
 ) : SetupComponent, ComponentContext by componentContext {
     private val saveSignalApi = instanceKeeper.getOrCreate(
-        "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}"
-    ) {
-        createSaveTempSignalApi.get()
-    }
+        key = "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}",
+        factory = {
+            createSaveTempSignalApi.get()
+        }
+    )
     private val historyViewModel = instanceKeeper.getOrCreate(
-        "SetupComponent_historyViewModel_${param.brandId}_${param.categoryId}"
-    ) {
-        createHistoryViewModel.get()
-    }
+        key = "SetupComponent_historyViewModel_${param.brandId}_${param.categoryId}",
+        factory = {
+            createHistoryViewModel.get()
+        }
+    )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
-        "SetupComponent_dispatchSignalApi_${param.brandId}_${param.categoryId}"
-    ) {
-        createDispatchSignalApi.get()
-    }
+        key = "SetupComponent_dispatchSignalApi_${param.brandId}_${param.categoryId}",
+        factory = {
+            createDispatchSignalApi.get()
+        }
+    )
     private val createCurrentSignalViewModel = instanceKeeper.getOrCreate(
-        "SetupComponent_createCurrentSignalViewModel_${param.brandId}_${param.categoryId}"
-    ) {
-        currentSignalViewModelFactory.invoke(param) {
-            it.signalResponse?.signalModel?.let { signalModel ->
-                val fff = FlipperFileFormat(
-                    orderedDict = listOf(
-                        ("Filetype" to "IR signals file"),
-                        ("Version" to "1"),
-                        ("name" to signalModel.name),
-                        ("type" to signalModel.type),
-                        ("frequency" to signalModel.frequency),
-                        ("duty_cycle" to signalModel.dutyCycle),
-                        ("data" to signalModel.data),
-                        ("protocol" to signalModel.protocol),
-                        ("address" to signalModel.address),
-                        ("command" to signalModel.command),
-                    ).mapNotNull { (k, v) -> if (v == null) null else k to v }
-                )
-                saveSignalApi.saveTempFile(fff, TEMP_FILE_NAME)
+        key = "SetupComponent_createCurrentSignalViewModel_${param.brandId}_${param.categoryId}",
+        factory = {
+            currentSignalViewModelFactory.invoke(param) {
+                it.signalResponse?.signalModel?.let { signalModel ->
+                    val fff = FlipperFileFormat(
+                        orderedDict = listOf(
+                            ("Filetype" to "IR signals file"),
+                            ("Version" to "1"),
+                            ("name" to signalModel.name),
+                            ("type" to signalModel.type),
+                            ("frequency" to signalModel.frequency),
+                            ("duty_cycle" to signalModel.dutyCycle),
+                            ("data" to signalModel.data),
+                            ("protocol" to signalModel.protocol),
+                            ("address" to signalModel.address),
+                            ("command" to signalModel.command),
+                        ).mapNotNull { (k, v) -> if (v == null) null else k to v }
+                    )
+                    saveSignalApi.saveTempFile(fff, TEMP_FILE_NAME)
+                }
             }
         }
-    }
+    )
     private val modelFlow = combine(
         this.createCurrentSignalViewModel.state,
         saveSignalApi.state,
