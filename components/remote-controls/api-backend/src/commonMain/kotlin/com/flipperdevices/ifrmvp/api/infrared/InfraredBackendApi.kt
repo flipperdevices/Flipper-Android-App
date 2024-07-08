@@ -1,4 +1,4 @@
-package com.flipperdevices.ifrmvp.api.backend
+package com.flipperdevices.ifrmvp.api.infrared
 
 import com.flipperdevices.ifrmvp.backend.model.BrandsResponse
 import com.flipperdevices.ifrmvp.backend.model.CategoriesResponse
@@ -7,7 +7,7 @@ import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 
-interface ApiBackend {
+interface InfraredBackendApi {
     suspend fun getCategories(): CategoriesResponse
     suspend fun getManufacturers(categoryId: Long): BrandsResponse
     suspend fun getSignal(request: SignalRequestModel): SignalResponseModel

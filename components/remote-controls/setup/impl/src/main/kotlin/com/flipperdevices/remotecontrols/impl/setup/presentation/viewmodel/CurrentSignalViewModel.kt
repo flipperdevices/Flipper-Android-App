@@ -3,7 +3,7 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.ifrmvp.api.backend.ApiBackend
+import com.flipperdevices.ifrmvp.api.infrared.InfraredBackendApi
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel.SignalResultData
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CurrentSignalViewModel @AssistedInject constructor(
-    private val apiBackend: ApiBackend,
+    private val infraredBackendApi: InfraredBackendApi,
     @Assisted private val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onLoaded: (SignalResponseModel) -> Unit
 ) : DecomposeViewModel(), LogTagProvider {
@@ -37,7 +37,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
                 brandId = param.brandId,
             )
             withContext(Dispatchers.IO) {
-                apiBackend.getSignal(request)
+                infraredBackendApi.getSignal(request)
             }
         }
         result

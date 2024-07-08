@@ -1,4 +1,4 @@
-package com.flipperdevices.ifrmvp.api.backend
+package com.flipperdevices.ifrmvp.api.infrared
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.backend.model.BrandsResponse
@@ -19,10 +19,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, ApiBackend::class)
-class ApiBackendImpl @Inject constructor(
+@ContributesBinding(AppGraph::class, InfraredBackendApi::class)
+class InfraredBackendApiImpl @Inject constructor(
     private val httpClient: HttpClient
-) : ApiBackend {
+) : InfraredBackendApi {
     override suspend fun getCategories(): CategoriesResponse {
         return httpClient.get {
             url(host = HOST, path = "categories")

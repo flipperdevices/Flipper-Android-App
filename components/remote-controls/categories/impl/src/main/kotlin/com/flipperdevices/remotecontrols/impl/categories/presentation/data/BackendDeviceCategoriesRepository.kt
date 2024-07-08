@@ -1,7 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.categories.presentation.data
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.ifrmvp.api.backend.ApiBackend
+import com.flipperdevices.ifrmvp.api.infrared.InfraredBackendApi
 import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
@@ -10,12 +10,12 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DeviceCategoriesRepository::class)
 class BackendDeviceCategoriesRepository @Inject constructor(
-    private val apiBackend: ApiBackend,
+    private val infraredBackendApi: InfraredBackendApi,
 ) : DeviceCategoriesRepository {
 
     override suspend fun fetchCategories(): Result<List<DeviceCategory>> = runCatching {
         withContext(Dispatchers.IO) {
-            apiBackend.getCategories().categories
+            infraredBackendApi.getCategories().categories
         }
     }
 }
