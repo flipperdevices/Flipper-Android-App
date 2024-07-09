@@ -20,6 +20,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
@@ -160,6 +161,7 @@ class InstalledFapsFromNetworkProducer @Inject constructor(
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun getLoadedFapsFlow(): Flow<FapInstalledInternalLoadingState> {
         return applicationFromNetworkStateFlow.flatMapLatest { state ->
             return@flatMapLatest when (state) {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.filename
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
@@ -13,7 +14,6 @@ import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.squareup.anvil.annotations.ContributesMultibinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
@@ -51,7 +51,7 @@ class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTag
         contentResolver: ContentResolver,
         cacheDir: File,
         uri: Uri
-    ): DeeplinkContent? = withContext(Dispatchers.IO) {
+    ): DeeplinkContent? = withContext(FlipperDispatchers.workStealingDispatcher) {
         val filename = uri.filename(contentResolver) ?: System.currentTimeMillis().toString()
         val temporaryFile = File(cacheDir, filename)
         if (temporaryFile.exists()) {

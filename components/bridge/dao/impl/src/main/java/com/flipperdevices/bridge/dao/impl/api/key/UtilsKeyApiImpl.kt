@@ -11,10 +11,10 @@ import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.key.UtilsKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -35,7 +35,7 @@ class UtilsKeyApiImpl @Inject constructor(
 
     override suspend fun markAsSynchronized(
         keyPath: FlipperKeyPath
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         utilsKeyDao.markSynchronized(
             keyPath.path.pathToKey,
             keyPath.deleted,
@@ -46,7 +46,7 @@ class UtilsKeyApiImpl @Inject constructor(
     override suspend fun updateNote(
         keyPath: FlipperKeyPath,
         note: String
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         utilsKeyDao.updateNote(keyPath.path.pathToKey, keyPath.deleted, note)
     }
 

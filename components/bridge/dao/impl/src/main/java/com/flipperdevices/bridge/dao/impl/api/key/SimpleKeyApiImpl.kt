@@ -12,9 +12,9 @@ import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -33,7 +33,7 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun getAllKeys(
         includeDeleted: Boolean
-    ): List<FlipperKey> = withContext(Dispatchers.IO) {
+    ): List<FlipperKey> = withContext(FlipperDispatchers.workStealingDispatcher) {
         return@withContext if (includeDeleted) {
             simpleKeyDao.getAllIncludeDeleted()
         } else {
@@ -43,7 +43,7 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun getExistKeys(
         fileType: FlipperKeyType?
-    ): List<FlipperKey> = withContext(Dispatchers.IO) {
+    ): List<FlipperKey> = withContext(FlipperDispatchers.workStealingDispatcher) {
         return@withContext if (fileType == null) {
             simpleKeyDao.getAll()
         } else {
@@ -70,7 +70,7 @@ class SimpleKeyApiImpl @Inject constructor(
         }
     }
 
-    override suspend fun insertKey(key: FlipperKey) = withContext(Dispatchers.IO) {
+    override suspend fun insertKey(key: FlipperKey) = withContext(FlipperDispatchers.workStealingDispatcher) {
         simpleKeyDao.insert(key.toDatabaseKey())
     }
 
@@ -82,7 +82,7 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun getKey(
         keyPath: FlipperKeyPath
-    ): FlipperKey? = withContext(Dispatchers.IO) {
+    ): FlipperKey? = withContext(FlipperDispatchers.workStealingDispatcher) {
         return@withContext simpleKeyDao.getByPath(keyPath.path.pathToKey, keyPath.deleted)
             ?.toFlipperKey(additionalFileDao)
     }

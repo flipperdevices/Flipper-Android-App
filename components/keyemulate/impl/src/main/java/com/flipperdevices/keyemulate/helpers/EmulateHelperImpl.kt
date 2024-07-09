@@ -38,7 +38,7 @@ class EmulateHelperImpl @Inject constructor(
 ) : EmulateHelper, LogTagProvider {
     override val TAG = "EmulateHelper"
 
-    private var currentKeyEmulating = MutableStateFlow<EmulateConfig?>(null)
+    private val currentKeyEmulating = MutableStateFlow<EmulateConfig?>(null)
 
     @Volatile
     private var stopEmulateTimeAllowedMs: Long = 0
@@ -58,9 +58,8 @@ class EmulateHelperImpl @Inject constructor(
             stopEmulateInternal(requestApi)
         }
         currentKeyEmulating.emit(config)
-        var isEmulateStarted = false
-        try {
-            isEmulateStarted = startEmulateHelper.onStart(
+        val isEmulateStarted = try {
+            startEmulateHelper.onStart(
                 scope,
                 serviceApi,
                 config,

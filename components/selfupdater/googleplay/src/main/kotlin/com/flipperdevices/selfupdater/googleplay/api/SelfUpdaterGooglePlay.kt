@@ -12,6 +12,7 @@ import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
@@ -35,7 +36,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
 
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(context) }
     private val appUpdateInfoTask by lazy { appUpdateManager.appUpdateInfo }
-    private var updateListener = InstallStateUpdatedListener(::processUpdateListener)
+    private val updateListener = InstallStateUpdatedListener(::processUpdateListener)
 
     private fun processUpdateListener(state: InstallState) {
         info { "Current update state $state" }
@@ -49,10 +50,12 @@ class SelfUpdaterGooglePlay @Inject constructor(
                 )
                 inAppNotificationStorage.addNotification(notification)
             }
+
             InstallStatus.FAILED, InstallStatus.CANCELED -> {
                 val notification = InAppNotification.SelfUpdateError()
                 inAppNotificationStorage.addNotification(notification)
             }
+
             else -> {}
         }
     }
@@ -71,8 +74,8 @@ class SelfUpdaterGooglePlay @Inject constructor(
             info { "New update available, suggest to update" }
             appUpdateManager.startUpdateFlowForResult(
                 appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
                 activity,
+                AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE),
                 UPDATE_CODE
             )
             SelfUpdateResult.COMPLETE

@@ -14,6 +14,7 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.pingRequest
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -24,9 +25,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PingViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,
-    private val orchestrator: FDeviceOrchestrator
+    orchestrator: FDeviceOrchestrator
 ) : DecomposeViewModel() {
     private val logLines = MutableStateFlow(persistentListOf("Init PingViewModel"))
 

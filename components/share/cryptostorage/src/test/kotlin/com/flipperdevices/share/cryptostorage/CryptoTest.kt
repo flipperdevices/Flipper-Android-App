@@ -1,13 +1,13 @@
 package com.flipperdevices.share.cryptostorage
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.share.cryptostorage.helper.DecryptHelper
 import com.flipperdevices.share.cryptostorage.helper.EncryptHelper
 import io.ktor.util.toByteArray
 import io.ktor.utils.io.ByteChannel
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.close
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.junit.Assert
@@ -32,7 +32,7 @@ class CryptoTest {
 
         // Decrypt
         val decryptHelper = DecryptHelper()
-        val tempFile = withContext(Dispatchers.IO) {
+        val tempFile = withContext(FlipperDispatchers.workStealingDispatcher) {
             File.createTempFile("temp", null)
         }
         decryptHelper.writeDecrypt(encryptedReadChannel, tempFile, encryptHelper.getKeyString())

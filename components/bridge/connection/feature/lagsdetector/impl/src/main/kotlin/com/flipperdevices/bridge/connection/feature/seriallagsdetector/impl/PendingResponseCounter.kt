@@ -25,17 +25,17 @@ internal class PendingResponseCounter(
         }
     }
 
-    suspend fun rememberAction(request: FlipperRequest?) {
+    fun rememberAction(request: FlipperRequest?) {
         if (BuildConfig.INTERNAL && request != null) {
             pendingCommands[request] = Unit
         }
-        val tag = request?.javaClass?.simpleName ?: ""
+        val tag = request?.javaClass?.simpleName.orEmpty()
         onAction.invoke()
         val pendingCount = counter.getAndIncrement()
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }
     }
 
-    suspend fun forgetAction(request: FlipperRequest?) {
+    fun forgetAction(request: FlipperRequest?) {
         if (BuildConfig.INTERNAL && request != null) {
             pendingCommands.remove(request)
         }

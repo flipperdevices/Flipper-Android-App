@@ -87,7 +87,7 @@ class FlipperLagsDetectorImpl @Inject constructor(
         if (BuildConfig.INTERNAL && request != null) {
             pendingCommands[request] = Unit
         }
-        incrementPendingCounter(request?.javaClass?.simpleName ?: "")
+        incrementPendingCounter(request?.javaClass?.simpleName.orEmpty())
         val result = try {
             block()
         } finally {
@@ -105,7 +105,7 @@ class FlipperLagsDetectorImpl @Inject constructor(
             if (BuildConfig.INTERNAL && request != null) {
                 pendingCommands[request] = Unit
             }
-            incrementPendingCounter(request?.javaClass?.simpleName ?: "")
+            incrementPendingCounter(request?.javaClass?.simpleName.orEmpty())
         }.onEach {
             flipperActionNotifier.notifyAboutAction()
         }.onCompletion {
@@ -117,7 +117,7 @@ class FlipperLagsDetectorImpl @Inject constructor(
         }
     }
 
-    private suspend fun incrementPendingCounter(tag: String) {
+    private fun incrementPendingCounter(tag: String) {
         flipperActionNotifier.notifyAboutAction()
         val pendingCount = pendingResponseCounter.getAndIncrement()
         verbose { "Increase pending response command $tag, current size is ${pendingCount + 1}" }

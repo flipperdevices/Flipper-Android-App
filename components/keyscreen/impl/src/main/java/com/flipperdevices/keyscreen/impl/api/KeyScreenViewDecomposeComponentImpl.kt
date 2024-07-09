@@ -99,7 +99,8 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
         val settings = runBlocking { dataStore.data.first() }
         return when (settings.selectedTheme) {
             SelectedTheme.SYSTEM,
-            SelectedTheme.UNRECOGNIZED -> systemIsDark
+            SelectedTheme.UNRECOGNIZED,
+            null -> systemIsDark
 
             SelectedTheme.DARK -> true
             SelectedTheme.LIGHT -> false

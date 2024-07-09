@@ -4,6 +4,7 @@ import android.app.Application
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -74,7 +75,9 @@ class ShareViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun startDownload(serviceApi: FlipperServiceApi) = withContext(Dispatchers.IO) {
+    private suspend fun startDownload(
+        serviceApi: FlipperServiceApi
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         if (!downloadStarted.compareAndSet(false, true)) {
             info { "Download file $shareFile already started" }
             return@withContext

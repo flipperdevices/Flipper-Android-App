@@ -18,6 +18,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
@@ -45,7 +46,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
     override val TAG = "FlipperRequestApi"
 
     // Start from 1 because 0 is default in protobuf
-    private var idCounter = AtomicInteger(1)
+    private val idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val requestStorage: FRequestStorage = FRequestStorage()
     private val messageProtobufParser = messageProtobufParserFactory(
@@ -162,13 +163,14 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
     ): Flipper.Main = suspendCancellableCoroutine { cont ->
         requestListeners[uniqueId] = {
             requestListeners.remove(uniqueId)
+            @OptIn(ExperimentalCoroutinesApi::class)
             cont.resume(it) { throwable ->
                 error(throwable) { "Error on resume execution of $uniqueId command. Answer is $it" }
             }
         }
 
         cont.invokeOnCancellation {
-            requestStorage.removeIf { it.data.commandId == uniqueId }
+            requestStorage.removeIf { request -> request.data.commandId == uniqueId }
             requestListeners.remove(uniqueId)
         }
     }

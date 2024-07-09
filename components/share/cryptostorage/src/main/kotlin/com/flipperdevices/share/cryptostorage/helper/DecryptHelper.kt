@@ -1,13 +1,13 @@
 package com.flipperdevices.share.cryptostorage.helper
 
 import android.security.keystore.KeyProperties
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.share.cryptostorage.ALGORITHM_HELPER
 import com.flipperdevices.share.cryptostorage.BIT_SIZE
 import com.flipperdevices.share.cryptostorage.IV_LENGTH
 import com.flipperdevices.share.cryptostorage.TAG_LENGTH
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.core.readBytes
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
@@ -34,7 +34,7 @@ class DecryptHelper {
         inputStream: ByteReadChannel,
         secretKey: SecretKeySpec,
         outputStream: FileOutputStream
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         var cipher: Cipher? = null
 
         while (!inputStream.isClosedForRead) {

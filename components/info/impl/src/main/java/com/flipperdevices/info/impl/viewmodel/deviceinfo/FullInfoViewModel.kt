@@ -30,7 +30,7 @@ class FullInfoViewModel @Inject constructor(
     FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "FullInfoViewModel"
-    private var jobs = mutableListOf<Job>()
+    private val jobs = mutableListOf<Job>()
     private val flipperRpcInformationState =
         MutableStateFlow<FlipperInformationStatus<FlipperRpcInformation>>(
             FlipperInformationStatus.NotStarted()

@@ -43,7 +43,7 @@ class FlipperSerialOverflowThrottler(
     /**
      * Bytes waiting to be sent to the device
      */
-    private var bufferSizeState = MutableSharedFlow<Int>(replay = 1)
+    private val bufferSizeState = MutableSharedFlow<Int>(replay = 1)
 
     override fun onServiceReceived(gatt: BluetoothGatt): Boolean {
         val service = getServiceOrLog(gatt, Constants.BLESerialService.SERVICE_UUID) ?: return false
@@ -124,7 +124,7 @@ class FlipperSerialOverflowThrottler(
     }
 
     @Suppress("MagicNumber")
-    suspend fun sendTrashBytesAndBrokeSession() {
+    fun sendTrashBytesAndBrokeSession() {
         val randomBytes = byteArrayOf(-61, 91, 69, 107, -128, -69, -42, 107, 53, -102)
         serialApi.sendBytes(randomBytes)
     }

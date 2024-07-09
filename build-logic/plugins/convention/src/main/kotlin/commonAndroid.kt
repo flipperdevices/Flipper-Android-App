@@ -105,17 +105,17 @@ private fun Project.suppressOptIn() {
                 jvmTarget = "11"
 
                 freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
-                    "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-                    "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-                    "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
-                    "-Xopt-in=kotlin.time.ExperimentalTime",
-                    "-Xopt-in=kotlin.RequiresOptIn",
-                    "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
-                    "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
-                    "-Xopt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
+                    "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+                    "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                    "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                    "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-opt-in=com.squareup.anvil.annotations.ExperimentalAnvilApi",
+                    "-opt-in=kotlin.time.ExperimentalTime",
+                    "-opt-in=kotlin.RequiresOptIn",
+                    "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                    "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
+                    "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }
         }

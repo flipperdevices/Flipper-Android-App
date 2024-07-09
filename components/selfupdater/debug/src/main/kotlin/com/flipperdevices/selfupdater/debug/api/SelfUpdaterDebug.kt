@@ -32,11 +32,11 @@ class SelfUpdaterDebug @Inject constructor(
         }
 
         delay(NOTIFICATION_DEBUG_DELAY_MS)
-        return debugNoUpdates(manual)
+        return debugNoUpdates()
     }
 
     @Suppress("UnusedPrivateMember")
-    private fun debugSuccessUpdate(manual: Boolean): SelfUpdateResult {
+    private fun debugSuccessUpdate(): SelfUpdateResult {
         val startUpdateNotification = InAppNotification.SelfUpdateStarted()
         val readyUpdateNotification = InAppNotification.SelfUpdateReady(
             action = { inAppNotificationStorage.addNotification(startUpdateNotification) },
@@ -45,8 +45,7 @@ class SelfUpdaterDebug @Inject constructor(
         return SelfUpdateResult.COMPLETE
     }
 
-    @Suppress("UnusedPrivateMember")
-    private fun debugNoUpdates(manual: Boolean): SelfUpdateResult {
+    private fun debugNoUpdates(): SelfUpdateResult {
         return SelfUpdateResult.NO_UPDATES
     }
 

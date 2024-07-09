@@ -54,7 +54,7 @@ internal fun InternalComposableEmulateButtonWithText(
                         .padding(horizontal = 4.dp)
                         .size(14.dp),
                     painter = painterResource(iconId),
-                    contentDescription = textId?.let { stringResource(it) } ?: "",
+                    contentDescription = textId?.let { stringResource(it) }.orEmpty(),
                     tint = LocalPallet.current.warningColor
                 )
             }

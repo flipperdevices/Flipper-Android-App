@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModel @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi,
     private val keyParser: KeyParser,
@@ -23,6 +25,7 @@ class SearchViewModel @Inject constructor(
 ) : DecomposeViewModel() {
     private val queryFlow = MutableStateFlow("")
     private val searchState = MutableStateFlow<SearchState>(SearchState.Loading)
+
     init {
         queryFlow.mapLatest { query ->
             searchState.emit(SearchState.Loading)

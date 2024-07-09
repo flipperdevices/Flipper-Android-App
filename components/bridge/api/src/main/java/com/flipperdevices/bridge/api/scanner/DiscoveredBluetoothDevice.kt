@@ -24,7 +24,7 @@ data class DiscoveredBluetoothDevice(
     val name: String? get() = nameInternal
     val rssi: Int get() = rssiInternal
     val highestRssi: Int get() = highestRssiInternal
-    val services: List<UUID> get() = servicesResult?.map { it.uuid } ?: emptyList()
+    val services: List<UUID> get() = servicesResult?.map { it.uuid }.orEmpty()
 
     constructor(scanResult: ScanResult) : this(
         device = scanResult.device,

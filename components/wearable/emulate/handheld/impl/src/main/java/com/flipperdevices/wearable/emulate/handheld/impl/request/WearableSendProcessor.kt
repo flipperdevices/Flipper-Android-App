@@ -60,7 +60,7 @@ class WearableSendProcessor @Inject constructor(
 
         val keyPath = path.replaceFirstChar { if (it == '/') "" else it.toString() }
         val keyFile = File(keyPath)
-        val filePath = FlipperFilePath(keyFile.parent ?: "", keyFile.name)
+        val filePath = FlipperFilePath(keyFile.parent.orEmpty(), keyFile.name)
         val timeout = calculateTimeout(filePath)
         try {
             val emulateConfig = EmulateConfig(

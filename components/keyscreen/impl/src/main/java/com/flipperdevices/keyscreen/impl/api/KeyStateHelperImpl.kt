@@ -26,6 +26,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -143,6 +144,7 @@ class KeyStateHelperImpl @AssistedInject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFileAsFlow(keyPathNotNull: FlipperKeyPath) {
         updaterKeyApi.subscribeOnUpdatePath(keyPathNotNull).flatMapLatest {
             combine(

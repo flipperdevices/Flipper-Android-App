@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.CircularProgressIndicator
 import androidx.wear.compose.material.Text
+import androidx.wear.tooling.preview.devices.WearDevices
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScalingLazyColumn
 import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollableColumn
@@ -61,7 +61,7 @@ private fun ComposableKeysListLoading() {
 @Preview(
     showSystemUi = true,
     showBackground = true,
-    device = Devices.WEAR_OS_LARGE_ROUND
+    device = WearDevices.LARGE_ROUND
 )
 private fun ComposableKeysListEmpty() {
     ComposableWearOsScrollableColumn {

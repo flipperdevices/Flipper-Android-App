@@ -1,6 +1,7 @@
 package com.flipperdevices.faphub.dao.network.api
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.warn
@@ -15,7 +16,6 @@ import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -157,5 +157,5 @@ class FapNetworkApiImpl @Inject constructor(
 private suspend fun <T> catchWithDispatcher(
     block: suspend () -> T
 ): Result<T> = runCatching {
-    return@runCatching withContext(Dispatchers.IO) { block() }
+    return@runCatching withContext(FlipperDispatchers.workStealingDispatcher) { block() }
 }
