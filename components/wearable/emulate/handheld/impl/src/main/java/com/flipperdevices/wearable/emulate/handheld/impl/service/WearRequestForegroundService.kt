@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.flipperdevices.bridge.api.utils.PermissionHelper
@@ -30,8 +29,8 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
     override fun onCreate() {
         super.onCreate()
         info { "#onCreate" }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-            && PermissionHelper.getUngrantedPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+            PermissionHelper.getUngrantedPermission(
                 this,
                 PermissionHelper.getRequiredPermissions()
             ).isNotEmpty()

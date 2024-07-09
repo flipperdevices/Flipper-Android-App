@@ -58,8 +58,8 @@ class FlipperService : LifecycleService(), LogTagProvider {
                 applicationParams = component.applicationParams
             )
             flipperNotification = flipperNotificationLocal
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-                && PermissionHelper.getUngrantedPermission(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+                PermissionHelper.getUngrantedPermission(
                     this,
                     PermissionHelper.getRequiredPermissions()
                 ).isNotEmpty()

@@ -3,6 +3,8 @@
 # 1.7.2 - In Progress
 
 - [FIX] Distinct fap items by id in paging sources
+- [FIX] Paddings for update button
+- [FIX] Crash on app startup with WearOS app
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
