@@ -21,8 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
@@ -43,6 +43,7 @@ class SaveTempSignalViewModel @Inject constructor(
     override val state = _state.asStateFlow()
 
     override fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String) {
+        _state.value = SaveTempSignalApi.State.Pending
         launchWithLock(mutex, viewModelScope, "load") {
             val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }
             saveFolderApi.save(serviceApi.requestApi, "/ext/infrared/temp")
@@ -79,7 +80,8 @@ class SaveTempSignalViewModel @Inject constructor(
                     )
                 }
             }
-            .launchIn(this)
+            .collect()
+        _state.value = SaveTempSignalApi.State.Uploaded
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit

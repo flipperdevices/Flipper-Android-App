@@ -56,6 +56,7 @@ class SaveFileApiImpl @Inject constructor(
                             progressInternal,
                             totalSize
                         )
+                        info { "#onSendCallback $status" }
                         send(status)
                     }
                 )
@@ -73,6 +74,7 @@ class SaveFileApiImpl @Inject constructor(
                         }.wrapToRequest(FlipperRequestPriority.RIGHT_NOW)
                     ).collect()
                     send(SaveFileApi.Status.Finished)
+                    info { "#onCancel" }
                 }
             )
             info { "File send with response $response" }

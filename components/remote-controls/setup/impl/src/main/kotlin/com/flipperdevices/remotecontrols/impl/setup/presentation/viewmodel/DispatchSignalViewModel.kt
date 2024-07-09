@@ -17,7 +17,6 @@ import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,9 +62,8 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     override fun dispatch(config: EmulateConfig) {
-        val oldJob = latestDispatchJob
+        if (latestDispatchJob?.isActive == true) return
         latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
-            oldJob?.cancelAndJoin()
             _state.emit(DispatchSignalApi.State.Pending)
             serviceProvider.provideServiceApi(
                 lifecycleOwner = this@DispatchSignalViewModel,
