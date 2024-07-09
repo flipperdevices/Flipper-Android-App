@@ -16,11 +16,11 @@ fun BrandsLoadedContent(
     val listState = rememberLazyListState()
     AlphabetSearchComposable(
         modifier = modifier,
-        items = model.brands,
+        items = model.sortedBrands,
         toHeader = { it.name.first().uppercaseChar() },
         headers = model.headers,
-        listState=listState,
-        mainContent = {
+        listState = listState,
+        content = {
             BrandsList(
                 modifier = Modifier.weight(1f),
                 listState = listState,

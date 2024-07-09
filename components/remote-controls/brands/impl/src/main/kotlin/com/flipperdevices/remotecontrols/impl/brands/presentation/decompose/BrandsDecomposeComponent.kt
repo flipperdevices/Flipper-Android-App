@@ -5,6 +5,7 @@ import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
@@ -28,7 +29,7 @@ interface BrandsDecomposeComponent {
             val brands: ImmutableList<BrandModel>,
             val query: String
         ) : Model {
-            val groupedBrands by lazy {
+            private val groupedBrands by lazy {
                 brands.groupBy { brandModel ->
                     brandModel.charSection()
                 }.toList().sortedBy { it.first }
@@ -39,7 +40,7 @@ interface BrandsDecomposeComponent {
             }
 
             val headers by lazy {
-                groupedBrands.map { group -> group.first }.toImmutableList()
+                groupedBrands.map { group -> group.first }.toImmutableSet()
             }
         }
     }
