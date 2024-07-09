@@ -71,7 +71,7 @@ class SetupComponentImpl @AssistedInject constructor(
         }
     )
     private val modelFlow = combine(
-        this.createCurrentSignalViewModel.state,
+        createCurrentSignalViewModel.state,
         saveSignalApi.state,
         transform = { signalState, saveState ->
             when (signalState) {

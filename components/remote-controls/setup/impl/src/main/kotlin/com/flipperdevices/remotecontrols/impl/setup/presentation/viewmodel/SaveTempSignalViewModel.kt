@@ -43,7 +43,7 @@ class SaveTempSignalViewModel @Inject constructor(
     override val state = _state.asStateFlow()
 
     override fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String) {
-        _state.value = SaveTempSignalApi.State.Pending
+        _state.value = SaveTempSignalApi.State.Uploading(0, 0)
         launchWithLock(mutex, viewModelScope, "load") {
             val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }
             saveFolderApi.save(serviceApi.requestApi, "/ext/infrared/temp")

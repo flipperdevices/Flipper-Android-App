@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
@@ -79,7 +80,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     onBack = navigation::pop,
                     onIfrFileFound = {
                         val configuration = RemoteControlsNavigationConfig.Grid(ifrFileId = it)
-                        navigation.push(configuration)
+                        navigation.replaceCurrent(configuration)
                     }
                 )
         }
@@ -92,7 +93,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                         ifrFileId = config.ifrFileId,
                         uiFileId = null,
                     ),
-                    onPopClicked = onBack::invoke
+                    onPopClicked = navigation::pop
                 )
         }
     }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,7 +47,6 @@ fun SharedTopBar(
             contentDescription = null,
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
         )
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -68,5 +68,6 @@ fun SharedTopBar(
                 style = LocalTypography.current.subtitleM12
             )
         }
+        Spacer(modifier = Modifier.size(24.dp))
     }
 }
