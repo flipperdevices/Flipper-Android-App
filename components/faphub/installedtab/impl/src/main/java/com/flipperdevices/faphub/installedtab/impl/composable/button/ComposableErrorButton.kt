@@ -27,7 +27,7 @@ import com.flipperdevices.faphub.installedtab.impl.model.InstalledNetworkErrorEn
 
 @Composable
 fun ComposableErrorButton(
-    @Suppress("UnusedParameter")
+    @Suppress("UNUSED_PARAMETER")
     installedNetworkErrorEnum: InstalledNetworkErrorEnum,
     modifier: Modifier = Modifier
 ) = Column(

@@ -35,14 +35,14 @@ class PermissionStateBuilder(
     LocationEnableHelper.Listener,
     PermissionEnableHelper.Listener {
     override val TAG = "PermissionStateBuilder"
-    private var bluetoothEnableHelper: BluetoothEnableHelper = BluetoothEnableHelper(
+    private val bluetoothEnableHelper: BluetoothEnableHelper = BluetoothEnableHelper(
         listener = this
     )
-    private var locationEnableHelper: LocationEnableHelper = LocationEnableHelper(
+    private val locationEnableHelper: LocationEnableHelper = LocationEnableHelper(
         context = context,
         listener = this
     )
-    private var permissionEnableHelper: PermissionEnableHelper = PermissionEnableHelper(
+    private val permissionEnableHelper: PermissionEnableHelper = PermissionEnableHelper(
         context = context,
         listener = this,
         permissions = PermissionHelper.getRequiredPermissions()
@@ -64,7 +64,7 @@ class PermissionStateBuilder(
     fun processLocationSettings() = locationEnableHelper.processLocationAccept()
 
     // If a user has refused one permissive more than three times, we offer him to open the settings
-    private var permissionDeniedByUserCount = mutableMapOf<String, Int>()
+    private val permissionDeniedByUserCount = mutableMapOf<String, Int>()
 
     private val state = MutableStateFlow(NOT_REQUESTED_YET)
 

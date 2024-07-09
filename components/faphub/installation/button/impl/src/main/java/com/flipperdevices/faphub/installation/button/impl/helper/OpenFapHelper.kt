@@ -18,7 +18,6 @@ import com.flipperdevices.protobuf.app.startRequest
 import com.flipperdevices.protobuf.main
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +46,7 @@ class OpenFapHelperImpl @Inject constructor(
     private val currentOpenAppFlow = MutableStateFlow<FapButtonConfig?>(null)
     private val rpcVersionFlow = MutableStateFlow<SemVer?>(null)
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val scope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
 
     override fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState> {
         return combine(

@@ -24,6 +24,7 @@ class FTransportListenerImpl : LogTagProvider {
     fun getState() = state.asStateFlow()
 
     fun onErrorDuringConnect(device: FDeviceBaseModel, throwable: Throwable) {
+        @Suppress("UNUSED_EXPRESSION")
         when (throwable) {
             else -> {
                 error(throwable) { "Unknown error from transport layer" }

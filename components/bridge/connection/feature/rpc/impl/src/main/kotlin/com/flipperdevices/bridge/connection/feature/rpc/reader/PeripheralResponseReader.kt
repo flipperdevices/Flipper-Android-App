@@ -62,8 +62,6 @@ class PeripheralResponseReader @AssistedInject constructor(
                 }
             } catch (ignored: CancellationException) {
                 // ignore
-            } catch (ignored: java.util.concurrent.CancellationException) {
-                // ignore
             } catch (invalidProtocol: InvalidProtocolBufferException) {
                 error(invalidProtocol) { "Broke protocol" }
                 restartRPCApi.restartRpc()

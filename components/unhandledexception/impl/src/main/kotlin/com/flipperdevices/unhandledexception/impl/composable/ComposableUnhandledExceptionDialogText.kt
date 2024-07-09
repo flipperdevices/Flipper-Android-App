@@ -58,7 +58,7 @@ fun ComposableUnhandledExceptionDialogText(modifier: Modifier = Modifier) {
                     modifier = Modifier.layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
 
-                        val existingWidth = columnWidth ?: 0
+                        val existingWidth = columnWidth
                         val maxWidth = maxOf(existingWidth, placeable.width)
 
                         if (maxWidth > existingWidth) {

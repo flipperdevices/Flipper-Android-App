@@ -35,8 +35,8 @@ class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagP
     override suspend fun fromIntent(context: Context, intent: Intent): Deeplink? {
         val uri = intent.data ?: return null
         val link = uri.getQueryParameter(QUERY_URL) ?: return null
-        val version = uri.getQueryParameter(QUERY_VERSION) ?: ""
-        val channel = uri.getQueryParameter(QUERY_CHANNEL) ?: ""
+        val version = uri.getQueryParameter(QUERY_VERSION).orEmpty()
+        val channel = uri.getQueryParameter(QUERY_CHANNEL).orEmpty()
         return Deeplink.BottomBar.DeviceTab.WebUpdate(link, "$channel $version")
     }
 }

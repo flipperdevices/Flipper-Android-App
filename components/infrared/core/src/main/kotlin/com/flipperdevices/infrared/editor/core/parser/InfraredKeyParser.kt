@@ -63,20 +63,20 @@ object InfraredKeyParser {
     }
 
     private fun parseRemoteRaw(block: Map<String, String>): InfraredRemote.Raw {
-        val name = block[KEY_NAME] ?: ""
-        val type = block[KEY_TYPE] ?: ""
-        val frequency = block[KEY_FREQUENCY] ?: ""
-        val dutyCycle = block[KEY_DUTY_CYCLE] ?: ""
-        val data = block[KEY_DATA] ?: ""
+        val name = block[KEY_NAME].orEmpty()
+        val type = block[KEY_TYPE].orEmpty()
+        val frequency = block[KEY_FREQUENCY].orEmpty()
+        val dutyCycle = block[KEY_DUTY_CYCLE].orEmpty()
+        val data = block[KEY_DATA].orEmpty()
         return InfraredRemote.Raw(name, type, frequency, dutyCycle, data)
     }
 
     private fun parseRemoteParsed(block: Map<String, String>): InfraredRemote.Parsed {
-        val name = block[KEY_NAME] ?: ""
-        val type = block[KEY_TYPE] ?: ""
-        val protocol = block[KEY_PROTOCOL] ?: ""
-        val address = block[KEY_ADDRESS] ?: ""
-        val command = block[KEY_COMMAND] ?: ""
+        val name = block[KEY_NAME].orEmpty()
+        val type = block[KEY_TYPE].orEmpty()
+        val protocol = block[KEY_PROTOCOL].orEmpty()
+        val address = block[KEY_ADDRESS].orEmpty()
+        val command = block[KEY_COMMAND].orEmpty()
         return InfraredRemote.Parsed(name, type, protocol, address, command)
     }
 }

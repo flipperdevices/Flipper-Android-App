@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ktx.jre
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.OutputStream
@@ -14,7 +13,7 @@ suspend fun InputStream.copyTo(
     out: OutputStream,
     bufferSize: Int = DEFAULT_BUFFER_SIZE,
     onProcessed: suspend (Long) -> Unit
-): Long = withContext(Dispatchers.IO) {
+): Long = withContext(FlipperDispatchers.workStealingDispatcher) {
     var bytesCopied: Long = 0
     val buffer = ByteArray(bufferSize)
     var bytes = read(buffer)

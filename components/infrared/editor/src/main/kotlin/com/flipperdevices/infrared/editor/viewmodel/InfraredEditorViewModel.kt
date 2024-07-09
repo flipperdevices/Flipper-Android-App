@@ -44,7 +44,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredEditorViewModel"
 
-    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
 
     private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
     private val flipperParsedKeyFlow = MutableStateFlow<ImmutableList<InfraredRemote>?>(null)

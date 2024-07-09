@@ -13,8 +13,8 @@ import com.flipperdevices.bridge.dao.impl.repository.FavoriteDao
 import com.flipperdevices.bridge.dao.impl.repository.KeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -35,7 +35,7 @@ class FavoriteImpl @Inject constructor(
 
     override suspend fun updateFavorites(
         keys: List<FlipperKeyPath>
-    ): List<FlipperKeyPath> = withContext(Dispatchers.IO) {
+    ): List<FlipperKeyPath> = withContext(FlipperDispatchers.workStealingDispatcher) {
         database.withTransaction {
             favoriteDao.deleteAll()
 
@@ -57,15 +57,16 @@ class FavoriteImpl @Inject constructor(
         }.map { it.getFlipperKeyPath() }
     }
 
-    override suspend fun isFavorite(keyPath: FlipperKeyPath) = withContext(Dispatchers.IO) {
-        val favoritesResponse = favoriteDao.isFavorite(keyPath.path.pathToKey, keyPath.deleted)
-        return@withContext favoritesResponse.isNotEmpty()
-    }
+    override suspend fun isFavorite(keyPath: FlipperKeyPath) =
+        withContext(FlipperDispatchers.workStealingDispatcher) {
+            val favoritesResponse = favoriteDao.isFavorite(keyPath.path.pathToKey, keyPath.deleted)
+            return@withContext favoritesResponse.isNotEmpty()
+        }
 
     override suspend fun setFavorite(
         keyPath: FlipperKeyPath,
         isFavorite: Boolean
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val uid =
             keyDao.getByPath(keyPath.path.pathToKey, keyPath.deleted)?.uid ?: return@withContext
         val favoriteKey = favoriteDao.getFavoriteByKeyId(uid)
@@ -86,8 +87,8 @@ class FavoriteImpl @Inject constructor(
         )
     }
 
-    override suspend fun getFavoritesFlow(): Flow<List<FlipperKey>> = withContext(Dispatchers.IO) {
-        return@withContext favoriteDao.subscribe().map { keys ->
+    override fun getFavoritesFlow(): Flow<List<FlipperKey>> {
+        return favoriteDao.subscribe().map { keys ->
             keys.filter { !it.value.deleted }.map { (favoriteKey, key) ->
                 favoriteKey.order to FlipperKey(
                     mainFile = FlipperFile(
@@ -102,19 +103,20 @@ class FavoriteImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavorites(): List<FlipperKey> = withContext(Dispatchers.IO) {
-        return@withContext favoriteDao.getAll()
-            .filter { !it.value.deleted }
-            .map { (favoriteKey, key) ->
-                favoriteKey.order to FlipperKey(
-                    mainFile = FlipperFile(
-                        path = key.mainFilePath,
-                        content = key.content.flipperContent
-                    ),
-                    notes = key.notes,
-                    synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED,
-                    deleted = key.deleted
-                )
-            }.sortedBy { (order, _) -> order }.map { it.second }
-    }
+    override suspend fun getFavorites(): List<FlipperKey> =
+        withContext(FlipperDispatchers.workStealingDispatcher) {
+            return@withContext favoriteDao.getAll()
+                .filter { !it.value.deleted }
+                .map { (favoriteKey, key) ->
+                    favoriteKey.order to FlipperKey(
+                        mainFile = FlipperFile(
+                            path = key.mainFilePath,
+                            content = key.content.flipperContent
+                        ),
+                        notes = key.notes,
+                        synchronized = key.synchronizedStatus == SynchronizedStatus.SYNCHRONIZED,
+                        deleted = key.deleted
+                    )
+                }.sortedBy { (order, _) -> order }.map { it.second }
+        }
 }

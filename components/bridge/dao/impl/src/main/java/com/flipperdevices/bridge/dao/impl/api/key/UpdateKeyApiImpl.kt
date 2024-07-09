@@ -12,10 +12,10 @@ import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withFirstElement
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
@@ -53,7 +53,7 @@ class UpdateKeyApiImpl @Inject constructor(
     override suspend fun updateKey(
         oldKey: FlipperKey,
         newKey: FlipperKey
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         if (oldKey == newKey) return@withContext
 
         val isShouldSynchronize = isShouldSynchronize(oldKey, newKey)

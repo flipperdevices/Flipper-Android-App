@@ -8,6 +8,7 @@ import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.analytics.shake2report.impl.R
 import com.flipperdevices.analytics.shake2report.impl.model.Shake2ReportState
 import com.flipperdevices.core.ktx.android.toast
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import io.sentry.Attachment
 import io.sentry.Sentry
@@ -15,7 +16,6 @@ import io.sentry.SentryEvent
 import io.sentry.SentryLevel
 import io.sentry.protocol.Message
 import io.sentry.protocol.SentryId
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,11 +25,10 @@ import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
 import java.io.File
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
 
-@Suppress("MagicNumber")
-private val SENTRY_TIMEOUT_MS = TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES)
+private val SENTRY_TIMEOUT = 5.minutes
 
 class Shake2ReportViewModel @Inject constructor(
     private val application: Application,
@@ -65,7 +64,8 @@ class Shake2ReportViewModel @Inject constructor(
         if (state !is Shake2ReportState.Complete) return
         val id = state.id
 
-        val clipboardManager = ContextCompat.getSystemService(application, ClipboardManager::class.java)
+        val clipboardManager =
+            ContextCompat.getSystemService(application, ClipboardManager::class.java)
         val clipData = ClipData.newHtmlText(
             application.getString(R.string.shake2report_copy_sentry_title),
             id,
@@ -75,35 +75,36 @@ class Shake2ReportViewModel @Inject constructor(
         application.toast(R.string.shake2report_copy_sentry_copy_toast)
     }
 
-    private suspend fun compressLogFolder(): File = withContext(Dispatchers.IO) {
-        val logDir = internalShake2Report.logDir
-        val zipFile = ZipFile(
-            File(
-                application.cacheDir,
-                "logs-${System.currentTimeMillis()}.zip"
+    private suspend fun compressLogFolder(): File =
+        withContext(FlipperDispatchers.workStealingDispatcher) {
+            val logDir = internalShake2Report.logDir
+            val zipFile = ZipFile(
+                File(
+                    application.cacheDir,
+                    "logs-${System.currentTimeMillis()}.zip"
+                )
             )
-        )
-        val zipParameters = ZipParameters().apply {
-            compressionMethod = CompressionMethod.DEFLATE
-            compressionLevel = CompressionLevel.ULTRA
-        }
-        zipFile.addFolder(logDir, zipParameters)
+            val zipParameters = ZipParameters().apply {
+                compressionMethod = CompressionMethod.DEFLATE
+                compressionLevel = CompressionLevel.ULTRA
+            }
+            zipFile.addFolder(logDir, zipParameters)
 
-        return@withContext zipFile.file
-    }
+            return@withContext zipFile.file
+        }
 
     private suspend fun sendingReport(
         name: String,
         description: String,
         logZip: File?
-    ): String = withContext(Dispatchers.IO) {
+    ): String = withContext(FlipperDispatchers.workStealingDispatcher) {
         val event = SentryEvent()
         event.level = SentryLevel.ERROR
         event.message = Message().apply {
             message = name.ifBlank {
                 "Error via shake2report ${System.currentTimeMillis()}"
             }
-            params = (params ?: emptyList()).plus(description.split("\n"))
+            params = params.orEmpty().plus(description.split("\n"))
         }
 
         lateinit var sentryId: SentryId
@@ -112,7 +113,7 @@ class Shake2ReportViewModel @Inject constructor(
                 scope.addAttachment(Attachment(logs.absolutePath))
             }
             sentryId = Sentry.captureEvent(event)
-            Sentry.flush(SENTRY_TIMEOUT_MS)
+            Sentry.flush(SENTRY_TIMEOUT.inWholeMilliseconds)
             scope.clearAttachments()
         }
         return@withContext sentryId.toString()

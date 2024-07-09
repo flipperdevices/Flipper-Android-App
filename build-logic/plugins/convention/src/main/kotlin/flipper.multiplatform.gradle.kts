@@ -3,6 +3,7 @@ import com.android.build.gradle.BaseExtension
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
+    id("flipper.lint")
 }
 
 configure<BaseExtension> {

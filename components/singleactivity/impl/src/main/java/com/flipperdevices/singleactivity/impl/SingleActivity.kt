@@ -103,6 +103,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         }
     }
 
+    @Suppress("UNNECESSARY_SAFE_CALL", "UnnecessarySafeCall", "SENSELESS_COMPARISON")
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         info { "Receive new intent: ${intent?.toFullString()}" }

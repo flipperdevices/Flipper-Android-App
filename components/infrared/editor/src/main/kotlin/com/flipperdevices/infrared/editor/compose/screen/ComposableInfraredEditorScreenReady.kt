@@ -79,7 +79,7 @@ internal fun ComposableInfraredEditorScreenReady(
                     defaultDraggingModifier = Modifier,
                     key = remote,
                     index = index,
-                ) {
+                ) { _ ->
                     ComposableInfraredEditorItem(
                         remoteName = remote.name,
                         onChangeName = { onChangeName(index, it) },

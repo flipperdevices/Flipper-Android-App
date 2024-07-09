@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.keyparser.api.KeyParser
@@ -27,7 +28,6 @@ import com.flipperdevices.keyparser.impl.parsers.url.QUERY_ID
 import com.flipperdevices.keyparser.impl.parsers.url.QUERY_KEY
 import com.flipperdevices.keyparser.impl.parsers.url.QUERY_KEY_PATH
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URL
@@ -54,7 +54,7 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
 
     override suspend fun parseKey(
         flipperKey: FlipperKey
-    ): FlipperKeyParsed = withContext(Dispatchers.IO) {
+    ): FlipperKeyParsed = withContext(FlipperDispatchers.workStealingDispatcher) {
         val fileContent = flipperKey.keyContent.openStream().use {
             it.readBytes().toString(Charset.defaultCharset())
         }
@@ -75,7 +75,7 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
         val fileType = FlipperKeyType.getByExtension(extension)
         val keyPath = if (fileType == null) {
             warn { "Can't find file type with extension $fileType" }
-            FlipperFilePath(pathAsFile.parent ?: "", pathAsFile.name)
+            FlipperFilePath(pathAsFile.parent.orEmpty(), pathAsFile.name)
         } else {
             FlipperFilePath(fileType.flipperDir, pathAsFile.name)
         }

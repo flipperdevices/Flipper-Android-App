@@ -29,6 +29,7 @@ import com.flipperdevices.protobuf.copy
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
@@ -71,7 +72,7 @@ class FlipperRequestApiImpl @Inject constructor(
     private val sentryApi by sentryApiProvider
 
     // Start from 1 because 0 is default in protobuf
-    private var idCounter = AtomicInteger(1)
+    private val idCounter = AtomicInteger(1)
     private val requestListeners = ConcurrentHashMap<Int, OnReceiveResponse>()
     private val notificationMutableFlow = MutableSharedFlow<Flipper.Main>()
 
@@ -173,7 +174,7 @@ class FlipperRequestApiImpl @Inject constructor(
         requestStorage.sendRequest(*commands)
     }
 
-    override suspend fun getSpeed(): StateFlow<FlipperSerialSpeed> {
+    override fun getSpeed(): StateFlow<FlipperSerialSpeed> {
         return serialApiUnsafe.getSpeed()
     }
 
@@ -195,6 +196,7 @@ class FlipperRequestApiImpl @Inject constructor(
         return counter
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun awaitCommandAnswer(
         uniqueId: Int
     ): Flipper.Main = suspendCancellableCoroutine { cont ->
@@ -206,7 +208,9 @@ class FlipperRequestApiImpl @Inject constructor(
         }
 
         cont.invokeOnCancellation {
-            requestStorage.removeIf { it.data.commandId == uniqueId }
+            requestStorage.removeIf { request ->
+                request.data.commandId == uniqueId
+            }
             requestListeners.remove(uniqueId)
         }
     }
@@ -252,7 +256,7 @@ class FlipperRequestApiImpl @Inject constructor(
         info { "Complete reset and finish $counter tasks" }
     }
 
-    override suspend fun sendTrashBytesAndBrokeSession() {
+    override fun sendTrashBytesAndBrokeSession() {
         serialApi.sendTrashBytesAndBrokeSession()
     }
 

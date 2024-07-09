@@ -9,9 +9,9 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
+import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
+import io.github.fornewid.placeholder.foundation.placeholder
+import io.github.fornewid.placeholder.foundation.shimmer
 
 @Suppress("ModifierComposed") // MOB-1039
 fun Modifier.placeholderConnecting(shape: Int = 4) = composed {

@@ -46,7 +46,7 @@ data class NfcEditorState(
 
     operator fun get(location: NfcEditorCellLocation): NfcEditorCell {
         val selectableSector = when (location.field) {
-            EditorField.CARD -> nfcEditorCardInfo?.fieldsAsSectors ?: emptyList()
+            EditorField.CARD -> nfcEditorCardInfo?.fieldsAsSectors.orEmpty()
             EditorField.DATA -> sectors
         }
         val currentSector = selectableSector[location.sectorIndex]

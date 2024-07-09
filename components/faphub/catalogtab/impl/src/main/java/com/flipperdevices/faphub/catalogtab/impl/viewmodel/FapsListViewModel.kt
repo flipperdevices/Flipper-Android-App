@@ -16,6 +16,7 @@ import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.api.model.SortType.Companion.toSortType
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,6 +46,7 @@ class FapsListViewModel @Inject constructor(
 
     fun getSortTypeFlow() = sortStateFlow.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val faps = combine(
         sortStateFlow,
         targetProviderApi.getFlipperTarget(),

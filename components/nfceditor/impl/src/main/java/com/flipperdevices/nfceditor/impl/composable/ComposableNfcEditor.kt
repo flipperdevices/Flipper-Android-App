@@ -52,8 +52,9 @@ fun ComposableNfcEditor(
             )
         ) {
             val maxIndexSymbolCount = remember(constraints, nfcEditorState) {
-                nfcEditorState.sectors.maxOfOrNull { it.lines.maxOf { it.index } }
-                    ?.length() ?: 0
+                nfcEditorState.sectors.maxOfOrNull { sector ->
+                    sector.lines.maxOf { line -> line.index }
+                }?.length() ?: 0
             }
 
             val scaleFactor = key(

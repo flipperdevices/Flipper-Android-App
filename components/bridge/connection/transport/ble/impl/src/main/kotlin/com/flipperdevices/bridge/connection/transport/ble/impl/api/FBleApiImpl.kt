@@ -23,7 +23,7 @@ open class FBleApiImpl(
         info { "Init ble api listener" }
         client.connectionStateWithStatus
             .filterNotNull()
-            .onEach { (state, status) ->
+            .onEach { (state, _) ->
                 info { "Receive state $state" }
                 statusListener.onStatusUpdate(
                     when (state) {

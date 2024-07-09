@@ -12,9 +12,9 @@ import com.flipperdevices.bridge.dao.impl.repository.WidgetDataDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Provider
@@ -31,7 +31,7 @@ class WidgetDataApiImpl @Inject constructor(
     private val simpleKeyDao by simpleKeyDaoProvider
     private val appDatabase by appDatabaseProvider
 
-    override suspend fun getAll(): List<WidgetData> = withContext(Dispatchers.IO) {
+    override suspend fun getAll(): List<WidgetData> = withContext(FlipperDispatchers.workStealingDispatcher) {
         return@withContext widgetDataDao.getAll().map { element ->
             val keyPath = if (element.keyId != null) {
                 simpleKeyDao.getById(element.keyId)?.getFlipperKeyPath()
@@ -44,7 +44,7 @@ class WidgetDataApiImpl @Inject constructor(
 
     override suspend fun getWidgetDataByWidgetId(
         widgetId: Int
-    ): WidgetData? = withContext(Dispatchers.IO) {
+    ): WidgetData? = withContext(FlipperDispatchers.workStealingDispatcher) {
         val widgetDataElement = widgetDataDao.getWidgetDataById(widgetId)
             ?: return@withContext null
         val keyPath = if (widgetDataElement.keyId != null) {
@@ -58,7 +58,7 @@ class WidgetDataApiImpl @Inject constructor(
     override suspend fun updateTypeForWidget(
         widgetId: Int,
         type: WidgetType
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         appDatabase.withTransaction {
             val widgetData = widgetDataDao.getWidgetDataById(widgetId)
 
@@ -77,7 +77,7 @@ class WidgetDataApiImpl @Inject constructor(
     override suspend fun updateKeyForWidget(
         widgetId: Int,
         flipperKeyPath: FlipperKeyPath
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         appDatabase.withTransaction {
             val key = simpleKeyDao.getByPath(
                 flipperKeyPath.path.pathToKey,

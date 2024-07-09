@@ -7,7 +7,7 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxColors
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalMinimumTouchTargetEnforcement
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
@@ -28,7 +28,7 @@ internal fun ComposableCheckBox(
     Disable padding for checkbox
     https://stackoverflow.com/a/71609165
      */
-    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,

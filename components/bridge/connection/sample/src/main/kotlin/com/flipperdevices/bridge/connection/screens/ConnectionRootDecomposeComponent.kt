@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.connection.screens.device.ConnectionDeviceScreenDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
@@ -51,7 +51,7 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
         is ConnectionRootConfig.Device ->
             connectionDeviceScreenDecomposeComponentFactory(
                 componentContext = componentContext,
-                onOpenSearch = { navigation.push(ConnectionRootConfig.Search) }
+                onOpenSearch = { navigation.pushToFront(ConnectionRootConfig.Search) }
             )
     }
 

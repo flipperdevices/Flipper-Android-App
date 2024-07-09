@@ -51,7 +51,7 @@ data class FlipperFilePath(
         nameWithExtension.substringAfterLast('/').substringBeforeLast(".")
     }
 
-    fun getPathOnFlipper() = File(FLIPPER_STORAGE_NAME, pathToKey).path
+    fun getPathOnFlipper(): String = File(FLIPPER_STORAGE_NAME, pathToKey).path
 
     override fun toString() = pathToKey
 
