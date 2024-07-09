@@ -95,8 +95,9 @@ class SelfUpdaterThirdParty @Inject constructor(
     private fun registerDownloadReceiver(activity: Activity) {
         val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED) // check NOT
+            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED)
         } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
             activity.registerReceiver(downloadReceiver, intentFilter)
         }
         info { "Register download receiver" }
@@ -107,7 +108,8 @@ class SelfUpdaterThirdParty @Inject constructor(
             val url = githubUpdate.downloadUrl
             val title = githubUpdate.name
 
-            val networkTypes = DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
+            val networkTypes =
+                DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
             val request = DownloadManager.Request(Uri.parse(url))
                 .setAllowedNetworkTypes(networkTypes)
                 .setTitle(title)
