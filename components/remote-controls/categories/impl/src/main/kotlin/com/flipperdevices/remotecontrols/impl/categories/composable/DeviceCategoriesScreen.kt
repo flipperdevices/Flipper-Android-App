@@ -17,7 +17,7 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.
 import com.flipperdevices.remotecontrols.categories.impl.R as CategoriesR
 
 @Composable
-fun DeviceCategoriesScreen(
+internal fun DeviceCategoriesScreen(
     deviceCategoriesComponent: DeviceCategoriesComponent,
     modifier: Modifier = Modifier
 ) {
@@ -36,9 +36,7 @@ fun DeviceCategoriesScreen(
         Crossfade(model) { model ->
             when (model) {
                 DeviceCategoriesComponent.Model.Error -> {
-                    ErrorComposable {
-                        deviceCategoriesComponent.tryLoad()
-                    }
+                    ErrorComposable(onReload = deviceCategoriesComponent::tryLoad)
                 }
 
                 is DeviceCategoriesComponent.Model.Loaded -> {

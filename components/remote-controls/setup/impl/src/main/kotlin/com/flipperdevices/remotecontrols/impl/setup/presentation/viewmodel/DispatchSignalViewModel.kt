@@ -14,6 +14,9 @@ import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
+import com.flipperdevices.remotecontrols.impl.setup.encoding.JvmEncoder
+import com.flipperdevices.remotecontrols.impl.setup.util.toByteArray
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,14 +47,26 @@ class DispatchSignalViewModel @Inject constructor(
     ) {
         val i = remotes.indexOfFirst { remote ->
             when (identifier) {
-                is IfrKeyIdentifier.Name -> remote.name == identifier.name
-                is IfrKeyIdentifier.Sha256 -> TODO()
+                is IfrKeyIdentifier.Name -> {
+                    remote.name == identifier.name
+                }
+
+                is IfrKeyIdentifier.Sha256 -> {
+                    val encoder = JvmEncoder(ByteArrayEncoder.Algorithm.SHA_256)
+                    identifier.hash == encoder.encode(remote.toByteArray())
+                }
+
+                is IfrKeyIdentifier.MD5 -> {
+                    val encoder = JvmEncoder(ByteArrayEncoder.Algorithm.MD5)
+                    identifier.hash == encoder.encode(remote.toByteArray())
+                }
             }
         }
         val remote = remotes.getOrNull(i) ?: run {
-            error { "Not found!" }
+            error { "Not found remote by identifier $identifier" }
             return
         }
+
         val config = EmulateConfig(
             keyPath = ffPath,
             keyType = FlipperKeyType.INFRARED,

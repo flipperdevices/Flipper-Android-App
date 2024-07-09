@@ -161,7 +161,7 @@ include(
     ":components:infrared:api",
     ":components:infrared:impl",
     ":components:infrared:editor",
-    ":components:infrared:core",
+    ":components:infrared:utils",
 
     ":components:firstpair:api",
     ":components:firstpair:impl",

@@ -3,7 +3,7 @@ package com.flipperdevices.remotecontrols.impl.api
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
@@ -48,7 +48,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     onBackClicked = onBack::invoke,
                     onCategoryClicked = { deviceCategoryId ->
                         val configuration = RemoteControlsNavigationConfig.Brands(deviceCategoryId)
-                        navigation.push(configuration)
+                        navigation.pushToFront(configuration)
                     }
                 )
         }
@@ -64,7 +64,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                             categoryId = config.categoryId,
                             brandId = brandId
                         )
-                        navigation.push(configuration)
+                        navigation.pushToFront(configuration)
                     }
                 )
         }

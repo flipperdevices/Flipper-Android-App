@@ -24,7 +24,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "power",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.POWER
                             ),
@@ -41,7 +41,7 @@ internal object KitchenLayoutFactory {
                             data = TextButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "power",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 text = "PWR"
                             ),
@@ -51,7 +51,7 @@ internal object KitchenLayoutFactory {
                             data = TextButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "menu",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 text = "MENU"
                             ),
@@ -61,7 +61,7 @@ internal object KitchenLayoutFactory {
                             data = TextButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "tv_av",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 text = "TV/AV"
                             ),
@@ -72,7 +72,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "info",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.INFO
                             ),
@@ -82,7 +82,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "hm",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.HOME
                             ),
@@ -92,7 +92,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "back",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.BACK
                             ),
@@ -102,7 +102,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "more",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.MORE
                             ),
@@ -113,23 +113,23 @@ internal object KitchenLayoutFactory {
                             data = NavigationButtonData(
                                 upKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "up",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 leftKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "left",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 downKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "down",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 rightKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "right",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 okKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "apply",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 )
                             ),
                             position = IfrButton.Position(
@@ -145,11 +145,11 @@ internal object KitchenLayoutFactory {
                             data = ChannelButtonData(
                                 addKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "ch+",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 reduceKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "ch-",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                             ),
                             position = IfrButton.Position(
@@ -164,11 +164,11 @@ internal object KitchenLayoutFactory {
                             data = VolumeButtonData(
                                 addKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "v+",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 reduceKeyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "v-",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 )
                             ),
                             position = IfrButton.Position(
@@ -184,7 +184,7 @@ internal object KitchenLayoutFactory {
                             data = TextButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "123",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 text = "123"
                             ),
@@ -194,7 +194,7 @@ internal object KitchenLayoutFactory {
                             data = IconButtonData(
                                 keyIdentifier = IfrKeyIdentifier.Sha256(
                                     name = "sound_toggle",
-                                    sha256String = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
+                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
                                 iconId = IconButtonData.IconType.MUTE
                             ),

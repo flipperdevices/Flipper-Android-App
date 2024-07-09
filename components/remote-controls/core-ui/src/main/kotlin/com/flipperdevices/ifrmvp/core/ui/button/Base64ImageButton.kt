@@ -76,5 +76,7 @@ fun Base64ImageButton(
             iconTint = Color.Unspecified,
             modifier = modifier
         )
+    } else {
+        UnknownButton(onClick = onClick)
     }
 }

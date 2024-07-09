@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -28,7 +29,7 @@ import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
 import com.flipperdevices.ifrmvp.core.ui.button.rememberImageBitmap
 
 @Composable
-fun DeviceCategoryComposable(
+internal fun DeviceCategoryComposable(
     deviceCategory: DeviceCategory,
     onClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -84,6 +85,7 @@ private fun DeviceCategoryComposablePreview() {
     FlipperThemeInternal {
         Box(Modifier.fillMaxSize()) {
             DeviceCategoryComposable(
+                modifier = Modifier.width(120.dp),
                 deviceCategory = DeviceCategory(
                     id = 1,
                     meta = CategoryMeta(

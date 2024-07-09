@@ -28,6 +28,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+private val EXT_IFR_TEMP_FOLDER = "/ext/${FlipperKeyType.INFRARED.flipperDir}/temp"
+private val IFR_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"
+
 @ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
 class SaveTempSignalViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
@@ -46,12 +49,12 @@ class SaveTempSignalViewModel @Inject constructor(
         _state.value = SaveTempSignalApi.State.Uploading(0, 0)
         launchWithLock(mutex, viewModelScope, "load") {
             val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }
-            saveFolderApi.save(serviceApi.requestApi, "/ext/infrared/temp")
+            saveFolderApi.save(serviceApi.requestApi, EXT_IFR_TEMP_FOLDER)
             save(
                 serviceApi = serviceApi,
                 fff = fff,
                 ffPath = FlipperFilePath(
-                    folder = FlipperKeyType.INFRARED.flipperDir + "/temp",
+                    folder = IFR_TEMP_FOLDER,
                     nameWithExtension = nameWithExtension
                 )
             )

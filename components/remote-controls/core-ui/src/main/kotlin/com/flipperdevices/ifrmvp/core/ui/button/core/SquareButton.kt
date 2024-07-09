@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
 @Composable
 fun SquareButton(
@@ -22,7 +23,7 @@ fun SquareButton(
 ) {
     Box(
         modifier = modifier
-            .size(48.dp)
+            .size(GridConstants.DEFAULT_BUTTON_SIZE)
             .clip(RoundedCornerShape(8.dp))
             .background(background)
             .then(if (onClick != null) Modifier.clickableRipple(onClick = onClick) else Modifier),
