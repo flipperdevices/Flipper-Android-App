@@ -16,7 +16,8 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.editor.R
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
-import com.flipperdevices.infrared.editor.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

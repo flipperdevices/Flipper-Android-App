@@ -1,4 +1,4 @@
-package com.flipperdevices.infrared.editor.model
+package com.flipperdevices.infrared.editor.core.model
 
 sealed class InfraredRemote(
     val name: String,

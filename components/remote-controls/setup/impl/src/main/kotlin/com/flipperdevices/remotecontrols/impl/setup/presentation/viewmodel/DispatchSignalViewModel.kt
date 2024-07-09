@@ -10,7 +10,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
-import com.flipperdevices.infrared.editor.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi

@@ -5,8 +5,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
-import com.flipperdevices.infrared.editor.model.InfraredRemote
-import com.flipperdevices.infrared.editor.viewmodel.InfraredKeyParser
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.data.PagesRepository
 import dagger.assisted.Assisted

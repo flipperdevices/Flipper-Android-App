@@ -1,31 +1,18 @@
-package com.flipperdevices.infrared.editor.viewmodel
+package com.flipperdevices.infrared.editor.core.parser
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.infrared.editor.model.InfraredRemote
-
-private const val KEY_NAME = "name"
-private const val KEY_TYPE = "type"
-private const val KEY_TYPE_RAW = "raw"
-private const val KEY_TYPE_PARSED = "parsed"
-
-private const val KEY_PROTOCOL = "protocol"
-private const val KEY_ADDRESS = "address"
-private const val KEY_COMMAND = "command"
-
-private const val KEY_FREQUENCY = "frequency"
-private const val KEY_DUTY_CYCLE = "duty_cycle"
-private const val KEY_DATA = "data"
-
-private val allFields = listOf(
-    KEY_NAME,
-    KEY_TYPE,
-    KEY_PROTOCOL,
-    KEY_ADDRESS,
-    KEY_COMMAND,
-    KEY_FREQUENCY,
-    KEY_DUTY_CYCLE,
-    KEY_DATA
-)
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_ADDRESS
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_COMMAND
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DATA
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DUTY_CYCLE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FREQUENCY
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_NAME
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_PROTOCOL
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_PARSED
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_RAW
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.allFields
 
 object InfraredKeyParser {
     fun mapParsedKeyToInfraredRemotes(
