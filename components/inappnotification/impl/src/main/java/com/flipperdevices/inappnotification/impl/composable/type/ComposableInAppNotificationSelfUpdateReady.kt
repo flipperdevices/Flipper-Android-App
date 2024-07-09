@@ -28,7 +28,7 @@ internal fun ComposableInAppNotificationSelfUpdateReady(
             ComposableFlipperButton(
                 modifier = Modifier
                     .padding(start = 8.dp),
-                textPadding = PaddingValues(vertical = 12.dp, horizontal = 4.dp),
+                textPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
                 text = stringResource(R.string.ready_update_button),
                 textStyle = TextStyle(
                     fontSize = 12.sp
