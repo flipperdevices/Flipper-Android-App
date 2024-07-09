@@ -53,6 +53,7 @@ fun ComposableInfoCard(
                     modifier = Modifier
                         .padding(end = 12.dp)
                         .size(14.dp),
+                    tint = LocalPallet.current.iconTint30,
                     painter = painterResource(DesignSystem.drawable.ic_navigate),
                     contentDescription = stringResource(R.string.info_device_info_more_information)
                 )
