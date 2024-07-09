@@ -39,7 +39,7 @@ interface BrandsDecomposeComponent {
             }
 
             val headers by lazy {
-                groupedBrands.map { group -> group.first }
+                groupedBrands.map { group -> group.first }.toImmutableList()
             }
         }
     }

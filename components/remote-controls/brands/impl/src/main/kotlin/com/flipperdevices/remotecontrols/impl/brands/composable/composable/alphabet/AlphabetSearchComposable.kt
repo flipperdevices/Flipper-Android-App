@@ -1,17 +1,16 @@
-package com.flipperdevices.remotecontrols.impl.brands.composable.composable
+package com.flipperdevices.remotecontrols.impl.brands.composable.composable.alphabet
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,31 +22,30 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
+import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsList
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
-fun AlphabetSearchComposable(
-    model: BrandsDecomposeComponent.Model.Loaded,
+fun <T> AlphabetSearchComposable(
     modifier: Modifier = Modifier,
-    onBrandClicked: (BrandModel) -> Unit
+    items: ImmutableList<T>,
+    toHeader: (T) -> Char,
+    headers: ImmutableList<Char>,
+    listState: LazyListState,
+    mainContent: @Composable RowScope.() -> Unit
 ) {
     val offsets = remember { mutableStateMapOf<Int, Float>() }
     var selectedHeaderIndex by remember { mutableIntStateOf(0) }
     var isScrollingToIndex by remember { mutableStateOf(false) }
+
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
 
     Row(
         modifier = modifier
@@ -55,12 +53,8 @@ fun AlphabetSearchComposable(
             .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        BrandsList(
-            modifier = Modifier.weight(1f),
-            listState = listState,
-            brands = model.sortedBrands,
-            onBrandClicked = onBrandClicked
-        )
+        mainContent()
+
 
         fun updateSelectedIndexIfNeeded(offset: Float) {
             if (listState.isScrollInProgress) return
@@ -71,10 +65,9 @@ fun AlphabetSearchComposable(
                 ?.key ?: return
             if (selectedHeaderIndex == index) return
             selectedHeaderIndex = index
-            val selectedItemIndex = model
-                .brands
-                .map { it.name.first().uppercaseChar() }
-                .indexOfFirst { char -> char.code == model.headers[selectedHeaderIndex].code }
+            val selectedItemIndex = items
+                .map { it.let(toHeader).uppercaseChar() }
+                .indexOfFirst { char -> char.code == headers[selectedHeaderIndex].code }
                 .coerceIn(0 until listState.layoutInfo.totalItemsCount)
             scope.launch {
                 isScrollingToIndex = true
@@ -85,10 +78,9 @@ fun AlphabetSearchComposable(
 
         LaunchedEffect(listState.firstVisibleItemIndex, isScrollingToIndex) {
             if (isScrollingToIndex) return@LaunchedEffect
-            val ch = model.brands.getOrNull(listState.firstVisibleItemIndex)
-                ?.name
-                ?.first() ?: return@LaunchedEffect
-            val i = model.headers.indexOfFirst { it.uppercaseChar() == ch }
+            val ch = items.getOrNull(listState.firstVisibleItemIndex)
+                ?.let(toHeader) ?: return@LaunchedEffect
+            val i = headers.indexOfFirst { it.uppercaseChar() == ch }
                 .coerceIn(0, listState.layoutInfo.totalItemsCount)
             selectedHeaderIndex = i
         }
@@ -105,7 +97,7 @@ fun AlphabetSearchComposable(
                     detectVerticalDragGestures { change, _ -> updateSelectedIndexIfNeeded(change.position.y) }
                 }
         ) {
-            model.headers.forEachIndexed { i, header ->
+            headers.forEachIndexed { i, header ->
                 HeaderContent(
                     isSelected = i == selectedHeaderIndex,
                     text = header.toString(),
@@ -118,32 +110,3 @@ fun AlphabetSearchComposable(
     }
 }
 
-@Composable
-fun HeaderContent(
-    isSelected: Boolean,
-    text: String,
-    onGloballyPositioned: (LayoutCoordinates) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val scale by animateFloatAsState(
-        targetValue = when (isSelected) {
-            true -> 1.5f
-            false -> 1f
-        }
-    )
-    val textColor by animateColorAsState(
-        targetValue = when {
-            isSelected -> LocalPalletV2.current.text.body.primary
-            else -> LocalPalletV2.current.text.body.secondary
-        }
-    )
-    Text(
-        text = text,
-        modifier = modifier
-            .onGloballyPositioned(onGloballyPositioned)
-            .scale(scale),
-        textAlign = TextAlign.Center,
-        style = LocalTypography.current.subtitleM12,
-        color = textColor
-    )
-}
