@@ -8,7 +8,6 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.
 import com.flipperdevices.remotecontrols.impl.categories.presentation.viewmodel.DeviceCategoryListViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.asStateFlow
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 

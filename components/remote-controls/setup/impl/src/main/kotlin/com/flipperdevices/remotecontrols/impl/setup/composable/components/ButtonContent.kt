@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,7 +25,6 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
-import androidx.compose.runtime.remember
 
 @Composable
 private fun SignalResponseButton(

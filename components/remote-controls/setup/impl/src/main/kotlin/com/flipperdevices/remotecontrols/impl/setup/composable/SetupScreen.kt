@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,7 +20,6 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.Setup
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
-import androidx.compose.runtime.remember
 
 @Composable
 fun SetupScreen(

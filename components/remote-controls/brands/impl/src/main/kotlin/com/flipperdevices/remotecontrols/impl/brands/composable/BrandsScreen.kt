@@ -6,6 +6,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,7 +16,6 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsLoadedContent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
-import androidx.compose.runtime.remember
 
 @Composable
 fun BrandsScreen(

@@ -30,12 +30,18 @@ private fun resolveImage(imgBase64: String?): ByteArray? {
             }
 
             else -> {
-                logger.warn { "#resolveImage Unknown image format: '${imgBase64.take(HEADER_LENGTH)}'" }
+                logger.warn {
+                    "#resolveImage Unknown image format: '${imgBase64.take(HEADER_LENGTH)}'"
+                }
                 Base64.Default.decode(imgBase64)
             }
         }
     }
-        .onFailure { throwable -> logger.error(throwable) { "#resolveImage Could not resolve image from base 64 string." } }
+        .onFailure { throwable ->
+            logger.error(throwable) {
+                "#resolveImage Could not resolve image from base 64 string."
+            }
+        }
         .getOrNull()
 }
 

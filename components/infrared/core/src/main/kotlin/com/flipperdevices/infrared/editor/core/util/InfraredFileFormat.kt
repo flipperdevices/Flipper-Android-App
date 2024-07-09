@@ -1,6 +1,5 @@
 package com.flipperdevices.infrared.editor.core.util
 
-
 object InfraredFileFormat {
     const val KEY_FILE_TYPE_KEY = "Filetype"
     const val KEY_FILE_TYPE_VALUE = "IR signals file"

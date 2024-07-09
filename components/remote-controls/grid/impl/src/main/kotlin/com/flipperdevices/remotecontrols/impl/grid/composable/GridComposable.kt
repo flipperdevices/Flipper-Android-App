@@ -9,6 +9,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +25,6 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.grid.impl.R as GridR
-import androidx.compose.runtime.remember
 
 @Composable
 internal fun LoadedContent(

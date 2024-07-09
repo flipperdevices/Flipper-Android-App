@@ -42,7 +42,6 @@ class SaveTempSignalViewModel @Inject constructor(
     private val _state = MutableStateFlow<SaveTempSignalApi.State>(SaveTempSignalApi.State.Pending)
     override val state = _state.asStateFlow()
 
-
     override fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String) {
         launchWithLock(mutex, viewModelScope, "load") {
             val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }

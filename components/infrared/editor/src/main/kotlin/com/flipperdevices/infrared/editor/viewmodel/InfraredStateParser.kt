@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.infrared.editor.model.InfraredEditorState
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_ADDRESS
 import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_COMMAND
@@ -20,7 +19,7 @@ import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_PROTO
 import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE
 import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_PARSED
 import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_RAW
-
+import com.flipperdevices.infrared.editor.model.InfraredEditorState
 
 object InfraredStateParser {
     fun mapStateToFlipperKey(

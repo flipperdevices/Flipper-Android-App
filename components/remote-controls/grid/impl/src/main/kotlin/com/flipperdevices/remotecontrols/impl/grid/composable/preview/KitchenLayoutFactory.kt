@@ -139,7 +139,7 @@ internal object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                            ).run(::add)
+                        ).run(::add)
                         // Channel Volume
                         IfrButton(
                             data = ChannelButtonData(
@@ -159,7 +159,7 @@ internal object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                            ).run(::add)
+                        ).run(::add)
                         IfrButton(
                             data = VolumeButtonData(
                                 addKeyIdentifier = IfrKeyIdentifier.Sha256(
@@ -178,7 +178,7 @@ internal object KitchenLayoutFactory {
                                 containerHeight = 3
                             ),
 
-                            ).run(::add)
+                        ).run(::add)
                         // Bottom Button
                         IfrButton(
                             data = TextButtonData(
