@@ -45,13 +45,16 @@ class GridComponentImpl @AssistedInject constructor(
     private val gridFeature = instanceKeeper.getOrCreate(
         key = "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}",
         factory = {
-            createGridViewModel.invoke(param) { content ->
-                val fff = FlipperFileFormat.fromFileContent(content)
-                saveSignalViewModel.saveTempFile(
-                    fff = fff,
-                    nameWithExtension = "${param.ifrFileId}.ir"
-                )
-            }
+            createGridViewModel.invoke(
+                param = param,
+                onIrFileLoaded = { content ->
+                    val fff = FlipperFileFormat.fromFileContent(content)
+                    saveSignalViewModel.saveTempFile(
+                        fff = fff,
+                        nameWithExtension = "${param.ifrFileId}.ir"
+                    )
+                }
+            )
         }
     )
 
@@ -81,6 +84,20 @@ class GridComponentImpl @AssistedInject constructor(
             }
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading(0f))
+
+    override fun flipperState(coroutineScope: CoroutineScope) = combine(
+        dispatchSignalViewModel.state,
+        transform = { (dispatchState) ->
+            GridComponent.FlipperState(
+                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
+            )
+        }
+    ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.FlipperState())
+
+    override fun dismissBusyDialog() {
+        dispatchSignalViewModel.dismissBusyDialog()
+    }
 
     override fun onButtonClicked(identifier: IfrKeyIdentifier) {
         val gridLoadedState = (gridFeature.state.value as? GridViewModel.State.Loaded) ?: return

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
@@ -24,6 +25,8 @@ import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.remotecontrols.grid.impl.R as GridR
 
 @Composable
@@ -51,9 +54,13 @@ fun GridComposable(
     gridComponent: GridComponent,
     modifier: Modifier = Modifier
 ) {
+    val rootNavigation = LocalRootNavigation.current
     val coroutineScope = rememberCoroutineScope()
     val model by remember(gridComponent, coroutineScope) {
         gridComponent.model(coroutineScope)
+    }.collectAsState()
+    val flipperState by remember(gridComponent, coroutineScope) {
+        gridComponent.flipperState(coroutineScope)
     }.collectAsState()
     val scaffoldState = rememberScaffoldState()
     Scaffold(
@@ -81,6 +88,15 @@ fun GridComposable(
                     }
 
                     is GridComponent.Model.Loaded -> {
+                        if (flipperState.isFlipperBusy) {
+                            ComposableFlipperBusy(
+                                onDismiss = gridComponent::dismissBusyDialog,
+                                goToRemote = {
+                                    gridComponent.dismissBusyDialog()
+                                    rootNavigation.push(RootScreenConfig.ScreenStreaming)
+                                }
+                            )
+                        }
                         LoadedContent(
                             pagesLayout = model.pagesLayout,
                             onButtonClicked = { button, keyIdentifier ->
