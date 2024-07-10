@@ -2,12 +2,15 @@ package com.flipperdevices.wearable.emulate.handheld.impl.service
 
 import android.content.Intent
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearServiceComponent
 import com.google.android.gms.wearable.ChannelClient.Channel
@@ -26,6 +29,15 @@ class WearRequestForegroundService : LifecycleService(), WearRequestChannelBinde
     override fun onCreate() {
         super.onCreate()
         info { "#onCreate" }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+            PermissionHelper.getUngrantedPermission(
+                this,
+                PermissionHelper.getRequiredPermissions()
+            ).isNotEmpty()
+        ) {
+            error { "Can't launch foreground service on Android API 34 and upper without bluetooth permission" }
+            return
+        }
         startForeground(
             NOTIFICATION_ID,
             HandheldWearOSNotificationHelper.buildNotification(applicationContext)
