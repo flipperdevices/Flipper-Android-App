@@ -7,6 +7,5 @@ plugins {
 android.namespace = "com.flipperdevices.remotecontrols.core.model"
 
 commonDependencies {
-    implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)
 }

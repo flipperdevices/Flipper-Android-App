@@ -41,12 +41,9 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.immutable.collections)
-    implementation(libs.kotlin.serialization.json)
-    implementation(libs.ktor.client)
 
     implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)
-    implementation(libs.essenty.lifecycle)
     implementation(libs.essenty.lifecycle.coroutines)
 
     implementation(libs.bundles.decompose)

@@ -18,11 +18,8 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.deeplink.api)
     implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.api)
-    implementation(projects.components.keyemulate.api)
     implementation(projects.components.infrared.utils)
 
     implementation(projects.components.remoteControls.apiBackend)
@@ -42,13 +39,8 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.immutable.collections)
-    implementation(libs.kotlin.serialization.json)
-    implementation(libs.ktor.client)
 
     implementation(libs.decompose)
-    implementation(libs.kotlin.coroutines)
-    implementation(libs.essenty.lifecycle)
-    implementation(libs.essenty.lifecycle.coroutines)
 
     implementation(libs.bundles.decompose)
 }
