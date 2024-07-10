@@ -131,7 +131,7 @@ class SetupComponentImpl @AssistedInject constructor(
     }
 
     override fun onSuccessClicked() {
-        val state = createCurrentSignalViewModel.state.value as CurrentSignalViewModel.State.Loaded
+        val state = createCurrentSignalViewModel.state.value as? CurrentSignalViewModel.State.Loaded
             ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
         historyViewModel.rememberSuccessful(signalModel)
