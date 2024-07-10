@@ -13,6 +13,7 @@ import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
+import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -95,8 +96,9 @@ class SelfUpdaterThirdParty @Inject constructor(
     private fun registerDownloadReceiver(activity: Activity) {
         val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED) // check NOT
+            activity.registerReceiver(downloadReceiver, intentFilter, Context.RECEIVER_EXPORTED)
         } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
             activity.registerReceiver(downloadReceiver, intentFilter)
         }
         info { "Register download receiver" }
@@ -107,7 +109,8 @@ class SelfUpdaterThirdParty @Inject constructor(
             val url = githubUpdate.downloadUrl
             val title = githubUpdate.name
 
-            val networkTypes = DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
+            val networkTypes =
+                DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
             val request = DownloadManager.Request(Uri.parse(url))
                 .setAllowedNetworkTypes(networkTypes)
                 .setTitle(title)
@@ -126,6 +129,7 @@ class SelfUpdaterThirdParty @Inject constructor(
 
     private val downloadReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intents: Intent) {
+            info { "#onReceive ${intents.toFullString()}" }
             try {
                 val currentDownloadId = intents.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (downloadId != currentDownloadId) {

@@ -23,6 +23,7 @@
         </service>
 
         <service
+                android:foregroundServiceType="connectedDevice"
                 android:exported="false"
                 android:name=".service.WearRequestForegroundService"
                 android:stopWithTask="false" />
