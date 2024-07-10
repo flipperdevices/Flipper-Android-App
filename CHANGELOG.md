@@ -5,6 +5,7 @@
 - [FIX] Distinct fap items by id in paging sources
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
+- [Feature] Infrared controls
 
 # 1.7.1
 
