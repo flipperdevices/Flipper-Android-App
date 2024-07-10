@@ -3,6 +3,8 @@
 # 1.7.2 - In Progress
 
 - [FIX] Distinct fap items by id in paging sources
+- [FIX] Battery level charge
+- [FIX] Button arrow tint
 - [FIX] Paddings for update button
 - [FIX] Crash on app startup with WearOS app
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
