@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
@@ -67,7 +68,7 @@ class DispatchSignalViewModel @Inject constructor(
             error { "Not found remote by identifier $identifier" }
             return
         }
-
+        info { "#dispatch remote: ${remote.name} i: $i" }
         val config = EmulateConfig(
             keyPath = ffPath,
             keyType = FlipperKeyType.INFRARED,
