@@ -12,6 +12,7 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
@@ -76,6 +77,10 @@ class DispatchSignalViewModel @Inject constructor(
         dispatch(config)
     }
 
+    override fun dismissBusyDialog() {
+        _state.value = DispatchSignalApi.State.Pending
+    }
+
     override fun dispatch(config: EmulateConfig) {
         if (latestDispatchJob?.isActive == true) return
         latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
@@ -86,7 +91,7 @@ class DispatchSignalViewModel @Inject constructor(
                 onBleManager = { serviceApi ->
                     launch {
                         _state.emit(DispatchSignalApi.State.Emulating)
-                        runCatching {
+                        try {
                             emulateHelper.startEmulate(
                                 scope = this,
                                 serviceApi = serviceApi,
@@ -94,9 +99,13 @@ class DispatchSignalViewModel @Inject constructor(
                             )
                             delay(DEFAULT_SIGNAL_DELAY)
                             emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                            _state.emit(DispatchSignalApi.State.Pending)
+                        } catch (ignored: AlreadyOpenedAppException) {
+                            _state.emit(DispatchSignalApi.State.FlipperIsBusy)
+                        } catch (e: Exception) {
+                            error(e) { "#tryLoad uncaught exception: could not dispatch signal" }
+                            _state.emit(DispatchSignalApi.State.Pending)
                         }
-                            .onFailure { throwable -> error(throwable) { "#tryLoad could not dispatch signal" } }
-                        _state.emit(DispatchSignalApi.State.Pending)
                     }
                 }
             )

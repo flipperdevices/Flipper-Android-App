@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface SetupComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
+    fun flipperState(coroutineScope: CoroutineScope): StateFlow<FlipperState>
+
     val remoteFoundFlow: Flow<IfrFileModel>
     val param: SetupScreenDecomposeComponent.Param
 
@@ -19,6 +21,8 @@ interface SetupComponent {
     fun onFailedClicked()
     fun dispatchSignal()
 
+    fun dismissBusyDialog()
+
     fun tryLoad()
 
     fun onFileFound(ifrFileModel: IfrFileModel)
@@ -26,9 +30,13 @@ interface SetupComponent {
     sealed interface Model {
         data class Loading(val progress: Float) : Model
         data class Loaded(val response: SignalResponseModel) : Model
-
         data object Error : Model
     }
+
+    data class FlipperState(
+        val isFlipperBusy: Boolean = false,
+        val isEmulating: Boolean = false
+    )
 
     interface Factory {
         fun createSetupComponent(

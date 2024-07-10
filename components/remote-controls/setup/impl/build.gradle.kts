@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.deeplink.api)
@@ -28,6 +29,8 @@ dependencies {
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.setup.api)
+
+    implementation(projects.components.rootscreen.api)
 
     // Compose
     implementation(libs.compose.ui)

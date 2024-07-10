@@ -19,6 +19,7 @@ fun SquareButton(
     onClick: (() -> Unit)?,
     background: Color,
     modifier: Modifier = Modifier,
+    isEmulating: Boolean = false,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
@@ -26,7 +27,16 @@ fun SquareButton(
             .size(GridConstants.DEFAULT_BUTTON_SIZE)
             .clip(RoundedCornerShape(8.dp))
             .background(background)
-            .then(if (onClick != null) Modifier.clickableRipple(onClick = onClick) else Modifier),
+            .then(
+                if (onClick != null) {
+                    Modifier.clickableRipple(
+                        onClick = onClick,
+                        enabled = !isEmulating
+                    )
+                } else {
+                    Modifier
+                }
+            ),
         contentAlignment = Alignment.Center,
         content = content
     )

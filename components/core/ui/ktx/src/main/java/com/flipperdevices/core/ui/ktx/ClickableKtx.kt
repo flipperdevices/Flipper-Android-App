@@ -10,13 +10,15 @@ import androidx.compose.ui.composed
 @Suppress("ModifierComposed") // MOB-1039
 fun Modifier.clickableRipple(
     bounded: Boolean = true,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) = composed {
     this.then(
         clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = rememberRipple(bounded = bounded),
-            onClick = onClick
+            onClick = onClick,
+            enabled = enabled
         )
     )
 }

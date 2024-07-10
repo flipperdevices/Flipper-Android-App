@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface DispatchSignalApi : InstanceKeeper.Instance {
     val state: StateFlow<State>
 
+    fun dismissBusyDialog()
+
     /**
      * Dispatch key from temporal file which contains only one key
      */
@@ -26,6 +28,7 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
 
     sealed interface State {
         data object Pending : State
+        data object FlipperIsBusy : State
         data object Emulating : State
         data object Error : State
     }

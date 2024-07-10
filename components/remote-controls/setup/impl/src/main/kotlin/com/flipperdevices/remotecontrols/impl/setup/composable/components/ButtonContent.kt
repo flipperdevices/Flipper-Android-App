@@ -29,7 +29,8 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 @Composable
 private fun SignalResponseButton(
     data: SignalResponse.Data,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isEmulating: Boolean
 ) {
     val text = data.text
     val iconType = remember(data.iconId) {
@@ -40,6 +41,7 @@ private fun SignalResponseButton(
             TextButton(
                 text = text,
                 onClick = onClick,
+                isEmulating = isEmulating,
                 modifier = Modifier.size(64.dp)
             )
         }
@@ -48,6 +50,7 @@ private fun SignalResponseButton(
             SquareIconButton(
                 iconType = iconType,
                 onClick = onClick,
+                isEmulating = isEmulating,
                 modifier = Modifier.size(64.dp)
             )
         }
@@ -66,6 +69,7 @@ fun ButtonContent(
     onClicked: () -> Unit,
     data: SignalResponse.Data,
     categoryName: String,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -73,7 +77,11 @@ fun ButtonContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SignalResponseButton(data = data, onClick = onClicked)
+        SignalResponseButton(
+            data = data,
+            onClick = onClicked,
+            isEmulating = isEmulating
+        )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
             text = stringResource(SetupR.string.point_flipper)
@@ -97,6 +105,7 @@ private fun ComposableConfirmContentDarkPreview() {
             ButtonContent(
                 onClicked = {},
                 categoryName = "CATEGORY",
+                isEmulating = true,
                 data = SignalResponse.Data(
                     type = "ANY",
                     iconId = "HOME"
@@ -105,6 +114,7 @@ private fun ComposableConfirmContentDarkPreview() {
             ButtonContent(
                 onClicked = {},
                 categoryName = "CATEGORY 2",
+                isEmulating = true,
                 data = SignalResponse.Data(
                     type = "ANY",
                     text = "TV/AV"
@@ -113,6 +123,7 @@ private fun ComposableConfirmContentDarkPreview() {
             ButtonContent(
                 onClicked = {},
                 categoryName = "CATEGORY 2",
+                isEmulating = true,
                 data = SignalResponse.Data(
                     type = "ANY",
                 )

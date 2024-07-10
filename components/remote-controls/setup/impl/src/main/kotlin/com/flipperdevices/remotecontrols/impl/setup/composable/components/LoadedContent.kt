@@ -18,6 +18,7 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 @Composable
 fun LoadedContent(
     model: SetupComponent.Model.Loaded,
+    isEmulating: Boolean,
     onPositiveClicked: () -> Unit,
     onNegativeClicked: () -> Unit,
     onDispatchSignalClicked: () -> Unit,
@@ -38,7 +39,8 @@ fun LoadedContent(
                     onClicked = onDispatchSignalClicked,
                     modifier = Modifier,
                     data = signalResponse.data,
-                    categoryName = signalResponse.categoryName
+                    categoryName = signalResponse.categoryName,
+                    isEmulating = isEmulating
                 )
                 ConfirmContent(
                     text = signalResponse.message,
@@ -67,8 +69,9 @@ private fun LoadedContentPreview() {
     FlipperThemeInternal {
         LoadedContent(
             model = SetupComponent.Model.Loaded(
-                response = SignalResponseModel()
+                response = SignalResponseModel(),
             ),
+            isEmulating = true,
             onPositiveClicked = {},
             onNegativeClicked = {},
             onDispatchSignalClicked = {}

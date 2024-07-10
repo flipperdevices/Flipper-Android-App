@@ -21,12 +21,14 @@ fun SquareIconButton(
     background: Color,
     iconTint: Color,
     modifier: Modifier = Modifier,
+    isEmulating: Boolean = false,
     contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
-        background = background
+        background = background,
+        isEmulating = isEmulating
     ) {
         Icon(
             painter = painter,
@@ -44,12 +46,14 @@ fun SquareImageButton(
     background: Color,
     iconTint: Color,
     modifier: Modifier = Modifier,
+    isEmulating: Boolean = false,
     contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
-        background = background
+        background = background,
+        isEmulating = isEmulating
     ) {
         Icon(
             bitmap = bitmap,
@@ -65,11 +69,13 @@ fun SquareIconButton(
     iconType: IconButtonData.IconType,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
+    isEmulating: Boolean = false,
     onClick: () -> Unit,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
+        isEmulating = isEmulating,
         background = LocalPalletV2.current.surface.menu.body.dufault
     ) {
         Icon(

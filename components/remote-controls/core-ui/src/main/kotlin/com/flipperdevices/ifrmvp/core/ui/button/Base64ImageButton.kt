@@ -65,6 +65,7 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 fun Base64ImageButton(
     base64Icon: String,
     modifier: Modifier = Modifier,
+    isEmulating: Boolean = false,
     onClick: () -> Unit
 ) {
     val imageBitmap = rememberImageBitmap(base64Icon)
@@ -74,7 +75,8 @@ fun Base64ImageButton(
             background = LocalPalletV2.current.surface.menu.body.dufault,
             bitmap = imageBitmap,
             iconTint = Color.Unspecified,
-            modifier = modifier
+            modifier = modifier,
+            isEmulating = isEmulating
         )
     } else {
         UnknownButton(onClick = onClick)

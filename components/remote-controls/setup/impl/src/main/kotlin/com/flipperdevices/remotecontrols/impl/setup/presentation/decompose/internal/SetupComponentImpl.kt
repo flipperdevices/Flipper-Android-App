@@ -80,11 +80,11 @@ class SetupComponentImpl @AssistedInject constructor(
                     when (saveState) {
                         SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
-                            response = signalState.response
+                            response = signalState.response,
                         )
 
                         SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
-                            response = signalState.response
+                            response = signalState.response,
                         )
 
                         is SaveTempSignalApi.State.Uploading -> SetupComponent.Model.Loading(
@@ -101,9 +101,23 @@ class SetupComponentImpl @AssistedInject constructor(
     override fun model(coroutineScope: CoroutineScope) = modelFlow
         .stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.Model.Loading(0f))
 
+    override fun flipperState(coroutineScope: CoroutineScope) = combine(
+        dispatchSignalApi.state,
+        transform = { (dispatchState) ->
+            SetupComponent.FlipperState(
+                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
+            )
+        }
+    ).stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.FlipperState())
+
     override val remoteFoundFlow: Flow<IfrFileModel> = modelFlow
         .filterIsInstance<SetupComponent.Model.Loaded>()
         .mapNotNull { it.response.ifrFileModel }
+
+    override fun dismissBusyDialog() {
+        dispatchSignalApi.dismissBusyDialog()
+    }
 
     override fun tryLoad() {
         createCurrentSignalViewModel.load(
