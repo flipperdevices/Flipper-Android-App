@@ -83,7 +83,7 @@ class GridComponentImpl @AssistedInject constructor(
                     }
                 }
 
-                GridViewModel.State.Loading -> GridComponent.Model.Error
+                GridViewModel.State.Loading -> GridComponent.Model.Loading(0f)
             }
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading(0f))
