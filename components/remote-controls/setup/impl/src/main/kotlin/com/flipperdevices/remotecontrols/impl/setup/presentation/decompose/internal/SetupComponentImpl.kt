@@ -73,7 +73,8 @@ class SetupComponentImpl @AssistedInject constructor(
     private val modelFlow = combine(
         createCurrentSignalViewModel.state,
         saveSignalApi.state,
-        transform = { signalState, saveState ->
+        dispatchSignalApi.state,
+        transform = { signalState, saveState, dispatchState ->
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
@@ -81,10 +82,14 @@ class SetupComponentImpl @AssistedInject constructor(
                         SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
+                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating
                         )
 
                         SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
                             response = signalState.response,
+                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating
                         )
 
                         is SaveTempSignalApi.State.Uploading -> SetupComponent.Model.Loading(
@@ -100,16 +105,6 @@ class SetupComponentImpl @AssistedInject constructor(
 
     override fun model(coroutineScope: CoroutineScope) = modelFlow
         .stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.Model.Loading(0f))
-
-    override fun flipperState(coroutineScope: CoroutineScope) = combine(
-        dispatchSignalApi.state,
-        transform = { (dispatchState) ->
-            SetupComponent.FlipperState(
-                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
-            )
-        }
-    ).stateIn(coroutineScope, SharingStarted.Eagerly, SetupComponent.FlipperState())
 
     override val remoteFoundFlow: Flow<IfrFileModel> = modelFlow
         .filterIsInstance<SetupComponent.Model.Loaded>()

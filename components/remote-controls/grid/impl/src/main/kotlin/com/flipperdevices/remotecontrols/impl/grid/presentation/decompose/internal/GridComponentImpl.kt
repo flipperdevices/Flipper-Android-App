@@ -61,7 +61,8 @@ class GridComponentImpl @AssistedInject constructor(
     override fun model(coroutineScope: CoroutineScope) = combine(
         saveSignalViewModel.state,
         gridFeature.state,
-        transform = { saveState, gridState ->
+        dispatchSignalViewModel.state,
+        transform = { saveState, gridState, dispatchState ->
             when (gridState) {
                 GridViewModel.State.Error -> GridComponent.Model.Error
                 is GridViewModel.State.Loaded -> {
@@ -70,7 +71,9 @@ class GridComponentImpl @AssistedInject constructor(
                         SaveTempSignalApi.State.Uploaded, SaveTempSignalApi.State.Pending -> {
                             GridComponent.Model.Loaded(
                                 pagesLayout = gridState.pagesLayout,
-                                remotes = gridState.remotes
+                                remotes = gridState.remotes,
+                                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
                             )
                         }
 
@@ -84,16 +87,6 @@ class GridComponentImpl @AssistedInject constructor(
             }
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading(0f))
-
-    override fun flipperState(coroutineScope: CoroutineScope) = combine(
-        dispatchSignalViewModel.state,
-        transform = { (dispatchState) ->
-            GridComponent.FlipperState(
-                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
-            )
-        }
-    ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.FlipperState())
 
     override fun dismissBusyDialog() {
         dispatchSignalViewModel.dismissBusyDialog()

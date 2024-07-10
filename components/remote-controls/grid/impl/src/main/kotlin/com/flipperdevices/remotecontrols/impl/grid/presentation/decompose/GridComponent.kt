@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface GridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
-    fun flipperState(coroutineScope: CoroutineScope): StateFlow<FlipperState>
 
     fun onButtonClicked(identifier: IfrKeyIdentifier)
     fun tryLoad()
@@ -26,16 +25,13 @@ interface GridComponent {
 
         data class Loaded(
             val pagesLayout: PagesLayout,
-            val remotes: ImmutableList<InfraredRemote>
+            val remotes: ImmutableList<InfraredRemote>,
+            val isFlipperBusy: Boolean = false,
+            val isEmulating: Boolean = false
         ) : Model
 
         data object Error : Model
     }
-
-    data class FlipperState(
-        val isFlipperBusy: Boolean = false,
-        val isEmulating: Boolean = false
-    )
 
     fun interface Factory {
         fun invoke(

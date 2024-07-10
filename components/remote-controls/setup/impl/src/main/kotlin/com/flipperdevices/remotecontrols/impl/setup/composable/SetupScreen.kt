@@ -1,6 +1,9 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,6 +27,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
+private val SetupComponent.Model.key: Any
+    get() = when (this) {
+        SetupComponent.Model.Error -> "error"
+        is SetupComponent.Model.Loaded -> "loaded"
+        is SetupComponent.Model.Loading -> "loading"
+    }
+
 @Composable
 fun SetupScreen(
     setupComponent: SetupComponent,
@@ -33,9 +43,6 @@ fun SetupScreen(
     val coroutineScope = rememberCoroutineScope()
     val model by remember(setupComponent, coroutineScope) {
         setupComponent.model(coroutineScope)
-    }.collectAsState()
-    val flipperState by remember(setupComponent, coroutineScope) {
-        setupComponent.flipperState(coroutineScope)
     }.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow
@@ -53,14 +60,19 @@ fun SetupScreen(
             )
         }
     ) { scaffoldPaddings ->
-        Crossfade(model) { model ->
+        AnimatedContent(
+            targetState = model,
+            modifier = Modifier.padding(scaffoldPaddings),
+            transitionSpec = { fadeIn().togetherWith(fadeOut()) },
+            contentKey = { it.key }
+        ) { model ->
             when (model) {
                 SetupComponent.Model.Error -> {
                     ErrorComposable(onReload = setupComponent::onSuccessClicked)
                 }
 
                 is SetupComponent.Model.Loaded -> {
-                    if (flipperState.isFlipperBusy) {
+                    if (model.isFlipperBusy) {
                         ComposableFlipperBusy(
                             onDismiss = setupComponent::dismissBusyDialog,
                             goToRemote = {
@@ -71,7 +83,7 @@ fun SetupScreen(
                     }
                     LoadedContent(
                         model = model,
-                        isEmulating = flipperState.isEmulating,
+                        isEmulating = model.isEmulating,
                         modifier = Modifier.padding(scaffoldPaddings),
                         onPositiveClicked = setupComponent::onSuccessClicked,
                         onNegativeClicked = setupComponent::onFailedClicked,

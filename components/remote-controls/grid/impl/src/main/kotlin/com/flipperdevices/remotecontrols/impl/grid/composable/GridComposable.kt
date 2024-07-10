@@ -1,6 +1,9 @@
 package com.flipperdevices.remotecontrols.impl.grid.composable
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -49,6 +52,13 @@ internal fun LoadedContent(
     )
 }
 
+private val GridComponent.Model.key: Any
+    get() = when (this) {
+        GridComponent.Model.Error -> "error"
+        is GridComponent.Model.Loaded -> "loaded"
+        is GridComponent.Model.Loading -> "loading"
+    }
+
 @Composable
 fun GridComposable(
     gridComponent: GridComponent,
@@ -56,13 +66,10 @@ fun GridComposable(
 ) {
     val rootNavigation = LocalRootNavigation.current
     val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
     val model by remember(gridComponent, coroutineScope) {
         gridComponent.model(coroutineScope)
     }.collectAsState()
-    val flipperState by remember(gridComponent, coroutineScope) {
-        gridComponent.flipperState(coroutineScope)
-    }.collectAsState()
-    val scaffoldState = rememberScaffoldState()
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -75,9 +82,11 @@ fun GridComposable(
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
         scaffoldState = scaffoldState,
         content = { scaffoldPaddings ->
-            Crossfade(
+            AnimatedContent(
                 targetState = model,
-                modifier = Modifier.padding(scaffoldPaddings)
+                modifier = Modifier.padding(scaffoldPaddings),
+                transitionSpec = { fadeIn().togetherWith(fadeOut()) },
+                contentKey = { it.key }
             ) { model ->
                 when (model) {
                     GridComponent.Model.Error -> {
@@ -88,7 +97,7 @@ fun GridComposable(
                     }
 
                     is GridComponent.Model.Loaded -> {
-                        if (flipperState.isFlipperBusy) {
+                        if (model.isFlipperBusy) {
                             ComposableFlipperBusy(
                                 onDismiss = gridComponent::dismissBusyDialog,
                                 goToRemote = {
