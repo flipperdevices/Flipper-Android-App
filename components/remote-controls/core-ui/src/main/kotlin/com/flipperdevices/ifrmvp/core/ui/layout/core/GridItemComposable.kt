@@ -1,6 +1,5 @@
 package com.flipperdevices.ifrmvp.core.ui.layout.core
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.zIndex
 import com.flipperdevices.ifrmvp.core.ui.ext.toComposeAlignment
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants

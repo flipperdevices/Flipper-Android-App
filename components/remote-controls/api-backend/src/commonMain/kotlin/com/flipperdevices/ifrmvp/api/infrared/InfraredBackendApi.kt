@@ -6,11 +6,32 @@ import com.flipperdevices.ifrmvp.backend.model.IfrFileContentResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
+import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.POST
+import de.jensklingenberg.ktorfit.http.Query
 
 interface InfraredBackendApi {
+    @GET("categories")
     suspend fun getCategories(): CategoriesResponse
-    suspend fun getManufacturers(categoryId: Long): BrandsResponse
-    suspend fun getSignal(request: SignalRequestModel): SignalResponseModel
-    suspend fun getIfrFileContent(ifrFileId: Long): IfrFileContentResponse
-    suspend fun getUiFile(ifrFileId: Long): PagesLayout
+
+    @GET("brands")
+    suspend fun getManufacturers(
+        @Query("category_id") categoryId: Long
+    ): BrandsResponse
+
+    @POST("signal")
+    suspend fun getSignal(
+        @Body request: SignalRequestModel
+    ): SignalResponseModel
+
+    @GET("key")
+    suspend fun getIfrFileContent(
+        @Query("ifr_file_id") ifrFileId: Long
+    ): IfrFileContentResponse
+
+    @GET("ui")
+    suspend fun getUiFile(
+        @Query("ifr_file_id") ifrFileId: Long
+    ): PagesLayout
 }
