@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 
 @Composable
@@ -30,7 +31,9 @@ fun TextButton(
                 fontSize = 14.sfp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier,
-                lineHeight = 2.sfp
+                lineHeight = 2.sfp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     )
