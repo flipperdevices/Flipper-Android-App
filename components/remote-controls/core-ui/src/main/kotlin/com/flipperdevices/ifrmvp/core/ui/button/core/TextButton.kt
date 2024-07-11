@@ -1,13 +1,12 @@
 package com.flipperdevices.ifrmvp.core.ui.button.core
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 
 @Composable
 fun TextButton(
@@ -15,7 +14,6 @@ fun TextButton(
     modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.onPrimary,
-    fontSize: TextUnit = MaterialTheme.typography.caption.fontSize,
     isEmulating: Boolean = false,
     onClick: (() -> Unit)?
 ) {
@@ -27,10 +25,12 @@ fun TextButton(
         content = {
             Text(
                 text = text,
-                style = MaterialTheme.typography.caption.copy(fontSize = fontSize),
+                style = MaterialTheme.typography.caption,
                 color = textColor,
+                fontSize = 14.sfp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier,
+                lineHeight = 2.sfp
             )
         }
     )

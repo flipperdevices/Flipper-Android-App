@@ -1,6 +1,7 @@
 package com.flipperdevices.ifrmvp.core.ui.button.core
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -10,8 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
 @Composable
@@ -24,12 +24,12 @@ fun SquareButton(
 ) {
     Box(
         modifier = modifier
-            .size(GridConstants.DEFAULT_BUTTON_SIZE)
-            .clip(RoundedCornerShape(8.dp))
+            .size(GridConstants.DEFAULT_BUTTON_SIZE.sf)
+            .clip(RoundedCornerShape(8.sf))
             .background(background)
             .then(
                 if (onClick != null) {
-                    Modifier.clickableRipple(
+                    Modifier.clickable(
                         onClick = onClick,
                         enabled = !isEmulating
                     )

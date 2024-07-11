@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.ext.asPainter
 import com.flipperdevices.ifrmvp.core.ui.ext.tintFor
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 
 @Composable
@@ -34,7 +34,7 @@ fun SquareIconButton(
             painter = painter,
             contentDescription = contentDescription,
             tint = iconTint,
-            modifier = Modifier.fillMaxSize().padding(12.dp)
+            modifier = Modifier.fillMaxSize().padding(12.sf)
         )
     }
 }
@@ -59,7 +59,7 @@ fun SquareImageButton(
             bitmap = bitmap,
             contentDescription = contentDescription,
             tint = iconTint,
-            modifier = Modifier.fillMaxSize().padding(12.dp)
+            modifier = Modifier.fillMaxSize().padding(12.sf)
         )
     }
 }
@@ -82,7 +82,7 @@ fun SquareIconButton(
             painter = iconType.asPainter(),
             contentDescription = contentDescription,
             tint = iconType.tintFor(),
-            modifier = Modifier.fillMaxSize().padding(12.dp)
+            modifier = Modifier.fillMaxSize().padding(12.sf)
         )
     }
 }

@@ -11,11 +11,9 @@ data class GridSize(val width: Dp, val height: Dp)
 fun BoxWithConstraintsScope.rememberGridSize(
     maxRows: Int,
     maxColumns: Int,
-    maxWidth: Dp,
-    maxHeight: Dp
 ): GridSize {
-    val calculatedWidth = this.maxWidth.coerceAtMost(maxWidth)
-    val calculatedHeight = this.maxHeight.coerceAtMost(maxHeight)
+    val calculatedWidth = this.maxWidth
+    val calculatedHeight = this.maxHeight
     return remember(calculatedWidth, calculatedHeight) {
         GridSize(
             width = calculatedWidth / maxColumns,

@@ -20,8 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
 private const val NAV_BUTTON_SCALE = 4
@@ -41,7 +42,7 @@ fun NavigationButton(
 ) {
     Box(
         modifier = modifier
-            .size(GridConstants.DEFAULT_BUTTON_SIZE * NAV_BUTTON_SCALE)
+            .size(GridConstants.DEFAULT_BUTTON_SIZE.sf * NAV_BUTTON_SCALE)
             .clip(CircleShape)
             .background(background),
         contentAlignment = Alignment.Center
@@ -51,7 +52,7 @@ fun NavigationButton(
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
+                .size(32.sf)
                 .clip(CircleShape)
                 .clickable(onClick = onUpClicked)
                 .align(Alignment.TopCenter)
@@ -61,17 +62,17 @@ fun NavigationButton(
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
+                .size(32.sf)
                 .clip(CircleShape)
                 .clickable(onClick = onLeftClicked)
                 .align(Alignment.CenterStart)
         )
         Box(
             modifier = Modifier
-                .size(GridConstants.DEFAULT_BUTTON_SIZE)
+                .size(GridConstants.DEFAULT_BUTTON_SIZE.sf)
                 .clip(CircleShape)
                 .background(MaterialTheme.colors.primaryVariant)
-                .padding(4.dp)
+                .padding(4.sf)
                 .clip(CircleShape)
                 .background(LocalPalletV2.current.surface.menu.separator.default)
                 .clip(CircleShape)
@@ -83,6 +84,8 @@ fun NavigationButton(
                     text = "OK",
                     style = MaterialTheme.typography.caption,
                     color = textColor,
+                    fontSize = 16.sfp,
+                    lineHeight = 2.sfp
                 )
             }
         )
@@ -92,7 +95,7 @@ fun NavigationButton(
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
+                .size(32.sf)
                 .clip(CircleShape)
                 .clickable(onClick = onRightClicked)
                 .align(Alignment.CenterEnd)
@@ -103,7 +106,7 @@ fun NavigationButton(
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
-                .size(32.dp)
+                .size(32.sf)
                 .clip(CircleShape)
                 .clickable(onClick = onDownClicked)
                 .align(Alignment.BottomCenter)
