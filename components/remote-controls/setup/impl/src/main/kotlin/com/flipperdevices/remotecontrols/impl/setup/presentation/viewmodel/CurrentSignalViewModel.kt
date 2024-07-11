@@ -11,11 +11,9 @@ import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CurrentSignalViewModel @AssistedInject constructor(
     private val infraredBackendApi: InfraredBackendApi,
@@ -38,9 +36,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
                 categoryId = param.categoryId,
                 brandId = param.brandId,
             )
-            withContext(Dispatchers.IO) {
-                infraredBackendApi.getSignal(request)
-            }
+            infraredBackendApi.getSignal(request)
         }
         result
             .onFailure { _state.emit(State.Error) }

@@ -14,8 +14,8 @@ internal class ScrollState<T>(
     private val headers: ImmutableSet<Char>,
     private val toHeader: (T) -> Char,
 ) {
-    private var _selectedHeaderIndex = mutableIntStateOf(0)
-    private var _isScrollingToIndex = mutableStateOf(false)
+    private val _selectedHeaderIndex = mutableIntStateOf(0)
+    private val _isScrollingToIndex = mutableStateOf(false)
     private val offsets = mutableStateMapOf<Int, Float>()
 
     val isScrollingToIndex by _isScrollingToIndex

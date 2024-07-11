@@ -108,7 +108,7 @@ fun GridComposable(
                         }
                         LoadedContent(
                             pagesLayout = model.pagesLayout,
-                            onButtonClicked = { button, keyIdentifier ->
+                            onButtonClicked = { _, keyIdentifier ->
                                 gridComponent.onButtonClicked(keyIdentifier)
                             },
                             onReload = gridComponent::tryLoad
