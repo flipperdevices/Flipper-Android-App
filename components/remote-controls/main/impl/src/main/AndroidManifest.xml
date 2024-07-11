@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:usesCleartextTraffic="true" />
-    <!--        TODO REMOVE THIS FILE-->
+    <!--        TODO REMOVE THIS FILE AFTER https://github.com/flipperdevices/IRDB-Backend DEPLOY-->
 </manifest>

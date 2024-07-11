@@ -36,7 +36,7 @@ class InfraredKtorfitModule {
     }
 
     companion object {
-        // TODO
+        // TODO CHANGE HOST AND AndroidManifest.xml usesCleartextTraffic AFTER https://github.com/flipperdevices/IRDB-Backend DEPLOY
         private const val HOST = "http://192.168.0.107:8080"
     }
 }
