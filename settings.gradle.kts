@@ -161,6 +161,7 @@ include(
     ":components:infrared:api",
     ":components:infrared:impl",
     ":components:infrared:editor",
+    ":components:infrared:utils",
 
     ":components:firstpair:api",
     ":components:firstpair:impl",
@@ -266,6 +267,20 @@ include(
     ":components:notification:api",
     ":components:notification:impl",
     ":components:notification:noop",
+
+    ":components:remote-controls:api-backend",
+    ":components:remote-controls:core-model",
+    ":components:remote-controls:core-ui",
+    ":components:remote-controls:main:impl",
+    ":components:remote-controls:main:api",
+    ":components:remote-controls:brands:impl",
+    ":components:remote-controls:brands:api",
+    ":components:remote-controls:categories:impl",
+    ":components:remote-controls:categories:api",
+    ":components:remote-controls:grid:impl",
+    ":components:remote-controls:grid:api",
+    ":components:remote-controls:setup:impl",
+    ":components:remote-controls:setup:api",
 
     ":components:rootscreen:api",
     ":components:rootscreen:impl",

@@ -4,26 +4,23 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_ADDRESS
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_COMMAND
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DATA
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DUTY_CYCLE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FILE_TYPE_KEY
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FILE_TYPE_VALUE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FILE_VERSION_KEY
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FILE_VERSION_VALUE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FREQUENCY
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_NAME
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_PROTOCOL
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_PARSED
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_RAW
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
-import com.flipperdevices.infrared.editor.model.InfraredRemote
 
-private const val KEY_FILE_TYPE_KEY = "Filetype"
-private const val KEY_FILE_TYPE_VALUE = "IR signals file"
-private const val KEY_FILE_VERSION_KEY = "Version"
-private const val KEY_FILE_VERSION_VALUE = "1"
-
-private const val KEY_NAME = "name"
-private const val KEY_TYPE = "type"
-private const val KEY_TYPE_RAW = "raw"
-private const val KEY_TYPE_PARSED = "parsed"
-
-private const val KEY_PROTOCOL = "protocol"
-private const val KEY_ADDRESS = "address"
-private const val KEY_COMMAND = "command"
-
-private const val KEY_FREQUENCY = "frequency"
-private const val KEY_DUTY_CYCLE = "duty_cycle"
-private const val KEY_DATA = "data"
 object InfraredStateParser {
     fun mapStateToFlipperKey(
         oldKey: FlipperKey,

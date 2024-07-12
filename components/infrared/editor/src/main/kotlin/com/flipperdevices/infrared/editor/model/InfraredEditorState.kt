@@ -1,6 +1,7 @@
 package com.flipperdevices.infrared.editor.model
 
 import androidx.annotation.StringRes
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

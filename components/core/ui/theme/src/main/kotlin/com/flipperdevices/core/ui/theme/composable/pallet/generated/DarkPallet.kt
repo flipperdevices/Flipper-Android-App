@@ -307,7 +307,7 @@ internal fun getDarkPallet(): FlipperPalletV2 = FlipperPalletV2(
         ),
         sheet = Sheet(
             body = SheetBody(
-                default = Color(0xFF333333)
+                default = Color(0xFF1A1A1A)
             ),
             separator = SheetSeparator(
                 default = Color(0xFF333333)

@@ -4,7 +4,8 @@ import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.core.test.readTestAssetString
-import com.flipperdevices.infrared.editor.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

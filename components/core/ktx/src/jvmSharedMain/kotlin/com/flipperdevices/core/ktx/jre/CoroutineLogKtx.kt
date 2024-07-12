@@ -34,10 +34,10 @@ fun LogTagProvider.launchWithLock(
     mutex: Mutex,
     scope: CoroutineScope,
     tag: String? = null,
-    action: suspend () -> Unit
+    action: suspend CoroutineScope.() -> Unit
 ) {
     scope.launch(FlipperDispatchers.workStealingDispatcher) {
-        withLock(mutex, tag, action)
+        withLock(mutex, tag) { action.invoke(this) }
     }
 }
 
