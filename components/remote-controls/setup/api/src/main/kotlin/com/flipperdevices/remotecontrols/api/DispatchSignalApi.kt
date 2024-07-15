@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface DispatchSignalApi : InstanceKeeper.Instance {
     val state: StateFlow<State>
+    val isEmulated: StateFlow<Boolean>
 
     fun dismissBusyDialog()
 
@@ -16,6 +17,8 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
      * Dispatch key from temporal file which contains only one key
      */
     fun dispatch(config: EmulateConfig)
+
+    fun reset()
 
     /**
      * Dispatch specific key from custom located remote

@@ -22,6 +22,7 @@ import com.flipperdevices.remotecontrols.impl.setup.util.toByteArray
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +41,19 @@ class DispatchSignalViewModel @Inject constructor(
 
     private val _state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
     override val state = _state.asStateFlow()
+
+    private val _isEmulated = MutableStateFlow(false)
+    override val isEmulated = _isEmulated.asStateFlow()
+
     private var latestDispatchJob: Job? = null
+
+    override fun reset() {
+        viewModelScope.launch {
+            latestDispatchJob?.cancelAndJoin()
+            _state.value = DispatchSignalApi.State.Pending
+            _isEmulated.value = false
+        }
+    }
 
     override fun dispatch(
         identifier: IfrKeyIdentifier,
@@ -101,6 +114,7 @@ class DispatchSignalViewModel @Inject constructor(
                             delay(DEFAULT_SIGNAL_DELAY)
                             emulateHelper.stopEmulate(this, serviceApi.requestApi)
                             _state.emit(DispatchSignalApi.State.Pending)
+                            _isEmulated.emit(true)
                         } catch (ignored: AlreadyOpenedAppException) {
                             _state.emit(DispatchSignalApi.State.FlipperIsBusy)
                         } catch (e: Exception) {

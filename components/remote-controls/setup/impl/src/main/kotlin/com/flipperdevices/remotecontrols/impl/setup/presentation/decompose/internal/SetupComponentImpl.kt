@@ -74,7 +74,8 @@ class SetupComponentImpl @AssistedInject constructor(
         createCurrentSignalViewModel.state,
         saveSignalApi.state,
         dispatchSignalApi.state,
-        transform = { signalState, saveState, dispatchState ->
+        dispatchSignalApi.isEmulated,
+        transform = { signalState, saveState, dispatchState, isEmulated ->
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
@@ -83,13 +84,15 @@ class SetupComponentImpl @AssistedInject constructor(
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating
+                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
+                            isEmulated = isEmulated
                         )
 
                         SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating
+                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
+                            isEmulated = isEmulated
                         )
 
                         is SaveTempSignalApi.State.Uploading -> SetupComponent.Model.Loading(
@@ -115,6 +118,8 @@ class SetupComponentImpl @AssistedInject constructor(
     }
 
     override fun tryLoad() {
+        if (dispatchSignalApi.state.value is DispatchSignalApi.State.Emulating) return
+        dispatchSignalApi.reset()
         createCurrentSignalViewModel.load(
             successResults = historyViewModel.state.value.successfulSignals,
             failedResults = historyViewModel.state.value.failedSignals
