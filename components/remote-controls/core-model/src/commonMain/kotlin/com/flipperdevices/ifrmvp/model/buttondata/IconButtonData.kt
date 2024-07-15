@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class IconButtonData(
     @SerialName("key_id")
-    override val keyIdentifier: IfrKeyIdentifier,
+    override val keyIdentifier: IfrKeyIdentifier = IfrKeyIdentifier.Unknown,
     @SerialName("icon_id")
     val iconId: IconType
 ) : SingleKeyButtonData {

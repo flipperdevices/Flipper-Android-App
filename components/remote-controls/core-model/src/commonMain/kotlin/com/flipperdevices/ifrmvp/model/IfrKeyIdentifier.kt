@@ -44,4 +44,10 @@ sealed interface IfrKeyIdentifier {
         @SerialName("key_name")
         override val name: String,
     ) : IfrKeyIdentifier
+
+    @SerialName("UNKNOWN")
+    @Serializable
+    data object Unknown : IfrKeyIdentifier {
+        override val name = "Unknown"
+    }
 }

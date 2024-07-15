@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,55 +18,29 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.ifrmvp.backend.model.SignalResponse
-import com.flipperdevices.ifrmvp.core.ui.button.UnknownButton
-import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
-import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
-import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
+import com.flipperdevices.ifrmvp.core.ui.button.ButtonItemComposable
+import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
+@Suppress("UnusedParameter")
 private fun SignalResponseButton(
-    data: SignalResponse.Data,
+    data: ButtonData,
     onClick: () -> Unit,
     isEmulating: Boolean
 ) {
-    val text = data.text
-    val iconType = remember(data.iconId) {
-        IconButtonData.IconType.entries.firstOrNull { it.name == data.iconId }
-    }
-    when {
-        text != null -> {
-            TextButton(
-                text = text,
-                onClick = onClick,
-                isEmulating = isEmulating,
-                modifier = Modifier.size(64.dp)
-            )
-        }
-
-        iconType != null -> {
-            SquareIconButton(
-                iconType = iconType,
-                onClick = onClick,
-                isEmulating = isEmulating,
-                modifier = Modifier.size(64.dp)
-            )
-        }
-
-        else -> {
-            UnknownButton(
-                onClick = onClick,
-                modifier = Modifier.size(64.dp)
-            )
-        }
-    }
+    ButtonItemComposable(
+        buttonData = data,
+        onKeyDataClicked = { onClick.invoke() },
+        modifier = Modifier.size(64.dp),
+    )
 }
 
 @Composable
 fun ButtonContent(
     onClicked: () -> Unit,
-    data: SignalResponse.Data,
+    data: ButtonData,
     categoryName: String,
     isEmulating: Boolean,
     modifier: Modifier = Modifier,
@@ -106,27 +79,19 @@ private fun ComposableConfirmContentDarkPreview() {
                 onClicked = {},
                 categoryName = "CATEGORY",
                 isEmulating = true,
-                data = SignalResponse.Data(
-                    type = "ANY",
-                    iconId = "HOME"
-                )
+                data = TextButtonData(text = "Hello")
             )
             ButtonContent(
                 onClicked = {},
                 categoryName = "CATEGORY 2",
                 isEmulating = true,
-                data = SignalResponse.Data(
-                    type = "ANY",
-                    text = "TV/AV"
-                )
+                data = TextButtonData(text = "TV/AV")
             )
             ButtonContent(
                 onClicked = {},
                 categoryName = "CATEGORY 2",
                 isEmulating = true,
-                data = SignalResponse.Data(
-                    type = "ANY",
-                )
+                data = TextButtonData(text = "Hello world")
             )
         }
     }

@@ -69,13 +69,11 @@ fun SquareIconButton(
     iconType: IconButtonData.IconType,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    isEmulating: Boolean = false,
     onClick: () -> Unit,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
-        isEmulating = isEmulating,
         background = LocalPalletV2.current.surface.menu.body.dufault
     ) {
         Icon(

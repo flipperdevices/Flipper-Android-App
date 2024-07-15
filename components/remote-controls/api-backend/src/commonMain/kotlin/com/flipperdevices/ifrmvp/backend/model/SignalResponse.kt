@@ -1,5 +1,7 @@
 package com.flipperdevices.ifrmvp.backend.model
 
+import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
+import com.flipperdevices.ifrmvp.model.serialization.ButtonDataSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,15 +14,6 @@ data class SignalResponse(
     @SerialName("category_name")
     val categoryName: String,
     @SerialName("data")
-    val data: Data,
-) {
-    @Serializable
-    data class Data(
-        @SerialName("type")
-        val type: String,
-        @SerialName("icon_id")
-        val iconId: String? = null,
-        @SerialName("text")
-        val text: String? = null
-    )
-}
+    @Serializable(ButtonDataSerializer::class)
+    val data: ButtonData,
+)
