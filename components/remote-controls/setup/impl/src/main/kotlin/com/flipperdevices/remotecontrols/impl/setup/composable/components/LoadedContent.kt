@@ -1,11 +1,14 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,7 +21,6 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 @Composable
 fun LoadedContent(
     model: SetupComponent.Model.Loaded,
-    isEmulating: Boolean,
     onPositiveClicked: () -> Unit,
     onNegativeClicked: () -> Unit,
     onDispatchSignalClicked: () -> Unit,
@@ -26,28 +28,33 @@ fun LoadedContent(
 ) {
     val ifrFileModel = model.response.ifrFileModel
     val signalResponse = model.response.signalResponse
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         when {
             ifrFileModel != null -> Unit
 
             signalResponse != null -> {
-                Box(modifier = Modifier)
                 ButtonContent(
                     onClicked = onDispatchSignalClicked,
-                    modifier = Modifier,
+                    modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
-                    isEmulating = isEmulating
+                    isEmulating = model.isEmulating,
                 )
-                ConfirmContent(
-                    text = signalResponse.message,
-                    onNegativeClicked = onNegativeClicked,
-                    onPositiveClicked = onPositiveClicked,
+                AnimatedVisibility(
+                    visible = model.isEmulated,
+                    enter = slideInVertically(initialOffsetY = { it / 2 }),
+                    exit = slideOutVertically(),
                     modifier = Modifier
-                )
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                ) {
+                    ConfirmContent(
+                        text = signalResponse.message,
+                        onNegativeClicked = onNegativeClicked,
+                        onPositiveClicked = onPositiveClicked,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
             }
 
             else -> {
@@ -70,8 +77,8 @@ private fun LoadedContentPreview() {
         LoadedContent(
             model = SetupComponent.Model.Loaded(
                 response = SignalResponseModel(),
+                isEmulated = true
             ),
-            isEmulating = true,
             onPositiveClicked = {},
             onNegativeClicked = {},
             onDispatchSignalClicked = {}
