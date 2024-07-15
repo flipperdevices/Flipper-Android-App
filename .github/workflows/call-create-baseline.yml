@@ -18,7 +18,7 @@ on:
 jobs:
   baseline_file:
     name: Upload baseline profile file
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     outputs:
       BUILD_VARIANT_NAME: ${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME }}
       BASELINE_FILE_ID: ${{ steps.create_baseline_file_id.outputs.BASELINE_FILE_ID }}

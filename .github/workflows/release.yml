@@ -9,7 +9,7 @@ on:
 jobs:
   build_number:
     name: Generate build number
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     outputs:
       number: ${{ steps.build_out.outputs.number }}
       number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
@@ -40,7 +40,7 @@ jobs:
       BUILD_VARIANT_NAME: "release"
   build_release:
     name: Build Release AAB and APK
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ create_release_baseline,build_number ]
     strategy:
       matrix:
@@ -112,7 +112,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   build_release_gms_wearos:
     name: Build AAB and APK WearOS
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: build_number
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
@@ -174,7 +174,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   upload_to_github:
     name: Upload to Github Releases
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ build_release, build_release_gms_wearos, build_number ]
     steps:
@@ -258,7 +258,7 @@ jobs:
           prerelease: false
   upload_to_playstore:
     name: Upload to Play Store
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ build_release ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
@@ -281,7 +281,7 @@ jobs:
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
   upload_to_playstore_wearos:
     name: Upload WearOS to Play Store
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ build_release_gms_wearos ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
