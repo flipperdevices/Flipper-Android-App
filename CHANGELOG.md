@@ -7,6 +7,7 @@
 - [FIX] Button arrow tint
 - [FIX] Paddings for update button
 - [FIX] Crash on app startup with WearOS app
+- [FIX] Expand verify signal bottom sheet only after signal is dispatched
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
