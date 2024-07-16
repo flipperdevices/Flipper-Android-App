@@ -11,7 +11,7 @@ concurrency:
 jobs:
   invalidate_gradle_cache:
     name: Update gradle cache
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
@@ -28,7 +28,7 @@ jobs:
           arguments: testDebugUnitTest desktopTest detekt lint
   build_number:
     name: Generate build number
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     outputs:
       number: ${{ steps.build_out.outputs.number }}
       number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
@@ -59,7 +59,7 @@ jobs:
       BUILD_VARIANT_NAME: "internal"
   build_internal_release:
     name: Build Internal AAB and APK
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ create_internal_baseline, build_number ]
     strategy:
       matrix:
@@ -131,7 +131,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   build_internal_release_gms_wearos:
     name: Build Internal AAB and APK WearOS
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: build_number
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
@@ -193,7 +193,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   upload_to_github:
     name: Upload to Github Releases
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ build_internal_release, build_internal_release_gms_wearos, build_number ]
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
@@ -275,7 +275,7 @@ jobs:
           prerelease: true
   upload_to_playstore:
     name: Upload to Play Store
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ build_internal_release ]
     steps:
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
@@ -292,7 +292,7 @@ jobs:
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     needs: [ build_internal_release_gms_wearos ]
     steps:
       - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
