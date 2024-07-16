@@ -37,9 +37,15 @@ jobs:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
+      - name: Set up JDK 1.17
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Unit test
-        run: |
-          ./gradlew testDebugUnitTest desktopTest
+        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        with:
+          arguments: testDebugUnitTest desktopTest
   detekt:
     name: "Check project by detekt"
     runs-on: [self-hosted, AndroidShell]
@@ -47,9 +53,15 @@ jobs:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
+      - name: Set up JDK 1.17
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: detekt
-        run: |
-          ./gradlew detektMain
+        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        with:
+          arguments: detektMain
   android_lint:
     name: "Check project by android`s lint"
     runs-on: [self-hosted, AndroidShell]
@@ -57,6 +69,12 @@ jobs:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
           submodules: 'recursive'
+      - name: Set up JDK 1.17
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Android lint
-        run: |
-          ./gradlew lint
+        uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+        with:
+          arguments: lint
