@@ -3,6 +3,8 @@ package com.flipperdevices.keyedit.impl.composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ fun ComposableEditScreen(
     when (state) {
         KeyEditState.Loading,
         is KeyEditState.Saving -> ComposableEditScreenLoading()
+
         is KeyEditState.Editing -> ComposableEditScreenEditing(
             onNameChange = onNameChange,
             onNoteChange = onNoteChange,
@@ -30,6 +33,7 @@ fun ComposableEditScreen(
             onCancel = onBack,
             onSave = onSave
         )
+
         KeyEditState.Failed -> onBack()
     }
 }
@@ -51,14 +55,18 @@ private fun ComposableEditScreenEditing(
     title: String?,
     state: KeyEditState.Editing,
     onCancel: () -> Unit,
-    onSave: () -> Unit
+    onSave: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val buttonState = if (state.savingKeyActive) {
         SaveButtonState.ENABLED
     } else {
         SaveButtonState.DISABLED
     }
-    Column {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         ComposableEditAppBar(
             title = title,
             saveButtonState = buttonState,
