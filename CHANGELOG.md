@@ -12,6 +12,7 @@
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [Feature] Infrared controls
+- [Feature] Remove bond on retry pair
 
 # 1.7.1
 
