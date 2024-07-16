@@ -31,7 +31,8 @@ interface SetupComponent {
         data class Loaded(
             val response: SignalResponseModel,
             val isFlipperBusy: Boolean = false,
-            val isEmulating: Boolean = false
+            val isEmulating: Boolean = false,
+            val isEmulated: Boolean
         ) : Model
 
         data object Error : Model

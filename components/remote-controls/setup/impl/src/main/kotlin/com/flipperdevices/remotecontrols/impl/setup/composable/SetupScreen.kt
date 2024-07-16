@@ -83,7 +83,6 @@ fun SetupScreen(
                     }
                     LoadedContent(
                         model = model,
-                        isEmulating = model.isEmulating,
                         modifier = Modifier.padding(scaffoldPaddings),
                         onPositiveClicked = setupComponent::onSuccessClicked,
                         onNegativeClicked = setupComponent::onFailedClicked,
