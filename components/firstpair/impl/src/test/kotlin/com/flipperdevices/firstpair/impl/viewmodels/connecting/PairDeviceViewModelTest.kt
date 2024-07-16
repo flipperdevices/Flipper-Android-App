@@ -80,7 +80,7 @@ class PairDeviceViewModelTest {
             bleManager.bluetoothDevice
         } returns testDevice.device
 
-        underTest.startConnectToDevice(testDevice)
+        underTest.startConnectToDevice(testDevice, resetPair = false)
         advanceUntilIdle()
         Assert.assertEquals(
             listOf(
@@ -121,7 +121,7 @@ class PairDeviceViewModelTest {
             bleManager.bluetoothDevice
         } returns testDevice.device
 
-        underTest.startConnectToDevice(testDevice)
+        underTest.startConnectToDevice(testDevice, resetPair = false)
         advanceUntilIdle()
         stateFlow.emit(ConnectionState.Ready(FlipperSupportedState.READY))
         advanceUntilIdle()
@@ -169,7 +169,7 @@ class PairDeviceViewModelTest {
         } returns testDevice.device
 
         advanceUntilIdle()
-        underTest.startConnectToDevice(testDevice)
+        underTest.startConnectToDevice(testDevice, resetPair = false)
         advanceUntilIdle()
         stateFlow.emit(ConnectionState.Initializing)
         advanceUntilIdle()
@@ -218,7 +218,7 @@ class PairDeviceViewModelTest {
             bleManager.bluetoothDevice
         } returns testDevice.device
 
-        underTest.startConnectToDevice(testDevice)
+        underTest.startConnectToDevice(testDevice, resetPair = false)
         advanceUntilIdle()
         Assert.assertEquals(
             listOf(
@@ -252,7 +252,7 @@ class PairDeviceViewModelTest {
             bleManager.bluetoothDevice
         } returns testDevice.device
 
-        underTest.startConnectToDevice(testDevice)
+        underTest.startConnectToDevice(testDevice, resetPair = false)
         advanceUntilIdle()
         stateFlow.emit(ConnectionState.Disconnected(ConnectionState.Disconnected.Reason.UNKNOWN))
         advanceUntilIdle()
