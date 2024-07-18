@@ -7,12 +7,6 @@ import kotlinx.serialization.Serializable
 data class SignalModel(
     @SerialName("id")
     val id: Long,
-    @SerialName("ifr_file_id")
-    val irFileId: Long,
-    @SerialName("brand_id")
-    val brandId: Long,
-    @SerialName("category_id")
-    val categoryId: Long,
     @SerialName("name")
     val name: String,
     @SerialName("type")
@@ -29,6 +23,4 @@ data class SignalModel(
     val dutyCycle: String? = null,
     @SerialName("data")
     val data: String? = null,
-    @SerialName("hash")
-    val hash: String
 )
