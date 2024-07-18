@@ -61,29 +61,26 @@ jobs:
           baseline_file_path="./instances/android/app/src/${build_variant}/generated/baselineProfiles/baseline-prof.txt"
           echo "BASELINE_FILE_PATH=${baseline_file_path}" >> $GITHUB_OUTPUT
 
+
+      # On Flipper self-hosted we don't have it so install locally in current container
       - name: Setup libx11
         run: |
           export DEBIAN_FRONTEND=noninteractive;
           sudo apt update;
           sudo apt install -y libx11-6;
 
+      # We need to install specific platforms for this job which is not present inside self-hosted VM
       - name: Setup Platform-android-34
         run: |
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34"
 
+      # Remember current user ANDROID_HOME location to use it via sudo
       # steps.share_android_home.ANDROID_HOME
       - name: Share ANDROID_HOME location
         id: share_android_home
         run: |
           android_home="$ANDROID_HOME"
-          echo $ANDROID_HOME
-          echo $android_home
           echo "ANDROID_HOME=$android_home" >> $GITHUB_OUTPUT
-
-      - name: Print android home
-        run: |
-          sudo echo ${{ steps.share_android_home.outputs.ANDROID_HOME }}
-          sudo ls ${{ steps.share_android_home.outputs.ANDROID_HOME }}
 
       # steps.create_baseline_task.outputs.BASELINE_TASK
       - id: create_baseline_task
@@ -93,17 +90,9 @@ jobs:
           task_name="generate${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME_UPPERCASE }}BaselineProfile"
           path=":instances:android:app"          
           gradlew_full_task="$path:$task_name $no_test_param  --stacktrace"
-          echo "BASELINE_TASK=$gradlew_full_task" >> $GITHUB_OUTPUT
+          echo "BASELINE_TASK=$gradlew_full_task" >> $GITHUB_OUTPUT    
 
-      # print all outputs
-      - name: Print outputs of current baseline task
-        run: |
-          echo "BUILD_VARIANT_NAME ${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME }}"
-          echo "BUILD_VARIANT_NAME_UPPERCASE ${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME_UPPERCASE }}"  
-          echo "BASELINE_FILE_ID ${{ steps.create_baseline_file_id.outputs.BASELINE_FILE_ID }}"           
-          echo "BASELINE_FILE_PATH ${{ steps.create_baseline_file_path.outputs.BASELINE_FILE_PATH }}"
-          echo "BASELINE_TASK ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}"          
-
+      # Here also specified ANDROID environment variables for sudo command
       - name: Run baseline profiles
         run: |
           sudo ANDROID_SDK_ROOT=${{ steps.share_android_home.outputs.ANDROID_HOME }} ANDROID_HOME=${{ steps.share_android_home.outputs.ANDROID_HOME }} ANDROID_AVD_HOME=${{ steps.share_android_home.outputs.ANDROID_HOME }}/avd ./gradlew ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}
