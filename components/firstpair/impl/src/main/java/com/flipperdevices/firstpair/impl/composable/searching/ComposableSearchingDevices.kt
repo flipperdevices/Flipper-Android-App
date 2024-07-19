@@ -21,7 +21,7 @@ import com.flipperdevices.firstpair.impl.model.SearchingContent
 @Composable
 fun ComposableSearchingDevices(
     state: SearchingContent.FoundedDevices,
-    onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
+    onDeviceClick: (DiscoveredBluetoothDevice, resetPair: Boolean) -> Unit,
     onRefreshSearching: () -> Unit,
     onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
@@ -41,7 +41,7 @@ fun ComposableSearchingDevices(
             ComposableConnectingTimeoutDialog(
                 titleId = R.string.firstpair_retry_dialog_pairing_title,
                 descId = R.string.firstpair_retry_dialog_pairing_desc,
-                onRetry = { onDeviceClick(pairDevice) },
+                onRetry = { onDeviceClick(pairDevice, true) },
                 onResetTimeoutState = onResetTimeoutState
             )
         }
@@ -51,7 +51,7 @@ fun ComposableSearchingDevices(
             ComposableConnectingTimeoutDialog(
                 titleId = R.string.firstpair_retry_dialog_connecting_title,
                 descId = R.string.firstpair_retry_dialog_connecting_desc,
-                onRetry = { onDeviceClick(pairDevice) },
+                onRetry = { onDeviceClick(pairDevice, false) },
                 onResetTimeoutState = onResetTimeoutState
             )
         }
@@ -78,9 +78,11 @@ fun ComposableSearchingDevices(
                 val isConnecting = remember(device.address, currentDeviceConnecting) {
                     device.address == currentDeviceConnecting
                 }
-                ComposableSearchItem(text = name, isConnecting = isConnecting) {
-                    onDeviceClick(device)
-                }
+                ComposableSearchItem(
+                    text = name,
+                    isConnecting = isConnecting,
+                    onConnectionClick = { onDeviceClick(device, false) }
+                )
             }
         }
     }
