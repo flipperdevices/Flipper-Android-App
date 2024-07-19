@@ -14,6 +14,7 @@
 - [CI] Bump target SDK to 34
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
+- [Feature] Add onetap widget
 
 # 1.7.1
 

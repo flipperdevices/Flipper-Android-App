@@ -14,7 +14,7 @@ import com.flipperdevices.widget.impl.di.WidgetComponent
 abstract class BaseWidgetProvider(
     private val widgetType: WidgetType
 ) : AppWidgetProvider(), LogTagProvider {
-    override val TAG = "BaseWidgetProvider"
+    override val TAG = "BaseWidgetProvider-$widgetType"
 
     override fun onReceive(context: Context, intent: Intent?) {
         super.onReceive(context, intent)
