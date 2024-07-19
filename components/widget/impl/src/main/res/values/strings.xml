@@ -7,7 +7,10 @@
     <string name="img_disable_btn">Disable button</string>
     <string name="img_add_btn">Add key</string>
     <string name="widget_loading">Loading…</string>
-    <string name="widget_description">Emulate Flipper’s keys, cards and signals remotely</string>
+    <string name="widget_title">Emulate On Flipper (Continuous)</string>
+    <string name="widget_title_one_tap">Emulate On Flipper (One Signal)</string>
+    <string name="widget_description">Emulate your Flipper’s keys, cards and signals remotely.</string>
+    <string name="widget_description_one_tap">Emulate your Flipper’s keys, cards and signals remotely. Sends a signal only once.</string>
     <string name="widget_err_cant_connect">Can’t Connect to Flipper</string>
     <string name="widget_err_bt_turn_off">Bluetooth is Turned Off</string>
     <string name="widget_err_busy">Flipper is Busy</string>

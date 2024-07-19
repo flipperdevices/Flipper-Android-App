@@ -11,5 +11,6 @@ data class WidgetData(
 ) : Parcelable
 
 enum class WidgetType {
-    SIMPLE
+    SIMPLE,
+    ONE_CLICK
 }
