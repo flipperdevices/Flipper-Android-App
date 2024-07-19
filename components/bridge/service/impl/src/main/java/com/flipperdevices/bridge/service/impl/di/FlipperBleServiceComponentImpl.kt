@@ -12,6 +12,9 @@ import com.flipperdevices.bridge.service.impl.delegate.FlipperActionNotifierImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperLagsDetectorImpl
 import com.flipperdevices.bridge.service.impl.delegate.FlipperSafeConnectWrapper
 import com.flipperdevices.bridge.service.impl.delegate.FlipperServiceConnectDelegate
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByMac
+import com.flipperdevices.bridge.service.impl.delegate.connection.FlipperConnectionByName
+import com.flipperdevices.bridge.service.impl.utils.RemoveBondHelper
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Provider
 
@@ -75,11 +78,32 @@ class FlipperBleServiceComponentImpl(
         )
     }
 
+    private val flipperConnectionByMac by lazy {
+        FlipperConnectionByMac(
+            bleManagerProvider = { flipperBleManagerImpl },
+            adapterProvider = { bluetoothAdapter },
+            scannerProvider = { bluetoothScanner }
+        )
+    }
+    private val flipperConnectionByName by lazy {
+        FlipperConnectionByName(
+            bleManagerProvider = { flipperBleManagerImpl },
+            scannerProvider = { bluetoothScanner }
+        )
+    }
+
     private val flipperServiceConnectDelegate by lazy {
         FlipperServiceConnectDelegate(
             bleManagerProvider = { flipperBleManagerImpl },
             contextProvider = { context },
-            scannerProvider = { bluetoothScanner },
+            adapterProvider = { bluetoothAdapter },
+            flipperConnectionByMac = { flipperConnectionByMac },
+            flipperConnectionByName = { flipperConnectionByName }
+        )
+    }
+
+    private val removeBondHelper by lazy {
+        RemoveBondHelper(
             adapterProvider = { bluetoothAdapter }
         )
     }
@@ -88,7 +112,9 @@ class FlipperBleServiceComponentImpl(
         FlipperSafeConnectWrapper(
             scopeProvider = { scope },
             serviceErrorListenerProvider = { serviceErrorListener },
-            connectDelegateProvider = { flipperServiceConnectDelegate }
+            connectDelegateProvider = { flipperServiceConnectDelegate },
+            dataStoreProvider = { pairSettingsStore },
+            removeBondHelperProvider = { removeBondHelper }
         )
     }
 

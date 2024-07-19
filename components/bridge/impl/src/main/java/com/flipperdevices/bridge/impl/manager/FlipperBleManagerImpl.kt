@@ -98,11 +98,14 @@ class FlipperBleManagerImpl @Inject constructor(
     }
 
     override suspend fun connectToDevice(device: BluetoothDevice) {
+        info { "Schedule to connect: $device" }
         withLock(bleMutex, "connect") {
+            connectRequest?.cancelPendingConnection()
+
             val connectRequestLocal = connect(device).retry(
                 Constants.BLE.RECONNECT_COUNT,
                 Constants.BLE.RECONNECT_TIME_MS.toInt()
-            ).useAutoConnect(true)
+            )
 
             connectRequestLocal.enqueue()
 

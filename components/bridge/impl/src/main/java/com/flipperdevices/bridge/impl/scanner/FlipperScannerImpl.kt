@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.scanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.pm.PackageManager
@@ -16,6 +17,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -77,7 +79,7 @@ class FlipperScannerImpl @Inject constructor(
         }
     }
 
-    override fun findFlipperById(deviceId: String): Flow<DiscoveredBluetoothDevice> {
+    override suspend fun findFlipperById(deviceId: String): Flow<DiscoveredBluetoothDevice> {
         val bondedDevice = getAlreadyBondedDevices().firstOrNull {
             it.address == deviceId
         }
@@ -86,6 +88,24 @@ class FlipperScannerImpl @Inject constructor(
         }
         return scanner.scanFlow(provideSettings(), provideFilterForFindById(deviceId))
             .map { DiscoveredBluetoothDevice(it) }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun findFlipperByName(
+        deviceName: String,
+    ): Flow<DiscoveredBluetoothDevice> = flow {
+        getAlreadyBondedDevices().filter {
+            it.name == deviceName
+        }.forEach {
+            emit(it)
+        }
+
+        scanner.scanFlow(provideSettings(), provideFilterForDefaultScan())
+            .filter { it.device.name == deviceName }
+            .map { DiscoveredBluetoothDevice(it) }
+            .collect {
+                emit(it)
+            }
     }
 
     private fun getAlreadyBondedDevices(): List<DiscoveredBluetoothDevice> {
