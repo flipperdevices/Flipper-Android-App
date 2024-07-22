@@ -35,7 +35,7 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClicked: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: ClassWhichNotExist,
+    @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
