@@ -16,6 +16,7 @@
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
+- [FIX] Ignore faps manifest with point in start
 
 # 1.7.1
 
