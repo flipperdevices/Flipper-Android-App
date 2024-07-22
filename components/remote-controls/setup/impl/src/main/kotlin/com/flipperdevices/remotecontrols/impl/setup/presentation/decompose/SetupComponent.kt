@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +43,7 @@ interface SetupComponent {
         fun createSetupComponent(
             componentContext: ComponentContext,
             param: SetupScreenDecomposeComponent.Param,
-            onBack: () -> Unit,
+            onBack: DecomposeOnBackParameter,
             onIfrFileFound: (ifrFileId: Long) -> Unit
         ): SetupComponent
     }

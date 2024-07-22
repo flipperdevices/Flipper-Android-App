@@ -2,6 +2,7 @@ package com.flipperdevices.remotecontrols.impl.categories.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.StateFlow
 
@@ -23,7 +24,7 @@ interface DeviceCategoriesComponent {
     fun interface Factory {
         fun invoke(
             componentContext: ComponentContext,
-            onBackClicked: () -> Unit,
+            onBackClicked: DecomposeOnBackParameter,
             onCategoryClicked: (categoryId: Long) -> Unit
         ): DeviceCategoriesComponent
     }

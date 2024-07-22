@@ -8,6 +8,7 @@ import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.BrandsListViewModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.QueryViewModel
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
@@ -23,7 +24,7 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, BrandsDecomposeComponent.Factory::class)
 class BrandsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val onBackClicked: () -> Unit,
+    @Assisted private val onBackClicked: DecomposeOnBackParameter,
     @Assisted private val onBrandClicked: (brandId: Long) -> Unit,
     @Assisted categoryId: Long,
     createBrandsListViewModel: BrandsListViewModel.Factory,

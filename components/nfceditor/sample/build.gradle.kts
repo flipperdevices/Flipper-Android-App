@@ -7,10 +7,6 @@ plugins {
 android.namespace = "com.flipperdevices.nfceditor.sample"
 
 android {
-    buildFeatures.compose = true
-}
-
-android {
     defaultConfig {
         applicationId = "com.flipperdevices.nfceditor.sample"
     }

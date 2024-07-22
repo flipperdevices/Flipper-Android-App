@@ -4,13 +4,7 @@ plugins {
     id("kotlin-kapt")
 }
 
-android {
-    namespace = "com.flipperdevices.wearable"
-
-    buildFeatures {
-        compose = true
-    }
-}
+android.namespace = "com.flipperdevices.wearable"
 
 dependencies {
     implementation(projects.components.core.di)
