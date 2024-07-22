@@ -51,7 +51,7 @@ internal fun ComposableFullScreenshotScreen(
             screenshots = screenshots,
             currentPage = pagerState.currentPage,
             modifier = Modifier.align(Alignment.BottomCenter),
-            onImageSelected = imageSelectViewModel::onImageSelected
+            onImageSelect = imageSelectViewModel::onImageSelected
         )
 
         ComposableFullScreenshotAppBar(

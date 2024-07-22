@@ -55,7 +55,7 @@ internal fun ComposableScreenshotsList(
     screenshots: ImmutableList<String>,
     currentPage: Int,
     modifier: Modifier = Modifier,
-    onImageSelected: (Int) -> Unit
+    onImageSelect: (Int) -> Unit
 ) {
     val lazyRowState = rememberLazyListState()
     LaunchedEffect(currentPage) {
@@ -83,7 +83,7 @@ internal fun ComposableScreenshotsList(
                 isSelected = isSelected,
                 onClick = onClick@{
                     if (isSelected) return@onClick
-                    onImageSelected.invoke(index)
+                    onImageSelect(index)
                 }
             )
         }

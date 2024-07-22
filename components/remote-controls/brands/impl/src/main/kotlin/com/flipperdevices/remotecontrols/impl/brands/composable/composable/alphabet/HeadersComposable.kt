@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 internal fun HeaderComposable(
     isSelected: Boolean,
     text: String,
-    onGloballyPositioned: (LayoutCoordinates) -> Unit,
+    onGloballyPosition: (LayoutCoordinates) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scale by animateFloatAsState(
@@ -47,7 +47,7 @@ internal fun HeaderComposable(
     Text(
         text = text,
         modifier = modifier
-            .onGloballyPositioned(onGloballyPositioned)
+            .onGloballyPositioned(onGloballyPosition)
             .scale(scale),
         textAlign = TextAlign.Center,
         style = LocalTypography.current.subtitleM12,
@@ -88,7 +88,7 @@ internal fun <T> HeadersComposable(
             HeaderComposable(
                 isSelected = i == selectedHeaderIndex,
                 text = header.toString(),
-                onGloballyPositioned = {
+                onGloballyPosition = {
                     scrollState.updateOffset(i, it.boundsInParent().center.y)
                 }
             )
