@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
@@ -49,7 +50,7 @@ interface BrandsDecomposeComponent {
         fun createBrandsComponent(
             componentContext: ComponentContext,
             categoryId: Long,
-            onBackClicked: () -> Unit,
+            onBackClicked: DecomposeOnBackParameter,
             onBrandClicked: (brandId: Long) -> Unit
         ): BrandsDecomposeComponent
     }

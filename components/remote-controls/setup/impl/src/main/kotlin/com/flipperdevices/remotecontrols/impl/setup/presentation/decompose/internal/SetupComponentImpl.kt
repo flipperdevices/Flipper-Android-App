@@ -15,6 +15,7 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.Setup
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,7 @@ import javax.inject.Provider
 class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
-    @Assisted private val onBackClicked: () -> Unit,
+    @Assisted private val onBackClicked: DecomposeOnBackParameter,
     @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,

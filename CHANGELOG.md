@@ -2,6 +2,7 @@
 
 # 1.7.2 - In Progress
 
+- [Refactor] Update to Kotlin 2.0
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint

@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.square.anvil.gradle)
     implementation(libs.ktorfit.gradle)
     implementation(libs.compose.multiplatform.gradle)
+    implementation(libs.compose.gradle)
     implementation(libs.kotlin.jvm.gradle)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
