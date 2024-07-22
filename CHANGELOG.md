@@ -13,6 +13,7 @@
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
+- [CI] Update deps
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
