@@ -39,7 +39,7 @@ class FlipperInformationApiImpl @Inject constructor(
 ) : BluetoothGattServiceWrapper, FlipperInformationApi, LogTagProvider {
     override val TAG = "FlipperInformationApi"
     private val informationState = MutableStateFlow(FlipperGATTInformation())
-    private var infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
+    private val infoCharacteristics = mutableMapOf<UUID, BluetoothGattCharacteristic>()
 
     private val scope by scopeProvider
     private val metricApi by metricApiProvider

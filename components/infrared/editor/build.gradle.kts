@@ -7,6 +7,7 @@ android.namespace = "com.flipperdevices.infrared.editor"
 
 dependencies {
     implementation(projects.components.infrared.api)
+    implementation(projects.components.infrared.utils)
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyscreen.shared)
     implementation(projects.components.keyemulate.api)

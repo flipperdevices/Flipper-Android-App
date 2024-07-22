@@ -9,9 +9,9 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.wearable.emulate.impl.R
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
+import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
+import io.github.fornewid.placeholder.foundation.placeholder
+import io.github.fornewid.placeholder.foundation.shimmer
 
 @Composable
 fun ComposableActionLoading(

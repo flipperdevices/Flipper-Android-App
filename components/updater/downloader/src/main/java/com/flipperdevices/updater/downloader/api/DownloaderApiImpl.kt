@@ -52,27 +52,31 @@ class DownloaderApiImpl @Inject constructor(
 
         response.channels.map { channel ->
             channel.id to channel.versions.maxByOrNull { it.timestamp }
-        }.filter { it.first != null && it.second != null }
-            .map { it.first!! to it.second!! }
-            .forEach { (channel, version) ->
-                val updaterFile = version
-                    .files
-                    .filter { it.type == ArtifactType.UPDATE_TGZ }
-                    .find { it.target == Target.F7 }
-                    ?: return@forEach
-
-                versionMap[channel.original] = VersionFiles(
-                    version = FirmwareVersion(
-                        channel.original,
-                        version.version.clearVersion()
-                    ),
-                    updaterFile = DistributionFile(
-                        updaterFile.url,
-                        updaterFile.sha256
-                    ),
-                    changelog = version.changelog
-                )
+        }.mapNotNull { (channel, versions) ->
+            if (channel == null || versions == null) {
+                null
+            } else {
+                channel to versions
             }
+        }.forEach { (channel, version) ->
+            val updaterFile = version
+                .files
+                .filter { it.type == ArtifactType.UPDATE_TGZ }
+                .find { it.target == Target.F7 }
+                ?: return@forEach
+
+            versionMap[channel.original] = VersionFiles(
+                version = FirmwareVersion(
+                    channel.original,
+                    version.version.clearVersion()
+                ),
+                updaterFile = DistributionFile(
+                    updaterFile.url,
+                    updaterFile.sha256
+                ),
+                changelog = version.changelog
+            )
+        }
 
         verbose { "Result version map is $versionMap" }
 

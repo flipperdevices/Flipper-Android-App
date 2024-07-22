@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,10 +28,15 @@ fun ComposableKeySaveScreen(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
+    Column(
+        modifier
+    ) {
         ComposableKeySaveBar(onCancel)
         keyScreenApi.KeyCard(
-            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .padding(start = 24.dp, end = 24.dp, bottom = 12.dp),
             key = keyParsed,
             deleted = false
         )
@@ -44,7 +51,9 @@ fun ComposableKeySaveScreen(
                 }
             } else {
                 ComposableFlipperButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp, bottom = 24.dp),
                     text = stringResource(R.string.receive_save_btn),
                     onClick = onSave
                 )

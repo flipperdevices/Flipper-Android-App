@@ -7,9 +7,9 @@ import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.charset.Charset
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
 
     private suspend fun getFavoritesFromFlipper(
         flipperKeyStorage: FlipperKeyStorage
-    ): List<String> = withContext(Dispatchers.IO) {
+    ): List<String> = withContext(FlipperDispatchers.workStealingDispatcher) {
         val favoritesFile = flipperKeyStorage.loadFile(
             FAVORITES_PATH
         ).openStream().use {

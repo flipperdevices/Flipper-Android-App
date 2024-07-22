@@ -48,7 +48,7 @@ class FRequestStorage @Inject constructor() : LogTagProvider {
         }
     }
 
-    suspend fun getNextRequest(timeout: Long = REQUEST_POOL_TIMEOUT_MS): FlipperRequest? {
+    fun getNextRequest(timeout: Long = REQUEST_POOL_TIMEOUT_MS): FlipperRequest? {
         val request = runCatching {
             queue.poll(timeout, TimeUnit.MILLISECONDS)
         }.getOrNull()

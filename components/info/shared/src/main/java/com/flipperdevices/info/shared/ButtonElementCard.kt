@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 
 @Composable
@@ -73,7 +74,8 @@ fun ButtonElementRow(
                 Icon(
                     modifier = Modifier.fillMaxSize(),
                     painter = painterResource(actionIconId),
-                    contentDescription = text
+                    contentDescription = text,
+                    tint = LocalPallet.current.iconTint30
                 )
             }
         }

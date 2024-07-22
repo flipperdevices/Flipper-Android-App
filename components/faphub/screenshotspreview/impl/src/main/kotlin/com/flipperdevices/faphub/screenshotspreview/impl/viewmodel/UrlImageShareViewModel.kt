@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.flipperdevices.core.ktx.android.BitmapKtx.rescale
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.share.SharableFile
 import com.flipperdevices.core.share.ShareHelper
@@ -68,7 +69,7 @@ class UrlImageShareViewModel @Inject constructor(
         return newBitmap
     }
 
-    fun shareUrlImage(url: URL) = viewModelScope.launch(Dispatchers.IO) {
+    fun shareUrlImage(url: URL) = viewModelScope.launch(FlipperDispatchers.workStealingDispatcher) {
         url.decodeBitmap()
             .map { bitmap -> bitmap.fillBackground() }
             .map { bitmap -> bitmap.rescale(EXPORT_RESCALE_MULTIPLIER) }

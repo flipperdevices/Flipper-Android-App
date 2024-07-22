@@ -44,7 +44,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
     /**
      * Bytes waiting to be sent to the device
      */
-    private var bufferSizeState = MutableSharedFlow<Int>(replay = 1)
+    private val bufferSizeState = MutableSharedFlow<Int>(replay = 1)
 
     init {
         scope.launch {

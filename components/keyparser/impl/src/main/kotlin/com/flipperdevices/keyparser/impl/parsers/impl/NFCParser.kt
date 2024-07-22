@@ -36,7 +36,13 @@ class NFCParser : KeyParserDelegate {
 
         val lines = keyContentAsMap.filter { it.key.startsWith(KEY_BLOCK) }.map {
             it.key.replace(KEY_BLOCK, "").trim().toIntOrNull() to it.value
-        }.filterNot { it.first == null }.map { it.first!! to it.second }
+        }.mapNotNull { (key, value) ->
+            if (key == null) {
+                null
+            } else {
+                key to value
+            }
+        }
 
         return FlipperKeyParsed.NFC(
             keyName = flipperKey.path.nameWithoutExtension,

@@ -8,7 +8,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("io.sentry.android.gradle")
-    id("org.jetbrains.kotlin.plugin.compose")
+    id("flipper.lint")
 }
 
 @Suppress("UnstableApiUsage")

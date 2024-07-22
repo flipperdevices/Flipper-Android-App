@@ -34,6 +34,6 @@ data class FlipperAdditionalFile(
     val filePath: FlipperFilePath
         get() {
             val file = File(path)
-            return FlipperFilePath(file.parent ?: "", file.name)
+            return FlipperFilePath(file.parent.orEmpty(), file.name)
         }
 }

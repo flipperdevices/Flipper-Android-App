@@ -28,7 +28,7 @@ class ScreenStreamingViewModel @AssistedInject constructor(
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
 ) : DecomposeViewModel() {
-    private var vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
+    private val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     private val lockRepository = LockRepository(
         scope = viewModelScope,

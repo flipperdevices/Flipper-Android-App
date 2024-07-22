@@ -20,6 +20,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -83,6 +84,7 @@ class FlipperServiceProviderImpl @Inject constructor(
             lateinit var consumer: FlipperBleServiceConsumer
             consumer = object : FlipperBleServiceConsumer {
                 override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
+                    @OptIn(ExperimentalCoroutinesApi::class)
                     continuation.resume(serviceApi, onCancellation = {
                         disconnectInternal(consumer)
                     })

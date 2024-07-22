@@ -61,7 +61,7 @@ fun ComposableCategoryCard(
             }
             Text(
                 modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
-                text = fapCategory?.name ?: "",
+                text = fapCategory?.name.orEmpty(),
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPallet.current.text100,
                 maxLines = 1,

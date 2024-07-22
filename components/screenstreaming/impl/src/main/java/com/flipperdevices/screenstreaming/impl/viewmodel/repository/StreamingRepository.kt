@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.protobuf.screen.startScreenStreamRequest
@@ -13,7 +14,6 @@ import com.flipperdevices.protobuf.screen.stopScreenStreamRequest
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.StreamingState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -68,7 +68,7 @@ class StreamingRepository(
 
     private suspend fun onStreamFrameReceived(
         streamFrame: Gui.ScreenFrame
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val screen = ScreenStreamFrameDecoder.decode(streamFrame) ?: return@withContext
         scope.launch {
             flipperScreen.emit(screen)

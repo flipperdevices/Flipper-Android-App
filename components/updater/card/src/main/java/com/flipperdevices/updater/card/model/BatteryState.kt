@@ -1,9 +1,9 @@
 package com.flipperdevices.updater.card.model
 
-private const val ALLOWED_BATTERY_CHARGE = 0.1f
+private const val ALLOWED_BATTERY_CHARGE = 0.09f
 
 sealed class BatteryState {
-    object Unknown : BatteryState()
+    data object Unknown : BatteryState()
     class Ready(
         val isCharging: Boolean,
         val batteryLevel: Float

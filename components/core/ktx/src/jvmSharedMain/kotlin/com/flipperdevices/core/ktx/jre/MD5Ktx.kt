@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ktx.jre
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.math.BigInteger
@@ -14,7 +13,7 @@ private const val BIG_INTEGER_POSITIVE_NUMBER = 1
 /**
  * Calculate md5 and _close_ stream
  */
-suspend fun InputStream.md5(): String = withContext(Dispatchers.IO) {
+suspend fun InputStream.md5(): String = withContext(FlipperDispatchers.workStealingDispatcher) {
     use { stream ->
         val encoder = MessageDigest.getInstance(MD5_NAME)
         val buffer = ByteArray(DEFAULT_BUFFER_SIZE)

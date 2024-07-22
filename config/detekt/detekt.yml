@@ -193,7 +193,7 @@ coroutines:
   SuspendFunWithCoroutineScopeReceiver:
     active: false
   SuspendFunWithFlowReturnType:
-    active: true
+    active: false
 
 empty-blocks:
   active: true
@@ -779,3 +779,9 @@ Compose:
     active: false
   ModifierNotUsedAtRoot:
     active: true
+
+DecomposeRule:
+  PushForbiddenRule:
+    active: true
+    checkImport: true
+    replaceTo: 'pushToFront()'

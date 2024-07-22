@@ -40,7 +40,7 @@ class FileManagerViewModel @AssistedInject constructor(
     override val TAG = "FileManagerViewModel"
 
     private val mutex = Mutex()
-    private var fileManagerStateFlow =
+    private val fileManagerStateFlow =
         MutableStateFlow(FileManagerState(currentPath = directory))
 
     init {

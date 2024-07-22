@@ -84,7 +84,7 @@ private fun ComposableSheetAction(
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
-            text = descId?.let { stringResource(id = it) } ?: "",
+            text = descId?.let { stringResource(id = it) }.orEmpty(),
             style = LocalTypography.current.subtitleR10.copy(
                 color = LocalPallet.current.text30
             )

@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.test.readTestAssetString
+import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Assert

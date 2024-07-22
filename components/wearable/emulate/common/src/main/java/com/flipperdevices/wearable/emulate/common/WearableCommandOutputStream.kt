@@ -73,8 +73,6 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 }
             } catch (ignored: CancellationException) {
                 // ignore
-            } catch (ignored: java.util.concurrent.CancellationException) {
-                // ignore
             } catch (invalidProtocol: InvalidProtocolBufferException) {
                 error(invalidProtocol) { "Broke protocol" }
             } catch (e: Exception) {

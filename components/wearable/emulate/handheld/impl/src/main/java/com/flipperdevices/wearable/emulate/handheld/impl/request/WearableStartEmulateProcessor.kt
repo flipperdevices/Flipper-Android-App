@@ -55,7 +55,7 @@ class WearableStartEmulateProcessor @Inject constructor(
         try {
             val emulateConfig = EmulateConfig(
                 keyType = keyType,
-                keyPath = FlipperFilePath(keyFile.parent ?: "", keyFile.name)
+                keyPath = FlipperFilePath(keyFile.parent.orEmpty(), keyFile.name)
             )
             commandOutputStream.send(
                 mainResponse {

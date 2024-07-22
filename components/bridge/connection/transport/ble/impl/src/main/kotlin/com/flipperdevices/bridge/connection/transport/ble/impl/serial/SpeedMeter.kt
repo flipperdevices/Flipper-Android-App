@@ -15,7 +15,7 @@ private const val DELAY_MS = 1000L
 
 class SpeedMeter(scope: CoroutineScope) {
     private val bytesPerSecond = MutableStateFlow(0L)
-    private var bytesCollected = AtomicLong(0)
+    private val bytesCollected = AtomicLong(0)
 
     init {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {

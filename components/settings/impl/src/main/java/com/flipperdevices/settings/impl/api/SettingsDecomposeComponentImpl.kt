@@ -7,6 +7,7 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.debug.api.StressTestDecomposeComponent
 import com.flipperdevices.filemanager.api.navigation.FileManagerDecomposeComponent
+import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.settings.api.SettingsDecomposeComponent
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
@@ -17,6 +18,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SettingsDecomposeComponent.Factory::class)
 class SettingsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -24,7 +26,8 @@ class SettingsDecomposeComponentImpl @AssistedInject constructor(
     private val fileManagerComponentFactory: FileManagerDecomposeComponent.Factory,
     private val shake2ReportComponentFactory: Shake2ReportDecomposeComponent.Factory,
     private val mainComponentFactory: MainScreenDecomposeComponent.Factory,
-    private val stressTestFactory: StressTestDecomposeComponent.Factory
+    private val stressTestFactory: StressTestDecomposeComponent.Factory,
+    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory
 ) : SettingsDecomposeComponent<SettingsNavigationConfig>(), ComponentContext by componentContext {
 
     override val stack: Value<ChildStack<SettingsNavigationConfig, DecomposeComponent>> =
@@ -57,5 +60,10 @@ class SettingsDecomposeComponentImpl @AssistedInject constructor(
         )
 
         SettingsNavigationConfig.StressTest -> stressTestFactory(componentContext)
+
+        SettingsNavigationConfig.RemoteControls -> remoteControlsComponentFactory(
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) }
+        )
     }
 }

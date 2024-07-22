@@ -1,14 +1,17 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.ktx.android.RemoveBondHelper
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.firstpair.impl.model.DevicePairState
 import com.flipperdevices.firstpair.impl.storage.FirstPairStorage
@@ -26,8 +29,9 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-private const val TIMEOUT_MS = 10L * 1000
+private val TIMEOUT = 10.seconds
 
 class PairDeviceViewModel(
     private val firstPairBleManagerFactory: FirstPairBleManager.Factory,
@@ -37,11 +41,17 @@ class PairDeviceViewModel(
 ) : DecomposeViewModel(),
     LogTagProvider {
 
-    @Inject constructor(
+    @Inject
+    constructor(
         firstPairBleManagerFactory: FirstPairBleManager.Factory,
         firstPairStorage: FirstPairStorage,
         deviceColorSaver: DeviceColorSaver
-    ) : this(firstPairBleManagerFactory, firstPairStorage, deviceColorSaver, FlipperDispatchers.workStealingDispatcher)
+    ) : this(
+        firstPairBleManagerFactory,
+        firstPairStorage,
+        deviceColorSaver,
+        FlipperDispatchers.workStealingDispatcher
+    )
 
     override val TAG = "PairDeviceViewModel"
 
@@ -53,10 +63,11 @@ class PairDeviceViewModel(
     private var connectingJob: Job? = null
     private val mutex = Mutex()
 
-    fun startConnectToDevice(device: DiscoveredBluetoothDevice) {
+    fun startConnectToDevice(device: DiscoveredBluetoothDevice, resetPair: Boolean) {
         info { "Start connect to ${device.name} (${device.address})" }
 
         if (connectingJob != null) {
+            warn { "Connecting job is not null, return" }
             return
         }
         @Suppress("SwallowedException")
@@ -68,8 +79,12 @@ class PairDeviceViewModel(
                         device.name
                     )
                 )
+                if (resetPair) {
+                    resetBondWithLog(device.device)
+                }
                 subscribeOnPairState(device)
-                withTimeout(TIMEOUT_MS) {
+
+                withTimeout(TIMEOUT) {
                     info { "Start connect to device job" }
                     firstPairBleManager.connectToDevice(device.device)
                     info { "Finish method #connectToDevice" }
@@ -85,6 +100,15 @@ class PairDeviceViewModel(
             } finally {
                 connectingJob = null
             }
+        }
+    }
+
+    private fun resetBondWithLog(device: BluetoothDevice) {
+        info { "Try remove bond from device ${device.address}..." }
+        RemoveBondHelper.removeBond(device).onFailure {
+            error(it) { "Failed remove bond for device with id ${device.address} and device is $device" }
+        }.onSuccess {
+            info { "Remove bond successful for ${device.address}" }
         }
     }
 

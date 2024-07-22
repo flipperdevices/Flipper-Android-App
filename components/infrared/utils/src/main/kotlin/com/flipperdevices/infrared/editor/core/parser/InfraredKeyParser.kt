@@ -1,31 +1,18 @@
-package com.flipperdevices.infrared.editor.viewmodel
+package com.flipperdevices.infrared.editor.core.parser
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.infrared.editor.model.InfraredRemote
-
-private const val KEY_NAME = "name"
-private const val KEY_TYPE = "type"
-private const val KEY_TYPE_RAW = "raw"
-private const val KEY_TYPE_PARSED = "parsed"
-
-private const val KEY_PROTOCOL = "protocol"
-private const val KEY_ADDRESS = "address"
-private const val KEY_COMMAND = "command"
-
-private const val KEY_FREQUENCY = "frequency"
-private const val KEY_DUTY_CYCLE = "duty_cycle"
-private const val KEY_DATA = "data"
-
-private val allFields = listOf(
-    KEY_NAME,
-    KEY_TYPE,
-    KEY_PROTOCOL,
-    KEY_ADDRESS,
-    KEY_COMMAND,
-    KEY_FREQUENCY,
-    KEY_DUTY_CYCLE,
-    KEY_DATA
-)
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_ADDRESS
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_COMMAND
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DATA
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_DUTY_CYCLE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_FREQUENCY
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_NAME
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_PROTOCOL
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_PARSED
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.KEY_TYPE_RAW
+import com.flipperdevices.infrared.editor.core.util.InfraredFileFormat.allFields
 
 object InfraredKeyParser {
     fun mapParsedKeyToInfraredRemotes(
@@ -76,20 +63,20 @@ object InfraredKeyParser {
     }
 
     private fun parseRemoteRaw(block: Map<String, String>): InfraredRemote.Raw {
-        val name = block[KEY_NAME] ?: ""
-        val type = block[KEY_TYPE] ?: ""
-        val frequency = block[KEY_FREQUENCY] ?: ""
-        val dutyCycle = block[KEY_DUTY_CYCLE] ?: ""
-        val data = block[KEY_DATA] ?: ""
+        val name = block[KEY_NAME].orEmpty()
+        val type = block[KEY_TYPE].orEmpty()
+        val frequency = block[KEY_FREQUENCY].orEmpty()
+        val dutyCycle = block[KEY_DUTY_CYCLE].orEmpty()
+        val data = block[KEY_DATA].orEmpty()
         return InfraredRemote.Raw(name, type, frequency, dutyCycle, data)
     }
 
     private fun parseRemoteParsed(block: Map<String, String>): InfraredRemote.Parsed {
-        val name = block[KEY_NAME] ?: ""
-        val type = block[KEY_TYPE] ?: ""
-        val protocol = block[KEY_PROTOCOL] ?: ""
-        val address = block[KEY_ADDRESS] ?: ""
-        val command = block[KEY_COMMAND] ?: ""
+        val name = block[KEY_NAME].orEmpty()
+        val type = block[KEY_TYPE].orEmpty()
+        val protocol = block[KEY_PROTOCOL].orEmpty()
+        val address = block[KEY_ADDRESS].orEmpty()
+        val command = block[KEY_COMMAND].orEmpty()
         return InfraredRemote.Parsed(name, type, protocol, address, command)
     }
 }

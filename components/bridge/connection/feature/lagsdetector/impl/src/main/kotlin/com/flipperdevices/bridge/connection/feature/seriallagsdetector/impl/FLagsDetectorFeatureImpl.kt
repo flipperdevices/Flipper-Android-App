@@ -33,7 +33,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
 
     init {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            flipperActionNotifier.getActionFlow().collectLatest { connectionState ->
+            flipperActionNotifier.getActionFlow().collectLatest { _ ->
                 delay(PendingResponseCounter.LAGS_FLIPPER_DETECT_TIMEOUT_MS)
                 if (pendingResponseCounter.hasPendingRequests()) {
                     error {

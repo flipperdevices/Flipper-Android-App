@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.bridge.dao.api.model.WidgetType
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.toFullString
 import com.flipperdevices.core.log.LogTagProvider
@@ -48,9 +49,19 @@ class WidgetBroadcastReceiver : BroadcastReceiver(), LogTagProvider {
                         WidgetState.IN_PROGRESS
                     )
                 }
+                val widgetData = runBlocking {
+                    widgetComponent.widgetDataApi.getWidgetDataByWidgetId(widgetId)
+                }
+                val oneTimeEmulation = widgetData?.widgetType == WidgetType.ONE_CLICK
 
-                StartChainBuilder.getStartChain(context, keyPath.path, widgetId).enqueue()
+                StartChainBuilder.getStartChain(
+                    context = context,
+                    filePath = keyPath.path,
+                    widgetId = widgetId,
+                    oneTimeEmulation = oneTimeEmulation
+                ).enqueue()
             }
+
             FLIPPER_KEY_STOP_ACTION ->
                 StopChainBuilder.getStopChain(context, widgetId).enqueue()
         }

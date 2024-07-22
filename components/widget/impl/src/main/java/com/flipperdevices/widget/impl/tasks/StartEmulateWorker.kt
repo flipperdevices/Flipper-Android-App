@@ -115,7 +115,7 @@ class StartEmulateWorker(
 
         val filePath = File(filePathString)
         val folder =
-            filePath.parent ?: FlipperKeyType.getByExtension(filePath.extension)?.flipperDir ?: ""
+            filePath.parent ?: FlipperKeyType.getByExtension(filePath.extension)?.flipperDir.orEmpty()
         return FlipperFilePath(
             folder,
             filePath.name

@@ -3,6 +3,18 @@
 # 1.7.2 - In Progress
 
 - [FIX] Distinct fap items by id in paging sources
+- [FIX] Battery level charge
+- [FIX] Button arrow tint
+- [FIX] Paddings for update button
+- [FIX] Crash on app startup with WearOS app
+- [FIX] Expand verify signal bottom sheet only after signal is dispatched
+- [FIX] Fix scroll on save edit screen
+- [CI] Add https://github.com/LionZXY/detekt-decompose-rule
+- [CI] Enabling detekt module for android and kmp modules
+- [CI] Bump target SDK to 34
+- [Feature] Infrared controls
+- [Feature] Remove bond on retry pair
+- [Feature] Add onetap widget
 
 # 1.7.1
 

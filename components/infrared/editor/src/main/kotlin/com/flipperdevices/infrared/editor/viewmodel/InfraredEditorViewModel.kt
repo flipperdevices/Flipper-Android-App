@@ -15,8 +15,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.editor.R
+import com.flipperdevices.infrared.editor.core.model.InfraredRemote
+import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
-import com.flipperdevices.infrared.editor.model.InfraredRemote
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -43,7 +44,7 @@ class InfraredEditorViewModel @AssistedInject constructor(
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredEditorViewModel"
 
-    private var vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
 
     private val flipperKeyFlow = MutableStateFlow<FlipperKey?>(null)
     private val flipperParsedKeyFlow = MutableStateFlow<ImmutableList<InfraredRemote>?>(null)

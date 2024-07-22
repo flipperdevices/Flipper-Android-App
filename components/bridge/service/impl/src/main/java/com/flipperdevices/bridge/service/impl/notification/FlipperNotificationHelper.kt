@@ -73,7 +73,7 @@ class FlipperNotificationHelper(
         notificationManager.createNotificationChannel(flipperChannel)
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
+    @SuppressLint("UnspecifiedImmutableFlag", "ObsoleteSdkInt")
     private fun getIntentForOpenApplication(): PendingIntent {
         val intent = Intent(context, applicationParams.startApplicationClass.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or

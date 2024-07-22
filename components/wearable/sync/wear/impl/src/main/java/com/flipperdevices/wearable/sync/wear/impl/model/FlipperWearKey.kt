@@ -16,7 +16,7 @@ data class FlipperWearKey(
         path = File(syncItem.path).absoluteFile.let {
             FlipperKeyPath(
                 path = FlipperFilePath(
-                    folder = it.parent ?: "",
+                    folder = it.parent.orEmpty(),
                     nameWithExtension = it.name
                 ),
                 deleted = false

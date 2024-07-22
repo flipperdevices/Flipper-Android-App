@@ -19,13 +19,13 @@ const val DELETE_CELL = "$DELETE_SYMBOL$DELETE_SYMBOL"
 const val BYTES_SYMBOL_COUNT = 2
 
 class TextUpdaterHelper {
-    private var nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
+    private val nfcEditorStateFlow = MutableStateFlow<NfcEditorState?>(
         NfcEditorState(
             sectors = persistentListOf()
         )
     )
 
-    private var currentActiveCellState = mutableStateOf<NfcEditorCellLocation?>(null)
+    private val currentActiveCellState = mutableStateOf<NfcEditorCellLocation?>(null)
     private var currentActiveCell by currentActiveCellState
 
     private var backupTextCurrentCell: String? = null
