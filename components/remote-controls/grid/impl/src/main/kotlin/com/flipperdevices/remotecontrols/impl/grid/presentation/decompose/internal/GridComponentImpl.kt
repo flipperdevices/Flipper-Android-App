@@ -25,7 +25,7 @@ import javax.inject.Provider
 class GridComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val param: GridScreenDecomposeComponent.Param,
-    @Assisted private val onPopClicked: () -> Unit,
+    @Assisted private val onPopClick: () -> Unit,
     createGridViewModel: GridViewModel.Factory,
     createSaveSignalViewModel: Provider<SaveTempSignalApi>,
     createDispatchSignalViewModel: Provider<DispatchSignalApi>
@@ -92,7 +92,7 @@ class GridComponentImpl @AssistedInject constructor(
         dispatchSignalViewModel.dismissBusyDialog()
     }
 
-    override fun onButtonClicked(identifier: IfrKeyIdentifier) {
+    override fun onButtonClick(identifier: IfrKeyIdentifier) {
         val gridLoadedState = (gridFeature.state.value as? GridViewModel.State.Loaded) ?: return
         val remotes = gridLoadedState.remotes
         dispatchSignalViewModel.dispatch(
@@ -106,7 +106,7 @@ class GridComponentImpl @AssistedInject constructor(
     }
 
     override fun tryLoad() = gridFeature.tryLoad()
-    override fun pop() = onPopClicked.invoke()
+    override fun pop() = onPopClick.invoke()
 }
 
 private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"

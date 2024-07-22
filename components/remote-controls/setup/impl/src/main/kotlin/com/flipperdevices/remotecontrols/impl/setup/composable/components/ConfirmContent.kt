@@ -32,8 +32,8 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 @Composable
 fun ConfirmContent(
     text: String,
-    onPositiveClicked: () -> Unit,
-    onNegativeClicked: () -> Unit,
+    onPositiveClick: () -> Unit,
+    onNegativeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -76,12 +76,12 @@ fun ConfirmContent(
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .clip(RoundedCornerShape(30.dp))
-                            .clickableRipple(onClick = onNegativeClicked)
+                            .clickableRipple(onClick = onNegativeClick)
                             .padding(vertical = 12.dp, horizontal = 36.dp),
                     )
                     ComposableFlipperButton(
                         text = stringResource(SetupR.string.yes),
-                        onClick = onPositiveClicked
+                        onClick = onPositiveClick
                     )
                 }
             }
@@ -99,8 +99,8 @@ private fun ComposableConfirmContentLightPreview() {
     FlipperThemeInternal {
         ConfirmContent(
             text = "Super mega text of preview confirm element",
-            onPositiveClicked = {},
-            onNegativeClicked = {}
+            onPositiveClick = {},
+            onNegativeClick = {}
         )
     }
 }
@@ -115,8 +115,8 @@ private fun ComposableConfirmContentDarkPreview() {
     FlipperThemeInternal {
         ConfirmContent(
             text = "Super mega text of preview confirm element",
-            onPositiveClicked = {},
-            onNegativeClicked = {}
+            onPositiveClick = {},
+            onNegativeClick = {}
         )
     }
 }

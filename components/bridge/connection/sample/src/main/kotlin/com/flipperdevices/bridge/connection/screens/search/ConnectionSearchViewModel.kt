@@ -59,7 +59,7 @@ class ConnectionSearchViewModel @Inject constructor(
 
     fun getDevicesFlow() = devicesFlow.asStateFlow()
 
-    fun onDeviceClicked(searchItem: ConnectionSearchItem) {
+    fun onDeviceClick(searchItem: ConnectionSearchItem) {
         viewModelScope.launch {
             if (searchItem.savedDeviceModel == null) {
                 persistedStorage.addDevice(searchItem.device.toFDeviceFlipperZeroBleModel())

@@ -14,14 +14,14 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @ContributesAssistedFactory(AppGraph::class, CategoriesScreenDecomposeComponent.Factory::class)
 class CategoriesScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted onBackClicked: () -> Unit,
-    @Assisted onCategoryClicked: (categoryId: Long) -> Unit,
+    @Assisted onBackClick: () -> Unit,
+    @Assisted onCategoryClick: (categoryId: Long) -> Unit,
     deviceCategoriesComponentFactory: DeviceCategoriesComponent.Factory,
 ) : CategoriesScreenDecomposeComponent(componentContext) {
     private val deviceCategoriesComponent = deviceCategoriesComponentFactory.invoke(
         componentContext = childContext("DeviceCategoriesComponent"),
-        onBackClicked = onBackClicked,
-        onCategoryClicked = onCategoryClicked
+        onBackClick = onBackClick,
+        onCategoryClick = onCategoryClick
     )
 
     @Composable

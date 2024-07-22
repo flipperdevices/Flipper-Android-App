@@ -59,7 +59,7 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
 
                         Icon(
                             modifier = Modifier
-                                .clickableRipple { searchViewModel.onDeviceClicked(searchItem) }
+                                .clickableRipple { searchViewModel.onDeviceClick(searchItem) }
                                 .padding(16.dp)
                                 .size(24.dp),
                             painter = painterResourceByKey(

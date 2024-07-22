@@ -15,10 +15,10 @@ interface SetupComponent {
     val remoteFoundFlow: Flow<IfrFileModel>
     val param: SetupScreenDecomposeComponent.Param
 
-    fun onBackClicked()
+    fun onBackClick()
 
-    fun onSuccessClicked()
-    fun onFailedClicked()
+    fun onSuccessClick()
+    fun onFailedClick()
     fun dispatchSignal()
 
     fun dismissBusyDialog()

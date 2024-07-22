@@ -34,7 +34,7 @@ import javax.inject.Provider
 class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
-    @Assisted private val onBackClicked: DecomposeOnBackParameter,
+    @Assisted private val onBackClick: DecomposeOnBackParameter,
     @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
@@ -131,7 +131,7 @@ class SetupComponentImpl @AssistedInject constructor(
         onIfrFileFound.invoke(ifrFileModel.id)
     }
 
-    override fun onSuccessClicked() {
+    override fun onSuccessClick() {
         val state = createCurrentSignalViewModel.state.value as? CurrentSignalViewModel.State.Loaded
             ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
@@ -139,7 +139,7 @@ class SetupComponentImpl @AssistedInject constructor(
         tryLoad()
     }
 
-    override fun onFailedClicked() {
+    override fun onFailedClick() {
         val state = createCurrentSignalViewModel.state.value as? CurrentSignalViewModel.State.Loaded
             ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
@@ -163,7 +163,7 @@ class SetupComponentImpl @AssistedInject constructor(
         dispatchSignalApi.dispatch(config)
     }
 
-    override fun onBackClicked() = onBackClicked.invoke()
+    override fun onBackClick() = onBackClick.invoke()
 }
 
 private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"

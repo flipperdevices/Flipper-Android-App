@@ -24,8 +24,8 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, BrandsDecomposeComponent.Factory::class)
 class BrandsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val onBackClicked: DecomposeOnBackParameter,
-    @Assisted private val onBrandClicked: (brandId: Long) -> Unit,
+    @Assisted private val onBackClick: DecomposeOnBackParameter,
+    @Assisted private val onBrandClick: (brandId: Long) -> Unit,
     @Assisted categoryId: Long,
     createBrandsListViewModel: BrandsListViewModel.Factory,
     createQueryViewModel: Provider<QueryViewModel>
@@ -69,8 +69,8 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
             .flowOn(FlipperDispatchers.workStealingDispatcher)
             .stateIn(coroutineScope, SharingStarted.Eagerly, BrandsDecomposeComponent.Model.Loading)
 
-    override fun onBackClicked() {
-        onBackClicked.invoke()
+    override fun onBackClick() {
+        onBackClick.invoke()
     }
 
     override fun onQueryChanged(query: String) {
@@ -81,8 +81,8 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
         queryFeature.clearQuery()
     }
 
-    override fun onBrandClicked(brandModel: BrandModel) {
-        onBrandClicked.invoke(brandModel.id)
+    override fun onBrandClick(brandModel: BrandModel) {
+        onBrandClick.invoke(brandModel.id)
     }
 
     override fun tryLoad() {

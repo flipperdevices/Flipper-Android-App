@@ -35,7 +35,7 @@ import com.flipperdevices.remotecontrols.grid.impl.R as GridR
 @Composable
 internal fun LoadedContent(
     pagesLayout: PagesLayout,
-    onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
+    onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -45,7 +45,7 @@ internal fun LoadedContent(
         content = {
             ButtonsComposable(
                 pageLayout = pagesLayout.pages.firstOrNull(),
-                onButtonClicked = onButtonClicked,
+                onButtonClick = onButtonClick,
                 onReload = onReload
             )
         }
@@ -76,7 +76,7 @@ fun GridComposable(
             SharedTopBar(
                 title = "",
                 subtitle = "",
-                onBackClicked = gridComponent::pop
+                onBackClick = gridComponent::pop
             )
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
@@ -108,8 +108,8 @@ fun GridComposable(
                         }
                         LoadedContent(
                             pagesLayout = model.pagesLayout,
-                            onButtonClicked = { _, keyIdentifier ->
-                                gridComponent.onButtonClicked(keyIdentifier)
+                            onButtonClick = { _, keyIdentifier ->
+                                gridComponent.onButtonClick(keyIdentifier)
                             },
                             onReload = gridComponent::tryLoad
                         )
@@ -133,7 +133,7 @@ private fun LoadedContentEmptyPreview() {
     FlipperThemeInternal {
         LoadedContent(
             pagesLayout = PagesLayout(emptyList()),
-            onButtonClicked = { _, _ -> },
+            onButtonClick = { _, _ -> },
             onReload = {}
         )
     }

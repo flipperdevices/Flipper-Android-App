@@ -22,7 +22,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 @Composable
 internal fun ComposableCheckBox(
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckChange: (Boolean) -> Unit
 ) {
     /*
     Disable padding for checkbox
@@ -31,7 +31,7 @@ internal fun ComposableCheckBox(
     CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Checkbox(
             checked = checked,
-            onCheckedChange = onCheckedChange,
+            onCheckedChange = onCheckChange,
             colors = CheckboxColors(
                 checkedCheckmarkColor = LocalPallet.current.accent,
                 checkedBorderColor = LocalPallet.current.reportBorder,

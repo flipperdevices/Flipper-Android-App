@@ -75,7 +75,7 @@ private fun CategoryList(
                     )
                 },
                 flipperKeyParsed = flipperKeyParsed,
-                onCardClicked = {
+                onCardClick = {
                     onOpenKeyScreen(flipperKey.getKeyPath())
                 }
             )

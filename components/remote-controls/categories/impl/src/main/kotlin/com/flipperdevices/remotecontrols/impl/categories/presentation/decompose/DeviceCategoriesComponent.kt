@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 interface DeviceCategoriesComponent {
     val model: StateFlow<Model>
 
-    fun onCategoryClicked(category: DeviceCategory)
+    fun onCategoryClick(category: DeviceCategory)
 
-    fun onBackClicked()
+    fun onBackClick()
 
     fun tryLoad()
 
@@ -24,8 +24,8 @@ interface DeviceCategoriesComponent {
     fun interface Factory {
         fun invoke(
             componentContext: ComponentContext,
-            onBackClicked: DecomposeOnBackParameter,
-            onCategoryClicked: (categoryId: Long) -> Unit
+            onBackClick: DecomposeOnBackParameter,
+            onCategoryClick: (categoryId: Long) -> Unit
         ): DeviceCategoriesComponent
     }
 }

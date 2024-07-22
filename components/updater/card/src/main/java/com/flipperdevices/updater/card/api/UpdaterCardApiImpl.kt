@@ -31,7 +31,7 @@ class UpdaterCardApiImpl @Inject constructor(
         deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
         onStartUpdateRequest: (UpdateRequest) -> Unit,
         requestRefresh: Boolean,
-        onRefreshRequestExecuted: () -> Unit
+        onRefreshRequestExecute: () -> Unit
     ) {
         val updateStateViewModel: UpdateStateViewModel =
             componentContext.viewModelWithFactory(key = null) {
@@ -47,10 +47,10 @@ class UpdaterCardApiImpl @Inject constructor(
                 updateRequestViewModelProvider.get()
             }
 
-        LaunchedEffect(requestRefresh, onRefreshRequestExecuted) {
+        LaunchedEffect(requestRefresh, onRefreshRequestExecute) {
             if (requestRefresh) {
                 updateCardViewModel.refresh()
-                onRefreshRequestExecuted()
+                onRefreshRequestExecute()
             }
         }
 

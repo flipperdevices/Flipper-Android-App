@@ -29,7 +29,7 @@ private val CARD_WIDTH = 65.dp
 private fun IndicatorItem(
     screenshotUrl: String,
     isSelected: Boolean,
-    onClicked: () -> Unit
+    onClick: () -> Unit
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isSelected) MAX_SCALE else MIN_SCALE,
@@ -45,7 +45,7 @@ private fun IndicatorItem(
             modifier = Modifier
                 .width(CARD_WIDTH * scale)
                 .height(CARD_HEIGHT * scale)
-                .clickableRipple(onClick = onClicked),
+                .clickableRipple(onClick = onClick),
         )
     }
 }
@@ -81,8 +81,8 @@ internal fun ComposableScreenshotsList(
             IndicatorItem(
                 screenshotUrl = item,
                 isSelected = isSelected,
-                onClicked = onClicked@{
-                    if (isSelected) return@onClicked
+                onClick = onClick@{
+                    if (isSelected) return@onClick
                     onImageSelected.invoke(index)
                 }
             )

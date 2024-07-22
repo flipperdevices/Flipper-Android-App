@@ -60,7 +60,7 @@ internal fun ComposableFullScreenshotScreen(
             itemsAmount = screenshots.size,
             selectedItemIndex = pagerState.currentPage,
             modifier = Modifier.align(Alignment.TopCenter),
-            onSaveClicked = {
+            onSaveClick = {
                 val url = screenshots[pagerState.currentPage].let(::URL)
                 urlImageShareViewModel.shareUrlImage(url)
             }

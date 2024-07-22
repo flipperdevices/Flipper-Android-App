@@ -45,8 +45,8 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
             categoriesScreenDecomposeComponentFactory
                 .invoke(
                     componentContext = componentContext,
-                    onBackClicked = onBack::invoke,
-                    onCategoryClicked = { deviceCategoryId ->
+                    onBackClick = onBack::invoke,
+                    onCategoryClick = { deviceCategoryId ->
                         val configuration = RemoteControlsNavigationConfig.Brands(deviceCategoryId)
                         navigation.pushToFront(configuration)
                     }
@@ -57,9 +57,9 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
             brandsScreenDecomposeComponentFactory
                 .createBrandsComponent(
                     componentContext = componentContext,
-                    onBackClicked = navigation::pop,
+                    onBackClick = navigation::pop,
                     categoryId = config.categoryId,
-                    onBrandClicked = { brandId ->
+                    onBrandClick = { brandId ->
                         val configuration = RemoteControlsNavigationConfig.Setup(
                             categoryId = config.categoryId,
                             brandId = brandId
@@ -93,7 +93,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                         ifrFileId = config.ifrFileId,
                         uiFileId = null,
                     ),
-                    onPopClicked = navigation::pop
+                    onPopClick = navigation::pop
                 )
         }
     }

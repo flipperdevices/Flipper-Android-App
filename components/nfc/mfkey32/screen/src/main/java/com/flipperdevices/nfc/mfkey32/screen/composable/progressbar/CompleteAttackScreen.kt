@@ -29,7 +29,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun CompleteAttack(
     keysCollected: ImmutableList<String>,
-    onDone: () -> Unit,
+    onComplete: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Column(
     modifier.fillMaxWidth(),
@@ -74,7 +74,7 @@ fun CompleteAttack(
             .fillMaxWidth(),
         text = stringResource(R.string.mfkey32_complete_btn),
         textPadding = PaddingValues(vertical = 14.dp),
-        onClick = onDone
+        onClick = onComplete
     )
 }
 

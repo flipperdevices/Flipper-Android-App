@@ -14,7 +14,7 @@ import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.
 @Composable
 internal fun DeviceCategoriesLoadedContent(
     model: DeviceCategoriesComponent.Model.Loaded,
-    onCategoryClicked: (DeviceCategory) -> Unit,
+    onCategoryClick: (DeviceCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -26,8 +26,8 @@ internal fun DeviceCategoriesLoadedContent(
         items(model.deviceTypes) { deviceCategory ->
             DeviceCategoryComposable(
                 deviceCategory = deviceCategory,
-                onClicked = {
-                    onCategoryClicked.invoke(deviceCategory)
+                onClick = {
+                    onCategoryClick.invoke(deviceCategory)
                 }
             )
         }

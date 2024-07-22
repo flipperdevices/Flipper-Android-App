@@ -21,7 +21,7 @@ import kotlinx.collections.immutable.toImmutableSet
  * Displays the [ChildStack] in [SwipeToDismissBox][androidx.wear.compose.material.SwipeToDismissBox].
  *
  * @param stack a [ChildStack] to be displayed.
- * @param onDismissed called when the swipe to dismiss gesture has completed, allows popping the stack.
+ * @param onDismiss called when the swipe to dismiss gesture has completed, allows popping the stack.
  * See [StackNavigator#pop][com.arkivanov.decompose.router.stack.pop].
  * @param modifier a [Modifier] to be applied to the underlying
  * [SwipeToDismissBox][androidx.wear.compose.material.SwipeToDismissBox].
@@ -30,7 +30,7 @@ import kotlinx.collections.immutable.toImmutableSet
 @Composable
 fun <C : Any, T : Any> SwipeToDismissBox(
     stack: Value<ChildStack<C, T>>,
-    onDismissed: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (child: Child.Created<C, T>) -> Unit,
 ) {
@@ -38,7 +38,7 @@ fun <C : Any, T : Any> SwipeToDismissBox(
 
     SwipeToDismissBox(
         stack = state.value,
-        onDismissed = onDismissed,
+        onDismiss = onDismiss,
         modifier = modifier,
         content = content
     )
@@ -48,7 +48,7 @@ fun <C : Any, T : Any> SwipeToDismissBox(
  * Displays the [ChildStack] in [SwipeToDismissBox][androidx.wear.compose.material.SwipeToDismissBox].
  *
  * @param stack a [ChildStack] to be displayed.
- * @param onDismissed called when the swipe to dismiss gesture has completed, allows popping the stack.
+ * @param onDismiss called when the swipe to dismiss gesture has completed, allows popping the stack.
  * See [StackNavigator#pop][com.arkivanov.decompose.router.stack.pop].
  * @param modifier a [Modifier] to be applied to the underlying
  * [SwipeToDismissBox][androidx.wear.compose.material.SwipeToDismissBox].
@@ -57,7 +57,7 @@ fun <C : Any, T : Any> SwipeToDismissBox(
 @Composable
 fun <C : Any, T : Any> SwipeToDismissBox(
     stack: ChildStack<C, T>,
-    onDismissed: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (child: Child.Created<C, T>) -> Unit,
 ) {
@@ -68,7 +68,7 @@ fun <C : Any, T : Any> SwipeToDismissBox(
     RetainStates(holder, stack.getConfigurations().toImmutableSet())
 
     SwipeToDismissBox(
-        onDismissed = onDismissed,
+        onDismissed = onDismiss,
         modifier = modifier,
         backgroundKey = background?.configuration ?: SwipeToDismissKeys.Background,
         contentKey = active.configuration,

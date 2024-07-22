@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface GridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
-    fun onButtonClicked(identifier: IfrKeyIdentifier)
+    fun onButtonClick(identifier: IfrKeyIdentifier)
     fun tryLoad()
     fun pop()
 
@@ -37,7 +37,7 @@ interface GridComponent {
         fun invoke(
             componentContext: ComponentContext,
             param: GridScreenDecomposeComponent.Param,
-            onPopClicked: () -> Unit
+            onPopClick: () -> Unit
         ): GridComponent
     }
 }

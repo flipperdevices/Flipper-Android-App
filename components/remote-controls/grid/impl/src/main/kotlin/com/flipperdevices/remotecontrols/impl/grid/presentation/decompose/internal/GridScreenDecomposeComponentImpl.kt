@@ -15,13 +15,13 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class GridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: GridScreenDecomposeComponent.Param,
-    @Assisted onPopClicked: () -> Unit,
+    @Assisted onPopClick: () -> Unit,
     gridComponentFactory: GridComponent.Factory
 ) : GridScreenDecomposeComponent(componentContext) {
     private val gridComponent = gridComponentFactory.invoke(
         componentContext = childContext("GridComponent"),
         param = param,
-        onPopClicked = onPopClicked
+        onPopClick = onPopClick
     )
 
     @Composable

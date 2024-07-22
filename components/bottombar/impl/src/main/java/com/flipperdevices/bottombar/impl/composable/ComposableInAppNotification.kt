@@ -10,7 +10,7 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 fun ComposableInAppNotification(
     notificationRenderer: InAppNotificationRenderer,
     notificationState: InAppNotificationState,
-    onNotificationHidden: (notification: InAppNotification) -> Unit,
+    onNotificationHide: (notification: InAppNotification) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (notificationState !is InAppNotificationState.ShownNotification) {
@@ -20,6 +20,6 @@ fun ComposableInAppNotification(
         notification = notificationState.notification,
         modifier = modifier
     ) {
-        onNotificationHidden(notificationState.notification)
+        onNotificationHide(notificationState.notification)
     }
 }
