@@ -17,6 +17,7 @@ import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import kotlin.math.sign
 
 @Composable
 fun LoadedContent(
@@ -49,7 +50,7 @@ fun LoadedContent(
                         .align(Alignment.BottomCenter),
                 ) {
                     ConfirmContent(
-                        text = signalResponse.message,
+                        text = signalResponse.message.format(signalResponse.categoryName),
                         onNegativeClicked = onNegativeClicked,
                         onPositiveClicked = onPositiveClicked,
                         modifier = Modifier.align(Alignment.BottomCenter)

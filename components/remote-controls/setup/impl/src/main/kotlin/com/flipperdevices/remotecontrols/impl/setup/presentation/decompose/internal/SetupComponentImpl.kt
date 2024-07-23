@@ -157,7 +157,7 @@ class SetupComponentImpl @AssistedInject constructor(
                 TEMP_FILE_NAME
             ),
             keyType = FlipperKeyType.INFRARED,
-            args = signalModel.name,
+            args = signalModel.remote.name,
             index = 0
         )
         dispatchSignalApi.dispatch(config)
