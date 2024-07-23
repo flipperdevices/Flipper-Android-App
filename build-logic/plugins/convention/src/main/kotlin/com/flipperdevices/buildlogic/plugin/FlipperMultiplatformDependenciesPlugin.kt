@@ -17,13 +17,13 @@ class FlipperMultiplatformDependenciesPlugin : Plugin<Project> {
             } else {
                 fullSourceSetName
             }
-
-            target.extensions.create(
-                "${noMainSourceSetName}Dependencies",
-                FlipperMultiplatformDependenciesScope::class,
-                target,
-                fullSourceSetName
-            )
+            sourceSet.dependencies {
+                target.extensions.create(
+                    "${noMainSourceSetName}Dependencies",
+                    FlipperMultiplatformDependenciesScope::class,
+                    this
+                )
+            }
         }
     }
 

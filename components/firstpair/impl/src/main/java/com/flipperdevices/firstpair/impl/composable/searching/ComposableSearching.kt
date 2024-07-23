@@ -24,7 +24,7 @@ fun ComposableSearchingScreen(
     onBack: () -> Unit,
     onHelpClicking: () -> Unit,
     onSkipConnection: () -> Unit,
-    onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
+    onDeviceClick: (DiscoveredBluetoothDevice, resetPair: Boolean) -> Unit,
     onRefreshSearching: () -> Unit,
     onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
@@ -51,7 +51,7 @@ fun ComposableSearchingScreen(
 @Composable
 fun ComposableSearchingContent(
     content: SearchingContent,
-    onDeviceClick: (DiscoveredBluetoothDevice) -> Unit,
+    onDeviceClick: (DiscoveredBluetoothDevice, resetPair: Boolean) -> Unit,
     onRefreshSearching: () -> Unit,
     onResetTimeoutState: () -> Unit,
     modifier: Modifier = Modifier
@@ -96,7 +96,7 @@ private fun ComposableSearchingScreenPreview() {
         onHelpClicking = {},
         onSkipConnection = {},
         onRefreshSearching = {},
-        onDeviceClick = {},
+        onDeviceClick = { _, _ -> },
         onResetTimeoutState = {}
     )
 }

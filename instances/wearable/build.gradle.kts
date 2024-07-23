@@ -1,20 +1,10 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
 }
 
-android {
-    namespace = "com.flipperdevices.wearable"
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-}
+android.namespace = "com.flipperdevices.wearable"
 
 dependencies {
     implementation(projects.components.core.di)

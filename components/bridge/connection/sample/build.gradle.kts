@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil")
+    id("flipper.anvil.kapt")
     id("kotlin-kapt")
     id("kotlinx-serialization")
 }
@@ -9,9 +9,6 @@ android.namespace = "com.flipperdevices.bridge.connection"
 
 android {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 android {

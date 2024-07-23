@@ -34,6 +34,7 @@ class FapManifestCacheLoader @Inject constructor(
         val namesWithHash = flipperStorageApi
             .listingDirectoryWithMd5(FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER)
             .filter { File(it.name).extension == FapManifestConstants.FAP_MANIFEST_EXTENSION }
+            .filterNot { it.name.startsWith(".") }
         val filesWithHash = getLocalFilesWithHash().associate { (file, md5) -> md5 to file }
         info { "Find ${filesWithHash.size} files in cache" }
         val cached = mutableListOf<Pair<File, String>>()

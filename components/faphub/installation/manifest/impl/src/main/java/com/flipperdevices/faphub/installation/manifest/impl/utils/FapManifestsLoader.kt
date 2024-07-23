@@ -129,10 +129,9 @@ class FapManifestsLoader @AssistedInject constructor(
         val cacheResult = cacheLoader.loadCache()
         info { "Cache load result is toLoad: ${cacheResult.toLoadNames}, cached: ${cacheResult.cachedNames}" }
         val fapItemsList = mutableListOf<FapManifestItem>()
-        cacheResult.cachedNames.map { (file, name) ->
+        cacheResult.cachedNames.mapNotNull { (file, name) ->
             parser.parse(file.readBytes(), name)
-        }.filterNotNull()
-            .filter { fapExistChecker.checkExist(it.path) }
+        }.filter { fapExistChecker.checkExist(it.path) }
             .filter { it.isDevCatalog == isUseDevCatalog }
             .forEach {
                 fapItemsList.add(it)
@@ -144,15 +143,12 @@ class FapManifestsLoader @AssistedInject constructor(
                 )
             }
         info { "Parsed ${fapItemsList.size} manifests from cache" }
-        cacheResult.toLoadNames
-            .map { name ->
-                loadManifestFile(
-                    requestApi = serviceApi.requestApi,
-                    filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
-                )?.let { parser.parse(it, name) }
-            }
-            .filterNotNull()
-            .filter { fapExistChecker.checkExist(it.path) }
+        cacheResult.toLoadNames.mapNotNull { name ->
+            loadManifestFile(
+                requestApi = serviceApi.requestApi,
+                filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
+            )?.let { parser.parse(it, name) }
+        }.filter { fapExistChecker.checkExist(it.path) }
             .filter { it.isDevCatalog == isUseDevCatalog }
             .forEach { content ->
                 fapItemsList.add(content)

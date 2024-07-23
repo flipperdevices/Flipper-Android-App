@@ -23,7 +23,7 @@ concurrency:
 jobs:
   info:
     name: "Display concurrency info"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     steps:
       - run: |
           echo "github.workflow=${{ github.workflow }}"
@@ -32,7 +32,7 @@ jobs:
           echo "github.repository=${{ github.repository }}"
   test:
     name: "Run unit tests"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
@@ -48,7 +48,7 @@ jobs:
           arguments: testDebugUnitTest desktopTest
   detekt:
     name: "Check project by detekt"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
@@ -64,7 +64,7 @@ jobs:
           arguments: detektMain
   android_lint:
     name: "Check project by android`s lint"
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, AndroidShell]
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
         with:
