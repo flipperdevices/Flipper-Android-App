@@ -1,12 +1,10 @@
-package com.flipperdevices.bridge.impl.manager.service
+package com.flipperdevices.bridge.connection.feature.protocolversion.impl.api
 
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.impl.manager.UnsafeBleManager
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
+import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
@@ -14,21 +12,22 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.Settings
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withTimeoutOrNull
-import javax.inject.Inject
+import kotlin.time.Duration
 import javax.inject.Provider
 
 private val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
 private val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)
 
-class FlipperVersionApiImpl @Inject constructor(
-    settingsStoreProvider: Provider<DataStore<Settings>>
-) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
+class FVersionFeatureApiImpl @AssistedInject constructor(
+    private val settingsStoreProvider: Provider<DataStore<Settings>>
+) : FVersionFeatureApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
 
     private val settingsStore by settingsStoreProvider
@@ -39,7 +38,7 @@ class FlipperVersionApiImpl @Inject constructor(
 
     override fun getVersionInformationFlow(): StateFlow<SemVer?> = semVerStateFlow
 
-    override suspend fun isSupported(version: SemVer, timeout: Long): Boolean {
+    override suspend fun isSupported(version: SemVer, timeout: Duration): Boolean {
         info { "Check for support version $version with timeout $timeout" }
         val currentVersion = try {
             withTimeoutOrNull(timeout) {
