@@ -21,9 +21,9 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 @Composable
 fun LoadedContent(
     model: SetupComponent.Model.Loaded,
-    onPositiveClicked: () -> Unit,
-    onNegativeClicked: () -> Unit,
-    onDispatchSignalClicked: () -> Unit,
+    onPositiveClick: () -> Unit,
+    onNegativeClick: () -> Unit,
+    onDispatchSignalClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val ifrFileModel = model.response.ifrFileModel
@@ -34,7 +34,7 @@ fun LoadedContent(
 
             signalResponse != null -> {
                 ButtonContent(
-                    onClicked = onDispatchSignalClicked,
+                    onClick = onDispatchSignalClick,
                     modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
@@ -50,8 +50,8 @@ fun LoadedContent(
                 ) {
                     ConfirmContent(
                         text = signalResponse.message,
-                        onNegativeClicked = onNegativeClicked,
-                        onPositiveClicked = onPositiveClicked,
+                        onNegativeClick = onNegativeClick,
+                        onPositiveClick = onPositiveClick,
                         modifier = Modifier.align(Alignment.BottomCenter)
                     )
                 }
@@ -79,9 +79,9 @@ private fun LoadedContentPreview() {
                 response = SignalResponseModel(),
                 isEmulated = true
             ),
-            onPositiveClicked = {},
-            onNegativeClicked = {},
-            onDispatchSignalClicked = {}
+            onPositiveClick = {},
+            onNegativeClick = {},
+            onDispatchSignalClick = {}
         )
     }
 }

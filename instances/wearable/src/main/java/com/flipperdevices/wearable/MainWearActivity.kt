@@ -121,7 +121,7 @@ class MainWearActivity : ComponentActivity(), LogTagProvider {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(LocalPallet.current.background),
-                    onDismissed = rootComponent::onBack
+                    onDismiss = rootComponent::onBack
                 ) {
                     it.instance.Render()
                 }

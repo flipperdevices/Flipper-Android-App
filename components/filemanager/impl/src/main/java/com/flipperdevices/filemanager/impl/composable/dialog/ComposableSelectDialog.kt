@@ -19,10 +19,10 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 @Composable
 fun ComposableSelectDialog(
     options: IntArray,
-    onSelected: (Int?) -> Unit,
+    onSelect: (Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Dialog(onDismissRequest = { onSelected(null) }) {
+    Dialog(onDismissRequest = { onSelect(null) }) {
         Column(modifier = modifier.background(LocalPallet.current.backgroundDialog)) {
             options.forEachIndexed { index, elementTextId ->
                 ComposableDialogOption(
@@ -31,7 +31,7 @@ fun ComposableSelectDialog(
                         .fillMaxWidth(),
                     textId = elementTextId,
                     onClick = {
-                        onSelected(elementTextId)
+                        onSelect(elementTextId)
                     }
                 )
                 if (index != options.lastIndex) {

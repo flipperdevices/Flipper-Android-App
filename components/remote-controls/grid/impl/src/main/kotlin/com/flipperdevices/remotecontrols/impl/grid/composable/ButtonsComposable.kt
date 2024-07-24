@@ -25,7 +25,7 @@ import com.flipperdevices.remotecontrols.grid.impl.R as GridR
 @Composable
 fun BoxWithConstraintsScope.ButtonsComposable(
     pageLayout: PageLayout?,
-    onButtonClicked: (IfrButton, IfrKeyIdentifier) -> Unit,
+    onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     onReload: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,8 +57,8 @@ fun BoxWithConstraintsScope.ButtonsComposable(
                             content = {
                                 ButtonItemComposable(
                                     buttonData = button.data,
-                                    onKeyDataClicked = { keyIdentifier ->
-                                        onButtonClicked.invoke(button, keyIdentifier)
+                                    onKeyDataClick = { keyIdentifier ->
+                                        onButtonClick.invoke(button, keyIdentifier)
                                     }
                                 )
                             }

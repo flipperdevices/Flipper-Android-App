@@ -12,7 +12,7 @@ private const val DEFAULT_SCREENSHOT_SIZE = 6
 @Composable
 fun AppCardScreenshots(
     screenshots: ImmutableList<String>?,
-    onScreenshotClicked: (index: Int) -> Unit,
+    onScreenshotClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     screenshotModifier: Modifier = Modifier,
 ) {
@@ -32,7 +32,7 @@ fun AppCardScreenshots(
             val screenshotUrl = screenshots[index]
             ComposableAppScreenshot(
                 modifier = screenshotModifier.clickable {
-                    onScreenshotClicked.invoke(index)
+                    onScreenshotClick.invoke(index)
                 },
                 url = screenshotUrl
             )

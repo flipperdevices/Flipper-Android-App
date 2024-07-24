@@ -128,8 +128,8 @@ private fun ComposableFapScreenInternal(
             AppCardScreenshots(
                 screenshots = fapItem?.screenshots,
                 modifier = Modifier.padding(top = 18.dp, start = 14.dp),
-                onScreenshotClicked = onScreenshotClicked@{ index ->
-                    val requireFapItem = fapItem ?: return@onScreenshotClicked
+                onScreenshotClick = onScreenshotClick@{ index ->
+                    val requireFapItem = fapItem ?: return@onScreenshotClick
                     val param = ScreenshotsPreviewParam(
                         title = requireFapItem.name,
                         screenshotsUrls = requireFapItem.screenshots,

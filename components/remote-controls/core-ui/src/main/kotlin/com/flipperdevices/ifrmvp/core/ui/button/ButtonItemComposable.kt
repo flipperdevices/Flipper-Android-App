@@ -18,7 +18,7 @@ import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
 @Composable
 fun ButtonItemComposable(
     buttonData: ButtonData,
-    onKeyDataClicked: (IfrKeyIdentifier) -> Unit,
+    onKeyDataClick: (IfrKeyIdentifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (buttonData) {
@@ -26,40 +26,40 @@ fun ButtonItemComposable(
             SquareIconButton(
                 iconType = buttonData.iconId,
                 modifier = modifier,
-                onClick = { onKeyDataClicked.invoke(buttonData.keyIdentifier) }
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
             )
         }
 
         is ChannelButtonData -> {
             ChannelButton(
-                onNextClicked = { onKeyDataClicked.invoke(buttonData.addKeyIdentifier) },
-                onPrevClicked = { onKeyDataClicked.invoke(buttonData.reduceKeyIdentifier) },
+                onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
+                onPrevClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
             )
         }
 
         is VolumeButtonData -> {
             VolumeButton(
-                onAddClicked = { onKeyDataClicked.invoke(buttonData.addKeyIdentifier) },
-                onReduceClicked = { onKeyDataClicked.invoke(buttonData.reduceKeyIdentifier) },
+                onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
+                onReduceClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
             )
         }
 
         is NavigationButtonData -> {
             NavigationButton(
-                onLeftClicked = { onKeyDataClicked.invoke(buttonData.leftKeyIdentifier) },
-                onRightClicked = { onKeyDataClicked.invoke(buttonData.rightKeyIdentifier) },
-                onDownClicked = { onKeyDataClicked.invoke(buttonData.downKeyIdentifier) },
-                onUpClicked = { onKeyDataClicked.invoke(buttonData.upKeyIdentifier) },
-                onOkClicked = { onKeyDataClicked.invoke(buttonData.okKeyIdentifier) },
+                onLeftClick = { onKeyDataClick.invoke(buttonData.leftKeyIdentifier) },
+                onRightClick = { onKeyDataClick.invoke(buttonData.rightKeyIdentifier) },
+                onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
+                onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
+                onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
                 modifier = modifier,
             )
         }
 
         is TextButtonData -> {
             TextButton(
-                onClick = { onKeyDataClicked.invoke(buttonData.keyIdentifier) },
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
                 text = buttonData.text,
                 background = LocalPalletV2.current.surface.menu.body.dufault,
                 modifier = modifier,
@@ -69,7 +69,7 @@ fun ButtonItemComposable(
         is Base64ImageButtonData -> {
             Base64ImageButton(
                 base64Icon = buttonData.pngBase64,
-                onClick = { onKeyDataClicked.invoke(buttonData.keyIdentifier) },
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
                 modifier = modifier,
             )
         }

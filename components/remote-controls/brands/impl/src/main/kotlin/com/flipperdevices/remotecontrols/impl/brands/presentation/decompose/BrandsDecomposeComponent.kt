@@ -17,9 +17,9 @@ interface BrandsDecomposeComponent {
 
     fun clearQuery()
 
-    fun onBackClicked()
+    fun onBackClick()
 
-    fun onBrandClicked(brandModel: BrandModel)
+    fun onBrandClick(brandModel: BrandModel)
 
     fun tryLoad()
 
@@ -50,8 +50,8 @@ interface BrandsDecomposeComponent {
         fun createBrandsComponent(
             componentContext: ComponentContext,
             categoryId: Long,
-            onBackClicked: DecomposeOnBackParameter,
-            onBrandClicked: (brandId: Long) -> Unit
+            onBackClick: DecomposeOnBackParameter,
+            onBrandClick: (brandId: Long) -> Unit
         ): BrandsDecomposeComponent
     }
 }

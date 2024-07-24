@@ -27,7 +27,7 @@ import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 fun ComposableKeyCard(
     synchronizationContent: (@Composable () -> Unit)?,
     flipperKeyParsed: FlipperKeyParsed,
-    onCardClicked: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     typeColor: Color = colorByFlipperKeyType(flipperKeyParsed.fileType),
 ) {
@@ -36,7 +36,7 @@ fun ComposableKeyCard(
             .padding(horizontal = 14.dp)
             .fillMaxWidth()
     ) {
-        Column(Modifier.clickableRipple(onClick = onCardClicked).padding(bottom = 8.dp)) {
+        Column(Modifier.clickableRipple(onClick = onCardClick).padding(bottom = 8.dp)) {
             ComposableKeyCardContent(
                 flipperKeyParsed,
                 typeColor,

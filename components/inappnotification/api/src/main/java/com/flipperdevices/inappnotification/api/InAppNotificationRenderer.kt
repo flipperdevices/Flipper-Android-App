@@ -9,6 +9,6 @@ interface InAppNotificationRenderer {
     fun InAppNotification(
         notification: InAppNotification,
         modifier: Modifier,
-        onNotificationHidden: () -> Unit
+        onNotificationHide: () -> Unit
     )
 }

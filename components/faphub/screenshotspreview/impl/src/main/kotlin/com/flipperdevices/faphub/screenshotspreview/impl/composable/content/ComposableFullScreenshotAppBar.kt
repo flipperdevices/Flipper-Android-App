@@ -29,7 +29,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 internal fun ComposableFullScreenshotAppBar(
     onBack: () -> Unit,
-    onSaveClicked: () -> Unit,
+    onSaveClick: () -> Unit,
     title: String,
     itemsAmount: Int,
     selectedItemIndex: Int,
@@ -81,7 +81,7 @@ internal fun ComposableFullScreenshotAppBar(
         Icon(
             modifier = Modifier
                 .size(24.dp)
-                .clickableRipple(bounded = false, onClick = onSaveClicked),
+                .clickableRipple(bounded = false, onClick = onSaveClick),
             tint = LocalPallet.current.text100,
             painter = painterResource(R.drawable.ic_share),
             contentDescription = null
@@ -101,7 +101,7 @@ private fun FullScreenshotAppBar() {
             """.trimIndent(),
             itemsAmount = 5,
             selectedItemIndex = 2,
-            onSaveClicked = {}
+            onSaveClick = {}
         )
     }
 }

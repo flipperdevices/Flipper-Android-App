@@ -15,8 +15,8 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, DeviceCategoriesComponent.Factory::class)
 class DeviceCategoriesComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val onBackClicked: DecomposeOnBackParameter,
-    @Assisted private val onCategoryClicked: (categoryId: Long) -> Unit,
+    @Assisted private val onBackClick: DecomposeOnBackParameter,
+    @Assisted private val onCategoryClick: (categoryId: Long) -> Unit,
     createDeviceCategoryListViewModel: Provider<DeviceCategoryListViewModel>,
 ) : DeviceCategoriesComponent,
     ComponentContext by componentContext {
@@ -26,11 +26,11 @@ class DeviceCategoriesComponentImpl @AssistedInject constructor(
 
     override val model = deviceCategoryListFeature.model
 
-    override fun onCategoryClicked(category: DeviceCategory) {
-        onCategoryClicked(category.id)
+    override fun onCategoryClick(category: DeviceCategory) {
+        onCategoryClick(category.id)
     }
 
-    override fun onBackClicked() = onBackClicked.invoke()
+    override fun onBackClick() = onBackClick.invoke()
 
     override fun tryLoad() {
         deviceCategoryListFeature.tryLoad()

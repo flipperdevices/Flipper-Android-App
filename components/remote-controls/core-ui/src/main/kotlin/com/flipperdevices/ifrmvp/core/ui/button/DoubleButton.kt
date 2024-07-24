@@ -14,8 +14,8 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
 @Composable
 fun DoubleButton(
-    onFirstClicked: () -> Unit,
-    onLastClicked: () -> Unit,
+    onFirstClick: () -> Unit,
+    onLastClick: () -> Unit,
     firstText: String,
     lastText: String,
     modifier: Modifier = Modifier,
@@ -29,7 +29,7 @@ fun DoubleButton(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextButton(
-            onClick = onFirstClicked,
+            onClick = onFirstClick,
             text = firstText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
         )
@@ -41,7 +41,7 @@ fun DoubleButton(
             )
         }
         TextButton(
-            onClick = onLastClicked,
+            onClick = onLastClick,
             text = lastText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
         )
@@ -50,13 +50,13 @@ fun DoubleButton(
 
 @Composable
 fun VolumeButton(
-    onAddClicked: () -> Unit,
-    onReduceClicked: () -> Unit,
+    onAddClick: () -> Unit,
+    onReduceClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     DoubleButton(
-        onFirstClicked = onAddClicked,
-        onLastClicked = onReduceClicked,
+        onFirstClick = onAddClick,
+        onLastClick = onReduceClick,
         text = "VOL",
         firstText = "+",
         lastText = "-",
@@ -66,13 +66,13 @@ fun VolumeButton(
 
 @Composable
 fun ChannelButton(
-    onNextClicked: () -> Unit,
-    onPrevClicked: () -> Unit,
+    onNextClick: () -> Unit,
+    onPrevClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     DoubleButton(
-        onFirstClicked = onNextClicked,
-        onLastClicked = onPrevClicked,
+        onFirstClick = onNextClick,
+        onLastClick = onPrevClick,
         text = "CH",
         firstText = "+",
         lastText = "-",
