@@ -88,7 +88,6 @@ private fun DeviceCategoryComposablePreview() {
                 modifier = Modifier.width(120.dp),
                 deviceCategory = DeviceCategory(
                     id = 1,
-                    folderName = "Folder",
                     meta = CategoryMeta(
                         iconPngBase64 = "",
                         iconSvgBase64 = "",
