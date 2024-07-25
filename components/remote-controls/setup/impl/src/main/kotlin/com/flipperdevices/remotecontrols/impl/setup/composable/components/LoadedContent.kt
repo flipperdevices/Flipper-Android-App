@@ -38,7 +38,6 @@ fun LoadedContent(
                     modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
-                    isEmulating = model.isEmulating,
                 )
                 AnimatedVisibility(
                     visible = model.isEmulated,

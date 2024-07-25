@@ -24,11 +24,9 @@ import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
-@Suppress("UnusedParameter")
 private fun SignalResponseButton(
     data: ButtonData,
     onClick: () -> Unit,
-    isEmulating: Boolean
 ) {
     ButtonItemComposable(
         buttonData = data,
@@ -42,7 +40,6 @@ fun ButtonContent(
     onClick: () -> Unit,
     data: ButtonData,
     categoryName: String,
-    isEmulating: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -53,7 +50,6 @@ fun ButtonContent(
         SignalResponseButton(
             data = data,
             onClick = onClick,
-            isEmulating = isEmulating
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
@@ -78,19 +74,16 @@ private fun ComposableConfirmContentDarkPreview() {
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY",
-                isEmulating = true,
                 data = TextButtonData(text = "Hello")
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
-                isEmulating = true,
                 data = TextButtonData(text = "TV/AV")
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
-                isEmulating = true,
                 data = TextButtonData(text = "Hello world")
             )
         }
