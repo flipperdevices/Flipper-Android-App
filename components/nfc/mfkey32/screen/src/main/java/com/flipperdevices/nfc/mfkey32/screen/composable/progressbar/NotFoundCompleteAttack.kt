@@ -23,7 +23,7 @@ import com.flipperdevices.nfc.mfkey32.screen.R
 
 @Composable
 fun NotFoundCompleteAttack(
-    onDone: () -> Unit,
+    onComplete: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Column(
     modifier.fillMaxWidth(),
@@ -52,7 +52,7 @@ fun NotFoundCompleteAttack(
             .fillMaxWidth(),
         text = stringResource(R.string.mfkey32_complete_btn),
         textPadding = PaddingValues(vertical = 14.dp),
-        onClick = onDone
+        onClick = onComplete
     )
 }
 

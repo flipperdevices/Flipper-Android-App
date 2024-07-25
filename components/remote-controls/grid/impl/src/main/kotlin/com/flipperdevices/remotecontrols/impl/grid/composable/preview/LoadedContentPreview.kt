@@ -14,7 +14,7 @@ private fun LoadedContentPreview() {
     FlipperThemeInternal {
         LoadedContent(
             pagesLayout = KitchenLayoutFactory.create(),
-            onButtonClicked = { _, _ -> },
+            onButtonClick = { _, _ -> },
             onReload = {}
         )
     }

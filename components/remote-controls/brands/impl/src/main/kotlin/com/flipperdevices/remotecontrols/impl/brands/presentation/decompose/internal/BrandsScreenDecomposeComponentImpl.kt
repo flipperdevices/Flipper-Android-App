@@ -15,15 +15,15 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class BrandsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryId: Long,
-    @Assisted onBackClicked: () -> Unit,
-    @Assisted onBrandClicked: (brandId: Long) -> Unit,
+    @Assisted onBackClick: () -> Unit,
+    @Assisted onBrandClick: (brandId: Long) -> Unit,
     brandsDecomposeComponentFactory: BrandsDecomposeComponent.Factory,
 ) : BrandsScreenDecomposeComponent(componentContext) {
     private val brandsComponent = brandsDecomposeComponentFactory.createBrandsComponent(
         componentContext = childContext("BrandsComponent"),
         categoryId = categoryId,
-        onBackClicked = onBackClicked,
-        onBrandClicked = onBrandClicked
+        onBackClick = onBackClick,
+        onBrandClick = onBrandClick
     )
 
     @Composable

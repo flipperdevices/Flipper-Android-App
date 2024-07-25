@@ -11,8 +11,8 @@ abstract class BrandsScreenDecomposeComponent(
         fun createBrandsComponent(
             componentContext: ComponentContext,
             categoryId: Long,
-            onBackClicked: () -> Unit,
-            onBrandClicked: (brandId: Long) -> Unit
+            onBackClick: () -> Unit,
+            onBrandClick: (brandId: Long) -> Unit
         ): BrandsScreenDecomposeComponent
     }
 }

@@ -30,11 +30,11 @@ private const val NAV_BUTTON_SCALE = 4
 @Suppress("LongMethod")
 @Composable
 fun NavigationButton(
-    onUpClicked: () -> Unit,
-    onRightClicked: () -> Unit,
-    onDownClicked: () -> Unit,
-    onLeftClicked: () -> Unit,
-    onOkClicked: () -> Unit,
+    onUpClick: () -> Unit,
+    onRightClick: () -> Unit,
+    onDownClick: () -> Unit,
+    onLeftClick: () -> Unit,
+    onOkClick: () -> Unit,
     modifier: Modifier = Modifier,
     background: Color = LocalPalletV2.current.surface.menu.body.dufault,
     iconTint: Color = MaterialTheme.colors.onPrimary,
@@ -54,7 +54,7 @@ fun NavigationButton(
             modifier = Modifier
                 .size(32.sf)
                 .clip(CircleShape)
-                .clickable(onClick = onUpClicked)
+                .clickable(onClick = onUpClick)
                 .align(Alignment.TopCenter)
         )
         Icon(
@@ -64,7 +64,7 @@ fun NavigationButton(
             modifier = Modifier
                 .size(32.sf)
                 .clip(CircleShape)
-                .clickable(onClick = onLeftClicked)
+                .clickable(onClick = onLeftClick)
                 .align(Alignment.CenterStart)
         )
         Box(
@@ -76,7 +76,7 @@ fun NavigationButton(
                 .clip(CircleShape)
                 .background(LocalPalletV2.current.surface.menu.separator.default)
                 .clip(CircleShape)
-                .clickable(onClick = onOkClicked)
+                .clickable(onClick = onOkClick)
                 .align(Alignment.Center),
             contentAlignment = Alignment.Center,
             content = {
@@ -97,7 +97,7 @@ fun NavigationButton(
             modifier = Modifier
                 .size(32.sf)
                 .clip(CircleShape)
-                .clickable(onClick = onRightClicked)
+                .clickable(onClick = onRightClick)
                 .align(Alignment.CenterEnd)
         )
 
@@ -108,7 +108,7 @@ fun NavigationButton(
             modifier = Modifier
                 .size(32.sf)
                 .clip(CircleShape)
-                .clickable(onClick = onDownClicked)
+                .clickable(onClick = onDownClick)
                 .align(Alignment.BottomCenter)
         )
     }

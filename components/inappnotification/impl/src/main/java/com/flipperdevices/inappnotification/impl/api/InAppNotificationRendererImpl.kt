@@ -15,11 +15,11 @@ class InAppNotificationRendererImpl @Inject constructor() : InAppNotificationRen
     override fun InAppNotification(
         notification: InAppNotification,
         modifier: Modifier,
-        onNotificationHidden: () -> Unit,
+        onNotificationHide: () -> Unit,
     ) {
         ComposableInAppNotification(
             notification = notification,
-            onNotificationHidden = onNotificationHidden,
+            onNotificationHide = onNotificationHide,
             modifier = modifier
         )
     }

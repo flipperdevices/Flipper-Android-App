@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun BrandsList(
     brands: ImmutableList<BrandModel>,
-    onBrandClicked: (BrandModel) -> Unit,
+    onBrandClick: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
 ) {
@@ -57,7 +57,7 @@ fun BrandsList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable { onBrandClicked.invoke(brand) }
+                        .clickable { onBrandClick.invoke(brand) }
                         .padding(vertical = 12.dp)
                 )
                 Spacer(

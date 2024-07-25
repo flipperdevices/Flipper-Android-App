@@ -39,7 +39,7 @@ private fun SignalResponseButton(
 
 @Composable
 fun ButtonContent(
-    onClicked: () -> Unit,
+    onClick: () -> Unit,
     data: ButtonData,
     categoryName: String,
     isEmulating: Boolean,
@@ -52,7 +52,7 @@ fun ButtonContent(
     ) {
         SignalResponseButton(
             data = data,
-            onClick = onClicked,
+            onClick = onClick,
             isEmulating = isEmulating
         )
         Spacer(modifier = Modifier.height(14.dp))
@@ -76,19 +76,19 @@ private fun ComposableConfirmContentDarkPreview() {
     FlipperThemeInternal {
         Column {
             ButtonContent(
-                onClicked = {},
+                onClick = {},
                 categoryName = "CATEGORY",
                 isEmulating = true,
                 data = TextButtonData(text = "Hello")
             )
             ButtonContent(
-                onClicked = {},
+                onClick = {},
                 categoryName = "CATEGORY 2",
                 isEmulating = true,
                 data = TextButtonData(text = "TV/AV")
             )
             ButtonContent(
-                onClicked = {},
+                onClick = {},
                 categoryName = "CATEGORY 2",
                 isEmulating = true,
                 data = TextButtonData(text = "Hello world")

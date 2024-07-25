@@ -39,7 +39,7 @@ class InAppNotificationViewModel @AssistedInject constructor(
 
     fun state(): StateFlow<InAppNotificationState> = notificationState
 
-    fun onNotificationHidden(notification: InAppNotification) {
+    fun onNotificationHide(notification: InAppNotification) {
         notificationState.update {
             if (it is InAppNotificationState.ShownNotification &&
                 it.notification == notification

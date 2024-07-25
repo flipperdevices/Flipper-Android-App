@@ -28,7 +28,7 @@ internal fun DeviceCategoriesScreen(
             SharedTopBar(
                 title = stringResource(CategoriesR.string.categories_title),
                 subtitle = stringResource(CategoriesR.string.categories_subtitle),
-                onBackClicked = deviceCategoriesComponent::onBackClicked
+                onBackClick = deviceCategoriesComponent::onBackClick
             )
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body
@@ -43,7 +43,7 @@ internal fun DeviceCategoriesScreen(
                     DeviceCategoriesLoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onCategoryClicked = deviceCategoriesComponent::onCategoryClicked
+                        onCategoryClick = deviceCategoriesComponent::onCategoryClick
                     )
                 }
 

@@ -48,7 +48,7 @@ internal fun ComposableReportPending(
         checked = checked,
         onChangeName = { name = it.take(MAX_TITLE) },
         onChangeDescription = { description = it },
-        onChangeChecked = { checked = it }
+        onChangeCheck = { checked = it }
     )
 
     ComposableFlipperButton(
@@ -69,7 +69,7 @@ private fun ComposableReportPendingFields(
     checked: Boolean,
     onChangeName: (String) -> Unit,
     onChangeDescription: (String) -> Unit,
-    onChangeChecked: (Boolean) -> Unit,
+    onChangeCheck: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) = Column(
     modifier = modifier
@@ -120,13 +120,13 @@ private fun ComposableReportPendingFields(
         textFieldModifier = Modifier.height(250.dp)
     )
 
-    ComposableReportAddLog(checked = checked, onCheckedChange = onChangeChecked)
+    ComposableReportAddLog(checked = checked, onCheckChange = onChangeCheck)
 }
 
 @Composable
 private fun ComposableReportAddLog(
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckChange: (Boolean) -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -134,7 +134,7 @@ private fun ComposableReportAddLog(
     ) {
         ComposableCheckBox(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckChange = onCheckChange
         )
         Text(
             text = stringResource(R.string.shake2report_add_log),

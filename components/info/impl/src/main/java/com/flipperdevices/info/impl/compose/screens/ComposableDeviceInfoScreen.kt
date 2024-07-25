@@ -74,7 +74,7 @@ fun ComposableDeviceInfoScreen(
                 modifier = Modifier.padding(top = 14.dp),
                 onStartUpdateRequest = onStartUpdateRequest,
                 requestRefresh = refreshRequested,
-                onRefreshRequestExecuted = { refreshRequested = false },
+                onRefreshRequestExecute = { refreshRequested = false },
                 deeplink = deeplink,
                 componentContext = componentContext
             )

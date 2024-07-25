@@ -27,7 +27,7 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 fun SharedTopBar(
     title: String,
     subtitle: String,
-    onBackClicked: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -42,7 +42,7 @@ fun SharedTopBar(
         Icon(
             modifier = Modifier
                 .size(24.dp)
-                .clickableRipple(bounded = false, onClick = onBackClicked),
+                .clickableRipple(bounded = false, onClick = onBackClick),
             painter = painterResource(DesignSystem.drawable.ic_back),
             contentDescription = null,
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor

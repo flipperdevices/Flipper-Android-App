@@ -36,12 +36,12 @@ const val VISIBLE_ANIMATION_MS = 1000
 @Composable
 fun ComposableInAppNotification(
     notification: InAppNotification,
-    onNotificationHidden: () -> Unit,
+    onNotificationHide: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ComposableInAppNotificationCard(
         notification = notification,
-        onNotificationHidden = onNotificationHidden,
+        onNotificationHide = onNotificationHide,
         modifier = modifier
     )
 }
@@ -50,20 +50,20 @@ fun ComposableInAppNotification(
 @Suppress("LongMethod")
 private fun ComposableInAppNotificationCard(
     notification: InAppNotification,
-    onNotificationHidden: () -> Unit,
+    onNotificationHide: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var visibleState by remember { mutableStateOf(false) }
-    var actionClicked by remember { mutableStateOf(false) }
+    var actionClick by remember { mutableStateOf(false) }
     LaunchedEffect(notification) {
         visibleState = true
     }
 
-    val onClickAction = remember(onNotificationHidden) {
+    val onClickAction = remember(onNotificationHide) {
         {
             visibleState = false
-            actionClicked = true
-            onNotificationHidden()
+            actionClick = true
+            onNotificationHide()
         }
     }
     AnimatedVisibility(
@@ -108,15 +108,15 @@ private fun ComposableInAppNotificationCard(
             }
         }
     }
-    DisposableEffect(notification, onNotificationHidden) {
+    DisposableEffect(notification, onNotificationHide) {
         val handler = Handler(Looper.getMainLooper())
 
         val fadeOutRunnable = {
             visibleState = false
         }
         val hiddenRunnable = {
-            if (!actionClicked) {
-                onNotificationHidden()
+            if (!actionClick) {
+                onNotificationHide()
             }
         }
 

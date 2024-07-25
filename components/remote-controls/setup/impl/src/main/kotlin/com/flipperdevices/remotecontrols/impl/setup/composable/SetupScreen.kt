@@ -56,7 +56,7 @@ fun SetupScreen(
             SharedTopBar(
                 title = stringResource(SetupR.string.setup_title),
                 subtitle = stringResource(SetupR.string.setup_subtitle),
-                onBackClicked = setupComponent::onBackClicked
+                onBackClick = setupComponent::onBackClick
             )
         }
     ) { scaffoldPaddings ->
@@ -68,7 +68,7 @@ fun SetupScreen(
         ) { model ->
             when (model) {
                 SetupComponent.Model.Error -> {
-                    ErrorComposable(onReload = setupComponent::onSuccessClicked)
+                    ErrorComposable(onReload = setupComponent::onSuccessClick)
                 }
 
                 is SetupComponent.Model.Loaded -> {
@@ -84,9 +84,9 @@ fun SetupScreen(
                     LoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onPositiveClicked = setupComponent::onSuccessClicked,
-                        onNegativeClicked = setupComponent::onFailedClicked,
-                        onDispatchSignalClicked = setupComponent::dispatchSignal
+                        onPositiveClick = setupComponent::onSuccessClick,
+                        onNegativeClick = setupComponent::onFailedClick,
+                        onDispatchSignalClick = setupComponent::dispatchSignal
                     )
                 }
 

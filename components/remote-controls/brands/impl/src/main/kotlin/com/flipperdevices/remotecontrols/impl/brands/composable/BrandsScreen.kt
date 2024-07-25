@@ -32,7 +32,7 @@ fun BrandsScreen(
             SharedTopBar(
                 title = stringResource(BrandsR.string.brands_title),
                 subtitle = stringResource(BrandsR.string.brands_subtitle),
-                onBackClicked = brandsDecomposeComponent::onBackClicked
+                onBackClick = brandsDecomposeComponent::onBackClick
             )
         }
     ) { scaffoldPaddings ->
@@ -46,7 +46,7 @@ fun BrandsScreen(
                     BrandsLoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onBrandClicked = brandsDecomposeComponent::onBrandClicked
+                        onBrandClick = brandsDecomposeComponent::onBrandClick
                     )
                 }
 

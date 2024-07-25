@@ -68,7 +68,7 @@ fun ComposableBubbleHoldToSend(
             enter = fadeIn(animationSpec = tween(DELAY_ANIMATION)),
             exit = fadeOut(animationSpec = tween(DELAY_ANIMATION))
         ) {
-            ComposableHoldToSendInternal(onBubbleSizeChanged = {
+            ComposableHoldToSendInternal(onBubbleSizeChange = {
                 positionBubble = it
             })
         }
@@ -91,13 +91,13 @@ private fun calculateBubblePosition(
 
 @Composable
 fun ComposableHoldToSendInternal(
-    onBubbleSizeChanged: (IntSize) -> Unit,
+    onBubbleSizeChange: (IntSize) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val bubbleColor = LocalPallet.current.bubbleEmulateBackground.copy(alpha = 0.8f)
     Column(
         modifier = modifier.onGloballyPositioned {
-            onBubbleSizeChanged(it.size)
+            onBubbleSizeChange(it.size)
         },
         horizontalAlignment = Alignment.End
     ) {
@@ -144,6 +144,6 @@ fun ComposableHoldToSendInternal(
 @Composable
 private fun ComposableHoldToSendPreview() {
     FlipperThemeInternal {
-        ComposableHoldToSendInternal(onBubbleSizeChanged = {})
+        ComposableHoldToSendInternal(onBubbleSizeChange = {})
     }
 }

@@ -10,7 +10,7 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.Bran
 @Composable
 fun BrandsLoadedContent(
     model: BrandsDecomposeComponent.Model.Loaded,
-    onBrandClicked: (BrandModel) -> Unit,
+    onBrandClick: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -25,7 +25,7 @@ fun BrandsLoadedContent(
                 modifier = Modifier.weight(1f),
                 listState = listState,
                 brands = model.sortedBrands,
-                onBrandClicked = onBrandClicked
+                onBrandClick = onBrandClick
             )
         }
     )

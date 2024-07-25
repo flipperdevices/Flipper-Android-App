@@ -17,6 +17,6 @@ interface UpdaterCardApi {
         deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
         onStartUpdateRequest: (UpdateRequest) -> Unit,
         requestRefresh: Boolean,
-        onRefreshRequestExecuted: () -> Unit
+        onRefreshRequestExecute: () -> Unit
     )
 }

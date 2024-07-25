@@ -53,7 +53,7 @@ fun ComposableFileManagerScreen(
                 R.string.filemanager_open_dialog_download
             )
         }
-        ComposableSelectDialog(chooseOptions, onSelected = {
+        ComposableSelectDialog(chooseOptions, onSelect = {
             when (it) {
                 R.string.filemanager_open_dialog_edit -> onOpenEditor(localFileItem)
                 R.string.filemanager_open_dialog_download -> onDownloadAndShareFile(localFileItem)
@@ -121,7 +121,7 @@ private fun ComposableCreateActionDialog(
             R.string.filemanager_add_dialog_file,
             R.string.filemanager_add_dialog_folder
         ),
-        onSelected = {
+        onSelect = {
             when (it) {
                 R.string.filemanager_add_dialog_file ->
                     createFileManagerAction = CreateFileManagerAction.FILE

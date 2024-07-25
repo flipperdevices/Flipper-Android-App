@@ -63,7 +63,7 @@ fun ComposableMainScreen(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 notificationRenderer = notificationRenderer,
                 notificationState = notificationState,
-                onNotificationHidden = notificationViewModel::onNotificationHidden
+                onNotificationHide = notificationViewModel::onNotificationHide
             )
         }
     }
