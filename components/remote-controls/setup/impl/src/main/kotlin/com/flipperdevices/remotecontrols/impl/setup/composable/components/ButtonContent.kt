@@ -32,7 +32,7 @@ private fun SignalResponseButton(
 ) {
     ButtonItemComposable(
         buttonData = data,
-        onKeyDataClicked = { onClick.invoke() },
+        onKeyDataClick = { onClick.invoke() },
         modifier = Modifier.size(64.dp),
     )
 }
