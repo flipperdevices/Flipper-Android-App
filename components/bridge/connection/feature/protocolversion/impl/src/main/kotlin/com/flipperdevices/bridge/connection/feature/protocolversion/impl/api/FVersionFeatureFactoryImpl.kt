@@ -1,6 +1,8 @@
 package com.flipperdevices.bridge.connection.feature.protocolversion.impl.api
 
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
@@ -10,6 +12,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
+@FDeviceFeatureQualifier(FDeviceFeature.VERSION)
 @ContributesBinding(AppGraph::class, FVersionFeatureApi.Factory::class)
 class FVersionFeatureFactoryImpl @Inject constructor(
     private val factory: FVersionFeatureApiImpl.InternalFactory

@@ -18,7 +18,4 @@ interface FVersionFeatureApi : FDeviceFeatureApi {
         version: SemVer,
         timeout: Duration = VERSION_WAITING_TIMEOUT
     ): Boolean
-
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }

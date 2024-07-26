@@ -1,5 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.common.api
 
+import dagger.MapKey
+
 enum class FDeviceFeature {
     RPC,
     SERIAL_LAGS_DETECTOR,
@@ -8,3 +10,7 @@ enum class FDeviceFeature {
     VERSION,
     RPC_INFO
 }
+
+@Retention(AnnotationRetention.RUNTIME)
+@MapKey
+annotation class FDeviceFeatureQualifier(val enum: FDeviceFeature)

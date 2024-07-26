@@ -1,16 +1,20 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, FLagsDetectorFeature.Factory::class)
+@FDeviceFeatureQualifier(FDeviceFeature.SERIAL_LAGS_DETECTOR)
+@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FLagsDetectorFeatureFactoryImpl @Inject constructor(
     private val lagsDetectorFeatureFactory: FLagsDetectorFeatureImpl.InternalFactory
 ) : FLagsDetectorFeature.Factory {

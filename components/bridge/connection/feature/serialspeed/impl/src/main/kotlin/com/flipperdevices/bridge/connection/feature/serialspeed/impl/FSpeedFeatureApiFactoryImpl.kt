@@ -1,16 +1,20 @@
 package com.flipperdevices.bridge.connection.feature.serialspeed.impl
 
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, FSpeedFeatureApi.Factory::class)
+@FDeviceFeatureQualifier(FDeviceFeature.SERIAL_SPEED)
+@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FSpeedFeatureApiFactoryImpl @Inject constructor(
     private val speedFeatureInternalFactory: FSpeedFeatureApiImpl.InternalFactory
 ) : FSpeedFeatureApi.Factory {

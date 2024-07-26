@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.connection.device.fzero.api.FZeroDeviceApi
 import com.flipperdevices.bridge.connection.device.fzero.impl.utils.FZeroFeatureClassToEnumMapper
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.common.api.FOnDeviceReadyFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
@@ -27,12 +28,8 @@ import kotlin.reflect.KClass
 class FZeroDeviceApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val connectedDevice: FConnectedDeviceApi,
-    private val rpcFeatureFactory: FRpcFeatureApi.Factory,
-    private val restartRpcFeatureFactory: FRestartRpcFeatureApi.Factory,
-    private val serialLagsDetectorFactory: FLagsDetectorFeature.Factory,
-    private val speedFeatureFactory: FSpeedFeatureApi.Factory,
-    private val versionFeatureFactory: FVersionFeatureApi.Factory,
-    private val rpcInfoFeatureApi: FRpcInfoFeatureApi.Factory
+    private val onReadyFeatureApi: MutableSet<FOnDeviceReadyFeatureApi>,
+    private val factories: MutableMap<FDeviceFeature, FDeviceFeatureApi.Factory>
 ) : FZeroDeviceApi, FUnsafeDeviceFeatureApi, LogTagProvider {
     override val TAG = "FZeroDeviceApi"
 
@@ -57,14 +54,7 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
         if (featureApi != null) {
             return featureApi
         }
-        val factory = when (feature) {
-            FDeviceFeature.RPC -> rpcFeatureFactory
-            FDeviceFeature.SERIAL_LAGS_DETECTOR -> serialLagsDetectorFactory
-            FDeviceFeature.SERIAL_RESTART_RPC -> restartRpcFeatureFactory
-            FDeviceFeature.SERIAL_SPEED -> speedFeatureFactory
-            FDeviceFeature.VERSION -> versionFeatureFactory
-            FDeviceFeature.RPC_INFO -> rpcInfoFeatureApi
-        }
+        val factory = factories[feature] ?: return null
         featureApi = factory(
             unsafeFeatureDeviceApi = this,
             scope = scope,

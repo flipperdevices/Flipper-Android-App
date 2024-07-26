@@ -1,6 +1,8 @@
 package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.api
 
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
@@ -8,10 +10,12 @@ import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureA
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, FRpcInfoFeatureApi.Factory::class)
+@FDeviceFeatureQualifier(FDeviceFeature.RPC_INFO)
+@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FRpcInfoFeatureFactoryImpl @Inject constructor(
     private val factory: FRpcInfoFeatureApiImpl.InternalFactory
 ) : FRpcInfoFeatureApi.Factory {

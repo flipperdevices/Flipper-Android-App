@@ -6,6 +6,4 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface FSpeedFeatureApi : FDeviceFeatureApi {
     suspend fun getSpeed(): StateFlow<FlipperSerialSpeed>
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }

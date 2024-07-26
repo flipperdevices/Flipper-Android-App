@@ -15,6 +15,4 @@ interface FRpcInfoFeatureApi : FDeviceFeatureApi {
     fun getRpcInformationFlow(): StateFlow<FlipperInformationStatus<FlipperRpcInformation>>
 
     suspend fun reset()
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }

@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.stats
+package com.flipperdevices.bridge.conenction.feature.storageinfo.impl.stats
 
 import com.flipperdevices.bridge.api.manager.FlipperReadyListener
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi

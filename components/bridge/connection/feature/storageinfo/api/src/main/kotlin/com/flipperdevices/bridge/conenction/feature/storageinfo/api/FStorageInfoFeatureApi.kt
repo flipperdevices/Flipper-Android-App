@@ -14,6 +14,4 @@ interface FStorageInfoFeatureApi : FDeviceFeatureApi {
     )
 
     suspend fun reset()
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }
