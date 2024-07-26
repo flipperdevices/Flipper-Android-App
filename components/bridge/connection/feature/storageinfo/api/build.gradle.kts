@@ -2,7 +2,7 @@ plugins {
     id("flipper.android-lib")
 }
 
-android.namespace = "com.flipperdevices.bridge.conenction.feature.storageinfo.api"
+android.namespace = "com.flipperdevices.bridge.connection.feature.storageinfo.api"
 
 dependencies {
     implementation(projects.components.core.data)

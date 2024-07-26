@@ -19,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
  */
 interface FDeviceFeatureApi {
     fun interface Factory {
-        operator fun invoke(
+        suspend operator fun invoke(
             unsafeFeatureDeviceApi: FUnsafeDeviceFeatureApi,
             scope: CoroutineScope,
             connectedDevice: FConnectedDeviceApi

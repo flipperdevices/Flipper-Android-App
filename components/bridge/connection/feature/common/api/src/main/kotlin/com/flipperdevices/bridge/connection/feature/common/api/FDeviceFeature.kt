@@ -8,7 +8,9 @@ enum class FDeviceFeature {
     SERIAL_RESTART_RPC,
     SERIAL_SPEED,
     VERSION,
-    RPC_INFO
+    RPC_INFO,
+    STORAGE_INFO,
+    GET_INFO
 }
 
 @Retention(AnnotationRetention.RUNTIME)
