@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.api
 
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpcinfo.impl.fullinforpc.DeprecatedFlipperFullInfoRpcApi
@@ -12,6 +13,7 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -29,6 +31,7 @@ private val API_SUPPORTED_GET_REQUEST = SemVer(
 
 class FRpcInfoFeatureApiImpl @AssistedInject constructor(
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,
+    @Assisted private val versionApi: FVersionFeatureApi,
     private val shake2ReportApi: Shake2ReportApi
 ) : FRpcInfoFeatureApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
@@ -66,7 +69,7 @@ class FRpcInfoFeatureApiImpl @AssistedInject constructor(
     private suspend fun invalidateInternal() {
         rpcInformationFlow.emit(FlipperInformationStatus.InProgress(FlipperRpcInformation()))
         val flipperFullInfoRpcApi = if (
-            serviceApi.flipperVersionApi.isSupported(API_SUPPORTED_GET_REQUEST)
+            versionApi.isSupported(API_SUPPORTED_GET_REQUEST)
         ) {
             NewFlipperFullInfoRpcApi()
         } else {
@@ -95,7 +98,11 @@ class FRpcInfoFeatureApiImpl @AssistedInject constructor(
         }
     }
 
+    @AssistedFactory
     fun interface InternalFactory {
-        fun invoke(): FRpcInfoFeatureApiImpl
+        operator fun invoke(
+            rpcFeatureApi: FRpcFeatureApi,
+            versionApi: FVersionFeatureApi,
+        ): FRpcInfoFeatureApiImpl
     }
 }

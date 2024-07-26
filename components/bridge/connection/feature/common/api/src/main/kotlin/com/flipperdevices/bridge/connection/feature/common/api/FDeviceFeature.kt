@@ -5,5 +5,6 @@ enum class FDeviceFeature {
     SERIAL_LAGS_DETECTOR,
     SERIAL_RESTART_RPC,
     SERIAL_SPEED,
-    VERSION
+    VERSION,
+    RPC_INFO
 }

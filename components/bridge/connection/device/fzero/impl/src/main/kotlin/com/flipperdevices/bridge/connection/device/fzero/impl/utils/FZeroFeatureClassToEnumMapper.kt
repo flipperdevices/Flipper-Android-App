@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import kotlinx.collections.immutable.ImmutableMap
@@ -22,6 +23,7 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.SERIAL_RESTART_RPC -> FRestartRpcFeatureApi::class
             FDeviceFeature.SERIAL_SPEED -> FSpeedFeatureApi::class
             FDeviceFeature.VERSION -> FVersionFeatureApi::class
+            FDeviceFeature.RPC_INFO -> FRpcInfoFeatureApi::class
         }
     }
 

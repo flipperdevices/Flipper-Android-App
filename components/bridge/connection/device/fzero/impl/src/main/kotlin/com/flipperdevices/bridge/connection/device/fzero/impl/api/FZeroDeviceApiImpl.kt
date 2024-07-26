@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeat
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
@@ -30,7 +31,8 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
     private val restartRpcFeatureFactory: FRestartRpcFeatureApi.Factory,
     private val serialLagsDetectorFactory: FLagsDetectorFeature.Factory,
     private val speedFeatureFactory: FSpeedFeatureApi.Factory,
-    private val versionFeatureFactory: FVersionFeatureApi.Factory
+    private val versionFeatureFactory: FVersionFeatureApi.Factory,
+    private val rpcInfoFeatureApi: FRpcInfoFeatureApi.Factory
 ) : FZeroDeviceApi, FUnsafeDeviceFeatureApi, LogTagProvider {
     override val TAG = "FZeroDeviceApi"
 
@@ -61,6 +63,7 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
             FDeviceFeature.SERIAL_RESTART_RPC -> restartRpcFeatureFactory
             FDeviceFeature.SERIAL_SPEED -> speedFeatureFactory
             FDeviceFeature.VERSION -> versionFeatureFactory
+            FDeviceFeature.RPC_INFO -> rpcInfoFeatureApi
         }
         featureApi = factory(
             unsafeFeatureDeviceApi = this,
