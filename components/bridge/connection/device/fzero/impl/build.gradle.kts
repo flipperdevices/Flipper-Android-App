@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.restartrpc.api)
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

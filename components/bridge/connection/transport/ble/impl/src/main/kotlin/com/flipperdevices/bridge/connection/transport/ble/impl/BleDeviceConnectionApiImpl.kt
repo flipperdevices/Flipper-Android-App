@@ -70,12 +70,14 @@ class BleDeviceConnectionApiImpl(
             FBleApiImpl(
                 client = device,
                 scope = scope,
-                statusListener = listener
+                statusListener = listener,
+                metaInfoGattMap = config.metaInfoGattMap
             )
         } else {
             bleApiWithSerialFactory.build(
                 scope = scope,
-                config = serialConfig,
+                serialConfig = serialConfig,
+                metaInfoGattMap = config.metaInfoGattMap,
                 client = device,
                 statusListener = listener
             )

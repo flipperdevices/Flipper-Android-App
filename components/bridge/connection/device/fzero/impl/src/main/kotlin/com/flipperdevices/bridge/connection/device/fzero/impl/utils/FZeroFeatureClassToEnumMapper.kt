@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.device.fzero.impl.utils
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
@@ -20,6 +21,7 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.SERIAL_LAGS_DETECTOR -> FLagsDetectorFeature::class
             FDeviceFeature.SERIAL_RESTART_RPC -> FRestartRpcFeatureApi::class
             FDeviceFeature.SERIAL_SPEED -> FSpeedFeatureApi::class
+            FDeviceFeature.VERSION -> FVersionFeatureApi::class
         }
     }
 
