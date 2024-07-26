@@ -38,7 +38,6 @@ fun LoadedContent(
                     modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
-                    isEmulating = model.isEmulating,
                 )
                 AnimatedVisibility(
                     visible = model.isEmulated,
@@ -49,7 +48,7 @@ fun LoadedContent(
                         .align(Alignment.BottomCenter),
                 ) {
                     ConfirmContent(
-                        text = signalResponse.message,
+                        text = signalResponse.message.format(signalResponse.categoryName),
                         onNegativeClick = onNegativeClick,
                         onPositiveClick = onPositiveClick,
                         modifier = Modifier.align(Alignment.BottomCenter)

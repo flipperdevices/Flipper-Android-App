@@ -15,33 +15,49 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed interface IfrKeyIdentifier {
-    val name: String
-
     /**
      * SHA-256 of raw data
      */
-    @SerialName("SHA_256")
+    @SerialName(Sha256.TYPE)
     @Serializable
-    class Sha256(
+    data class Sha256(
         @SerialName("key_name")
-        override val name: String,
+        val name: String,
         @SerialName("sha_256_string")
         val hash: String
-    ) : IfrKeyIdentifier
+    ) : IfrKeyIdentifier {
+        companion object {
+            const val TYPE = "SHA_256"
+        }
+    }
 
-    @SerialName("MD5")
+    @SerialName(MD5.TYPE)
     @Serializable
-    class MD5(
+    data class MD5(
         @SerialName("key_name")
-        override val name: String,
+        val name: String,
         @SerialName("md5_string")
         val hash: String
-    ) : IfrKeyIdentifier
+    ) : IfrKeyIdentifier {
+        companion object {
+            const val TYPE = "MD5"
+        }
+    }
 
-    @SerialName("NAME")
+    @SerialName(Name.TYPE)
     @Serializable
-    class Name(
+    data class Name(
         @SerialName("key_name")
-        override val name: String,
-    ) : IfrKeyIdentifier
+        val name: String,
+    ) : IfrKeyIdentifier {
+        companion object {
+            const val TYPE = "NAME"
+        }
+    }
+
+    @SerialName(Unknown.TYPE)
+    @Serializable
+    data object Unknown : IfrKeyIdentifier {
+        const val TYPE = "EMPTY"
+    }
 }

@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 data class IfrFileModel(
     @SerialName("id")
     val id: Long,
-    @SerialName("category_id")
-    val categoryId: Long,
     @SerialName("brand_id")
-    val brandId: Long
+    val brandId: Long,
 )

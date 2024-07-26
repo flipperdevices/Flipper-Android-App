@@ -20,14 +20,14 @@ internal fun SignalModel.toFFFormat(): FlipperFileFormat {
         orderedDict = listOf(
             (KEY_FILE_TYPE_KEY to KEY_FILE_TYPE_VALUE),
             (KEY_FILE_VERSION_KEY to KEY_FILE_VERSION_VALUE),
-            (KEY_NAME to name),
-            (KEY_TYPE to type),
-            (KEY_FREQUENCY to frequency),
-            (KEY_DUTY_CYCLE to dutyCycle),
-            (KEY_DATA to data),
-            (KEY_PROTOCOL to protocol),
-            (KEY_ADDRESS to address),
-            (KEY_COMMAND to command),
+            (KEY_NAME to remote.name),
+            (KEY_TYPE to remote.type),
+            (KEY_FREQUENCY to remote.frequency),
+            (KEY_DUTY_CYCLE to remote.dutyCycle),
+            (KEY_DATA to remote.data),
+            (KEY_PROTOCOL to remote.protocol),
+            (KEY_ADDRESS to remote.address),
+            (KEY_COMMAND to remote.command),
         ).mapNotNull { (k, v) -> if (v == null) null else k to v }
     )
 }

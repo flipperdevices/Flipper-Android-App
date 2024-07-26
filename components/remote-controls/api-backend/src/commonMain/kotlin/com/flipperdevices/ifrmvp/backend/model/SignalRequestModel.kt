@@ -9,8 +9,6 @@ data class SignalRequestModel(
     val successResults: List<SignalResultData> = emptyList(),
     @SerialName("failed_results")
     val failedResults: List<SignalResultData> = emptyList(),
-    @SerialName("category_id")
-    val categoryId: Long,
     @SerialName("brand_id")
     val brandId: Long
 ) {
@@ -18,7 +16,5 @@ data class SignalRequestModel(
     data class SignalResultData(
         @SerialName("signal_id")
         val signalId: Long,
-        @SerialName("ifr_file_id")
-        val ifrFileId: Long
     )
 }
