@@ -5,7 +5,7 @@ kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.colle
 kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "2.0.0-1.0.23" # https://github.com/google/ksp/releases
-anvil = "2.5.0-beta09" # https://github.com/square/anvil/releases
+anvil = "2.5.0-beta10-SNAPSHOT" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.5.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "4.27.2" # https://github.com/protocolbuffers/protobuf/releases
@@ -177,7 +177,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 # Dependency Injection
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger-kapt = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
 anvil-utils-annotations = { module = "me.gulya.anvil:annotations", version.ref = "anvil-utils" }
 anvil-utils-compiler = { module = "me.gulya.anvil:compiler", version.ref = "anvil-utils" }

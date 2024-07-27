@@ -5,5 +5,5 @@ plugins {
 
 dependencies {
     "implementation"(libs.ktorfit.lib)
-    ksp(libs.ktorfit.ksp)
+    "commonKsp"(libs.ktorfit.ksp)
 }

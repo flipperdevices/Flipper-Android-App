@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.kapt")
-    id("kotlin-kapt")
+    id("flipper.anvil.entrypoint")
     id("kotlinx-serialization")
 }
 
@@ -64,7 +63,7 @@ dependencies {
 
     // Dagger deps
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
 

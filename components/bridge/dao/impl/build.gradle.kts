@@ -20,7 +20,7 @@ dependencies {
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.ksp)
+    commonKsp(libs.room.ksp)
 
     implementation(libs.kotlin.immutable.collections)
 
