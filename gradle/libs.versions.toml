@@ -1,6 +1,6 @@
 [versions]
 # You also need to bump the version of ksp, anvil, compose
-kotlin-general = "2.0.20-Beta2" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "2.0.0" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
@@ -63,8 +63,7 @@ grgit-gradle = "8d818b74b9"
 work = "2.9.0" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.7.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
-# don't upgrade to 1.14+ until Kotlin is upgraded to 2.0. https://github.com/Foso/Ktorfit/releases/tag/1.14.0
-ktorfit = "1.13.0" # https://github.com/Foso/Ktorfit/releases
+ktorfit = "2.0.0" # https://github.com/Foso/Ktorfit/releases
 decompose = "3.1.0" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.1.0" # https://github.com/arkivanov/Essenty/releases
 zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
@@ -225,7 +224,6 @@ ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
 # Ktorfit
-ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
 ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-gradle = { module = "de.jensklingenberg.ktorfit:ktorfit-gradle-plugin", version.ref = "ktorfit" }
 
