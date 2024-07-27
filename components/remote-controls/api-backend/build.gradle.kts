@@ -3,7 +3,7 @@ plugins {
     id("flipper.multiplatform-dependencies")
     id("kotlinx-serialization")
     id("flipper.anvil")
-    id("flipper.ktorfit")
+    id("flipper.ktorfit-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.remotecontrols.api.backend"

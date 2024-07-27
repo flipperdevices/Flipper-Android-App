@@ -3,9 +3,9 @@ package com.flipperdevices.ifrmvp.api.infrared
 import com.flipperdevices.ifrmvp.backend.model.BrandsResponse
 import com.flipperdevices.ifrmvp.backend.model.CategoriesResponse
 import com.flipperdevices.ifrmvp.backend.model.IfrFileContentResponse
+import com.flipperdevices.ifrmvp.backend.model.PagesLayoutBackendModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
-import com.flipperdevices.ifrmvp.model.PagesLayout
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.POST
@@ -33,5 +33,5 @@ interface InfraredBackendApi {
     @GET("ui")
     suspend fun getUiFile(
         @Query("ifr_file_id") ifrFileId: Long
-    ): PagesLayout
+    ): PagesLayoutBackendModel
 }

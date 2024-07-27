@@ -3,8 +3,11 @@ package com.flipperdevices.faphub.dao.network.ktorfit
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitBundleApi
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitVersionApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.createKtorfitApplicationApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.createKtorfitBundleApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.createKtorfitCategoryApi
+import com.flipperdevices.faphub.dao.network.ktorfit.api.createKtorfitVersionApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
 import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
 import com.squareup.anvil.annotations.ContributesTo
@@ -35,25 +38,25 @@ class KtorfitModule {
     @Provides
     @Reusable
     fun provideApplicationApi(ktorfit: Ktorfit): KtorfitApplicationApi {
-        return ktorfit.create()
+        return ktorfit.createKtorfitApplicationApi()
     }
 
     @Provides
     @Reusable
     fun provideNetworkCategoryApi(ktorfit: Ktorfit): FapHubNetworkCategoryApi {
-        val categoryApi = ktorfit.create<KtorfitCategoryApi>()
+        val categoryApi = ktorfit.createKtorfitCategoryApi()
         return FapHubNetworkCategoryApi(categoryApi)
     }
 
     @Provides
     @Reusable
     fun provideBundleApi(ktorfit: Ktorfit): KtorfitBundleApi {
-        return ktorfit.create()
+        return ktorfit.createKtorfitBundleApi()
     }
 
     @Provides
     @Reusable
     fun provideVersionApi(ktorfit: Ktorfit): KtorfitVersionApi {
-        return ktorfit.create()
+        return ktorfit.createKtorfitVersionApi()
     }
 }
