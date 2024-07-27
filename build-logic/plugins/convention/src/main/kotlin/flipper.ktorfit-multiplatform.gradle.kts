@@ -5,6 +5,7 @@ plugins {
 }
 kotlin {
     sourceSets {
+        @Suppress("UnusedPrivateProperty")
         val commonMain by getting {
             dependencies {
                 implementation(libs.ktorfit.lib)
