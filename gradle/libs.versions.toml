@@ -63,7 +63,8 @@ grgit-gradle = "8d818b74b9"
 work = "2.9.0" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.7.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
-ktorfit = "2.0.0" # https://github.com/Foso/Ktorfit/releases
+ktorfit = "a004d528f1" # https://github.com/Foso/Ktorfit/releases
+ktorfit-ksp = "e1872c34ae"
 decompose = "3.1.0" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.1.0" # https://github.com/arkivanov/Essenty/releases
 zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
@@ -224,8 +225,9 @@ ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
 # Ktorfit
-ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
-ktorfit-gradle = { module = "de.jensklingenberg.ktorfit:ktorfit-gradle-plugin", version.ref = "ktorfit" }
+ktorfit-ksp = { module = "com.github.LionZXY.Ktorfit:ktorfit-ksp", version.ref = "ktorfit-ksp" }
+ktorfit-lib = { module = "com.github.LionZXY.Ktorfit:ktorfit-lib", version.ref = "ktorfit" }
+ktorfit-gradle = { module = "com.github.LionZXY.Ktorfit:ktorfit-gradle-plugin", version.ref = "ktorfit" }
 
 # Apache commons
 apache-compress = { module = "org.apache.commons:commons-compress", version.ref = "apache-compress" }
