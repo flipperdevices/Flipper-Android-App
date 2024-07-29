@@ -38,7 +38,7 @@ import kotlinx.collections.immutable.ImmutableList
 fun AddRemoteEndBlock(modifier: Modifier = Modifier) {
     val rootNavigation = LocalRootNavigation.current
     Text(
-        text = "Add Remote",
+        text = stringResource(R.string.add_remote),
         style = LocalTypography.current.buttonB14,
         color = LocalPalletV2.current.text.title.blackOnColor,
         modifier = modifier
