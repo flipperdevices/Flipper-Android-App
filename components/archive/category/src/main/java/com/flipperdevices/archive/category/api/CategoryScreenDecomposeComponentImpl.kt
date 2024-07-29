@@ -9,6 +9,7 @@ import com.flipperdevices.archive.category.composable.ComposableCategory
 import com.flipperdevices.archive.category.composable.ComposableDeleted
 import com.flipperdevices.archive.category.model.CategoryNavigationConfig
 import com.flipperdevices.archive.category.viewmodels.CategoryViewModel
+import com.flipperdevices.archive.category.viewmodels.DebugSettingsViewModel
 import com.flipperdevices.archive.category.viewmodels.DeleteViewModel
 import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -32,12 +33,16 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val deleteViewModelProvider: Provider<DeleteViewModel>,
     private val categoryViewModelFactory: CategoryViewModel.Factory,
-    private val synchronizationUiApi: SynchronizationUiApi
+    private val synchronizationUiApi: SynchronizationUiApi,
+    private val debugSettingsViewModelProvider: Provider<DebugSettingsViewModel>,
 ) : ScreenDecomposeComponent(componentContext) {
 
     @Composable
     @Suppress("NonSkippableComposable")
     override fun Render() {
+        val debugSettingsViewModel = viewModelWithFactory(key = null) {
+            debugSettingsViewModelProvider.get()
+        }
         val deleteViewModel = viewModelWithFactory(key = null) {
             deleteViewModelProvider.get()
         }
@@ -52,6 +57,7 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val onOpenKeyScreen: (FlipperKeyPath) -> Unit = { flipperKeyPath ->
             rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
         }
+        val showRemoteControls by debugSettingsViewModel.showRemoteControls.collectAsState()
 
         when (categoryType) {
             is CategoryType.ByFileType -> ComposableCategory(
@@ -60,7 +66,8 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
                 onBack = { navigation.popOr(onBack::invoke) },
                 onOpenKeyScreen = onOpenKeyScreen,
                 categoryState = categoryState,
-                synchronizationState = synchronizationState
+                synchronizationState = synchronizationState,
+                showRemoteControls = showRemoteControls
             )
 
             CategoryType.Deleted -> ComposableDeleted(

@@ -21,6 +21,7 @@
 - [Feature] Add onetap widget
 - [FIX] Ignore faps manifest with point in start
 - [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
+- [FIX] Relocate remote-controls button to infrared remotes screen
 
 # 1.7.1
 

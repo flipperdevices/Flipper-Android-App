@@ -35,9 +35,6 @@ dependencies {
     implementation(projects.components.notification.api)
     implementation(projects.components.inappnotification.api)
 
-    implementation(projects.components.remoteControls.main.api)
-    implementation(projects.components.remoteControls.brands.api)
-
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.pbutils)

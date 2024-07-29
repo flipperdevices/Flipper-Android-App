@@ -27,6 +27,7 @@
     <string name="debug_skip_autosync">Skip auto synchronization in Debug mode</string>
     <string name="debug_selfupdater">Suggest self update in debug mode</string>
     <string name="debug_application_catalog_dev">Use dev catalog</string>
+    <string name="debug_application_show_remote_controls">Show remote controls</string>
     <string name="debug_application_installall_dev">Install all app</string>
     <string name="debug_broke_session">Broke RPC/BLE session</string>
 
@@ -38,7 +39,6 @@
     <string name="experimental_file_manager">File Manager</string>
     <string name="experimental_file_manager_desc">Navigate through Flipper files</string>
     <string name="experimental_remote_control">Remote controls</string>
-    <string name="experimental_remote_control_desc">Configure remote controls and use it with flipper</string>
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
     <string name="experimental_application_catalog">Enable Apps in Hub</string>
