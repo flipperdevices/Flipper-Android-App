@@ -102,10 +102,11 @@ class InstalledFapsUidsProducerTest {
         underTest.getUidsStateFlow().filter {
             it is FapInstalledUidsState.Loaded && it.faps.isNotEmpty()
         }.first()
+
         advanceUntilIdle()
 
-        Assert.assertEquals(
-            listOf(
+        Assert.assertArrayEquals(
+            arrayOf(
                 FapInstalledUidsState.Loaded(faps = persistentListOf(), inProgress = true),
                 FapInstalledUidsState.Loaded(
                     faps = persistentListOf(
@@ -116,7 +117,7 @@ class InstalledFapsUidsProducerTest {
                     inProgress = true
                 )
             ),
-            states
+            states.toTypedArray()
         )
 
         job.cancelAndJoin()
@@ -135,8 +136,8 @@ class InstalledFapsUidsProducerTest {
         }.first()
         advanceUntilIdle()
 
-        Assert.assertEquals(
-            listOf(
+        Assert.assertArrayEquals(
+            arrayOf(
                 FapInstalledUidsState.Loaded(faps = persistentListOf(), inProgress = true),
                 FapInstalledUidsState.Loaded(
                     faps = persistentListOf(
@@ -155,7 +156,7 @@ class InstalledFapsUidsProducerTest {
                     inProgress = false
                 )
             ),
-            states
+            states.toTypedArray()
         )
 
         job.cancelAndJoin()

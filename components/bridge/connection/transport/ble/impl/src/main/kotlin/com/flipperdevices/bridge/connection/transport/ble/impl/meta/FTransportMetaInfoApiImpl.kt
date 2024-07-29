@@ -8,6 +8,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -22,6 +23,7 @@ class FTransportMetaInfoApiImpl(
 ) : FTransportMetaInfoApi, LogTagProvider {
     override val TAG = "FTransportMetaInfoApi"
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun get(key: TransportMetaInfoKey): Result<Flow<ByteArray?>> = runCatching {
         val address = metaInfoGattMap[key]
             ?: return Result.failure(RuntimeException("Can't found provider for $key"))
