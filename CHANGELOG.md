@@ -1,6 +1,7 @@
 # Changelog
 
 # 1.7.2 - In Progress
+Attention: don't forget to add the flag for F-Droid before release
 
 - [Refactor] Update to Kotlin 2.0
 - [FIX] Distinct fap items by id in paging sources

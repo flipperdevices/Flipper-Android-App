@@ -50,7 +50,7 @@ object ApkConfig {
     val Project.CURRENT_FLAVOR_TYPE: FlavorType
         get() {
             val default = FlavorType.DEV
-            val key = "CURRENT_FLAVOR_TYPE"
+            val key = "current_flavor_type"
             val propValue = propOrNull(key)
             if (propValue == null) {
                 logger.warn("Property $key was not found, writing default $default")

@@ -10,6 +10,7 @@ dependencies {
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.buildKonfig)
 
     implementation(projects.components.bridge.connection.device.common.api)
     implementation(projects.components.bridge.connection.feature.common.api)

@@ -7,8 +7,8 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FOnDeviceReadyFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.di.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -35,7 +35,7 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
     private val mutex = Mutex()
 
     init {
-        if (BuildConfig.DEBUG) {
+        if (BuildKonfig.CRASH_APP_ON_FAILED_CHECKS) {
             FDeviceFeature.entries.forEach { key ->
                 checkNotNull(factories[key]) { "Not found factory for $key" }
             }
