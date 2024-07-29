@@ -19,12 +19,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Provider
 import kotlin.time.Duration
@@ -38,25 +37,18 @@ class FVersionFeatureApiImpl @AssistedInject constructor(
     @Assisted metaInfoApi: FTransportMetaInfoApi
 ) : FVersionFeatureApi, LogTagProvider {
     override val TAG = "FlipperVersionApi"
-
-    private val ignoreUnsupported by lazy {
-        runBlocking {
-            settingsStoreProvider.get().data.first().ignoreUnsupportedVersion
-        }
-    }
+    private val settingsStore by settingsStoreProvider
 
     private val semVerStateFlow = MutableStateFlow<SemVer?>(null)
     private val supportedStateFlow = MutableStateFlow<FlipperSupportedState?>(null)
 
     init {
-        if (ignoreUnsupported) {
-            supportedStateFlow.value = FlipperSupportedState.READY
-        }
-
         metaInfoApi.get(TransportMetaInfoKey.API_VERSION).onFailure {
             semVerStateFlow.value = SemVer(0, 0)
         }.onSuccess { flow ->
-            flow.onEach(this::onReceiveVersionRawData).launchIn(scope)
+            combine(settingsStore.data, flow) { settings, data ->
+                onReceiveVersionRawData(settings.ignoreUnsupportedVersion, data)
+            }.launchIn(scope)
         }
     }
 
@@ -64,18 +56,22 @@ class FVersionFeatureApiImpl @AssistedInject constructor(
 
     override fun getSupportedStateFlow() = supportedStateFlow.asStateFlow()
 
-    private suspend fun onReceiveVersionRawData(data: ByteArray?) {
+    private suspend fun onReceiveVersionRawData(
+        ignoreUnsupported: Boolean,
+        data: ByteArray?
+    ) {
         if (data == null) {
             semVerStateFlow.emit(null)
             return
         }
         try {
             val apiVersion = String(data)
-            onSupportedVersionReceived(apiVersion)
+            onSupportedVersionReceived(ignoreUnsupported, apiVersion)
         } catch (e: Exception) {
             error(e) { "Failed parse api version $data" }
 
             setDeviceSupportedStatus(
+                ignoreUnsupported,
                 FlipperSupportedState.DEPRECATED_FLIPPER
             )
         }
@@ -100,7 +96,10 @@ class FVersionFeatureApiImpl @AssistedInject constructor(
         return currentVersion >= version
     }
 
-    private suspend fun onSupportedVersionReceived(apiVersion: String) {
+    private suspend fun onSupportedVersionReceived(
+        ignoreUnsupported: Boolean,
+        apiVersion: String
+    ) {
         info { "Api version is $apiVersion" }
         val filteredApiVersion = apiVersion.replace("[^0-9.]", "")
         info { "Filtered api version is $filteredApiVersion" }
@@ -113,10 +112,13 @@ class FVersionFeatureApiImpl @AssistedInject constructor(
             minorVersion = minorPart?.toIntOrNull() ?: 0
         )
         semVerStateFlow.update { versionInformation }
-        setDeviceSupportedStatus(versionInformation.toSupportedState())
+        setDeviceSupportedStatus(ignoreUnsupported, versionInformation.toSupportedState())
     }
 
-    private suspend fun setDeviceSupportedStatus(state: FlipperSupportedState) {
+    private suspend fun setDeviceSupportedStatus(
+        ignoreUnsupported: Boolean,
+        state: FlipperSupportedState
+    ) {
         if (ignoreUnsupported) {
             supportedStateFlow.emit(FlipperSupportedState.READY)
             return
