@@ -22,6 +22,7 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -55,7 +56,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val receiveKeyFactory: KeyReceiveDecomposeComponent.Factory,
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
-    private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory
+    private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
+    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -126,6 +128,10 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             updateRequest = config.updateRequest,
             onBack = this::internalOnBack
+        )
+        RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 

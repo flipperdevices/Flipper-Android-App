@@ -27,6 +27,8 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.rootscreen.api)
 
+    implementation(projects.components.core.preference)
+
     implementation(libs.appcompat)
 
     // Compose

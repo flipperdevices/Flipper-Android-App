@@ -28,6 +28,9 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.changelog.api)
 
+    implementation(projects.components.remoteControls.main.api)
+    implementation(projects.components.remoteControls.brands.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
