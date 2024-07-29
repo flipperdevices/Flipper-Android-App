@@ -8,6 +8,9 @@ import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
+import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.dataOrNull
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -17,6 +20,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -51,6 +56,29 @@ class PingViewModel @Inject constructor(
                     log("Receive bytes: $it ")
                 }
         }
+        viewModelScope.launch {
+            val alreadyPrintedKeys = mutableSetOf<String>()
+            featureProvider.get<FRpcInfoFeatureApi>()
+                .filterIsInstance<FFeatureStatus.Supported<FRpcInfoFeatureApi>>()
+                .flatMapLatest {
+                    it.featureApi.getRpcInformationFlow()
+                }.onEach { rpcInfo ->
+                    val data = rpcInfo.dataOrNull()
+                    if (data == null) {
+                        log("RpcInfo feature is $rpcInfo")
+                    } else {
+                        for ((key, value) in data.allFields.entries) {
+                            if (alreadyPrintedKeys.contains(key).not()) {
+                                alreadyPrintedKeys.add(key)
+                                log("$key: $value")
+                            }
+                        }
+                    }
+                    if (rpcInfo is FlipperInformationStatus.Ready) {
+                        log("Request complete")
+                    }
+                }.launchIn(viewModelScope)
+        }
     }
 
     fun getLogLinesState() = logLines.asStateFlow()
@@ -65,6 +93,13 @@ class PingViewModel @Inject constructor(
             }.wrapToRequest()
         )
         info { "Send ping request successful" }
+    }
+
+    fun invalidateRpcInfo() = viewModelScope.launch {
+        val rpcInfoApi = featureProvider.get<FRpcInfoFeatureApi>()
+            .filterIsInstance<FFeatureStatus.Supported<FRpcInfoFeatureApi>>()
+            .first().featureApi
+        rpcInfoApi.invalidate(viewModelScope, force = true)
     }
 
     private fun log(text: String) {

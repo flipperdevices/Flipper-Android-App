@@ -1,8 +1,8 @@
 package com.flipperdevices.bridge.connection.feature.storageinfo.model
 
 import android.content.Context
-import com.flipperdevices.bridge.connection.feature.storageinfo.api.R
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.connection.feature.storageinfo.api.R
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import kotlin.math.max
 

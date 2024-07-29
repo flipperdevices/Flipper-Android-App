@@ -1,12 +1,14 @@
+@file: Suppress("NoWildcardImports")
+
 package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.mapper
 
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty.DeviceInfo.*
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FirmwareInfo
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.RadioStackInfo
 import kotlinx.collections.immutable.toImmutableMap
-import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty.DeviceInfo.*
 
 // This fields uses in NOT other section
 private val usedFields = setOf(

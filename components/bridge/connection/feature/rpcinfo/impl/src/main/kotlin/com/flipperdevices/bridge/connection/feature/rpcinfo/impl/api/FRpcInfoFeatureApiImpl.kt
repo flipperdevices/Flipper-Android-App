@@ -39,6 +39,7 @@ class FRpcInfoFeatureApiImpl @AssistedInject constructor(
         )
 
     override fun getRpcInformationFlow() = rpcInformationFlow.asStateFlow()
+
     override suspend fun invalidate(
         scope: CoroutineScope,
         force: Boolean

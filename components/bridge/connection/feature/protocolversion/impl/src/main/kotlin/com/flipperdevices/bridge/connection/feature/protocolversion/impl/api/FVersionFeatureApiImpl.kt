@@ -1,7 +1,5 @@
 package com.flipperdevices.bridge.connection.feature.protocolversion.impl.api
 
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCharacteristic
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
@@ -28,8 +26,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.time.Duration
 import javax.inject.Provider
+import kotlin.time.Duration
 
 private val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
 private val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)

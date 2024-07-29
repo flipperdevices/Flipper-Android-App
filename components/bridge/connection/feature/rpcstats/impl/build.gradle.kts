@@ -24,5 +24,4 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
 
     implementation(libs.kotlin.coroutines)
-
 }

@@ -67,6 +67,9 @@ dependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.analytics.shake2report.noop)
 
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.noop)
+
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
 

@@ -36,5 +36,5 @@ sealed interface FGetInfoApiProperty {
     ) : FGetInfoApiProperty
 
     val path
-        get() = "${group}.${key}"
+        get() = "${group.key}.$key"
 }

@@ -41,7 +41,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val lagsDetector: FLagsDetectorFeature,
     @Assisted private val restartApiFeature: FRestartRpcFeatureApi,
-    private val messageProtobufParserFactory: FProtobufMessageCollector.Factory
+    messageProtobufParserFactory: FProtobufMessageCollector.Factory
 ) : FRpcFeatureApi, LogTagProvider {
     override val TAG = "FlipperRequestApi"
 

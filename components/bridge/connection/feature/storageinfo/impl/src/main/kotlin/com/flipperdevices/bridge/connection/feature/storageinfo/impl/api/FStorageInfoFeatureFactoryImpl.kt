@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -16,7 +15,7 @@ import javax.inject.Inject
 @ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FStorageInfoFeatureFactoryImpl @Inject constructor(
     private val factory: FStorageInfoFeatureApiImpl.InternalFactory
-): FDeviceFeatureApi.Factory {
+) : FDeviceFeatureApi.Factory {
     override suspend fun invoke(
         unsafeFeatureDeviceApi: FUnsafeDeviceFeatureApi,
         scope: CoroutineScope,

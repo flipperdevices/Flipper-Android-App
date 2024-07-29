@@ -22,10 +22,12 @@ open class FBleApiImpl(
     private val client: ClientBleGatt,
     private val statusListener: FTransportConnectionStatusListener,
     private val metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
-) : FBleApi, FTransportMetaInfoApi by FTransportMetaInfoApiImpl(
-    client = client,
-    metaInfoGattMap = metaInfoGattMap
-), LogTagProvider {
+) : FBleApi,
+    FTransportMetaInfoApi by FTransportMetaInfoApiImpl(
+        client = client,
+        metaInfoGattMap = metaInfoGattMap
+    ),
+    LogTagProvider {
     override val TAG = "FBleApi"
 
     init {

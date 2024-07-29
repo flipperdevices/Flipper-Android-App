@@ -1,10 +1,8 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
 import com.flipperdevices.bridge.connection.transport.ble.api.GATTCharacteristicAddress
-import com.flipperdevices.bridge.connection.transport.ble.impl.meta.FTransportMetaInfoApiImpl
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialRestartApiImpl
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
-import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.bridge.connection.transport.common.api.meta.TransportMetaInfoKey
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialRestartApi

@@ -50,7 +50,8 @@ class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
             val logs by pingViewModel.getLogLinesState().collectAsState()
             FPingComposable(
                 logs = logs,
-                onSendPing = pingViewModel::sendPing
+                onSendPing = pingViewModel::sendPing,
+                invalidateRpcInfo = pingViewModel::invalidateRpcInfo
             )
         }
     }

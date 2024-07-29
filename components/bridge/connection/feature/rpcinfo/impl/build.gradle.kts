@@ -8,7 +8,6 @@ android.namespace = "com.flipperdevices.bridge.connection.feature.rpcinfo.impl"
 dependencies {
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
 
-
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)

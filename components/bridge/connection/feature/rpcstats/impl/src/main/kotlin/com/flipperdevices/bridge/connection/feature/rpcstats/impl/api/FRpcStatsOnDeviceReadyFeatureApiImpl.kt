@@ -14,6 +14,7 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
 import com.flipperdevices.shake2report.api.Shake2ReportApi
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -32,7 +33,6 @@ class FRpcStatsOnDeviceReadyFeatureApiImpl @AssistedInject constructor(
 
     private val mutex = Mutex()
     private var statJob: Job? = null
-
 
     override suspend fun onReady() {
         storageFeatureApi.invalidate(
@@ -88,6 +88,7 @@ class FRpcStatsOnDeviceReadyFeatureApiImpl @AssistedInject constructor(
         shake2ReportApi.setExtra(FlipperInformationMapping.convert(information))
     }
 
+    @AssistedFactory
     fun interface InternalFactory {
         operator fun invoke(
             scope: CoroutineScope,

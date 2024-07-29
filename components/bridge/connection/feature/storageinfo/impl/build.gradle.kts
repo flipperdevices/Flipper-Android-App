@@ -18,7 +18,6 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.rpc.model)
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
 
-
     implementation(projects.components.bridge.pbutils)
 
     implementation(libs.kotlin.coroutines)

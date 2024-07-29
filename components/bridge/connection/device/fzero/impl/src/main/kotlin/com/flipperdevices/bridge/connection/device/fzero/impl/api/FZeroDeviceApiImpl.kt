@@ -6,12 +6,6 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FOnDeviceReadyFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
-import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
-import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
-import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.BuildConfig
@@ -25,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import kotlin.jvm.Throws
 import java.util.EnumMap
 import kotlin.reflect.KClass
 
@@ -43,7 +36,9 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
 
     init {
         if (BuildConfig.DEBUG) {
-            check(FDeviceFeature.entries.filterNot { factories.containsKey(it) }.isEmpty())
+            FDeviceFeature.entries.forEach { key ->
+                checkNotNull(factories[key]) { "Not found factory for $key" }
+            }
         }
 
         scope.launch {
