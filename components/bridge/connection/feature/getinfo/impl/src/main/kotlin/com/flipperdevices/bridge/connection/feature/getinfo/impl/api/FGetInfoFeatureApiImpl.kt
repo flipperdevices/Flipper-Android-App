@@ -1,9 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.getinfo.impl.api
 
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
-import com.flipperdevices.bridge.connection.feature.getinfo.impl.mapper.DeviceInfoKeyMapper
 import com.flipperdevices.bridge.connection.feature.getinfo.impl.mapper.FGetInfoApiKeyMapper
-import com.flipperdevices.bridge.connection.feature.getinfo.impl.utils.path
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiGroup
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi

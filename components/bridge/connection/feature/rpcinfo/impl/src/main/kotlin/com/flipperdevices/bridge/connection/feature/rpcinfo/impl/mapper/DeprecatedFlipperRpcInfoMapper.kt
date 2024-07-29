@@ -43,9 +43,9 @@ private val usedFields = setOf(
     DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
 
-internal class DeprecatedFlipperRpcInfoMapper : FlipperRpcInfoMapper {
+internal class DeprecatedFlipperRpcInfoMapper : FlipperRpcInfoMapper<String> {
     override fun map(
-        raw: InternalFlipperRpcInformationRaw
+        raw: InternalFlipperRpcInformationRaw<String>
     ): FlipperRpcInformation {
         val fields = raw.otherFields
         val flipperDeviceInfo = FlipperDeviceInfo(

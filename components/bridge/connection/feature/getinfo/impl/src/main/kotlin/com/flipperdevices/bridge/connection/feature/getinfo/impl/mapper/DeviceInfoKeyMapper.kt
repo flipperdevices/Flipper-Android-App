@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.connection.feature.getinfo.impl.mapper
 
-import com.flipperdevices.bridge.connection.feature.getinfo.impl.utils.path
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiGroup
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 

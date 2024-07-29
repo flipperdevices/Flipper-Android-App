@@ -1,46 +1,24 @@
 package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.mapper
 
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FirmwareInfo
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperDeviceInfo
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.RadioStackInfo
 import kotlinx.collections.immutable.toImmutableMap
-
-private const val DEVICE_NAME = "devinfo_hardware.name"
-private const val HARDWARE_MODEL = "devinfo_hardware.model"
-private const val HARDWARE_REGION = "devinfo_hardware.region.builtin"
-private const val HARDWARE_REGION_PROV = "devinfo_hardware.region.provisioned"
-private const val HARDWARE_VERSION = "devinfo_hardware.ver"
-private const val HARDWARE_OTP_VERSION = "devinfo_hardware.otp.ver"
-private const val SERIAL_NUMBER = "devinfo_hardware.uid"
-
-private const val FIRMWARE_COMMIT = "devinfo_firmware.commit.hash"
-private const val FIRMWARE_BRANCH = "devinfo_firmware.branch.name"
-private const val FIRMWARE_BUILD_DATE = "devinfo_firmware.build.date"
-private const val FIRMWARE_TARGET = "devinfo_firmware.target"
-private const val PROTOBUF_MAJOR = "devinfo_protobuf.version.major"
-private const val PROTOBUF_MINOR = "devinfo_protobuf.version.minor"
-private const val DEVICE_INFO_MAJOR = "devinfo_format.major"
-private const val DEVICE_INFO_MINOR = "devinfo_format.minor"
-
-private const val RADIO_STACK_MAJOR = "devinfo_radio.stack.major"
-private const val RADIO_STACK_MINOR = "devinfo_radio.stack.minor"
-private const val RADIO_STACK_TYPE = "devinfo_radio.stack.type"
-private const val RADIO_STACK_SUB = "devinfo_radio.stack.sub"
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty.DeviceInfo.*
 
 // This fields uses in NOT other section
 private val usedFields = setOf(
-    DEVICE_NAME, HARDWARE_MODEL, HARDWARE_REGION, HARDWARE_REGION_PROV,
-    HARDWARE_VERSION, HARDWARE_OTP_VERSION, SERIAL_NUMBER,
-    FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
-    FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR,
-    RADIO_STACK_MAJOR, RADIO_STACK_MINOR, RADIO_STACK_TYPE, RADIO_STACK_SUB,
-    DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
+    DEVICE_NAME, HARDWARE_MODEL, HARDWARE_REGION, HARDWARE_REGION_PROV, HARDWARE_VERSION,
+    HARDWARE_OTP_VERSION, SERIAL_NUMBER, FIRMWARE_COMMIT, FIRMWARE_BRANCH, FIRMWARE_BUILD_DATE,
+    FIRMWARE_TARGET, PROTOBUF_MAJOR, PROTOBUF_MINOR, RADIO_STACK_MAJOR, RADIO_STACK_MINOR,
+    RADIO_STACK_TYPE, RADIO_STACK_SUB, DEVICE_INFO_MAJOR, DEVICE_INFO_MINOR
 )
 
-internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
+internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper<FGetInfoApiProperty> {
     override fun map(
-        raw: InternalFlipperRpcInformationRaw
+        raw: InternalFlipperRpcInformationRaw<FGetInfoApiProperty>
     ): FlipperRpcInformation {
         val fields = raw.otherFields
         val flipperDeviceInfo = FlipperDeviceInfo(
@@ -91,9 +69,9 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
 
         val otherFields = mutableMapOf<String, String>()
         for ((key, value) in fields.minus(usedFields)) {
-            val newKeyName = key.substringAfter('_')
+            val newKeyName = key.key
             if (otherFields.containsKey(newKeyName)) {
-                otherFields[key] = value
+                otherFields[key.path] = value
             } else {
                 otherFields[newKeyName] = value
             }
@@ -104,7 +82,7 @@ internal class NewFlipperRpcInfoMapper : FlipperRpcInfoMapper {
             firmware = firmwareInfo,
             radioStack = radioStackInfo,
             otherFields = otherFields.toImmutableMap(),
-            allFields = fields.toImmutableMap()
+            allFields = fields.mapKeys { it.key.path }.toImmutableMap()
         )
     }
 }

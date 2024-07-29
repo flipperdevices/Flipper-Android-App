@@ -32,4 +32,7 @@ sealed interface FGetInfoApiProperty {
         override val group: FGetInfoApiGroup,
         override val key: String
     ) : FGetInfoApiProperty
+
+    val path
+        get() = "${group}.${key}"
 }

@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.feature.rpc.model)
-    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
 
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.analytics.shake2report.api)

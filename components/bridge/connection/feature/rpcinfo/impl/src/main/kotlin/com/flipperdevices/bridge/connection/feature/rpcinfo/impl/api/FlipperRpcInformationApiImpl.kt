@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpcinfo.impl.api
 
-import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpcinfo.impl.fullinforpc.DeprecatedFlipperFullInfoRpcApi
@@ -8,7 +8,6 @@ import com.flipperdevices.bridge.connection.feature.rpcinfo.impl.fullinforpc.New
 import com.flipperdevices.bridge.connection.feature.rpcinfo.impl.shaketoreport.FlipperInformationMapping
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
-import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.shake2report.api.Shake2ReportApi
@@ -24,14 +23,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 
-private val API_SUPPORTED_GET_REQUEST = SemVer(
-    majorVersion = 0,
-    minorVersion = 14
-)
-
 class FRpcInfoFeatureApiImpl @AssistedInject constructor(
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,
-    @Assisted private val versionApi: FVersionFeatureApi,
+    @Assisted private val getInfoFeatureApi: FGetInfoFeatureApi?,
     private val shake2ReportApi: Shake2ReportApi
 ) : FRpcInfoFeatureApi, LogTagProvider {
     override val TAG = "FlipperRpcInformationApi"
@@ -69,9 +63,9 @@ class FRpcInfoFeatureApiImpl @AssistedInject constructor(
     private suspend fun invalidateInternal() {
         rpcInformationFlow.emit(FlipperInformationStatus.InProgress(FlipperRpcInformation()))
         val flipperFullInfoRpcApi = if (
-            versionApi.isSupported(API_SUPPORTED_GET_REQUEST)
+            getInfoFeatureApi != null
         ) {
-            NewFlipperFullInfoRpcApi()
+            NewFlipperFullInfoRpcApi(getInfoFeatureApi)
         } else {
             DeprecatedFlipperFullInfoRpcApi()
         }
@@ -102,7 +96,7 @@ class FRpcInfoFeatureApiImpl @AssistedInject constructor(
     fun interface InternalFactory {
         operator fun invoke(
             rpcFeatureApi: FRpcFeatureApi,
-            versionApi: FVersionFeatureApi,
+            getInfoFeatureApi: FGetInfoFeatureApi?,
         ): FRpcInfoFeatureApiImpl
     }
 }

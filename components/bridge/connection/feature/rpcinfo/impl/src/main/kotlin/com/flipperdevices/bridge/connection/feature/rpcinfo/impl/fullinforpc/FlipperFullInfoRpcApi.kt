@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-internal abstract class FlipperFullInfoRpcApi(
-    private val mapper: FlipperRpcInfoMapper
+internal abstract class FlipperFullInfoRpcApi<KEY>(
+    private val mapper: FlipperRpcInfoMapper<KEY>
 ) {
     fun getRawDataFlow(
         requestApi: FRpcFeatureApi
     ): Flow<FlipperRpcInformation> = flow {
-        var rpcRaw = InternalFlipperRpcInformationRaw()
+        var rpcRaw = InternalFlipperRpcInformationRaw<KEY>()
         val mutex = Mutex()
         getRawDataFlow(requestApi) { key, value ->
             mutex.withLock {
@@ -29,6 +29,6 @@ internal abstract class FlipperFullInfoRpcApi(
 
     abstract suspend fun getRawDataFlow(
         requestApi: FRpcFeatureApi,
-        onNewPair: suspend (key: String, value: String) -> Unit
+        onNewPair: suspend (key: KEY, value: String) -> Unit
     )
 }

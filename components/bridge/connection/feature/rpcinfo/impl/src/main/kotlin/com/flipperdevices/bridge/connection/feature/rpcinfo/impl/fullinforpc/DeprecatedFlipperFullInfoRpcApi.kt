@@ -7,7 +7,7 @@ import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.system.deviceInfoRequest
 import com.flipperdevices.protobuf.system.powerInfoRequest
 
-internal class DeprecatedFlipperFullInfoRpcApi : FlipperFullInfoRpcApi(
+internal class DeprecatedFlipperFullInfoRpcApi : FlipperFullInfoRpcApi<String>(
     DeprecatedFlipperRpcInfoMapper()
 ) {
     override suspend fun getRawDataFlow(
