@@ -11,7 +11,7 @@ interface FOnDeviceReadyFeatureApi : FDeviceFeatureApi {
     suspend fun onReady()
 
     fun interface Factory {
-        operator fun invoke(
+        suspend operator fun invoke(
             unsafeFeatureDeviceApi: FUnsafeDeviceFeatureApi,
             scope: CoroutineScope,
             connectedDevice: FConnectedDeviceApi

@@ -1,28 +1,32 @@
 package com.flipperdevices.bridge.connection.feature.rpcstats.impl.api
 
-import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.connection.feature.rpcstats.api.FRpcStatsOnDeviceReadyFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpcstats.impl.shaketoreport.FlipperInformationMapping
 import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.property.getRequest
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.complex.FlipperRPCInfoEvent
+import com.flipperdevices.shake2report.api.Shake2ReportApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-
-private const val DEVICE_INFO_FIRMWARE_FORK_KEY = "devinfo.firmware.origin.fork"
-private const val DEVICE_INFO_FIRMWARE_ORIGIN_KEY = "devinfo.firmware.origin.git"
 
 class FRpcStatsOnDeviceReadyFeatureApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val storageFeatureApi: FStorageInfoFeatureApi,
-    @Assisted private val versionFeatureApi: FVersionFeatureApi
+    @Assisted private val getInfoFeatureApiNullable: FGetInfoFeatureApi?,
+    private val metricApi: MetricApi,
+    private val shake2ReportApi: Shake2ReportApi
 ) : FRpcStatsOnDeviceReadyFeatureApi, LogTagProvider {
     override val TAG = "FlipperRpcStatsCollector"
 
@@ -39,47 +43,21 @@ class FRpcStatsOnDeviceReadyFeatureApiImpl @AssistedInject constructor(
         val oldJob = statJob
         statJob = scope.launch {
             oldJob?.cancelAndJoin()
-            versionFeatureApi
-                .getVersionInformationFlow()
-                .collect { version ->
-                    if (version != null && version > API_SUPPORTED_GET_REQUEST) {
-                        startRequestApiInformation(serviceApi.requestApi)
-                    }
-                }
+            if (getInfoFeatureApiNullable != null) {
+                startRequestApiInformation(getInfoFeatureApiNullable)
+            }
         }
     }
 
-    private suspend fun startRequestApiInformation(requestApi: FlipperRequestApi) {
-        val forkResponse = requestApi.request(
-            flowOf(
-                main {
-                    propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_FORK_KEY }
-                }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-            )
-        )
-        val forkValue = if (forkResponse.commandStatus == Flipper.CommandStatus.OK) {
-            forkResponse.propertyGetResponse.value
-        } else {
-            null
-        }
-        val originResponse = requestApi.request(
-            flowOf(
-                main {
-                    propertyGetRequest = getRequest { key = DEVICE_INFO_FIRMWARE_ORIGIN_KEY }
-                }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-            )
-        )
-        val originValue = if (originResponse.commandStatus == Flipper.CommandStatus.OK) {
-            originResponse.propertyGetResponse.value
-        } else {
-            null
-        }
+    private suspend fun startRequestApiInformation(getInfoFeatureApi: FGetInfoFeatureApi) {
+        val fork = getInfoFeatureApi.get(FGetInfoApiProperty.DeviceInfo.FIRMWARE_FORK).getOrNull()
+        val origin = getInfoFeatureApi.get(FGetInfoApiProperty.DeviceInfo.FIRMWARE_ORIGIN).getOrNull()
 
-        storageInformationApi.getStorageInformationFlow().collect { storageInformation ->
+        storageFeatureApi.getStorageInformationFlow().collect { storageInformation ->
             if (storageInformation.externalStorageStatus is FlipperInformationStatus.Ready &&
                 storageInformation.internalStorageStatus is FlipperInformationStatus.Ready
             ) {
-                reportMetric(storageInformation, forkValue, originValue)
+                reportMetric(storageInformation, fork, origin)
             }
         }
     }
@@ -108,5 +86,13 @@ class FRpcStatsOnDeviceReadyFeatureApiImpl @AssistedInject constructor(
             )
         )
         shake2ReportApi.setExtra(FlipperInformationMapping.convert(information))
+    }
+
+    fun interface InternalFactory {
+        operator fun invoke(
+            scope: CoroutineScope,
+            storageFeatureApi: FStorageInfoFeatureApi,
+            getInfoFeatureApiNullable: FGetInfoFeatureApi?
+        ): FRpcStatsOnDeviceReadyFeatureApiImpl
     }
 }

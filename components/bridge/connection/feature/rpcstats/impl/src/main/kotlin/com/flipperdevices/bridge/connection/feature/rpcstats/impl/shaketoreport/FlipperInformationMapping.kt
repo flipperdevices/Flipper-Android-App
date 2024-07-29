@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.connection.feature.storageinfo.impl.shaketoreport
+package com.flipperdevices.bridge.connection.feature.rpcstats.impl.shaketoreport
 
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats

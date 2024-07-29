@@ -23,7 +23,9 @@ sealed interface FGetInfoApiProperty {
         RADIO_STACK_MAJOR("radio.stack.major"),
         RADIO_STACK_MINOR("radio.stack.minor"),
         RADIO_STACK_TYPE("radio.stack.type"),
-        RADIO_STACK_SUB("radio.stack.sub");
+        RADIO_STACK_SUB("radio.stack.sub"),
+        FIRMWARE_FORK("firmware.origin.fork"),
+        FIRMWARE_ORIGIN("firmware.origin.git");
 
         override val group = FGetInfoApiGroup.DEVICE_INFO
     }
