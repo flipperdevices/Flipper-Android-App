@@ -181,9 +181,9 @@ class FlipperInformationApiImpl @Inject constructor(
                         .replaceFirst(Constants.DEVICENAME_PREFIX, "")
                         .trim()
                 }
-                it.toBuilder()
-                    .setDeviceName(deviceNameFormatted)
-                    .build()
+                it.copy(
+                    device_name = deviceNameFormatted
+                )
             }
         }
     }

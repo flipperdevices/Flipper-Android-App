@@ -12,7 +12,7 @@ class HostUrlBuilder @Inject constructor(
     private val settings: DataStore<Settings>
 ) {
     suspend fun getHostUrl(): String {
-        val useDevCatalog = settings.data.first().useDevCatalog
+        val useDevCatalog = settings.data.first().use_dev_catalog
         return if (useDevCatalog) {
             FAP_URL_DEV
         } else {

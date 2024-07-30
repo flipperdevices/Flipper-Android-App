@@ -52,7 +52,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
 
         val dataStoreSettings = component.dataStoreSettings.get()
 
-        if (runBlockingWithLog { dataStoreSettings.data.first() }.usedForegroundService) {
+        if (runBlockingWithLog { dataStoreSettings.data.first() }.used_foreground_service) {
             val flipperNotificationLocal = FlipperNotificationHelper(
                 context = this,
                 applicationParams = component.applicationParams

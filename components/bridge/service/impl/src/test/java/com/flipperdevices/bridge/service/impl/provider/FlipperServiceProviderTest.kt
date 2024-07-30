@@ -12,7 +12,6 @@ import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.preference.pb.settings
 import com.flipperdevices.core.test.TimberRule
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertNotEquals
@@ -51,9 +50,9 @@ class FlipperServiceProviderTest {
         }
         dataStore = mock {
             on { data } doReturn MutableStateFlow(
-                settings {
-                    usedForegroundService = true
-                }
+                Settings(
+                    used_foreground_service = true
+                )
             )
         }
         subject = FlipperServiceProviderImpl(applicationContext, dataStore)

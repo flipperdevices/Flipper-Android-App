@@ -43,13 +43,13 @@ class DeviceStatusViewModel @Inject constructor(
             dataStorePair.data
         ) { connectionState, flipperInformation, pairSettings ->
             return@combine when (connectionState) {
-                is ConnectionState.Disconnected -> if (pairSettings.deviceName.isBlank() ||
-                    pairSettings.deviceId.isBlank()
+                is ConnectionState.Disconnected -> if (pairSettings.device_name.isBlank() ||
+                    pairSettings.device_id.isBlank()
                 ) {
                     DeviceStatus.NoDevice
                 } else {
                     DeviceStatus.NoDeviceInformation(
-                        pairSettings.deviceName,
+                        pairSettings.device_name,
                         connectInProgress = false
                     )
                 }
@@ -58,7 +58,7 @@ class DeviceStatusViewModel @Inject constructor(
                 ConnectionState.Initializing,
                 is ConnectionState.Ready,
                 ConnectionState.RetrievingInformation -> {
-                    var deviceName = pairSettings.deviceName
+                    var deviceName = pairSettings.device_name
                     if (deviceName.isBlank()) {
                         deviceName = "Unknown"
                     }
