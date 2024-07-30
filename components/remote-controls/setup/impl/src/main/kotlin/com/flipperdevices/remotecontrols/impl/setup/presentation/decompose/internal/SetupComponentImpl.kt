@@ -7,9 +7,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
@@ -64,7 +67,7 @@ class SetupComponentImpl @AssistedInject constructor(
         factory = {
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
-                saveSignalApi.saveTempFile(
+                saveSignalApi.saveFile(
                     fff = signalModel.toFFFormat(),
                     nameWithExtension = TEMP_FILE_NAME
                 )
@@ -77,6 +80,7 @@ class SetupComponentImpl @AssistedInject constructor(
         dispatchSignalApi.state,
         dispatchSignalApi.isEmulated,
         transform = { signalState, saveState, dispatchState, isEmulated ->
+            val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
@@ -85,14 +89,14 @@ class SetupComponentImpl @AssistedInject constructor(
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
+                            emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
                             isEmulated = isEmulated
                         )
 
                         SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
+                            emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
                             isEmulated = isEmulated
                         )
 
@@ -160,7 +164,10 @@ class SetupComponentImpl @AssistedInject constructor(
             args = signalModel.remote.name,
             index = 0
         )
-        dispatchSignalApi.dispatch(config)
+        val keyIdentifier = (loadedState.response.signalResponse?.data as? SingleKeyButtonData)
+            ?.keyIdentifier
+            ?: IfrKeyIdentifier.Unknown
+        dispatchSignalApi.dispatch(config, keyIdentifier)
     }
 
     override fun onBackClick() = onBackClick.invoke()

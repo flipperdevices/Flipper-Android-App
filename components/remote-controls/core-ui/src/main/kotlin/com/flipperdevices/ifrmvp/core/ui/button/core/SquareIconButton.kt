@@ -1,5 +1,6 @@
 package com.flipperdevices.ifrmvp.core.ui.button.core
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -8,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.ext.asPainter
 import com.flipperdevices.ifrmvp.core.ui.ext.tintFor
@@ -34,7 +37,9 @@ fun SquareIconButton(
             painter = painter,
             contentDescription = contentDescription,
             tint = iconTint,
-            modifier = Modifier.fillMaxSize().padding(12.sf)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.sf)
         )
     }
 }
@@ -59,7 +64,9 @@ fun SquareImageButton(
             bitmap = bitmap,
             contentDescription = contentDescription,
             tint = iconTint,
-            modifier = Modifier.fillMaxSize().padding(12.sf)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.sf)
         )
     }
 }
@@ -67,6 +74,7 @@ fun SquareImageButton(
 @Composable
 fun SquareIconButton(
     iconType: IconButtonData.IconType,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -74,13 +82,28 @@ fun SquareIconButton(
     SquareButton(
         modifier = modifier,
         onClick = onClick,
+        isEmulating = isEmulating,
         background = LocalPalletV2.current.surface.menu.body.dufault
     ) {
         Icon(
             painter = iconType.asPainter(),
             contentDescription = contentDescription,
             tint = iconType.tintFor(),
-            modifier = Modifier.fillMaxSize().padding(12.sf)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.sf)
+        )
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun SquareIconButtonPreview() {
+    FlipperThemeInternal {
+        SquareIconButton(
+            iconType = IconButtonData.IconType.POWER,
+            isEmulating = true,
+            onClick = {}
         )
     }
 }

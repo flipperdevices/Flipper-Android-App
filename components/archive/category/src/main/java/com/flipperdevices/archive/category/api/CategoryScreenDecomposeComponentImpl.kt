@@ -55,6 +55,7 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val rootNavigation = LocalRootNavigation.current
 
         val onOpenKeyScreen: (FlipperKeyPath) -> Unit = { flipperKeyPath ->
+//            flipperKeyPath.path.
             rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
         }
         val showRemoteControls by debugSettingsViewModel.showRemoteControls.collectAsState()

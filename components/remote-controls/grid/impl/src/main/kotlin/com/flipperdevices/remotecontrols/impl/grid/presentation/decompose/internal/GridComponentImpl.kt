@@ -6,11 +6,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
+import com.flipperdevices.remotecontrols.impl.grid.presentation.mapping.GridComponentStateMapper
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -18,6 +21,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
@@ -30,6 +35,11 @@ class GridComponentImpl @AssistedInject constructor(
     createSaveSignalViewModel: Provider<SaveTempSignalApi>,
     createDispatchSignalViewModel: Provider<DispatchSignalApi>
 ) : GridComponent, ComponentContext by componentContext {
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        prettyPrint = false
+    }
     private val saveSignalViewModel = instanceKeeper.getOrCreate(
         key = "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
         factory = {
@@ -47,11 +57,22 @@ class GridComponentImpl @AssistedInject constructor(
         factory = {
             createGridViewModel.invoke(
                 param = param,
+                onUiLoaded = { pagesLayout ->
+                    saveSignalViewModel.saveFile(
+                        deeplinkContent = DeeplinkContent.Raw(
+                            filename = "template.ui.json",
+                            content = json.encodeToString(pagesLayout)
+                        ),
+                        nameWithExtension = "template.ui.json",
+                        folderName = "/temp/${param.ifrFileId}"
+                    )
+                },
                 onIrFileLoaded = { content ->
                     val fff = FlipperFileFormat.fromFileContent(content)
-                    saveSignalViewModel.saveTempFile(
+                    saveSignalViewModel.saveFile(
                         fff = fff,
-                        nameWithExtension = "${param.ifrFileId}.ir"
+                        nameWithExtension = "${param.ifrFileId}.ir",
+                        folderName = "/temp/${param.ifrFileId}"
                     )
                 }
             )
@@ -63,30 +84,13 @@ class GridComponentImpl @AssistedInject constructor(
         gridFeature.state,
         dispatchSignalViewModel.state,
         transform = { saveState, gridState, dispatchState ->
-            when (gridState) {
-                GridViewModel.State.Error -> GridComponent.Model.Error
-                is GridViewModel.State.Loaded -> {
-                    when (saveState) {
-                        SaveTempSignalApi.State.Error -> GridComponent.Model.Error
-                        SaveTempSignalApi.State.Uploaded, SaveTempSignalApi.State.Pending -> {
-                            GridComponent.Model.Loaded(
-                                pagesLayout = gridState.pagesLayout,
-                                remotes = gridState.remotes,
-                                isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                                isEmulating = dispatchState is DispatchSignalApi.State.Emulating
-                            )
-                        }
-
-                        is SaveTempSignalApi.State.Uploading -> GridComponent.Model.Loading(
-                            saveState.progress
-                        )
-                    }
-                }
-
-                GridViewModel.State.Loading -> GridComponent.Model.Loading(0f)
-            }
+            GridComponentStateMapper.map(
+                saveState = saveState,
+                gridState = gridState,
+                dispatchState = dispatchState
+            )
         }
-    ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading(0f))
+    ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading())
 
     override fun dismissBusyDialog() {
         dispatchSignalViewModel.dismissBusyDialog()
@@ -99,14 +103,20 @@ class GridComponentImpl @AssistedInject constructor(
             identifier = identifier,
             remotes = remotes,
             ffPath = FlipperFilePath(
-                folder = FLIPPER_TEMP_FOLDER,
+                folder = "${FlipperKeyType.INFRARED.flipperDir}/temp/${param.ifrFileId}",
                 nameWithExtension = "${param.ifrFileId}.ir"
             )
         )
     }
 
+    override fun onDeleteFile() {
+        gridFeature.delete()
+    }
+
+    override fun onSaveFile() {
+        gridFeature.saveSignal()
+    }
+
     override fun tryLoad() = gridFeature.tryLoad()
     override fun pop() = onPopClick.invoke()
 }
-
-private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"

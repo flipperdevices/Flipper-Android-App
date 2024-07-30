@@ -14,20 +14,25 @@ interface GridComponent {
 
     fun onButtonClick(identifier: IfrKeyIdentifier)
     fun tryLoad()
+
+    fun onSaveFile()
+    fun onDeleteFile()
+
     fun pop()
 
     fun dismissBusyDialog()
 
     sealed interface Model {
         data class Loading(
-            val progress: Float,
+            val progress: Float = 0f,
         ) : Model
 
         data class Loaded(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
-            val isEmulating: Boolean = false
+            val emulatedKey: IfrKeyIdentifier? = null,
+            val isDownloaded: Boolean = false
         ) : Model
 
         data object Error : Model

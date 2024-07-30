@@ -2,9 +2,9 @@ package com.flipperdevices.ifrmvp.core.ui.layout.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,8 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -29,6 +31,7 @@ fun SharedTopBar(
     subtitle: String,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    actions: @Composable () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -39,18 +42,24 @@ fun SharedTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier
-                .size(24.dp)
-                .clickableRipple(bounded = false, onClick = onBackClick),
-            painter = painterResource(DesignSystem.drawable.ic_back),
-            contentDescription = null,
-            tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+        Box(
+            modifier = Modifier.weight(weight = 1f),
+            contentAlignment = Alignment.CenterStart,
+            content = {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickableRipple(bounded = false, onClick = onBackClick),
+                    painter = painterResource(DesignSystem.drawable.ic_back),
+                    contentDescription = null,
+                    tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+                )
+            }
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .weight(1f)
+                .weight(weight = 3f, fill = false)
                 .padding(horizontal = 8.dp)
         ) {
             Text(
@@ -68,6 +77,64 @@ fun SharedTopBar(
                 style = LocalTypography.current.subtitleM12
             )
         }
-        Spacer(modifier = Modifier.size(24.dp))
+        Box(
+            modifier = Modifier.weight(weight = 1f),
+            contentAlignment = Alignment.CenterEnd,
+            content = {
+                actions.invoke()
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SharedTopBarPreview() {
+    FlipperThemeInternal {
+        Column {
+            SharedTopBar(
+                title = "Title Title Title Title Title Title Title",
+                subtitle = "Subtitle",
+                onBackClick = {},
+            )
+            SharedTopBar(
+                title = "Title Title Title Title Title Title Title",
+                subtitle = "Subtitle",
+                onBackClick = {},
+                actions = {
+                    Row {
+                        repeat(2) {
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickableRipple(bounded = false, onClick = {}),
+                                painter = painterResource(DesignSystem.drawable.ic_back),
+                                contentDescription = null,
+                                tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+                            )
+                        }
+                    }
+                }
+            )
+            SharedTopBar(
+                title = "Title Title Title Title Title Title Title",
+                subtitle = "Subtitle",
+                onBackClick = {},
+                actions = {
+                    Row(modifier = Modifier.weight(1f)) {
+                        repeat(2) {
+                            Text(
+                                text = "Action",
+                                color = LocalPalletV2.current.text.title.blackOnColor,
+                                style = LocalTypography.current.titleEB18,
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+            )
+        }
     }
 }

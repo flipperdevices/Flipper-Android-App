@@ -37,6 +37,7 @@ internal fun LoadedContent(
     pagesLayout: PagesLayout,
     onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     onReload: () -> Unit,
+    emulatedKeyIdentifier: IfrKeyIdentifier?,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -45,6 +46,7 @@ internal fun LoadedContent(
         content = {
             ButtonsComposable(
                 pageLayout = pagesLayout.pages.firstOrNull(),
+                emulatedKeyIdentifier = emulatedKeyIdentifier,
                 onButtonClick = onButtonClick,
                 onReload = onReload
             )
@@ -76,7 +78,16 @@ fun GridComposable(
             SharedTopBar(
                 title = "",
                 subtitle = "",
-                onBackClick = gridComponent::pop
+                onBackClick = gridComponent::pop,
+                actions = {
+                    ComposableOptionsDropDown(
+                        isDownloaded = (model as? GridComponent.Model.Loaded)
+                            ?.isDownloaded
+                            ?: false,
+                        onSaveClick = gridComponent::onSaveFile,
+                        onDeleteClick = gridComponent::onDeleteFile,
+                    )
+                }
             )
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
@@ -111,7 +122,8 @@ fun GridComposable(
                             onButtonClick = { _, keyIdentifier ->
                                 gridComponent.onButtonClick(keyIdentifier)
                             },
-                            onReload = gridComponent::tryLoad
+                            onReload = gridComponent::tryLoad,
+                            emulatedKeyIdentifier = model.emulatedKey
                         )
                     }
 
@@ -134,7 +146,8 @@ private fun LoadedContentEmptyPreview() {
         LoadedContent(
             pagesLayout = PagesLayout(emptyList()),
             onButtonClick = { _, _ -> },
-            onReload = {}
+            onReload = {},
+            emulatedKeyIdentifier = null
         )
     }
 }

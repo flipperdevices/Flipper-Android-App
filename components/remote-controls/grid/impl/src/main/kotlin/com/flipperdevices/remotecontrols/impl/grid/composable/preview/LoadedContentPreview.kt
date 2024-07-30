@@ -15,7 +15,8 @@ private fun LoadedContentPreview() {
         LoadedContent(
             pagesLayout = KitchenLayoutFactory.create(),
             onButtonClick = { _, _ -> },
-            onReload = {}
+            onReload = {},
+            emulatedKeyIdentifier = null
         )
     }
 }

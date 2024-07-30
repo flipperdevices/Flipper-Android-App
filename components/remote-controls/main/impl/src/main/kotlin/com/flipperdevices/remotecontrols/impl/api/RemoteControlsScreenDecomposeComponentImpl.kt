@@ -32,7 +32,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     override val stack = childStack(
         source = navigation,
         serializer = RemoteControlsNavigationConfig.serializer(),
-        initialConfiguration = RemoteControlsNavigationConfig.SelectCategory,
+        initialConfiguration = RemoteControlsNavigationConfig.Grid(1), // todo remove back
         handleBackButton = true,
         childFactory = ::child,
     )

@@ -2,13 +2,18 @@ package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import kotlinx.coroutines.flow.StateFlow
 
 interface SaveTempSignalApi : InstanceKeeper.Instance {
 
     val state: StateFlow<State>
 
-    fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String)
+    fun saveFile(
+        deeplinkContent: DeeplinkContent,
+        nameWithExtension: String,
+        folderName: String = DEFAULT_FOLDER_NAME
+    )
 
     sealed interface State {
         data object Pending : State
@@ -18,5 +23,22 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
         }
 
         data object Uploaded : State
+    }
+
+    companion object {
+        private const val DEFAULT_FOLDER_NAME = "temp"
+
+        fun SaveTempSignalApi.saveFile(
+            fff: FlipperFileFormat,
+            nameWithExtension: String,
+            folderName: String = DEFAULT_FOLDER_NAME
+        ) = saveFile(
+            folderName = folderName,
+            nameWithExtension = nameWithExtension,
+            deeplinkContent = DeeplinkContent.FFFContent(
+                filename = nameWithExtension,
+                flipperFileFormat = fff
+            ),
+        )
     }
 }

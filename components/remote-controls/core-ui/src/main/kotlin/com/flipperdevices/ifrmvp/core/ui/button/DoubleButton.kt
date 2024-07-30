@@ -18,6 +18,7 @@ fun DoubleButton(
     onLastClick: () -> Unit,
     firstText: String,
     lastText: String,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier,
     text: String? = null,
 ) {
@@ -32,18 +33,21 @@ fun DoubleButton(
             onClick = onFirstClick,
             text = firstText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
+            isEmulating = isEmulating,
         )
         text?.let {
             TextButton(
                 onClick = null,
                 text = text,
-                background = LocalPalletV2.current.surface.menu.body.dufault
+                background = LocalPalletV2.current.surface.menu.body.dufault,
+                isEmulating = isEmulating
             )
         }
         TextButton(
             onClick = onLastClick,
             text = lastText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
+            isEmulating = isEmulating
         )
     }
 }
@@ -52,6 +56,7 @@ fun DoubleButton(
 fun VolumeButton(
     onAddClick: () -> Unit,
     onReduceClick: () -> Unit,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier
 ) {
     DoubleButton(
@@ -60,7 +65,8 @@ fun VolumeButton(
         text = "VOL",
         firstText = "+",
         lastText = "-",
-        modifier = modifier
+        modifier = modifier,
+        isEmulating = isEmulating
     )
 }
 
@@ -68,6 +74,7 @@ fun VolumeButton(
 fun ChannelButton(
     onNextClick: () -> Unit,
     onPrevClick: () -> Unit,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier,
 ) {
     DoubleButton(
@@ -76,6 +83,7 @@ fun ChannelButton(
         text = "CH",
         firstText = "+",
         lastText = "-",
-        modifier = modifier
+        modifier = modifier,
+        isEmulating = isEmulating
     )
 }

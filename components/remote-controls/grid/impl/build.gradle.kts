@@ -10,6 +10,8 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
 
+    implementation(projects.components.deeplink.api)
+
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
@@ -39,6 +41,8 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.immutable.collections)
+
+    implementation(libs.kotlin.serialization.json)
 
     implementation(libs.decompose)
 
