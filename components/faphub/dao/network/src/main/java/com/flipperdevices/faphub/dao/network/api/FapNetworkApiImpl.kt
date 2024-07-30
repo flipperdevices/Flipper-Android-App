@@ -9,10 +9,10 @@ import com.flipperdevices.faphub.dao.api.FapNetworkApi
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitApplicationApiRequest
-import com.flipperdevices.faphub.dao.network.ktorfit.utils.FapHubNetworkCategoryApi
-import com.flipperdevices.faphub.dao.network.ktorfit.utils.HostUrlBuilder
+import com.flipperdevices.faphub.dao.network.network.api.FapNetworkApplicationApi
+import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitApplicationApiRequest
+import com.flipperdevices.faphub.dao.network.network.utils.FapCachedCategoryApi
+import com.flipperdevices.faphub.dao.network.network.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapNetworkApi::class)
 class FapNetworkApiImpl @Inject constructor(
-    private val applicationApi: KtorfitApplicationApi,
-    private val categoryApi: FapHubNetworkCategoryApi,
+    private val applicationApi: FapNetworkApplicationApi,
+    private val categoryApi: FapCachedCategoryApi,
     private val hostUrlBuilder: HostUrlBuilder,
     private val fapApplicationReceiveHelper: FapApplicationReceiveHelper
 ) : FapNetworkApi, LogTagProvider {
