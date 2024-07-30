@@ -22,8 +22,8 @@ class FapNetworkCategoryApi(
     ): List<KtorfitCategory> {
         return httpClient.get {
             url("${fapHost.baseUrl}/v0/0/category")
-            sdkApi?.let { parameter("api", it) }
-            target?.let { parameter("target", it) }
+            parameter("api", sdkApi)
+            parameter("target", target)
         }.body()
     }
 }

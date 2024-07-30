@@ -49,8 +49,8 @@ class FapNetworkApplicationApi @Inject constructor(
     ): KtorfitApplicationDetailed {
         return httpClient.get {
             url("${fapHost.baseUrl}/v0/0/application/$id")
-            target?.let { parameter("target", it) }
-            sdkApiVersion?.let { parameter("api", it) }
+            parameter("target", target)
+            parameter("api", sdkApiVersion)
         }.body()
     }
 
