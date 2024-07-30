@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.config.api"
 
-dependencies {
+commonDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)
 }

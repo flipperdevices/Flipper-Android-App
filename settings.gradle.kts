@@ -43,6 +43,7 @@ include(
     ":components:bridge:dao:api",
     ":components:bridge:dao:impl",
 
+    ":components:bridge:connection:pbutils",
     ":components:bridge:connection:transport:ble:api",
     ":components:bridge:connection:transport:ble:impl",
     ":components:bridge:connection:transport:common:api",
