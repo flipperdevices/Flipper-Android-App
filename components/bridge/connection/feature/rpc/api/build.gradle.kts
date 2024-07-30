@@ -10,8 +10,8 @@ dependencies {
     implementation(projects.components.core.ktx)
 
     implementation(projects.components.bridge.connection.feature.common.api)
-    implementation(projects.components.bridge.connection.feature.lagsdetector.api)
     implementation(projects.components.bridge.connection.transport.common.api)
+    implementation(projects.components.bridge.connection.feature.lagsdetector.api)
 
     implementation(projects.components.bridge.pbutils)
 

@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.kotlin.coroutines)
 
     implementation(libs.slf4j.timber)
+    implementation(libs.kotlin.immutable.collections)
 
     testImplementation(projects.components.core.test)
     testImplementation(libs.kotlin.coroutines.test)

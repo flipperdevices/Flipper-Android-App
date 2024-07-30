@@ -725,6 +725,7 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
+      - 'com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty.DeviceInfo.*'
 
 formatting:
   IfElseBracing:

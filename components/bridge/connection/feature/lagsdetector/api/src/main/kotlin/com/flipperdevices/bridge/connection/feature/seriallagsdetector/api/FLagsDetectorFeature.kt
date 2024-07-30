@@ -22,6 +22,4 @@ interface FLagsDetectorFeature : FDeviceFeatureApi {
     fun <T> wrapPendingAction(request: FlipperRequest?, flow: Flow<T>): Flow<T>
 
     fun notifyAboutAction()
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }

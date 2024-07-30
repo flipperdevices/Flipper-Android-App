@@ -4,6 +4,4 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 
 interface FRestartRpcFeatureApi : FDeviceFeatureApi {
     suspend fun restartRpc()
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }

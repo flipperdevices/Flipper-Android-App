@@ -8,9 +8,9 @@ import kotlin.reflect.KClass
  * which means that the caller must ensure that no more than one call at a time are made to the methods
  */
 interface FUnsafeDeviceFeatureApi {
-    fun <T : FDeviceFeatureApi> getUnsafe(clazz: KClass<T>): T?
+    suspend fun <T : FDeviceFeatureApi> getUnsafe(clazz: KClass<T>): T?
 }
 
-inline fun <reified T : FDeviceFeatureApi> FUnsafeDeviceFeatureApi.getUnsafe(): T? {
+suspend inline fun <reified T : FDeviceFeatureApi> FUnsafeDeviceFeatureApi.getUnsafe(): T? {
     return getUnsafe(T::class)
 }

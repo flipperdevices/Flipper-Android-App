@@ -1,6 +1,7 @@
 # Changelog
 
 # 1.7.2 - In Progress
+Attention: don't forget to add the flag for F-Droid before release
 
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
@@ -16,6 +17,7 @@
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [CI] Update deps
+- [Feature] Add rpcinfo feature to new BLE api
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget

@@ -28,6 +28,4 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
      * Send batch request without waiting response
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
-
-    fun interface Factory : FDeviceFeatureApi.Factory
 }
