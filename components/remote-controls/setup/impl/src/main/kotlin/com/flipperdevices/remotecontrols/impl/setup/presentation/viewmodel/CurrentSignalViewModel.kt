@@ -33,7 +33,6 @@ class CurrentSignalViewModel @AssistedInject constructor(
             val request = SignalRequestModel(
                 successResults = successResults,
                 failedResults = failedResults,
-                categoryId = param.categoryId,
                 brandId = param.brandId,
             )
             infraredBackendApi.getSignal(request)

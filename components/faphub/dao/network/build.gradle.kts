@@ -1,8 +1,8 @@
 plugins {
     id("flipper.android-lib")
-    id("flipper.ktorfit")
     id("flipper.anvil")
     id("kotlinx-serialization")
+    id("flipper.ktorfit")
 }
 
 android.namespace = "com.flipperdevices.faphub.dao.network"

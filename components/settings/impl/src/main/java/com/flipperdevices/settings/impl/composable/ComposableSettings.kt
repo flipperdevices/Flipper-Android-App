@@ -79,7 +79,6 @@ fun ComposableSettings(
                 settings = settings,
                 onSwitchExperimental = settingsViewModel::onSwitchExperimental,
                 onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
-                onOpenRM = { onOpen(SettingsNavigationConfig.RemoteControls) },
             )
             ExportKeysCategory(
                 exportState = exportState,

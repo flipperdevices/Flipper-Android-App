@@ -4,6 +4,7 @@
 Attention: don't forget to add the flag for F-Droid before release
 
 - [Refactor] Update to Kotlin 2.0
+- [Refactor] Replace Ktorfit with Ktor requests in remote-controls
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint
@@ -11,6 +12,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Crash on app startup with WearOS app
 - [FIX] Expand verify signal bottom sheet only after signal is dispatched
 - [FIX] Fix scroll on save edit screen
+- [FIX] Update Infrared backend integration
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
@@ -20,6 +22,8 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
 - [FIX] Ignore faps manifest with point in start
+- [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
+- [FIX] Relocate remote-controls button to infrared remotes screen
 
 # 1.7.1
 

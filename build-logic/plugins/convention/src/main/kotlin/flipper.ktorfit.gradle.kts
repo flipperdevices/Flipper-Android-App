@@ -1,6 +1,7 @@
 plugins {
-    id("de.jensklingenberg.ktorfit")
+    id("flipper.android-lib")
     id("com.google.devtools.ksp")
+    id("de.jensklingenberg.ktorfit")
 }
 
 dependencies {
