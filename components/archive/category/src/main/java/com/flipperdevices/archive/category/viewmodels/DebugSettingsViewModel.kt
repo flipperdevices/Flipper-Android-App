@@ -13,6 +13,6 @@ class DebugSettingsViewModel @Inject constructor(
     settingsDataStore: DataStore<Settings>
 ) : DecomposeViewModel() {
     val showRemoteControls: StateFlow<Boolean> = settingsDataStore.data
-        .map { it.showRemoteControls }
+        .map { it.show_remote_controls }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 }

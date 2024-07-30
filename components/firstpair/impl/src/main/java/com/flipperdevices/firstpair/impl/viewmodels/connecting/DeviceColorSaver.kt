@@ -22,9 +22,9 @@ class DeviceColorSaver @Inject constructor(
             else -> null
         } ?: return
         dataStore.updateData {
-            it.toBuilder()
-                .setHardwareColor(deviceColor)
-                .build()
+            it.copy(
+                hardware_color = deviceColor
+            )
         }
     }
 }

@@ -13,11 +13,11 @@ import javax.inject.Inject
 class FlipperColorViewModel @Inject constructor(
     settings: DataStore<PairSettings>
 ) : DecomposeViewModel() {
-    private val colorFlipperState = MutableStateFlow(HardwareColor.WHITE)
+    private val colorFlipperState = MutableStateFlow<HardwareColor>(HardwareColor.WHITE)
 
     init {
         settings.data.onEach {
-            colorFlipperState.emit(it.hardwareColor)
+            colorFlipperState.emit(it.hardware_color)
         }.launchIn(viewModelScope)
     }
 

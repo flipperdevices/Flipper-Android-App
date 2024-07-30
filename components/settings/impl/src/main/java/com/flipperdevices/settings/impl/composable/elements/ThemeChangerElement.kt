@@ -27,14 +27,14 @@ import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.SimpleElement
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
+private val themes = listOf(SelectedTheme.SYSTEM, SelectedTheme.DARK, SelectedTheme.LIGHT)
+
 @Composable
 fun ThemeChangerElement(
     theme: SelectedTheme,
     modifier: Modifier = Modifier,
     onSelectTheme: (SelectedTheme) -> Unit,
 ) {
-    val themes = SelectedTheme.entries.filter { it != SelectedTheme.UNRECOGNIZED }
-
     val nameTheme = stringResource(id = getNameBySelectedTheme(theme))
     var showMenu by remember { mutableStateOf(false) }
 

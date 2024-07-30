@@ -3,8 +3,14 @@
 # 1.7.2 - In Progress
 Attention: don't forget to add the flag for F-Droid before release
 
+
+- [Feature] Add rpcinfo feature to new BLE api
+- [Feature] Infrared controls
+- [Feature] Remove bond on retry pair
+- [Feature] Add onetap widget
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
+- [Refactor] Migrate :core:preference to KMP
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint
@@ -13,17 +19,13 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Expand verify signal bottom sheet only after signal is dispatched
 - [FIX] Fix scroll on save edit screen
 - [FIX] Update Infrared backend integration
+- [FIX] Ignore faps manifest with point in start
+- [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
+- [FIX] Relocate remote-controls button to infrared remotes screen
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [CI] Update deps
-- [Feature] Add rpcinfo feature to new BLE api
-- [Feature] Infrared controls
-- [Feature] Remove bond on retry pair
-- [Feature] Add onetap widget
-- [FIX] Ignore faps manifest with point in start
-- [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
-- [FIX] Relocate remote-controls button to infrared remotes screen
 
 # 1.7.1
 

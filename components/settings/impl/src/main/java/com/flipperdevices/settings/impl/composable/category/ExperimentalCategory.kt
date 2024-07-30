@@ -18,10 +18,10 @@ fun ExperimentalCategory(
         CategoryElement(
             titleId = R.string.experimental_options,
             descriptionId = R.string.experimental_options_desc,
-            state = settings.enabledExperimentalFunctions,
+            state = settings.enabled_experimental_functions,
             onSwitchState = onSwitchExperimental
         )
-        if (settings.enabledExperimentalFunctions) {
+        if (settings.enabled_experimental_functions) {
             ClickableElement(
                 titleId = R.string.experimental_file_manager,
                 descriptionId = R.string.experimental_file_manager_desc,

@@ -72,7 +72,7 @@ class FlipperVersionApiImpl @Inject constructor(
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {
-        val ignoreUnsupported = settingsStore.data.first().ignoreUnsupportedVersion
+        val ignoreUnsupported = settingsStore.data.first().ignore_unsupported_version
         if (ignoreUnsupported) {
             bleManager.setDeviceSupportedStatus(FlipperSupportedState.READY)
             return

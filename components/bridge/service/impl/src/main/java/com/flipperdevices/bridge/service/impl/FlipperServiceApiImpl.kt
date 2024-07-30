@@ -61,7 +61,7 @@ class FlipperServiceApiImpl @Inject constructor(
 
         var previousDeviceId: String? = null
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            pairSettingsStore.data.map { it.deviceId }.collectLatest { deviceId ->
+            pairSettingsStore.data.map { it.device_id }.collectLatest { deviceId ->
                 withLock(mutex, "connect") {
                     if (!unhandledExceptionApi.isBleConnectionForbiddenFlow().first() &&
                         deviceId != previousDeviceId
@@ -85,7 +85,7 @@ class FlipperServiceApiImpl @Inject constructor(
         if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
             return@launchWithLock
         }
-        val deviceId = pairSettingsStore.data.first().deviceId
+        val deviceId = pairSettingsStore.data.first().device_id
         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
 
@@ -97,7 +97,7 @@ class FlipperServiceApiImpl @Inject constructor(
     }
 
     override suspend fun reconnect() = withLock(mutex, "reconnect") {
-        val deviceId = pairSettingsStore.data.first().deviceId
+        val deviceId = pairSettingsStore.data.first().device_id
         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
 

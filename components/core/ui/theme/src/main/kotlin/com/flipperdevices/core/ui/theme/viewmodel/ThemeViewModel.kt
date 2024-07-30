@@ -15,11 +15,11 @@ import javax.inject.Inject
 class ThemeViewModel @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>
 ) : DecomposeViewModel() {
-    private val selectedThemeStateFlow = MutableStateFlow(SelectedTheme.UNRECOGNIZED)
+    private val selectedThemeStateFlow = MutableStateFlow<SelectedTheme>(SelectedTheme.SYSTEM)
 
     init {
         dataStoreSettings.data.onEach {
-            selectedThemeStateFlow.emit(it.selectedTheme)
+            selectedThemeStateFlow.emit(it.selected_theme)
         }.launchIn(viewModelScope)
     }
 

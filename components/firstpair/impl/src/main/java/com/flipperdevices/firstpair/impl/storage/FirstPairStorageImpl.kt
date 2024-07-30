@@ -17,18 +17,18 @@ class FirstPairStorageImpl @Inject constructor(
     override val TAG = "FirstPairStorage"
 
     override fun isTosPassed(): Boolean {
-        return runBlockingWithLog("is_passed") { pairSettingsStore.data.first() }.tosPassed
+        return runBlockingWithLog("is_passed") { pairSettingsStore.data.first() }.tos_passed
     }
 
     override fun isDeviceSelected(): Boolean {
-        return runBlockingWithLog("is_device_selected") { pairSettingsStore.data.first() }.pairDevicePass
+        return runBlockingWithLog("is_device_selected") { pairSettingsStore.data.first() }.pair_device_pass
     }
 
     override fun markTosPassed(): Unit = runBlockingWithLog("mark_tos_passed") {
         pairSettingsStore.updateData {
-            it.toBuilder()
-                .setTosPassed(true)
-                .build()
+            it.copy(
+                tos_passed = true
+            )
         }
     }
 
@@ -37,12 +37,10 @@ class FirstPairStorageImpl @Inject constructor(
         deviceName: String?
     ): Unit = runBlockingWithLog("mark_device_selected") {
         pairSettingsStore.updateData {
-            var builder = it.toBuilder()
-                .setPairDevicePass(true)
+            var pairSetting = it.copy(pair_device_pass = true)
 
             if (deviceId != null) {
-                builder = builder
-                    .setDeviceId(deviceId)
+                pairSetting = pairSetting.copy(device_id = deviceId)
             }
             if (deviceName != null) {
                 var deviceNameFormatted = deviceName.trim()
@@ -51,10 +49,9 @@ class FirstPairStorageImpl @Inject constructor(
                         .replaceFirst(Constants.DEVICENAME_PREFIX, "")
                         .trim()
                 }
-                builder = builder
-                    .setDeviceName(deviceNameFormatted)
+                pairSetting = pairSetting.copy(device_name = deviceNameFormatted)
             }
-            builder.build()
+            pairSetting
         }
     }
 }

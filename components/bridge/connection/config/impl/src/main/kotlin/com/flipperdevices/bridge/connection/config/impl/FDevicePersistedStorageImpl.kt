@@ -8,11 +8,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
+import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.SavedDevice
-import com.flipperdevices.core.preference.pb.SavedDevice.DataCase
-import com.flipperdevices.core.preference.pb.flipperZeroBle
-import com.flipperdevices.core.preference.pb.savedDevice
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,11 +24,11 @@ class FDevicePersistedStorageImpl @Inject constructor(
 
     override fun getCurrentDevice(): Flow<FDeviceBaseModel?> {
         return newPairSettings.data.map { settings ->
-            val deviceId = settings.currentSelectedDeviceId
-            if (deviceId.isNullOrBlank()) {
+            val deviceId = settings.current_selected_device_id
+            if (deviceId.isBlank()) {
                 return@map null
             } else {
-                settings.devicesList.find { it.id == deviceId }
+                settings.devices.find { it.id == deviceId }
                     ?.run(::mapSavedDevice)
             }
         }
@@ -38,75 +36,70 @@ class FDevicePersistedStorageImpl @Inject constructor(
 
     override suspend fun setCurrentDevice(id: String?) {
         newPairSettings.updateData { settings ->
-            var builder = settings.toBuilder()
             if (id == null) {
-                builder = builder
-                    .clearCurrentSelectedDeviceId()
-            } else if (settings.devicesList.none { it.id == id }) {
+                settings.copy(current_selected_device_id = "")
+            } else if (settings.devices.none { it.id == id }) {
                 error("Can't find device with id $id")
             } else {
-                builder = builder
-                    .setCurrentSelectedDeviceId(id)
+                settings.copy(current_selected_device_id = id)
             }
-            builder.build()
         }
     }
 
     override suspend fun addDevice(device: FDeviceBaseModel) {
         info { "Add device $device" }
         newPairSettings.updateData { settings ->
-            settings.toBuilder()
-                .addDevices(mapDeviceBaseModelToSavedDevice(device))
-                .build()
+            settings.copy(
+                devices = settings.devices.plus(mapDeviceBaseModelToSavedDevice(device))
+            )
         }
     }
 
     override suspend fun removeDevice(id: String) {
         newPairSettings.updateData { settings ->
-            val deviceIndex = settings.devicesList.indexOfFirst { it.id == id }
+            val devicesList = settings.devices.toMutableList()
+            val deviceIndex = devicesList.indexOfFirst { it.id == id }
             if (deviceIndex < 0) {
                 warn { "Can't find device with id $id" }
                 settings
             } else {
-                settings.toBuilder()
-                    .removeDevices(deviceIndex)
-                    .build()
+                devicesList.removeAt(deviceIndex)
+                settings.copy(
+                    devices = devicesList
+                )
             }
         }
     }
 
     override fun getAllDevices(): Flow<List<FDeviceBaseModel>> {
         return newPairSettings.data.map { settings ->
-            settings.devicesList.mapNotNull { device ->
+            settings.devices.mapNotNull { device ->
                 mapSavedDevice(device)
             }
         }
     }
 
     private fun mapSavedDevice(device: SavedDevice): FDeviceBaseModel? {
-        return when (device.dataCase) {
-            DataCase.FLIPPER_ZERO_BLE -> {
-                FDeviceFlipperZeroBleModel(
-                    name = device.name,
-                    uniqueId = device.id,
-                    address = device.flipperZeroBle.address
-                )
-            }
-
-            DataCase.DATA_NOT_SET,
-            null -> null
+        val flipperZeroBle = device.flipper_zero_ble
+        if (flipperZeroBle != null) {
+            return FDeviceFlipperZeroBleModel(
+                name = device.name,
+                uniqueId = device.id,
+                address = flipperZeroBle.address
+            )
         }
+        return null
     }
 
     private fun mapDeviceBaseModelToSavedDevice(device: FDeviceBaseModel): SavedDevice {
         return when (device) {
-            is FDeviceFlipperZeroBleModel -> savedDevice {
-                id = device.uniqueId
-                name = device.name
-                flipperZeroBle = flipperZeroBle {
+            is FDeviceFlipperZeroBleModel -> SavedDevice(
+                id = device.uniqueId,
+                name = device.name,
+                flipper_zero_ble = FlipperZeroBle(
                     address = device.address
-                }
-            }
+                )
+            )
 
             else -> error("Can't find parser for $device")
         }
