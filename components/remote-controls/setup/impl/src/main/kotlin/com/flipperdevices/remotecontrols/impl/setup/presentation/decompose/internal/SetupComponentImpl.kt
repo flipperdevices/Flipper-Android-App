@@ -7,8 +7,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
-import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
-import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi

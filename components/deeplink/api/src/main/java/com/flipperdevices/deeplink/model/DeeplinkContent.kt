@@ -10,11 +10,19 @@ import com.flipperdevices.core.ktx.jre.length
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
 
 @Serializable
 sealed class DeeplinkContent : Parcelable {
+    @Parcelize
+    @Serializable
+    data class Raw(
+        val filename: String,
+        val content: String
+    ) : DeeplinkContent()
+
     @Parcelize
     @Serializable
     data class FFFContent(
@@ -54,6 +62,7 @@ sealed class DeeplinkContent : Parcelable {
             is InternalStorageFile -> file.length()
             is FFFContent -> flipperFileFormat.length()
             is FFFCryptoContent -> null
+            is Raw -> content.toByteArray().size.toLong()
         }
     }
 
@@ -63,6 +72,7 @@ sealed class DeeplinkContent : Parcelable {
             is InternalStorageFile -> file.name
             is FFFContent -> filename
             is FFFCryptoContent -> key.pathToKey
+            is Raw -> filename
         }
     }
 
@@ -72,6 +82,7 @@ sealed class DeeplinkContent : Parcelable {
             is InternalStorageFile -> file.inputStream()
             is FFFContent -> flipperFileFormat.openStream()
             is FFFCryptoContent -> null
+            is Raw -> ByteArrayInputStream(content.toByteArray())
         }
     }
 
@@ -86,6 +97,7 @@ sealed class DeeplinkContent : Parcelable {
             is InternalStorageFile -> file.delete()
             is FFFContent -> {} // Nothing
             is FFFCryptoContent -> {} // Nothing
+            is Raw -> {}
         }
     }
 }

@@ -27,10 +27,10 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun SharedTopBar(
+    title: String,
+    subtitle: String,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    title: String = "",
-    subtitle: String = "",
     actions: @Composable () -> Unit = {}
 ) {
     Row(
