@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.grid.composable
+package com.flipperdevices.remotecontrols.impl.grid.composable.components
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope

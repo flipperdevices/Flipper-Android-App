@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.grid.composable
+package com.flipperdevices.remotecontrols.impl.grid.composable.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
