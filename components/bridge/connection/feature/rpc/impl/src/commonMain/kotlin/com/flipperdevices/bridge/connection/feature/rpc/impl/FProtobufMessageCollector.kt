@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.connection.feature.rpc.impl
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.reader.PeripheralResponseReader
 import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
+import com.flipperdevices.bridge.connection.pbutils.encodeWithDelimitedSize
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.info
@@ -69,7 +70,7 @@ class FProtobufMessageCollector @AssistedInject constructor(
             while (isActive) {
                 val request = requestStorage.getNextRequest()
                 if (request != null) {
-                    serialApi.sendBytes(request.data.encode())
+                    serialApi.sendBytes(request.data.encodeWithDelimitedSize())
                 }
             }
         }

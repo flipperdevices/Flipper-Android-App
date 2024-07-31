@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpc.reader
 
+import com.flipperdevices.bridge.connection.pbutils.writeDelimitedTo
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.WriteRequest
@@ -47,12 +48,28 @@ class ByteEndlessInputStreamTest {
     }
 
     @Test
+    fun `check ping request protobuf serialization`() {
+        val message = Main(
+            system_ping_request = PingRequest()
+        )
+        val messageBytes = ByteArrayOutputStream().use { os ->
+            message.writeDelimitedTo(os)
+            return@use os.toByteArray()
+        }
+
+        Assert.assertArrayEquals(
+            byteArrayOf(2, 42, 0),
+            messageBytes
+        )
+    }
+
+    @Test
     fun `Write read protobuf message`() {
         val message = Main(
             system_ping_request = PingRequest()
         )
         val messageBytes = ByteArrayOutputStream().use { os ->
-            message.encode(os)
+            message.writeDelimitedTo(os)
             return@use os.toByteArray()
         }
 
@@ -72,7 +89,7 @@ class ByteEndlessInputStreamTest {
             ),
         )
         val messageBytes = ByteArrayOutputStream().use { os ->
-            message.encode(os)
+            message.writeDelimitedTo(os)
             return@use os.toByteArray()
         }
 
