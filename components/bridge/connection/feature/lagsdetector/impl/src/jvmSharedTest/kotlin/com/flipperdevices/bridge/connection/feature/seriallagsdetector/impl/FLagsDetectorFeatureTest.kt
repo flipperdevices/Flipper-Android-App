@@ -41,9 +41,9 @@ class FLagsDetectorFeatureTest {
             restartRpcFeatureApi = restartRpcFeatureApi
         )
         val backgroundJob = backgroundScope.launch {
-            underTest.wrapPendingAction(mockk()) {
+            underTest.wrapPendingAction(mockk(relaxed = true)) {
                 delay(Long.MAX_VALUE)
-                println("Hello world!")
+                println("Hello from pending action!")
             }
         }
         underTest.notifyAboutAction()

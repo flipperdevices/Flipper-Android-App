@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.rpc.reader
 
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
+import com.flipperdevices.bridge.connection.pbutils.decodeDelimitedPackage
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -55,7 +56,7 @@ class PeripheralResponseReader @AssistedInject constructor(
     private suspend fun CoroutineScope.parseLoopJob(byteInputStream: ByteEndlessInputStream) {
         while (this.isActive) {
             try {
-                val main = Main.ADAPTER.decode(byteInputStream)
+                val main = Main.ADAPTER.decodeDelimitedPackage(byteInputStream)
                 scope.launch(FlipperDispatchers.workStealingDispatcher) {
                     responses.emit(main)
                 }

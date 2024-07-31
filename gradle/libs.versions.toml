@@ -96,6 +96,7 @@ google-gms-firebase = "24.0.0" # https://firebase.google.com/docs/android/setup#
 buildkonfig = "5.4.0"
 
 wire = "5.0.0"
+okio = "3.9.0"
 
 [libraries]
 # Gradle - Core
@@ -283,6 +284,7 @@ essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-corou
 
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 [bundles]
 decompose = ["decompose", "decompose-jetpack"]

@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.rpc.reader
 
+import com.flipperdevices.bridge.connection.pbutils.decodeDelimitedPackage
 import com.flipperdevices.bridge.connection.pbutils.writeDelimitedTo
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
@@ -75,7 +76,7 @@ class ByteEndlessInputStreamTest {
 
         subject.write(messageBytes)
 
-        val actualMessage = Main.ADAPTER.decode(subject)
+        val actualMessage = Main.ADAPTER.decodeDelimitedPackage(subject)
         Assert.assertEquals(message, actualMessage)
     }
 
@@ -95,7 +96,7 @@ class ByteEndlessInputStreamTest {
 
         subject.write(messageBytes)
 
-        val actualMessage = Main.ADAPTER.decode(subject)
+        val actualMessage = Main.ADAPTER.decodeDelimitedPackage(subject)
         Assert.assertEquals(message, actualMessage)
     }
 
@@ -104,7 +105,7 @@ class ByteEndlessInputStreamTest {
         var cancelException: Throwable? = null
         val deffered = async {
             cancelException = runCatching {
-                Main.ADAPTER.decode(subject)
+                Main.ADAPTER.decodeDelimitedPackage(subject)
             }.exceptionOrNull()
         }
         scope.cancel()

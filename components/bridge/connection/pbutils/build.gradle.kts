@@ -15,7 +15,6 @@ wire {
     }
 }
 
-jvmSharedDependencies {
-    implementation(projects.components.core.log)
-    implementation(libs.kotlin.coroutines)
+commonDependencies {
+    implementation(libs.okio)
 }
