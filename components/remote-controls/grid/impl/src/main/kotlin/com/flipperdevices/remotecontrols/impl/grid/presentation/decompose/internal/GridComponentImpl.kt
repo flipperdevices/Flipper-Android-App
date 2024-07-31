@@ -32,33 +32,33 @@ class GridComponentImpl @AssistedInject constructor(
     @Assisted private val param: GridScreenDecomposeComponent.Param,
     @Assisted private val onPopClick: () -> Unit,
     createGridViewModel: GridViewModel.Factory,
-    createSaveSignalViewModel: Provider<SaveTempSignalApi>,
-    createDispatchSignalViewModel: Provider<DispatchSignalApi>
+    createSaveTempSignalApi: Provider<SaveTempSignalApi>,
+    createDispatchSignalApi: Provider<DispatchSignalApi>
 ) : GridComponent, ComponentContext by componentContext {
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
         prettyPrint = false
     }
-    private val saveSignalViewModel = instanceKeeper.getOrCreate(
+    private val saveTempSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
         factory = {
-            createSaveSignalViewModel.get()
+            createSaveTempSignalApi.get()
         }
     )
-    private val dispatchSignalViewModel = instanceKeeper.getOrCreate(
+    private val dispatchSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_dispatchSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
         factory = {
-            createDispatchSignalViewModel.get()
+            createDispatchSignalApi.get()
         }
     )
-    private val gridFeature = instanceKeeper.getOrCreate(
+    private val gridViewModel = instanceKeeper.getOrCreate(
         key = "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}",
         factory = {
             createGridViewModel.invoke(
                 param = param,
                 onUiLoaded = { pagesLayout ->
-                    saveSignalViewModel.saveFile(
+                    saveTempSignalApi.saveFile(
                         deeplinkContent = DeeplinkContent.Raw(
                             filename = "template.ui.json",
                             content = json.encodeToString(pagesLayout)
@@ -68,9 +68,8 @@ class GridComponentImpl @AssistedInject constructor(
                     )
                 },
                 onIrFileLoaded = { content ->
-                    val fff = FlipperFileFormat.fromFileContent(content)
-                    saveSignalViewModel.saveFile(
-                        fff = fff,
+                    saveTempSignalApi.saveFile(
+                        fff = FlipperFileFormat.fromFileContent(content),
                         nameWithExtension = "${param.ifrFileId}.ir",
                         folderName = "/temp/${param.ifrFileId}"
                     )
@@ -80,9 +79,9 @@ class GridComponentImpl @AssistedInject constructor(
     )
 
     override fun model(coroutineScope: CoroutineScope) = combine(
-        saveSignalViewModel.state,
-        gridFeature.state,
-        dispatchSignalViewModel.state,
+        saveTempSignalApi.state,
+        gridViewModel.state,
+        dispatchSignalApi.state,
         transform = { saveState, gridState, dispatchState ->
             GridComponentStateMapper.map(
                 saveState = saveState,
@@ -93,13 +92,13 @@ class GridComponentImpl @AssistedInject constructor(
     ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading())
 
     override fun dismissBusyDialog() {
-        dispatchSignalViewModel.dismissBusyDialog()
+        dispatchSignalApi.dismissBusyDialog()
     }
 
     override fun onButtonClick(identifier: IfrKeyIdentifier) {
-        val gridLoadedState = (gridFeature.state.value as? GridViewModel.State.Loaded) ?: return
+        val gridLoadedState = (gridViewModel.state.value as? GridViewModel.State.Loaded) ?: return
         val remotes = gridLoadedState.remotes
-        dispatchSignalViewModel.dispatch(
+        dispatchSignalApi.dispatch(
             identifier = identifier,
             remotes = remotes,
             ffPath = FlipperFilePath(
@@ -110,13 +109,13 @@ class GridComponentImpl @AssistedInject constructor(
     }
 
     override fun onDeleteFile() {
-        gridFeature.delete()
+        gridViewModel.delete()
     }
 
     override fun onSaveFile() {
-        gridFeature.saveSignal()
+        gridViewModel.saveSignal()
     }
 
-    override fun tryLoad() = gridFeature.tryLoad()
+    override fun tryLoad() = gridViewModel.tryLoad()
     override fun pop() = onPopClick.invoke()
 }

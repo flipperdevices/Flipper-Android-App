@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.grid.presentation.data
+package com.flipperdevices.remotecontrols.impl.grid.presentation.data.pages
 
 import com.flipperdevices.ifrmvp.model.PagesLayout
 

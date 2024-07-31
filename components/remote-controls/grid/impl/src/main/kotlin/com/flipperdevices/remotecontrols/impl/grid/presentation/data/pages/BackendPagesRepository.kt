@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.impl.grid.presentation.data
+package com.flipperdevices.remotecontrols.impl.grid.presentation.data.pages
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.api.infrared.InfraredBackendApi
@@ -11,7 +11,6 @@ import javax.inject.Inject
 class BackendPagesRepository @Inject constructor(
     private val infraredBackendApi: InfraredBackendApi,
 ) : PagesRepository {
-
     override suspend fun fetchDefaultPageLayout(
         ifrFileId: Long
     ): Result<PagesLayout> = runCatching<PagesLayout> {
