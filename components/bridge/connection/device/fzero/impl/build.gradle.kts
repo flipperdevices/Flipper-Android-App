@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.device.fzero.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.device.fzero.api)
 
     implementation(projects.components.core.di)

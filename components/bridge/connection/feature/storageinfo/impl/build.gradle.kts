@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.feature.storageinfo.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
 
     implementation(projects.components.core.di)
@@ -18,7 +19,7 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.rpc.model)
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
 
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.kotlin.coroutines)
 }

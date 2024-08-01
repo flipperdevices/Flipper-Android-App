@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.transportconfigbuilder.api"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.config.api)
 }

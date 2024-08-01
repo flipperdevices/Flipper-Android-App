@@ -14,8 +14,8 @@ import com.flipperdevices.bridge.connection.feature.storageinfo.model.dataOrNull
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.system.pingRequest
+import com.flipperdevices.protobuf.Main
+import com.flipperdevices.protobuf.system.PingRequest
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -88,9 +88,9 @@ class PingViewModel @Inject constructor(
         val requestApi = featureProvider.getSync<FRpcFeatureApi>()
         info { "Receive requestApi: $requestApi" }
         requestApi?.requestWithoutAnswer(
-            main {
-                systemPingRequest = pingRequest { }
-            }.wrapToRequest()
+            Main(
+                system_ping_request = PingRequest()
+            ).wrapToRequest()
         )
         info { "Send ping request successful" }
     }

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.feature.rpcinfo.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
 
     implementation(projects.components.core.data)
@@ -19,7 +20,7 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.rpc.model)
     implementation(projects.components.bridge.connection.feature.getinfo.api)
 
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
     implementation(projects.components.analytics.shake2report.api)
 
     implementation(libs.kotlin.immutable.collections)

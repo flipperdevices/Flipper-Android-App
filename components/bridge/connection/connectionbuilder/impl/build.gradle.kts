@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.connectionbuilder.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.connectionbuilder.api)
 
     implementation(projects.components.core.di)

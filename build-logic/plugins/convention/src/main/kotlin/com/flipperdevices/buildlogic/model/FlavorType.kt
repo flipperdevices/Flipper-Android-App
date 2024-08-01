@@ -10,8 +10,17 @@ package com.flipperdevices.buildlogic.model
  */
 enum class FlavorType(
     val isLogEnabled: Boolean,
-    val crashAppOnFailedChecks: Boolean
+    val crashAppOnFailedChecks: Boolean,
+    val loggingPendingCommands: Boolean
 ) {
-    DEV(isLogEnabled = true, crashAppOnFailedChecks = true),
-    PROD(isLogEnabled = true, crashAppOnFailedChecks = false)
+    DEV(
+        isLogEnabled = true,
+        crashAppOnFailedChecks = true,
+        loggingPendingCommands = true
+    ),
+    PROD(
+        isLogEnabled = true,
+        crashAppOnFailedChecks = false,
+        loggingPendingCommands = true
+    )
 }
