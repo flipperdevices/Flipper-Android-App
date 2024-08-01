@@ -97,7 +97,7 @@ sealed class DeeplinkContent : Parcelable {
             is InternalStorageFile -> file.delete()
             is FFFContent -> {} // Nothing
             is FFFCryptoContent -> {} // Nothing
-            is Raw -> {}
+            is Raw -> {} // Nothing
         }
     }
 }
