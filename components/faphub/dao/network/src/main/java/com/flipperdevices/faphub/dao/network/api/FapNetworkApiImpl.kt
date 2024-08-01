@@ -12,7 +12,6 @@ import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
 import com.flipperdevices.faphub.dao.network.network.api.FapNetworkApplicationApi
 import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitApplicationApiRequest
 import com.flipperdevices.faphub.dao.network.network.utils.FapCachedCategoryApi
-import com.flipperdevices.faphub.dao.network.network.utils.HostUrlBuilder
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding

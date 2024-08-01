@@ -19,7 +19,7 @@ class FapNetworkModule {
     fun provideFapNetworkHostEnum(
         settings: DataStore<Settings>
     ): FapNetworkHostEnum {
-        val useDevCatalog = runBlocking { settings.data.first().useDevCatalog }
+        val useDevCatalog = runBlocking { settings.data.first().use_dev_catalog }
         return when (useDevCatalog) {
             true -> FapNetworkHostEnum.DEV
             false -> FapNetworkHostEnum.PROD
