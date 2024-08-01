@@ -27,6 +27,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [CI] Update deps
+- [CI] Merge CI workflows in one
 
 # 1.7.1
 
