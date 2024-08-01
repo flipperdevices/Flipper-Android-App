@@ -32,10 +32,7 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
 
--keep class de.jensklingenberg.ktorfit.** { *; }
--keepclassmembers class de.jensklingenberg.ktorfit.** { *; }
-
-# Fix for some strange bug with ktorfit
+# Fix for some strange bug with ktor
 -keep class io.ktor.http.* { *; }
 
 # With R8 full mode generic signatures are stripped for classes that are not
