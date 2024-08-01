@@ -36,5 +36,11 @@ sealed class RootScreenConfig {
     data class Changelog(val updateRequest: UpdateRequest) : RootScreenConfig()
 
     @Serializable
-    data class RemoteControls(val deeplink: Deeplink.RootLevel.RemoteControl?) : RootScreenConfig()
+    data object RemoteControls : RootScreenConfig()
+
+    @Serializable
+    sealed class RemoteControlGrid : RootScreenConfig() {
+        data class Id(val ifrFileId: Long) : RemoteControlGrid()
+        data class Path(val flipperKeyPath: FlipperKeyPath) : RemoteControlGrid()
+    }
 }

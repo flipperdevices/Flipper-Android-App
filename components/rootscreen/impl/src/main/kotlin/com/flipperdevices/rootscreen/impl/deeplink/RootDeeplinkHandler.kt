@@ -83,7 +83,6 @@ class RootDeeplinkHandler(
             return when (deeplink) {
                 is Deeplink.RootLevel.SaveKey -> RootScreenConfig.SaveKey(deeplink)
                 is Deeplink.RootLevel.WidgetOptions -> RootScreenConfig.WidgetOptions(deeplink.appWidgetId)
-                is Deeplink.RootLevel.RemoteControl.Path -> RootScreenConfig.RemoteControls(deeplink)
             }
         }
     }
