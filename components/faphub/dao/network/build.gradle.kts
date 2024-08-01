@@ -2,7 +2,6 @@ plugins {
     id("flipper.android-lib")
     id("flipper.anvil")
     id("kotlinx-serialization")
-    id("flipper.ktorfit")
 }
 
 android.namespace = "com.flipperdevices.faphub.dao.network"
@@ -25,6 +24,7 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.datetime)
+    implementation(libs.ktor.client)
 
     implementation(libs.annotations)
 }

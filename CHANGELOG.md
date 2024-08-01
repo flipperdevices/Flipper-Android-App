@@ -11,6 +11,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
 - [Refactor] Migrate :core:preference to KMP
+- [Refactor] Remove ktorfit
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint
@@ -26,6 +27,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [CI] Update deps
+- [CI] Merge CI workflows in one
 
 # 1.7.1
 

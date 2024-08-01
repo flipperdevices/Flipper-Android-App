@@ -5,13 +5,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitApplicationApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitApplicationShort
-import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitException
-import com.flipperdevices.faphub.dao.network.ktorfit.model.KtorfitExceptionCode
-import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitApplicationApiRequest
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.ApplicationSortType
-import com.flipperdevices.faphub.dao.network.ktorfit.model.types.SortOrderType
+import com.flipperdevices.faphub.dao.network.network.api.FapNetworkApplicationApi
+import com.flipperdevices.faphub.dao.network.network.model.KtorfitApplicationShort
+import com.flipperdevices.faphub.dao.network.network.model.KtorfitExceptionCode
+import com.flipperdevices.faphub.dao.network.network.model.NetworkException
+import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitApplicationApiRequest
+import com.flipperdevices.faphub.dao.network.network.model.types.ApplicationSortType
+import com.flipperdevices.faphub.dao.network.network.model.types.SortOrderType
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import io.ktor.client.call.body
@@ -22,7 +22,7 @@ private const val MAX_QUERY_ARRAY_SIZE = 500
 
 @Suppress("LongParameterList")
 class FapApplicationReceiveHelper @Inject constructor(
-    private val applicationApi: KtorfitApplicationApi,
+    private val applicationApi: FapNetworkApplicationApi,
 ) : LogTagProvider {
     override val TAG = "FapApplicationReceiveHelper"
     suspend fun get(
@@ -46,10 +46,10 @@ class FapApplicationReceiveHelper @Inject constructor(
                 applicationIds = applicationIds
             )
         } catch (requestException: ClientRequestException) {
-            val ktorfitException = runCatching {
-                requestException.response.body<KtorfitException>()
+            val networkException = runCatching {
+                requestException.response.body<NetworkException>()
             }.getOrNull() ?: throw requestException
-            val exceptionCode = KtorfitExceptionCode.fromCode(ktorfitException.detail.code)
+            val exceptionCode = KtorfitExceptionCode.fromCode(networkException.detail.code)
             throw if (exceptionCode == KtorfitExceptionCode.UNKNOWN_SDK) {
                 FirmwareNotSupported(requestException)
             } else {
