@@ -15,9 +15,6 @@ interface GridComponent {
     fun onButtonClick(identifier: IfrKeyIdentifier)
     fun tryLoad()
 
-    fun onSaveFile()
-    fun onDeleteFile()
-
     fun pop()
 
     fun dismissBusyDialog()

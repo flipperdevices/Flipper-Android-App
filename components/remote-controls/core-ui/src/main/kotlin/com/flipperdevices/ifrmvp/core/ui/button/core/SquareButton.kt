@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
@@ -50,7 +49,6 @@ fun SquareButton(
                         Modifier
                             .fillMaxSize()
                             .placeholderConnecting()
-                            .alpha(alpha = 0.8f)
                     )
                 }
             }

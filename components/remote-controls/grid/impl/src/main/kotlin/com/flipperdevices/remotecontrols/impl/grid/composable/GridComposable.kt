@@ -11,7 +11,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
-import com.flipperdevices.remotecontrols.impl.grid.composable.components.ComposableOptionsDropDown
 import com.flipperdevices.remotecontrols.impl.grid.composable.components.GridComposableContent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 
@@ -30,15 +29,6 @@ fun GridComposable(
         topBar = {
             SharedTopBar(
                 onBackClick = gridComponent::pop,
-                actions = {
-                    ComposableOptionsDropDown(
-                        isDownloaded = (model as? GridComponent.Model.Loaded)
-                            ?.isDownloaded
-                            ?: false,
-                        onSaveClick = gridComponent::onSaveFile,
-                        onDeleteClick = gridComponent::onDeleteFile,
-                    )
-                }
             )
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,

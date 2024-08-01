@@ -1,7 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -44,15 +43,14 @@ class GridViewModel @AssistedInject constructor(
 
     fun tryLoad() {
         viewModelScope.launch {
-            val localPagesLayout =
-                localPagesRepository.getLocalPagesLayout(
-                    path = param.flipperFilePath,
-                    toPagesLayout = { rawContent ->
-                        runCatching {
-                            json.decodeFromString<PagesLayout>(rawContent)
-                        }.getOrNull()
-                    }
-                )
+            val localPagesLayout = localPagesRepository.getLocalPagesLayout(
+                path = param.flipperFilePath,
+                toPagesLayout = { rawContent ->
+                    runCatching {
+                        json.decodeFromString<PagesLayout>(rawContent)
+                    }.getOrNull()
+                }
+            )
             val localRemotesRaw = localPagesRepository.getLocalFlipperKey(param.flipperFilePath)
                 ?.keyContent
                 ?.openStream()
@@ -87,28 +85,6 @@ class GridViewModel @AssistedInject constructor(
                     isDownloaded = localPagesLayout != null && localRemotesRaw != null
                 )
             )
-        }
-    }
-
-    fun delete() {
-        val state = state.value as? State.Loaded ?: return
-        viewModelScope.launch {
-            localPagesRepository.delete(param.flipperFilePath)
-            _state.emit(state.copy(isDownloaded = false))
-        }
-    }
-
-    fun saveSignal() {
-        val state = state.value as? State.Loaded ?: return
-        viewModelScope.launch {
-            localPagesRepository.save(
-                flipperFilePath = param.flipperFilePath,
-                remotesRaw = state.remotesRaw,
-                content = FlipperKeyContent.RawData(
-                    json.encodeToString(state.pagesLayout).toByteArray()
-                )
-            )
-            _state.emit(state.copy(isDownloaded = true))
         }
     }
 
