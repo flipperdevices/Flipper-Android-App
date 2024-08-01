@@ -110,14 +110,6 @@ class GridComponentImpl @AssistedInject constructor(
         )
     }
 
-    override fun onDeleteFile() {
-        gridViewModel.delete()
-    }
-
-    override fun onSaveFile() {
-        gridViewModel.saveSignal()
-    }
-
     override fun tryLoad() = gridViewModel.tryLoad()
     override fun pop() = onPopClick.invoke()
 }
