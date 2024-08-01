@@ -28,8 +28,8 @@ internal fun GridComposableContent(
         modifier = modifier,
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
         contentKey = { it.contentKey }
-    ) { model ->
-        when (model) {
+    ) { animatedModel ->
+        when (animatedModel) {
             GridComponent.Model.Error -> {
                 ErrorComposable(
                     desc = stringResource(R.string.empty_page),
@@ -38,7 +38,7 @@ internal fun GridComposableContent(
             }
 
             is GridComponent.Model.Loaded -> {
-                if (model.isFlipperBusy) {
+                if (animatedModel.isFlipperBusy) {
                     ComposableFlipperBusy(
                         onDismiss = gridComponent::dismissBusyDialog,
                         goToRemote = {
@@ -48,17 +48,17 @@ internal fun GridComposableContent(
                     )
                 }
                 GridComposableLoadedContent(
-                    pagesLayout = model.pagesLayout,
+                    pagesLayout = animatedModel.pagesLayout,
                     onButtonClick = { _, keyIdentifier ->
                         gridComponent.onButtonClick(keyIdentifier)
                     },
                     onReload = gridComponent::tryLoad,
-                    emulatedKeyIdentifier = model.emulatedKey
+                    emulatedKeyIdentifier = animatedModel.emulatedKey
                 )
             }
 
             is GridComponent.Model.Loading -> {
-                LoadingComposable(progress = model.progress)
+                LoadingComposable(progress = animatedModel.progress)
             }
         }
     }
