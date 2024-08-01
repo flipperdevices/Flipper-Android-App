@@ -29,8 +29,7 @@ class GridViewModel @AssistedInject constructor(
     private val pagesRepository: PagesRepository,
     private val localPagesRepository: LocalPagesRepository,
     @Assisted private val param: GridScreenDecomposeComponent.Param,
-    @Assisted private val onIrFileLoaded: (String) -> Unit,
-    @Assisted private val onUiLoaded: (String) -> Unit
+    @Assisted private val onCallback: (Callback) -> Unit,
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "GridViewModel"
 
@@ -61,7 +60,9 @@ class GridViewModel @AssistedInject constructor(
                 ?.readText()
             val pagesLayout = localPagesLayout
                 ?: pagesRepository.fetchDefaultPageLayout(ifrFileId = param.irFileIdOrNull ?: -1)
-                    .onSuccess { pagesLayout -> onUiLoaded.invoke(json.encodeToString(pagesLayout)) }
+                    .onSuccess { pagesLayout ->
+                        onCallback.invoke(Callback.UiLoaded(json.encodeToString(pagesLayout)))
+                    }
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                     .getOrNull() ?: return@launch
@@ -70,7 +71,9 @@ class GridViewModel @AssistedInject constructor(
                 ?: pagesRepository.fetchKeyContent(param.irFileIdOrNull ?: -1)
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
-                    .onSuccess(onIrFileLoaded)
+                    .onSuccess {
+                        onCallback.invoke(Callback.InfraredFileLoaded(it))
+                    }
                     .getOrNull()
                     .orEmpty()
             _state.emit(
@@ -128,8 +131,12 @@ class GridViewModel @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             param: GridScreenDecomposeComponent.Param,
-            onIrFileLoaded: (String) -> Unit,
-            onUiLoaded: (String) -> Unit
+            onCallback: (Callback) -> Unit,
         ): GridViewModel
+    }
+
+    sealed interface Callback {
+        data class InfraredFileLoaded(val content: String) : Callback
+        data class UiLoaded(val content: String) : Callback
     }
 }

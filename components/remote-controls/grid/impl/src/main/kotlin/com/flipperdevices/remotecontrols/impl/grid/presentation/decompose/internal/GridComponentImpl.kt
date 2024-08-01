@@ -52,24 +52,29 @@ class GridComponentImpl @AssistedInject constructor(
         factory = {
             createGridViewModel.invoke(
                 param = param,
-                onUiLoaded = { uiJsonContent ->
-                    val id = param.irFileIdOrNull ?: return@invoke
-                    saveTempSignalApi.saveFile(
-                        deeplinkContent = DeeplinkContent.Raw(
-                            filename = "$id.ui.json",
-                            content = uiJsonContent
-                        ),
-                        nameWithExtension = "$id.ui.json",
-                        extFolderPath = param.extFolderPath
-                    )
-                },
-                onIrFileLoaded = { content ->
-                    param.irFileIdOrNull ?: return@invoke
-                    saveTempSignalApi.saveFile(
-                        fff = FlipperFileFormat.fromFileContent(content),
-                        nameWithExtension = param.nameWithExtension,
-                        extFolderPath = param.extFolderPath
-                    )
+                onCallback = { callback ->
+                    when (callback) {
+                        is GridViewModel.Callback.InfraredFileLoaded -> {
+                            param.irFileIdOrNull ?: return@invoke
+                            saveTempSignalApi.saveFile(
+                                fff = FlipperFileFormat.fromFileContent(callback.content),
+                                nameWithExtension = param.nameWithExtension,
+                                extFolderPath = param.extFolderPath
+                            )
+                        }
+
+                        is GridViewModel.Callback.UiLoaded -> {
+                            val id = param.irFileIdOrNull ?: return@invoke
+                            saveTempSignalApi.saveFile(
+                                deeplinkContent = DeeplinkContent.Raw(
+                                    filename = "$id.ui.json",
+                                    content = callback.content
+                                ),
+                                nameWithExtension = "$id.ui.json",
+                                extFolderPath = param.extFolderPath
+                            )
+                        }
+                    }
                 }
             )
         }
