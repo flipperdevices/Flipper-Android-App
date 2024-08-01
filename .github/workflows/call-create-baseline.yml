@@ -1,4 +1,4 @@
-name: "Create baseline call"
+name: Create BaselineProfile files
 on:
   workflow_call:
     outputs:

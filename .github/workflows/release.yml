@@ -178,7 +178,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   upload_to_github:
     name: Upload to Github Releases
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ build_release, build_release_gms_wearos, build_number ]
     steps:
@@ -262,7 +262,7 @@ jobs:
           prerelease: false
   upload_to_playstore:
     name: Upload to Play Store
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: ubuntu-latest
     needs: [ build_release ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
@@ -285,7 +285,7 @@ jobs:
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
   upload_to_playstore_wearos:
     name: Upload WearOS to Play Store
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: ubuntu-latest
     needs: [ build_release_gms_wearos ]
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:

@@ -18,11 +18,14 @@ jobs:
             build-logic/**
             gradle/**
             gradle.properties
-  release_build:
-    name: "Build release"
+  matrx_update_gradle:
+    name: "Build ${{ matrix.target }}"
     runs-on: [ self-hosted, AndroidShell ]
     needs: check_gradle_files_change
     if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
+    strategy:
+      matrix:
+        target: [ "Release", "Debug", "Internal" ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -35,40 +38,4 @@ jobs:
       - name: Build release
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
         with:
-          arguments: assembleRelease bundleRelease
-  debug_build:
-    name: "Build debug"
-    runs-on: [ self-hosted, AndroidShell ]
-    needs: check_gradle_files_change
-    if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        with:
-          submodules: 'recursive'
-      - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build debug
-        uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
-        with:
-          arguments: assembleDebug bundleDebug
-  internal_build:
-    name: "Build internal"
-    runs-on: [ self-hosted, AndroidShell ]
-    needs: check_gradle_files_change
-    if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        with:
-          submodules: 'recursive'
-      - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build internal
-        uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
-        with:
-          arguments: assembleInternal bundleInternal
+          arguments: assemble${{ matrix.target }} bundle${{ matrix.target }}

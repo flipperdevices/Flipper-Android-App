@@ -8,7 +8,7 @@ on:
 
 # Concurrency strategy:
 #   github.workflow: distinguish this workflow from others
-#   github.event_name: distinguish `push` event from `pull_request` event
+#   github.event_name: distinguish `push` event from `pull_request` and 'merge_group' event
 #   github.ref_name: distinguish branch
 #   github.repository: distinguish owner+repository
 #
@@ -29,6 +29,7 @@ jobs:
     uses: ./.github/workflows/call-check-changelog.yml
   update_gradle_cache:
     name: "Gradle cache update"
+    needs: [ validate_gradle_wrapper ]
     if: github.event_name == 'merge_group'
     uses: ./.github/workflows/call-gradle-cache.yml
   info:
@@ -44,6 +45,7 @@ jobs:
   test:
     name: "Run unit tests"
     runs-on: [ self-hosted, AndroidShell ]
+    needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -58,8 +60,9 @@ jobs:
         with:
           arguments: testDebugUnitTest desktopTest
   detekt:
-    name: "Check project by detekt"
+    name: "Check project by detekt and android`s lint"
     runs-on: [ self-hosted, AndroidShell ]
+    needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -72,20 +75,4 @@ jobs:
       - name: detekt
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
         with:
-          arguments: detektMain
-  android_lint:
-    name: "Check project by android`s lint"
-    runs-on: [ self-hosted, AndroidShell ]
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-        with:
-          submodules: 'recursive'
-      - name: Set up JDK 1.17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Android lint
-        uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
-        with:
-          arguments: lint
+          arguments: detektMain lint

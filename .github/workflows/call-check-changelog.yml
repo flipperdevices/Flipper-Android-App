@@ -1,4 +1,4 @@
-name: Pull Request CI - Changelog
+name: Check changelog changed
 on:
   workflow_call:
 
