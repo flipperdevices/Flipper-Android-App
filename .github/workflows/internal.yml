@@ -9,9 +9,13 @@ concurrency:
   group: "deploy"
 
 jobs:
+  validate_gradle_wrapper:
+    name: "Validate gradle wrapper"
+    uses: ./.github/workflows/call-validate-gradle-wrapper.yml
   invalidate_gradle_cache:
     name: Update gradle cache
     runs-on: [ self-hosted, AndroidShell ]
+    needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -28,7 +32,7 @@ jobs:
           arguments: testDebugUnitTest desktopTest detekt lint
   build_number:
     name: Generate build number
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     outputs:
       number: ${{ steps.build_out.outputs.number }}
       number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}

@@ -1,31 +1,28 @@
 name: Check configuration change
-
 on:
-  pull_request:
-    paths:
-      - '**.gradle.kts'
-      - 'build-logic/**'
-      - 'gradle/**'
-      - 'gradle.properties'
-  merge_group:
-
-# Concurrency strategy:
-#   github.workflow: distinguish this workflow from others
-#   github.event_name: distinguish `push` event from `pull_request` event
-#   github.ref_name: distinguish branch
-#   github.repository: distinguish owner+repository
-#
-# Reference:
-#   https://docs.github.com/en/actions/using-jobs/using-concurrency
-#   https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{github.ref_name}}-${{github.repository}}
-  cancel-in-progress: true
+  workflow_call:
 
 jobs:
+  check_gradle_files_change:
+    name: "Check that gradle files changed"
+    runs-on: ubuntu-latest
+    outputs:
+      GRADLE_FILES_CHANGED: ${{ steps.changed-changelog.outputs.any_changed }}
+    steps:
+      - name: Check that gradle files changed
+        id: changed-changelog
+        uses: tj-actions/changed-files@58ae566dc69a926834e4798bcfe0436ff97c0599 # v26.1
+        with:
+          files: |
+            **.gradle.kts
+            build-logic/**
+            gradle/**
+            gradle.properties
   release_build:
     name: "Build release"
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: [ self-hosted, AndroidShell ]
+    needs: check_gradle_files_change
+    if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -41,7 +38,9 @@ jobs:
           arguments: assembleRelease bundleRelease
   debug_build:
     name: "Build debug"
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: [ self-hosted, AndroidShell ]
+    needs: check_gradle_files_change
+    if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -57,7 +56,9 @@ jobs:
           arguments: assembleDebug bundleDebug
   internal_build:
     name: "Build internal"
-    runs-on: [self-hosted, AndroidShell]
+    runs-on: [ self-hosted, AndroidShell ]
+    needs: check_gradle_files_change
+    if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
