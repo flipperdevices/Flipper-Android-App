@@ -129,8 +129,9 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             updateRequest = config.updateRequest,
             onBack = this::internalOnBack
         )
-        RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
+        is RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
             componentContext = componentContext,
+            deeplink = config.deeplink,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }

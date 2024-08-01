@@ -12,7 +12,7 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
     fun saveFile(
         deeplinkContent: DeeplinkContent,
         nameWithExtension: String,
-        folderName: String = DEFAULT_FOLDER_NAME
+        extFolderPath: String
     )
 
     sealed interface State {
@@ -26,14 +26,12 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
     }
 
     companion object {
-        private const val DEFAULT_FOLDER_NAME = "temp"
-
         fun SaveTempSignalApi.saveFile(
             fff: FlipperFileFormat,
             nameWithExtension: String,
-            folderName: String = DEFAULT_FOLDER_NAME
+            extFolderPath: String
         ) = saveFile(
-            folderName = folderName,
+            extFolderPath = extFolderPath,
             nameWithExtension = nameWithExtension,
             deeplinkContent = DeeplinkContent.FFFContent(
                 filename = nameWithExtension,

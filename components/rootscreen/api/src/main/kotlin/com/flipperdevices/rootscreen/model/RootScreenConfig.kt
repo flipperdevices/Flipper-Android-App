@@ -36,5 +36,5 @@ sealed class RootScreenConfig {
     data class Changelog(val updateRequest: UpdateRequest) : RootScreenConfig()
 
     @Serializable
-    data object RemoteControls : RootScreenConfig()
+    data class RemoteControls(val deeplink: Deeplink.RootLevel.RemoteControl?) : RootScreenConfig()
 }

@@ -1,16 +1,22 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.data.localpages
 
+import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.ifrmvp.model.PagesLayout
 
 interface LocalPagesRepository {
-    suspend fun getLocalFlipperKey(ifrFileId: Long): FlipperKey?
-    suspend fun getLocalPagesLayout(ifrFileId: Long): PagesLayout?
+    suspend fun getLocalFlipperKey(path: FlipperFilePath): FlipperKey?
+    suspend fun getLocalPagesLayout(
+        path: FlipperFilePath,
+        toPagesLayout: (String) -> PagesLayout?
+    ): PagesLayout?
 
     suspend fun save(
-        ifrFileId: Long,
+        flipperFilePath: FlipperFilePath,
         remotesRaw: String,
-        pagesLayout: PagesLayout
+        content: FlipperKeyContent
     )
-    suspend fun delete(ifrFileId: Long)
+
+    suspend fun delete(path: FlipperFilePath)
 }

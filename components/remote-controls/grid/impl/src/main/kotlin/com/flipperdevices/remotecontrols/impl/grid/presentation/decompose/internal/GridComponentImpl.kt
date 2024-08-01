@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
@@ -14,6 +13,9 @@ import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.mapping.GridComponentStateMapper
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.extFolderPath
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.irFileIdOrNull
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.nameWithExtension
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -21,8 +23,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
@@ -35,43 +35,40 @@ class GridComponentImpl @AssistedInject constructor(
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
     createDispatchSignalApi: Provider<DispatchSignalApi>
 ) : GridComponent, ComponentContext by componentContext {
-    private val json = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-        prettyPrint = false
-    }
     private val saveTempSignalApi = instanceKeeper.getOrCreate(
-        key = "GridComponent_saveSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
+        key = "GridComponent_saveSignalViewModel_${param.key}",
         factory = {
             createSaveTempSignalApi.get()
         }
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
-        key = "GridComponent_dispatchSignalViewModel_${param.ifrFileId}_${param.uiFileId}",
+        key = "GridComponent_dispatchSignalViewModel_${param.key}",
         factory = {
             createDispatchSignalApi.get()
         }
     )
     private val gridViewModel = instanceKeeper.getOrCreate(
-        key = "GridComponent_gridFeature_${param.ifrFileId}_${param.uiFileId}",
+        key = "GridComponent_gridFeature_${param.key}",
         factory = {
             createGridViewModel.invoke(
                 param = param,
-                onUiLoaded = { pagesLayout ->
+                onUiLoaded = { uiJsonContent ->
+                    val id = param.irFileIdOrNull ?: return@invoke
                     saveTempSignalApi.saveFile(
                         deeplinkContent = DeeplinkContent.Raw(
-                            filename = "template.ui.json",
-                            content = json.encodeToString(pagesLayout)
+                            filename = "$id.ui.json",
+                            content = uiJsonContent
                         ),
-                        nameWithExtension = "template.ui.json",
-                        folderName = "/temp/${param.ifrFileId}"
+                        nameWithExtension = "$id.ui.json",
+                        extFolderPath = param.extFolderPath
                     )
                 },
                 onIrFileLoaded = { content ->
+                    param.irFileIdOrNull ?: return@invoke
                     saveTempSignalApi.saveFile(
                         fff = FlipperFileFormat.fromFileContent(content),
-                        nameWithExtension = "${param.ifrFileId}.ir",
-                        folderName = "/temp/${param.ifrFileId}"
+                        nameWithExtension = param.nameWithExtension,
+                        extFolderPath = param.extFolderPath
                     )
                 }
             )
@@ -102,8 +99,8 @@ class GridComponentImpl @AssistedInject constructor(
             identifier = identifier,
             remotes = remotes,
             ffPath = FlipperFilePath(
-                folder = "${FlipperKeyType.INFRARED.flipperDir}/temp/${param.ifrFileId}",
-                nameWithExtension = "${param.ifrFileId}.ir"
+                folder = param.extFolderPath,
+                nameWithExtension = param.nameWithExtension
             )
         )
     }

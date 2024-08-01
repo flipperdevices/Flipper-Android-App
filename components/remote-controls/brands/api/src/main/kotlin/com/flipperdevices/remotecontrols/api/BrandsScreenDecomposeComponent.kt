@@ -8,7 +8,7 @@ abstract class BrandsScreenDecomposeComponent(
 ) : ScreenDecomposeComponent(componentContext) {
 
     fun interface Factory {
-        fun createBrandsComponent(
+        operator fun invoke(
             componentContext: ComponentContext,
             categoryId: Long,
             onBackClick: () -> Unit,

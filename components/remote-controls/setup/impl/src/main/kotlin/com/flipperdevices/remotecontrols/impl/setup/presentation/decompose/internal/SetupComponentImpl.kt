@@ -69,7 +69,8 @@ class SetupComponentImpl @AssistedInject constructor(
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
                 saveSignalApi.saveFile(
                     fff = signalModel.toFFFormat(),
-                    nameWithExtension = TEMP_FILE_NAME
+                    nameWithExtension = TEMP_FILE_NAME,
+                    extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
                 )
             }
         }
@@ -157,7 +158,7 @@ class SetupComponentImpl @AssistedInject constructor(
         val signalModel = loadedState.response.signalResponse?.signalModel ?: return
         val config = EmulateConfig(
             keyPath = FlipperFilePath(
-                FLIPPER_TEMP_FOLDER,
+                ABSOLUTE_TEMP_FOLDER_PATH,
                 TEMP_FILE_NAME
             ),
             keyType = FlipperKeyType.INFRARED,
@@ -173,5 +174,5 @@ class SetupComponentImpl @AssistedInject constructor(
     override fun onBackClick() = onBackClick.invoke()
 }
 
-private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"
+private val ABSOLUTE_TEMP_FOLDER_PATH = "/${FlipperKeyType.INFRARED.flipperDir}/temp"
 private const val TEMP_FILE_NAME = "temp.ir"

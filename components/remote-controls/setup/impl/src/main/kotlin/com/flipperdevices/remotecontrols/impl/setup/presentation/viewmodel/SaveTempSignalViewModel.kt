@@ -1,7 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -25,8 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
-private val EXT_IFR_FOLDER = "/ext/${FlipperKeyType.INFRARED.flipperDir}"
-private val IFR_FOLDER = FlipperKeyType.INFRARED.flipperDir
+private const val EXT_PATH = "/ext"
 
 @ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
 class SaveTempSignalViewModel @Inject constructor(
@@ -45,12 +43,12 @@ class SaveTempSignalViewModel @Inject constructor(
     override fun saveFile(
         deeplinkContent: DeeplinkContent,
         nameWithExtension: String,
-        folderName: String
+        extFolderPath: String
     ) = save(
-        folderName = folderName,
+        extFolderPath = extFolderPath,
         deeplinkContent = deeplinkContent,
         absolutePath = FlipperFilePath(
-            folder = "${IFR_FOLDER}/$folderName",
+            folder = extFolderPath,
             nameWithExtension = nameWithExtension
         ).getPathOnFlipper(),
     )
@@ -58,7 +56,7 @@ class SaveTempSignalViewModel @Inject constructor(
     private fun save(
         deeplinkContent: DeeplinkContent,
         absolutePath: String,
-        folderName: String
+        extFolderPath: String
     ) {
         viewModelScope.launch(Dispatchers.Main) {
             _state.emit(SaveTempSignalApi.State.Uploading(0, 0))
@@ -67,7 +65,7 @@ class SaveTempSignalViewModel @Inject constructor(
                 onError = { _state.value = SaveTempSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launchWithLock(mutex, viewModelScope, "load") {
-                        saveFolderApi.save(serviceApi.requestApi, "${EXT_IFR_FOLDER}/$folderName")
+                        saveFolderApi.save(serviceApi.requestApi, "$EXT_PATH/$extFolderPath")
                         val saveFileFlow = saveFileApi.save(
                             requestApi = serviceApi.requestApi,
                             deeplinkContent = deeplinkContent,

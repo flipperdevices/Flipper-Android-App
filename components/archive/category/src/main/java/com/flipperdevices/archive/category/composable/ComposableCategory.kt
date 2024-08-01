@@ -43,7 +43,7 @@ fun AddRemoteEndBlock(modifier: Modifier = Modifier) {
         color = LocalPalletV2.current.text.title.blackOnColor,
         modifier = modifier
             .padding(horizontal = 14.dp)
-            .clickableRipple { rootNavigation.push(RootScreenConfig.RemoteControls) }
+            .clickableRipple { rootNavigation.push(RootScreenConfig.RemoteControls(null)) }
     )
 }
 

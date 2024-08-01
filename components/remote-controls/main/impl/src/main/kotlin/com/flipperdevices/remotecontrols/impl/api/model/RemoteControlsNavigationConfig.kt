@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.api.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,5 +17,8 @@ sealed interface RemoteControlsNavigationConfig {
     class Setup(val categoryId: Long, val brandId: Long) : RemoteControlsNavigationConfig
 
     @Serializable
-    class Grid(val ifrFileId: Long) : RemoteControlsNavigationConfig
+    sealed interface Grid : RemoteControlsNavigationConfig {
+        data class Id(val ifrFileId: Long) : Grid
+        data class Path(val flipperKeyPath: FlipperKeyPath) : Grid
+    }
 }
