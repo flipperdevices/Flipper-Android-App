@@ -15,6 +15,7 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -55,7 +56,6 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
         val rootNavigation = LocalRootNavigation.current
 
         val onOpenKeyScreen: (FlipperKeyPath) -> Unit = { flipperKeyPath ->
-//            flipperKeyPath.path.
             rootNavigation.push(RootScreenConfig.OpenKey(flipperKeyPath))
         }
         val showRemoteControls by debugSettingsViewModel.showRemoteControls.collectAsState()

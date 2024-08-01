@@ -2,12 +2,15 @@ package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.inter
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.mapping.GridComponentStateMapper
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.extFolderPath
@@ -49,26 +52,24 @@ class GridComponentImpl @AssistedInject constructor(
         factory = {
             createGridViewModel.invoke(
                 param = param,
-                onCallback = { callback ->
-                    when (callback) {
-                        is GridViewModel.Callback.InfraredFileLoaded -> {
-                            param.irFileIdOrNull ?: return@invoke
-                            saveTempSignalApi.saveFile(
-                                textContent = callback.content,
-                                nameWithExtension = param.nameWithExtension,
-                                extFolderPath = param.extFolderPath
-                            )
-                        }
-
-                        is GridViewModel.Callback.UiLoaded -> {
-                            val id = param.irFileIdOrNull ?: return@invoke
-                            saveTempSignalApi.saveFile(
-                                textContent = callback.content,
-                                nameWithExtension = "$id.ui.json",
-                                extFolderPath = param.extFolderPath
-                            )
-                        }
-                    }
+                onUiLoaded = { uiJsonContent ->
+                    val id = param.irFileIdOrNull ?: return@invoke
+                    saveTempSignalApi.saveFile(
+                        deeplinkContent = DeeplinkContent.Raw(
+                            filename = "$id.ui.json",
+                            content = uiJsonContent
+                        ),
+                        nameWithExtension = "$id.ui.json",
+                        extFolderPath = param.extFolderPath
+                    )
+                },
+                onIrFileLoaded = { content ->
+                    param.irFileIdOrNull ?: return@invoke
+                    saveTempSignalApi.saveFile(
+                        fff = FlipperFileFormat.fromFileContent(content),
+                        nameWithExtension = param.nameWithExtension,
+                        extFolderPath = param.extFolderPath
+                    )
                 }
             )
         }
@@ -102,6 +103,14 @@ class GridComponentImpl @AssistedInject constructor(
                 nameWithExtension = param.nameWithExtension
             )
         )
+    }
+
+    override fun onDeleteFile() {
+        gridViewModel.delete()
+    }
+
+    override fun onSaveFile() {
+        gridViewModel.saveSignal()
     }
 
     override fun tryLoad() = gridViewModel.tryLoad()

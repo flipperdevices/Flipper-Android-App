@@ -7,9 +7,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
@@ -35,7 +38,7 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: (id: Long) -> Unit,
+    @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
@@ -65,7 +68,7 @@ class SetupComponentImpl @AssistedInject constructor(
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
                 saveSignalApi.saveFile(
-                    textContent = signalModel.toFFFormat().openStream().reader().readText(),
+                    fff = signalModel.toFFFormat(),
                     nameWithExtension = TEMP_FILE_NAME,
                     extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
                 )

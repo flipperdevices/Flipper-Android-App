@@ -30,6 +30,11 @@ sealed interface Deeplink {
         data class WidgetOptions(
             val appWidgetId: Int
         ) : RootLevel
+
+        @Serializable
+        sealed interface RemoteControl : RootLevel {
+            data class Path(val flipperKeyPath: FlipperKeyPath) : RemoteControl
+        }
     }
 
     @Serializable

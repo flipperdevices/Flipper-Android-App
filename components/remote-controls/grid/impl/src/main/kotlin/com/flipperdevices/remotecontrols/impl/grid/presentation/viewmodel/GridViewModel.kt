@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -28,7 +29,8 @@ class GridViewModel @AssistedInject constructor(
     private val pagesRepository: PagesRepository,
     private val localPagesRepository: LocalPagesRepository,
     @Assisted private val param: GridScreenDecomposeComponent.Param,
-    @Assisted private val onCallback: (Callback) -> Unit,
+    @Assisted private val onIrFileLoaded: (String) -> Unit,
+    @Assisted private val onUiLoaded: (String) -> Unit
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "GridViewModel"
 
@@ -43,14 +45,15 @@ class GridViewModel @AssistedInject constructor(
 
     fun tryLoad() {
         viewModelScope.launch {
-            val localPagesLayout = localPagesRepository.getLocalPagesLayout(
-                path = param.flipperFilePath,
-                toPagesLayout = { rawContent ->
-                    runCatching {
-                        json.decodeFromString<PagesLayout>(rawContent)
-                    }.getOrNull()
-                }
-            )
+            val localPagesLayout =
+                localPagesRepository.getLocalPagesLayout(
+                    path = param.flipperFilePath,
+                    toPagesLayout = { rawContent ->
+                        runCatching {
+                            json.decodeFromString<PagesLayout>(rawContent)
+                        }.getOrNull()
+                    }
+                )
             val localRemotesRaw = localPagesRepository.getLocalFlipperKey(param.flipperFilePath)
                 ?.keyContent
                 ?.openStream()
@@ -58,9 +61,7 @@ class GridViewModel @AssistedInject constructor(
                 ?.readText()
             val pagesLayout = localPagesLayout
                 ?: pagesRepository.fetchDefaultPageLayout(ifrFileId = param.irFileIdOrNull ?: -1)
-                    .onSuccess { pagesLayout ->
-                        onCallback.invoke(Callback.UiLoaded(json.encodeToString(pagesLayout)))
-                    }
+                    .onSuccess { pagesLayout -> onUiLoaded.invoke(json.encodeToString(pagesLayout)) }
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                     .getOrNull() ?: return@launch
@@ -69,9 +70,7 @@ class GridViewModel @AssistedInject constructor(
                 ?: pagesRepository.fetchKeyContent(param.irFileIdOrNull ?: -1)
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
-                    .onSuccess {
-                        onCallback.invoke(Callback.InfraredFileLoaded(it))
-                    }
+                    .onSuccess(onIrFileLoaded)
                     .getOrNull()
                     .orEmpty()
             _state.emit(
@@ -82,9 +81,31 @@ class GridViewModel @AssistedInject constructor(
                         .let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
                         .toImmutableList(),
                     remotesRaw = remotesRaw,
-                    isDownloadedOnFlipper = localPagesLayout != null && localRemotesRaw != null
+                    isDownloaded = localPagesLayout != null && localRemotesRaw != null
                 )
             )
+        }
+    }
+
+    fun delete() {
+        val state = state.value as? State.Loaded ?: return
+        viewModelScope.launch {
+            localPagesRepository.delete(param.flipperFilePath)
+            _state.emit(state.copy(isDownloaded = false))
+        }
+    }
+
+    fun saveSignal() {
+        val state = state.value as? State.Loaded ?: return
+        viewModelScope.launch {
+            localPagesRepository.save(
+                flipperFilePath = param.flipperFilePath,
+                remotesRaw = state.remotesRaw,
+                content = FlipperKeyContent.RawData(
+                    json.encodeToString(state.pagesLayout).toByteArray()
+                )
+            )
+            _state.emit(state.copy(isDownloaded = true))
         }
     }
 
@@ -99,7 +120,7 @@ class GridViewModel @AssistedInject constructor(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,
             val remotesRaw: String,
-            val isDownloadedOnFlipper: Boolean
+            val isDownloaded: Boolean
         ) : State
     }
 
@@ -107,12 +128,8 @@ class GridViewModel @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             param: GridScreenDecomposeComponent.Param,
-            onCallback: (Callback) -> Unit,
+            onIrFileLoaded: (String) -> Unit,
+            onUiLoaded: (String) -> Unit
         ): GridViewModel
-    }
-
-    sealed interface Callback {
-        data class InfraredFileLoaded(val content: String) : Callback
-        data class UiLoaded(val content: String) : Callback
     }
 }
