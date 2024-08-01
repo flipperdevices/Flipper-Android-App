@@ -1,10 +1,11 @@
 [versions]
-# You also need to bump the version of ksp, anvil, compose
-kotlin-general = "2.0.20-Beta2" # https://kotlinlang.org/docs/releases.html#release-details
+# You also need to bump the version of ksp, anvil
+# Not bump to 2.0.20-Beta2+ until https://youtrack.jetbrains.com/issue/KT-70415/ fixed
+kotlin-general = "2.0.0" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.0.20-Beta2-1.0.23" # https://github.com/google/ksp/releases
+ksp = "2.0.0-1.0.23" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta09" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.5.1" # https://developer.android.com/studio/releases/gradle-plugin
@@ -15,7 +16,6 @@ compose-foundation = "1.6.8" # https://developer.android.com/jetpack/androidx/re
 compose-ui = "1.6.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
-compose-compiler = "1.5.14" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
 compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
