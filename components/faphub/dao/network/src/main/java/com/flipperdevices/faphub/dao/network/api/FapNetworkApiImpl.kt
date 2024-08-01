@@ -10,6 +10,7 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.network.helper.FapApplicationReceiveHelper
 import com.flipperdevices.faphub.dao.network.network.api.FapNetworkApplicationApi
+import com.flipperdevices.faphub.dao.network.network.model.FapNetworkHostEnum
 import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitApplicationApiRequest
 import com.flipperdevices.faphub.dao.network.network.utils.FapCachedCategoryApi
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
@@ -22,12 +23,12 @@ import javax.inject.Inject
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: FapNetworkApplicationApi,
     private val categoryApi: FapCachedCategoryApi,
-    private val hostUrlBuilder: HostUrlBuilder,
+    private val networkHost: FapNetworkHostEnum,
     private val fapApplicationReceiveHelper: FapApplicationReceiveHelper
 ) : FapNetworkApi, LogTagProvider {
     override val TAG = "FapNetworkApi"
 
-    override suspend fun getHostUrl() = hostUrlBuilder.getHostUrl()
+    override suspend fun getHostUrl() = networkHost.hostUrl
     override suspend fun getFeaturedItem(target: FlipperTarget) = catchWithDispatcher {
         debug { "Request featured item" }
 
