@@ -27,7 +27,7 @@ class NotificationDialogViewModel @Inject constructor(
 
     init {
         settings.data.onEach {
-            isNotificationShownStateFlow.emit(it.notificationDialogShown.not())
+            isNotificationShownStateFlow.emit(it.notification_dialog_shown.not())
         }.launchIn(viewModelScope)
     }
 
@@ -45,9 +45,9 @@ class NotificationDialogViewModel @Inject constructor(
     fun onDismiss() {
         runBlocking {
             settings.updateData {
-                it.toBuilder()
-                    .setNotificationDialogShown(true)
-                    .build()
+                it.copy(
+                    notification_dialog_shown = true
+                )
             }
         }
     }

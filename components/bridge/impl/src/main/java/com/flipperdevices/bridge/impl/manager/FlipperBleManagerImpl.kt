@@ -203,7 +203,7 @@ class FlipperBleManagerImpl @Inject constructor(
             error(it) { "Can't find service for version api" }
             setDeviceSupportedStatus(
                 runBlockingWithLog {
-                    if (settingsStore.data.first().ignoreUnsupportedVersion) {
+                    if (settingsStore.data.first().ignore_unsupported_version) {
                         FlipperSupportedState.READY
                     } else {
                         FlipperSupportedState.DEPRECATED_FLIPPER

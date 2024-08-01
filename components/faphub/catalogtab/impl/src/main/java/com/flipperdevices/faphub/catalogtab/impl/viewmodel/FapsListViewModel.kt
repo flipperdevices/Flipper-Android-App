@@ -40,7 +40,7 @@ class FapsListViewModel @Inject constructor(
         dataStoreSettings
             .data
             .onEach {
-                sortStateFlow.emit(it.selectedCatalogSort.toSortType())
+                sortStateFlow.emit(it.selected_catalog_sort.toSortType())
             }.launchIn(viewModelScope)
     }
 
@@ -67,9 +67,9 @@ class FapsListViewModel @Inject constructor(
     fun onSelectSortType(sortType: SortType) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedCatalogSort(sortType.toSelectedSortType())
-                    .build()
+                it.copy(
+                    selected_catalog_sort = sortType.toSelectedSortType()
+                )
             }
         }
     }

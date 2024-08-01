@@ -47,7 +47,7 @@ class FVersionFeatureApiImpl @AssistedInject constructor(
             semVerStateFlow.value = SemVer(0, 0)
         }.onSuccess { flow ->
             combine(settingsStore.data, flow) { settings, data ->
-                onReceiveVersionRawData(settings.ignoreUnsupportedVersion, data)
+                onReceiveVersionRawData(settings.ignore_unsupported_version, data)
             }.launchIn(scope)
         }
     }

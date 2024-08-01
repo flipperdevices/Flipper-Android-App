@@ -97,10 +97,9 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
 
     override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {
         val settings = runBlocking { dataStore.data.first() }
-        return when (settings.selectedTheme) {
+        return when (settings.selected_theme) {
             SelectedTheme.SYSTEM,
-            SelectedTheme.UNRECOGNIZED,
-            null -> systemIsDark
+            is SelectedTheme.Unrecognized -> systemIsDark
 
             SelectedTheme.DARK -> true
             SelectedTheme.LIGHT -> false

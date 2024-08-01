@@ -53,7 +53,7 @@ class InstallationActionExecutor @Inject constructor(
                 fullName = request.applicationName,
                 iconBase64 = iconBase64Request.getOrNull(),
                 sdkApi = getSdkApi(request.applicationUid, request.toVersion),
-                isDevCatalog = dataStoreSettings.data.first().useDevCatalog
+                isDevCatalog = dataStoreSettings.data.first().use_dev_catalog
             )
         )
         info { "Fap manifest added by request $request" }

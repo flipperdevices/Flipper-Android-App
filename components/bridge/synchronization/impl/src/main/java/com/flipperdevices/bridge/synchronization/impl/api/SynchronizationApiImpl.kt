@@ -46,7 +46,7 @@ class SynchronizationApiImpl @Inject constructor(
             return
         }
         if (BuildConfig.DEBUG && !force) { // Option only for debug build
-            if (runBlockingWithLog { dataStore.data.first().skipAutoSyncInDebug }) {
+            if (runBlockingWithLog { dataStore.data.first().skip_auto_sync_in_debug }) {
                 return
             }
         }

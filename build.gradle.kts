@@ -12,4 +12,5 @@ plugins {
     id("flipper.lint")
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.wire) apply false
 }
