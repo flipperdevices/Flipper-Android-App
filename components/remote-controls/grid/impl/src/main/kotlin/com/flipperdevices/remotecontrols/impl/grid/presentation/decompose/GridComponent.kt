@@ -29,7 +29,6 @@ interface GridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
             val emulatedKey: IfrKeyIdentifier? = null,
-            val isDownloaded: Boolean = false
         ) : Model
 
         data object Error : Model

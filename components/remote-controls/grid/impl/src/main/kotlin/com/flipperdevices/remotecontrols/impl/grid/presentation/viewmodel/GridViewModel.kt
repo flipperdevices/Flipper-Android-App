@@ -82,7 +82,7 @@ class GridViewModel @AssistedInject constructor(
                         .let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
                         .toImmutableList(),
                     remotesRaw = remotesRaw,
-                    isDownloaded = localPagesLayout != null && localRemotesRaw != null
+                    isDownloadedOnFlipper = localPagesLayout != null && localRemotesRaw != null
                 )
             )
         }
@@ -99,7 +99,7 @@ class GridViewModel @AssistedInject constructor(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,
             val remotesRaw: String,
-            val isDownloaded: Boolean
+            val isDownloadedOnFlipper: Boolean
         ) : State
     }
 
