@@ -262,7 +262,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.work.ktx)
-    implementation(libs.ktorfit.lib)
 
     implementation(libs.bundles.decompose)
 
