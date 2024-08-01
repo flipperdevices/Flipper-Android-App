@@ -9,9 +9,13 @@ concurrency:
   group: "deploy"
 
 jobs:
+  validate_gradle_wrapper:
+    name: "Validate gradle wrapper"
+    uses: ./.github/workflows/call-validate-gradle-wrapper.yml
   invalidate_gradle_cache:
     name: Update gradle cache
     runs-on: [ self-hosted, AndroidShell ]
+    needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -28,7 +32,8 @@ jobs:
           arguments: testDebugUnitTest desktopTest detekt lint
   build_number:
     name: Generate build number
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
+    needs: [ validate_gradle_wrapper ]
     outputs:
       number: ${{ steps.build_out.outputs.number }}
       number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
@@ -193,7 +198,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   upload_to_github:
     name: Upload to Github Releases
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ build_internal_release, build_internal_release_gms_wearos, build_number ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -275,7 +280,7 @@ jobs:
           prerelease: true
   upload_to_playstore:
     name: Upload to Play Store
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ build_internal_release ]
     steps:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
@@ -293,7 +298,7 @@ jobs:
           changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ build_internal_release_gms_wearos ]
     steps:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
