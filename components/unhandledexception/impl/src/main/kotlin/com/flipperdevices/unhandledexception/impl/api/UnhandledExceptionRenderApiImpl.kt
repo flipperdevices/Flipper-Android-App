@@ -31,16 +31,16 @@ class UnhandledExceptionRenderApiImpl @Inject constructor(
             initial = null
         )
 
-        if (settingData?.fatalBleSecurityExceptionHappens == true) {
+        if (settingData?.fatal_ble_security_exception_happens == true) {
             val deeplinkHandler = LocalDeeplinkHandler.current
             ComposableUnhandledExceptionDialog(
                 modifier = modifier,
                 onDismiss = {
                     runBlocking {
                         dataStore.updateData {
-                            it.toBuilder()
-                                .setFatalBleSecurityExceptionHappens(false)
-                                .build()
+                            it.copy(
+                                fatal_ble_security_exception_happens = false
+                            )
                         }
                     }
                     deeplinkHandler.handleDeeplink(Deeplink.BottomBar.OpenTab(DeeplinkBottomBarTab.DEVICE))

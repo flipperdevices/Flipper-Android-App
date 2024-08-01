@@ -33,7 +33,7 @@ class SkipProvisioningHelperImpl @Inject constructor(
     override suspend fun shouldSkipProvisioning(
         serviceApi: FlipperServiceApi
     ): Boolean {
-        val ignoreSubGhzProvisioning = settings.data.first().ignoreSubghzProvisioningOnZeroRegion
+        val ignoreSubGhzProvisioning = settings.data.first().ignore_subghz_provisioning_on_zero_region
         info { "ignoreSubGhzProvisioning disabled, so continue subghz provisioning" }
 
         if (!ignoreSubGhzProvisioning) {

@@ -28,7 +28,7 @@ internal fun isLight(
     return when (theme) {
         SelectedTheme.LIGHT -> true
         SelectedTheme.DARK -> false
-        SelectedTheme.UNRECOGNIZED,
+        is SelectedTheme.Unrecognized,
         SelectedTheme.SYSTEM -> !systemIsDark
     }
 }

@@ -36,9 +36,9 @@ class SkipProvisioningHelperTest {
     @Test
     fun `not skip provisioning if settings disable`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(false)
-                .build()
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = false
+            )
         )
 
         val shouldProvide = underTest.shouldSkipProvisioning(mockk())
@@ -49,9 +49,9 @@ class SkipProvisioningHelperTest {
     @Test
     fun `not skip provisioning if version null`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                .build()
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = true
+            )
         )
 
         val versionApi = mockk<FlipperVersionApi> {
@@ -72,9 +72,9 @@ class SkipProvisioningHelperTest {
     @Test
     fun `not skip provisioning if version deprecated`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                .build()
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = true
+            )
         )
 
         val versionApi = mockk<FlipperVersionApi> {
@@ -95,9 +95,10 @@ class SkipProvisioningHelperTest {
     @Test
     fun `not skip provisioning if hardware region null`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                .build()
+
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = true
+            )
         )
 
         val versionApi = mockk<FlipperVersionApi> {
@@ -122,9 +123,9 @@ class SkipProvisioningHelperTest {
     @Test
     fun `not skip provisioning if hardware region not zero`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                .build()
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = true
+            )
         )
 
         val versionApi = mockk<FlipperVersionApi> {
@@ -153,9 +154,9 @@ class SkipProvisioningHelperTest {
     @Test
     fun `skip provisioning`() = runTest {
         every { settings.data } returns flowOf(
-            Settings.getDefaultInstance().toBuilder()
-                .setIgnoreSubghzProvisioningOnZeroRegion(true)
-                .build()
+            Settings(
+                ignore_subghz_provisioning_on_zero_region = true
+            )
         )
 
         val versionApi = mockk<FlipperVersionApi> {

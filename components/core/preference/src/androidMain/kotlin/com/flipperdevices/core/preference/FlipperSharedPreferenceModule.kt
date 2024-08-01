@@ -42,16 +42,16 @@ class FlipperSharedPreferenceModule {
 }
 
 private val Context.dataStoreNewPairSettings: DataStore<NewPairSettings> by dataStore(
-    fileName = FlipperStorageProvider.DATASTORE_FILENAME_PAIR_SETTINGS_V2,
+    fileName = SettingsFilePaths.DATASTORE_FILENAME_PAIR_SETTINGS_V2,
     serializer = NewPairSettingsSerializer
 )
 
 private val Context.dataStoreSettings: DataStore<Settings> by dataStore(
-    fileName = FlipperStorageProvider.DATASTORE_FILENAME_SETTINGS,
+    fileName = SettingsFilePaths.DATASTORE_FILENAME_SETTINGS,
     serializer = SettingsSerializer
 )
 
 private val Context.dataStorePairSettings: DataStore<PairSettings> by dataStore(
-    fileName = FlipperStorageProvider.DATASTORE_FILENAME_PAIR_SETTINGS,
+    fileName = SettingsFilePaths.DATASTORE_FILENAME_PAIR_SETTINGS,
     serializer = PairSettingsSerializer
 )

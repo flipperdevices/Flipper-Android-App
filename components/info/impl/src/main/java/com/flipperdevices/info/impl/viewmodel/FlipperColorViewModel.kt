@@ -24,11 +24,11 @@ private const val RPC_KEY_HARDWARE_COLOR = "hardware.color"
 class FlipperColorViewModel @Inject constructor(
     private val settings: DataStore<PairSettings>
 ) : DecomposeViewModel(), FlipperBleServiceConsumer {
-    private val colorFlipperState = MutableStateFlow(HardwareColor.UNRECOGNIZED)
+    private val colorFlipperState = MutableStateFlow<HardwareColor>(HardwareColor.fromValue(-1))
 
     init {
         settings.data.onEach {
-            colorFlipperState.emit(it.hardwareColor)
+            colorFlipperState.emit(it.hardware_color)
         }.launchIn(viewModelScope)
     }
 
@@ -52,14 +52,14 @@ class FlipperColorViewModel @Inject constructor(
                 return@launch
             }
             val hardwareColor = when (response.propertyGetResponse.value.toIntOrNull()) {
-                HardwareColor.WHITE_VALUE -> HardwareColor.WHITE
-                HardwareColor.BLACK_VALUE -> HardwareColor.BLACK
+                HardwareColor.WHITE.value -> HardwareColor.WHITE
+                HardwareColor.BLACK.value -> HardwareColor.BLACK
                 else -> HardwareColor.WHITE
             }
             settings.updateData {
-                it.toBuilder()
-                    .setHardwareColor(hardwareColor)
-                    .build()
+                it.copy(
+                    hardware_color = hardwareColor
+                )
             }
         }
     }

@@ -28,7 +28,7 @@ class SettingsViewModel @Inject constructor(
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "SettingsViewModel"
 
-    private val settingsStateFlow = MutableStateFlow(Settings.getDefaultInstance())
+    private val settingsStateFlow = MutableStateFlow(Settings())
     private val exportStateFlow = MutableStateFlow(ExportState.NOT_STARTED)
 
     init {
@@ -46,9 +46,9 @@ class SettingsViewModel @Inject constructor(
     fun onSwitchDebug(value: Boolean) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setEnabledDebugSettings(value)
-                    .build()
+                it.copy(
+                    enabled_debug_settings = value
+                )
             }
         }
     }
@@ -56,9 +56,9 @@ class SettingsViewModel @Inject constructor(
     fun onSwitchExperimental(value: Boolean) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setEnabledExperimentalFunctions(value)
-                    .build()
+                it.copy(
+                    enabled_experimental_functions = value
+                )
             }
         }
     }
@@ -84,9 +84,9 @@ class SettingsViewModel @Inject constructor(
     fun onChangeSelectedTheme(theme: SelectedTheme) {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setSelectedTheme(theme)
-                    .build()
+                it.copy(
+                    selected_theme = theme
+                )
             }
         }
     }
@@ -94,9 +94,9 @@ class SettingsViewModel @Inject constructor(
     fun onExpertModeActivate() {
         viewModelScope.launch {
             dataStoreSettings.updateData {
-                it.toBuilder()
-                    .setExpertMode(true)
-                    .build()
+                it.copy(
+                    expert_mode = true
+                )
             }
         }
     }

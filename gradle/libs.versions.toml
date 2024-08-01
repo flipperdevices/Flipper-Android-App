@@ -93,6 +93,8 @@ google-gms-firebase = "24.0.0" # https://firebase.google.com/docs/android/setup#
 # Build Config
 buildkonfig = "5.4.0"
 
+wire = "5.0.0"
+
 [libraries]
 # Gradle - Core
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
@@ -274,6 +276,7 @@ essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-corou
 
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
+
 [bundles]
 decompose = ["decompose", "decompose-jetpack"]
 essenty = ["essenty-lifecycle", "essenty-lifecycle-coroutines"]
@@ -292,3 +295,4 @@ google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-general" }
 buildkonfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildkonfig" }
+wire = { id = "com.squareup.wire", version.ref = "wire" }

@@ -27,7 +27,7 @@ enum class SortType {
             SelectedCatalogSort.CREATED_AT_ASC -> CREATED_AT_ASC
             SelectedCatalogSort.NAME_DESC -> NAME_DESC
             SelectedCatalogSort.NAME_ASC -> NAME_ASC
-            SelectedCatalogSort.UNRECOGNIZED -> UPDATE_AT_DESC
+            is SelectedCatalogSort.Unrecognized -> UPDATE_AT_DESC
         }
     }
 }

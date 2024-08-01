@@ -133,7 +133,7 @@ class ConnectionStatusViewModel @Inject constructor(
 
         ConnectionState.Disconnecting -> ConnectionStatusState.Connecting
         is ConnectionState.Disconnected -> if (
-            pairSettingsStore.data.first().deviceId.isBlank()
+            pairSettingsStore.data.first().device_id.isBlank()
         ) {
             ConnectionStatusState.NoDevice
         } else {

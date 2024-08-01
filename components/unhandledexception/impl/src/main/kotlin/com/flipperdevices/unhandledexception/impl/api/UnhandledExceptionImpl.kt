@@ -35,7 +35,7 @@ class UnhandledExceptionImpl @Inject constructor(
     }
 
     override fun isBleConnectionForbiddenFlow(): Flow<Boolean> {
-        return dataStoreProvider.get().data.map { it.fatalBleSecurityExceptionHappens }
+        return dataStoreProvider.get().data.map { it.fatal_ble_security_exception_happens }
     }
 
     override fun uncaughtException(t: Thread, e: Throwable) {
@@ -49,9 +49,9 @@ class UnhandledExceptionImpl @Inject constructor(
     private fun markFatalBleSecurityExceptionHappens() {
         runBlocking {
             dataStoreProvider.get().updateData {
-                it.toBuilder()
-                    .setFatalBleSecurityExceptionHappens(true)
-                    .build()
+                it.copy(
+                    fatal_ble_security_exception_happens = true
+                )
             }
         }
     }

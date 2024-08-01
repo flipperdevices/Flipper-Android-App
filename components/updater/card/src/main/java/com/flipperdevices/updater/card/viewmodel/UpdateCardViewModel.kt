@@ -58,7 +58,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     init {
         viewModelScope.launch {
             dataStoreSettings.data.collectLatest {
-                updateChanelFlow.emit(it.selectedChannel.toFirmwareChannel())
+                updateChanelFlow.emit(it.selected_channel.toFirmwareChannel())
             }
         }
         serviceProvider.provideServiceApi(this, this)
@@ -74,9 +74,9 @@ class UpdateCardViewModel @AssistedInject constructor(
                 FirmwareChannel.RELEASE,
                 FirmwareChannel.RELEASE_CANDIDATE,
                 FirmwareChannel.DEV -> dataStoreSettings.updateData {
-                    it.toBuilder()
-                        .setSelectedChannel(channel.toSelectedChannel())
-                        .build()
+                    it.copy(
+                        selected_channel = channel.toSelectedChannel()
+                    )
                 }
 
                 else -> {}
@@ -155,7 +155,7 @@ private fun SelectedChannel.toFirmwareChannel(): FirmwareChannel? = when (this) 
     SelectedChannel.RELEASE -> FirmwareChannel.RELEASE
     SelectedChannel.RELEASE_CANDIDATE -> FirmwareChannel.RELEASE_CANDIDATE
     SelectedChannel.DEV -> FirmwareChannel.DEV
-    SelectedChannel.UNRECOGNIZED -> null
+    is SelectedChannel.Unrecognized -> null
 }
 
 private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) {
@@ -165,5 +165,5 @@ private fun FirmwareChannel?.toSelectedChannel(): SelectedChannel = when (this) 
     FirmwareChannel.UNKNOWN,
     FirmwareChannel.CUSTOM -> error("Can`t convert unknown firmware channel to internal channel")
 
-    null -> SelectedChannel.UNRECOGNIZED
+    null -> SelectedChannel.fromValue(-1)
 }

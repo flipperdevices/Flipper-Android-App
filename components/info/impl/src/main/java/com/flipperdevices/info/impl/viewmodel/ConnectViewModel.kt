@@ -52,10 +52,10 @@ class ConnectViewModel @Inject constructor(
     fun forgetFlipper() {
         viewModelScope.launch {
             dataStoreFirstPair.updateData {
-                it.toBuilder()
-                    .clearDeviceName()
-                    .clearDeviceId()
-                    .build()
+                it.copy(
+                    device_name = "",
+                    device_id = ""
+                )
             }
         }
     }

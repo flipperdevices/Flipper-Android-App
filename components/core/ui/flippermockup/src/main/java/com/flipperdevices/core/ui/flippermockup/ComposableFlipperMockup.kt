@@ -45,7 +45,7 @@ fun ComposableFlipperMockup(
 }
 
 private fun getTemplatePicId(color: HardwareColor, isActive: Boolean) = when (color) {
-    HardwareColor.UNRECOGNIZED,
+    is HardwareColor.Unrecognized,
     HardwareColor.WHITE -> when (isActive) {
         true -> R.drawable.template_white_flipper_active
         false -> R.drawable.template_white_flipper_disabled
@@ -70,7 +70,12 @@ private fun getTemplatePicId(color: HardwareColor, isActive: Boolean) = when (co
 private fun PreviewComposableFlipperMockup() {
     FlipperThemeInternal {
         Column {
-            HardwareColor.values().forEach { color ->
+            listOf(
+                HardwareColor.WHITE,
+                HardwareColor.BLACK,
+                HardwareColor.TRANSPARENT,
+                HardwareColor.fromValue(-1)
+            ).forEach { color ->
                 listOf(true, false).forEach { isActive ->
                     ComposableFlipperMockup(
                         flipperColor = color,
