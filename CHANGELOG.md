@@ -30,6 +30,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Bump target SDK to 34
 - [CI] Update deps
 - [CI] Merge CI workflows in one
+- [CI] Update CI changed-files action
 
 # 1.7.1
 
