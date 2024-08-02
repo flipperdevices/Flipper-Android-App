@@ -296,6 +296,7 @@ jobs:
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
           changesNotSentForReview: true
+          status: draft
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest
@@ -314,3 +315,4 @@ jobs:
           track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
           changesNotSentForReview: true
+          status: draft
