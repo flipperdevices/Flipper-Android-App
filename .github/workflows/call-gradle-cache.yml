@@ -14,7 +14,7 @@ jobs:
           submodules: 'recursive'
       - name: Check that gradle files changed
         id: gradle-related-changed
-        uses: tj-actions/changed-files@58ae566dc69a926834e4798bcfe0436ff97c0599 # v26.1
+        uses: tj-actions/changed-files@c65cd883420fd2eb864698a825fc4162dd94482c # v44.5.7
         with:
           files: |
             **.gradle.kts
