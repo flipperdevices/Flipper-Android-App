@@ -7,10 +7,13 @@ jobs:
     name: "Check that gradle files changed"
     runs-on: ubuntu-latest
     outputs:
-      GRADLE_FILES_CHANGED: ${{ steps.changed-changelog.outputs.any_changed }}
+      GRADLE_FILES_CHANGED: ${{ steps.gradle-related-changed.outputs.any_changed }}
     steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          submodules: 'recursive'
       - name: Check that gradle files changed
-        id: changed-changelog
+        id: gradle-related-changed
         uses: tj-actions/changed-files@58ae566dc69a926834e4798bcfe0436ff97c0599 # v26.1
         with:
           files: |

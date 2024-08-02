@@ -24,6 +24,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Ignore faps manifest with point in start
 - [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
 - [FIX] Relocate remote-controls button to infrared remotes screen
+- [FIX] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
