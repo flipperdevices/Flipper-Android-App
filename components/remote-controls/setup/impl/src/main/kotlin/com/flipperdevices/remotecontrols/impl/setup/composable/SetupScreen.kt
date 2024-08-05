@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -26,6 +25,7 @@ import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 
 private val SetupComponent.Model.key: Any
     get() = when (this) {
@@ -93,9 +93,10 @@ fun SetupScreen(
                 }
 
                 is SetupComponent.Model.Loading -> {
-                    LoadingComposable(progress = model.progress)
+                    SetupLoadingContent()
                 }
             }
         }
     }
 }
+
