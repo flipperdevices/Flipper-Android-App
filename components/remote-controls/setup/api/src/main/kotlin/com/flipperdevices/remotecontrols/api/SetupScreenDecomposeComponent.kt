@@ -12,7 +12,7 @@ abstract class SetupScreenDecomposeComponent(
             componentContext: ComponentContext,
             param: Param,
             onBack: () -> Unit,
-            onIfrFileFound: () -> Unit
+            onIrFileReady: (id: Long) -> Unit
         ): SetupScreenDecomposeComponent
     }
 

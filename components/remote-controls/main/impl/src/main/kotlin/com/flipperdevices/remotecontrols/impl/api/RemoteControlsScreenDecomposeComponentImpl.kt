@@ -73,7 +73,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     categoryId = config.categoryId
                 ),
                 onBack = navigation::pop,
-                onIfrFileFound = { navigation.pop() }
+                onIrFileReady = { navigation.pop() }
             )
         }
     }
