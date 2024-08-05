@@ -9,7 +9,6 @@ abstract class RemoteControlsScreenDecomposeComponent<C : Any> : CompositeDecomp
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
-            onSetupFinished: (irFileId: Long) -> Unit,
         ): RemoteControlsScreenDecomposeComponent<*>
     }
 }

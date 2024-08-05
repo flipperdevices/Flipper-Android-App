@@ -21,7 +21,6 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val onSetupFinished: (irFileId: Long) -> Unit,
     private val categoriesScreenDecomposeComponentFactory: CategoriesScreenDecomposeComponent.Factory,
     private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
     private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
@@ -74,10 +73,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     categoryId = config.categoryId
                 ),
                 onBack = navigation::pop,
-                onIfrFileFound = { id ->
-                    navigation.pop()
-                    onSetupFinished.invoke(id)
-                }
+                onIfrFileFound = { navigation.pop() }
             )
         }
     }

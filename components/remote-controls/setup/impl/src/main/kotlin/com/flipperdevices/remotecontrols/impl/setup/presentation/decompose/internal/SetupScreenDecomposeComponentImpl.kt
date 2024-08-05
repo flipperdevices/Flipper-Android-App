@@ -16,14 +16,14 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: SetupScreenDecomposeComponent.Param,
     @Assisted onBack: () -> Unit,
-    @Assisted onIrFileReady: (id: Long) -> Unit,
+    @Assisted onIfrFileFound: () -> Unit,
     setupComponentFactory: SetupComponent.Factory,
 ) : SetupScreenDecomposeComponent(componentContext) {
     private val setupComponent = setupComponentFactory.createSetupComponent(
         componentContext = childContext("SetupComponent"),
         param = param,
         onBack = onBack,
-        onIrFileReady = onIrFileReady
+        onIfrFileFound = onIfrFileFound
     )
 
     @Composable

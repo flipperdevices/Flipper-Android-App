@@ -45,7 +45,7 @@ interface SetupComponent {
             componentContext: ComponentContext,
             param: SetupScreenDecomposeComponent.Param,
             onBack: DecomposeOnBackParameter,
-            onIrFileReady: (id: Long) -> Unit
+            onIfrFileFound: () -> Unit
         ): SetupComponent
     }
 }
