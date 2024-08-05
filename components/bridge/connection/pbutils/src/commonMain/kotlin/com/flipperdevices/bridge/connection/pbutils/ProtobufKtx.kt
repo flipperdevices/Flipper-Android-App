@@ -50,7 +50,7 @@ private fun InputStream.readDelimitedLength(): Long {
         val reader = ProtoReader(buffer)
         try {
             size = reader.readVarint32()
-        } catch (eofException: EOFException) {
+        } catch (@Suppress("SwallowedException") eofException: EOFException) {
             continue
         }
     }
