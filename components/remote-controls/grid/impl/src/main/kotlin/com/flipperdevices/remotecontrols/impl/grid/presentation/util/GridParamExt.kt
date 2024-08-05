@@ -17,6 +17,14 @@ object GridParamExt {
             is GridScreenDecomposeComponent.Param.Path -> flipperKeyPath.path.nameWithExtension
         }
 
+    val GridScreenDecomposeComponent.Param.uiFileNameWithExtension: String
+        get() = when (this) {
+            is GridScreenDecomposeComponent.Param.Id -> "$irFileId.ui.json"
+            is GridScreenDecomposeComponent.Param.Path -> flipperKeyPath.path.nameWithExtension
+                .replace(".ir","")
+                .plus(".ui.json")
+        }
+
     val GridScreenDecomposeComponent.Param.flipperFilePath: FlipperFilePath
         get() = FlipperFilePath(
             folder = extFolderPath,

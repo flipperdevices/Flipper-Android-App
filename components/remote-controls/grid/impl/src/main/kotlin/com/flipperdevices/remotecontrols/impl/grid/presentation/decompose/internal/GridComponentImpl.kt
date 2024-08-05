@@ -13,6 +13,7 @@ import com.flipperdevices.remotecontrols.impl.grid.presentation.mapping.GridComp
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.extFolderPath
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.irFileIdOrNull
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.nameWithExtension
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.uiFileNameWithExtension
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -51,21 +52,19 @@ class GridComponentImpl @AssistedInject constructor(
                 param = param,
                 onCallback = { callback ->
                     when (callback) {
-                        is GridViewModel.Callback.InfraredFileLoaded -> {
+                        is GridViewModel.Callback.ContentLoaded -> {
                             param.irFileIdOrNull ?: return@invoke
                             saveTempSignalApi.saveFile(
-                                textContent = callback.content,
-                                nameWithExtension = param.nameWithExtension,
-                                extFolderPath = param.extFolderPath
-                            )
-                        }
-
-                        is GridViewModel.Callback.UiLoaded -> {
-                            val id = param.irFileIdOrNull ?: return@invoke
-                            saveTempSignalApi.saveFile(
-                                textContent = callback.content,
-                                nameWithExtension = "$id.ui.json",
-                                extFolderPath = param.extFolderPath
+                                SaveTempSignalApi.FileDesc(
+                                    textContent = callback.infraredContent,
+                                    nameWithExtension = param.nameWithExtension,
+                                    extFolderPath = param.extFolderPath
+                                ),
+                                SaveTempSignalApi.FileDesc(
+                                    textContent = callback.uiContent,
+                                    nameWithExtension = param.uiFileNameWithExtension,
+                                    extFolderPath = param.extFolderPath
+                                )
                             )
                         }
                     }

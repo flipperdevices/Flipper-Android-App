@@ -58,9 +58,6 @@ class GridViewModel @AssistedInject constructor(
                 ?.readText()
             val pagesLayout = localPagesLayout
                 ?: pagesRepository.fetchDefaultPageLayout(ifrFileId = param.irFileIdOrNull ?: -1)
-                    .onSuccess { pagesLayout ->
-                        onCallback.invoke(Callback.UiLoaded(json.encodeToString(pagesLayout)))
-                    }
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                     .getOrNull() ?: return@launch
@@ -69,11 +66,16 @@ class GridViewModel @AssistedInject constructor(
                 ?: pagesRepository.fetchKeyContent(param.irFileIdOrNull ?: -1)
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
-                    .onSuccess {
-                        onCallback.invoke(Callback.InfraredFileLoaded(it))
-                    }
                     .getOrNull()
                     .orEmpty()
+            if (localRemotesRaw == null && localPagesLayout == null) {
+                val pagesLayoutRaw = json.encodeToString(pagesLayout)
+                val callback = Callback.ContentLoaded(
+                    infraredContent = remotesRaw,
+                    uiContent = pagesLayoutRaw
+                )
+                onCallback.invoke(callback)
+            }
             _state.emit(
                 value = State.Loaded(
                     pagesLayout = pagesLayout,
@@ -112,7 +114,9 @@ class GridViewModel @AssistedInject constructor(
     }
 
     sealed interface Callback {
-        data class InfraredFileLoaded(val content: String) : Callback
-        data class UiLoaded(val content: String) : Callback
+        data class ContentLoaded(
+            val infraredContent: String,
+            val uiContent: String
+        ) : Callback
     }
 }

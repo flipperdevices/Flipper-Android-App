@@ -67,9 +67,11 @@ class SetupComponentImpl @AssistedInject constructor(
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
                 saveSignalApi.saveFile(
-                    textContent = signalModel.toFFFormat().openStream().reader().readText(),
-                    nameWithExtension = TEMP_FILE_NAME,
-                    extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
+                    SaveTempSignalApi.FileDesc(
+                        textContent = signalModel.toFFFormat().openStream().reader().readText(),
+                        nameWithExtension = TEMP_FILE_NAME,
+                        extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
+                    )
                 )
             }
         }
