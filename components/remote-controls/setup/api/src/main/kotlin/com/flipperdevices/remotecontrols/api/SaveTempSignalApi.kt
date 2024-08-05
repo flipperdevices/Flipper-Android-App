@@ -1,7 +1,6 @@
 package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
-import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import kotlinx.coroutines.flow.StateFlow
 
 interface SaveTempSignalApi : InstanceKeeper.Instance {

@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.setup.api.save.file
 
-import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
