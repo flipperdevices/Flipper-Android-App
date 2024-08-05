@@ -86,22 +86,14 @@ class SetupComponentImpl @AssistedInject constructor(
                 is CurrentSignalViewModel.State.Loaded -> {
                     when (saveState) {
                         SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
+                        is SaveTempSignalApi.State.Uploading,
+                        SaveTempSignalApi.State.Uploaded,
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                             emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
-                            isEmulated = isEmulated
-                        )
-
-                        SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
-                            response = signalState.response,
-                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
-                            isEmulated = isEmulated
-                        )
-
-                        is SaveTempSignalApi.State.Uploading -> SetupComponent.Model.Loading(
-                            saveState.progress
+                            isEmulated = isEmulated,
+                            isSyncing = saveState is SaveTempSignalApi.State.Uploading
                         )
                     }
                 }

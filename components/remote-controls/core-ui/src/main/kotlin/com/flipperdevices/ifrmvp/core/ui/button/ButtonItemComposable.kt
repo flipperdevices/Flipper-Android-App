@@ -21,6 +21,7 @@ fun ButtonItemComposable(
     buttonData: ButtonData,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     onKeyDataClick: (IfrKeyIdentifier) -> Unit,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier
 ) {
     when (buttonData) {
@@ -29,7 +30,8 @@ fun ButtonItemComposable(
                 iconType = buttonData.iconId,
                 modifier = modifier,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
-                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                isSyncing = isSyncing
             )
         }
 
@@ -39,7 +41,8 @@ fun ButtonItemComposable(
                 onPrevClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                    buttonData.addKeyIdentifier == emulatedKeyIdentifier
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                isSyncing = isSyncing
             )
         }
 
@@ -49,7 +52,8 @@ fun ButtonItemComposable(
                 onReduceClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                    buttonData.addKeyIdentifier == emulatedKeyIdentifier
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                isSyncing = isSyncing
             )
         }
 
@@ -61,6 +65,7 @@ fun ButtonItemComposable(
                 onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
                 onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
                 modifier = modifier,
+                isSyncing = isSyncing
             )
         }
 
@@ -71,6 +76,7 @@ fun ButtonItemComposable(
                 background = LocalPalletV2.current.surface.menu.body.dufault,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 modifier = modifier,
+                isSyncing = isSyncing
             )
         }
 
@@ -80,13 +86,15 @@ fun ButtonItemComposable(
                 onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
                 modifier = modifier,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
+                isSyncing = isSyncing
             )
         }
 
         UnknownButtonData -> {
             UnknownButton(
                 modifier = modifier,
-                onClick = {}
+                onClick = {},
+                isSyncing = isSyncing
             )
         }
     }

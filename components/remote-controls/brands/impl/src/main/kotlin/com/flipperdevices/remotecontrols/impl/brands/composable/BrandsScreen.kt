@@ -16,6 +16,7 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsLoadedContent
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
+import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsLoadingComposable
 
 @Composable
 fun BrandsScreen(
@@ -51,7 +52,7 @@ fun BrandsScreen(
                 }
 
                 BrandsDecomposeComponent.Model.Loading -> {
-                    LoadingComposable()
+                    BrandsLoadingComposable()
                 }
             }
         }

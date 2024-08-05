@@ -8,20 +8,28 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.theme.LocalPallet
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
+import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
+import io.github.fornewid.placeholder.foundation.placeholder
+import io.github.fornewid.placeholder.foundation.shimmer
 
 @Composable
 fun SquareButton(
     onClick: (() -> Unit)?,
     background: Color,
     isEmulating: Boolean,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
@@ -43,15 +51,45 @@ fun SquareButton(
         contentAlignment = Alignment.Center,
         content = {
             content.invoke(this)
-            Crossfade(isEmulating) { isEmulating ->
-                if (isEmulating) {
-                    Box(
-                        Modifier
-                            .fillMaxSize()
-                            .placeholderConnecting()
-                    )
-                }
-            }
+            EmulatingBox(isEmulating = isEmulating)
+            SyncingBox(isSyncing = isSyncing)
         }
     )
+}
+
+@Composable
+internal fun EmulatingBox(
+    isEmulating: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(isEmulating) { isEmulating ->
+        if (isEmulating) {
+            Box(
+                modifier
+                    .fillMaxSize()
+                    .placeholderConnecting()
+            )
+        }
+    }
+}
+
+@Composable
+internal fun SyncingBox(
+    isSyncing: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(isSyncing) { isEmulating ->
+        if (isEmulating) {
+            Box(
+                modifier
+                    .fillMaxSize()
+                    .background(LocalPalletV2.current.surface.menu.body.dufault)
+            )
+            Box(
+                modifier
+                    .fillMaxSize()
+                    .placeholderConnecting()
+            )
+        }
+    }
 }

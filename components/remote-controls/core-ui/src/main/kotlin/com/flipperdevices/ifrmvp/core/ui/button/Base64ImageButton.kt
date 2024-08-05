@@ -65,6 +65,7 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 fun Base64ImageButton(
     base64Icon: String,
     isEmulating: Boolean,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -76,9 +77,13 @@ fun Base64ImageButton(
             bitmap = imageBitmap,
             iconTint = Color.Unspecified,
             modifier = modifier,
-            isEmulating = isEmulating
+            isEmulating = isEmulating,
+            isSyncing = isSyncing
         )
     } else {
-        UnknownButton(onClick = onClick)
+        UnknownButton(
+            onClick = onClick,
+            isSyncing = isSyncing
+        )
     }
 }

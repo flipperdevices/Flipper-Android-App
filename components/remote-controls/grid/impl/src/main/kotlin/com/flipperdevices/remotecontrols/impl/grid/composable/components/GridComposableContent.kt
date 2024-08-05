@@ -53,7 +53,8 @@ internal fun GridComposableContent(
                         gridComponent.onButtonClick(keyIdentifier)
                     },
                     onReload = gridComponent::tryLoad,
-                    emulatedKeyIdentifier = animatedModel.emulatedKey
+                    emulatedKeyIdentifier = animatedModel.emulatedKey,
+                    isSyncing = animatedModel.isSyncing
                 )
             }
 

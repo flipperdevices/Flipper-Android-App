@@ -17,6 +17,7 @@ internal fun GridComposableLoadedContent(
     onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     onReload: () -> Unit,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
@@ -27,7 +28,8 @@ internal fun GridComposableLoadedContent(
                 pageLayout = pagesLayout.pages.firstOrNull(),
                 emulatedKeyIdentifier = emulatedKeyIdentifier,
                 onButtonClick = onButtonClick,
-                onReload = onReload
+                onReload = onReload,
+                isSyncing = isSyncing
             )
         }
     )
@@ -44,7 +46,8 @@ private fun LoadedContentEmptyPreview() {
             pagesLayout = PagesLayout(emptyList()),
             onButtonClick = { _, _ -> },
             onReload = {},
-            emulatedKeyIdentifier = null
+            emulatedKeyIdentifier = null,
+            isSyncing = false
         )
     }
 }

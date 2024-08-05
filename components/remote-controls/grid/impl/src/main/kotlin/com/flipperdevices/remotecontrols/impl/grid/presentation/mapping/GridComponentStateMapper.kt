@@ -15,18 +15,18 @@ internal object GridComponentStateMapper {
         is GridViewModel.State.Loaded -> {
             when (saveState) {
                 SaveTempSignalApi.State.Error -> GridComponent.Model.Error
-                SaveTempSignalApi.State.Uploaded, SaveTempSignalApi.State.Pending -> {
+                is SaveTempSignalApi.State.Uploading,
+                SaveTempSignalApi.State.Uploaded,
+                SaveTempSignalApi.State.Pending -> {
                     GridComponent.Model.Loaded(
                         pagesLayout = gridState.pagesLayout,
                         remotes = gridState.remotes,
                         isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                         emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
+                        isSyncing = saveState is SaveTempSignalApi.State.Uploading
                     )
                 }
 
-                is SaveTempSignalApi.State.Uploading -> GridComponent.Model.Loading(
-                    saveState.progress
-                )
             }
         }
 

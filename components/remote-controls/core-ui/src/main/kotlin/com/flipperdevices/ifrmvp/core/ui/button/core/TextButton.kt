@@ -13,6 +13,7 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 fun TextButton(
     text: String,
     isEmulating: Boolean,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.onPrimary,
@@ -23,6 +24,7 @@ fun TextButton(
         background = background,
         modifier = modifier,
         isEmulating = isEmulating,
+        isSyncing = isSyncing,
         content = {
             Text(
                 text = text,

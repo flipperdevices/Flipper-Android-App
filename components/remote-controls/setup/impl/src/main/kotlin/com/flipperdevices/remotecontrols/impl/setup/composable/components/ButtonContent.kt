@@ -28,13 +28,15 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 private fun SignalResponseButton(
     data: ButtonData,
     onClick: () -> Unit,
-    emulatedKeyIdentifier: IfrKeyIdentifier?
+    emulatedKeyIdentifier: IfrKeyIdentifier?,
+    isSyncing: Boolean
 ) {
     ButtonItemComposable(
         buttonData = data,
         onKeyDataClick = { onClick.invoke() },
         modifier = Modifier.size(64.dp),
         emulatedKeyIdentifier = emulatedKeyIdentifier,
+        isSyncing = isSyncing
     )
 }
 
@@ -42,6 +44,7 @@ private fun SignalResponseButton(
 fun ButtonContent(
     onClick: () -> Unit,
     data: ButtonData,
+    isSyncing: Boolean,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     categoryName: String,
     modifier: Modifier = Modifier,
@@ -55,6 +58,7 @@ fun ButtonContent(
             data = data,
             onClick = onClick,
             emulatedKeyIdentifier = emulatedKeyIdentifier,
+            isSyncing = isSyncing
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
@@ -80,19 +84,22 @@ private fun ComposableConfirmContentDarkPreview() {
                 onClick = {},
                 categoryName = "CATEGORY",
                 data = TextButtonData(text = "Hello"),
-                emulatedKeyIdentifier = null
+                emulatedKeyIdentifier = null,
+                isSyncing = false
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "TV/AV"),
-                emulatedKeyIdentifier = null
+                emulatedKeyIdentifier = null,
+                isSyncing = false
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "Hello world"),
-                emulatedKeyIdentifier = null
+                emulatedKeyIdentifier = null,
+                isSyncing = false
             )
         }
     }

@@ -34,7 +34,8 @@ interface SetupComponent {
             val response: SignalResponseModel,
             val isFlipperBusy: Boolean = false,
             val emulatedKeyIdentifier: IfrKeyIdentifier?,
-            val isEmulated: Boolean
+            val isEmulated: Boolean,
+            val isSyncing: Boolean
         ) : Model
 
         data object Error : Model
