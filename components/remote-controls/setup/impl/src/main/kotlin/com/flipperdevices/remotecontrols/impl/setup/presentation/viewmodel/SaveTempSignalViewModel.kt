@@ -58,35 +58,30 @@ class SaveTempSignalViewModel @Inject constructor(
         absolutePath: String,
         extFolderPath: String
     ) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             _state.emit(SaveTempSignalApi.State.Uploading(0, 0))
-            serviceProvider.provideServiceApi(
-                lifecycleOwner = this@SaveTempSignalViewModel,
-                onError = { _state.value = SaveTempSignalApi.State.Error },
-                onBleManager = { serviceApi ->
-                    launchWithLock(mutex, viewModelScope, "load") {
-                        saveFolderApi.save(serviceApi.requestApi, "$EXT_PATH/$extFolderPath")
-                        val saveFileFlow = saveFileApi.save(
-                            requestApi = serviceApi.requestApi,
-                            deeplinkContent = deeplinkContent,
-                            absolutePath = absolutePath
-                        )
-                        saveFileFlow
-                            .flowOn(FlipperDispatchers.workStealingDispatcher)
-                            .onEach {
-                                _state.value = when (it) {
-                                    SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
-                                    is SaveFileApi.Status.Saving -> SaveTempSignalApi.State.Uploading(
-                                        it.uploaded,
-                                        it.size
-                                    )
-                                }
-                            }
-                            .collect()
-                        _state.value = SaveTempSignalApi.State.Uploaded
+            val serviceApi = serviceProvider.getServiceApi()
+            launchWithLock(mutex, viewModelScope, "load") {
+                saveFolderApi.save(serviceApi.requestApi, "$EXT_PATH/$extFolderPath")
+                val saveFileFlow = saveFileApi.save(
+                    requestApi = serviceApi.requestApi,
+                    deeplinkContent = deeplinkContent,
+                    absolutePath = absolutePath
+                )
+                saveFileFlow
+                    .flowOn(FlipperDispatchers.workStealingDispatcher)
+                    .onEach {
+                        _state.value = when (it) {
+                            SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
+                            is SaveFileApi.Status.Saving -> SaveTempSignalApi.State.Uploading(
+                                it.uploaded,
+                                it.size
+                            )
+                        }
                     }
-                }
-            )
+                    .collect()
+                _state.value = SaveTempSignalApi.State.Uploaded
+            }
         }
     }
 
