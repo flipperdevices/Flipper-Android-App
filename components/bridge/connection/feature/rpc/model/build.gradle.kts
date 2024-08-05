@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.feature.rpc.model"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.core.ktx)
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
 }

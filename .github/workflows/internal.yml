@@ -282,6 +282,8 @@ jobs:
     name: Upload to Play Store
     runs-on: ubuntu-latest
     needs: [ build_internal_release ]
+    # Off while we experiment with the bug in Kotlin Compile and release the beta manually
+    if: false
     steps:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-googleplay
@@ -295,11 +297,12 @@ jobs:
           releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
           track: beta
           mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
-          changesNotSentForReview: true
   upload_to_playstore_wearos:
     name: Upload Wear OS to Play Store
     runs-on: ubuntu-latest
     needs: [ build_internal_release_gms_wearos ]
+    # Off while we experiment with the bug in Kotlin Compile and release the beta manually
+    if: false
     steps:
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         id: download-wearos
@@ -313,4 +316,3 @@ jobs:
           releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
           track: wear:beta
           mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt
-          changesNotSentForReview: true

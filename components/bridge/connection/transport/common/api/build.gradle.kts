@@ -1,9 +1,10 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.transport.common.api"
 
-dependencies {
+commonDependencies {
     implementation(libs.kotlin.coroutines)
 }

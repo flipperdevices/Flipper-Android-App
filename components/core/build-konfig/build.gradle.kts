@@ -21,4 +21,9 @@ buildConfig {
         "CRASH_APP_ON_FAILED_CHECKS",
         CURRENT_FLAVOR_TYPE.crashAppOnFailedChecks
     )
+    buildConfigField(
+        Boolean::class.java,
+        "LOGGING_PENDING_COMMANDS",
+        CURRENT_FLAVOR_TYPE.loggingPendingCommands
+    )
 }

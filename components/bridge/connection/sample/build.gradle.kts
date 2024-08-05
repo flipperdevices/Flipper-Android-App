@@ -71,7 +71,7 @@ dependencies {
     implementation(projects.components.analytics.metric.noop)
 
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.appcompat)
 

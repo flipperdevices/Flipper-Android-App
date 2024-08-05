@@ -1,8 +1,5 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
 }
 
 android.namespace = "com.flipperdevices.metric.api"
-
-dependencies {
-}

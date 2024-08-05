@@ -30,7 +30,6 @@ jobs:
   update_gradle_cache:
     name: "Gradle cache update"
     needs: [ validate_gradle_wrapper ]
-    if: github.event_name == 'merge_group'
     uses: ./.github/workflows/call-gradle-cache.yml
   info:
     name: "Display concurrency info"

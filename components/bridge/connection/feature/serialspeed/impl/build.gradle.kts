@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.feature.serialspeed.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
 
     implementation(projects.components.core.di)
