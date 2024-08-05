@@ -136,11 +136,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
 
         is RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
             componentContext = componentContext,
-            onSetupFinished = { id ->
-                val configuration = RootScreenConfig.RemoteControlGrid.Id(id)
-                navigation.pushToFront(configuration)
-            },
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = this::internalOnBack
         )
 
         is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(

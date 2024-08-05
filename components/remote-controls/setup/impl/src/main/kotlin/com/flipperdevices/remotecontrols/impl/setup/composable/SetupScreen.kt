@@ -46,7 +46,11 @@ fun SetupScreen(
     }.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow
-            .onEach { setupComponent.onFileFound(it) }
+            .onEach {
+                setupComponent.onFileFound(it)
+                val configuration = RootScreenConfig.RemoteControlGrid.Id(it.id)
+                rootNavigation.push(configuration)
+            }
             .launchIn(this)
     }
     Scaffold(

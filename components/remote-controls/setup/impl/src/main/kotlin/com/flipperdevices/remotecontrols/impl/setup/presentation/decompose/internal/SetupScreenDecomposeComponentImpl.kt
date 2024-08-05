@@ -16,7 +16,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: SetupScreenDecomposeComponent.Param,
     @Assisted onBack: () -> Unit,
-    @Assisted onIfrFileFound: (ifrFileId: Long) -> Unit,
+    @Assisted onIfrFileFound: () -> Unit,
     setupComponentFactory: SetupComponent.Factory,
 ) : SetupScreenDecomposeComponent(componentContext) {
     private val setupComponent = setupComponentFactory.createSetupComponent(
