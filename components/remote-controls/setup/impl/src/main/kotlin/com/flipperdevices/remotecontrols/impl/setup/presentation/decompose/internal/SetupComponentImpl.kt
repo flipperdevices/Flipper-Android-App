@@ -12,7 +12,6 @@ import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
-import com.flipperdevices.remotecontrols.api.SaveTempSignalApi.Companion.saveFile
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
@@ -68,7 +67,7 @@ class SetupComponentImpl @AssistedInject constructor(
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
                 saveSignalApi.saveFile(
-                    fff = signalModel.toFFFormat(),
+                    textContent = signalModel.toFFFormat().openStream().reader().readText(),
                     nameWithExtension = TEMP_FILE_NAME,
                     extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
                 )

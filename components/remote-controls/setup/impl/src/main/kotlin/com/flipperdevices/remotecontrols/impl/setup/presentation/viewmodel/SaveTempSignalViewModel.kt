@@ -9,12 +9,10 @@ import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.api.save.file.SaveFileApi
 import com.flipperdevices.remotecontrols.impl.setup.api.save.folder.SaveFolderApi
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -41,12 +39,12 @@ class SaveTempSignalViewModel @Inject constructor(
     override val state = _state.asStateFlow()
 
     override fun saveFile(
-        deeplinkContent: DeeplinkContent,
+        textContent: String,
         nameWithExtension: String,
         extFolderPath: String
     ) = save(
         extFolderPath = extFolderPath,
-        deeplinkContent = deeplinkContent,
+        textContent = textContent,
         absolutePath = FlipperFilePath(
             folder = extFolderPath,
             nameWithExtension = nameWithExtension
@@ -54,7 +52,7 @@ class SaveTempSignalViewModel @Inject constructor(
     )
 
     private fun save(
-        deeplinkContent: DeeplinkContent,
+        textContent: String,
         absolutePath: String,
         extFolderPath: String
     ) {
@@ -65,7 +63,7 @@ class SaveTempSignalViewModel @Inject constructor(
                 saveFolderApi.save(serviceApi.requestApi, "$EXT_PATH/$extFolderPath")
                 val saveFileFlow = saveFileApi.save(
                     requestApi = serviceApi.requestApi,
-                    deeplinkContent = deeplinkContent,
+                    textContent = textContent,
                     absolutePath = absolutePath
                 )
                 saveFileFlow

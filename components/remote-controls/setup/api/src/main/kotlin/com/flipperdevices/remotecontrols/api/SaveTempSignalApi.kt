@@ -2,7 +2,6 @@ package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import kotlinx.coroutines.flow.StateFlow
 
 interface SaveTempSignalApi : InstanceKeeper.Instance {
@@ -10,7 +9,7 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
     val state: StateFlow<State>
 
     fun saveFile(
-        deeplinkContent: DeeplinkContent,
+        textContent: String,
         nameWithExtension: String,
         extFolderPath: String
     )
@@ -23,20 +22,5 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
         }
 
         data object Uploaded : State
-    }
-
-    companion object {
-        fun SaveTempSignalApi.saveFile(
-            fff: FlipperFileFormat,
-            nameWithExtension: String,
-            extFolderPath: String
-        ) = saveFile(
-            extFolderPath = extFolderPath,
-            nameWithExtension = nameWithExtension,
-            deeplinkContent = DeeplinkContent.FFFContent(
-                filename = nameWithExtension,
-                flipperFileFormat = fff
-            ),
-        )
     }
 }
