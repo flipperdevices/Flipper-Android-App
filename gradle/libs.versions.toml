@@ -1,7 +1,7 @@
 [versions]
 # You also need to bump the version of ksp, anvil
 # Not bump to 2.0.20-Beta2+ until https://youtrack.jetbrains.com/issue/KT-70415/ fixed
-kotlin-general = "2.0.10" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "2.0.10-RC2" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
