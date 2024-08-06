@@ -3,7 +3,7 @@
   extends: [
     'config:best-practices',
     'group:all',
-    'schedule:weekly'
+    'schedule:weekly',
   ],
   gradle: {
     enabled: true,
@@ -14,17 +14,17 @@
   ],
   packageRules: [
     {
-      matchPackagePatterns: [
-        '^com.squareup.anvil',
-      ],
       allowedVersions: '!/.*-1-8$/',
+      matchPackageNames: [
+        '/^com.squareup.anvil/',
+      ],
     },
     {
-      matchPackagePatterns: [
-        '^com.vladsch.flexmark',
-        '^org.slf4j',
-      ],
       enabled: false,
+      matchPackageNames: [
+        '/^com.vladsch.flexmark/',
+        '/^org.slf4j/',
+      ],
     },
   ],
 }
