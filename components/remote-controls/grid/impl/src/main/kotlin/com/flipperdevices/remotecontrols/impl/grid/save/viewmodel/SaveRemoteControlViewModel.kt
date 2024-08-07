@@ -70,7 +70,11 @@ class SaveRemoteControlViewModel @Inject constructor(
                 )
             )
             withContext(Dispatchers.Main) {
-                onFinished.invoke(FlipperKeyPath(path = savedKey.mainFile.path.toNonTempPath(), false))
+                val keyPath = FlipperKeyPath(
+                    path = savedKey.mainFile.path.toNonTempPath(),
+                    deleted = false
+                )
+                onFinished.invoke(keyPath)
             }
         }
     }
