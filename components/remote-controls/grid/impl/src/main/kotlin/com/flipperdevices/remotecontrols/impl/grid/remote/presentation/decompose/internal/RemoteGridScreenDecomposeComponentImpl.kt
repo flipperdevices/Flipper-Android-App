@@ -3,7 +3,6 @@ package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompos
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.model.GridControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.RemoteGridComposable

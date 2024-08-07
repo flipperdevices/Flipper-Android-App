@@ -9,9 +9,9 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.model.GridControlParam
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
+import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.util.GridParamExt.extFolderPath
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.util.GridParamExt.nameWithExtension
-import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject

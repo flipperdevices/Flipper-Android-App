@@ -1,7 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote

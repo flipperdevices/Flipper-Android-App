@@ -24,7 +24,7 @@ class KeyEditDecomposeComponentNoop(
         override fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
-            onSave: (FlipperKey?) -> Unit ,
+            onSave: (FlipperKey?) -> Unit,
             flipperKeyPath: FlipperKeyPath,
             title: String?
         ) = KeyEditDecomposeComponentNoop(componentContext)

@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.model
 
-import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import kotlinx.serialization.Serializable

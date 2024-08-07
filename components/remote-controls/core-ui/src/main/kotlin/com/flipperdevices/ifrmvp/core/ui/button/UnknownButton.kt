@@ -11,8 +11,8 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 
 @Composable
 fun UnknownButton(
-    modifier: Modifier = Modifier,
     isSyncing: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
     SquareIconButton(

@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.composable.util
 
-import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 
 internal val RemoteGridComponent.Model.contentKey: Any

@@ -1,8 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -30,7 +28,6 @@ class SaveTempSignalViewModel @Inject constructor(
     private val saveFileApi: SaveFileApi,
     private val saveFolderApi: SaveFolderApi,
 ) : DecomposeViewModel(),
-    FlipperBleServiceConsumer,
     LogTagProvider,
     SaveTempSignalApi {
     private val mutex = Mutex()
@@ -76,7 +73,4 @@ class SaveTempSignalViewModel @Inject constructor(
             }
         }
     }
-
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
 }

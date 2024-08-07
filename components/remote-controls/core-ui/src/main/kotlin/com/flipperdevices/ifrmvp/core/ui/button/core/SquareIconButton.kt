@@ -23,10 +23,10 @@ fun SquareIconButton(
     painter: Painter,
     background: Color,
     iconTint: Color,
+    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     isEmulating: Boolean = false,
     contentDescription: String? = null,
-    isSyncing: Boolean
 ) {
     SquareButton(
         modifier = modifier,

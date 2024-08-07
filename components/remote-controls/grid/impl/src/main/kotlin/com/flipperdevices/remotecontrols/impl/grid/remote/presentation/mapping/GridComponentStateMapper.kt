@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping
 
-import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent

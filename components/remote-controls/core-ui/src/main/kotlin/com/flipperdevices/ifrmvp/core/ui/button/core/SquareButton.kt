@@ -72,15 +72,18 @@ internal fun SyncingBox(
     isSyncing: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Crossfade(isSyncing) { isEmulating ->
+    Crossfade(
+        targetState = isSyncing,
+        modifier = modifier
+    ) { isEmulating ->
         if (isEmulating) {
             Box(
-                modifier
+                Modifier
                     .fillMaxSize()
                     .background(LocalPalletV2.current.surface.menu.body.dufault)
             )
             Box(
-                modifier
+                Modifier
                     .fillMaxSize()
                     .placeholderConnecting()
             )

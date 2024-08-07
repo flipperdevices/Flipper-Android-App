@@ -3,9 +3,7 @@ package com.flipperdevices.infrared.impl.viewmodel
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.google.protobuf.api
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -16,7 +14,7 @@ import kotlinx.coroutines.launch
 class InfraredTypeViewModel @AssistedInject constructor(
     @Assisted private val flipperKeyPath: FlipperKeyPath,
     private val simpleKeyApi: SimpleKeyApi
-) : DecomposeViewModel(),LogTagProvider {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredTypeViewModel"
 
     private val _state = MutableStateFlow<State>(State.Loading)
@@ -31,8 +29,11 @@ class InfraredTypeViewModel @AssistedInject constructor(
             val containsUiJsonFile = apiKey
                 .additionalFiles
                 .any { it.path.nameWithExtension.contains(".json") }
-            if (containsUiJsonFile) _state.emit(State.RemoteControl)
-            else _state.emit(State.Default)
+            if (containsUiJsonFile) {
+                _state.emit(State.RemoteControl)
+            } else {
+                _state.emit(State.Default)
+            }
         }
     }
 

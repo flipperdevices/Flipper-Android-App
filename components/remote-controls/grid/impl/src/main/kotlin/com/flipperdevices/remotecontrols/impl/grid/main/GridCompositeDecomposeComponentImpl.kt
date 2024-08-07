@@ -5,10 +5,8 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
-import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.remotecontrols.api.GridCompositeDecomposeComponent
@@ -17,15 +15,14 @@ import com.flipperdevices.remotecontrols.impl.createcontrol.decompose.CreateCont
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.internal.LocalGridScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.internal.RemoteGridScreenDecomposeComponentImpl
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.model.GridNavigationConfig
-import com.flipperdevices.remotecontrols.impl.createcontrol.viewmodel.SaveRemoteControlViewModel
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, GridCompositeDecomposeComponent.Factory::class)
 class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

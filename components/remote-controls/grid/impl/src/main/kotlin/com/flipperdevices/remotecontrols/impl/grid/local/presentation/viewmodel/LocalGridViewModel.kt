@@ -76,7 +76,9 @@ class LocalGridViewModel @AssistedInject constructor(
                     remotes = remotes,
                     keyPath = keyPath
                 )
-            } else State.Error
+            } else {
+                State.Error
+            }
         }
     ).stateIn(viewModelScope, SharingStarted.Eagerly, State.Loading)
 

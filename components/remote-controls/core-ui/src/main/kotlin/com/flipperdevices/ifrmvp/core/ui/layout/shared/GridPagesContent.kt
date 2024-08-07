@@ -18,7 +18,7 @@ fun GridPagesContent(
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     isSyncing: Boolean,
     modifier: Modifier = Modifier,
-    onReload: (() -> Unit)?=null,
+    onReload: (() -> Unit)? = null,
 ) {
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),

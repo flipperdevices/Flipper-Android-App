@@ -3,12 +3,9 @@ package com.flipperdevices.infrared.impl.api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.StackNavigation
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
-import com.flipperdevices.infrared.impl.model.InfraredNavigationConfig
 import com.flipperdevices.infrared.impl.viewmodel.InfraredTypeViewModel
-import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -60,5 +57,4 @@ class InfraredTypeResolveDecomposeComponentImpl @AssistedInject constructor(
         data object RemoteControl : Callback
         data object Default : Callback
     }
-
 }

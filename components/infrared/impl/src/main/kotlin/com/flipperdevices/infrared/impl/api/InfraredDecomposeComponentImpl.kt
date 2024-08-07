@@ -20,6 +20,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, InfraredDecomposeComponent.Factory::class)
 class InfraredDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
