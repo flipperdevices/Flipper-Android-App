@@ -24,6 +24,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.foundation.layout.BoxScope
 
 @Composable
 fun SharedTopBar(
@@ -31,7 +32,7 @@ fun SharedTopBar(
     modifier: Modifier = Modifier,
     title: String = "",
     subtitle: String = "",
-    actions: @Composable () -> Unit = {}
+    actions: @Composable BoxScope.() -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -81,7 +82,7 @@ fun SharedTopBar(
             modifier = Modifier.weight(weight = 1f),
             contentAlignment = Alignment.CenterEnd,
             content = {
-                actions.invoke()
+                actions.invoke(this)
             }
         )
     }
@@ -121,17 +122,24 @@ private fun SharedTopBarPreview() {
                 subtitle = "Subtitle",
                 onBackClick = {},
                 actions = {
-                    Row(modifier = Modifier.weight(1f)) {
-                        repeat(2) {
-                            Text(
-                                text = "Action",
-                                color = LocalPalletV2.current.text.title.blackOnColor,
-                                style = LocalTypography.current.titleEB18,
-                                textAlign = TextAlign.Center,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
+                    Row(modifier = Modifier) {
+                        Text(
+                            text = "Action",
+                            color = LocalPalletV2.current.text.title.blackOnColor,
+                            style = LocalTypography.current.titleEB18,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickableRipple(bounded = false, onClick = {}),
+                            painter = painterResource(DesignSystem.drawable.ic_back),
+                            contentDescription = null,
+                            tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+                        )
+
                     }
                 }
             )

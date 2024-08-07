@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.mapping
 
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
@@ -9,7 +10,8 @@ internal object GridComponentStateMapper {
     fun map(
         saveState: SaveTempSignalApi.State,
         gridState: GridViewModel.State,
-        dispatchState: DispatchSignalApi.State
+        dispatchState: DispatchSignalApi.State,
+        synchronizationState: SynchronizationState
     ): GridComponent.Model = when (gridState) {
         GridViewModel.State.Error -> GridComponent.Model.Error
         is GridViewModel.State.Loaded -> {
@@ -23,7 +25,8 @@ internal object GridComponentStateMapper {
                         remotes = gridState.remotes,
                         isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                         emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
-                        isSyncing = saveState is SaveTempSignalApi.State.Uploading
+                        isSavingFiles = saveState is SaveTempSignalApi.State.Uploading,
+                        synchronizationState = synchronizationState
                     )
                 }
 

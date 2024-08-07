@@ -66,7 +66,7 @@ class SetupComponentImpl @AssistedInject constructor(
         factory = {
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
-                saveSignalApi.saveFile(
+                saveSignalApi.saveFiles(
                     SaveTempSignalApi.FileDesc(
                         textContent = signalModel.toFFFormat().openStream().reader().readText(),
                         nameWithExtension = TEMP_FILE_NAME,

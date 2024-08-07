@@ -13,7 +13,7 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
         val extFolderPath: String
     )
 
-    fun saveFile(vararg desc: FileDesc)
+    fun saveFiles(vararg filesDesc: FileDesc, onFinished: () -> Unit = {})
 
     sealed interface State {
         data object Pending : State

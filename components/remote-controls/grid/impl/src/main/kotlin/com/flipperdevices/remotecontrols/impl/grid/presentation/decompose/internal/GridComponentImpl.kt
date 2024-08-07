@@ -11,10 +11,12 @@ import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.presentation.decompose.GridComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.mapping.GridComponentStateMapper
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.extFolderPath
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.extTempFolderPath
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.irFileIdOrNull
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.nameWithExtension
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.uiFileNameWithExtension
 import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.GridViewModel
+import com.flipperdevices.remotecontrols.impl.grid.presentation.viewmodel.SaveDeviceViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
@@ -31,8 +33,15 @@ class GridComponentImpl @AssistedInject constructor(
     @Assisted private val onPopClick: () -> Unit,
     createGridViewModel: GridViewModel.Factory,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
-    createDispatchSignalApi: Provider<DispatchSignalApi>
+    createDispatchSignalApi: Provider<DispatchSignalApi>,
+    createSaveDeviceViewModel: Provider<SaveDeviceViewModel>
 ) : GridComponent, ComponentContext by componentContext {
+    private val saveDeviceViewModel = instanceKeeper.getOrCreate(
+        key = "GridComponent_saveDeviceViewModel_${param.key}",
+        factory = {
+            createSaveDeviceViewModel.get()
+        }
+    )
     private val saveTempSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_saveSignalViewModel_${param.key}",
         factory = {
@@ -54,16 +63,16 @@ class GridComponentImpl @AssistedInject constructor(
                     when (callback) {
                         is GridViewModel.Callback.ContentLoaded -> {
                             param.irFileIdOrNull ?: return@invoke
-                            saveTempSignalApi.saveFile(
+                            saveTempSignalApi.saveFiles(
                                 SaveTempSignalApi.FileDesc(
                                     textContent = callback.infraredContent,
                                     nameWithExtension = param.nameWithExtension,
-                                    extFolderPath = param.extFolderPath
+                                    extFolderPath = param.extTempFolderPath
                                 ),
                                 SaveTempSignalApi.FileDesc(
                                     textContent = callback.uiContent,
                                     nameWithExtension = param.uiFileNameWithExtension,
-                                    extFolderPath = param.extFolderPath
+                                    extFolderPath = param.extTempFolderPath
                                 )
                             )
                         }
@@ -77,17 +86,50 @@ class GridComponentImpl @AssistedInject constructor(
         saveTempSignalApi.state,
         gridViewModel.state,
         dispatchSignalApi.state,
-        transform = { saveState, gridState, dispatchState ->
+        saveDeviceViewModel.synchronizationState,
+        transform = { saveState, gridState, dispatchState, synchronizationState ->
             GridComponentStateMapper.map(
                 saveState = saveState,
                 gridState = gridState,
-                dispatchState = dispatchState
+                dispatchState = dispatchState,
+                synchronizationState = synchronizationState
             )
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, GridComponent.Model.Loading())
 
     override fun dismissBusyDialog() {
         dispatchSignalApi.dismissBusyDialog()
+    }
+
+    override fun save() {
+        val rawRemotes = gridViewModel.getRawRemotesContent() ?: return
+        val rawUi = gridViewModel.getRawPagesContent() ?: return
+        saveTempSignalApi.saveFiles(
+            SaveTempSignalApi.FileDesc(
+                textContent = rawRemotes,
+                nameWithExtension = param.nameWithExtension,
+                extFolderPath = param.extFolderPath
+            ),
+            SaveTempSignalApi.FileDesc(
+                textContent = rawUi,
+                nameWithExtension = param.uiFileNameWithExtension,
+                extFolderPath = param.extFolderPath
+            ),
+            onFinished = {
+                saveDeviceViewModel.saveToDatabase(
+                    remotesPath = FlipperFilePath(
+                        folder = param.extFolderPath,
+                        nameWithExtension = param.nameWithExtension
+                    ),
+                    uiPath = FlipperFilePath(
+                        folder = param.extFolderPath,
+                        nameWithExtension = param.uiFileNameWithExtension
+                    ),
+                    rawRemotes = rawRemotes,
+                    rawUi = rawUi
+                )
+            }
+        )
     }
 
     override fun onButtonClick(identifier: IfrKeyIdentifier) {
@@ -97,7 +139,7 @@ class GridComponentImpl @AssistedInject constructor(
             identifier = identifier,
             remotes = remotes,
             ffPath = FlipperFilePath(
-                folder = param.extFolderPath,
+                folder = param.extTempFolderPath,
                 nameWithExtension = param.nameWithExtension
             )
         )

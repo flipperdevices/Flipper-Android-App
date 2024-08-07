@@ -10,7 +10,7 @@ import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.presentation.data.localpages.LocalPagesRepository
 import com.flipperdevices.remotecontrols.impl.grid.presentation.data.pages.PagesRepository
-import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.flipperFilePath
+import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.flipperTempFilePath
 import com.flipperdevices.remotecontrols.impl.grid.presentation.util.GridParamExt.irFileIdOrNull
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -44,14 +44,14 @@ class GridViewModel @AssistedInject constructor(
     fun tryLoad() {
         viewModelScope.launch {
             val localPagesLayout = localPagesRepository.getLocalPagesLayout(
-                path = param.flipperFilePath,
+                path = param.flipperTempFilePath,
                 toPagesLayout = { rawContent ->
                     runCatching {
                         json.decodeFromString<PagesLayout>(rawContent)
                     }.getOrNull()
                 }
             )
-            val localRemotesRaw = localPagesRepository.getLocalFlipperKey(param.flipperFilePath)
+            val localRemotesRaw = localPagesRepository.getLocalFlipperKey(param.flipperTempFilePath)
                 ?.keyContent
                 ?.openStream()
                 ?.reader()
@@ -88,6 +88,17 @@ class GridViewModel @AssistedInject constructor(
                 )
             )
         }
+    }
+
+    fun getRawRemotesContent(): String? {
+        val state = state.value as? State.Loaded ?: return null
+        return state.remotesRaw
+
+    }
+
+    fun getRawPagesContent(): String? {
+        val state = state.value as? State.Loaded ?: return null
+        return json.encodeToString(state.pagesLayout)
     }
 
     init {

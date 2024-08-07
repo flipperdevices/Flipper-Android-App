@@ -38,7 +38,10 @@ class SaveTempSignalViewModel @Inject constructor(
     private val _state = MutableStateFlow<SaveTempSignalApi.State>(SaveTempSignalApi.State.Pending)
     override val state = _state.asStateFlow()
 
-    override fun saveFile(vararg filesDesc: SaveTempSignalApi.FileDesc) {
+    override fun saveFiles(
+        vararg filesDesc: SaveTempSignalApi.FileDesc,
+        onFinished: () -> Unit,
+    ) {
         viewModelScope.launch {
             _state.emit(SaveTempSignalApi.State.Uploading(0, 0))
             val serviceApi = serviceProvider.getServiceApi()
@@ -69,6 +72,7 @@ class SaveTempSignalViewModel @Inject constructor(
                         .collect()
                 }
                 _state.value = SaveTempSignalApi.State.Uploaded
+                onFinished.invoke()
             }
         }
     }

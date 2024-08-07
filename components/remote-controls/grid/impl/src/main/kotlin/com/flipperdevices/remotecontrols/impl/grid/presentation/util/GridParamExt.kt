@@ -5,9 +5,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 
 object GridParamExt {
-    val GridScreenDecomposeComponent.Param.extFolderPath: String
+    val GridScreenDecomposeComponent.Param.extTempFolderPath: String
         get() = when (this) {
             is GridScreenDecomposeComponent.Param.Id -> "${FlipperKeyType.INFRARED.flipperDir}/temp/"
+            is GridScreenDecomposeComponent.Param.Path -> "/${flipperKeyPath.path.folder}"
+        }
+
+    val GridScreenDecomposeComponent.Param.extFolderPath: String
+        get() = when (this) {
+            is GridScreenDecomposeComponent.Param.Id -> "${FlipperKeyType.INFRARED.flipperDir}/"
             is GridScreenDecomposeComponent.Param.Path -> "/${flipperKeyPath.path.folder}"
         }
 
@@ -21,13 +27,13 @@ object GridParamExt {
         get() = when (this) {
             is GridScreenDecomposeComponent.Param.Id -> "$irFileId.ui.json"
             is GridScreenDecomposeComponent.Param.Path -> flipperKeyPath.path.nameWithExtension
-                .replace(".ir","")
+                .replace(".ir", "")
                 .plus(".ui.json")
         }
 
-    val GridScreenDecomposeComponent.Param.flipperFilePath: FlipperFilePath
+    val GridScreenDecomposeComponent.Param.flipperTempFilePath: FlipperFilePath
         get() = FlipperFilePath(
-            folder = extFolderPath,
+            folder = extTempFolderPath,
             nameWithExtension = nameWithExtension
         )
 

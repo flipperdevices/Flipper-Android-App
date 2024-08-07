@@ -7,6 +7,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
@@ -54,7 +55,7 @@ internal fun GridComposableContent(
                     },
                     onReload = gridComponent::tryLoad,
                     emulatedKeyIdentifier = animatedModel.emulatedKey,
-                    isSyncing = animatedModel.isSyncing
+                    isSyncing = animatedModel.isSavingFiles || animatedModel.isSynchronizing
                 )
             }
 

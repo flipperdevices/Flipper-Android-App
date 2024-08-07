@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.grid.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
@@ -19,6 +20,8 @@ interface GridComponent {
 
     fun dismissBusyDialog()
 
+    fun save()
+
     sealed interface Model {
         data class Loading(
             val progress: Float = 0f,
@@ -29,8 +32,11 @@ interface GridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
             val emulatedKey: IfrKeyIdentifier? = null,
-            val isSyncing: Boolean,
-        ) : Model
+            val isSavingFiles: Boolean,
+            val synchronizationState: SynchronizationState
+        ) : Model {
+            val isSynchronizing = synchronizationState is SynchronizationState.InProgress
+        }
 
         data object Error : Model
     }
