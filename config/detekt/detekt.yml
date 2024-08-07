@@ -753,7 +753,7 @@ Compose:
   ModifierWithoutDefault:
     active: true
   MultipleEmitters:
-    active: true
+    active: false
     # You can optionally add your own composables here
     # contentEmitters: MyComposable,MyOtherComposable
   MutableParams:
