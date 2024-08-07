@@ -38,6 +38,9 @@ interface RemoteGridComponent {
         ) : Model
 
         data object Error : Model
+
+        val isFilesSaved: Boolean
+            get() = this is Loaded && !this.isSavingFiles
     }
 
     fun interface Factory {

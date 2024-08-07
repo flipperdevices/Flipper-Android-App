@@ -31,8 +31,6 @@ class InfraredTypeViewModel @AssistedInject constructor(
             val containsUiJsonFile = apiKey
                 .additionalFiles
                 .any { it.path.nameWithExtension.contains(".json") }
-            info { "#tryLoad key: $apiKey" }
-            info { "#tryLoad additionalFiles: ${apiKey.additionalFiles }}" }
             if (containsUiJsonFile) _state.emit(State.RemoteControl)
             else _state.emit(State.Default)
         }

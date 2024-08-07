@@ -143,13 +143,13 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(
             componentContext = componentContext,
             param = GridControlParam.Id(config.ifrFileId),
-            onBack = navigation::pop
+            onBack = this::internalOnBack
         )
 
         is RootScreenConfig.RemoteControlGrid.Path -> gridScreenDecomposeComponentFactory(
             componentContext = componentContext,
             param = GridControlParam.Path(config.flipperKeyPath),
-            onBack = navigation::pop
+            onBack = this::internalOnBack
         )
     }
 

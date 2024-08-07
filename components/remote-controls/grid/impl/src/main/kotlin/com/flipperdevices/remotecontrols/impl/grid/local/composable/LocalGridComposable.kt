@@ -27,9 +27,7 @@ fun LocalGridComposable(
     Scaffold(
         modifier = modifier,
         topBar = {
-            SharedTopBar(
-                onBackClick = localGridComponent::pop
-            )
+            SharedTopBar(onBackClick = localGridComponent::pop)
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
         scaffoldState = scaffoldState,

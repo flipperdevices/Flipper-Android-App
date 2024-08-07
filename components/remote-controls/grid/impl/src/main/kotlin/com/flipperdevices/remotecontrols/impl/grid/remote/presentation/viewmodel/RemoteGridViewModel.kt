@@ -66,7 +66,7 @@ class RemoteGridViewModel @AssistedInject constructor(
                         .let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
                         .toImmutableList(),
                     remotesRaw = remotesRaw,
-                    isDownloadedOnFlipper = false
+                    isDownloadedOnFlipper = true
                 )
             )
         }

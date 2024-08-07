@@ -84,7 +84,7 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
         is InfraredNavigationConfig.RemoteControl -> gridCompositeFactory.invoke(
             componentContext = componentContext,
             param = GridControlParam.Path(keyPath),
-            onBack = navigation::popOr
+            onBack = { navigation.popOr(onBack::invoke) }
         )
     }
 }

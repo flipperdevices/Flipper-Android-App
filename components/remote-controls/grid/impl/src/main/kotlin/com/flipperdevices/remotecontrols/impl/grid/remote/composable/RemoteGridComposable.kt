@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.composable
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -36,16 +37,18 @@ fun RemoteGridComposable(
             SharedTopBar(
                 onBackClick = remoteGridComponent::pop,
                 actions = {
-                    Row(modifier = Modifier) {
-                        Text(
-                            text = "Save",
-                            color = LocalPalletV2.current.text.title.blackOnColor,
-                            style = LocalTypography.current.titleEB18,
-                            textAlign = TextAlign.Center,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.clickableRipple(onClick = remoteGridComponent::save)
-                        )
+                    AnimatedVisibility(model.isFilesSaved) {
+                        Row(modifier = Modifier) {
+                            Text(
+                                text = "Save",
+                                color = LocalPalletV2.current.text.title.blackOnColor,
+                                style = LocalTypography.current.titleEB18,
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.clickableRipple(onClick = remoteGridComponent::save)
+                            )
+                        }
                     }
                 }
             )
