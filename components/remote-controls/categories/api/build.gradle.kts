@@ -5,8 +5,6 @@ plugins {
 android.namespace = "com.flipperdevices.remotecontrols.categories.api"
 
 dependencies {
-    implementation(projects.components.deeplink.api)
-
     implementation(projects.components.core.ui.decompose)
 
     implementation(libs.compose.ui)

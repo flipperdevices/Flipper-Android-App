@@ -16,7 +16,7 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     /**
      * Dispatch key from temporal file which contains only one key
      */
-    fun dispatch(config: EmulateConfig)
+    fun dispatch(config: EmulateConfig, identifier: IfrKeyIdentifier)
 
     fun reset()
 
@@ -32,7 +32,7 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     sealed interface State {
         data object Pending : State
         data object FlipperIsBusy : State
-        data object Emulating : State
+        data class Emulating(val ifrKeyIdentifier: IfrKeyIdentifier) : State
         data object Error : State
     }
 }

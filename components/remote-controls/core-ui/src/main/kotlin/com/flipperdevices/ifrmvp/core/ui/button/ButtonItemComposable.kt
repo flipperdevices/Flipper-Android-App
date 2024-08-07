@@ -15,9 +15,11 @@ import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.UnknownButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
 
+@Suppress("LongMethod")
 @Composable
 fun ButtonItemComposable(
     buttonData: ButtonData,
+    emulatedKeyIdentifier: IfrKeyIdentifier?,
     onKeyDataClick: (IfrKeyIdentifier) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -26,6 +28,7 @@ fun ButtonItemComposable(
             SquareIconButton(
                 iconType = buttonData.iconId,
                 modifier = modifier,
+                isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
             )
         }
@@ -35,6 +38,8 @@ fun ButtonItemComposable(
                 onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
                 onPrevClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
+                isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier
             )
         }
 
@@ -43,6 +48,8 @@ fun ButtonItemComposable(
                 onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
                 onReduceClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
                 modifier = modifier,
+                isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier
             )
         }
 
@@ -62,6 +69,7 @@ fun ButtonItemComposable(
                 onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
                 text = buttonData.text,
                 background = LocalPalletV2.current.surface.menu.body.dufault,
+                isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 modifier = modifier,
             )
         }
@@ -71,6 +79,7 @@ fun ButtonItemComposable(
                 base64Icon = buttonData.pngBase64,
                 onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
                 modifier = modifier,
+                isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
             )
         }
 

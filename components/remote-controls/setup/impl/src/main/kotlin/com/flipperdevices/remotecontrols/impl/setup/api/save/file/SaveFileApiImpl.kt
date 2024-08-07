@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.setup.api.save.file
 
-import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
@@ -9,7 +8,6 @@ import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest
@@ -18,23 +16,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
+import java.io.ByteArrayInputStream
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, SaveFileApi::class)
-class SaveFileApiImpl @Inject constructor(
-    private val context: Context
-) : LogTagProvider, SaveFileApi {
+class SaveFileApiImpl @Inject constructor() : LogTagProvider, SaveFileApi {
     override val TAG: String = "SaveFileApi"
     override fun save(
         requestApi: FlipperRequestApi,
-        deeplinkContent: DeeplinkContent,
+        textContent: String,
         absolutePath: String
     ): Flow<SaveFileApi.Status> = channelFlow {
-        val totalSize = deeplinkContent.length() ?: 0
+        val byteArray = textContent.toByteArray()
+        val totalSize = byteArray.size.toLong()
         var progressInternal = 0L
-        val contentResolver = context.contentResolver
-        deeplinkContent.openStream(contentResolver).use { fileStream ->
-            val stream = fileStream ?: return@use
+        info { "#save Saving content: size: $totalSize $textContent" }
+        ByteArrayInputStream(byteArray).use { stream ->
             val commandFlow = streamToCommandFlow(
                 stream,
                 totalSize,

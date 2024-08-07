@@ -40,6 +40,8 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation(libs.decompose)
 
     implementation(libs.bundles.decompose)

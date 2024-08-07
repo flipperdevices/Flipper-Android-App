@@ -37,4 +37,10 @@ sealed class RootScreenConfig {
 
     @Serializable
     data object RemoteControls : RootScreenConfig()
+
+    @Serializable
+    sealed class RemoteControlGrid : RootScreenConfig() {
+        data class Id(val ifrFileId: Long) : RemoteControlGrid()
+        data class Path(val flipperKeyPath: FlipperKeyPath) : RemoteControlGrid()
+    }
 }

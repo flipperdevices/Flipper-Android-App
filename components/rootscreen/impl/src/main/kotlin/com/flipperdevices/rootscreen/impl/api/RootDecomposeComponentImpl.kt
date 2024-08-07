@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
@@ -22,6 +23,7 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
@@ -57,7 +59,8 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
-    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory
+    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
+    private val gridScreenDecomposeComponentFactory: GridScreenDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -71,6 +74,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     )
     private val deeplinkHandler = RootDeeplinkHandler(navigation, stack, firstPairApi)
 
+    @Suppress("LongMethod")
     private fun child(
         config: RootScreenConfig,
         componentContext: ComponentContext
@@ -129,9 +133,22 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             updateRequest = config.updateRequest,
             onBack = this::internalOnBack
         )
-        RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
+
+        is RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
             componentContext = componentContext,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = this::internalOnBack
+        )
+
+        is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(
+            componentContext = componentContext,
+            param = GridScreenDecomposeComponent.Param.Id(config.ifrFileId),
+            onPopClick = navigation::pop
+        )
+
+        is RootScreenConfig.RemoteControlGrid.Path -> gridScreenDecomposeComponentFactory(
+            componentContext = componentContext,
+            param = GridScreenDecomposeComponent.Param.Path(config.flipperKeyPath),
+            onPopClick = navigation::pop
         )
     }
 

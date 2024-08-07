@@ -8,7 +8,7 @@ abstract class CategoriesScreenDecomposeComponent(
 ) : ScreenDecomposeComponent(componentContext) {
 
     fun interface Factory {
-        fun invoke(
+        operator fun invoke(
             componentContext: ComponentContext,
             onBackClick: () -> Unit,
             onCategoryClick: (categoryId: Long) -> Unit

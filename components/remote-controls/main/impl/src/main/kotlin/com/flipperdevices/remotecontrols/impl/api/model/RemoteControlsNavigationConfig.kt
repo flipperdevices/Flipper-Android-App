@@ -14,7 +14,4 @@ sealed interface RemoteControlsNavigationConfig {
 
     @Serializable
     class Setup(val categoryId: Long, val brandId: Long) : RemoteControlsNavigationConfig
-
-    @Serializable
-    class Grid(val ifrFileId: Long) : RemoteControlsNavigationConfig
 }

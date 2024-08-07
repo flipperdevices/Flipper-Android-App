@@ -19,6 +19,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.core.ui.button.ButtonItemComposable
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
@@ -27,11 +28,13 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 private fun SignalResponseButton(
     data: ButtonData,
     onClick: () -> Unit,
+    emulatedKeyIdentifier: IfrKeyIdentifier?
 ) {
     ButtonItemComposable(
         buttonData = data,
         onKeyDataClick = { onClick.invoke() },
         modifier = Modifier.size(64.dp),
+        emulatedKeyIdentifier = emulatedKeyIdentifier,
     )
 }
 
@@ -39,6 +42,7 @@ private fun SignalResponseButton(
 fun ButtonContent(
     onClick: () -> Unit,
     data: ButtonData,
+    emulatedKeyIdentifier: IfrKeyIdentifier?,
     categoryName: String,
     modifier: Modifier = Modifier,
 ) {
@@ -50,6 +54,7 @@ fun ButtonContent(
         SignalResponseButton(
             data = data,
             onClick = onClick,
+            emulatedKeyIdentifier = emulatedKeyIdentifier,
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
@@ -74,17 +79,20 @@ private fun ComposableConfirmContentDarkPreview() {
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY",
-                data = TextButtonData(text = "Hello")
+                data = TextButtonData(text = "Hello"),
+                emulatedKeyIdentifier = null
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
-                data = TextButtonData(text = "TV/AV")
+                data = TextButtonData(text = "TV/AV"),
+                emulatedKeyIdentifier = null
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
-                data = TextButtonData(text = "Hello world")
+                data = TextButtonData(text = "Hello world"),
+                emulatedKeyIdentifier = null
             )
         }
     }

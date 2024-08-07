@@ -8,11 +8,11 @@ abstract class SetupScreenDecomposeComponent(
 ) : ScreenDecomposeComponent(componentContext) {
 
     interface Factory {
-        fun invoke(
+        operator fun invoke(
             componentContext: ComponentContext,
             param: Param,
             onBack: () -> Unit,
-            onIfrFileFound: (ifrFileId: Long) -> Unit
+            onIrFileReady: (id: Long) -> Unit
         ): SetupScreenDecomposeComponent
     }
 

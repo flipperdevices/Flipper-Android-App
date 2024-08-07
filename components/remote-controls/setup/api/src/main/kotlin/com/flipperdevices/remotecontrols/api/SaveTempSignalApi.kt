@@ -1,14 +1,17 @@
 package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
-import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import kotlinx.coroutines.flow.StateFlow
 
 interface SaveTempSignalApi : InstanceKeeper.Instance {
 
     val state: StateFlow<State>
 
-    fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String)
+    fun saveFile(
+        textContent: String,
+        nameWithExtension: String,
+        extFolderPath: String
+    )
 
     sealed interface State {
         data object Pending : State

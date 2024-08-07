@@ -64,8 +64,8 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 @Composable
 fun Base64ImageButton(
     base64Icon: String,
+    isEmulating: Boolean,
     modifier: Modifier = Modifier,
-    isEmulating: Boolean = false,
     onClick: () -> Unit
 ) {
     val imageBitmap = rememberImageBitmap(base64Icon)
