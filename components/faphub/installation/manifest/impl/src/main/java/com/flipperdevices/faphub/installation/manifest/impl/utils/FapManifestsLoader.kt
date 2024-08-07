@@ -161,6 +161,8 @@ class FapManifestsLoader @AssistedInject constructor(
             }
         info { "Parsed ${fapItemsList.size} manifests from flipper" }
 
+        cacheLoader.invalidate(fapItemsList)
+
         manifestLoaderState.emit(
             FapManifestLoaderState.Loaded(
                 items = fapItemsList.toPersistentList(),
