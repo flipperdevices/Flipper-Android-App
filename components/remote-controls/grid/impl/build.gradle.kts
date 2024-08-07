@@ -18,9 +18,11 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.rpc.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.infrared.utils)
 
     implementation(projects.components.remoteControls.apiBackend)
@@ -28,6 +30,7 @@ dependencies {
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.grid.api)
     implementation(projects.components.remoteControls.setup.api)
+    implementation(projects.components.keyedit.api)
 
     implementation(projects.components.rootscreen.api)
 

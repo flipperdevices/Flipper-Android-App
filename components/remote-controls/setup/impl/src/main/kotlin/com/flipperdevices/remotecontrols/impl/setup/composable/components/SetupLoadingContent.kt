@@ -32,7 +32,7 @@ internal fun SetupLoadingContent(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .height(16.dp)
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth(fraction = 0.7f)
                 .placeholderConnecting()
         )
     }

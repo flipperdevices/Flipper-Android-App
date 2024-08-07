@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
@@ -55,7 +54,7 @@ fun DoubleButton(
             isEmulating = isEmulating,
             isSyncing = false
         )
-        SyncingBox(isSyncing=isSyncing)
+        SyncingBox(isSyncing = isSyncing)
     }
 }
 

@@ -23,8 +23,9 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.GridCompositeDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.model.GridControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -60,7 +61,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
     private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
-    private val gridScreenDecomposeComponentFactory: GridScreenDecomposeComponent.Factory
+    private val gridScreenDecomposeComponentFactory: GridCompositeDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -141,14 +142,14 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
 
         is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(
             componentContext = componentContext,
-            param = GridScreenDecomposeComponent.Param.Id(config.ifrFileId),
-            onPopClick = navigation::pop
+            param = GridControlParam.Id(config.ifrFileId),
+            onBack = navigation::pop
         )
 
         is RootScreenConfig.RemoteControlGrid.Path -> gridScreenDecomposeComponentFactory(
             componentContext = componentContext,
-            param = GridScreenDecomposeComponent.Param.Path(config.flipperKeyPath),
-            onPopClick = navigation::pop
+            param = GridControlParam.Path(config.flipperKeyPath),
+            onBack = navigation::pop
         )
     }
 

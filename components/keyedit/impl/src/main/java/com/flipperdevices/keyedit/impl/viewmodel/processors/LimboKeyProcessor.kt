@@ -1,6 +1,7 @@
 package com.flipperdevices.keyedit.impl.viewmodel.processors
 
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
+import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
@@ -20,6 +21,7 @@ class LimboKeyProcessor @Inject constructor(
     private val parser: KeyParser,
     private val utilsKeyApi: UtilsKeyApi,
     private val simpleKeyApi: SimpleKeyApi,
+    private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     private val inAppNotificationStorage: InAppNotificationStorage
 ) : EditableKeyProcessor<EditableKey.Limb> {
@@ -48,7 +50,7 @@ class LimboKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Limb,
         editState: KeyEditState.Editing,
-        onEndAction: () -> Unit
+        onEndAction: (FlipperKey?) -> Unit
     ) {
         val newPathUnfree = if (editState.name != null) {
             editableKey.notSavedFlipperKey.mainFile.path.copyWithChangedName(editState.name)
@@ -62,8 +64,16 @@ class LimboKeyProcessor @Inject constructor(
         val newKey = editableKey.notSavedFlipperKey.toFlipperKey(newPath).copy(
             notes = editState.notes
         )
-
         simpleKeyApi.insertKey(newKey)
+
+        val insertedKey = simpleKeyApi.getKey(newKey.getKeyPath())
+        if (insertedKey != null) {
+            updateKeyApi.updateKey(
+                oldKey = insertedKey,
+                insertedKey.copy(additionalFiles = newKey.additionalFiles)
+            )
+        }
+
         synchronizationApi.startSynchronization(force = true)
         inAppNotificationStorage.addNotification(
             InAppNotification.Successful(
@@ -71,7 +81,7 @@ class LimboKeyProcessor @Inject constructor(
                 descId = R.string.saved_key_desc
             )
         )
-        onEndAction()
+        onEndAction(newKey)
     }
 }
 

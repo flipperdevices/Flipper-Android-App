@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
@@ -114,6 +113,6 @@ fun NavigationButton(
                 .clickable(onClick = onDownClick)
                 .align(Alignment.BottomCenter)
         )
-        SyncingBox(isSyncing=isSyncing)
+        SyncingBox(isSyncing = isSyncing)
     }
 }

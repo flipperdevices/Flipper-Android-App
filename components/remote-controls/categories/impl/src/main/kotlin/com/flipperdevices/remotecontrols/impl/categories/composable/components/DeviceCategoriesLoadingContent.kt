@@ -26,7 +26,7 @@ fun DeviceCategoriesLoadingContent(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(8) {
+        items(count = 8) {
             Card(
                 modifier = Modifier.placeholderConnecting(),
                 backgroundColor = LocalPalletV2.current.surface.contentCard.body.default,

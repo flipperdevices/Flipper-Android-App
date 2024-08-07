@@ -3,4 +3,5 @@
     <!--    Settings-->
     <string name="error_title">Error</string>
     <string name="error_action">Reload</string>
+    <string name="empty_page">Page is empty!</string>
 </resources>

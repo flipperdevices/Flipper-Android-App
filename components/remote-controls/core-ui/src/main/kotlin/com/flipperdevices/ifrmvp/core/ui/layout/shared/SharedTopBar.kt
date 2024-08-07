@@ -3,6 +3,7 @@ package com.flipperdevices.ifrmvp.core.ui.layout.shared
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,6 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import androidx.compose.foundation.layout.BoxScope
 
 @Composable
 fun SharedTopBar(
@@ -139,7 +139,6 @@ private fun SharedTopBarPreview() {
                             contentDescription = null,
                             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
                         )
-
                     }
                 }
             )

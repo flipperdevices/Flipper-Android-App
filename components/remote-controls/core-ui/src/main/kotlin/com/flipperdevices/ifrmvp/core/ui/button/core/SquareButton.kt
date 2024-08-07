@@ -8,21 +8,15 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
-import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
-import io.github.fornewid.placeholder.foundation.placeholder
-import io.github.fornewid.placeholder.foundation.shimmer
 
 @Composable
 fun SquareButton(

@@ -51,7 +51,6 @@ private fun LazyListScope.itemsPlaceholder(count: Int) {
     }
 }
 
-
 @Composable
 fun BrandsLoadingComposable(modifier: Modifier = Modifier) {
     Row(
@@ -65,14 +64,14 @@ fun BrandsLoadingComposable(modifier: Modifier = Modifier) {
                 .weight(1f)
                 .padding(end = 14.dp)
         ) {
-            itemsPlaceholder(4)
-            itemsPlaceholder(8)
+            itemsPlaceholder(count = 4)
+            itemsPlaceholder(count = 8)
         }
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxHeight()
         ) {
-            repeat(24) {
+            repeat(times = 24) {
                 Box(
                     modifier = Modifier
                         .padding(vertical = 4.dp)
@@ -82,8 +81,6 @@ fun BrandsLoadingComposable(modifier: Modifier = Modifier) {
                 )
             }
         }
-
-
     }
 }
 

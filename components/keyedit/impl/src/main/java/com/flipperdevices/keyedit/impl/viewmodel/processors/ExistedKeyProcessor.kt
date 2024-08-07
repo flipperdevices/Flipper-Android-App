@@ -3,6 +3,7 @@ package com.flipperdevices.keyedit.impl.viewmodel.processors
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
@@ -38,25 +39,30 @@ class ExistedKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Existed,
         editState: KeyEditState.Editing,
-        onEndAction: () -> Unit
+        onEndAction: (FlipperKey?) -> Unit
     ) {
+        val oldKey = simpleKeyApi.getKey(editableKey.flipperKeyPath) ?: kotlin.run {
+            onEndAction.invoke(null)
+            return
+        }
+        val extension = editableKey.flipperKeyPath.path
+            .nameWithExtension
+            .substringAfterLast('.')
+        val newFlipperKey = oldKey.copy(
+            mainFile = oldKey.mainFile.copy(
+                path = FlipperFilePath(
+                    editableKey.flipperKeyPath.path.folder,
+                    "${editState.name}.$extension"
+                )
+            ),
+            notes = editState.notes
+        )
+
         try {
-            val oldKey = simpleKeyApi.getKey(editableKey.flipperKeyPath) ?: return
-            val extension =
-                editableKey.flipperKeyPath.path.nameWithExtension.substringAfterLast('.')
-            val newFlipperKey = oldKey.copy(
-                mainFile = oldKey.mainFile.copy(
-                    path = FlipperFilePath(
-                        editableKey.flipperKeyPath.path.folder,
-                        "${editState.name}.$extension"
-                    )
-                ),
-                notes = editState.notes
-            )
             updateKeyApi.updateKey(oldKey, newFlipperKey)
             synchronizationApi.startSynchronization(force = true)
         } finally {
-            onEndAction()
+            onEndAction(newFlipperKey)
         }
     }
 }
