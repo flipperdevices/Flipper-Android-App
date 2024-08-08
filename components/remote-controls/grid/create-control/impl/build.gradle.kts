@@ -15,37 +15,23 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.rpc.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.infrared.utils)
 
-    implementation(projects.components.remoteControls.apiBackend)
-    implementation(projects.components.remoteControls.coreModel)
-    implementation(projects.components.remoteControls.coreUi)
-    implementation(projects.components.remoteControls.grid.main.api)
-    implementation(projects.components.remoteControls.setup.api)
     implementation(projects.components.remoteControls.grid.createControl.api)
     implementation(projects.components.keyedit.api)
-
-    implementation(projects.components.rootscreen.api)
 
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.material.icons.core)
-    implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.immutable.collections)
-
-    implementation(libs.kotlin.serialization.json)
 
     implementation(libs.decompose)
 
