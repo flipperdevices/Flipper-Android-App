@@ -3,7 +3,7 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.remotecontrols.device.select.impl"
+android.namespace = "com.flipperdevices.remotecontrols.grid.main.impl"
 
 dependencies {
     implementation(projects.components.core.di)
@@ -15,22 +15,27 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.rpc.api)
     implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.api)
-    implementation(projects.components.keyemulate.api)
+    implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.infrared.utils)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
-    implementation(projects.components.remoteControls.main.api)
-    implementation(projects.components.remoteControls.brands.api)
-    implementation(projects.components.remoteControls.categories.api)
     implementation(projects.components.remoteControls.grid.main.api)
+    implementation(projects.components.remoteControls.grid.createControl.api)
+    implementation(projects.components.remoteControls.grid.remote.api)
+    implementation(projects.components.remoteControls.grid.saved.api)
     implementation(projects.components.remoteControls.setup.api)
+    implementation(projects.components.keyedit.api)
+
+    implementation(projects.components.rootscreen.api)
 
     // Compose
     implementation(libs.compose.ui)
@@ -40,13 +45,11 @@ dependencies {
     implementation(libs.compose.material.icons.core)
     implementation(libs.compose.material.icons.extended)
 
+    implementation(libs.kotlin.immutable.collections)
+
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.ktor.client)
 
     implementation(libs.decompose)
-    implementation(libs.kotlin.coroutines)
-    implementation(libs.essenty.lifecycle)
-    implementation(libs.essenty.lifecycle.coroutines)
 
     implementation(libs.bundles.decompose)
 }
