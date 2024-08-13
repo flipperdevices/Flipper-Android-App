@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.UI_INFRARED_EXTENSION
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

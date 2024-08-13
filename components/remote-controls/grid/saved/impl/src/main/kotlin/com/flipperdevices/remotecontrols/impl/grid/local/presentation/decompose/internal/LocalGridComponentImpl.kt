@@ -2,7 +2,6 @@ package com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier

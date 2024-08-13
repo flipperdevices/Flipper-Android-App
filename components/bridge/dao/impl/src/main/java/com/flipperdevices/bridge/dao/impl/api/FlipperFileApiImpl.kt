@@ -36,7 +36,7 @@ class FlipperFileApiImpl @Inject constructor(
     }
 
     override suspend fun insert(file: FlipperFile) {
-        val extension = when(file.path.fileType) {
+        val extension = when (file.path.fileType) {
             FlipperFileType.SHADOW_NFC -> FlipperKeyType.NFC.extension
             FlipperFileType.UI_INFRARED -> FlipperKeyType.INFRARED.extension
             else -> {
@@ -45,7 +45,7 @@ class FlipperFileApiImpl @Inject constructor(
         }
         val pathToKeyFile = FlipperFilePath(
             folder = file.path.folder,
-            nameWithExtension = "${file.path.nameWithoutExtension}.${extension}"
+            nameWithExtension = "${file.path.nameWithoutExtension}.$extension"
         )
         val foundedKey = simpleKeyDao.getByPath(pathToKeyFile.pathToKey, deleted = false)
             ?: error("Can't find nfc or infrared key for ${file.path}")

@@ -44,7 +44,6 @@ class SaveRemoteControlViewModel @Inject constructor(
 
     private fun FlipperFilePath.toNonTempPath() = copy(folder = folder.replace("/temp", ""))
 
-
     private suspend fun delete(path: FlipperFilePath) {
         val serviceApi = flipperServiceProvider.getServiceApi()
         val moveResponse = serviceApi.requestApi.request(
@@ -76,7 +75,6 @@ class SaveRemoteControlViewModel @Inject constructor(
             error("Could not move file ${oldPath.getPathOnFlipper()} status: ${moveResponse.commandStatus}")
         }
     }
-
 
     private suspend fun awaitSynchronization() {
         if (!synchronizationApi.isSynchronizationRunning()) {

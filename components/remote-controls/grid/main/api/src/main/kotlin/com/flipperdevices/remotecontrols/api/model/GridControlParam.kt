@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.api.model
 
-import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.UI_INFRARED_EXTENSION
