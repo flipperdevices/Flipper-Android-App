@@ -22,8 +22,6 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 fun SquareButton(
     onClick: (() -> Unit)?,
     background: Color,
-    isEmulating: Boolean,
-    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
@@ -36,7 +34,7 @@ fun SquareButton(
                 if (onClick != null) {
                     Modifier.clickable(
                         onClick = onClick,
-                        enabled = !isEmulating
+                        enabled = !LocalButtonPlaceholder.current.isEmulating
                     )
                 } else {
                     Modifier
@@ -45,8 +43,8 @@ fun SquareButton(
         contentAlignment = Alignment.Center,
         content = {
             content.invoke(this)
-            EmulatingBox(isEmulating = isEmulating)
-            SyncingBox(isSyncing = isSyncing)
+            EmulatingBox(isEmulating = LocalButtonPlaceholder.current.isEmulating)
+            SyncingBox(isSyncing = LocalButtonPlaceholder.current.isSyncing)
         }
     )
 }

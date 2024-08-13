@@ -3,6 +3,7 @@ package com.flipperdevices.ifrmvp.core.ui.button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
@@ -26,75 +27,111 @@ fun ButtonItemComposable(
 ) {
     when (buttonData) {
         is IconButtonData -> {
-            SquareIconButton(
-                iconType = buttonData.iconId,
-                modifier = modifier,
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
-                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                isSyncing = isSyncing
+                content = {
+                    SquareIconButton(
+                        iconType = buttonData.iconId,
+                        modifier = modifier,
+                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                    )
+                }
             )
         }
 
         is ChannelButtonData -> {
-            ChannelButton(
-                onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
-                onPrevClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
-                modifier = modifier,
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
                     buttonData.addKeyIdentifier == emulatedKeyIdentifier,
-                isSyncing = isSyncing
+                content = {
+                    ChannelButton(
+                        onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
+                        onPrevClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
             )
         }
 
         is VolumeButtonData -> {
-            VolumeButton(
-                onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
-                onReduceClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
-                modifier = modifier,
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
                     buttonData.addKeyIdentifier == emulatedKeyIdentifier,
-                isSyncing = isSyncing
+                content = {
+                    VolumeButton(
+                        onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
+                        onReduceClick = { onKeyDataClick.invoke(buttonData.reduceKeyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
             )
         }
 
         is NavigationButtonData -> {
-            NavigationButton(
-                onLeftClick = { onKeyDataClick.invoke(buttonData.leftKeyIdentifier) },
-                onRightClick = { onKeyDataClick.invoke(buttonData.rightKeyIdentifier) },
-                onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
-                onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
-                onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
-                modifier = modifier,
-                isSyncing = isSyncing
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
+                isEmulating = listOf(
+                    buttonData.okKeyIdentifier,
+                    buttonData.upKeyIdentifier,
+                    buttonData.rightKeyIdentifier,
+                    buttonData.downKeyIdentifier,
+                    buttonData.leftKeyIdentifier
+                ).contains(emulatedKeyIdentifier),
+                content = {
+                    NavigationButton(
+                        onLeftClick = { onKeyDataClick.invoke(buttonData.leftKeyIdentifier) },
+                        onRightClick = { onKeyDataClick.invoke(buttonData.rightKeyIdentifier) },
+                        onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
+                        onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
+                        onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
             )
         }
 
         is TextButtonData -> {
-            TextButton(
-                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                text = buttonData.text,
-                background = LocalPalletV2.current.surface.menu.body.dufault,
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
-                modifier = modifier,
-                isSyncing = isSyncing
+                content = {
+                    TextButton(
+                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                        text = buttonData.text,
+                        background = LocalPalletV2.current.surface.menu.body.dufault,
+                        modifier = modifier,
+                    )
+                }
             )
         }
 
         is Base64ImageButtonData -> {
-            Base64ImageButton(
-                base64Icon = buttonData.pngBase64,
-                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                modifier = modifier,
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
-                isSyncing = isSyncing
+                content = {
+                    Base64ImageButton(
+                        base64Icon = buttonData.pngBase64,
+                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
             )
         }
 
         UnknownButtonData -> {
-            UnknownButton(
-                modifier = modifier,
-                onClick = {},
-                isSyncing = isSyncing
+            ButtonPlaceholderComposition(
+                isSyncing = isSyncing,
+                isEmulating = false,
+                content = {
+                    UnknownButton(
+                        modifier = modifier,
+                        onClick = {},
+                    )
+                }
             )
         }
     }

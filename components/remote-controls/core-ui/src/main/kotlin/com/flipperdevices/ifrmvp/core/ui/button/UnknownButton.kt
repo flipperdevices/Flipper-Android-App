@@ -11,7 +11,6 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 
 @Composable
 fun UnknownButton(
-    isSyncing: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
@@ -21,6 +20,5 @@ fun UnknownButton(
         painter = rememberVectorPainter(Icons.Default.Error),
         iconTint = MaterialTheme.colors.onPrimary,
         modifier = modifier,
-        isSyncing = isSyncing
     )
 }
