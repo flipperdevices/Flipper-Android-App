@@ -38,9 +38,7 @@ class LocalGridViewModel @AssistedInject constructor(
 
     private val keyFlow = updaterKeyApi
         .subscribeOnUpdatePath(param.flipperKeyPath)
-        .onEach { info { "#subscribeOnUpdatePath $it" } }
         .flatMapLatest(simpleKeyApi::getKeyAsFlow)
-        .onEach { info { "#getKeyAsFlow $it" } }
 
     private val keyPathFlow = keyFlow.map {
         it?.getKeyPath()

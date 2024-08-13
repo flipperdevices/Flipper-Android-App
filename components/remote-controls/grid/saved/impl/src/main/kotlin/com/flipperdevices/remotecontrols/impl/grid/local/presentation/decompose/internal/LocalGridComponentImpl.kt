@@ -62,13 +62,11 @@ class LocalGridComponentImpl @AssistedInject constructor(
         val gridLoadedState =
             (localGridViewModel.state.value as? LocalGridViewModel.State.Loaded) ?: return
         val remotes = gridLoadedState.remotes
+
         dispatchSignalApi.dispatch(
             identifier = identifier,
             remotes = remotes,
-            ffPath = FlipperFilePath(
-                folder = param.extFolderPath,
-                nameWithExtension = param.nameWithExtension
-            )
+            ffPath = gridLoadedState.keyPath.path
         )
     }
 
