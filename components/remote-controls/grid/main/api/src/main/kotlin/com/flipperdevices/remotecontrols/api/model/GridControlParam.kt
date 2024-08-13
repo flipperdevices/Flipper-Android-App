@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.api.model
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.api.model.UI_INFRARED_EXTENSION
 
 sealed interface GridControlParam {
     data class Id(val irFileId: Long) : GridControlParam
@@ -17,12 +18,6 @@ sealed interface GridControlParam {
             is Path -> "/${flipperKeyPath.path.folder}"
         }
 
-    val extFolderPath: String
-        get() = when (this) {
-            is Id -> "${FlipperKeyType.INFRARED.flipperDir}/"
-            is Path -> "/${flipperKeyPath.path.folder}"
-        }
-
     val nameWithExtension: String
         get() = when (this) {
             is Id -> "$irFileId.ir"
@@ -31,23 +26,12 @@ sealed interface GridControlParam {
 
     val uiFileNameWithExtension: String
         get() = when (this) {
-            is Id -> "$irFileId.ui.json"
+            is Id -> "$irFileId.$UI_INFRARED_EXTENSION"
             is Path ->
                 flipperKeyPath.path.nameWithExtension
                     .replace(".ir", "")
-                    .plus(".ui.json")
+                    .plus(".$UI_INFRARED_EXTENSION")
         }
-
-    val flipperTempFilePath: FlipperFilePath
-        get() = FlipperFilePath(
-            folder = extTempFolderPath,
-            nameWithExtension = nameWithExtension
-        )
-    val flipperFilePath: FlipperFilePath
-        get() = FlipperFilePath(
-            folder = extFolderPath,
-            nameWithExtension = nameWithExtension
-        )
 
     val irFileIdOrNull: Long?
         get() = when (this) {

@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.remoteControls.grid.createControl.api)
     implementation(projects.components.keyedit.api)

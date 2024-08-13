@@ -12,7 +12,6 @@ import com.flipperdevices.remotecontrols.impl.createcontrol.composable.CreateCon
 import com.flipperdevices.remotecontrols.impl.createcontrol.viewmodel.SaveRemoteControlViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.gulya.anvil.assisted.ContributesAssistedFactory
@@ -30,18 +29,22 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        val saveRemoteControlViewModel = viewModelWithFactory(key = null) {
-            saveRemoteControlViewModelFactory.get()
-        }
+        val saveRemoteControlViewModel = viewModelWithFactory(
+            key = null,
+            factory = { saveRemoteControlViewModelFactory.get() }
+        )
         LaunchedEffect(saveRemoteControlViewModel) {
             saveRemoteControlViewModel.state
-                .filterIsInstance<SaveRemoteControlViewModel.State.Finished>()
-                .onEach { onFinished.invoke(it.keyPath) }
-                .launchIn(this)
-            saveRemoteControlViewModel.state
-                .filterIsInstance<SaveRemoteControlViewModel.State.KeyNotFound>()
-                .onEach { onFailed.invoke() }
-                .launchIn(this)
+                .onEach {
+                    when (it) {
+                        is SaveRemoteControlViewModel.State.Finished -> onFinished.invoke(it.keyPath)
+                        SaveRemoteControlViewModel.State.CouldNotModifyFiles,
+                        SaveRemoteControlViewModel.State.KeyNotFound -> onFailed.invoke()
+
+                        SaveRemoteControlViewModel.State.Pending,
+                        SaveRemoteControlViewModel.State.Updating -> Unit
+                    }
+                }.launchIn(this)
             saveRemoteControlViewModel.moveAndUpdate(
                 savedKeyPath = savedKey,
                 originalKey = originalKey,
