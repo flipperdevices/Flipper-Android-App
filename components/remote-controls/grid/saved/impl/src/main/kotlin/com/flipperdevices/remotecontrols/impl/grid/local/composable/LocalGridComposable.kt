@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -24,6 +25,7 @@ import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.
 @Composable
 fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
+    onError: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -31,6 +33,9 @@ fun LocalGridComposable(
     val model by remember(localGridComponent, coroutineScope) {
         localGridComponent.model(coroutineScope)
     }.collectAsState()
+    LaunchedEffect(model) {
+        if (model is LocalGridComponent.Model.Error) onError.invoke()
+    }
     Scaffold(
         modifier = modifier,
         topBar = {

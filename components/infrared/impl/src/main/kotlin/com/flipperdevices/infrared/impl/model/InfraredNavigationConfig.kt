@@ -6,9 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class InfraredNavigationConfig {
     @Serializable
-    data class TypeResolver(val keyPath: FlipperKeyPath) : InfraredNavigationConfig()
-
-    @Serializable
     data class View(val keyPath: FlipperKeyPath) : InfraredNavigationConfig()
 
     @Serializable

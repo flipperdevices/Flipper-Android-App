@@ -28,6 +28,7 @@ class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: GridControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onUiNotFound: () -> Unit,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
     private val remoteGridComponentFactory: RemoteGridScreenDecomposeComponent.Factory,
     private val localGridComponentFactory: LocalGridScreenDecomposeComponent.Factory,
@@ -72,6 +73,7 @@ class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             param = GridControlParam.Path(config.keyPath),
             onBack = { navigation.popOr(onBack::invoke) },
+            onUiNotFound = onUiNotFound
         )
 
         is GridNavigationConfig.ServerControl -> remoteGridComponentFactory.invoke(

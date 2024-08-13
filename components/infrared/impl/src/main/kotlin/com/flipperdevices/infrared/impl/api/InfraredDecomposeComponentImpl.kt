@@ -28,7 +28,6 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val infraredViewFactory: InfraredViewDecomposeComponentImpl.Factory,
     private val infraredEditorFactory: InfraredEditorDecomposeComponent.Factory,
-    private val infraredTypeResolverFactory: InfraredTypeResolveDecomposeComponentImpl.Factory,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
     private val gridCompositeFactory: GridCompositeDecomposeComponent.Factory
 ) : InfraredDecomposeComponent<InfraredNavigationConfig>(), ComponentContext by componentContext {
@@ -37,7 +36,7 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
         childStack(
             source = navigation,
             serializer = InfraredNavigationConfig.serializer(),
-            initialConfiguration = InfraredNavigationConfig.TypeResolver(keyPath),
+            initialConfiguration = InfraredNavigationConfig.RemoteControl(keyPath),
             handleBackButton = true,
             childFactory = ::child,
         )
@@ -66,26 +65,11 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
             title = null
         )
 
-        is InfraredNavigationConfig.TypeResolver -> infraredTypeResolverFactory.invoke(
-            componentContext = componentContext,
-            keyPath = config.keyPath,
-            onCallback = {
-                when (it) {
-                    InfraredTypeResolveDecomposeComponentImpl.Callback.Default -> {
-                        navigation.replaceCurrent(InfraredNavigationConfig.View(keyPath))
-                    }
-
-                    InfraredTypeResolveDecomposeComponentImpl.Callback.RemoteControl -> {
-                        navigation.replaceCurrent(InfraredNavigationConfig.RemoteControl(keyPath))
-                    }
-                }
-            }
-        )
-
         is InfraredNavigationConfig.RemoteControl -> gridCompositeFactory.invoke(
             componentContext = componentContext,
             param = GridControlParam.Path(keyPath),
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            onUiNotFound = { navigation.replaceCurrent(InfraredNavigationConfig.View(config.keyPath)) }
         )
     }
 }

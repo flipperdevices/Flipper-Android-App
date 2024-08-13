@@ -13,6 +13,7 @@ abstract class LocalGridScreenDecomposeComponent(
             componentContext: ComponentContext,
             param: GridControlParam.Path,
             onBack: DecomposeOnBackParameter,
+            onUiNotFound: () -> Unit
         ): LocalGridScreenDecomposeComponent
     }
 }

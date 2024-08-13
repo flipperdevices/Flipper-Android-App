@@ -6,12 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.GridPagesContent
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
-import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.util.contentKey
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
@@ -31,11 +28,8 @@ internal fun LocalGridComposableContent(
         contentKey = { model.contentKey }
     ) { animatedModel ->
         when (animatedModel) {
-            LocalGridComponent.Model.Error -> {
-                ErrorComposable(
-                    desc = stringResource(R.string.empty_page),
-                )
-            }
+            // We leave screen on error
+            LocalGridComponent.Model.Error -> Unit
 
             is LocalGridComponent.Model.Loaded -> {
                 if (animatedModel.isFlipperBusy) {

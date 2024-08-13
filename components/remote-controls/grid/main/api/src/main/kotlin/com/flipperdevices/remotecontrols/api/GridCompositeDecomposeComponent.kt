@@ -10,7 +10,8 @@ abstract class GridCompositeDecomposeComponent<C : Any> : CompositeDecomposeComp
         operator fun invoke(
             componentContext: ComponentContext,
             param: GridControlParam,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
+            onUiNotFound: () -> Unit
         ): GridCompositeDecomposeComponent<*>
     }
 }

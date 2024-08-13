@@ -18,6 +18,7 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: GridControlParam.Path,
     @Assisted onBack: DecomposeOnBackParameter,
+    @Assisted private val onUiNotFound: () -> Unit,
     localGridComponentFactory: LocalGridComponent.Factory
 ) : LocalGridScreenDecomposeComponent(componentContext) {
     private val localGridComponent = localGridComponentFactory.invoke(
@@ -28,6 +29,9 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        LocalGridComposable(localGridComponent)
+        LocalGridComposable(
+            localGridComponent = localGridComponent,
+            onError = onUiNotFound
+        )
     }
 }
