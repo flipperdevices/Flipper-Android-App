@@ -23,7 +23,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix scroll on save edit screen
 - [FIX] Update Infrared backend integration
 - [FIX] Ignore faps manifest with point in start
-- [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
+- [FIX] Use kotlin 2.0.20-RC2 for bypass Options screen crash
 - [FIX] Relocate remote-controls button to infrared remotes screen
 - [FIX] Fap manifest caching
 - [CI] Fix merge-queue files diff
