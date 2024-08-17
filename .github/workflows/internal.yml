@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/call-validate-gradle-wrapper.yml
   invalidate_gradle_cache:
     name: Update gradle cache
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -64,7 +64,7 @@ jobs:
       BUILD_VARIANT_NAME: "internal"
   build_internal_release:
     name: Build Internal AAB and APK
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ create_internal_baseline, build_number ]
     strategy:
       matrix:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@master
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
         name: "Download ${{ needs.create_internal_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
         with:
           name: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_ID }}
@@ -136,7 +136,7 @@ jobs:
           path: ${{ steps.artifacts_copy.outputs.path }}
   build_internal_release_gms_wearos:
     name: Build Internal AAB and APK WearOS
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: build_number
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
