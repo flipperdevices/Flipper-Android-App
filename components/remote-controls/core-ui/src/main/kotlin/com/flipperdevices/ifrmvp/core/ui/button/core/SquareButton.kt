@@ -54,8 +54,8 @@ internal fun EmulatingBox(
     isEmulating: Boolean,
     modifier: Modifier = Modifier
 ) {
-    Crossfade(isEmulating) { isEmulating ->
-        if (isEmulating) {
+    Crossfade(isEmulating) { isEmulatingLocal ->
+        if (isEmulatingLocal) {
             Box(
                 modifier
                     .fillMaxSize()
