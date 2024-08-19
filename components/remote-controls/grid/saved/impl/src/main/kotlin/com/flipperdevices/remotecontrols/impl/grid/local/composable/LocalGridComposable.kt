@@ -25,6 +25,7 @@ import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.L
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 
 @Composable
+@Suppress("LongMethod")
 fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
     onCallback: (LocalGridScreenDecomposeComponent.Callback) -> Unit,
