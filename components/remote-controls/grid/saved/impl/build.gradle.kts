@@ -29,6 +29,8 @@ dependencies {
 
     implementation(projects.components.rootscreen.api)
 
+    implementation(projects.components.keyscreen.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

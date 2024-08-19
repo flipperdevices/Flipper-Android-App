@@ -3,6 +3,8 @@ package com.flipperdevices.infrared.impl.api
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
@@ -74,6 +76,12 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
                     LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo -> {
                         navigation.replaceCurrent(InfraredNavigationConfig.View(config.keyPath))
                     }
+
+                    is LocalGridScreenDecomposeComponent.Callback.Rename -> {
+                        navigation.pushNew(InfraredNavigationConfig.Rename(it.keyPath))
+                    }
+
+                    LocalGridScreenDecomposeComponent.Callback.Deleted -> navigation.popOr(onBack::invoke)
                 }
             }
         )

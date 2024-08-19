@@ -49,7 +49,8 @@ class LocalGridComponentImpl @AssistedInject constructor(
                     remotes = gridState.remotes,
                     isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                     emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
-                    synchronizationState = syncState
+                    synchronizationState = syncState,
+                    keyPath = gridState.keyPath
                 )
 
                 LocalGridViewModel.State.Loading -> LocalGridComponent.Model.Loading
@@ -68,6 +69,10 @@ class LocalGridComponentImpl @AssistedInject constructor(
             ffPath = gridLoadedState.keyPath.path
         )
     }
+
+    override fun onRename(onEndAction: (FlipperKeyPath) -> Unit) = localGridViewModel.onRename(onEndAction)
+
+    override fun onDelete(onEndAction: () -> Unit) = localGridViewModel.onDelete(onEndAction)
 
     override fun pop() = onBack.invoke()
 

@@ -29,6 +29,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.core.ui.res.R as SharedRes
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 
 @Composable
 @Suppress("LongMethod")
@@ -51,7 +52,7 @@ internal fun ComposableInfraredDropDown(
             modifier = Modifier
                 .clickableRipple(bounded = false, onClick = onChangeState)
                 .size(24.dp),
-            tint = LocalPallet.current.text100,
+            tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor,
             painter = painterResource(SharedRes.drawable.ic_more_points),
             contentDescription = null
         )

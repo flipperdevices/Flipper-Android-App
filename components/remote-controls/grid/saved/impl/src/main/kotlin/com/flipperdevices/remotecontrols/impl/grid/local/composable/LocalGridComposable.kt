@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
@@ -43,16 +44,29 @@ fun LocalGridComposable(
     Scaffold(
         modifier = modifier,
         topBar = {
-            SharedTopBar(onBackClick = localGridComponent::pop) {
-                ComposableInfraredDropDown(
-                    onRename = {},
-                    onDelete = {},
-                    onRemoteInfo = {
-                        onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo)
-                    },
-                    onShare = {},
-                    emulatingInProgress = (model as? LocalGridComponent.Model.Loaded)?.emulatedKey != null
-                )
+            (model as? LocalGridComponent.Model.Loaded)?.let { loadedModel ->
+                SharedTopBar(onBackClick = localGridComponent::pop) {
+                    ComposableInfraredDropDown(
+                        onRename = {
+                            localGridComponent.onRename {
+                                val config = LocalGridScreenDecomposeComponent.Callback.Rename(loadedModel.keyPath)
+                                onCallback.invoke(config)
+                            }
+
+                        },
+                        onDelete = {
+
+                            localGridComponent.onDelete {
+                                onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Deleted)
+                            }
+                        },
+                        onRemoteInfo = {
+                            onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo)
+                        },
+                        onShare = {},
+                        emulatingInProgress = loadedModel.emulatedKey != null
+                    )
+                }
             }
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,

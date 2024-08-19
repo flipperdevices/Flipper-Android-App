@@ -10,6 +10,8 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
+import com.flipperdevices.keyscreen.api.KeyStateHelperApi
+import com.flipperdevices.keyscreen.model.KeyScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,8 +27,7 @@ import kotlinx.serialization.json.Json
 
 class LocalGridViewModel @AssistedInject constructor(
     @Assisted private val keyPath: FlipperKeyPath,
-    private val updaterKeyApi: UpdateKeyApi,
-    private val simpleKeyApi: SimpleKeyApi,
+    keyStateHelperApi: KeyStateHelperApi.Builder,
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "LocalGridViewModel"
     private val json: Json = Json {
@@ -35,49 +36,44 @@ class LocalGridViewModel @AssistedInject constructor(
         isLenient = true
     }
 
-    private val keyFlow = updaterKeyApi
-        .subscribeOnUpdatePath(keyPath)
-        .flatMapLatest(simpleKeyApi::getKeyAsFlow)
+    private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
 
-    private val keyPathFlow = keyFlow.map {
-        it?.getKeyPath()
-    }
+    val state = keyStateHelper.getKeyScreenState()
+        .map {
+            when (it) {
+                is KeyScreenState.Error -> State.Error
+                KeyScreenState.InProgress -> State.Loading
+                is KeyScreenState.Ready -> {
+                    val keyPath = it.flipperKey.getKeyPath()
+                    val pagesLayout = it.flipperKey.additionalFiles.firstNotNullOfOrNull { fFile ->
+                        val text = fFile.content.openStream().reader().readText()
+                        runCatching {
+                            json.decodeFromString<PagesLayout>(text)
+                        }.getOrNull()
+                    }
+                    val remotes = it.flipperKey.keyContent
+                        .openStream()
+                        .reader()
+                        .readText()
+                        .let(FlipperFileFormat::fromFileContent)
+                        .let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
+                        .toImmutableList()
+                    if (pagesLayout==null) State.Error
+                    else {
+                        State.Loaded(
+                            pagesLayout = pagesLayout,
+                            remotes = remotes,
+                            keyPath = keyPath
+                        )
+                    }
+                }
+            }
+        }.stateIn(viewModelScope, SharingStarted.Eagerly,State.Loading)
 
-    private val uiFlow = keyFlow
-        .map { it?.additionalFiles.orEmpty() }
-        .map { additionalFiles ->
-            additionalFiles.firstNotNullOfOrNull { fFile ->
-                val text = fFile.content.openStream().reader().readText()
-                runCatching {
-                    json.decodeFromString<PagesLayout>(text)
-                }.getOrNull()
-            }
-        }.onEach { info { "#uiFlow $it" } }
-    private val remotesFlow = keyFlow.map {
-        it?.keyContent
-            ?.openStream()
-            ?.reader()
-            ?.readText()
-            ?.let(FlipperFileFormat::fromFileContent)
-            ?.let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
-            ?.toImmutableList()
-    }.onEach { info { "#remotesFlow $it" } }
-    val state = combine(
-        flow = uiFlow,
-        flow2 = remotesFlow,
-        flow3 = keyPathFlow,
-        transform = { pagesLayout, remotes, keyPath ->
-            if (pagesLayout != null && remotes != null && keyPath != null) {
-                State.Loaded(
-                    pagesLayout = pagesLayout,
-                    remotes = remotes,
-                    keyPath = keyPath
-                )
-            } else {
-                State.Error
-            }
-        }
-    ).stateIn(viewModelScope, SharingStarted.Eagerly, State.Loading)
+
+    fun onRename(onEndAction: (FlipperKeyPath) -> Unit) = keyStateHelper.onOpenEdit(onEndAction)
+
+    fun onDelete(onEndAction: () -> Unit) = keyStateHelper.onDelete(onEndAction)
 
     sealed interface State {
         data object Loading : State

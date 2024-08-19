@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface LocalGridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
     fun onButtonClick(identifier: IfrKeyIdentifier)
+    fun onRename(onEndAction: (FlipperKeyPath) -> Unit)
+    fun onDelete(onEndAction: () -> Unit)
     fun pop()
     fun dismissBusyDialog()
 
@@ -24,7 +26,8 @@ interface LocalGridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean,
             val emulatedKey: IfrKeyIdentifier?,
-            val synchronizationState: SynchronizationState
+            val synchronizationState: SynchronizationState,
+            val keyPath: FlipperKeyPath
         ) : Model {
             val isSynchronizing = synchronizationState is SynchronizationState.InProgress
         }
