@@ -10,7 +10,7 @@ import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping.GridComponentStateMapper
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.RemoteGridViewModel
@@ -28,7 +28,7 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, RemoteGridComponent.Factory::class)
 class RemoteGridComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val param: GridControlParam.Id,
+    @Assisted private val param: ServerRemoteControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onSaveKey: (NotSavedFlipperKey) -> Unit,
     createRemoteGridViewModel: RemoteGridViewModel.Factory,
@@ -55,7 +55,6 @@ class RemoteGridComponentImpl @AssistedInject constructor(
                 onCallback = { callback ->
                     when (callback) {
                         is RemoteGridViewModel.Callback.ContentLoaded -> {
-                            param.irFileIdOrNull ?: return@invoke
                             saveTempSignalApi.saveFiles(
                                 SaveTempSignalApi.FileDesc(
                                     textContent = callback.infraredContent,

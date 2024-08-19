@@ -10,9 +10,6 @@ sealed class GridNavigationConfig {
     data class Rename(val notSavedFlipperKey: NotSavedFlipperKey) : GridNavigationConfig()
 
     @Serializable
-    data class SavedControl(val keyPath: FlipperKeyPath) : GridNavigationConfig()
-
-    @Serializable
     data class ServerControl(val id: Long) : GridNavigationConfig()
 
     @Serializable

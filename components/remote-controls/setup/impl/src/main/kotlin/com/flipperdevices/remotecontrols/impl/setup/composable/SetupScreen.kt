@@ -47,7 +47,7 @@ fun SetupScreen(
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
-            val configuration = RootScreenConfig.RemoteControlGrid.Id(it.id)
+            val configuration = RootScreenConfig.ServerRemoteControl(it.id)
             rootNavigation.push(configuration)
         }.launchIn(this)
     }

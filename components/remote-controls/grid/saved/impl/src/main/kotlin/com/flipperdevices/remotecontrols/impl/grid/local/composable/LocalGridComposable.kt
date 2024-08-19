@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableInfraredDropDown
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableSynchronizationNotification
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.LocalGridComposableContent
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
@@ -25,7 +27,7 @@ import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.
 @Composable
 fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
-    onError: () -> Unit,
+    onCallback: (LocalGridScreenDecomposeComponent.Callback) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -34,12 +36,24 @@ fun LocalGridComposable(
         localGridComponent.model(coroutineScope)
     }.collectAsState()
     LaunchedEffect(model) {
-        if (model is LocalGridComponent.Model.Error) onError.invoke()
+        if (model is LocalGridComponent.Model.Error) {
+            onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.UiFileNotFound)
+        }
     }
     Scaffold(
         modifier = modifier,
         topBar = {
-            SharedTopBar(onBackClick = localGridComponent::pop)
+            SharedTopBar(onBackClick = localGridComponent::pop) {
+                ComposableInfraredDropDown(
+                    onRename = {},
+                    onDelete = {},
+                    onRemoteInfo = {
+                        onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo)
+                    },
+                    onShare = {},
+                    emulatingInProgress = (model as? LocalGridComponent.Model.Loaded)?.emulatedKey != null
+                )
+            }
         },
         backgroundColor = LocalPalletV2.current.surface.backgroundMain.body,
         scaffoldState = scaffoldState,

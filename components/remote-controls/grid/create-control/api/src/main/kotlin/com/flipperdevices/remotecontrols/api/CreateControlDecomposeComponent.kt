@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.api
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
 abstract class CreateControlDecomposeComponent(
@@ -13,8 +14,7 @@ abstract class CreateControlDecomposeComponent(
             componentContext: ComponentContext,
             savedKey: FlipperKeyPath,
             originalKey: NotSavedFlipperKey,
-            onFinished: (FlipperKeyPath) -> Unit,
-            onFailed: () -> Unit
+            onBack: DecomposeOnBackParameter
         ): CreateControlDecomposeComponent
     }
 }

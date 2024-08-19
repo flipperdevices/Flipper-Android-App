@@ -22,9 +22,9 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.GridCompositeDecomposeComponent
+import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -60,7 +60,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
     private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
-    private val gridScreenDecomposeComponentFactory: GridCompositeDecomposeComponent.Factory
+    private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -139,18 +139,10 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             onBack = this::internalOnBack
         )
 
-        is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(
+        is RootScreenConfig.ServerRemoteControl -> serverRemoteControlFactory(
             componentContext = componentContext,
-            param = GridControlParam.Id(config.ifrFileId),
+            param = ServerRemoteControlParam(config.infraredFileId),
             onBack = this::internalOnBack,
-            onUiNotFound = this::internalOnBack
-        )
-
-        is RootScreenConfig.RemoteControlGrid.Path -> gridScreenDecomposeComponentFactory(
-            componentContext = componentContext,
-            param = GridControlParam.Path(config.flipperKeyPath),
-            onBack = this::internalOnBack,
-            onUiNotFound = this::internalOnBack
         )
     }
 

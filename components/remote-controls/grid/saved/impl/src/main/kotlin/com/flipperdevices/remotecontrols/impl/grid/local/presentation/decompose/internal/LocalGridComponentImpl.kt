@@ -2,11 +2,11 @@ package com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -22,18 +22,18 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, LocalGridComponent.Factory::class)
 class LocalGridComponentImpl @AssistedInject constructor(
     @Assisted private val componentContext: ComponentContext,
-    @Assisted private val param: GridControlParam.Path,
+    @Assisted private val keyPath: FlipperKeyPath,
     @Assisted private val onBack: DecomposeOnBackParameter,
     createLocalGridViewModel: LocalGridViewModel.Factory,
     createDispatchSignalApi: Provider<DispatchSignalApi>,
     private val synchronizationApi: SynchronizationApi
 ) : LocalGridComponent, ComponentContext by componentContext {
     private val localGridViewModel = instanceKeeper.getOrCreate(
-        key = "LocalGridComponent_localGridViewModel_${param.key}",
-        factory = { createLocalGridViewModel.invoke(param) }
+        key = "LocalGridComponent_localGridViewModel_$keyPath",
+        factory = { createLocalGridViewModel.invoke(keyPath) }
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
-        key = "LocalGridComponent_dispatchSignalApi_${param.key}",
+        key = "LocalGridComponent_dispatchSignalApi_$keyPath",
         factory = { createDispatchSignalApi.get() }
     )
 

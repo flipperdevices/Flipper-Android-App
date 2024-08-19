@@ -1,7 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.api
 
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
@@ -11,9 +11,14 @@ abstract class LocalGridScreenDecomposeComponent(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            param: GridControlParam.Path,
+            keyPath: FlipperKeyPath,
             onBack: DecomposeOnBackParameter,
-            onUiNotFound: () -> Unit
+            onCallback: (Callback) -> Unit
         ): LocalGridScreenDecomposeComponent
+    }
+
+    sealed interface Callback {
+        data object UiFileNotFound : Callback
+        data object ViewRemoteInfo : Callback
     }
 }

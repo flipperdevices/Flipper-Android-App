@@ -11,8 +11,7 @@ import com.flipperdevices.infrared.api.InfraredDecomposeComponent
 import com.flipperdevices.infrared.api.InfraredEditorDecomposeComponent
 import com.flipperdevices.infrared.impl.model.InfraredNavigationConfig
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
-import com.flipperdevices.remotecontrols.api.GridCompositeDecomposeComponent
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
@@ -29,7 +28,7 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
     private val infraredViewFactory: InfraredViewDecomposeComponentImpl.Factory,
     private val infraredEditorFactory: InfraredEditorDecomposeComponent.Factory,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
-    private val gridCompositeFactory: GridCompositeDecomposeComponent.Factory
+    private val savedGridFactory: LocalGridScreenDecomposeComponent.Factory
 ) : InfraredDecomposeComponent<InfraredNavigationConfig>(), ComponentContext by componentContext {
 
     override val stack: Value<ChildStack<InfraredNavigationConfig, DecomposeComponent>> =
@@ -65,11 +64,18 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
             title = null
         )
 
-        is InfraredNavigationConfig.RemoteControl -> gridCompositeFactory.invoke(
+        is InfraredNavigationConfig.RemoteControl -> savedGridFactory.invoke(
             componentContext = componentContext,
-            param = GridControlParam.Path(keyPath),
+            keyPath = keyPath,
             onBack = { navigation.popOr(onBack::invoke) },
-            onUiNotFound = { navigation.replaceCurrent(InfraredNavigationConfig.View(config.keyPath)) }
+            onCallback = {
+                when (it) {
+                    LocalGridScreenDecomposeComponent.Callback.UiFileNotFound,
+                    LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo -> {
+                        navigation.replaceCurrent(InfraredNavigationConfig.View(config.keyPath))
+                    }
+                }
+            }
         )
     }
 }

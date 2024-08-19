@@ -2,7 +2,7 @@ package com.flipperdevices.remotecontrols.grid.remote.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
@@ -12,7 +12,7 @@ abstract class RemoteGridScreenDecomposeComponent(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            param: GridControlParam.Id,
+            param: ServerRemoteControlParam,
             onBack: DecomposeOnBackParameter,
             onSaveKey: (NotSavedFlipperKey) -> Unit
         ): RemoteGridScreenDecomposeComponent

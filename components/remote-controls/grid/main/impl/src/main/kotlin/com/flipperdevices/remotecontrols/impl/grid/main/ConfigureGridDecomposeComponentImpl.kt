@@ -9,11 +9,10 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
+import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CreateControlDecomposeComponent
-import com.flipperdevices.remotecontrols.api.GridCompositeDecomposeComponent
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.grid.remote.api.RemoteGridScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.main.model.GridNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -23,24 +22,19 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @Suppress("LongParameterList")
-@ContributesAssistedFactory(AppGraph::class, GridCompositeDecomposeComponent.Factory::class)
-class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
+@ContributesAssistedFactory(AppGraph::class, ConfigureGridDecomposeComponent.Factory::class)
+class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted param: GridControlParam,
+    @Assisted param: ServerRemoteControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted private val onUiNotFound: () -> Unit,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
     private val remoteGridComponentFactory: RemoteGridScreenDecomposeComponent.Factory,
-    private val localGridComponentFactory: LocalGridScreenDecomposeComponent.Factory,
     private val createControlComponentFactory: CreateControlDecomposeComponent.Factory,
-) : GridCompositeDecomposeComponent<GridNavigationConfig>(), ComponentContext by componentContext {
+) : ConfigureGridDecomposeComponent<GridNavigationConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<GridNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = GridNavigationConfig.serializer(),
-        initialConfiguration = when (param) {
-            is GridControlParam.Id -> GridNavigationConfig.ServerControl(param.irFileId)
-            is GridControlParam.Path -> GridNavigationConfig.SavedControl(param.flipperKeyPath)
-        },
+        initialConfiguration = GridNavigationConfig.ServerControl(param.infraredFileId),
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -69,16 +63,9 @@ class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
             title = null
         )
 
-        is GridNavigationConfig.SavedControl -> localGridComponentFactory.invoke(
-            componentContext = componentContext,
-            param = GridControlParam.Path(config.keyPath),
-            onBack = { navigation.popOr(onBack::invoke) },
-            onUiNotFound = onUiNotFound
-        )
-
         is GridNavigationConfig.ServerControl -> remoteGridComponentFactory.invoke(
             componentContext = componentContext,
-            param = GridControlParam.Id(config.id),
+            param = ServerRemoteControlParam(config.id),
             onBack = { navigation.popOr(onBack::invoke) },
             onSaveKey = {
                 navigation.pushNew(GridNavigationConfig.Rename(it))
@@ -89,8 +76,7 @@ class GridCompositeDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             savedKey = config.keyPath,
             originalKey = config.notSavedFlipperKey,
-            onFinished = { navigation.replaceCurrent(GridNavigationConfig.SavedControl(it)) },
-            onFailed = { navigation.popOr(onBack::invoke) }
+            onBack = onBack
         )
     }
 }

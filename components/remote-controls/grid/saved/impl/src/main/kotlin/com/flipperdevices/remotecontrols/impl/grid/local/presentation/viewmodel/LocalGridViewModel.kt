@@ -10,7 +10,6 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,7 +24,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 
 class LocalGridViewModel @AssistedInject constructor(
-    @Assisted private val param: GridControlParam.Path,
+    @Assisted private val keyPath: FlipperKeyPath,
     private val updaterKeyApi: UpdateKeyApi,
     private val simpleKeyApi: SimpleKeyApi,
 ) : DecomposeViewModel(), LogTagProvider {
@@ -37,7 +36,7 @@ class LocalGridViewModel @AssistedInject constructor(
     }
 
     private val keyFlow = updaterKeyApi
-        .subscribeOnUpdatePath(param.flipperKeyPath)
+        .subscribeOnUpdatePath(keyPath)
         .flatMapLatest(simpleKeyApi::getKeyAsFlow)
 
     private val keyPathFlow = keyFlow.map {
@@ -93,7 +92,7 @@ class LocalGridViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            param: GridControlParam.Path,
+            keyPath: FlipperKeyPath,
         ): LocalGridViewModel
     }
 }

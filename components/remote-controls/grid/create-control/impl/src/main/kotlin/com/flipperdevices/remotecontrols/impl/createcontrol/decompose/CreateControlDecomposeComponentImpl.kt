@@ -10,6 +10,9 @@ import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.CreateControlDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.createcontrol.composable.CreateControlComposable
 import com.flipperdevices.remotecontrols.impl.createcontrol.viewmodel.SaveRemoteControlViewModel
+import com.flipperdevices.rootscreen.api.LocalRootNavigation
+import com.flipperdevices.rootscreen.model.RootScreenConfig
+import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
@@ -22,8 +25,7 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val componentContext: ComponentContext,
     @Assisted private val savedKey: FlipperKeyPath,
     @Assisted private val originalKey: NotSavedFlipperKey,
-    @Assisted private val onFinished: (FlipperKeyPath) -> Unit,
-    @Assisted private val onFailed: () -> Unit,
+    @Assisted private val onBack: DecomposeOnBackParameter,
     private val saveRemoteControlViewModelFactory: Provider<SaveRemoteControlViewModel>
 ) : CreateControlDecomposeComponent(componentContext) {
 
@@ -33,13 +35,20 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
             key = null,
             factory = { saveRemoteControlViewModelFactory.get() }
         )
+        val rootNavigation = LocalRootNavigation.current
         LaunchedEffect(saveRemoteControlViewModel) {
             saveRemoteControlViewModel.state
                 .onEach {
                     when (it) {
-                        is SaveRemoteControlViewModel.State.Finished -> onFinished.invoke(it.keyPath)
+                        is SaveRemoteControlViewModel.State.Finished -> {
+                            onBack.invoke()
+                            rootNavigation.push(RootScreenConfig.OpenKey(it.keyPath))
+                        }
+
                         SaveRemoteControlViewModel.State.CouldNotModifyFiles,
-                        SaveRemoteControlViewModel.State.KeyNotFound -> onFailed.invoke()
+                        SaveRemoteControlViewModel.State.KeyNotFound -> {
+                            onBack.invoke()
+                        }
 
                         SaveRemoteControlViewModel.State.Pending,
                         SaveRemoteControlViewModel.State.Updating -> Unit

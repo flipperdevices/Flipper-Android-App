@@ -5,7 +5,7 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +45,7 @@ interface RemoteGridComponent {
     fun interface Factory {
         fun invoke(
             componentContext: ComponentContext,
-            param: GridControlParam.Id,
+            param: ServerRemoteControlParam,
             onBack: DecomposeOnBackParameter,
             onSaveKey: (NotSavedFlipperKey) -> Unit
         ): RemoteGridComponent

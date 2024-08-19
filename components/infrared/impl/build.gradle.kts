@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.remoteControls.grid.main.api)
+    implementation(projects.components.remoteControls.grid.saved.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

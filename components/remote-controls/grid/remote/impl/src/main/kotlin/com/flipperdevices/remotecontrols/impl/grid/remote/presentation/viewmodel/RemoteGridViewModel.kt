@@ -7,7 +7,7 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.data.pages.PagesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,7 +23,7 @@ import kotlinx.serialization.json.Json
 @Suppress("LongParameterList")
 class RemoteGridViewModel @AssistedInject constructor(
     private val pagesRepository: PagesRepository,
-    @Assisted private val param: GridControlParam.Id,
+    @Assisted private val param: ServerRemoteControlParam,
     @Assisted private val onCallback: (Callback) -> Unit,
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "GridViewModel"
@@ -40,13 +40,13 @@ class RemoteGridViewModel @AssistedInject constructor(
     fun tryLoad() {
         viewModelScope.launch {
             val pagesLayout =
-                pagesRepository.fetchDefaultPageLayout(ifrFileId = param.irFileIdOrNull ?: -1)
+                pagesRepository.fetchDefaultPageLayout(ifrFileId = param.infraredFileId)
                     .onFailure { _state.emit(State.Error) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                     .getOrNull() ?: return@launch
             val pagesLayoutRaw = json.encodeToString(pagesLayout)
 
-            val remotesRaw = pagesRepository.fetchKeyContent(param.irFileIdOrNull ?: -1)
+            val remotesRaw = pagesRepository.fetchKeyContent(param.infraredFileId)
                 .onFailure { _state.emit(State.Error) }
                 .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
                 .getOrNull()
@@ -99,7 +99,7 @@ class RemoteGridViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            param: GridControlParam.Id,
+            param: ServerRemoteControlParam,
             onCallback: (Callback) -> Unit,
         ): RemoteGridViewModel
     }

@@ -5,7 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.remotecontrols.api.model.GridControlParam
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.grid.remote.api.RemoteGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.RemoteGridComposable
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
@@ -17,7 +17,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 @ContributesAssistedFactory(AppGraph::class, RemoteGridScreenDecomposeComponent.Factory::class)
 class RemoteGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted param: GridControlParam.Id,
+    @Assisted param: ServerRemoteControlParam,
     @Assisted onBack: DecomposeOnBackParameter,
     @Assisted onSaveKey: (NotSavedFlipperKey) -> Unit,
     remoteGridComponentFactory: RemoteGridComponent.Factory
