@@ -43,7 +43,7 @@ jobs:
           echo "github.repository=${{ github.repository }}"
   test:
     name: "Run unit tests"
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -60,7 +60,7 @@ jobs:
           arguments: testDebugUnitTest desktopTest
   detekt:
     name: "Check project by detekt and android`s lint"
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: [ validate_gradle_wrapper ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
