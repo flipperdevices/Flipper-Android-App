@@ -29,6 +29,7 @@ import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.
 fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
     onCallback: (LocalGridScreenDecomposeComponent.Callback) -> Unit,
+    onShare: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -49,21 +50,19 @@ fun LocalGridComposable(
                     ComposableInfraredDropDown(
                         onRename = {
                             localGridComponent.onRename {
-                                val config = LocalGridScreenDecomposeComponent.Callback.Rename(loadedModel.keyPath)
-                                onCallback.invoke(config)
+                                onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Rename(loadedModel.keyPath))
                             }
 
                         },
                         onDelete = {
-
                             localGridComponent.onDelete {
                                 onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Deleted)
                             }
                         },
                         onRemoteInfo = {
-                            onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo)
+                            onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(loadedModel.keyPath))
                         },
-                        onShare = {},
+                        onShare = onShare,
                         emulatingInProgress = loadedModel.emulatedKey != null
                     )
                 }

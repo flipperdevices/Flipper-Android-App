@@ -30,6 +30,7 @@ dependencies {
     implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.keyscreen.api)
+    implementation(projects.components.share.api)
 
     // Compose
     implementation(libs.compose.ui)

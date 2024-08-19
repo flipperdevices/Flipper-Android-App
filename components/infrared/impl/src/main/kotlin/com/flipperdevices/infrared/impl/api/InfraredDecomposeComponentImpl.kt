@@ -72,9 +72,11 @@ class InfraredDecomposeComponentImpl @AssistedInject constructor(
             onBack = { navigation.popOr(onBack::invoke) },
             onCallback = {
                 when (it) {
-                    LocalGridScreenDecomposeComponent.Callback.UiFileNotFound,
-                    LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo -> {
+                    LocalGridScreenDecomposeComponent.Callback.UiFileNotFound -> {
                         navigation.replaceCurrent(InfraredNavigationConfig.View(config.keyPath))
+                    }
+                    is LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo -> {
+                        navigation.replaceCurrent(InfraredNavigationConfig.View(it.keyPath))
                     }
 
                     is LocalGridScreenDecomposeComponent.Callback.Rename -> {
