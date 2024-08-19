@@ -41,6 +41,12 @@ jobs:
           echo "github.event_name=${{ github.event_name }}"
           echo "github.ref_name=${{ github.ref_name }}"
           echo "github.repository=${{ github.repository }}"
+  try_internal_baseline:
+    name: "Try baseline profile"
+    needs: [ validate_gradle_wrapper ]
+    uses: ./.github/workflows/call-create-baseline.yml
+    with:
+      BUILD_VARIANT_NAME: "internal"
   test:
     name: "Run unit tests"
     runs-on: ubuntu-latest
