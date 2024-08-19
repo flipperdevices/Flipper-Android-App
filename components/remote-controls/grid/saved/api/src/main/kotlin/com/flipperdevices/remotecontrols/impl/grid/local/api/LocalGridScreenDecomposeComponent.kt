@@ -19,7 +19,7 @@ abstract class LocalGridScreenDecomposeComponent(
 
     sealed interface Callback {
         data object UiFileNotFound : Callback
-        data object Deleted: Callback
+        data object Deleted : Callback
         data class Rename(val keyPath: FlipperKeyPath) : Callback
         data class ViewRemoteInfo(val keyPath: FlipperKeyPath) : Callback
     }

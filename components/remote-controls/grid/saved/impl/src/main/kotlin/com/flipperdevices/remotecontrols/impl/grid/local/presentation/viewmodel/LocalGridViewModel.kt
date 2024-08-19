@@ -1,11 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel
 
-import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
@@ -18,10 +15,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 
@@ -58,8 +52,9 @@ class LocalGridViewModel @AssistedInject constructor(
                         .let(FlipperFileFormat::fromFileContent)
                         .let(InfraredKeyParser::mapParsedKeyToInfraredRemotes)
                         .toImmutableList()
-                    if (pagesLayout==null) State.Error
-                    else {
+                    if (pagesLayout == null) {
+                        State.Error
+                    } else {
                         State.Loaded(
                             pagesLayout = pagesLayout,
                             remotes = remotes,
@@ -68,8 +63,7 @@ class LocalGridViewModel @AssistedInject constructor(
                     }
                 }
             }
-        }.stateIn(viewModelScope, SharingStarted.Eagerly,State.Loading)
-
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, State.Loading)
 
     fun onRename(onEndAction: (FlipperKeyPath) -> Unit) = keyStateHelper.onOpenEdit(onEndAction)
 

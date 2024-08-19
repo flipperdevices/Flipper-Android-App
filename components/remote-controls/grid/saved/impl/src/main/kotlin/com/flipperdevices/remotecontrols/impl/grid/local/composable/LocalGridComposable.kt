@@ -15,7 +15,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
@@ -50,9 +49,10 @@ fun LocalGridComposable(
                     ComposableInfraredDropDown(
                         onRename = {
                             localGridComponent.onRename {
-                                onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Rename(loadedModel.keyPath))
+                                onCallback.invoke(
+                                    LocalGridScreenDecomposeComponent.Callback.Rename(loadedModel.keyPath)
+                                )
                             }
-
                         },
                         onDelete = {
                             localGridComponent.onDelete {
@@ -60,7 +60,9 @@ fun LocalGridComposable(
                             }
                         },
                         onRemoteInfo = {
-                            onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(loadedModel.keyPath))
+                            onCallback.invoke(
+                                LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(loadedModel.keyPath)
+                            )
                         },
                         onShare = onShare,
                         emulatingInProgress = loadedModel.emulatedKey != null

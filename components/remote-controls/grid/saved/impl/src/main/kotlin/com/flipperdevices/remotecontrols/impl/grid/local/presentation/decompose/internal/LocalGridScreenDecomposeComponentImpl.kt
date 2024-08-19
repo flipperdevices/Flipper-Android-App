@@ -64,6 +64,5 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
                 onShare = onShare
             )
         }
-
     }
 }
