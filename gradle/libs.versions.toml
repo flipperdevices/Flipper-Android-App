@@ -1,11 +1,10 @@
 [versions]
-# You also need to bump the version of ksp, anvil
-# Not bump to 2.0.20-Beta2+ until https://youtrack.jetbrains.com/issue/KT-70415/ fixed
-kotlin-general = "2.0.20-Beta1" # https://kotlinlang.org/docs/releases.html#release-details
+# You also need to bump the version of ksp
+kotlin-general = "2.0.20-RC2" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.0.20-Beta1-1.0.22" # https://github.com/google/ksp/releases
+ksp = "2.0.20-RC2-1.0.24" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta11" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.5.1" # https://developer.android.com/studio/releases/gradle-plugin
