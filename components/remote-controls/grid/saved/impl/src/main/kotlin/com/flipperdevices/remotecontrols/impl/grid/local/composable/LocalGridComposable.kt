@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
+import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableInfraredDropDown
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableSynchronizationNotification
@@ -46,7 +48,11 @@ fun LocalGridComposable(
         modifier = modifier,
         topBar = {
             (model as? LocalGridComponent.Model.Loaded)?.let { loadedModel ->
-                SharedTopBar(onBackClick = localGridComponent::pop) {
+                SharedTopBar(
+                    onBackClick = localGridComponent::pop,
+                    title = loadedModel.keyPath.path.nameWithoutExtension,
+                    subtitle = stringResource(R.string.remote_subtitle)
+                ) {
                     ComposableInfraredDropDown(
                         onRename = {
                             localGridComponent.onRename {

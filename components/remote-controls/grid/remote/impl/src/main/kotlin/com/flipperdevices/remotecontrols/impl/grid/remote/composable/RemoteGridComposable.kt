@@ -40,12 +40,16 @@ fun RemoteGridComposable(
         topBar = {
             SharedTopBar(
                 onBackClick = remoteGridComponent::pop,
-                subtitle = (model as? RemoteGridComponent.Model.Loaded)
-                    ?.saveProgressOrNull
-                    ?.let { progress ->
-                        stringResource(R.string.uploading_to_flipper).format("$progress%")
-                    }
-                    .orEmpty(),
+                title = (model as? RemoteGridComponent.Model.Loaded)?.let {
+                    remoteGridComponent.param.remoteName
+                }.orEmpty(),
+                subtitle = (model as? RemoteGridComponent.Model.Loaded)?.let { loadedModel ->
+                    loadedModel
+                        .saveProgressOrNull
+                        ?.let { progress ->
+                            stringResource(R.string.uploading_to_flipper).format("$progress%")
+                        } ?: stringResource(R.string.remote_subtitle)
+                }.orEmpty(),
                 actions = {
                     AnimatedVisibility(
                         visible = model.isFilesSaved,

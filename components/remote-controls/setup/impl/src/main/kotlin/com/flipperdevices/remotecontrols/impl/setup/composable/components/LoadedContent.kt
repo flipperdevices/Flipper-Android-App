@@ -45,7 +45,7 @@ fun LoadedContent(
                 AnimatedVisibility(
                     visible = model.isEmulated,
                     enter = slideInVertically(initialOffsetY = { it / 2 }),
-                    exit = slideOutVertically(),
+                    exit = slideOutVertically(targetOffsetY = { it / 2 }),
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)

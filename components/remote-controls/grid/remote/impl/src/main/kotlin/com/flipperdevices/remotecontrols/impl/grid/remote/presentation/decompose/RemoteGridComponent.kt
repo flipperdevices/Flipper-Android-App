@@ -13,6 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface RemoteGridComponent {
+    val param: ServerRemoteControlParam
+
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClick(identifier: IfrKeyIdentifier)

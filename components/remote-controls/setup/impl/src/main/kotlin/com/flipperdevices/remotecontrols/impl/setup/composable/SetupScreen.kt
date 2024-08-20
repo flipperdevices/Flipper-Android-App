@@ -34,6 +34,7 @@ private val SetupComponent.Model.key: Any
         is SetupComponent.Model.Loading -> "loading"
     }
 
+@Suppress("LongMethod")
 @Composable
 fun SetupScreen(
     setupComponent: SetupComponent,
@@ -47,7 +48,10 @@ fun SetupScreen(
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
-            val configuration = RootScreenConfig.ServerRemoteControl(it.id)
+            val configuration = RootScreenConfig.ServerRemoteControl(
+                it.id,
+                setupComponent.param.remoteName
+            )
             rootNavigation.push(configuration)
         }.launchIn(this)
     }

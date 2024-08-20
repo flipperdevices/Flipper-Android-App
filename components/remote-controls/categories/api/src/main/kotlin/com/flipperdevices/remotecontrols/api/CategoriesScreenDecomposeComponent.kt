@@ -11,7 +11,7 @@ abstract class CategoriesScreenDecomposeComponent(
         operator fun invoke(
             componentContext: ComponentContext,
             onBackClick: () -> Unit,
-            onCategoryClick: (categoryId: Long) -> Unit
+            onCategoryClick: (categoryId: Long, categoryName: String) -> Unit
         ): CategoriesScreenDecomposeComponent
     }
 }

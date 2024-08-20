@@ -25,7 +25,7 @@ interface DeviceCategoriesComponent {
         fun invoke(
             componentContext: ComponentContext,
             onBackClick: DecomposeOnBackParameter,
-            onCategoryClick: (categoryId: Long) -> Unit
+            onCategoryClick: (categoryId: Long, categoryName: String) -> Unit
         ): DeviceCategoriesComponent
     }
 }

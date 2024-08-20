@@ -3,7 +3,10 @@ package com.flipperdevices.remotecontrols.api.model
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.UI_INFRARED_EXTENSION
 
-data class ServerRemoteControlParam(val infraredFileId: Long) {
+data class ServerRemoteControlParam(
+    val infraredFileId: Long,
+    val remoteName: String
+) {
 
     val key: String
         get() = this.toString()
@@ -12,8 +15,8 @@ data class ServerRemoteControlParam(val infraredFileId: Long) {
         get() = "${FlipperKeyType.INFRARED.flipperDir}/temp/"
 
     val nameWithExtension: String
-        get() = "$infraredFileId.ir"
+        get() = "$remoteName.ir"
 
     val uiFileNameWithExtension: String
-        get() = "$infraredFileId.$UI_INFRARED_EXTENSION"
+        get() = "$remoteName.$UI_INFRARED_EXTENSION"
 }

@@ -28,7 +28,7 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, RemoteGridComponent.Factory::class)
 class RemoteGridComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val param: ServerRemoteControlParam,
+    @Assisted override val param: ServerRemoteControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onSaveKey: (NotSavedFlipperKey) -> Unit,
     createRemoteGridViewModel: RemoteGridViewModel.Factory,

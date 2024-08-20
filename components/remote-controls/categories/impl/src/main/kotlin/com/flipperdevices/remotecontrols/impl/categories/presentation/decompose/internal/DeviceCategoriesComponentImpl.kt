@@ -16,7 +16,7 @@ import javax.inject.Provider
 class DeviceCategoriesComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onCategoryClick: (categoryId: Long) -> Unit,
+    @Assisted private val onCategoryClick: (categoryId: Long, categoryName: String) -> Unit,
     createDeviceCategoryListViewModel: Provider<DeviceCategoryListViewModel>,
 ) : DeviceCategoriesComponent,
     ComponentContext by componentContext {
@@ -27,7 +27,10 @@ class DeviceCategoriesComponentImpl @AssistedInject constructor(
     override val model = deviceCategoryListFeature.model
 
     override fun onCategoryClick(category: DeviceCategory) {
-        onCategoryClick(category.id)
+        onCategoryClick(
+            category.id,
+            category.meta.manifest.singularDisplayName
+        )
     }
 
     override fun onBackClick() = onBackClick.invoke()
