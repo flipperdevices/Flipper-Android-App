@@ -2,9 +2,9 @@ package com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
@@ -26,10 +26,10 @@ interface LocalGridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean,
             val emulatedKey: IfrKeyIdentifier?,
-            val synchronizationState: SynchronizationState,
+            val connectionState: InfraredEmulateState,
             val keyPath: FlipperKeyPath
         ) : Model {
-            val isSynchronizing = synchronizationState is SynchronizationState.InProgress
+            val isSynchronizing = connectionState == InfraredEmulateState.SYNCING
         }
 
         data object Error : Model

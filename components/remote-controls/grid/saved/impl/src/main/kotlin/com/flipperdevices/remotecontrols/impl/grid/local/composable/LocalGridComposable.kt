@@ -15,9 +15,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableInfraredDropDown
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableSynchronizationNotification
@@ -62,7 +62,9 @@ fun LocalGridComposable(
                         },
                         onRemoteInfo = {
                             onCallback.invoke(
-                                LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(loadedModel.keyPath)
+                                LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(
+                                    loadedModel.keyPath
+                                )
                             )
                         },
                         onShare = onShare,
@@ -87,8 +89,8 @@ fun LocalGridComposable(
                 contentAlignment = Alignment.BottomCenter
             ) {
                 val state = (model as? LocalGridComponent.Model.Loaded)
-                    ?.synchronizationState
-                    ?: SynchronizationState.NotStarted
+                    ?.connectionState
+                    ?: InfraredEmulateState.ALL_GOOD
                 ComposableSynchronizationNotification(state)
             }
         }
