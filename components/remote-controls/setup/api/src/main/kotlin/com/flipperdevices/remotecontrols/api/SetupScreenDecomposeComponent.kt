@@ -29,7 +29,6 @@ abstract class SetupScreenDecomposeComponent(
                 .replace("/", "_")
                 .replace(".", "_")
                 .take(MAX_SIZE_REMOTE_LENGTH)
-
     }
 
     companion object {
