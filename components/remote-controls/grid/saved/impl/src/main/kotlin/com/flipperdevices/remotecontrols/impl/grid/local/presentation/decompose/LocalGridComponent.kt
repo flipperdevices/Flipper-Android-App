@@ -29,7 +29,10 @@ interface LocalGridComponent {
             val connectionState: InfraredEmulateState,
             val keyPath: FlipperKeyPath
         ) : Model {
-            val isSynchronizing = connectionState == InfraredEmulateState.SYNCING
+            val isSynchronizing = listOf(
+                InfraredEmulateState.SYNCING,
+                InfraredEmulateState.CONNECTING
+            ).contains(connectionState)
         }
 
         data object Error : Model

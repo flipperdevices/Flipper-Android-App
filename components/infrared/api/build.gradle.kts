@@ -12,5 +12,4 @@ dependencies {
     implementation(libs.kotlin.coroutines)
 
     implementation(libs.decompose)
-    implementation(project(":components:bridge:service:api"))
 }
