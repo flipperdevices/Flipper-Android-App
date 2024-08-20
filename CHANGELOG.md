@@ -27,6 +27,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Use kotlin 2.0.20-RC2 for bypass Options screen crash
 - [FIX] Relocate remote-controls button to infrared remotes screen
 - [FIX] Fap manifest caching
+- [FIX] Remote controls design issues
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
