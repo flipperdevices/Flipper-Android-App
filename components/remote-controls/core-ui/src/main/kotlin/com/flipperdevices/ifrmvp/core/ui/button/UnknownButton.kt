@@ -19,6 +19,6 @@ fun UnknownButton(
         background = LocalPalletV2.current.action.danger.background.primary.default,
         painter = rememberVectorPainter(Icons.Default.Error),
         iconTint = MaterialTheme.colors.onPrimary,
-        modifier = modifier
+        modifier = modifier,
     )
 }

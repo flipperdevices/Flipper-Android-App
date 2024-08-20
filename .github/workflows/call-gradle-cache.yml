@@ -23,7 +23,7 @@ jobs:
             gradle.properties
   matrx_update_gradle:
     name: "Build ${{ matrix.target }}"
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     needs: check_gradle_files_change
     if: needs.check_gradle_files_change.outputs.GRADLE_FILES_CHANGED == 'true'
     strategy:

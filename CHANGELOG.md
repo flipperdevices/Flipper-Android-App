@@ -8,6 +8,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
+- [Feature] Save, edit, share remote control
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls

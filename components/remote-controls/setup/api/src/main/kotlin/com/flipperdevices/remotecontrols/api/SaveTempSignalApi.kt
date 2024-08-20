@@ -7,11 +7,13 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
 
     val state: StateFlow<State>
 
-    fun saveFile(
-        textContent: String,
-        nameWithExtension: String,
-        extFolderPath: String
+    class FileDesc(
+        val textContent: String,
+        val nameWithExtension: String,
+        val extFolderPath: String
     )
+
+    fun saveFiles(vararg filesDesc: FileDesc, onFinished: () -> Unit = {})
 
     sealed interface State {
         data object Pending : State

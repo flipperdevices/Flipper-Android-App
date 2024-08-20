@@ -23,7 +23,7 @@ data class NotSavedFlipperKey(
 @Serializable
 data class NotSavedFlipperFile(
     val path: FlipperFilePath,
-    val content: FlipperKeyContent.InternalFile
+    val content: FlipperKeyContent
 ) : Parcelable
 
 suspend fun FlipperFile.toNotSavedFlipperFile(

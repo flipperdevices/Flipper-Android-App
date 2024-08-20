@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.keyedit.impl.composable.ComposableEditScreen
@@ -19,6 +20,7 @@ class KeyEditDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val editableKey: EditableKey,
     @Assisted private val title: String?,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onSave: (FlipperKey?) -> Unit,
     private val keyEditViewModelFactory: KeyEditViewModel.Factory
 ) : KeyEditDecomposeComponent(componentContext) {
     @Composable
@@ -35,7 +37,7 @@ class KeyEditDecomposeComponentImpl @AssistedInject constructor(
             state = state,
             onBack = onBack::invoke,
             onSave = {
-                viewModel.onSave(onBack::invoke)
+                viewModel.onSave(onSave::invoke)
             }
         )
     }
@@ -45,6 +47,7 @@ class KeyEditDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
+            onSave: (FlipperKey?) -> Unit,
             editableKey: EditableKey,
             title: String?
         ): KeyEditDecomposeComponentImpl

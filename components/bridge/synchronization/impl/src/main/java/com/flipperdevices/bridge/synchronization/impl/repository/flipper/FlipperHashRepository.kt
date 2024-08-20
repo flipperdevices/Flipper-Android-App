@@ -72,6 +72,11 @@ class FlipperHashRepositoryImpl @Inject constructor(
         ) {
             return true
         }
+        if (FlipperFileType.getByExtension(extension) == FlipperFileType.UI_INFRARED &&
+            requestedType == FlipperKeyType.INFRARED
+        ) {
+            return true
+        }
         val fileTypeByExtension = FlipperKeyType.getByExtension(extension)
         if (fileTypeByExtension == null) {
             debug {

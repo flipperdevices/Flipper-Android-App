@@ -15,6 +15,7 @@ import java.io.InputStream
  * May be a stream, a file, a link, or bytes.
  * Do not limit your support to only one type of content.
  */
+@Serializable
 sealed class FlipperKeyContent : Parcelable {
     @Parcelize
     data class RawData(val bytes: ByteArray) : FlipperKeyContent() {

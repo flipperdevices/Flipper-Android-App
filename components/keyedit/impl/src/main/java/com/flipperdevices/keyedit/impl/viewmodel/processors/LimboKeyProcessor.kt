@@ -48,7 +48,7 @@ class LimboKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Limb,
         editState: KeyEditState.Editing,
-        onEndAction: () -> Unit
+        onEndAction: (FlipperKey?) -> Unit
     ) {
         val newPathUnfree = if (editState.name != null) {
             editableKey.notSavedFlipperKey.mainFile.path.copyWithChangedName(editState.name)
@@ -71,7 +71,7 @@ class LimboKeyProcessor @Inject constructor(
                 descId = R.string.saved_key_desc
             )
         )
-        onEndAction()
+        onEndAction(newKey)
     }
 }
 
