@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -61,7 +62,7 @@ internal fun ComposableInfraredDropDown(
             onDismissRequest = { isShowMoreOptions = false }
         ) {
             ComposableInfraredDropDownItem(
-                text = "Remote Info",
+                text = stringResource(R.string.option_remote_info),
                 painter = painterResource(R.drawable.ic_how_to_use),
                 onClick = {
                     onRemoteInfo.invoke()
@@ -69,7 +70,7 @@ internal fun ComposableInfraredDropDown(
                 }
             )
             ComposableInfraredDropDownItem(
-                text = "Rename",
+                text = stringResource(R.string.option_rename),
                 painter = painterResource(R.drawable.ic_edit),
                 onClick = {
                     onChangeState.invoke()
@@ -80,7 +81,7 @@ internal fun ComposableInfraredDropDown(
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
-                text = "Share",
+                text = stringResource(R.string.option_share),
                 painter = painterResource(SharedRes.drawable.ic_upload),
                 onClick = {
                     onChangeState.invoke()
@@ -89,7 +90,7 @@ internal fun ComposableInfraredDropDown(
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
-                text = "Delete",
+                text = stringResource(R.string.option_delete),
                 painter = painterResource(SharedRes.drawable.ic_trash_icon),
                 colorText = LocalPallet.current.keyDelete,
                 colorIcon = LocalPallet.current.keyDelete,

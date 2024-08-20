@@ -12,12 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.remotecontrols.grid.remote.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.components.RemoteGridComposableContent
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 
@@ -40,7 +42,7 @@ fun RemoteGridComposable(
                     AnimatedVisibility(model.isFilesSaved) {
                         Row(modifier = Modifier) {
                             Text(
-                                text = "Save",
+                                text = stringResource(R.string.save),
                                 color = LocalPalletV2.current.text.title.blackOnColor,
                                 style = LocalTypography.current.titleEB18,
                                 textAlign = TextAlign.Center,

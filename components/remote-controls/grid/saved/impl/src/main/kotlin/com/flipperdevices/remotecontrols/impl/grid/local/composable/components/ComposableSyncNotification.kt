@@ -30,8 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -90,10 +90,10 @@ fun ComposableSyncingNotification(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(24.dp)
                     .rotate(angle),
-                tint = Color.Unspecified
+                tint = LocalPalletV2.current.text.link.default
             )
         },
-        text = "Syncing..."
+        text = stringResource(R.string.sync_state_syncing)
     )
 }
 
@@ -107,10 +107,27 @@ fun ComposableSyncedNotification(modifier: Modifier = Modifier) {
                 contentDescription = null,
                 modifier = Modifier
                     .size(24.dp),
-                tint = Color.Unspecified
+                tint = LocalPalletV2.current.text.link.default
             )
         },
-        text = "Synced!"
+        text = stringResource(R.string.sync_state_synced)
+    )
+}
+
+@Composable
+fun ComposableNotConnectedNotification(modifier: Modifier = Modifier) {
+    ComposableNotification(
+        modifier = modifier,
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.ic_not_connected),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp),
+                tint = LocalPalletV2.current.illustration.blackAndWhite.black
+            )
+        },
+        text = stringResource(R.string.sync_state_not_connected)
     )
 }
 
@@ -149,6 +166,7 @@ private fun ComposableNotificationPreview() {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             ComposableSyncingNotification()
             ComposableSyncedNotification()
+            ComposableNotConnectedNotification()
         }
     }
 }
