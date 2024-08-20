@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Settings-->
+    <string name="configuring_title">Configuring</string>
+    <string name="configuring_desc">Remote control is being configured. Please do not close this screen</string>
+</resources>

@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -47,7 +47,7 @@ fun SetupScreen(
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
-            val configuration = RootScreenConfig.RemoteControlGrid.Id(it.id)
+            val configuration = RootScreenConfig.ServerRemoteControl(it.id)
             rootNavigation.push(configuration)
         }.launchIn(this)
     }
@@ -93,7 +93,7 @@ fun SetupScreen(
                 }
 
                 is SetupComponent.Model.Loading -> {
-                    LoadingComposable(progress = model.progress)
+                    SetupLoadingContent()
                 }
             }
         }

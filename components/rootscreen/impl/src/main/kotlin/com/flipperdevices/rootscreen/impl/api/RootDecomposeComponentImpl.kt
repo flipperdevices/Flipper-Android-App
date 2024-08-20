@@ -10,7 +10,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
@@ -23,8 +22,9 @@ import com.flipperdevices.faphub.screenshotspreview.api.ScreenshotsPreviewDecomp
 import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.GridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -60,7 +60,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
     private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
-    private val gridScreenDecomposeComponentFactory: GridScreenDecomposeComponent.Factory
+    private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val navigation = StackNavigation<RootScreenConfig>()
@@ -139,16 +139,10 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
             onBack = this::internalOnBack
         )
 
-        is RootScreenConfig.RemoteControlGrid.Id -> gridScreenDecomposeComponentFactory(
+        is RootScreenConfig.ServerRemoteControl -> serverRemoteControlFactory(
             componentContext = componentContext,
-            param = GridScreenDecomposeComponent.Param.Id(config.ifrFileId),
-            onPopClick = navigation::pop
-        )
-
-        is RootScreenConfig.RemoteControlGrid.Path -> gridScreenDecomposeComponentFactory(
-            componentContext = componentContext,
-            param = GridScreenDecomposeComponent.Param.Path(config.flipperKeyPath),
-            onPopClick = navigation::pop
+            param = ServerRemoteControlParam(config.infraredFileId),
+            onBack = this::internalOnBack,
         )
     }
 

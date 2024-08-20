@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
@@ -21,7 +22,6 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 fun SquareButton(
     onClick: (() -> Unit)?,
     background: Color,
-    isEmulating: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
@@ -34,7 +34,7 @@ fun SquareButton(
                 if (onClick != null) {
                     Modifier.clickable(
                         onClick = onClick,
-                        enabled = !isEmulating
+                        enabled = !LocalButtonPlaceholder.current.isEmulating
                     )
                 } else {
                     Modifier
@@ -43,15 +43,48 @@ fun SquareButton(
         contentAlignment = Alignment.Center,
         content = {
             content.invoke(this)
-            Crossfade(isEmulating) { isEmulating ->
-                if (isEmulating) {
-                    Box(
-                        Modifier
-                            .fillMaxSize()
-                            .placeholderConnecting()
-                    )
-                }
-            }
+            EmulatingBox(isEmulating = LocalButtonPlaceholder.current.isEmulating)
+            SyncingBox(isSyncing = LocalButtonPlaceholder.current.isSyncing)
         }
     )
+}
+
+@Composable
+internal fun EmulatingBox(
+    isEmulating: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(isEmulating) { isEmulatingLocal ->
+        if (isEmulatingLocal) {
+            Box(
+                modifier
+                    .fillMaxSize()
+                    .placeholderConnecting()
+            )
+        }
+    }
+}
+
+@Composable
+internal fun SyncingBox(
+    isSyncing: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Crossfade(
+        targetState = isSyncing,
+        modifier = modifier
+    ) { isEmulating ->
+        if (isEmulating) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(LocalPalletV2.current.surface.menu.body.dufault)
+            )
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .placeholderConnecting()
+            )
+        }
+    }
 }

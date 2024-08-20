@@ -39,7 +39,8 @@ fun LoadedContent(
                     modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
-                    emulatedKeyIdentifier = model.emulatedKeyIdentifier
+                    emulatedKeyIdentifier = model.emulatedKeyIdentifier,
+                    isSyncing = model.isSyncing
                 )
                 AnimatedVisibility(
                     visible = model.isEmulated,
@@ -80,7 +81,8 @@ private fun LoadedContentPreview() {
             model = SetupComponent.Model.Loaded(
                 response = SignalResponseModel(),
                 isEmulated = true,
-                emulatedKeyIdentifier = null
+                emulatedKeyIdentifier = null,
+                isSyncing = false
             ),
             onPositiveClick = {},
             onNegativeClick = {},

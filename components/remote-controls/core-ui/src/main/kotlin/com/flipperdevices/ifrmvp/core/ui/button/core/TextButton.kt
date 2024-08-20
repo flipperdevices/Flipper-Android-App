@@ -12,7 +12,6 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 @Composable
 fun TextButton(
     text: String,
-    isEmulating: Boolean,
     modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.onPrimary,
@@ -22,7 +21,6 @@ fun TextButton(
         onClick = onClick,
         background = background,
         modifier = modifier,
-        isEmulating = isEmulating,
         content = {
             Text(
                 text = text,

@@ -24,14 +24,12 @@ fun SquareIconButton(
     background: Color,
     iconTint: Color,
     modifier: Modifier = Modifier,
-    isEmulating: Boolean = false,
     contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
         background = background,
-        isEmulating = isEmulating
     ) {
         Icon(
             painter = painter,
@@ -51,14 +49,12 @@ fun SquareImageButton(
     background: Color,
     iconTint: Color,
     modifier: Modifier = Modifier,
-    isEmulating: Boolean = false,
     contentDescription: String? = null,
 ) {
     SquareButton(
         modifier = modifier,
         onClick = onClick,
         background = background,
-        isEmulating = isEmulating
     ) {
         Icon(
             bitmap = bitmap,
@@ -74,7 +70,6 @@ fun SquareImageButton(
 @Composable
 fun SquareIconButton(
     iconType: IconButtonData.IconType,
-    isEmulating: Boolean,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     onClick: () -> Unit,
@@ -82,7 +77,6 @@ fun SquareIconButton(
     SquareButton(
         modifier = modifier,
         onClick = onClick,
-        isEmulating = isEmulating,
         background = LocalPalletV2.current.surface.menu.body.dufault
     ) {
         Icon(
@@ -102,8 +96,7 @@ private fun SquareIconButtonPreview() {
     FlipperThemeInternal {
         SquareIconButton(
             iconType = IconButtonData.IconType.POWER,
-            isEmulating = true,
-            onClick = {}
+            onClick = {},
         )
     }
 }

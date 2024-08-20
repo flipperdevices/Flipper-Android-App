@@ -29,7 +29,7 @@ dependencies {
     implementation(projects.components.remoteControls.main.api)
     implementation(projects.components.remoteControls.brands.api)
     implementation(projects.components.remoteControls.categories.api)
-    implementation(projects.components.remoteControls.grid.api)
+    implementation(projects.components.remoteControls.grid.main.api)
     implementation(projects.components.remoteControls.setup.api)
 
     // Compose
