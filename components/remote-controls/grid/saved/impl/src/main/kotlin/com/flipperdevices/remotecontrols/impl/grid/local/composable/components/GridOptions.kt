@@ -2,6 +2,7 @@
 
 package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,21 +40,33 @@ internal fun ComposableInfraredDropDown(
     onRename: () -> Unit,
     onShare: () -> Unit,
     onDelete: () -> Unit,
-    emulatingInProgress: Boolean,
+    isEmulating: Boolean,
+    isConnected: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var isShowMoreOptions by remember { mutableStateOf(false) }
     val onChangeState = { isShowMoreOptions = !isShowMoreOptions }
-
+    val isDropDownEnabled = isConnected && !isEmulating
+    val moreIconTint by animateColorAsState(
+        if (isDropDownEnabled) {
+            LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+        } else {
+            LocalPalletV2.current.action.neutral.icon.primary.disabled
+        }
+    )
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
         Icon(
             modifier = Modifier
-                .clickableRipple(bounded = false, onClick = onChangeState)
+                .clickableRipple(
+                    bounded = false,
+                    onClick = onChangeState,
+                    enabled = isDropDownEnabled
+                )
                 .size(24.dp),
-            tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor,
+            tint = moreIconTint,
             painter = painterResource(SharedRes.drawable.ic_more_points),
             contentDescription = null
         )
@@ -77,7 +90,7 @@ internal fun ComposableInfraredDropDown(
                     onChangeState.invoke()
                     onRename.invoke()
                 },
-                isActive = !emulatingInProgress
+                isActive = !isEmulating
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(

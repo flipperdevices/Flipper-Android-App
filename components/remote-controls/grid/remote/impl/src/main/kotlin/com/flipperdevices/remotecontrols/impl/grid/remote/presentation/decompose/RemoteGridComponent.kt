@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompos
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
@@ -36,8 +37,10 @@ interface RemoteGridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
             val emulatedKey: IfrKeyIdentifier? = null,
-            val saveState: SaveTempSignalApi.State
+            val saveState: SaveTempSignalApi.State,
+            val connectionState: InfraredEmulateState
         ) : Model {
+            val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
             val isSavingFiles = saveState is SaveTempSignalApi.State.Uploading
             val saveProgressOrNull = (saveState as? SaveTempSignalApi.State.Uploading)
                 ?.progressPercent

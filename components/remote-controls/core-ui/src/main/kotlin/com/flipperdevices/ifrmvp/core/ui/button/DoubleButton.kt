@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.button.core.LocalButtonPlaceholder
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
@@ -47,7 +46,7 @@ fun DoubleButton(
             text = lastText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
         )
-        SyncingBox(LocalButtonPlaceholder.current.isSyncing)
+        SyncingBox()
     }
 }
 

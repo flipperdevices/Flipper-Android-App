@@ -33,6 +33,7 @@ interface LocalGridComponent {
                 InfraredEmulateState.SYNCING,
                 InfraredEmulateState.CONNECTING
             ).contains(connectionState)
+            val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
         }
 
         data object Error : Model

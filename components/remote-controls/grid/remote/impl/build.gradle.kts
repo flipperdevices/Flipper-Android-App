@@ -18,7 +18,9 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
+    implementation(projects.components.bridge.service.api)
     implementation(projects.components.infrared.utils)
+    implementation(projects.components.infrared.api)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)

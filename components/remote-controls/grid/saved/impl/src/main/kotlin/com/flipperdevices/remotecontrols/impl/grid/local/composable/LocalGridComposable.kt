@@ -74,7 +74,8 @@ fun LocalGridComposable(
                             )
                         },
                         onShare = onShare,
-                        emulatingInProgress = loadedModel.emulatedKey != null
+                        isEmulating = loadedModel.emulatedKey != null,
+                        isConnected = loadedModel.isConnected
                     )
                 }
             }

@@ -29,14 +29,16 @@ private fun SignalResponseButton(
     data: ButtonData,
     onClick: () -> Unit,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
-    isSyncing: Boolean
+    isSyncing: Boolean,
+    isConnected: Boolean
 ) {
     ButtonItemComposable(
         buttonData = data,
         onKeyDataClick = { onClick.invoke() },
         modifier = Modifier.size(64.dp),
         emulatedKeyIdentifier = emulatedKeyIdentifier,
-        isSyncing = isSyncing
+        isSyncing = isSyncing,
+        isConnected = isConnected,
     )
 }
 
@@ -45,6 +47,7 @@ fun ButtonContent(
     onClick: () -> Unit,
     data: ButtonData,
     isSyncing: Boolean,
+    isConnected: Boolean,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     categoryName: String,
     modifier: Modifier = Modifier,
@@ -58,7 +61,8 @@ fun ButtonContent(
             data = data,
             onClick = onClick,
             emulatedKeyIdentifier = emulatedKeyIdentifier,
-            isSyncing = isSyncing
+            isSyncing = isSyncing,
+            isConnected = isConnected,
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
@@ -85,21 +89,24 @@ private fun ComposableConfirmContentDarkPreview() {
                 categoryName = "CATEGORY",
                 data = TextButtonData(text = "Hello"),
                 emulatedKeyIdentifier = null,
-                isSyncing = false
+                isSyncing = false,
+                isConnected = true
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "TV/AV"),
                 emulatedKeyIdentifier = null,
-                isSyncing = false
+                isSyncing = false,
+                isConnected = true
             )
             ButtonContent(
                 onClick = {},
                 categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "Hello world"),
                 emulatedKeyIdentifier = null,
-                isSyncing = false
+                isSyncing = false,
+                isConnected = true
             )
         }
     }

@@ -59,7 +59,8 @@ internal fun LocalGridComposableContent(
                         localGridComponent.onButtonClick(keyIdentifier)
                     },
                     emulatedKeyIdentifier = animatedModel.emulatedKey,
-                    isSyncing = animatedModel.isSynchronizing
+                    isSyncing = animatedModel.isSynchronizing,
+                    isConnected = animatedModel.isConnected
                 )
             }
 

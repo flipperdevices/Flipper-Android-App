@@ -65,7 +65,8 @@ internal fun RemoteGridComposableContent(
                     },
                     onReload = remoteGridComponent::tryLoad,
                     emulatedKeyIdentifier = animatedModel.emulatedKey,
-                    isSyncing = animatedModel.isSavingFiles
+                    isSyncing = animatedModel.isSavingFiles,
+                    isConnected = animatedModel.isConnected
                 )
             }
 
