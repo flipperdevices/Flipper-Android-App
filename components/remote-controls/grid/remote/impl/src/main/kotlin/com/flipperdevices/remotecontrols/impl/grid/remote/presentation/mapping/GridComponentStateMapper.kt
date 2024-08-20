@@ -23,7 +23,7 @@ internal object GridComponentStateMapper {
                         remotes = gridState.remotes,
                         isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                         emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
-                        isSavingFiles = saveState is SaveTempSignalApi.State.Uploading,
+                        saveState = saveState
                     )
                 }
             }

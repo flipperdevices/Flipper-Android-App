@@ -5,6 +5,7 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
@@ -33,8 +34,15 @@ interface RemoteGridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
             val emulatedKey: IfrKeyIdentifier? = null,
-            val isSavingFiles: Boolean,
-        ) : Model
+            val saveState: SaveTempSignalApi.State
+        ) : Model {
+            val isSavingFiles = saveState is SaveTempSignalApi.State.Uploading
+            val saveProgressOrNull = (saveState as? SaveTempSignalApi.State.Uploading)
+                ?.progressPercent
+                ?.times(other = 100)
+                ?.toInt()
+                ?.coerceIn(minimumValue = 0, maximumValue = 100)
+        }
 
         data object Error : Model
 

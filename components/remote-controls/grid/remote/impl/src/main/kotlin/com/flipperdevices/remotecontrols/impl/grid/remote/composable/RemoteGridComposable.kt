@@ -1,6 +1,8 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.composable
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -38,8 +40,18 @@ fun RemoteGridComposable(
         topBar = {
             SharedTopBar(
                 onBackClick = remoteGridComponent::pop,
+                subtitle = (model as? RemoteGridComponent.Model.Loaded)
+                    ?.saveProgressOrNull
+                    ?.let { progress ->
+                        stringResource(R.string.uploading_to_flipper).format("$progress%")
+                    }
+                    .orEmpty(),
                 actions = {
-                    AnimatedVisibility(model.isFilesSaved) {
+                    AnimatedVisibility(
+                        visible = model.isFilesSaved,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
                         Row(modifier = Modifier) {
                             Text(
                                 text = stringResource(R.string.save),

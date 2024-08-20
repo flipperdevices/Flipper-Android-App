@@ -19,7 +19,7 @@ interface SaveTempSignalApi : InstanceKeeper.Instance {
         data object Pending : State
         data object Error : State
         data class Uploading(val progressInternal: Long, val total: Long) : State {
-            val progress: Float = if (total == 0L) 0f else progressInternal / total.toFloat()
+            val progressPercent: Float = if (total == 0L) 0f else progressInternal / total.toFloat()
         }
 
         data object Uploaded : State

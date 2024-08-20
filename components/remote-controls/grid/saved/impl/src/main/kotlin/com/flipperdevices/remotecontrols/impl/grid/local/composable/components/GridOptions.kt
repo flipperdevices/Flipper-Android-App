@@ -69,6 +69,7 @@ internal fun ComposableInfraredDropDown(
                     onChangeState.invoke()
                 }
             )
+            Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
                 text = stringResource(R.string.option_rename),
                 painter = painterResource(R.drawable.ic_edit),
@@ -78,7 +79,6 @@ internal fun ComposableInfraredDropDown(
                 },
                 isActive = !emulatingInProgress
             )
-            Divider(modifier = Modifier.padding(horizontal = 8.dp))
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
                 text = stringResource(R.string.option_share),
