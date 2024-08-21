@@ -13,6 +13,7 @@ import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping.GridComponentStateMapper
+import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.RemoteGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -28,17 +29,24 @@ import javax.inject.Provider
 @ContributesAssistedFactory(AppGraph::class, RemoteGridComponent.Factory::class)
 class RemoteGridComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted private val param: ServerRemoteControlParam,
+    @Assisted override val param: ServerRemoteControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onSaveKey: (NotSavedFlipperKey) -> Unit,
     createRemoteGridViewModel: RemoteGridViewModel.Factory,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
     createDispatchSignalApi: Provider<DispatchSignalApi>,
+    createConnectionViewModel: Provider<ConnectionViewModel>
 ) : RemoteGridComponent, ComponentContext by componentContext {
     private val saveTempSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_saveSignalViewModel_${param.key}",
         factory = {
             createSaveTempSignalApi.get()
+        }
+    )
+    private val connectionViewModel = instanceKeeper.getOrCreate(
+        key = "GridComponent_connectionViewModel_${param.key}",
+        factory = {
+            createConnectionViewModel.get()
         }
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
@@ -78,11 +86,13 @@ class RemoteGridComponentImpl @AssistedInject constructor(
         saveTempSignalApi.state,
         remoteGridViewModel.state,
         dispatchSignalApi.state,
-        transform = { saveState, gridState, dispatchState ->
+        connectionViewModel.state,
+        transform = { saveState, gridState, dispatchState, connectionState ->
             GridComponentStateMapper.map(
                 saveState = saveState,
                 gridState = gridState,
                 dispatchState = dispatchState,
+                connectionState = connectionState
             )
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, RemoteGridComponent.Model.Loading())

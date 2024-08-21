@@ -3,11 +3,11 @@ package com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
+import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -26,7 +26,7 @@ class LocalGridComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     createLocalGridViewModel: LocalGridViewModel.Factory,
     createDispatchSignalApi: Provider<DispatchSignalApi>,
-    private val synchronizationApi: SynchronizationApi
+    createConnectionViewModel: Provider<ConnectionViewModel>,
 ) : LocalGridComponent, ComponentContext by componentContext {
     private val localGridViewModel = instanceKeeper.getOrCreate(
         key = "LocalGridComponent_localGridViewModel_$keyPath",
@@ -36,12 +36,16 @@ class LocalGridComponentImpl @AssistedInject constructor(
         key = "LocalGridComponent_dispatchSignalApi_$keyPath",
         factory = { createDispatchSignalApi.get() }
     )
+    private val connectionViewModel = instanceKeeper.getOrCreate(
+        key = "LocalGridComponent_connectionViewModel_$keyPath",
+        factory = { createConnectionViewModel.get() }
+    )
 
     override fun model(coroutineScope: CoroutineScope) = combine(
         flow = localGridViewModel.state,
         flow2 = dispatchSignalApi.state,
-        flow3 = synchronizationApi.getSynchronizationState(),
-        transform = { gridState, dispatchState, syncState ->
+        flow3 = connectionViewModel.state,
+        transform = { gridState, dispatchState, connectionState ->
             when (gridState) {
                 LocalGridViewModel.State.Error -> LocalGridComponent.Model.Error
                 is LocalGridViewModel.State.Loaded -> LocalGridComponent.Model.Loaded(
@@ -49,7 +53,7 @@ class LocalGridComponentImpl @AssistedInject constructor(
                     remotes = gridState.remotes,
                     isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                     emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
-                    synchronizationState = syncState,
+                    connectionState = connectionState,
                     keyPath = gridState.keyPath
                 )
 

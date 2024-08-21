@@ -11,7 +11,12 @@ interface SaveFileApi {
     ): Flow<Status>
 
     sealed interface Status {
-        data class Saving(val uploaded: Long, val size: Long) : Status
+        data class Saving(
+            val uploaded: Long,
+            val size: Long,
+            val lastWriteSize: Long
+        ) : Status
+
         data object Finished : Status
     }
 }

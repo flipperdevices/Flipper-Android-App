@@ -60,7 +60,7 @@ fun SharedTopBar(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .weight(weight = 3f, fill = false)
+                .weight(weight = 2f, fill = false)
                 .padding(horizontal = 8.dp)
         ) {
             Text(
@@ -122,7 +122,10 @@ private fun SharedTopBarPreview() {
                 subtitle = "Subtitle",
                 onBackClick = {},
                 actions = {
-                    Row(modifier = Modifier) {
+                    Row(
+                        modifier = Modifier,
+                        horizontalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
                         Text(
                             text = "Action",
                             color = LocalPalletV2.current.text.title.blackOnColor,

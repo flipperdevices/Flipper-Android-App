@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.button.core.LocalButtonPlaceholder
+import com.flipperdevices.ifrmvp.core.ui.button.core.NoConnectionBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
@@ -113,6 +113,7 @@ fun NavigationButton(
                 .clickable(onClick = onDownClick)
                 .align(Alignment.BottomCenter)
         )
-        SyncingBox(isSyncing = LocalButtonPlaceholder.current.isSyncing)
+        SyncingBox()
+        NoConnectionBox()
     }
 }

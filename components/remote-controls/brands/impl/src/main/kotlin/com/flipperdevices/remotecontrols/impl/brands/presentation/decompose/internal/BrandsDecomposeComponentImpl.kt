@@ -25,7 +25,7 @@ import javax.inject.Provider
 class BrandsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onBrandClick: (brandId: Long) -> Unit,
+    @Assisted private val onBrandClick: (brandId: Long, brandName: String) -> Unit,
     @Assisted categoryId: Long,
     createBrandsListViewModel: BrandsListViewModel.Factory,
     createQueryViewModel: Provider<QueryViewModel>
@@ -82,7 +82,7 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
     }
 
     override fun onBrandClick(brandModel: BrandModel) {
-        onBrandClick.invoke(brandModel.id)
+        onBrandClick.invoke(brandModel.id, brandModel.name)
     }
 
     override fun tryLoad() {

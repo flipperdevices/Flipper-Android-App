@@ -141,7 +141,10 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
 
         is RootScreenConfig.ServerRemoteControl -> serverRemoteControlFactory(
             componentContext = componentContext,
-            param = ServerRemoteControlParam(config.infraredFileId),
+            param = ServerRemoteControlParam(
+                infraredFileId = config.infraredFileId,
+                remoteName = config.remoteName
+            ),
             onBack = this::internalOnBack,
         )
     }

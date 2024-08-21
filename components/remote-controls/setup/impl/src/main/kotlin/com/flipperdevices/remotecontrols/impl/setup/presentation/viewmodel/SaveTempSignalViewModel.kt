@@ -40,7 +40,9 @@ class SaveTempSignalViewModel @Inject constructor(
         onFinished: () -> Unit,
     ) {
         viewModelScope.launch {
-            _state.emit(SaveTempSignalApi.State.Uploading(0, 0))
+            var progressInternal = 0L
+            val totalSize = filesDesc.sumOf { it.textContent.toByteArray().size.toLong() }
+            _state.emit(SaveTempSignalApi.State.Uploading(0, totalSize))
             val serviceApi = serviceProvider.getServiceApi()
             launchWithLock(mutex, viewModelScope, "load") {
                 filesDesc.forEach { fileDesc ->
@@ -60,10 +62,13 @@ class SaveTempSignalViewModel @Inject constructor(
                         .onEach {
                             _state.value = when (it) {
                                 SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
-                                is SaveFileApi.Status.Saving -> SaveTempSignalApi.State.Uploading(
-                                    it.uploaded,
-                                    it.size
-                                )
+                                is SaveFileApi.Status.Saving -> {
+                                    progressInternal += it.lastWriteSize
+                                    SaveTempSignalApi.State.Uploading(
+                                        progressInternal,
+                                        totalSize
+                                    )
+                                }
                             }
                         }
                         .collect()

@@ -23,12 +23,14 @@ fun ButtonItemComposable(
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     onKeyDataClick: (IfrKeyIdentifier) -> Unit,
     isSyncing: Boolean,
+    isConnected: Boolean,
     modifier: Modifier = Modifier
 ) {
     when (buttonData) {
         is IconButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
                     SquareIconButton(
@@ -43,6 +45,7 @@ fun ButtonItemComposable(
         is ChannelButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
                     buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
@@ -58,6 +61,7 @@ fun ButtonItemComposable(
         is VolumeButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
                     buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
@@ -73,6 +77,7 @@ fun ButtonItemComposable(
         is NavigationButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = listOf(
                     buttonData.okKeyIdentifier,
                     buttonData.upKeyIdentifier,
@@ -96,6 +101,7 @@ fun ButtonItemComposable(
         is TextButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
                     TextButton(
@@ -111,6 +117,7 @@ fun ButtonItemComposable(
         is Base64ImageButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
                     Base64ImageButton(
@@ -125,6 +132,7 @@ fun ButtonItemComposable(
         UnknownButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
+                isConnected = isConnected,
                 isEmulating = false,
                 content = {
                     UnknownButton(

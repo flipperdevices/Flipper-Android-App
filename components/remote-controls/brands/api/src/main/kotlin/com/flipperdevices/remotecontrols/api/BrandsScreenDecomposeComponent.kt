@@ -12,7 +12,7 @@ abstract class BrandsScreenDecomposeComponent(
             componentContext: ComponentContext,
             categoryId: Long,
             onBackClick: () -> Unit,
-            onBrandClick: (brandId: Long) -> Unit
+            onBrandClick: (brandId: Long, brandName: String) -> Unit
         ): BrandsScreenDecomposeComponent
     }
 }

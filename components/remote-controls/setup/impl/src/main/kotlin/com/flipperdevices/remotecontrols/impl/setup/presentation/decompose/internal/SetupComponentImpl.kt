@@ -15,6 +15,7 @@ import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -41,12 +42,19 @@ class SetupComponentImpl @AssistedInject constructor(
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
-    createDispatchSignalApi: Provider<DispatchSignalApi>
+    createDispatchSignalApi: Provider<DispatchSignalApi>,
+    createConnectionViewModel: Provider<ConnectionViewModel>
 ) : SetupComponent, ComponentContext by componentContext {
     private val saveSignalApi = instanceKeeper.getOrCreate(
         key = "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}",
         factory = {
             createSaveTempSignalApi.get()
+        }
+    )
+    private val connectionViewModel = instanceKeeper.getOrCreate(
+        key = "SetupComponent_connectionViewModel_${param.brandId}_${param.categoryId}",
+        factory = {
+            createConnectionViewModel.get()
         }
     )
     private val historyViewModel = instanceKeeper.getOrCreate(
@@ -81,7 +89,8 @@ class SetupComponentImpl @AssistedInject constructor(
         saveSignalApi.state,
         dispatchSignalApi.state,
         dispatchSignalApi.isEmulated,
-        transform = { signalState, saveState, dispatchState, isEmulated ->
+        connectionViewModel.state,
+        transform = { signalState, saveState, dispatchState, isEmulated, connectionState ->
             val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
@@ -95,7 +104,7 @@ class SetupComponentImpl @AssistedInject constructor(
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                             emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
                             isEmulated = isEmulated,
-                            isSyncing = saveState is SaveTempSignalApi.State.Uploading
+                            connectionState = connectionState
                         )
                     }
                 }
