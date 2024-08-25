@@ -13,10 +13,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.impl.R
 import com.flipperdevices.infrared.impl.composable.components.ComposableIconText
 import com.flipperdevices.infrared.impl.composable.components.ComposableInfraredAppBar
-import com.flipperdevices.infrared.impl.viewmodel.InfraredEmulateState
 import com.flipperdevices.infrared.impl.viewmodel.InfraredViewModel
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi

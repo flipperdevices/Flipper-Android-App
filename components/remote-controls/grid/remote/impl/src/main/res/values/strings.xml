@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_page">Page is empty!</string>
+    <string name="save">Save</string>
+    <string name="loading_remote">Loading Remote…</string>
+    <string name="uploading_to_flipper">Uploading to Flipper: %s</string>
+    <string name="remote_subtitle">Remote</string>
+</resources>

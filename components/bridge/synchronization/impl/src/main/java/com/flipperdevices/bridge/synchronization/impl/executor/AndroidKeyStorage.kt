@@ -30,7 +30,10 @@ class AndroidKeyStorage @Inject constructor(
             FlipperFileType.KEY -> simpleKeyApi.getKey(
                 FlipperKeyPath(filePath, deleted = false)
             )?.mainFile?.content ?: error("Can't found $filePath")
-            FlipperFileType.SHADOW_NFC -> flipperFileApi.getFile(filePath).content
+
+            FlipperFileType.SHADOW_NFC,
+            FlipperFileType.UI_INFRARED -> flipperFileApi.getFile(filePath).content
+
             FlipperFileType.OTHER ->
                 error("I cannot process a file that is neither a key nor a shadow file: $filePath")
         }
@@ -49,8 +52,11 @@ class AndroidKeyStorage @Inject constructor(
                 ),
                 newContent
             )
+
+            FlipperFileType.UI_INFRARED,
             FlipperFileType.SHADOW_NFC ->
                 flipperFileApi.updateFileContent(filePath, newContent)
+
             FlipperFileType.OTHER ->
                 error("I cannot process a file that is neither a key nor a shadow file: $filePath")
         }
@@ -69,7 +75,10 @@ class AndroidKeyStorage @Inject constructor(
                     deleted = false
                 )
             )
+
+            FlipperFileType.UI_INFRARED,
             FlipperFileType.SHADOW_NFC -> flipperFileApi.insert(FlipperFile(filePath, keyContent))
+
             FlipperFileType.OTHER ->
                 error("I cannot process a file that is neither a key nor a shadow file: $filePath")
         }
@@ -79,7 +88,9 @@ class AndroidKeyStorage @Inject constructor(
         info { "Mark delete key $filePath" }
         when (filePath.fileType) {
             FlipperFileType.KEY -> deleteKeyApi.markDeleted(filePath)
+            FlipperFileType.UI_INFRARED,
             FlipperFileType.SHADOW_NFC -> flipperFileApi.deleteFile(filePath)
+
             FlipperFileType.OTHER ->
                 error("I cannot process a file that is neither a key nor a shadow file: $filePath")
         }

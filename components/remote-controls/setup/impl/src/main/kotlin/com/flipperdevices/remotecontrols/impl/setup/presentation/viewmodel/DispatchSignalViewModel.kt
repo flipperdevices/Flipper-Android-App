@@ -93,14 +93,14 @@ class DispatchSignalViewModel @Inject constructor(
             args = remote.name,
             index = i
         )
-        dispatch(config)
+        dispatch(config, identifier)
     }
 
     override fun dismissBusyDialog() {
         _state.value = DispatchSignalApi.State.Pending
     }
 
-    override fun dispatch(config: EmulateConfig) {
+    override fun dispatch(config: EmulateConfig, identifier: IfrKeyIdentifier) {
         if (latestDispatchJob?.isActive == true) return
         latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
             _state.emit(DispatchSignalApi.State.Pending)
@@ -109,7 +109,7 @@ class DispatchSignalViewModel @Inject constructor(
                 onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launch {
-                        _state.emit(DispatchSignalApi.State.Emulating)
+                        _state.emit(DispatchSignalApi.State.Emulating(identifier))
                         try {
                             emulateHelper.startEmulate(
                                 scope = this,

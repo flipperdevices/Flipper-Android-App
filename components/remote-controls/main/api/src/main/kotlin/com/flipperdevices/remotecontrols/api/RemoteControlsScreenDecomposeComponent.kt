@@ -8,7 +8,7 @@ abstract class RemoteControlsScreenDecomposeComponent<C : Any> : CompositeDecomp
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
+            onBack: DecomposeOnBackParameter,
         ): RemoteControlsScreenDecomposeComponent<*>
     }
 }

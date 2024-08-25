@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
@@ -19,7 +20,6 @@ fun SquareButton(
     onClick: (() -> Unit)?,
     background: Color,
     modifier: Modifier = Modifier,
-    isEmulating: Boolean = false,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
@@ -28,16 +28,29 @@ fun SquareButton(
             .clip(RoundedCornerShape(8.sf))
             .background(background)
             .then(
+                if (!LocalButtonPlaceholder.current.isConnected) {
+                    Modifier.background(LocalPalletV2.current.action.blackAndWhite.icon.disabled)
+                } else {
+                    Modifier
+                }
+            )
+            .then(
                 if (onClick != null) {
                     Modifier.clickable(
                         onClick = onClick,
-                        enabled = !isEmulating
+                        enabled = (!LocalButtonPlaceholder.current.isEmulating)
+                            .and(LocalButtonPlaceholder.current.isConnected)
                     )
                 } else {
                     Modifier
                 }
             ),
         contentAlignment = Alignment.Center,
-        content = content
+        content = {
+            content.invoke(this)
+            EmulatingBox()
+            SyncingBox()
+            NoConnectionBox()
+        }
     )
 }

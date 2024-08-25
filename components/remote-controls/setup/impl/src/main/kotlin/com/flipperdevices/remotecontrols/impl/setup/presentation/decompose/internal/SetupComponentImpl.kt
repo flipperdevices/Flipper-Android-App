@@ -7,12 +7,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
+import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal.mapping.toFFFormat
+import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -35,16 +38,23 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: (ifrFileId: Long) -> Unit,
+    @Assisted private val onIfrFileFound: (id: Long) -> Unit,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
-    createDispatchSignalApi: Provider<DispatchSignalApi>
+    createDispatchSignalApi: Provider<DispatchSignalApi>,
+    createConnectionViewModel: Provider<ConnectionViewModel>
 ) : SetupComponent, ComponentContext by componentContext {
     private val saveSignalApi = instanceKeeper.getOrCreate(
         key = "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}",
         factory = {
             createSaveTempSignalApi.get()
+        }
+    )
+    private val connectionViewModel = instanceKeeper.getOrCreate(
+        key = "SetupComponent_connectionViewModel_${param.brandId}_${param.categoryId}",
+        factory = {
+            createConnectionViewModel.get()
         }
     )
     private val historyViewModel = instanceKeeper.getOrCreate(
@@ -64,9 +74,12 @@ class SetupComponentImpl @AssistedInject constructor(
         factory = {
             currentSignalViewModelFactory.invoke(param) { responseModel ->
                 val signalModel = responseModel.signalResponse?.signalModel ?: return@invoke
-                saveSignalApi.saveTempFile(
-                    fff = signalModel.toFFFormat(),
-                    nameWithExtension = TEMP_FILE_NAME
+                saveSignalApi.saveFiles(
+                    SaveTempSignalApi.FileDesc(
+                        textContent = signalModel.toFFFormat().openStream().reader().readText(),
+                        nameWithExtension = TEMP_FILE_NAME,
+                        extFolderPath = ABSOLUTE_TEMP_FOLDER_PATH
+                    )
                 )
             }
         }
@@ -76,28 +89,22 @@ class SetupComponentImpl @AssistedInject constructor(
         saveSignalApi.state,
         dispatchSignalApi.state,
         dispatchSignalApi.isEmulated,
-        transform = { signalState, saveState, dispatchState, isEmulated ->
+        connectionViewModel.state,
+        transform = { signalState, saveState, dispatchState, isEmulated, connectionState ->
+            val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
                 is CurrentSignalViewModel.State.Loaded -> {
                     when (saveState) {
                         SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
+                        is SaveTempSignalApi.State.Uploading,
+                        SaveTempSignalApi.State.Uploaded,
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
-                            isEmulated = isEmulated
-                        )
-
-                        SaveTempSignalApi.State.Uploaded -> SetupComponent.Model.Loaded(
-                            response = signalState.response,
-                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
-                            isEmulating = dispatchState is DispatchSignalApi.State.Emulating,
-                            isEmulated = isEmulated
-                        )
-
-                        is SaveTempSignalApi.State.Uploading -> SetupComponent.Model.Loading(
-                            saveState.progress
+                            emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
+                            isEmulated = isEmulated,
+                            connectionState = connectionState
                         )
                     }
                 }
@@ -153,18 +160,21 @@ class SetupComponentImpl @AssistedInject constructor(
         val signalModel = loadedState.response.signalResponse?.signalModel ?: return
         val config = EmulateConfig(
             keyPath = FlipperFilePath(
-                FLIPPER_TEMP_FOLDER,
+                ABSOLUTE_TEMP_FOLDER_PATH,
                 TEMP_FILE_NAME
             ),
             keyType = FlipperKeyType.INFRARED,
             args = signalModel.remote.name,
             index = 0
         )
-        dispatchSignalApi.dispatch(config)
+        val keyIdentifier = (loadedState.response.signalResponse?.data as? SingleKeyButtonData)
+            ?.keyIdentifier
+            ?: IfrKeyIdentifier.Unknown
+        dispatchSignalApi.dispatch(config, keyIdentifier)
     }
 
     override fun onBackClick() = onBackClick.invoke()
 }
 
-private val FLIPPER_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"
+private val ABSOLUTE_TEMP_FOLDER_PATH = "/${FlipperKeyType.INFRARED.flipperDir}/temp"
 private const val TEMP_FILE_NAME = "temp.ir"

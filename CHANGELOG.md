@@ -8,6 +8,8 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Infrared controls
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
+- [Feature] Save, edit, share remote control
+- [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
 - [Refactor] Migrate :core:preference to KMP
@@ -22,9 +24,11 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix scroll on save edit screen
 - [FIX] Update Infrared backend integration
 - [FIX] Ignore faps manifest with point in start
-- [FIX] Try use kotlin 2.0.20-Beta2 for bypass compose compiler exception
+- [FIX] Use kotlin 2.0.20-RC2 for bypass Options screen crash
 - [FIX] Relocate remote-controls button to infrared remotes screen
-- [FIX] Fix merge-queue files diff
+- [FIX] Fap manifest caching
+- [FIX] Remote controls design issues
+- [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34

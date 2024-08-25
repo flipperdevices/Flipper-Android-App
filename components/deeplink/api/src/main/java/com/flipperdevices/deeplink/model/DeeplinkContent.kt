@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
+import com.flipperdevices.core.ktx.jre.length
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
@@ -81,6 +82,7 @@ sealed class DeeplinkContent : Parcelable {
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
+
             is InternalStorageFile -> file.delete()
             is FFFContent -> {} // Nothing
             is FFFCryptoContent -> {} // Nothing

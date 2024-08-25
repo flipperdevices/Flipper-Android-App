@@ -15,14 +15,12 @@ fun TextButton(
     modifier: Modifier = Modifier,
     background: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.onPrimary,
-    isEmulating: Boolean = false,
     onClick: (() -> Unit)?
 ) {
     SquareButton(
         onClick = onClick,
         background = background,
         modifier = modifier,
-        isEmulating = isEmulating,
         content = {
             Text(
                 text = text,

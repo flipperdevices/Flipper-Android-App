@@ -51,7 +51,7 @@ interface BrandsDecomposeComponent {
             componentContext: ComponentContext,
             categoryId: Long,
             onBackClick: DecomposeOnBackParameter,
-            onBrandClick: (brandId: Long) -> Unit
+            onBrandClick: (brandId: Long, brandName: String) -> Unit
         ): BrandsDecomposeComponent
     }
 }

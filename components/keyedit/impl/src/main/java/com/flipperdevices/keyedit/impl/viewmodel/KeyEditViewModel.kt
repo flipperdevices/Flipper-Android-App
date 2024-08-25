@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
+import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -83,7 +84,7 @@ class KeyEditViewModel @AssistedInject constructor(
         }
     }
 
-    fun onSave(onEndAction: () -> Unit) {
+    fun onSave(onEndAction: (FlipperKey?) -> Unit) {
         val savingState = keyEditState.updateAndGet {
             if (it is KeyEditState.Editing) {
                 KeyEditState.Saving(it)

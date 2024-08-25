@@ -65,7 +65,6 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 fun Base64ImageButton(
     base64Icon: String,
     modifier: Modifier = Modifier,
-    isEmulating: Boolean = false,
     onClick: () -> Unit
 ) {
     val imageBitmap = rememberImageBitmap(base64Icon)
@@ -76,9 +75,10 @@ fun Base64ImageButton(
             bitmap = imageBitmap,
             iconTint = Color.Unspecified,
             modifier = modifier,
-            isEmulating = isEmulating
         )
     } else {
-        UnknownButton(onClick = onClick)
+        UnknownButton(
+            onClick = onClick,
+        )
     }
 }

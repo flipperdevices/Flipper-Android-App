@@ -1,35 +1,26 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
-import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.api.save.file.SaveFileApi
 import com.flipperdevices.remotecontrols.impl.setup.api.save.folder.SaveFolderApi
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-private val EXT_IFR_TEMP_FOLDER = "/ext/${FlipperKeyType.INFRARED.flipperDir}/temp"
-private val IFR_TEMP_FOLDER = FlipperKeyType.INFRARED.flipperDir + "/temp"
+private const val EXT_PATH = "/ext"
 
 @ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
 class SaveTempSignalViewModel @Inject constructor(
@@ -37,7 +28,6 @@ class SaveTempSignalViewModel @Inject constructor(
     private val saveFileApi: SaveFileApi,
     private val saveFolderApi: SaveFolderApi,
 ) : DecomposeViewModel(),
-    FlipperBleServiceConsumer,
     LogTagProvider,
     SaveTempSignalApi {
     private val mutex = Mutex()
@@ -45,47 +35,47 @@ class SaveTempSignalViewModel @Inject constructor(
     private val _state = MutableStateFlow<SaveTempSignalApi.State>(SaveTempSignalApi.State.Pending)
     override val state = _state.asStateFlow()
 
-    override fun saveTempFile(fff: FlipperFileFormat, nameWithExtension: String) {
-        _state.value = SaveTempSignalApi.State.Uploading(0, 0)
-        launchWithLock(mutex, viewModelScope, "load") {
-            val serviceApi = withContext(Dispatchers.Main) { serviceProvider.getServiceApi() }
-            saveFolderApi.save(serviceApi.requestApi, EXT_IFR_TEMP_FOLDER)
-            save(
-                serviceApi = serviceApi,
-                fff = fff,
-                ffPath = FlipperFilePath(
-                    folder = IFR_TEMP_FOLDER,
-                    nameWithExtension = nameWithExtension
-                )
-            )
+    override fun saveFiles(
+        vararg filesDesc: SaveTempSignalApi.FileDesc,
+        onFinished: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            var progressInternal = 0L
+            val totalSize = filesDesc.sumOf { it.textContent.toByteArray().size.toLong() }
+            _state.emit(SaveTempSignalApi.State.Uploading(0, totalSize))
+            val serviceApi = serviceProvider.getServiceApi()
+            launchWithLock(mutex, viewModelScope, "load") {
+                filesDesc.forEach { fileDesc ->
+                    val absolutePath = FlipperFilePath(
+                        folder = fileDesc.extFolderPath,
+                        nameWithExtension = fileDesc.nameWithExtension
+                    ).getPathOnFlipper()
+
+                    saveFolderApi.save(serviceApi.requestApi, "$EXT_PATH/${fileDesc.extFolderPath}")
+                    val saveFileFlow = saveFileApi.save(
+                        requestApi = serviceApi.requestApi,
+                        textContent = fileDesc.textContent,
+                        absolutePath = absolutePath
+                    )
+                    saveFileFlow
+                        .flowOn(FlipperDispatchers.workStealingDispatcher)
+                        .onEach {
+                            _state.value = when (it) {
+                                SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
+                                is SaveFileApi.Status.Saving -> {
+                                    progressInternal += it.lastWriteSize
+                                    SaveTempSignalApi.State.Uploading(
+                                        progressInternal,
+                                        totalSize
+                                    )
+                                }
+                            }
+                        }
+                        .collect()
+                }
+                _state.value = SaveTempSignalApi.State.Uploaded
+                onFinished.invoke()
+            }
         }
     }
-
-    private suspend fun save(
-        serviceApi: FlipperServiceApi,
-        fff: FlipperFileFormat,
-        ffPath: FlipperFilePath
-    ) = coroutineScope {
-        val deeplinkContent = DeeplinkContent.FFFContent(ffPath.nameWithExtension, fff)
-        val saveFileFlow = saveFileApi.save(
-            requestApi = serviceApi.requestApi,
-            deeplinkContent = deeplinkContent,
-            absolutePath = ffPath.getPathOnFlipper()
-        )
-        saveFileFlow
-            .flowOn(FlipperDispatchers.workStealingDispatcher)
-            .onEach {
-                _state.value = when (it) {
-                    SaveFileApi.Status.Finished -> SaveTempSignalApi.State.Uploaded
-                    is SaveFileApi.Status.Saving -> SaveTempSignalApi.State.Uploading(
-                        it.uploaded,
-                        it.size
-                    )
-                }
-            }
-            .collect()
-        _state.value = SaveTempSignalApi.State.Uploaded
-    }
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
 }

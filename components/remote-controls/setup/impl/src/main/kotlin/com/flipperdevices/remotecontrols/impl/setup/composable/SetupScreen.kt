@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.LoadingComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
@@ -34,6 +34,7 @@ private val SetupComponent.Model.key: Any
         is SetupComponent.Model.Loading -> "loading"
     }
 
+@Suppress("LongMethod")
 @Composable
 fun SetupScreen(
     setupComponent: SetupComponent,
@@ -45,9 +46,14 @@ fun SetupScreen(
         setupComponent.model(coroutineScope)
     }.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
-        setupComponent.remoteFoundFlow
-            .onEach { setupComponent.onFileFound(it) }
-            .launchIn(this)
+        setupComponent.remoteFoundFlow.onEach {
+            setupComponent.onFileFound(it)
+            val configuration = RootScreenConfig.ServerRemoteControl(
+                it.id,
+                setupComponent.param.remoteName
+            )
+            rootNavigation.push(configuration)
+        }.launchIn(this)
     }
     Scaffold(
         modifier = modifier,
@@ -91,7 +97,7 @@ fun SetupScreen(
                 }
 
                 is SetupComponent.Model.Loading -> {
-                    LoadingComposable(progress = model.progress)
+                    SetupLoadingContent()
                 }
             }
         }
