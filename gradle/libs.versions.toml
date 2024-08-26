@@ -4,7 +4,7 @@ kotlin-general = "2.0.20" # https://kotlinlang.org/docs/releases.html#release-de
 kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.0.20-1.0.25-SNAPSHOT" # https://github.com/google/ksp/releases
+ksp = "2.0.20-1.0.24" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta11" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.5.2" # https://developer.android.com/studio/releases/gradle-plugin
@@ -21,7 +21,10 @@ compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/lay
 compose-paging = "3.3.2" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
 compose-multiplatform = "1.6.11" # https://github.com/JetBrains/compose-multiplatform/releases
-horologist = "0.6.18" # https://github.com/google/horologist/releases
+# 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
+# androidx.navigation:navigation-compose:2.8.0-beta0 requires Android API 35
+# Android API 35 not supported by roboelectric
+horologist = "0.6.17" # https://github.com/google/horologist/releases
 serialization-json = "1.7.1" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "18.2.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google

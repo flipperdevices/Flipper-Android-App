@@ -24,6 +24,7 @@
       matchPackageNames: [
         '/^com.vladsch.flexmark/',
         '/^org.slf4j/',
+        '/^com.google.android.horologist/'
       ],
     },
   ],
