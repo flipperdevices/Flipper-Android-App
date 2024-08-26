@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, BrandsDecomposeComponent.Factory::class)
 class BrandsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

@@ -33,8 +33,6 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 
-private const val NAV_BUTTON_SCALE = 4
-
 @Suppress("LongMethod")
 @Composable
 fun NavigationButton(

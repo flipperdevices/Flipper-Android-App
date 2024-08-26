@@ -47,7 +47,6 @@ fun InfraredsScreen(
                 is InfraredsListViewModel.State.Loaded -> {
                     val listState = rememberLazyListState()
                     AlphabetSearchComposable(
-                        modifier = modifier,
                         items = model.infrareds,
                         toHeader = { it.folderName.first().uppercaseChar() },
                         headers = remember(model) {

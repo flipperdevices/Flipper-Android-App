@@ -38,7 +38,7 @@ fun ShutterButtonComposable(
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .clip(CircleShape)
                 .background(LocalPalletV2.current.surface.dialog.body.default)

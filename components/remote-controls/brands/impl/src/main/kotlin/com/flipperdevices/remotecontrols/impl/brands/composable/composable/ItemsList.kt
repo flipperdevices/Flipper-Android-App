@@ -29,10 +29,10 @@ fun <T> ItemsList(
     items: ImmutableList<T>,
     onClick: (T) -> Unit,
     onLongClick: (T) -> Unit,
+    toCharSection: (T) -> Char,
+    toString: (T) -> String,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    toCharSection: (T) -> Char,
-    toString: (T) -> String
 ) {
     LazyColumn(
         state = listState,

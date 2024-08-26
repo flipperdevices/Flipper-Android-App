@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.EnergySavingsLeaf
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Fireplace
 import androidx.compose.material.icons.filled.Light
-import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.LiveTv
 import androidx.compose.material.icons.filled.LockReset
 import androidx.compose.material.icons.filled.Logout
@@ -44,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 
+@Suppress("CyclomaticComplexMethod")
 @Composable
 fun IconButtonData.IconType.asPainter() = when (this) {
     IconButtonData.IconType.BACK -> rememberVectorPainter(Icons.AutoMirrored.Filled.Reply)
