@@ -12,12 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
-import com.flipperdevices.ifrmvp.core.ui.button.core.EmptyButtonPlaceholderComposition
-import com.flipperdevices.ifrmvp.core.ui.button.core.EmulatingBox
-import com.flipperdevices.ifrmvp.core.ui.button.core.LocalButtonPlaceholder
-import com.flipperdevices.ifrmvp.core.ui.button.core.NoConnectionBox
-import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
@@ -88,7 +82,6 @@ fun ChannelButton(
         modifier = modifier,
     )
 }
-
 
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable

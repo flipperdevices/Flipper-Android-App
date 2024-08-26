@@ -51,7 +51,7 @@ fun ButtonItemComposable(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                        buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
                     ChannelButton(
                         onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
@@ -67,7 +67,7 @@ fun ButtonItemComposable(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                        buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
                     VolumeButton(
                         onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },

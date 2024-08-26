@@ -21,6 +21,8 @@ interface BrandsDecomposeComponent {
 
     fun onBrandClick(brandModel: BrandModel)
 
+    fun onBrandLongClick(brandModel: BrandModel)
+
     fun tryLoad()
 
     sealed interface Model {
@@ -51,7 +53,8 @@ interface BrandsDecomposeComponent {
             componentContext: ComponentContext,
             categoryId: Long,
             onBackClick: DecomposeOnBackParameter,
-            onBrandClick: (brandId: Long, brandName: String) -> Unit
+            onBrandClick: (brandId: Long, brandName: String) -> Unit,
+            onBrandLongClick: (brandId: Long) -> Unit
         ): BrandsDecomposeComponent
     }
 }

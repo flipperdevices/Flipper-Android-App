@@ -1,7 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.brands.composable.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,25 +22,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.ifrmvp.backend.model.BrandModel
-import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun BrandsList(
-    brands: ImmutableList<BrandModel>,
-    onBrandClick: (BrandModel) -> Unit,
+fun <T> ItemsList(
+    items: ImmutableList<T>,
+    onClick: (T) -> Unit,
+    onLongClick: (T) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
+    toCharSection: (T) -> Char,
+    toString: (T) -> String
 ) {
     LazyColumn(
         state = listState,
         modifier = modifier.padding(end = 14.dp)
     ) {
-        itemsIndexed(brands) { i, brand ->
-            val charSection = remember(i) { brand.charSection() }
+        itemsIndexed(items) { i, brand ->
+            val charSection = remember(i) { toCharSection.invoke(brand) }
             val needDisplayTag = remember(i) {
-                charSection != brands.getOrNull(i - 1)?.charSection()
+                charSection != items.getOrNull(i - 1)?.let(toCharSection)
             }
             if (needDisplayTag) {
                 Text(
@@ -52,13 +53,16 @@ fun BrandsList(
             }
             Column {
                 Text(
-                    text = brand.name,
+                    text = toString.invoke(brand),
                     style = LocalTypography.current.bodyM14,
                     color = MaterialTheme.colors.onPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable { onBrandClick.invoke(brand) }
+                        .combinedClickable(
+                            onClick = { onClick.invoke(brand) },
+                            onLongClick = { onLongClick.invoke(brand) }
+                        )
                         .padding(vertical = 12.dp)
                 )
                 Spacer(

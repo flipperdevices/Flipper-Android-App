@@ -16,6 +16,11 @@ sealed interface RemoteControlsNavigationConfig {
     ) : RemoteControlsNavigationConfig
 
     @Serializable
+    data class Infrareds(
+        val brandId: Long,
+    ) : RemoteControlsNavigationConfig
+
+    @Serializable
     class Setup(
         val categoryId: Long,
         val brandId: Long,

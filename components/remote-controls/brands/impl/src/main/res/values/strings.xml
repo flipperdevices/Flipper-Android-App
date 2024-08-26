@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="brands_title">Select Brand</string>
+    <string name="infrareds_title">Select File</string>
     <string name="brands_subtitle">Add remote</string>
 </resources>
