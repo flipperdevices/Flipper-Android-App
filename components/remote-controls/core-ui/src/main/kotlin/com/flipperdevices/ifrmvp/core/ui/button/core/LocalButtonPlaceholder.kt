@@ -19,6 +19,14 @@ enum class ButtonPlaceholderState {
 }
 
 @Composable
+internal fun EmptyButtonPlaceholderComposition(content: @Composable () -> Unit) {
+    CompositionLocalProvider(
+        value = LocalButtonPlaceholder provides ButtonPlaceholderState.NONE,
+        content = content
+    )
+}
+
+@Composable
 internal fun ButtonPlaceholderComposition(
     isSyncing: Boolean,
     isEmulating: Boolean,

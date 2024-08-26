@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Reply
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.filled.Air
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Fireplace
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.SettingsPower
@@ -27,18 +28,5 @@ fun IconButtonData.IconType.asPainter() = when (this) {
     IconButtonData.IconType.COOL -> rememberVectorPainter(Icons.Default.SevereCold)
     IconButtonData.IconType.HEAT -> rememberVectorPainter(Icons.Default.Fireplace)
     IconButtonData.IconType.FAN -> rememberVectorPainter(Icons.Default.Air)
-}
-
-@Composable
-fun IconButtonData.IconType.tintFor() = when (this) {
-    IconButtonData.IconType.FAN,
-    IconButtonData.IconType.HEAT,
-    IconButtonData.IconType.COOL,
-    IconButtonData.IconType.BACK,
-    IconButtonData.IconType.HOME,
-    IconButtonData.IconType.INFO,
-    IconButtonData.IconType.MORE,
-    IconButtonData.IconType.MUTE -> MaterialTheme.colors.onPrimary
-
-    IconButtonData.IconType.POWER -> LocalPalletV2.current.icon.danger.primary
+    IconButtonData.IconType.CAMERA -> rememberVectorPainter(Icons.Default.CameraAlt)
 }

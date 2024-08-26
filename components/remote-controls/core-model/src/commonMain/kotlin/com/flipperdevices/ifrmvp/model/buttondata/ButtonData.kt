@@ -15,7 +15,10 @@ sealed interface ButtonData {
         ICON,
         BASE64_IMAGE,
         CHANNEL,
+        OK_NAVIGATION,
         NAVIGATION,
         VOLUME,
+        SHUTTER,
+        POWER
     }
 }

@@ -14,7 +14,7 @@ data class IconButtonData(
     override val type: ButtonData.ButtonType = ButtonData.ButtonType.ICON
 
     enum class IconType {
-        BACK, HOME, INFO, MORE, MUTE, POWER,
-        COOL, HEAT, FAN
+        BACK, HOME, INFO, MORE, MUTE,
+        POWER, COOL, HEAT, FAN, CAMERA
     }
 }

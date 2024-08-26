@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.composable
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -43,7 +44,7 @@ fun RemoteGridComposable(
             RemoteGridComposableContent(
                 remoteGridComponent = remoteGridComponent,
                 model = model,
-                modifier = Modifier.padding(scaffoldPaddings)
+                modifier = Modifier.padding(scaffoldPaddings).navigationBarsPadding()
             )
         }
     )

@@ -1,5 +1,6 @@
 package com.flipperdevices.keyemulate.helpers
 
+import android.content.Intent
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
@@ -31,6 +32,7 @@ class FlipperAppErrorHandlerImpl @Inject constructor() : FlipperAppErrorHelper {
         if (!serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_FLIPPER_ERROR)) {
             return FlipperAppError.NotSupportedApi
         }
+        Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
         val errorResponse = requestApi.request(
             flowOf(

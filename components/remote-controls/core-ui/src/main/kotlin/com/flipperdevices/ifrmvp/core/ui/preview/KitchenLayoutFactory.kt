@@ -127,10 +127,6 @@ internal object KitchenLayoutFactory {
                                     name = "right",
                                     hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
                                 ),
-                                okKeyIdentifier = IfrKeyIdentifier.Sha256(
-                                    name = "apply",
-                                    hash = "60d18bb96f05eee3bde60a0c3f87b13f74b0c4d3d934d659ef7738f415881740"
-                                )
                             ),
                             position = IfrButton.Position(
                                 y = 3,

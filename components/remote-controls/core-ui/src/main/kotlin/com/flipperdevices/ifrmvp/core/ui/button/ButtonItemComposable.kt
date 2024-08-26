@@ -1,5 +1,6 @@
 package com.flipperdevices.ifrmvp.core.ui.button
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
@@ -12,6 +13,9 @@ import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.ChannelButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.NavigationButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.OkNavigationButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.PowerButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.ShutterButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.UnknownButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
@@ -47,7 +51,7 @@ fun ButtonItemComposable(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                        buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
                     ChannelButton(
                         onNextClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
@@ -63,7 +67,7 @@ fun ButtonItemComposable(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
                 isEmulating = buttonData.reduceKeyIdentifier == emulatedKeyIdentifier ||
-                    buttonData.addKeyIdentifier == emulatedKeyIdentifier,
+                        buttonData.addKeyIdentifier == emulatedKeyIdentifier,
                 content = {
                     VolumeButton(
                         onAddClick = { onKeyDataClick.invoke(buttonData.addKeyIdentifier) },
@@ -74,7 +78,7 @@ fun ButtonItemComposable(
             )
         }
 
-        is NavigationButtonData -> {
+        is OkNavigationButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
@@ -92,6 +96,29 @@ fun ButtonItemComposable(
                         onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
                         onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
                         onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
+            )
+        }
+
+        is NavigationButtonData -> {
+            ButtonPlaceholderComposition(
+                isConnected = isConnected,
+                isSyncing = isSyncing,
+                isEmulating = listOf(
+                    buttonData.upKeyIdentifier,
+                    buttonData.rightKeyIdentifier,
+                    buttonData.downKeyIdentifier,
+                    buttonData.leftKeyIdentifier
+                ).contains(emulatedKeyIdentifier),
+                content = {
+                    NavigationButton(
+                        onLeftClick = { onKeyDataClick.invoke(buttonData.leftKeyIdentifier) },
+                        onRightClick = { onKeyDataClick.invoke(buttonData.rightKeyIdentifier) },
+                        onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
+                        onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
+                        onOkClick = null,
                         modifier = modifier,
                     )
                 }
@@ -140,6 +167,29 @@ fun ButtonItemComposable(
                         onClick = {},
                     )
                 }
+            )
+        }
+
+        is PowerButtonData -> {
+            ButtonPlaceholderComposition(
+                isConnected = isConnected,
+                isSyncing = isSyncing,
+                isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
+                content = {
+                    SquareIconButton(
+                        iconType = IconButtonData.IconType.POWER,
+                        modifier = modifier,
+                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                        background = LocalPalletV2.current.icon.danger.primary,
+                        iconTint = MaterialTheme.colors.onPrimary
+                    )
+                }
+            )
+        }
+
+        is ShutterButtonData -> {
+            ShutterButtonComposable(
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
             )
         }
     }

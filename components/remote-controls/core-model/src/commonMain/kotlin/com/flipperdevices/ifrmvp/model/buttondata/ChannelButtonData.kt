@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ChannelButtonData(
     @SerialName("add_key_id")
-    val addKeyIdentifier: IfrKeyIdentifier = IfrKeyIdentifier.Unknown,
+    val addKeyIdentifier: IfrKeyIdentifier,
     @SerialName("reduce_key_id")
     val reduceKeyIdentifier: IfrKeyIdentifier,
 ) : ButtonData {

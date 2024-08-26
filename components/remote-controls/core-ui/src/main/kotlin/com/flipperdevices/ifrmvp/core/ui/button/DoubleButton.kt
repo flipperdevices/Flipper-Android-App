@@ -1,5 +1,6 @@
 package com.flipperdevices.ifrmvp.core.ui.button
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
+import com.flipperdevices.ifrmvp.core.ui.button.core.EmptyButtonPlaceholderComposition
+import com.flipperdevices.ifrmvp.core.ui.button.core.EmulatingBox
+import com.flipperdevices.ifrmvp.core.ui.button.core.LocalButtonPlaceholder
+import com.flipperdevices.ifrmvp.core.ui.button.core.NoConnectionBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
@@ -46,7 +54,6 @@ fun DoubleButton(
             text = lastText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
         )
-        SyncingBox()
     }
 }
 
@@ -80,4 +87,16 @@ fun ChannelButton(
         lastText = "-",
         modifier = modifier,
     )
+}
+
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun UnknownButtonPreview() {
+    FlipperThemeInternal {
+        ChannelButton(
+            onNextClick = {},
+            onPrevClick = {}
+        )
+    }
 }
