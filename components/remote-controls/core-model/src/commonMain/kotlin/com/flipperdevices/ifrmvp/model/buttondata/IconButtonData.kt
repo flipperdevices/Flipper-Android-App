@@ -15,6 +15,14 @@ data class IconButtonData(
 
     enum class IconType {
         BACK, HOME, INFO, MORE, MUTE,
-        POWER, COOL, HEAT, FAN, CAMERA
+        POWER, COOL, HEAT, FAN, CAMERA,
+        BRIGHT_MORE, BRIGHT_LESS,
+        PAUSE, PLAY, STOP, EXIT,
+        MENU, ZOOM_IN, ZOOM_OUT,
+        RESET, NEXT, PREVIOUS,
+        EJECT, RECORD, WIND_SPEED,
+        MODE, LIGHT, TIMER, OFF,
+        DELETE, LIVE_TV, FAVORITE,
+        ENERGY_SAVE, VOL_UP, VOL_DOWN
     }
 }
