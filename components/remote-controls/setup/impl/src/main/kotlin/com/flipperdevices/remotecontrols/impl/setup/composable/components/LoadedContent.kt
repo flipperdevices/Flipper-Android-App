@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
@@ -40,12 +41,13 @@ fun LoadedContent(
                     data = signalResponse.data,
                     categoryName = signalResponse.categoryName,
                     emulatedKeyIdentifier = model.emulatedKeyIdentifier,
-                    isSyncing = model.isSyncing
+                    isSyncing = model.isSyncing,
+                    isConnected = model.isConnected
                 )
                 AnimatedVisibility(
                     visible = model.isEmulated,
                     enter = slideInVertically(initialOffsetY = { it / 2 }),
-                    exit = slideOutVertically(),
+                    exit = slideOutVertically(targetOffsetY = { it / 2 }),
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
@@ -82,7 +84,7 @@ private fun LoadedContentPreview() {
                 response = SignalResponseModel(),
                 isEmulated = true,
                 emulatedKeyIdentifier = null,
-                isSyncing = false
+                connectionState = InfraredConnectionApi.InfraredEmulateState.ALL_GOOD
             ),
             onPositiveClick = {},
             onNegativeClick = {},

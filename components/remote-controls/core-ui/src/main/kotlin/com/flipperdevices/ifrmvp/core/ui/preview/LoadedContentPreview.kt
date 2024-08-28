@@ -17,7 +17,8 @@ private fun LoadedContentPreview() {
             onButtonClick = { _, _ -> },
             onReload = {},
             emulatedKeyIdentifier = null,
-            isSyncing = false
+            isSyncing = false,
+            isConnected = true
         )
     }
 }

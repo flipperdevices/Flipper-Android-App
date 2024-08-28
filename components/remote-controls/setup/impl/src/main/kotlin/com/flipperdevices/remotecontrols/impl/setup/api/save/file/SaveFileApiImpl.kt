@@ -50,8 +50,9 @@ class SaveFileApiImpl @Inject constructor() : LogTagProvider, SaveFileApi {
                         val size = message.storageWriteRequest.file.data.size().toLong()
                         progressInternal += size
                         val status = SaveFileApi.Status.Saving(
-                            progressInternal,
-                            totalSize
+                            uploaded = progressInternal,
+                            size = totalSize,
+                            lastWriteSize = size
                         )
                         info { "#onSendCallback $status" }
                         send(status)

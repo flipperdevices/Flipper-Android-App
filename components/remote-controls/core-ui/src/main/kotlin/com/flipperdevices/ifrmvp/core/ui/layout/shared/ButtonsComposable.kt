@@ -26,6 +26,7 @@ internal fun BoxWithConstraintsScope.ButtonsComposable(
     pageLayout: PageLayout?,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     isSyncing: Boolean,
+    isConnected: Boolean,
     onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     modifier: Modifier = Modifier,
     onReload: (() -> Unit)? = null,
@@ -60,6 +61,7 @@ internal fun BoxWithConstraintsScope.ButtonsComposable(
                                     buttonData = button.data,
                                     emulatedKeyIdentifier = emulatedKeyIdentifier,
                                     isSyncing = isSyncing,
+                                    isConnected = isConnected,
                                     onKeyDataClick = { keyIdentifier ->
                                         onButtonClick.invoke(button, keyIdentifier)
                                     }

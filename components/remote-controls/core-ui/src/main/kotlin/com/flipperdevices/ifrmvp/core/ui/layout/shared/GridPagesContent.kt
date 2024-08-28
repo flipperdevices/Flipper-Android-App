@@ -17,6 +17,7 @@ fun GridPagesContent(
     onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     isSyncing: Boolean,
+    isConnected: Boolean,
     modifier: Modifier = Modifier,
     onReload: (() -> Unit)? = null,
 ) {
@@ -29,7 +30,8 @@ fun GridPagesContent(
                 emulatedKeyIdentifier = emulatedKeyIdentifier,
                 onButtonClick = onButtonClick,
                 onReload = onReload,
-                isSyncing = isSyncing
+                isSyncing = isSyncing,
+                isConnected = isConnected
             )
         }
     )
@@ -47,7 +49,8 @@ private fun LoadedContentEmptyPreview() {
             onButtonClick = { _, _ -> },
             onReload = {},
             emulatedKeyIdentifier = null,
-            isSyncing = false
+            isSyncing = false,
+            isConnected = true
         )
     }
 }

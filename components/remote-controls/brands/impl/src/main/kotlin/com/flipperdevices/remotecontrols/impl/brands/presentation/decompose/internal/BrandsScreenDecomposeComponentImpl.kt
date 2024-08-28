@@ -16,7 +16,7 @@ class BrandsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryId: Long,
     @Assisted onBackClick: () -> Unit,
-    @Assisted onBrandClick: (brandId: Long) -> Unit,
+    @Assisted onBrandClick: (brandId: Long, brandName: String) -> Unit,
     brandsDecomposeComponentFactory: BrandsDecomposeComponent.Factory,
 ) : BrandsScreenDecomposeComponent(componentContext) {
     private val brandsComponent = brandsDecomposeComponentFactory.createBrandsComponent(

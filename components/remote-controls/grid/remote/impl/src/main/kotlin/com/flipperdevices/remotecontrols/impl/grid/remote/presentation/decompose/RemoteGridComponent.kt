@@ -3,8 +3,10 @@ package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompos
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
@@ -12,6 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface RemoteGridComponent {
+    val param: ServerRemoteControlParam
+
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClick(identifier: IfrKeyIdentifier)
@@ -33,8 +37,17 @@ interface RemoteGridComponent {
             val remotes: ImmutableList<InfraredRemote>,
             val isFlipperBusy: Boolean = false,
             val emulatedKey: IfrKeyIdentifier? = null,
-            val isSavingFiles: Boolean,
-        ) : Model
+            val saveState: SaveTempSignalApi.State,
+            val connectionState: InfraredEmulateState
+        ) : Model {
+            val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
+            val isSavingFiles = saveState is SaveTempSignalApi.State.Uploading
+            val saveProgressOrNull = (saveState as? SaveTempSignalApi.State.Uploading)
+                ?.progressPercent
+                ?.times(other = 100)
+                ?.toInt()
+                ?.coerceIn(minimumValue = 0, maximumValue = 100)
+        }
 
         data object Error : Model
 

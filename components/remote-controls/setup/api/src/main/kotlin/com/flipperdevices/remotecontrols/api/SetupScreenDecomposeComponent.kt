@@ -19,5 +19,19 @@ abstract class SetupScreenDecomposeComponent(
     class Param(
         val brandId: Long,
         val categoryId: Long,
-    )
+        val brandName: String,
+        val categoryName: String
+    ) {
+        val remoteName: String
+            get() = "${brandName}_$categoryName"
+                .replace(" ", "_")
+                .replace("\\", "_")
+                .replace("/", "_")
+                .replace(".", "_")
+                .take(MAX_SIZE_REMOTE_LENGTH)
+    }
+
+    companion object {
+        private const val MAX_SIZE_REMOTE_LENGTH = 21
+    }
 }

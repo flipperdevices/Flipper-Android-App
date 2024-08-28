@@ -34,7 +34,10 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
     override val stack: Value<ChildStack<GridNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
         serializer = GridNavigationConfig.serializer(),
-        initialConfiguration = GridNavigationConfig.ServerControl(param.infraredFileId),
+        initialConfiguration = GridNavigationConfig.ServerControl(
+            id = param.infraredFileId,
+            remoteName = param.remoteName
+        ),
         handleBackButton = true,
         childFactory = ::child,
     )
@@ -65,7 +68,10 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
 
         is GridNavigationConfig.ServerControl -> remoteGridComponentFactory.invoke(
             componentContext = componentContext,
-            param = ServerRemoteControlParam(config.id),
+            param = ServerRemoteControlParam(
+                config.id,
+                config.remoteName
+            ),
             onBack = { navigation.popOr(onBack::invoke) },
             onSaveKey = {
                 navigation.pushNew(GridNavigationConfig.Rename(it))

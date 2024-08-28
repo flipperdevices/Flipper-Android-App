@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
+import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.coroutines.CoroutineScope
@@ -35,8 +36,14 @@ interface SetupComponent {
             val isFlipperBusy: Boolean = false,
             val emulatedKeyIdentifier: IfrKeyIdentifier?,
             val isEmulated: Boolean,
-            val isSyncing: Boolean
-        ) : Model
+            val connectionState: InfraredEmulateState
+        ) : Model {
+            val isSyncing: Boolean = listOf(
+                InfraredEmulateState.CONNECTING,
+                InfraredEmulateState.SYNCING
+            ).contains(connectionState)
+            val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
+        }
 
         data object Error : Model
     }

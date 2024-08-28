@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping
 
+import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
@@ -10,6 +11,7 @@ internal object GridComponentStateMapper {
         saveState: SaveTempSignalApi.State,
         gridState: RemoteGridViewModel.State,
         dispatchState: DispatchSignalApi.State,
+        connectionState: InfraredConnectionApi.InfraredEmulateState
     ): RemoteGridComponent.Model = when (gridState) {
         RemoteGridViewModel.State.Error -> RemoteGridComponent.Model.Error
         is RemoteGridViewModel.State.Loaded -> {
@@ -23,7 +25,8 @@ internal object GridComponentStateMapper {
                         remotes = gridState.remotes,
                         isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                         emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
-                        isSavingFiles = saveState is SaveTempSignalApi.State.Uploading,
+                        saveState = saveState,
+                        connectionState = connectionState
                     )
                 }
             }

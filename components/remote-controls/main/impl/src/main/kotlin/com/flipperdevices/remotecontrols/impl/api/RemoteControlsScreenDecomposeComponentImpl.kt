@@ -43,8 +43,11 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
             categoriesScreenDecomposeComponentFactory(
                 componentContext = componentContext,
                 onBackClick = onBack::invoke,
-                onCategoryClick = { deviceCategoryId ->
-                    val configuration = RemoteControlsNavigationConfig.Brands(deviceCategoryId)
+                onCategoryClick = { deviceCategoryId, categoryName ->
+                    val configuration = RemoteControlsNavigationConfig.Brands(
+                        deviceCategoryId,
+                        categoryName
+                    )
                     navigation.pushToFront(configuration)
                 }
             )
@@ -55,10 +58,12 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 onBackClick = navigation::pop,
                 categoryId = config.categoryId,
-                onBrandClick = { brandId ->
+                onBrandClick = { brandId, brandName ->
                     val configuration = RemoteControlsNavigationConfig.Setup(
                         categoryId = config.categoryId,
-                        brandId = brandId
+                        brandId = brandId,
+                        categoryName = config.categoryName,
+                        brandName = brandName
                     )
                     navigation.pushToFront(configuration)
                 }
@@ -70,7 +75,9 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 param = SetupScreenDecomposeComponent.Param(
                     brandId = config.brandId,
-                    categoryId = config.categoryId
+                    categoryId = config.categoryId,
+                    brandName = config.brandName,
+                    categoryName = config.categoryName
                 ),
                 onBack = navigation::pop,
                 onIrFileReady = { navigation.pop() }

@@ -8,4 +8,6 @@
     <string name="option_rename">Rename</string>
     <string name="option_share">Share</string>
     <string name="option_delete">Delete</string>
+    <string name="loading_remote">Loading Remote…</string>
+    <string name="remote_subtitle">Remote</string>
 </resources>
