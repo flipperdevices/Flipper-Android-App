@@ -29,6 +29,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Relocate remote-controls button to infrared remotes screen
 - [FIX] Fap manifest caching
 - [FIX] Remote controls design issues
+- [FIX] Fix flaky test
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
@@ -36,6 +37,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Update deps
 - [CI] Merge CI workflows in one
 - [CI] Update CI changed-files action
+- [CI] Update CI for github runners
 
 # 1.7.1
 

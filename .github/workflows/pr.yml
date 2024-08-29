@@ -28,9 +28,9 @@ jobs:
     name: "Validate CHANGELOG changed"
     uses: ./.github/workflows/call-check-changelog.yml
   update_gradle_cache:
-    name: "Gradle cache update"
+    name: "Gradle configuration change check"
     needs: [ validate_gradle_wrapper ]
-    uses: ./.github/workflows/call-gradle-cache.yml
+    uses: ./.github/workflows/call-configuration-change.yml
   info:
     name: "Display concurrency info"
     runs-on: ubuntu-latest
@@ -45,6 +45,9 @@ jobs:
     name: "Run unit tests"
     runs-on: ubuntu-latest
     needs: [ validate_gradle_wrapper ]
+    strategy:
+      matrix:
+        target: [ "testDebugUnitTest", "desktopTest" ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -54,14 +57,17 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Unit test
+      - name: "Test ${{ matrix.target }}"
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
         with:
-          arguments: testDebugUnitTest desktopTest
+          arguments: ${{ matrix.target }}
   detekt:
-    name: "Check project by detekt and android`s lint"
+    name: "Check project by linters"
     runs-on: ubuntu-latest
     needs: [ validate_gradle_wrapper ]
+    strategy:
+      matrix:
+        target: [ "detektMain", "lint" ]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -71,7 +77,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: detekt
+      - name: "Lint by ${{ matrix.target }}"
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
         with:
-          arguments: detektMain lint
+          arguments: ${{ matrix.target }}
