@@ -32,7 +32,6 @@ class FlipperAppErrorHandlerImpl @Inject constructor() : FlipperAppErrorHelper {
         if (!serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_FLIPPER_ERROR)) {
             return FlipperAppError.NotSupportedApi
         }
-        Intent.FLAG_FROM_BACKGROUND or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
         val errorResponse = requestApi.request(
             flowOf(

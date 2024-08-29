@@ -18,6 +18,7 @@ import com.flipperdevices.remotecontrols.impl.brands.composable.composable.alpha
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.InfraredsListViewModel
 import kotlinx.collections.immutable.toImmutableSet
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
+import androidx.compose.foundation.layout.padding
 
 @Composable
 fun InfraredsScreen(
@@ -38,7 +39,10 @@ fun InfraredsScreen(
             )
         }
     ) { scaffoldPaddings ->
-        Crossfade(targetState = state) { model ->
+        Crossfade(
+            targetState = state,
+            modifier = Modifier.padding(scaffoldPaddings)
+        ) { model ->
             when (model) {
                 InfraredsListViewModel.State.Error -> {
                     ErrorComposable(onReload = onReload)
