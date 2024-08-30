@@ -14,6 +14,7 @@ import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class LimboKeyProcessor @Inject constructor(
@@ -82,7 +83,7 @@ private fun NotSavedFlipperKey.toFlipperKey(newPath: FlipperFilePath) = FlipperK
             it.path.copyWithChangedName(newPath.nameWithoutExtension),
             it.content
         )
-    },
+    }.toImmutableList(),
     notes = notes,
     deleted = false,
     synchronized = false

@@ -1,13 +1,9 @@
 package com.flipperdevices.updater.model
 
 import android.net.Uri
-import android.os.Parcelable
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
-@Parcelize
 @Serializable
 data class UpdateRequest(
     val updateFrom: FirmwareVersion,
@@ -15,27 +11,23 @@ data class UpdateRequest(
     val changelog: String?,
     val content: UpdateContent,
     val requestId: Long = System.currentTimeMillis()
-) : Parcelable
+)
 
-@Parcelize
 @Serializable
-sealed class UpdateContent : Parcelable {
+sealed class UpdateContent {
     abstract fun folderName(): String
 }
 
-@Parcelize
 @Serializable
 class OfficialFirmware(
     val distributionFile: DistributionFile
-) : UpdateContent(), Parcelable {
+) : UpdateContent() {
     override fun folderName(): String = distributionFile.sha256 ?: distributionFile.url
 }
 
-@Parcelize
 @Serializable
-class InternalStorageFirmware(private val uriString: String) : UpdateContent(), Parcelable {
+class InternalStorageFirmware(private val uriString: String) : UpdateContent() {
 
-    @IgnoredOnParcel
     @Transient
     val uri: Uri = Uri.parse(uriString)
 
@@ -47,8 +39,7 @@ class InternalStorageFirmware(private val uriString: String) : UpdateContent(), 
     }
 }
 
-@Parcelize
 @Serializable
-class WebUpdaterFirmware(val url: String) : UpdateContent(), Parcelable {
+class WebUpdaterFirmware(val url: String) : UpdateContent() {
     override fun folderName(): String = url.substringBeforeLast("/")
 }

@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.lifecycle.compose)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.ui)
