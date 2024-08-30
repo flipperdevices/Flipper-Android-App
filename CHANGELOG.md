@@ -14,6 +14,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
 - [Refactor] Migrate :core:preference to KMP
 - [Refactor] Migrate :bridge:connection:* to KMP
+- [Refactor] Migrate :bridge:synchronization:*, :core:ktx and :core:theme to KMP
 - [Refactor] Remove ktorfit
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge

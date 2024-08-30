@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.bridge.dao.impl.model.Key
 import com.flipperdevices.bridge.dao.impl.model.SynchronizedStatus
 import com.flipperdevices.bridge.dao.impl.repository.AdditionalFileDao
+import kotlinx.collections.immutable.toImmutableList
 
 internal fun FlipperKey.toDatabaseKey(): Key {
     return Key(
@@ -32,7 +33,10 @@ internal suspend fun Key.toFlipperKey(additionalFileDao: AdditionalFileDao): Fli
         notes = notes,
         synchronized = synchronizedStatus == SynchronizedStatus.SYNCHRONIZED,
         deleted = deleted,
-        additionalFiles = additionalFileDao.getFilesForKeyWithId(uid).map { it.toFlipperFile() }
+        additionalFiles = additionalFileDao.getFilesForKeyWithId(uid)
+            .map {
+                it.toFlipperFile()
+            }.toImmutableList()
     )
 }
 

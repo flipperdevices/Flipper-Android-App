@@ -1,27 +1,20 @@
 plugins {
-    id("flipper.android-compose")
-    id("flipper.anvil")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.ui"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
-    implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.bridge.dao.api)
 
-    implementation(libs.appcompat)
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.lifecycle.compose)
 }
