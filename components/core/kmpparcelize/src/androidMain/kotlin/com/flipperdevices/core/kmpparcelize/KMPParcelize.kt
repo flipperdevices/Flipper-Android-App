@@ -1,5 +1,5 @@
 package com.flipperdevices.core.kmpparcelize
 
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 actual typealias KMPParcelize = Parcelize

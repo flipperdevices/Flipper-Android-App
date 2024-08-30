@@ -8,6 +8,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.preference.FlipperStorageProvider
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -22,7 +24,7 @@ private val EXAMPLE_FLIPPER_KEY = FlipperKey(
         ),
         content = FlipperKeyContent.RawData("Hello, world".toByteArray())
     ),
-    additionalFiles = listOf(
+    additionalFiles = persistentListOf(
         FlipperFile(
             path = FlipperFilePath(
                 folder = "test",
@@ -187,7 +189,7 @@ class ShouldSynchronizeHelperTest {
             )
         )
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = newAdditionalFiles
+            additionalFiles = newAdditionalFiles.toPersistentList()
         )
         Assert.assertTrue(
             ShouldSynchronizeHelper.isShouldSynchronize(
@@ -200,7 +202,7 @@ class ShouldSynchronizeHelperTest {
     @Test
     fun `not edit additional file, not create new file`() = runTest {
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 FlipperFile(
                     path = FlipperFilePath(
                         folder = "test",
@@ -221,7 +223,7 @@ class ShouldSynchronizeHelperTest {
     @Test
     fun `edit additional file name`() = runTest {
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 EXAMPLE_FLIPPER_KEY.additionalFiles.first().copy(
                     path = FlipperFilePath(
                         folder = "test",
@@ -242,7 +244,7 @@ class ShouldSynchronizeHelperTest {
     @Test
     fun `edit additional file content`() = runTest {
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 EXAMPLE_FLIPPER_KEY.additionalFiles.first().copy(
                     content = FlipperKeyContent.RawData("Hello from additional file2".toByteArray())
                 )
@@ -263,7 +265,7 @@ class ShouldSynchronizeHelperTest {
             .useTemporaryFile(ApplicationProvider.getApplicationContext()) { tmpFile ->
                 tmpFile.writeText("Hello from additional file")
                 val newKey = EXAMPLE_FLIPPER_KEY.copy(
-                    additionalFiles = listOf(
+                    additionalFiles = persistentListOf(
                         FlipperFile(
                             path = FlipperFilePath(
                                 folder = "test",
@@ -293,7 +295,7 @@ class ShouldSynchronizeHelperTest {
                     ),
                     content = FlipperKeyContent.RawData("Hello from additional file".toByteArray())
                 )
-            )
+            ).toPersistentList()
         )
 
         Assert.assertTrue(
@@ -315,10 +317,10 @@ class ShouldSynchronizeHelperTest {
                     ),
                     content = FlipperKeyContent.RawData("Hello from additional file".toByteArray())
                 )
-            )
+            ).toPersistentList()
         )
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 FlipperFile(
                     path = FlipperFilePath(
                         folder = "test",
@@ -334,7 +336,7 @@ class ShouldSynchronizeHelperTest {
     @Test
     fun `remove additional file - empty`() = runTest {
         val newKey = EXAMPLE_FLIPPER_KEY.copy(
-            additionalFiles = emptyList()
+            additionalFiles = persistentListOf()
         )
 
         Assert.assertTrue(ShouldSynchronizeHelper.isShouldSynchronize(EXAMPLE_FLIPPER_KEY, newKey))

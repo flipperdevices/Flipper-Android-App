@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.dao.api.model
 
+import com.flipperdevices.core.kmpparcelize.KMPIgnoreOnParcel
 import com.flipperdevices.core.kmpparcelize.KMPParcelable
 import com.flipperdevices.core.kmpparcelize.KMPParcelize
 import kotlinx.serialization.SerialName
@@ -22,9 +23,11 @@ data class FlipperFilePath(
     @SerialName("name")
     val nameWithExtension: String // With extension
 ) : KMPParcelable, Comparable<FlipperFilePath> {
+    @KMPIgnoreOnParcel
     val extension: String
         get() = nameWithExtension.substringAfterLast('.')
 
+    @KMPIgnoreOnParcel
     val pathToKey: String by lazy {
         var path = File(folder, nameWithExtension).path
         if (path.firstOrNull() == File.separatorChar) {
@@ -33,14 +36,17 @@ data class FlipperFilePath(
         return@lazy path
     }
 
+    @KMPIgnoreOnParcel
     val keyType: FlipperKeyType? by lazy {
         FlipperKeyType.getByExtension(extension)
     }
 
+    @KMPIgnoreOnParcel
     val fileType: FlipperFileType by lazy {
         FlipperFileType.getByExtension(extension)
     }
 
+    @KMPIgnoreOnParcel
     val nameWithoutExtension by lazy {
         nameWithExtension.substringAfterLast('/').substringBeforeLast(".")
     }
