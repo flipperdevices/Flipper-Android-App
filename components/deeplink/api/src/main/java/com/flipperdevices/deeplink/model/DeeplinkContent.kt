@@ -3,46 +3,39 @@ package com.flipperdevices.deeplink.model
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
-import android.os.Parcelable
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
-import com.flipperdevices.core.ktx.jre.length
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.io.File
 import java.io.InputStream
 
 @Serializable
-sealed class DeeplinkContent : Parcelable {
-    @Parcelize
+sealed class DeeplinkContent {
     @Serializable
     data class FFFContent(
         val filename: String,
         val flipperFileFormat: FlipperFileFormat
     ) : DeeplinkContent()
 
-    @Parcelize
     @Serializable
     data class ExternalUri(
         val filename: String?,
         val size: Long?,
         val uriString: String
     ) : DeeplinkContent() {
-        @IgnoredOnParcel
+        @Transient
         val uri: Uri by lazy { Uri.parse(uriString) }
     }
 
-    @Parcelize
     @Serializable
     data class InternalStorageFile(
         val filePath: String
     ) : DeeplinkContent() {
-        @IgnoredOnParcel
+        @Transient
         val file by lazy { File(filePath) }
     }
 
-    @Parcelize
     @Serializable
     data class FFFCryptoContent(
         val key: FlipperKeyCrypto

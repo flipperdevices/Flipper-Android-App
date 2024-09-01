@@ -17,6 +17,7 @@ import com.flipperdevices.nfceditor.impl.model.NfcCellType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCardType
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCell
 import com.flipperdevices.nfceditor.impl.model.NfcEditorCellLocation
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -422,7 +423,7 @@ class NfcEditorStateProducerHelperTest {
                     FlipperFilePath("test", "some_trash.txt"),
                     content = FlipperKeyContent.RawData(byteArrayOf())
                 )
-            )
+            ).toImmutableList()
         )
 
         val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
@@ -461,7 +462,7 @@ class NfcEditorStateProducerHelperTest {
                     FlipperFilePath("test", "some_trash.txt"),
                     content = FlipperKeyContent.RawData(byteArrayOf())
                 )
-            )
+            ).toImmutableList()
         )
 
         val editorState = NfcEditorStateProducerHelper.mapParsedKeyToNfcEditorState(
@@ -496,7 +497,7 @@ private fun getFlipperKey(
         )
     } else {
         emptyList()
-    },
+    }.toImmutableList(),
     synchronized = false,
     deleted = false
 )

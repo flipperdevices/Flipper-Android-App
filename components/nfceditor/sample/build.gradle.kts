@@ -49,6 +49,7 @@ dependencies {
     kapt(libs.dagger.kapt)
 
     implementation(libs.timber)
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.activity)

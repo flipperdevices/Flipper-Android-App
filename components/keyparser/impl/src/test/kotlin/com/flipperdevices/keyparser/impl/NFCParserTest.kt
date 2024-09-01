@@ -11,6 +11,7 @@ import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.core.test.readTestAssetString
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyparser.impl.parsers.impl.NFCParser
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -29,7 +30,7 @@ class NFCParserTest {
                 path = FlipperFilePath("test", "test.nfc"),
                 content = FlipperKeyContent.RawData(readTestAsset("mf_4k.nfc"))
             ),
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 FlipperFile(
                     path = FlipperFilePath("test", "test.nfc.shd"),
                     content = FlipperKeyContent.RawData(readTestAsset("mf_4k.nfc.shd"))
@@ -64,7 +65,7 @@ class NFCParserTest {
                 path = FlipperFilePath("test", "test.nfc"),
                 content = FlipperKeyContent.RawData(readTestAsset("mf_4k.nfc"))
             ),
-            additionalFiles = listOf(
+            additionalFiles = persistentListOf(
                 FlipperFile(
                     path = FlipperFilePath("test", "test.nfc.invalidshd"),
                     content = FlipperKeyContent.RawData(readTestAsset("mf_4k.nfc.shd"))
