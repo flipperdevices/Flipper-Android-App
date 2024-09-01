@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.brands.composable
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +19,6 @@ import com.flipperdevices.remotecontrols.impl.brands.composable.composable.alpha
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.InfraredsListViewModel
 import kotlinx.collections.immutable.toImmutableSet
 import com.flipperdevices.remotecontrols.brands.impl.R as BrandsR
-import androidx.compose.foundation.layout.padding
 
 @Composable
 fun InfraredsScreen(

@@ -1,12 +1,18 @@
 package com.flipperdevices.ifrmvp.core.ui.button
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.Base64ImageButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
@@ -191,6 +197,35 @@ fun ButtonItemComposable(
             ShutterButtonComposable(
                 onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ButtonItemComposablePreview() {
+    FlipperThemeInternal {
+        ButtonItemComposable(
+            buttonData = TextButtonData(text = "TXT"),
+            emulatedKeyIdentifier = null,
+            onKeyDataClick = {},
+            isSyncing = false,
+            isConnected = false
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(4.sf)) {
+            IconButtonData.IconType.entries.chunked(size = 6).forEach { entries ->
+                Row(horizontalArrangement = Arrangement.spacedBy(4.sf)) {
+                    entries.forEach { iconType ->
+                        ButtonItemComposable(
+                            buttonData = IconButtonData(iconId = iconType),
+                            emulatedKeyIdentifier = null,
+                            onKeyDataClick = {},
+                            isSyncing = false,
+                            isConnected = false
+                        )
+                    }
+                }
+            }
         }
     }
 }
