@@ -1,6 +1,5 @@
 package com.flipperdevices.keyemulate.helpers
 
-import android.content.Intent
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
