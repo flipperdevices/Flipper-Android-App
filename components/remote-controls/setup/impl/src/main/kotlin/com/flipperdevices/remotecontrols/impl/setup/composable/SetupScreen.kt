@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.AnimatedConfirmContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -45,6 +47,7 @@ fun SetupScreen(
     val model by remember(setupComponent, coroutineScope) {
         setupComponent.model(coroutineScope)
     }.collectAsState()
+    val lastEmulatedSignal by setupComponent.lastEmulatedSignal.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
@@ -90,8 +93,6 @@ fun SetupScreen(
                     LoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onPositiveClick = setupComponent::onSuccessClick,
-                        onNegativeClick = setupComponent::onFailedClick,
                         onDispatchSignalClick = setupComponent::dispatchSignal
                     )
                 }
@@ -101,5 +102,13 @@ fun SetupScreen(
                 }
             }
         }
+        AnimatedConfirmContent(
+            lastEmulatedSignal = lastEmulatedSignal,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPaddings),
+            onNegativeClick = setupComponent::onFailedClick,
+            onSuccessClick = setupComponent::onSuccessClick,
+        )
     }
 }

@@ -44,23 +44,20 @@ class DispatchSignalViewModel @Inject constructor(
     private val _state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
     override val state = _state.asStateFlow()
 
-    private val _isEmulated = MutableStateFlow(false)
-    override val isEmulated = _isEmulated.asStateFlow()
-
     private var latestDispatchJob: Job? = null
 
     override fun reset() {
         viewModelScope.launch {
             latestDispatchJob?.cancelAndJoin()
             _state.value = DispatchSignalApi.State.Pending
-            _isEmulated.value = false
         }
     }
 
     override fun dispatch(
         identifier: IfrKeyIdentifier,
         remotes: List<InfraredRemote>,
-        ffPath: FlipperFilePath
+        ffPath: FlipperFilePath,
+        onDispatched: () -> Unit
     ) {
         val i = remotes.indexOfFirst { remote ->
             when (identifier) {
@@ -95,14 +92,18 @@ class DispatchSignalViewModel @Inject constructor(
             args = remote.name,
             index = i
         )
-        dispatch(config, identifier)
+        dispatch(config, identifier, onDispatched)
     }
 
     override fun dismissBusyDialog() {
         _state.value = DispatchSignalApi.State.Pending
     }
 
-    override fun dispatch(config: EmulateConfig, identifier: IfrKeyIdentifier) {
+    override fun dispatch(
+        config: EmulateConfig,
+        identifier: IfrKeyIdentifier,
+        onDispatched: () -> Unit
+    ) {
         if (latestDispatchJob?.isActive == true) return
         latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
             _state.emit(DispatchSignalApi.State.Pending)
@@ -121,7 +122,7 @@ class DispatchSignalViewModel @Inject constructor(
                             delay(DEFAULT_SIGNAL_DELAY)
                             emulateHelper.stopEmulate(this, serviceApi.requestApi)
                             _state.emit(DispatchSignalApi.State.Pending)
-                            _isEmulated.emit(true)
+                            onDispatched.invoke()
                         } catch (ignored: AlreadyOpenedAppException) {
                             _state.emit(DispatchSignalApi.State.FlipperIsBusy)
                         } catch (e: Exception) {
