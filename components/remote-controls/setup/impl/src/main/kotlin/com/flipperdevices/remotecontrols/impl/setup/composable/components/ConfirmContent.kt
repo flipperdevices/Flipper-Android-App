@@ -1,6 +1,13 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -27,6 +35,7 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
@@ -87,6 +96,49 @@ fun ConfirmContent(
             }
         }
     )
+}
+
+@Composable
+fun AnimatedConfirmContent(
+    lastEmulatedSignal: SignalResponse?,
+    onNegativeClick: () -> Unit,
+    onSuccessClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        val transition = updateTransition(
+            targetState = lastEmulatedSignal,
+            label = lastEmulatedSignal?.signalModel?.id?.toString()
+        )
+        transition.AnimatedVisibility(
+            visible = { localLastEmulatedSignal -> localLastEmulatedSignal != null },
+            enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
+            exit = slideOutVertically(targetOffsetY = { it / 2 }) + fadeOut(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding(),
+        ) {
+            val contentState = when (this.transition.targetState) {
+                EnterExitState.Visible -> transition.targetState
+                else -> transition.currentState
+            }
+            ConfirmContent(
+                text = when (contentState) {
+                    null -> ""
+                    else ->
+                        contentState.message
+                            .format(contentState.categoryName)
+                },
+                onNegativeClick = onNegativeClick,
+                onPositiveClick = onSuccessClick,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
+    }
 }
 
 @Preview(

@@ -6,7 +6,10 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
+import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
@@ -23,7 +26,10 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
@@ -44,7 +50,8 @@ class SetupComponentImpl @AssistedInject constructor(
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
     createDispatchSignalApi: Provider<DispatchSignalApi>,
     createConnectionViewModel: Provider<ConnectionViewModel>
-) : SetupComponent, ComponentContext by componentContext {
+) : SetupComponent, ComponentContext by componentContext, LogTagProvider {
+    override val TAG: String = "SetupComponent"
     private val saveSignalApi = instanceKeeper.getOrCreate(
         key = "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}",
         factory = {
@@ -84,13 +91,15 @@ class SetupComponentImpl @AssistedInject constructor(
             }
         }
     )
+    private val _lastEmulatedSignal = MutableStateFlow<SignalResponse?>(null)
+    override val lastEmulatedSignal: StateFlow<SignalResponse?> = _lastEmulatedSignal.asStateFlow()
+
     private val modelFlow = combine(
         createCurrentSignalViewModel.state,
         saveSignalApi.state,
         dispatchSignalApi.state,
-        dispatchSignalApi.isEmulated,
         connectionViewModel.state,
-        transform = { signalState, saveState, dispatchState, isEmulated, connectionState ->
+        transform = { signalState, saveState, dispatchState, connectionState ->
             val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
                 CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
@@ -103,7 +112,6 @@ class SetupComponentImpl @AssistedInject constructor(
                             response = signalState.response,
                             isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
                             emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
-                            isEmulated = isEmulated,
                             connectionState = connectionState
                         )
                     }
@@ -132,6 +140,7 @@ class SetupComponentImpl @AssistedInject constructor(
             successResults = historyViewModel.state.value.successfulSignals,
             failedResults = historyViewModel.state.value.failedSignals
         )
+        _lastEmulatedSignal.value = null
     }
 
     override fun onFileFound(ifrFileModel: IfrFileModel) {
@@ -156,8 +165,14 @@ class SetupComponentImpl @AssistedInject constructor(
 
     override fun dispatchSignal() {
         val state = createCurrentSignalViewModel.state.value
-        val loadedState = state as? CurrentSignalViewModel.State.Loaded ?: return
-        val signalModel = loadedState.response.signalResponse?.signalModel ?: return
+        val loadedState = state as? CurrentSignalViewModel.State.Loaded ?: run {
+            error { "#dispatchSignal dispatch called from unloaded state" }
+            return
+        }
+        val signalModel = loadedState.response.signalResponse?.signalModel ?: run {
+            error { "#dispatchSignal signalModel is null" }
+            return
+        }
         val config = EmulateConfig(
             keyPath = FlipperFilePath(
                 ABSOLUTE_TEMP_FOLDER_PATH,
@@ -170,7 +185,11 @@ class SetupComponentImpl @AssistedInject constructor(
         val keyIdentifier = (loadedState.response.signalResponse?.data as? SingleKeyButtonData)
             ?.keyIdentifier
             ?: IfrKeyIdentifier.Unknown
-        dispatchSignalApi.dispatch(config, keyIdentifier)
+        dispatchSignalApi.dispatch(
+            config = config,
+            identifier = keyIdentifier,
+            onDispatched = { _lastEmulatedSignal.value = loadedState.response.signalResponse }
+        )
     }
 
     override fun onBackClick() = onBackClick.invoke()
