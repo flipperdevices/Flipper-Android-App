@@ -23,7 +23,6 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.model.LoadingState
-import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +33,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import android.app.Application as FlipperApp
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 
 const val VIBRATOR_TIME = 100L
 
@@ -41,6 +41,7 @@ abstract class EmulateViewModel(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
+    private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: FlipperApp
 ) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
@@ -182,7 +183,7 @@ abstract class EmulateViewModel(
 
     override fun onDestroy() {
         if (emulateButtonStateFlow.value is EmulateButtonState.Active) {
-            CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
+            closeEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
         }
         super.onDestroy()
     }
