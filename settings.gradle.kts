@@ -111,6 +111,7 @@ include(
     ":components:core:progress",
     ":components:core:permission:api",
     ":components:core:permission:impl",
+    ":components:core:kmpparcelize",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

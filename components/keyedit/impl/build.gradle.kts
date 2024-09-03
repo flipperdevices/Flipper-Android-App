@@ -1,7 +1,7 @@
 plugins {
     id("flipper.android-compose")
     id("flipper.anvil")
-    id("kotlin-parcelize")
+
     id("kotlinx-serialization")
 }
 
@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.ui)

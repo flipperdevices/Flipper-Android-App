@@ -1,23 +1,17 @@
 plugins {
-    id("flipper.android-compose")
-    id("flipper.anvil")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.ui.theme"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.core.di)
-    implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
-    implementation(libs.appcompat)
 }

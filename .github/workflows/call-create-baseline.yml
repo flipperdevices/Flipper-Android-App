@@ -18,7 +18,7 @@ on:
 jobs:
   baseline_file:
     name: Upload baseline profile file
-    runs-on: [ self-hosted, AndroidShell ]
+    runs-on: ubuntu-latest
     outputs:
       BUILD_VARIANT_NAME: ${{ steps.create_uppercase_variant.outputs.BUILD_VARIANT_NAME }}
       BASELINE_FILE_ID: ${{ steps.create_baseline_file_id.outputs.BASELINE_FILE_ID }}
@@ -62,25 +62,12 @@ jobs:
           echo "BASELINE_FILE_PATH=${baseline_file_path}" >> $GITHUB_OUTPUT
 
 
-      # On Flipper self-hosted we don't have it so install locally in current container
-      - name: Setup libx11
+      # Make kvm able to launch emulator
+      - name: Enable KVM group perms
         run: |
-          export DEBIAN_FRONTEND=noninteractive;
-          sudo apt update;
-          sudo apt install -y libx11-6;
-
-      # We need to install specific platforms for this job which is not present inside self-hosted VM
-      - name: Setup Platform-android-34
-        run: |
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34"
-
-      # Remember current user ANDROID_HOME location to use it via sudo
-      # steps.share_android_home.ANDROID_HOME
-      - name: Share ANDROID_HOME location
-        id: share_android_home
-        run: |
-          android_home="$ANDROID_HOME"
-          echo "ANDROID_HOME=$android_home" >> $GITHUB_OUTPUT
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       # steps.create_baseline_task.outputs.BASELINE_TASK
       - id: create_baseline_task
@@ -95,9 +82,9 @@ jobs:
       # Here also specified ANDROID environment variables for sudo command
       - name: Run baseline profiles
         run: |
-          sudo ANDROID_SDK_ROOT=${{ steps.share_android_home.outputs.ANDROID_HOME }} ANDROID_HOME=${{ steps.share_android_home.outputs.ANDROID_HOME }} ANDROID_AVD_HOME=${{ steps.share_android_home.outputs.ANDROID_HOME }}/avd ./gradlew ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}
+          ./gradlew ${{ steps.create_baseline_task.outputs.BASELINE_TASK }}
 
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
         name: "Upload baseline file"
         with:
           name: ${{ steps.create_baseline_file_id.outputs.BASELINE_FILE_ID }}

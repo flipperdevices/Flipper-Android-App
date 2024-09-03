@@ -19,6 +19,7 @@ import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.renameRequest
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -149,7 +150,7 @@ class SaveRemoteControlViewModel @Inject constructor(
                             path = it.path.toNonTempPath(),
                             content = it.content
                         )
-                    }
+                    }.toImmutableList()
                 )
             )
             awaitSynchronization()

@@ -233,7 +233,7 @@ object NfcEditorStateProducerHelper {
             ).filterNotNull()
 
         return oldKey.copy(
-            additionalFiles = newAdditionalFiles
+            additionalFiles = newAdditionalFiles.toImmutableList()
         )
     }
 
@@ -249,7 +249,6 @@ object NfcEditorStateProducerHelper {
 
         return FlipperKey(
             mainFile = newFlipperFile,
-            additionalFiles = listOf(),
             notes = oldKey.notes,
             synchronized = false,
             deleted = false
