@@ -23,6 +23,7 @@ import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.model.LoadingState
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.protobuf.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import android.app.Application as FlipperApp
-import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 
 const val VIBRATOR_TIME = 100L
 

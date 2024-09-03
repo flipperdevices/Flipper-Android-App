@@ -3,8 +3,8 @@ package com.flipperdevices.keyemulate.viewmodel
 import android.app.Application
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
-import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import javax.inject.Inject
 
 class SimpleEmulateViewModel @Inject constructor(
