@@ -140,7 +140,6 @@ class DispatchSignalViewModel @Inject constructor(
         if (_state.value is DispatchSignalApi.State.Emulating) {
             closeEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
         }
-        emulateHelper.getCurrentEmulatingKey()
         super<DecomposeViewModel>.onDestroy()
     }
 
