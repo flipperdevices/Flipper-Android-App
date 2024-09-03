@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -18,6 +19,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
+import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
@@ -46,16 +48,14 @@ interface SynchronizationTask {
 
 @ContributesBinding(AppGraph::class, SynchronizationTask.Builder::class)
 class SynchronizationTaskBuilder @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    private val simpleKeyApi: SimpleKeyApi,
+    private val featureProvider: FFeatureProvider,
     private val metricApi: MetricApi,
     private val syncWearableApi: SyncWearableApi,
     private val mfKey32Api: MfKey32Api
 ) : SynchronizationTask.Builder {
     override fun build(): SynchronizationTask {
         return SynchronizationTaskImpl(
-            serviceProvider,
-            simpleKeyApi,
+            featureProvider,
             metricApi,
             syncWearableApi,
             mfKey32Api
@@ -66,27 +66,26 @@ class SynchronizationTaskBuilder @Inject constructor(
 private const val START_SYNCHRONIZATION_PERCENT = 0.01f
 
 class SynchronizationTaskImpl(
-    serviceProvider: FlipperServiceProvider,
-    private val simpleKeyApi: SimpleKeyApi,
+    private val featureProvider: FFeatureProvider,
     private val metricApi: MetricApi,
     private val syncWearableApi: SyncWearableApi,
     private val mfKey32Api: MfKey32Api
-) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider),
+) : OneTimeExecutionTask<Unit, SynchronizationState>(),
     SynchronizationTask,
     LogTagProvider {
     override val TAG = "SynchronizationTask"
 
     override suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         input: Unit,
         stateListener: suspend (SynchronizationState) -> Unit
     ) {
+
         // Waiting to be connected to the flipper
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
+                        it.supportedState == FlipperSupportedState.READY
             }.first()
         startInternal(
             scope,

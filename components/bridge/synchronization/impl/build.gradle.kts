@@ -1,13 +1,13 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.android-compose")
-    id("flipper.anvil")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.impl"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
@@ -18,11 +18,14 @@ dependencies {
     implementation(projects.components.core.progress)
     implementation(projects.components.core.ui.lifecycle)
 
-    implementation(projects.components.bridge.api)
+    /*implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.rpc.api)
+    implementation(projects.components.bridge.rpc.api)*/
+
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
 
     implementation(projects.components.wearable.sync.handheld.api)
     implementation(projects.components.nfc.mfkey32.api)
@@ -36,20 +39,18 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 
-    implementation(libs.lifecycle.runtime.ktx)
-
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
     implementation(libs.dagger)
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+jvmSharedTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.mockk)
+    implementation(libs.roboelectric)
+    implementation(libs.kotlin.coroutines.test)
 }

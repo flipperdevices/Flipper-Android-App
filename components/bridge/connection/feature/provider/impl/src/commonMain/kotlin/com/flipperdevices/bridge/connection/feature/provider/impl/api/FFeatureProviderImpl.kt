@@ -13,6 +13,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -33,6 +34,7 @@ class FFeatureProviderImpl @Inject constructor(
     private val deviceStateFlow = MutableStateFlow<FDeviceApi?>(null)
 
     init {
+        combine()
         orchestrator.getState().map { status ->
             when (status) {
                 is FDeviceConnectStatus.Connected -> deviceApiMapper.get(status)
