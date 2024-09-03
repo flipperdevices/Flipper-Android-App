@@ -15,6 +15,7 @@ import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
 import com.flipperdevices.remotecontrols.impl.setup.encoding.JvmEncoder
@@ -32,7 +33,8 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, DispatchSignalApi::class)
 class DispatchSignalViewModel @Inject constructor(
     private val emulateHelper: EmulateHelper,
-    private val serviceProvider: FlipperServiceProvider
+    private val serviceProvider: FlipperServiceProvider,
+    private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
 ) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider,
@@ -129,6 +131,13 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
+
+    override fun onDestroy() {
+        if (_state.value is DispatchSignalApi.State.Emulating) {
+            closeEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
+        }
+        super<DecomposeViewModel>.onDestroy()
+    }
 
     companion object {
         private const val DEFAULT_SIGNAL_DELAY = 500L

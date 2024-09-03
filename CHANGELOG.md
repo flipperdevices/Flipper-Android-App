@@ -31,6 +31,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fap manifest caching
 - [FIX] Remote controls design issues
 - [FIX] Fix flaky test
+- [FIX] Infinite dispatch after screen close on remote-control screens
 - [FIX] Bad bottom sheet animation on infrared setup screen
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
@@ -40,6 +41,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Merge CI workflows in one
 - [CI] Update CI changed-files action
 - [CI] Update CI for github runners
+- [CI] Remote self-hosted runners
 
 # 1.7.1
 
