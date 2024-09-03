@@ -28,6 +28,16 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 
 @Composable
 fun ConfirmContent(
@@ -87,6 +97,48 @@ fun ConfirmContent(
             }
         }
     )
+}
+
+@Composable
+fun AnimatedConfirmContent(
+    lastEmulatedSignal: SignalResponse?,
+    modifier: Modifier,
+    onNegativeClick: () -> Unit,
+    onSuccessClick: () -> Unit
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        val transition = updateTransition(
+            targetState = lastEmulatedSignal,
+            label = lastEmulatedSignal?.signalModel?.id?.toString()
+        )
+        transition.AnimatedVisibility(
+            visible = { localLastEmulatedSignal -> localLastEmulatedSignal != null },
+            enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
+            exit = slideOutVertically(targetOffsetY = { it / 2 }) + fadeOut(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding(),
+        ) {
+            val contentState = when (this.transition.targetState) {
+                EnterExitState.Visible -> transition.targetState
+                else -> transition.currentState
+            }
+            ConfirmContent(
+                text = when (contentState) {
+                    null -> ""
+                    else -> contentState.message
+                        .format(contentState.categoryName)
+                },
+                onNegativeClick = onNegativeClick,
+                onPositiveClick = onSuccessClick,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
+    }
 }
 
 @Preview(

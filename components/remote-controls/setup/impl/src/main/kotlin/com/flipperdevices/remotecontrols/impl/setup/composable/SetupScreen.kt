@@ -26,6 +26,18 @@ import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.Alignment
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.AnimatedConfirmContent
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.ConfirmContent
 
 private val SetupComponent.Model.key: Any
     get() = when (this) {
@@ -45,6 +57,7 @@ fun SetupScreen(
     val model by remember(setupComponent, coroutineScope) {
         setupComponent.model(coroutineScope)
     }.collectAsState()
+    val lastEmulatedSignal by setupComponent.lastEmulatedSignal.collectAsState()
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
@@ -90,8 +103,6 @@ fun SetupScreen(
                     LoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onPositiveClick = setupComponent::onSuccessClick,
-                        onNegativeClick = setupComponent::onFailedClick,
                         onDispatchSignalClick = setupComponent::dispatchSignal
                     )
                 }
@@ -101,5 +112,13 @@ fun SetupScreen(
                 }
             }
         }
+        AnimatedConfirmContent(
+            lastEmulatedSignal = lastEmulatedSignal,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPaddings),
+            onNegativeClick = setupComponent::onFailedClick,
+            onSuccessClick = setupComponent::onSuccessClick,
+        )
     }
 }

@@ -19,12 +19,11 @@ import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
+import androidx.compose.animation.Crossfade
 
 @Composable
 fun LoadedContent(
     model: SetupComponent.Model.Loaded,
-    onPositiveClick: () -> Unit,
-    onNegativeClick: () -> Unit,
     onDispatchSignalClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,22 +43,6 @@ fun LoadedContent(
                     isSyncing = model.isSyncing,
                     isConnected = model.isConnected
                 )
-                AnimatedVisibility(
-                    visible = model.isEmulated,
-                    enter = slideInVertically(initialOffsetY = { it / 2 }),
-                    exit = slideOutVertically(targetOffsetY = { it / 2 }),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding(),
-                ) {
-                    ConfirmContent(
-                        text = signalResponse.message.format(signalResponse.categoryName),
-                        onNegativeClick = onNegativeClick,
-                        onPositiveClick = onPositiveClick,
-                        modifier = Modifier.align(Alignment.BottomCenter)
-                    )
-                }
             }
 
             else -> {
@@ -82,12 +65,9 @@ private fun LoadedContentPreview() {
         LoadedContent(
             model = SetupComponent.Model.Loaded(
                 response = SignalResponseModel(),
-                isEmulated = true,
                 emulatedKeyIdentifier = null,
                 connectionState = InfraredConnectionApi.InfraredEmulateState.ALL_GOOD
             ),
-            onPositiveClick = {},
-            onNegativeClick = {},
             onDispatchSignalClick = {}
         )
     }
