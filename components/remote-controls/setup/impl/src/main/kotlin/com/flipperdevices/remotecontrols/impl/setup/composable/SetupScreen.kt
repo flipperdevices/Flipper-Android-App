@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
+import com.flipperdevices.remotecontrols.impl.setup.composable.components.AnimatedConfirmContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -26,18 +28,6 @@ import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterExitState
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.ui.Alignment
-import com.flipperdevices.remotecontrols.impl.setup.composable.components.AnimatedConfirmContent
-import com.flipperdevices.remotecontrols.impl.setup.composable.components.ConfirmContent
 
 private val SetupComponent.Model.key: Any
     get() = when (this) {

@@ -1,6 +1,13 @@
 package com.flipperdevices.remotecontrols.impl.setup.composable.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -27,17 +35,8 @@ import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterExitState
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
+import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 @Composable
 fun ConfirmContent(
@@ -130,8 +129,9 @@ fun AnimatedConfirmContent(
             ConfirmContent(
                 text = when (contentState) {
                     null -> ""
-                    else -> contentState.message
-                        .format(contentState.categoryName)
+                    else ->
+                        contentState.message
+                            .format(contentState.categoryName)
                 },
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onSuccessClick,
