@@ -39,6 +39,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [CI] Merge CI workflows in one
 - [CI] Update CI changed-files action
 - [CI] Update CI for github runners
+- [CI] Remote self-hosted runners
 
 # 1.7.1
 
