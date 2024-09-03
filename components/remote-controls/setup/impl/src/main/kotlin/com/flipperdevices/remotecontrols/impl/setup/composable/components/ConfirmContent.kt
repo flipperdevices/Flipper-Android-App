@@ -100,8 +100,8 @@ fun ConfirmContent(
 
 @Composable
 fun AnimatedConfirmContent(
+    modifier: Modifier = Modifier,
     lastEmulatedSignal: SignalResponse?,
-    modifier: Modifier,
     onNegativeClick: () -> Unit,
     onSuccessClick: () -> Unit
 ) {
