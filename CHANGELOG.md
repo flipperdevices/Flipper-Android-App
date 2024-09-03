@@ -31,6 +31,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fap manifest caching
 - [FIX] Remote controls design issues
 - [FIX] Fix flaky test
+- [FIX] Bad bottom sheet animation on infrared setup screen
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
