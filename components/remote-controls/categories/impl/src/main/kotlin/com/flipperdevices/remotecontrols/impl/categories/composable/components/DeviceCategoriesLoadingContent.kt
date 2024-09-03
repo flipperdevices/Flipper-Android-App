@@ -36,6 +36,7 @@ fun DeviceCategoriesLoadingContent(modifier: Modifier = Modifier) {
                         onClick = {},
                         deviceCategory = DeviceCategory(
                             id = -1,
+                            folderName = "",
                             meta = CategoryMeta(
                                 iconPngBase64 = "",
                                 iconSvgBase64 = "",

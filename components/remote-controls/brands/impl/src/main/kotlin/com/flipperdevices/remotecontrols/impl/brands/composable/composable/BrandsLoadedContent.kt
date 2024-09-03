@@ -6,11 +6,13 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.alphabet.AlphabetSearchComposable
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
+import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 
 @Composable
 fun BrandsLoadedContent(
     model: BrandsDecomposeComponent.Model.Loaded,
     onBrandClick: (BrandModel) -> Unit,
+    onBrandLongClick: (BrandModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -21,11 +23,14 @@ fun BrandsLoadedContent(
         headers = model.headers,
         listState = listState,
         content = {
-            BrandsList(
+            ItemsList(
                 modifier = Modifier.weight(1f),
                 listState = listState,
-                brands = model.sortedBrands,
-                onBrandClick = onBrandClick
+                items = model.sortedBrands,
+                onClick = onBrandClick,
+                onLongClick = onBrandLongClick,
+                toString = { it.name },
+                toCharSection = { it.charSection() }
             )
         }
     )

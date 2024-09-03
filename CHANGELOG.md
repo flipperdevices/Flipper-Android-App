@@ -9,6 +9,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Remove bond on retry pair
 - [Feature] Add onetap widget
 - [Feature] Save, edit, share remote control
+- [Feature] More UI elements for remote-controls
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls

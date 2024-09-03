@@ -1,17 +1,27 @@
 package com.flipperdevices.ifrmvp.core.ui.button
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.Base64ImageButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.ButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.ChannelButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.NavigationButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.OkNavigationButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.PowerButtonData
+import com.flipperdevices.ifrmvp.model.buttondata.ShutterButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.UnknownButtonData
 import com.flipperdevices.ifrmvp.model.buttondata.VolumeButtonData
@@ -74,7 +84,7 @@ fun ButtonItemComposable(
             )
         }
 
-        is NavigationButtonData -> {
+        is OkNavigationButtonData -> {
             ButtonPlaceholderComposition(
                 isSyncing = isSyncing,
                 isConnected = isConnected,
@@ -92,6 +102,29 @@ fun ButtonItemComposable(
                         onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
                         onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
                         onOkClick = { onKeyDataClick.invoke(buttonData.okKeyIdentifier) },
+                        modifier = modifier,
+                    )
+                }
+            )
+        }
+
+        is NavigationButtonData -> {
+            ButtonPlaceholderComposition(
+                isConnected = isConnected,
+                isSyncing = isSyncing,
+                isEmulating = listOf(
+                    buttonData.upKeyIdentifier,
+                    buttonData.rightKeyIdentifier,
+                    buttonData.downKeyIdentifier,
+                    buttonData.leftKeyIdentifier
+                ).contains(emulatedKeyIdentifier),
+                content = {
+                    NavigationButton(
+                        onLeftClick = { onKeyDataClick.invoke(buttonData.leftKeyIdentifier) },
+                        onRightClick = { onKeyDataClick.invoke(buttonData.rightKeyIdentifier) },
+                        onDownClick = { onKeyDataClick.invoke(buttonData.downKeyIdentifier) },
+                        onUpClick = { onKeyDataClick.invoke(buttonData.upKeyIdentifier) },
+                        onOkClick = null,
                         modifier = modifier,
                     )
                 }
@@ -141,6 +174,58 @@ fun ButtonItemComposable(
                     )
                 }
             )
+        }
+
+        is PowerButtonData -> {
+            ButtonPlaceholderComposition(
+                isConnected = isConnected,
+                isSyncing = isSyncing,
+                isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
+                content = {
+                    SquareIconButton(
+                        iconType = IconButtonData.IconType.POWER,
+                        modifier = modifier,
+                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                        background = LocalPalletV2.current.icon.danger.primary,
+                        iconTint = MaterialTheme.colors.onPrimary
+                    )
+                }
+            )
+        }
+
+        is ShutterButtonData -> {
+            ShutterButtonComposable(
+                onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) }
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ButtonItemComposablePreview() {
+    FlipperThemeInternal {
+        ButtonItemComposable(
+            buttonData = TextButtonData(text = "TXT"),
+            emulatedKeyIdentifier = null,
+            onKeyDataClick = {},
+            isSyncing = false,
+            isConnected = false
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(4.sf)) {
+            IconButtonData.IconType.entries.chunked(size = 6).forEach { entries ->
+                Row(horizontalArrangement = Arrangement.spacedBy(4.sf)) {
+                    entries.forEach { iconType ->
+                        ButtonItemComposable(
+                            buttonData = IconButtonData(iconId = iconType),
+                            emulatedKeyIdentifier = null,
+                            onKeyDataClick = {},
+                            isSyncing = false,
+                            isConnected = false
+                        )
+                    }
+                }
+            }
         }
     }
 }

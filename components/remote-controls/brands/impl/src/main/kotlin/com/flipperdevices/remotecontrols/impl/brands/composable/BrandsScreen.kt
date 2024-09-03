@@ -46,7 +46,8 @@ fun BrandsScreen(
                     BrandsLoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onBrandClick = brandsDecomposeComponent::onBrandClick
+                        onBrandClick = brandsDecomposeComponent::onBrandClick,
+                        onBrandLongClick = brandsDecomposeComponent::onBrandLongClick
                     )
                 }
 

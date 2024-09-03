@@ -1,20 +1,23 @@
 package com.flipperdevices.ifrmvp.core.ui.button
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
 @Composable
-fun DoubleButton(
+fun VerticalDoubleButton(
     onFirstClick: () -> Unit,
     onLastClick: () -> Unit,
     firstText: String,
@@ -46,7 +49,6 @@ fun DoubleButton(
             text = lastText,
             background = LocalPalletV2.current.surface.menu.body.dufault,
         )
-        SyncingBox()
     }
 }
 
@@ -56,7 +58,7 @@ fun VolumeButton(
     onReduceClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    DoubleButton(
+    VerticalDoubleButton(
         onFirstClick = onAddClick,
         onLastClick = onReduceClick,
         text = "VOL",
@@ -72,7 +74,7 @@ fun ChannelButton(
     onPrevClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    DoubleButton(
+    VerticalDoubleButton(
         onFirstClick = onNextClick,
         onLastClick = onPrevClick,
         text = "CH",
@@ -80,4 +82,21 @@ fun ChannelButton(
         lastText = "-",
         modifier = modifier,
     )
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun ChannelButtonPreview() {
+    FlipperThemeInternal {
+        Row(horizontalArrangement = Arrangement.spacedBy(4.sf)) {
+            ChannelButton(
+                onNextClick = {},
+                onPrevClick = {}
+            )
+            VolumeButton(
+                onReduceClick = {},
+                onAddClick = {}
+            )
+        }
+    }
 }

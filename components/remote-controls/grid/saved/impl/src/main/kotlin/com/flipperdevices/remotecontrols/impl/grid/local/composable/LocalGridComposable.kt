@@ -86,7 +86,7 @@ fun LocalGridComposable(
             LocalGridComposableContent(
                 localGridComponent = localGridComponent,
                 model = model,
-                modifier = Modifier.padding(scaffoldPaddings)
+                modifier = Modifier.padding(scaffoldPaddings).navigationBarsPadding()
             )
             Box(
                 modifier = Modifier

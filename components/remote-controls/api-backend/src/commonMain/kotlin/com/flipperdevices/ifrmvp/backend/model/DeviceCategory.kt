@@ -10,4 +10,6 @@ class DeviceCategory(
     val id: Long,
     @SerialName("meta")
     val meta: CategoryMeta,
+    @SerialName("folder_name")
+    val folderName: String
 )

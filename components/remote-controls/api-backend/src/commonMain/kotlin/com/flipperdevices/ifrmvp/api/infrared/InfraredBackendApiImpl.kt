@@ -5,6 +5,7 @@ import com.flipperdevices.ifrmvp.api.infrared.model.InfraredHost
 import com.flipperdevices.ifrmvp.backend.model.BrandsResponse
 import com.flipperdevices.ifrmvp.backend.model.CategoriesResponse
 import com.flipperdevices.ifrmvp.backend.model.IfrFileContentResponse
+import com.flipperdevices.ifrmvp.backend.model.InfraredsResponse
 import com.flipperdevices.ifrmvp.backend.model.PagesLayoutBackendModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
@@ -63,6 +64,14 @@ class InfraredBackendApiImpl(
         return httpClient.get {
             url("${host.url}/ui")
             parameter("ifr_file_id", ifrFileId)
+            contentType(ContentType.Application.Json)
+        }.body()
+    }
+
+    override suspend fun getInfrareds(brandId: Long): InfraredsResponse {
+        return httpClient.get {
+            url("${host.url}/infrareds")
+            parameter("brand_id", brandId)
             contentType(ContentType.Application.Json)
         }.body()
     }

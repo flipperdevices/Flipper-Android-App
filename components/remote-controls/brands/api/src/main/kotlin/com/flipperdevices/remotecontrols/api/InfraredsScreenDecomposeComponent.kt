@@ -3,17 +3,15 @@ package com.flipperdevices.remotecontrols.api
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
-abstract class BrandsScreenDecomposeComponent(
+abstract class InfraredsScreenDecomposeComponent(
     componentContext: ComponentContext
 ) : ScreenDecomposeComponent(componentContext) {
 
-    fun interface Factory {
+    interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            categoryId: Long,
-            onBackClick: () -> Unit,
-            onBrandClick: (brandId: Long, brandName: String) -> Unit,
-            onBrandLongClick: (brandId: Long) -> Unit
-        ): BrandsScreenDecomposeComponent
+            brandId: Long,
+            onBack: () -> Unit,
+        ): InfraredsScreenDecomposeComponent
     }
 }

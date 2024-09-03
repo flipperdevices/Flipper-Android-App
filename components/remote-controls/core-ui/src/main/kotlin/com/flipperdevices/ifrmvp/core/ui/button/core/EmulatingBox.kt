@@ -4,10 +4,14 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
 @Composable
 internal fun EmulatingBox(
@@ -62,5 +66,32 @@ internal fun SyncingBox(
                     .placeholderConnecting()
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SyncingBoxPreview() {
+    FlipperThemeInternal {
+        Box(modifier = Modifier.size(54.sf).background(LocalPalletV2.current.surface.bottomBar.body))
+        SyncingBox()
+    }
+}
+
+@Preview
+@Composable
+private fun NoConnectionBoxPreview() {
+    FlipperThemeInternal {
+        Box(modifier = Modifier.size(54.sf).background(LocalPalletV2.current.surface.bottomBar.body))
+        NoConnectionBox()
+    }
+}
+
+@Preview
+@Composable
+private fun EmulatingBoxPreview() {
+    FlipperThemeInternal {
+        Box(modifier = Modifier.size(54.sf).background(LocalPalletV2.current.surface.bottomBar.body))
+        EmulatingBox()
     }
 }

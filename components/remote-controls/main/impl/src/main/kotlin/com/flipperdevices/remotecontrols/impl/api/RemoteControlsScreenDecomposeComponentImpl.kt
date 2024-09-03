@@ -7,11 +7,13 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
@@ -24,6 +26,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     private val categoriesScreenDecomposeComponentFactory: CategoriesScreenDecomposeComponent.Factory,
     private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
     private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
+    private val infraredsScreenDecomposeComponentFactory: InfraredsScreenDecomposeComponent.Factory,
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -58,6 +61,12 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 onBackClick = navigation::pop,
                 categoryId = config.categoryId,
+                onBrandLongClick = {
+                    val configuration = RemoteControlsNavigationConfig.Infrareds(
+                        brandId = it,
+                    )
+                    navigation.pushToFront(configuration)
+                },
                 onBrandClick = { brandId, brandName ->
                     val configuration = RemoteControlsNavigationConfig.Setup(
                         categoryId = config.categoryId,
@@ -81,6 +90,14 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 ),
                 onBack = navigation::pop,
                 onIrFileReady = { navigation.pop() }
+            )
+        }
+
+        is RemoteControlsNavigationConfig.Infrareds -> {
+            infraredsScreenDecomposeComponentFactory.invoke(
+                componentContext = componentContext,
+                brandId = config.brandId,
+                onBack = navigation::popOr,
             )
         }
     }

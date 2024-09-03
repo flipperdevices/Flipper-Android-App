@@ -70,11 +70,6 @@ class DispatchSignalViewModel @Inject constructor(
                     identifier.hash == encoder.encode(remote.toByteArray())
                 }
 
-                is IfrKeyIdentifier.MD5 -> {
-                    val encoder = JvmEncoder(ByteArrayEncoder.Algorithm.MD5)
-                    identifier.hash == encoder.encode(remote.toByteArray())
-                }
-
                 IfrKeyIdentifier.Unknown -> {
                     error { "Found Unknown key identifier on remote ${remote.name}" }
                     false
