@@ -12,10 +12,10 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
-import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
 import com.flipperdevices.remotecontrols.impl.setup.encoding.JvmEncoder
