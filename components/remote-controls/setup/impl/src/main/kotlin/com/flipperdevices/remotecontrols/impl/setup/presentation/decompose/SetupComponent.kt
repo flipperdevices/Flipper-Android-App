@@ -2,6 +2,7 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
+import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
@@ -15,6 +16,7 @@ interface SetupComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     val remoteFoundFlow: Flow<IfrFileModel>
+    val lastEmulatedSignal: StateFlow<SignalResponse?>
     val param: SetupScreenDecomposeComponent.Param
 
     fun onBackClick()
@@ -35,7 +37,6 @@ interface SetupComponent {
             val response: SignalResponseModel,
             val isFlipperBusy: Boolean = false,
             val emulatedKeyIdentifier: IfrKeyIdentifier?,
-            val isEmulated: Boolean,
             val connectionState: InfraredEmulateState
         ) : Model {
             val isSyncing: Boolean = listOf(
