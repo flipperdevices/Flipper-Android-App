@@ -69,6 +69,7 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
             }
 
             FlipperFileType.SHADOW_NFC -> FlipperKeyType.NFC.flipperDir
+            FlipperFileType.UI_INFRARED -> FlipperKeyType.INFRARED.flipperDir
             FlipperFileType.OTHER -> error("Don't support file with this type")
         }
         val targetPath = FlipperFilePath(

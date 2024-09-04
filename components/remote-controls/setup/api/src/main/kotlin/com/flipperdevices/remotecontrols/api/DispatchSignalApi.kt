@@ -9,14 +9,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface DispatchSignalApi : InstanceKeeper.Instance {
     val state: StateFlow<State>
-    val isEmulated: StateFlow<Boolean>
 
     fun dismissBusyDialog()
 
     /**
      * Dispatch key from temporal file which contains only one key
      */
-    fun dispatch(config: EmulateConfig)
+    fun dispatch(
+        config: EmulateConfig,
+        identifier: IfrKeyIdentifier,
+        onDispatched: () -> Unit = {}
+    )
 
     fun reset()
 
@@ -26,13 +29,14 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     fun dispatch(
         identifier: IfrKeyIdentifier,
         remotes: List<InfraredRemote>,
-        ffPath: FlipperFilePath
+        ffPath: FlipperFilePath,
+        onDispatched: () -> Unit = {}
     )
 
     sealed interface State {
         data object Pending : State
         data object FlipperIsBusy : State
-        data object Emulating : State
+        data class Emulating(val ifrKeyIdentifier: IfrKeyIdentifier) : State
         data object Error : State
     }
 }

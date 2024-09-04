@@ -150,9 +150,9 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private fun goToTab(bottomBarTabEnum: BottomBarTabEnum, force: Boolean) {
         runBlocking {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setSelectedTab(bottomBarTabEnum.protobufRepresentation)
-                    .build()
+                it.copy(
+                    selected_tab = bottomBarTabEnum.protobufRepresentation
+                )
             }
         }
 

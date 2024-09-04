@@ -23,6 +23,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Provider
 
+private val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
+private val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)
+
 class FlipperVersionApiImpl @Inject constructor(
     settingsStoreProvider: Provider<DataStore<Settings>>
 ) : BluetoothGattServiceWrapper, FlipperVersionApi, LogTagProvider {
@@ -69,7 +72,7 @@ class FlipperVersionApiImpl @Inject constructor(
     }
 
     override suspend fun initialize(bleManager: UnsafeBleManager) {
-        val ignoreUnsupported = settingsStore.data.first().ignoreUnsupportedVersion
+        val ignoreUnsupported = settingsStore.data.first().ignore_unsupported_version
         if (ignoreUnsupported) {
             bleManager.setDeviceSupportedStatus(FlipperSupportedState.READY)
             return
@@ -115,7 +118,7 @@ class FlipperVersionApiImpl @Inject constructor(
 }
 
 private fun SemVer.toSupportedState() = when {
-    this < Constants.API_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_FLIPPER
-    this >= Constants.API_MAX_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_APPLICATION
+    this < API_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_FLIPPER
+    this >= API_MAX_SUPPORTED_VERSION -> FlipperSupportedState.DEPRECATED_APPLICATION
     else -> FlipperSupportedState.READY
 }

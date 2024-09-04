@@ -14,4 +14,6 @@
     <string name="dialog_restore_all_desc">All deleted keys will be restored and synced with Flipper</string>
     <string name="dialog_restore_all_confirm">Restore All</string>
 
+    <string name="add_remote">Add Remote</string>
+
 </resources>

@@ -15,7 +15,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class CategoriesScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onBackClick: () -> Unit,
-    @Assisted onCategoryClick: (categoryId: Long) -> Unit,
+    @Assisted onCategoryClick: (categoryId: Long, categoryName: String) -> Unit,
     deviceCategoriesComponentFactory: DeviceCategoriesComponent.Factory,
 ) : CategoriesScreenDecomposeComponent(componentContext) {
     private val deviceCategoriesComponent = deviceCategoriesComponentFactory.invoke(

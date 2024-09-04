@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.PersistentList
 fun FPingComposable(
     logs: PersistentList<String>,
     onSendPing: () -> Unit,
+    invalidateRpcInfo: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -39,6 +40,12 @@ fun FPingComposable(
             onClick = onSendPing
         ) {
             Text(text = "Send ping")
+        }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = invalidateRpcInfo
+        ) {
+            Text(text = "Get device info")
         }
     }
 }

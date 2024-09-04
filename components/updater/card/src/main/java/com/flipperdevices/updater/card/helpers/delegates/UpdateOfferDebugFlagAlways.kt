@@ -15,6 +15,6 @@ class UpdateOfferDebugFlagAlways @Inject constructor(
 ) : UpdateOfferDelegate {
 
     override fun isRequire(serviceApi: FlipperServiceApi): Flow<Boolean> {
-        return dataStoreSettings.data.map { it.alwaysUpdate }
+        return dataStoreSettings.data.map { it.always_update }
     }
 }

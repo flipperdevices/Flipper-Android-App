@@ -11,7 +11,6 @@ import com.flipperdevices.settings.impl.composable.components.ClickableElement
 fun ExperimentalCategory(
     settings: Settings,
     onOpenFM: () -> Unit,
-    onOpenRM: () -> Unit,
     onSwitchExperimental: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -19,19 +18,14 @@ fun ExperimentalCategory(
         CategoryElement(
             titleId = R.string.experimental_options,
             descriptionId = R.string.experimental_options_desc,
-            state = settings.enabledExperimentalFunctions,
+            state = settings.enabled_experimental_functions,
             onSwitchState = onSwitchExperimental
         )
-        if (settings.enabledExperimentalFunctions) {
+        if (settings.enabled_experimental_functions) {
             ClickableElement(
                 titleId = R.string.experimental_file_manager,
                 descriptionId = R.string.experimental_file_manager_desc,
                 onClick = onOpenFM
-            )
-            ClickableElement(
-                titleId = R.string.experimental_remote_control,
-                descriptionId = R.string.experimental_remote_control_desc,
-                onClick = onOpenRM
             )
         }
     }

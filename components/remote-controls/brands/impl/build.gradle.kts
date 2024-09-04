@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.brands.api)
 
+    implementation(projects.components.rootscreen.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

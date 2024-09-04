@@ -1,6 +1,5 @@
 plugins {
     id("flipper.android-lib")
-    id("flipper.ktorfit")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
@@ -25,6 +24,7 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.datetime)
+    implementation(libs.ktor.client)
 
     implementation(libs.annotations)
 }

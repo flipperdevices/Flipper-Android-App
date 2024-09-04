@@ -49,6 +49,7 @@ class DebugViewModel @Inject constructor(
             DebugSettingSwitch.SelfUpdaterDebug -> onSwitchSelfUpdaterDebug(flag)
             DebugSettingSwitch.SkipAutoSync -> onSwitchSkipAutoSync(flag)
             DebugSettingSwitch.SkipProvisioning -> onSwitchIgnoreSubGhzProvisioning(flag)
+            DebugSettingSwitch.ShowRemoteControls -> onShowRemoteControls(flag)
         }
     }
 
@@ -63,9 +64,9 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchIgnoreSupportedVersion(ignored: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setIgnoreUnsupportedVersion(ignored)
-                    .build()
+                it.copy(
+                    ignore_unsupported_version = ignored
+                )
             }
 
             askRestartApp()
@@ -75,9 +76,9 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchIgnoreUpdaterVersion(alwaysUpdate: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setAlwaysUpdate(alwaysUpdate)
-                    .build()
+                it.copy(
+                    always_update = alwaysUpdate
+                )
             }
         }
     }
@@ -85,9 +86,9 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchIgnoreSubGhzProvisioning(ignoreSubGhzProvisioningOnZeroRegion: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setIgnoreSubghzProvisioningOnZeroRegion(ignoreSubGhzProvisioningOnZeroRegion)
-                    .build()
+                it.copy(
+                    ignore_subghz_provisioning_on_zero_region = ignoreSubGhzProvisioningOnZeroRegion
+                )
             }
         }
     }
@@ -95,9 +96,9 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchSkipAutoSync(skipAutoSync: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setSkipAutoSyncInDebug(skipAutoSync)
-                    .build()
+                it.copy(
+                    skip_auto_sync_in_debug = skipAutoSync
+                )
             }
         }
     }
@@ -121,9 +122,9 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchSelfUpdaterDebug(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setSelfUpdaterDebug(enabled)
-                    .build()
+                it.copy(
+                    self_updater_debug = enabled
+                )
             }
         }
     }
@@ -131,11 +132,21 @@ class DebugViewModel @Inject constructor(
     private fun onSwitchFapHubDev(enabled: Boolean) {
         viewModelScope.launch {
             settingsDataStore.updateData {
-                it.toBuilder()
-                    .setUseDevCatalog(enabled)
-                    .build()
+                it.copy(
+                    use_dev_catalog = enabled
+                )
             }
             askRestartApp()
+        }
+    }
+
+    private fun onShowRemoteControls(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.copy(
+                    show_remote_controls = enabled
+                )
+            }
         }
     }
 

@@ -24,10 +24,10 @@ fun DebugCategory(
         CategoryElement(
             titleId = R.string.debug_options,
             descriptionId = R.string.debug_options_desc,
-            state = settings.enabledDebugSettings,
+            state = settings.enabled_debug_settings,
             onSwitchState = onSwitchDebug
         )
-        if (settings.enabledDebugSettings) {
+        if (settings.enabled_debug_settings) {
             DebugCategoryItems(
                 settings = settings,
                 onAction = { onAction(it) },
@@ -58,21 +58,21 @@ private fun DebugCategoryItems(
     SwitchableElement(
         titleId = R.string.debug_ignored_unsupported_version,
         descriptionId = R.string.debug_ignored_unsupported_version_desc,
-        state = settings.ignoreUnsupportedVersion,
+        state = settings.ignore_unsupported_version,
         onSwitchState = { onSwitch(DebugSettingSwitch.IgnoreSupportedVersion, it) }
     )
     GrayDivider()
     SwitchableElement(
         titleId = R.string.debug_ignored_update_version,
         descriptionId = R.string.debug_ignored_update_version_desc,
-        state = settings.alwaysUpdate,
+        state = settings.always_update,
         onSwitchState = { onSwitch(DebugSettingSwitch.IgnoreUpdaterVersion, it) }
     )
     GrayDivider()
     SwitchableElement(
         titleId = R.string.debug_subghz_provisioning_ignore,
         descriptionId = R.string.debug_subghz_provisioning_ignore_desc,
-        state = settings.ignoreSubghzProvisioningOnZeroRegion,
+        state = settings.ignore_subghz_provisioning_on_zero_region,
         onSwitchState = { onSwitch(DebugSettingSwitch.SkipProvisioning, it) }
     )
     GrayDivider()
@@ -83,19 +83,25 @@ private fun DebugCategoryItems(
     GrayDivider()
     SwitchableElement(
         titleId = R.string.debug_skip_autosync,
-        state = settings.skipAutoSyncInDebug,
+        state = settings.skip_auto_sync_in_debug,
         onSwitchState = { onSwitch(DebugSettingSwitch.SkipAutoSync, it) }
     )
     GrayDivider()
     SwitchableElement(
         titleId = R.string.debug_application_catalog_dev,
-        state = settings.useDevCatalog,
+        state = settings.use_dev_catalog,
         onSwitchState = { onSwitch(DebugSettingSwitch.FapHubDev, it) }
     )
     GrayDivider()
     SwitchableElement(
+        titleId = R.string.debug_application_show_remote_controls,
+        state = settings.show_remote_controls,
+        onSwitchState = { onSwitch(DebugSettingSwitch.ShowRemoteControls, it) }
+    )
+    GrayDivider()
+    SwitchableElement(
         titleId = R.string.debug_selfupdater,
-        state = settings.selfUpdaterDebug,
+        state = settings.self_updater_debug,
         onSwitchState = { onSwitch(DebugSettingSwitch.SelfUpdaterDebug, it) }
     )
     GrayDivider()

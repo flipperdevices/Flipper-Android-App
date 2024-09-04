@@ -1,7 +1,6 @@
 package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -15,6 +14,7 @@ import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
+import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -26,8 +26,15 @@ class InfraredViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
+    closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: Application
-) : EmulateViewModel(serviceProvider, emulateHelper, synchronizationApi, application) {
+) : EmulateViewModel(
+    serviceProvider,
+    emulateHelper,
+    synchronizationApi,
+    closeEmulateAppTaskHolder,
+    application
+) {
     override val TAG = "InfraredViewModel"
 
     override suspend fun onStartEmulateInternal(
@@ -71,6 +78,7 @@ class InfraredViewModel @Inject constructor(
             when (buttonState) {
                 is EmulateButtonState.Disabled,
                 is EmulateButtonState.Loading -> buttonState
+
                 is EmulateButtonState.Inactive -> activeState
                 is EmulateButtonState.Active -> {
                     emulateHelper.stopEmulateForce(serviceApi.requestApi)

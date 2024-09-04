@@ -25,7 +25,7 @@ class SelfUpdaterDebug @Inject constructor(
     override val TAG = "SelfUpdaterDebug"
 
     override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
-        val isFlagDebug = dataStoreSettings.data.map { it.selfUpdaterDebug }.first()
+        val isFlagDebug = dataStoreSettings.data.map { it.self_updater_debug }.first()
         if (!isFlagDebug) {
             info { "Self Updater in Debug Mode disable" }
             return SelfUpdateResult.ERROR

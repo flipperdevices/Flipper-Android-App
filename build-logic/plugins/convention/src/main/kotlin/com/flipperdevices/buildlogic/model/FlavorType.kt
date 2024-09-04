@@ -8,7 +8,19 @@ package com.flipperdevices.buildlogic.model
  * so in the end, when project will e KMP-full, this will be final version
  * of BuildKonfig field values
  */
-enum class FlavorType(val isLogEnabled: Boolean) {
-    DEV(isLogEnabled = true),
-    PROD(isLogEnabled = false)
+enum class FlavorType(
+    val isLogEnabled: Boolean,
+    val crashAppOnFailedChecks: Boolean,
+    val loggingPendingCommands: Boolean
+) {
+    DEV(
+        isLogEnabled = true,
+        crashAppOnFailedChecks = true,
+        loggingPendingCommands = true
+    ),
+    PROD(
+        isLogEnabled = true,
+        crashAppOnFailedChecks = false,
+        loggingPendingCommands = true
+    )
 }

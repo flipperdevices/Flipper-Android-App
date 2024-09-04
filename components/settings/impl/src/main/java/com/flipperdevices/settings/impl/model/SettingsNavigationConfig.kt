@@ -15,7 +15,4 @@ sealed class SettingsNavigationConfig {
 
     @Serializable
     data object StressTest : SettingsNavigationConfig()
-
-    @Serializable
-    data object RemoteControls : SettingsNavigationConfig()
 }

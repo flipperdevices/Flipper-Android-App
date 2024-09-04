@@ -72,7 +72,7 @@ class FlipperAppNotificationApiImpl @Inject constructor(
             when (updateNotificationStateInternal) {
                 UpdateNotificationStateInternal.IN_PROGRESS -> UpdateNotificationState.IN_PROGRESS
                 UpdateNotificationStateInternal.READY -> if (
-                    settings.notificationTopicUpdateEnabled
+                    settings.notification_topic_update_enabled
                 ) {
                     when (permissionHelper.isPermissionGranted(UPDATE_TOPIC_NOTIFICATION_CHANNEL)) {
                         NotificationPermissionState.GRANTED -> UpdateNotificationState.ENABLED
@@ -205,9 +205,9 @@ class FlipperAppNotificationApiImpl @Inject constructor(
         }
 
         settingsDataStore.updateData {
-            it.toBuilder()
-                .setNotificationTopicUpdateEnabled(isSubscribe)
-                .build()
+            it.copy(
+                notification_topic_update_enabled = isSubscribe
+            )
         }
     }
 

@@ -12,11 +12,9 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -83,7 +81,7 @@ class InstalledFapsUidsProducerTest {
     }
 
     @Test
-    fun `reinvalidate don't refresh cache`() = runTest {
+    fun `reinvalidate don't refresh cache`() = runTest(UnconfinedTestDispatcher()) {
         fapManifestStateFlow.emit(
             FapManifestState.Loaded(
                 items = persistentListOf(getTestManifest("TEST")),
@@ -92,9 +90,11 @@ class InstalledFapsUidsProducerTest {
         )
 
         val states = mutableListOf<FapInstalledUidsState>()
-        val stateSubscribeJob = underTest.getUidsStateFlow().onEach {
-            states.add(it)
-        }.launchIn(this + testScheduler)
+        val stateSubscribeJob = launch {
+            underTest.getUidsStateFlow().collect {
+                states.add(it)
+            }
+        }
 
         var job = launch {
             underTest.refresh(this, force = true)
@@ -102,10 +102,9 @@ class InstalledFapsUidsProducerTest {
         underTest.getUidsStateFlow().filter {
             it is FapInstalledUidsState.Loaded && it.faps.isNotEmpty()
         }.first()
-        advanceUntilIdle()
 
-        Assert.assertEquals(
-            listOf(
+        Assert.assertArrayEquals(
+            arrayOf(
                 FapInstalledUidsState.Loaded(faps = persistentListOf(), inProgress = true),
                 FapInstalledUidsState.Loaded(
                     faps = persistentListOf(
@@ -116,7 +115,7 @@ class InstalledFapsUidsProducerTest {
                     inProgress = true
                 )
             ),
-            states
+            states.toTypedArray()
         )
 
         job.cancelAndJoin()
@@ -133,10 +132,9 @@ class InstalledFapsUidsProducerTest {
         underTest.getUidsStateFlow().filter {
             it is FapInstalledUidsState.Loaded && it.faps.find { it.applicationUid == "TEST2" } != null
         }.first()
-        advanceUntilIdle()
 
-        Assert.assertEquals(
-            listOf(
+        Assert.assertArrayEquals(
+            arrayOf(
                 FapInstalledUidsState.Loaded(faps = persistentListOf(), inProgress = true),
                 FapInstalledUidsState.Loaded(
                     faps = persistentListOf(
@@ -155,7 +153,7 @@ class InstalledFapsUidsProducerTest {
                     inProgress = false
                 )
             ),
-            states
+            states.toTypedArray()
         )
 
         job.cancelAndJoin()

@@ -31,19 +31,6 @@ sealed interface IfrKeyIdentifier {
         }
     }
 
-    @SerialName(MD5.TYPE)
-    @Serializable
-    data class MD5(
-        @SerialName("key_name")
-        val name: String,
-        @SerialName("md5_string")
-        val hash: String
-    ) : IfrKeyIdentifier {
-        companion object {
-            const val TYPE = "MD5"
-        }
-    }
-
     @SerialName(Name.TYPE)
     @Serializable
     data class Name(

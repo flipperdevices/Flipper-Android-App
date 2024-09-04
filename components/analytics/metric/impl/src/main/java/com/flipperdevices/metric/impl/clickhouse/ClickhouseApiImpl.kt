@@ -251,12 +251,12 @@ class ClickhouseApiImpl @Inject constructor(
 
     private suspend fun getUUID(): String {
         var uuid = dataStore.data.first().uuid
-        if (uuid.isNullOrBlank()) {
+        if (uuid.isBlank()) {
             uuid = dataStore.updateData {
-                if (it.uuid.isNullOrBlank()) {
-                    it.toBuilder()
-                        .setUuid(UUID.randomUUID().toString())
-                        .build()
+                if (it.uuid.isBlank()) {
+                    it.copy(
+                        uuid = UUID.randomUUID().toString()
+                    )
                 } else {
                     it
                 }

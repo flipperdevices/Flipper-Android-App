@@ -3,6 +3,7 @@ package com.flipperdevices.metric.impl.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
+import com.flipperdevices.metric.api.MetricAndroidApi
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SessionState
@@ -10,13 +11,16 @@ import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.metric.impl.clickhouse.ClickhouseApi
 import com.flipperdevices.metric.impl.countly.CountlyApi
 import com.squareup.anvil.annotations.ContributesBinding
+import dagger.Reusable
 import javax.inject.Inject
 
+@Reusable
 @ContributesBinding(AppGraph::class, MetricApi::class)
+@ContributesBinding(AppGraph::class, MetricAndroidApi::class)
 class MetricApiImpl @Inject constructor(
     private val countlyApi: CountlyApi,
     private val clickhouseApi: ClickhouseApi
-) : MetricApi, LogTagProvider {
+) : MetricApi, MetricAndroidApi, LogTagProvider {
     override val TAG = "MetricApi"
 
     override fun reportSimpleEvent(simpleEvent: SimpleEvent, arg: String?) {

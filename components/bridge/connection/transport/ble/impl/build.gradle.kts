@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.anvil")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.transport.ble.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.connection.transport.ble.api)
 
     implementation(projects.components.core.log)
@@ -22,9 +23,12 @@ dependencies {
     implementation(libs.kotlin.coroutines)
 
     implementation(libs.slf4j.timber)
+    implementation(libs.kotlin.immutable.collections)
+}
 
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
+androidUnitTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.junit)
+    implementation(libs.mockk)
 }

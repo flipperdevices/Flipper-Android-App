@@ -142,8 +142,13 @@ class UploaderViewModel @AssistedInject constructor(
         val shadowFile = flipperKey
             .additionalFiles
             .firstOrNull { it.path.fileType == FlipperFileType.SHADOW_NFC }
+        val irUiFile = flipperKey
+            .additionalFiles
+            .firstOrNull { it.path.fileType == FlipperFileType.UI_INFRARED }
         if (flipperKey.flipperKeyType == FlipperKeyType.NFC && shadowFile != null) {
             return shadowFile.content
+        } else if (flipperKey.flipperKeyType == FlipperKeyType.INFRARED && irUiFile != null) {
+            return irUiFile.content
         }
 
         return flipperKey.mainFile.content

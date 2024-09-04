@@ -77,7 +77,7 @@ class FlipperServiceConnectionHelperImpl(
         }
         val usedBackgroundService = runBlockingWithLog {
             dataStoreSettings.data.first()
-        }.usedForegroundService
+        }.used_foreground_service
 
         if (usedBackgroundService) {
             // Without it service destroy after unbind
@@ -99,7 +99,7 @@ class FlipperServiceConnectionHelperImpl(
         if (serviceRunning) {
             val usedForegroundService = runBlocking {
                 dataStoreSettings.data.first()
-            }.usedForegroundService
+            }.used_foreground_service
             if (usedForegroundService) {
                 info { "Stop service" }
                 val stopIntent = Intent(applicationContext, FlipperService::class.java).apply {

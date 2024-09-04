@@ -56,7 +56,9 @@ object KeyDiffCombiner {
     private fun resolveConflictBothAdd(first: KeyDiff, second: KeyDiff): KeyDiff? {
         return if (first.newHash.hash == second.newHash.hash) {
             null
-        } else if (first.newHash.keyPath.fileType == FlipperFileType.SHADOW_NFC) {
+        } else if (listOf(FlipperFileType.SHADOW_NFC, FlipperFileType.UI_INFRARED)
+                .contains(first.newHash.keyPath.fileType)
+        ) {
             /**
              * If the file is shadow, we always give priority
              * to a copy of the file from the flipper.

@@ -14,6 +14,7 @@ import com.flipperdevices.keyedit.impl.R
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class LimboKeyProcessor @Inject constructor(
@@ -48,7 +49,7 @@ class LimboKeyProcessor @Inject constructor(
     override suspend fun onSave(
         editableKey: EditableKey.Limb,
         editState: KeyEditState.Editing,
-        onEndAction: () -> Unit
+        onEndAction: (FlipperKey?) -> Unit
     ) {
         val newPathUnfree = if (editState.name != null) {
             editableKey.notSavedFlipperKey.mainFile.path.copyWithChangedName(editState.name)
@@ -71,7 +72,7 @@ class LimboKeyProcessor @Inject constructor(
                 descId = R.string.saved_key_desc
             )
         )
-        onEndAction()
+        onEndAction(newKey)
     }
 }
 
@@ -82,7 +83,7 @@ private fun NotSavedFlipperKey.toFlipperKey(newPath: FlipperFilePath) = FlipperK
             it.path.copyWithChangedName(newPath.nameWithoutExtension),
             it.content
         )
-    },
+    }.toImmutableList(),
     notes = notes,
     deleted = false,
     synchronized = false

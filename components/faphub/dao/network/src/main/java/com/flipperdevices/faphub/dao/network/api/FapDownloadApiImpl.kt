@@ -8,7 +8,7 @@ import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitBundleApi
+import com.flipperdevices.faphub.dao.network.network.api.FapNetworkBundleApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.call.body
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapDownloadApi::class)
 class FapDownloadApiImpl @Inject constructor(
-    private val bundleApi: KtorfitBundleApi,
+    private val bundleApi: FapNetworkBundleApi,
     private val context: Context
 ) : FapDownloadApi, LogTagProvider {
     override val TAG = "FapDownloadApi"

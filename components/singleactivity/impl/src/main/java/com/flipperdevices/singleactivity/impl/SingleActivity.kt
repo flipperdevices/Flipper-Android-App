@@ -27,7 +27,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.MetricAndroidApi
 import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
@@ -47,7 +47,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
     lateinit var rootComponentFactory: RootDecomposeComponent.Factory
 
     @Inject
-    lateinit var metricApi: MetricApi
+    lateinit var metricApi: MetricAndroidApi
 
     @Inject
     lateinit var onCreateHandlerDispatcher: OnCreateHandlerDispatcher

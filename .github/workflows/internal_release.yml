@@ -1,0 +1,211 @@
+name: Upload to Google Play Beta
+
+on: workflow_dispatch
+
+concurrency:
+  group: "deploy"
+
+jobs:
+  validate_gradle_wrapper:
+    name: "Validate gradle wrapper"
+    uses: ./.github/workflows/call-validate-gradle-wrapper.yml
+  build_number:
+    name: Generate build number
+    runs-on: ubuntu-latest
+    needs: [ validate_gradle_wrapper ]
+    outputs:
+      number: ${{ steps.build_out.outputs.number }}
+      number_wearos: ${{ steps.wearos_out.outputs.number_wearos }}
+    steps:
+      - name: Generate build number
+        id: buildnumber
+        uses: onyxmueller/build-tag-number@4a0c81c9af350d967032d49204c83c38e6b0c8e4 # v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate build number for WearOS
+        id: buildnumber_wearos
+        uses: onyxmueller/build-tag-number@4a0c81c9af350d967032d49204c83c38e6b0c8e4 # v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Set output for simple build'
+        id: build_out
+        run: |
+          echo "number=${{ steps.buildnumber.outputs.build_number }}" >> $GITHUB_OUTPUT
+      - name: 'Set output for WearOS'
+        id: wearos_out
+        run: |
+          echo "number_wearos=${{ steps.buildnumber_wearos.outputs.build_number }}" >> $GITHUB_OUTPUT
+  create_internal_baseline:
+    name: "Create baseline profile"
+    needs: build_number
+    uses: ./.github/workflows/call-create-baseline.yml
+    with:
+      BUILD_VARIANT_NAME: "internal"
+  build_internal_release:
+    name: Build Internal AAB and APK
+    runs-on: ubuntu-latest
+    needs: [ create_internal_baseline, build_number ]
+    strategy:
+      matrix:
+        target: [ "gh_gms", "gh_nogms", "googleplay" ]
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          submodules: 'recursive'
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+        name: "Download ${{ needs.create_internal_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
+        with:
+          name: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_ID }}
+          path: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_PATH }}
+      - name: Set up JDK 1.17
+        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: 'Set variables'
+        id: vars
+        run: |
+          export $(cat .github/workflows/version.env | xargs)
+          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number }}" >> $GITHUB_OUTPUT
+      - name: Build internal release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          ORG_GRADLE_PROJECT_version_code: ${{ steps.vars.outputs.minor_version }}
+          ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
+          ORG_GRADLE_PROJECT_countly_url: ${{ secrets.COUNTLY_URL_PROD }}
+          ORG_GRADLE_PROJECT_countly_app_key: ${{ secrets.COUNTLY_APP_KEY_PROD }}
+        run: |
+          export $(cat .github/workflows/targets/${{ matrix.target }}.env | xargs)
+          ./gradlew :instances:android:app:assembleInternal :instances:android:app:bundleInternal
+      - name: Sign AAB
+        id: sign_aab
+        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        with:
+          releaseDirectory: instances/android/app/build/outputs/bundle/internal
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - name: Sign APK
+        id: sign_apk
+        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        with:
+          releaseDirectory: instances/android/app/build/outputs/apk/internal
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - name: Copy artifacts
+        id: artifacts_copy
+        run: |
+          mkdir artifacts
+          cp ${{ steps.sign_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-${{ matrix.target }}.aab
+          cp ${{ steps.sign_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-${{ matrix.target }}.apk
+          cp instances/android/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
+          echo "path=artifacts/" >> $GITHUB_OUTPUT
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        with:
+          name: artifacts-${{ matrix.target }}
+          path: ${{ steps.artifacts_copy.outputs.path }}
+  build_internal_release_gms_wearos:
+    name: Build Internal AAB and APK WearOS
+    runs-on: ubuntu-latest
+    needs: build_number
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          submodules: 'recursive'
+      - name: Set up JDK 1.17
+        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: 'Set variables'
+        id: vars
+        run: |
+          export $(cat .github/workflows/version.env | xargs)
+          echo "major_version=${MAJOR_VERSION}" >> $GITHUB_OUTPUT
+          echo "minor_version=${{ needs.build_number.outputs.number_wearos }}" >> $GITHUB_OUTPUT
+      - name: Build internal release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          ORG_GRADLE_PROJECT_version_code: ${{ steps.vars.outputs.minor_version }}
+          ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
+        run: |
+          export $(cat .github/workflows/targets/wearos.env | xargs)
+          ./gradlew :instances:wearable:assembleInternal :instances:wearable:bundleInternal
+      - name: Sign Wear AAB
+        id: sign_wear_aab
+        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        with:
+          releaseDirectory: instances/wearable/build/outputs/bundle/internal
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - name: Sign Wear APK
+        id: sign_wear_apk
+        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        with:
+          releaseDirectory: instances/wearable/build/outputs/apk/internal
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - name: Copy artifacts
+        id: artifacts_copy
+        run: |
+          mkdir artifacts
+          cp ${{ steps.sign_wear_aab.outputs.signedReleaseFile }} artifacts/flipper-zero-wearos.aab
+          cp ${{ steps.sign_wear_apk.outputs.signedReleaseFile }} artifacts/flipper-zero-wearos.apk
+          cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
+          echo "path=artifacts/" >> $GITHUB_OUTPUT
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        with:
+          name: artifacts-wearos
+          path: ${{ steps.artifacts_copy.outputs.path }}
+  upload_to_playstore:
+    name: Upload to Play Store
+    runs-on: ubuntu-latest
+    needs: [ build_internal_release ]
+    steps:
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        id: download-googleplay
+        with:
+          name: artifacts-googleplay
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
+          packageName: com.flipperdevices.app
+          releaseFiles: ${{steps.download-googleplay.outputs.download-path}}/flipper-zero-googleplay.aab
+          track: beta
+          mappingFile: ${{steps.download-googleplay.outputs.download-path}}/mapping-googleplay.txt
+  upload_to_playstore_wearos:
+    name: Upload Wear OS to Play Store
+    runs-on: ubuntu-latest
+    needs: [ build_internal_release_gms_wearos ]
+    steps:
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        id: download-wearos
+        with:
+          name: artifacts-wearos
+      - name: Upload to Play Store Wear OS
+        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_PUBLISHER_JSON }}
+          packageName: com.flipperdevices.app
+          releaseFiles: ${{steps.download-wearos.outputs.download-path}}/flipper-zero-wearos.aab
+          track: wear:beta
+          mappingFile: ${{steps.download-wearos.outputs.download-path}}/mapping-wearos.txt

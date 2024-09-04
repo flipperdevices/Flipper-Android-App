@@ -14,8 +14,6 @@ data class NavigationButtonData(
     val downKeyIdentifier: IfrKeyIdentifier = IfrKeyIdentifier.Unknown,
     @SerialName("right_key_id")
     val rightKeyIdentifier: IfrKeyIdentifier = IfrKeyIdentifier.Unknown,
-    @SerialName("ok_key_id")
-    val okKeyIdentifier: IfrKeyIdentifier = IfrKeyIdentifier.Unknown,
 ) : ButtonData {
     override val type: ButtonData.ButtonType = ButtonData.ButtonType.NAVIGATION
 }

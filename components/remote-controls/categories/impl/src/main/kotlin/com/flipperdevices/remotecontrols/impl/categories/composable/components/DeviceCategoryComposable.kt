@@ -95,7 +95,8 @@ private fun DeviceCategoryComposablePreview() {
                             displayName = "TVs",
                             singularDisplayName = "TV"
                         )
-                    )
+                    ),
+                    folderName = "FOLDER"
                 ),
                 onClick = {}
             )

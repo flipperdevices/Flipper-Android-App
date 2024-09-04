@@ -60,6 +60,9 @@ class CountlyApiImpl @Inject constructor(
         id: String,
         params: Map<String, Any?>?
     ) {
+        if (countly.events() == null) {
+            return
+        }
         verbose { "Report event $id with $params" }
         if (params == null) {
             countly.events().recordEvent(id)
@@ -81,10 +84,10 @@ class CountlyApiImpl @Inject constructor(
         config.setLoggingEnabled(BuildConfig.INTERNAL)
         val settings = runBlocking {
             dataStore.updateData {
-                if (it.uuid.isNullOrBlank()) {
-                    it.toBuilder()
-                        .setUuid(UUID.randomUUID().toString())
-                        .build()
+                if (it.uuid.isBlank()) {
+                    it.copy(
+                        uuid = UUID.randomUUID().toString()
+                    )
                 } else {
                     it
                 }

@@ -41,6 +41,7 @@ abstract class EmulateViewModel(
     private val serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
+    private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: FlipperApp
 ) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
@@ -182,7 +183,7 @@ abstract class EmulateViewModel(
 
     override fun onDestroy() {
         if (emulateButtonStateFlow.value is EmulateButtonState.Active) {
-            CloseEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
+            closeEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
         }
         super.onDestroy()
     }

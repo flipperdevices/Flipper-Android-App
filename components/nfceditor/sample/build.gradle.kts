@@ -48,6 +48,7 @@ dependencies {
     commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.activity)

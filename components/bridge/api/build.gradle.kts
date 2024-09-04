@@ -1,6 +1,5 @@
 plugins {
     id("flipper.android-lib")
-    id("kotlin-parcelize")
 }
 
 android.namespace = "com.flipperdevices.bridge.api"

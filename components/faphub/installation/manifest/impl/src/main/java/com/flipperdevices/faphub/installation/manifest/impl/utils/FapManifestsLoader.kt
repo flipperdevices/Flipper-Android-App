@@ -109,7 +109,7 @@ class FapManifestsLoader @AssistedInject constructor(
         connectionState: ConnectionState,
         storageInformation: FlipperStorageInformation
     ) {
-        val isUseDevCatalog = dataStoreSettings.data.first().useDevCatalog
+        val isUseDevCatalog = dataStoreSettings.data.first().use_dev_catalog
         val serviceApi = flipperServiceProvider.getServiceApi()
         if (!connectionState.isReady) {
             throw FlipperNotConnected()
@@ -160,6 +160,8 @@ class FapManifestsLoader @AssistedInject constructor(
                 )
             }
         info { "Parsed ${fapItemsList.size} manifests from flipper" }
+
+        cacheLoader.invalidate(fapItemsList)
 
         manifestLoaderState.emit(
             FapManifestLoaderState.Loaded(

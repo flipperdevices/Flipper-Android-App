@@ -5,8 +5,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.FapVersionApi
-import com.flipperdevices.faphub.dao.network.ktorfit.api.KtorfitVersionApi
-import com.flipperdevices.faphub.dao.network.ktorfit.model.requests.KtorfitDetailedVersionRequest
+import com.flipperdevices.faphub.dao.network.network.api.FapNetworkVersionApi
+import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitDetailedVersionRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -14,14 +14,14 @@ private const val MAX_QUERY_ARRAY_SIZE = 500
 
 @ContributesBinding(AppGraph::class, FapVersionApi::class)
 class FapVersionApiImpl @Inject constructor(
-    private val ktorfitVersionApi: KtorfitVersionApi
+    private val fapNetworkVersionApi: FapNetworkVersionApi
 ) : FapVersionApi, LogTagProvider {
     override val TAG = "FapVersionApi"
 
     override suspend fun getVersionsMap(versions: List<String>): Map<String, SemVer> {
         val fetchedVersions = versions.chunked(MAX_QUERY_ARRAY_SIZE)
             .pmap {
-                ktorfitVersionApi.getVersions(
+                fapNetworkVersionApi.getVersions(
                     KtorfitDetailedVersionRequest(
                         applicationVersions = it,
                         limit = it.size,

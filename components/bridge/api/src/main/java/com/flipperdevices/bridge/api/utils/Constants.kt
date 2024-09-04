@@ -9,7 +9,6 @@ object Constants {
     const val MAC_PREFIX = "80:E1:26:"
     const val KEYS_DEFAULT_STORAGE = "/any/"
     const val RPC_START_REQUEST_ARG = "RPC"
-    val API_MAX_SUPPORTED_VERSION = SemVer(majorVersion = 1, minorVersion = 0)
     val API_SUPPORTED_UNLOCK = SemVer(
         majorVersion = 0,
         minorVersion = 16
@@ -35,7 +34,6 @@ object Constants {
         minorVersion = 21
     )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
-    val API_SUPPORTED_VERSION = SemVer(majorVersion = 0, minorVersion = 3)
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
 
     object GenericService {

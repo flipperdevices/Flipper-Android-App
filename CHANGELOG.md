@@ -1,8 +1,22 @@
 # Changelog
 
 # 1.7.2 - In Progress
+Attention: don't forget to add the flag for F-Droid before release
 
+
+- [Feature] Add rpcinfo feature to new BLE api
+- [Feature] Infrared controls
+- [Feature] Remove bond on retry pair
+- [Feature] Add onetap widget
+- [Feature] Save, edit, share remote control
+- [Feature] More UI elements for remote-controls
+- [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
+- [Refactor] Replace Ktorfit with Ktor requests in remote-controls
+- [Refactor] Migrate :core:preference to KMP
+- [Refactor] Migrate :bridge:connection:* to KMP
+- [Refactor] Migrate :bridge:synchronization, :core:ktx and :core:theme to KMP
+- [Refactor] Remove ktorfit
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint
@@ -11,14 +25,23 @@
 - [FIX] Expand verify signal bottom sheet only after signal is dispatched
 - [FIX] Fix scroll on save edit screen
 - [FIX] Update Infrared backend integration
+- [FIX] Ignore faps manifest with point in start
+- [FIX] Use kotlin 2.0.20-RC2 for bypass Options screen crash
+- [FIX] Relocate remote-controls button to infrared remotes screen
+- [FIX] Fap manifest caching
+- [FIX] Remote controls design issues
+- [FIX] Fix flaky test
+- [FIX] Infinite dispatch after screen close on remote-control screens
+- [FIX] Bad bottom sheet animation on infrared setup screen
+- [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
 - [CI] Bump target SDK to 34
 - [CI] Update deps
-- [Feature] Infrared controls
-- [Feature] Remove bond on retry pair
-- [Feature] Add onetap widget
-- [FIX] Ignore faps manifest with point in start
+- [CI] Merge CI workflows in one
+- [CI] Update CI changed-files action
+- [CI] Update CI for github runners
+- [CI] Remote self-hosted runners
 
 # 1.7.1
 

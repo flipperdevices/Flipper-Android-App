@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_page">Page is empty!</string>
+    <string name="sync_state_not_connected">Flipper not connected</string>
+    <string name="sync_state_syncing">Syncing…</string>
+    <string name="sync_state_synced">Synced!</string>
+    <string name="option_remote_info">Remote Info</string>
+    <string name="option_rename">Rename</string>
+    <string name="option_share">Share</string>
+    <string name="option_delete">Delete</string>
+    <string name="loading_remote">Loading Remote…</string>
+    <string name="remote_subtitle">Remote</string>
+</resources>

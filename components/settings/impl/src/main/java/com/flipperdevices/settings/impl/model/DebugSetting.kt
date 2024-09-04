@@ -7,6 +7,7 @@ sealed interface DebugSettingSwitch {
     data object SkipAutoSync : DebugSettingSwitch
     data object FapHubDev : DebugSettingSwitch
     data object SelfUpdaterDebug : DebugSettingSwitch
+    data object ShowRemoteControls : DebugSettingSwitch
 }
 
 sealed interface DebugSettingAction {
