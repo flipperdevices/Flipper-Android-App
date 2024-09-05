@@ -26,8 +26,16 @@ class HistoryViewModel @Inject constructor() : DecomposeViewModel() {
         _state.update { it.copy(failedSignals = it.failedSignals + signalResultData) }
     }
 
+    fun rememberSkipped(signalModel: SignalModel) {
+        val signalResultData = SignalResultData(
+            signalId = signalModel.id,
+        )
+        _state.update { it.copy(skippedSignals = it.skippedSignals + signalResultData) }
+    }
+
     data class State(
         val successfulSignals: List<SignalResultData> = emptyList(),
-        val failedSignals: List<SignalResultData> = emptyList()
+        val failedSignals: List<SignalResultData> = emptyList(),
+        val skippedSignals: List<SignalResultData> = emptyList()
     )
 }

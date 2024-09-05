@@ -38,11 +38,13 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
+@Suppress("LongMethod")
 @Composable
 fun ConfirmContent(
     text: String,
     onPositiveClick: () -> Unit,
     onNegativeClick: () -> Unit,
+    onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -76,7 +78,8 @@ fun ConfirmContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 42.dp, horizontal = 38.dp)
+                        .padding(horizontal = 38.dp)
+                        .padding(top = 42.dp)
                 ) {
                     Text(
                         text = stringResource(SetupR.string.no),
@@ -93,6 +96,17 @@ fun ConfirmContent(
                         onClick = onPositiveClick
                     )
                 }
+                Text(
+                    text = stringResource(SetupR.string.skip),
+                    style = LocalTypography.current.buttonB16,
+                    color = LocalPalletV2.current.action.blue.text.default,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(30.dp))
+                        .clickableRipple(onClick = onSkipClick)
+                        .padding(vertical = 18.dp, horizontal = 36.dp)
+                        .padding(bottom = 22.dp),
+                )
             }
         }
     )
@@ -103,6 +117,7 @@ fun AnimatedConfirmContent(
     lastEmulatedSignal: SignalResponse?,
     onNegativeClick: () -> Unit,
     onSuccessClick: () -> Unit,
+    onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -135,6 +150,7 @@ fun AnimatedConfirmContent(
                 },
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onSuccessClick,
+                onSkipClick = onSkipClick,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
@@ -152,7 +168,8 @@ private fun ComposableConfirmContentLightPreview() {
         ConfirmContent(
             text = "Super mega text of preview confirm element",
             onPositiveClick = {},
-            onNegativeClick = {}
+            onNegativeClick = {},
+            onSkipClick = {}
         )
     }
 }
@@ -168,7 +185,8 @@ private fun ComposableConfirmContentDarkPreview() {
         ConfirmContent(
             text = "Super mega text of preview confirm element",
             onPositiveClick = {},
-            onNegativeClick = {}
+            onNegativeClick = {},
+            onSkipClick = {}
         )
     }
 }

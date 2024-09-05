@@ -26,13 +26,15 @@ class CurrentSignalViewModel @AssistedInject constructor(
 
     fun load(
         successResults: List<SignalResultData>,
-        failedResults: List<SignalResultData>
+        failedResults: List<SignalResultData>,
+        skippedResults: List<SignalResultData>
     ) = viewModelScope.launch {
         _state.emit(State.Loading)
         val result = runCatching {
             val request = SignalRequestModel(
                 successResults = successResults,
                 failedResults = failedResults,
+                skippedResults = skippedResults,
                 brandId = param.brandId,
             )
             infraredBackendApi.getSignal(request)
@@ -45,7 +47,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
     }
 
     init {
-        load(emptyList(), emptyList())
+        load(emptyList(), emptyList(), emptyList())
     }
 
     sealed interface State {

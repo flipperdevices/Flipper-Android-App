@@ -23,6 +23,7 @@ interface SetupComponent {
 
     fun onSuccessClick()
     fun onFailedClick()
+    fun onSkipClicked()
     fun dispatchSignal()
 
     fun dismissBusyDialog()
