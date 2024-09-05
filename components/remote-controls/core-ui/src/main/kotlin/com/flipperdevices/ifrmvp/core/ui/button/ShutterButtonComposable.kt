@@ -10,13 +10,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -24,6 +23,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.EmulatingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
+import com.flipperdevices.remotecontrols.core.ui.R
 
 @Composable
 fun ShutterButtonComposable(
@@ -49,7 +49,7 @@ fun ShutterButtonComposable(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = rememberVectorPainter(Icons.Default.CameraAlt),
+                painter = painterResource(R.drawable.ic_shutter),
                 tint = MaterialTheme.colors.onPrimary,
                 contentDescription = null,
                 modifier = Modifier.size(48.sf)

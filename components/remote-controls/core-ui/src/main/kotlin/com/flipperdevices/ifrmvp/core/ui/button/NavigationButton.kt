@@ -12,17 +12,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
@@ -32,6 +28,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
+import com.flipperdevices.remotecontrols.core.ui.R
 
 @Suppress("LongMethod")
 @Composable
@@ -55,7 +52,7 @@ fun NavigationButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = rememberVectorPainter(Icons.Filled.KeyboardArrowUp),
+            painter = painterResource(R.drawable.ic_up),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -65,7 +62,7 @@ fun NavigationButton(
                 .align(Alignment.TopCenter)
         )
         Icon(
-            painter = rememberVectorPainter(Icons.AutoMirrored.Filled.KeyboardArrowLeft),
+            painter = painterResource(R.drawable.ic_left),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -88,19 +85,18 @@ fun NavigationButton(
                     .align(Alignment.Center),
                 contentAlignment = Alignment.Center,
                 content = {
-                    Text(
-                        text = "OK",
-                        style = MaterialTheme.typography.caption,
-                        color = textColor,
-                        fontSize = 16.sfp,
-                        lineHeight = 2.sfp
+                    Icon(
+                        painter = painterResource(R.drawable.ic_ok),
+                        tint = MaterialTheme.colors.onPrimary,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.sf)
                     )
                 }
             )
         }
 
         Icon(
-            painter = rememberVectorPainter(Icons.AutoMirrored.Filled.KeyboardArrowRight),
+            painter = painterResource(R.drawable.ic_right),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -111,7 +107,7 @@ fun NavigationButton(
         )
 
         Icon(
-            painter = rememberVectorPainter(Icons.Filled.KeyboardArrowDown),
+            painter = painterResource(R.drawable.ic_down),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
