@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.storageinfo.impl.api
 
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpc.api.toThrowableFlow
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
@@ -8,6 +9,7 @@ import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperSto
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
@@ -20,6 +22,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onErrorResume
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -139,19 +143,20 @@ class FStorageInfoFeatureApiImpl @AssistedInject constructor(
                     path = storagePath
                 )
             ).wrapToRequest()
-        ).collect { response ->
-            if (response.command_status != CommandStatus.OK) {
+        ).toThrowableFlow()
+            .catch {
+                error(it) { "Failed get storage info" }
                 spaceInfoReceiver(StorageStats.Error)
-                return@collect
             }
-            val storageInfoResponse = response.storage_info_response ?: return@collect
-            spaceInfoReceiver(
-                StorageStats.Loaded(
-                    total = storageInfoResponse.total_space,
-                    free = storageInfoResponse.free_space
+            .collect { response ->
+                val storageInfoResponse = response.storage_info_response ?: return@collect
+                spaceInfoReceiver(
+                    StorageStats.Loaded(
+                        total = storageInfoResponse.total_space,
+                        free = storageInfoResponse.free_space
+                    )
                 )
-            )
-        }
+            }
     }
 
     @AssistedFactory

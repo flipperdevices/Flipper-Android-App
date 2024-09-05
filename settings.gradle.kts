@@ -70,6 +70,8 @@ include(
     ":components:bridge:connection:feature:rpcinfo:impl",
     ":components:bridge:connection:feature:rpcstats:api",
     ":components:bridge:connection:feature:rpcstats:impl",
+    ":components:bridge:connection:feature:storage:api",
+    ":components:bridge:connection:feature:storage:impl",
     ":components:bridge:connection:feature:storageinfo:api",
     ":components:bridge:connection:feature:storageinfo:impl",
     ":components:bridge:connection:feature:getinfo:api",

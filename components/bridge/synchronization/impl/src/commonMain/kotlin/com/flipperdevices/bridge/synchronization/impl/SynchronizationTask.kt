@@ -80,6 +80,7 @@ class SynchronizationTaskImpl(
         input: Unit,
         stateListener: suspend (SynchronizationState) -> Unit
     ) {
+        // Get service ready
 
         // Waiting to be connected to the flipper
         serviceApi.connectionInformationApi.getConnectionStateFlow()
@@ -89,7 +90,6 @@ class SynchronizationTaskImpl(
             }.first()
         startInternal(
             scope,
-            serviceApi,
             ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
                 stateListener(SynchronizationState.InProgress(it))
             })
@@ -103,7 +103,6 @@ class SynchronizationTaskImpl(
 
     private suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         progressTracker: ProgressWrapperTracker
     ) {
         info { "#startInternal" }

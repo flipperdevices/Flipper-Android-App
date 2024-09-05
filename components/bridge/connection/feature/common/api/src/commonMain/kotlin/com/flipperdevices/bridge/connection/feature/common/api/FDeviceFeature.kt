@@ -10,7 +10,8 @@ enum class FDeviceFeature {
     VERSION,
     RPC_INFO,
     STORAGE_INFO,
-    GET_INFO
+    GET_INFO,
+    STORAGE
 }
 
 @Retention(AnnotationRetention.RUNTIME)

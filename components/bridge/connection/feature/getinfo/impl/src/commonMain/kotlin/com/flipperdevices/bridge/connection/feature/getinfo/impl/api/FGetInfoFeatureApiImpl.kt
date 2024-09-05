@@ -29,7 +29,7 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
                     property_get_request = GetRequest(key = property.path)
                 ).wrapToRequest()
             )
-        )
+        ).getOrThrow()
         val forkValue = if (forkResponse.command_status == CommandStatus.OK) {
             forkResponse.property_get_response?.value_
         } else {
@@ -48,7 +48,7 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
             Main(
                 property_get_request = GetRequest(key = group.key)
             ).wrapToRequest()
-        ).mapNotNull { it.property_get_response }
+        ).mapNotNull { it.getOrNull()?.property_get_response }
             .map { mapper.map(group, it.key) to it.value_ }
     }
 
