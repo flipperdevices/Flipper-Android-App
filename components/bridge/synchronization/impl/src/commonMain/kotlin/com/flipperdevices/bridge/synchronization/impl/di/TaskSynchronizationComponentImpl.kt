@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.di
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutorImpl
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
@@ -23,8 +22,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 
 class TaskSynchronizationComponentImpl(
     deps: TaskSynchronizationComponentDependencies,
-    requestApi: FlipperRequestApi,
-    flipperVersionApi: FlipperVersionApi
+    storageFeatureApi: FStorageFeatureApi
 ) : TaskSynchronizationComponent,
     TaskSynchronizationComponentDependencies by deps {
     private val manifestStorage = ManifestStorageImpl(context)

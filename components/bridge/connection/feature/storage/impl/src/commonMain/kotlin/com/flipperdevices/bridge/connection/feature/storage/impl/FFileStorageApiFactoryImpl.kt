@@ -23,7 +23,7 @@ class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
         connectedDevice: FConnectedDeviceApi
     ): FDeviceFeatureApi? {
         val rpcApi = unsafeFeatureDeviceApi.getUnsafe<FRpcFeatureApi>() ?: return null
-        return FFileStorageApiImpl(
+        return FStorageFeatureApiImpl(
             md5Api = FFileStorageMD5ApiImpl(rpcApi)
         )
     }

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
@@ -28,7 +29,7 @@ interface FlipperHashRepository {
 
 @ContributesBinding(TaskGraph::class, FlipperHashRepository::class)
 class FlipperHashRepositoryImpl @Inject constructor(
-    private val flipperStorageApi: FlipperStorageApi
+    private val storageFeatureApi: FStorageFeatureApi
 ) : FlipperHashRepository, LogTagProvider {
     override val TAG = "HashRepository"
 

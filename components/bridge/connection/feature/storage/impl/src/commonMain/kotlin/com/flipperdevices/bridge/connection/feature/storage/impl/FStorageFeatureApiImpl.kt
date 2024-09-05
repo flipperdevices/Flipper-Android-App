@@ -1,9 +1,10 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl
 
-import com.flipperdevices.bridge.connection.feature.storage.api.FFileStorageApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileStorageMD5Api
 
-class FFileStorageApiImpl(
+class FStorageFeatureApiImpl(
     private val md5Api: FFileStorageMD5Api
-) : FFileStorageApi, FFileStorageMD5Api by md5Api {
+) : FStorageFeatureApi {
+    override fun md5Api() = md5Api
 }

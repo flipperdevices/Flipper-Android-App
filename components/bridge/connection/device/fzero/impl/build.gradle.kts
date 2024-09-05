@@ -25,6 +25,7 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
