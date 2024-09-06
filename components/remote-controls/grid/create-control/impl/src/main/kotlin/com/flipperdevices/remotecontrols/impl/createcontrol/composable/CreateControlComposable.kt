@@ -134,6 +134,6 @@ private fun CreateControlComposableModifyingPreview() {
 @Composable
 private fun CreateControlComposableSyncingPreview() {
     FlipperThemeInternal {
-        CreateControlComposable(State.InProgress.Synchronizing(0.3f))
+        CreateControlComposable(State.InProgress.Synchronizing(progress = 0.3f))
     }
 }
