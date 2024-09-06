@@ -66,13 +66,6 @@ fun LocalGridComposable(
                                 onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Deleted)
                             }
                         },
-                        onRemoteInfo = {
-                            onCallback.invoke(
-                                LocalGridScreenDecomposeComponent.Callback.ViewRemoteInfo(
-                                    loadedModel.keyPath
-                                )
-                            )
-                        },
                         onShare = onShare,
                         isEmulating = loadedModel.emulatedKey != null,
                         isConnected = loadedModel.isConnected
