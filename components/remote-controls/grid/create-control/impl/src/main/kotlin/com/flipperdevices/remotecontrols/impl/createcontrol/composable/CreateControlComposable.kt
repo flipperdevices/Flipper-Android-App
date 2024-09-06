@@ -45,15 +45,15 @@ internal fun CreateControlComposable(state: State) {
                 State.Pending -> 5
             }
         },
-        content = { state ->
+        content = { animatedState ->
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TitleComposable(state)
+                TitleComposable(animatedState)
                 Spacer(Modifier.height(24.dp))
-                ProgressIndicatorComposable((state as? State.InProgress.Synchronizing)?.progress)
+                ProgressIndicatorComposable((animatedState as? State.InProgress.Synchronizing)?.progress)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.configuring_desc),
