@@ -10,6 +10,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Add onetap widget
 - [Feature] Save, edit, share remote control
 - [Feature] More UI elements for remote-controls
+- [Feature] Add How to Use dialog into remote-controls
 - [Feature] Skip infrared signals on setup screen
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
