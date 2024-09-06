@@ -36,7 +36,6 @@ import com.flipperdevices.core.ui.res.R as SharedRes
 @Composable
 @Suppress("LongMethod")
 internal fun ComposableInfraredDropDown(
-    onRemoteInfo: () -> Unit,
     onRename: () -> Unit,
     onShare: () -> Unit,
     onDelete: () -> Unit,
@@ -44,6 +43,9 @@ internal fun ComposableInfraredDropDown(
     isConnected: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var isShowHowToUseDialog by remember { mutableStateOf(false) }
+    ComposableRemoteDialogHowToUse(isShowHowToUseDialog) { isShowHowToUseDialog = false }
+
     var isShowMoreOptions by remember { mutableStateOf(false) }
     val onChangeState = { isShowMoreOptions = !isShowMoreOptions }
     val isDropDownEnabled = isConnected && !isEmulating
@@ -75,10 +77,10 @@ internal fun ComposableInfraredDropDown(
             onDismissRequest = { isShowMoreOptions = false }
         ) {
             ComposableInfraredDropDownItem(
-                text = stringResource(R.string.option_remote_info),
+                text = stringResource(R.string.option_how_to_use),
                 painter = painterResource(R.drawable.ic_how_to_use),
                 onClick = {
-                    onRemoteInfo.invoke()
+                    isShowHowToUseDialog = !isShowHowToUseDialog
                     onChangeState.invoke()
                 }
             )
