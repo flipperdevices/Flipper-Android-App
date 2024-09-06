@@ -2,5 +2,7 @@
 <resources>
     <!--    Settings-->
     <string name="configuring_title">Configuring</string>
+    <string name="configuring_files_title">Configuring</string>
     <string name="configuring_desc">Remote control is being configured. Please do not close this screen</string>
+    <string name="archive_sync_percent">Syncing %1$s</string>
 </resources>

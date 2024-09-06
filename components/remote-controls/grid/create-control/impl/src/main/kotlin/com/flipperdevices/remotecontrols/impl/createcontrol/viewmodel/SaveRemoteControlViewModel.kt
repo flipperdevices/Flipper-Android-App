@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
@@ -21,10 +20,13 @@ import com.flipperdevices.protobuf.storage.deleteRequest
 import com.flipperdevices.protobuf.storage.renameRequest
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
@@ -77,18 +79,24 @@ class SaveRemoteControlViewModel @Inject constructor(
         }
     }
 
-    private suspend fun awaitSynchronization() {
+    private suspend fun awaitSynchronization(
+        onChange: (progress: Float) -> Unit
+    ): Unit = coroutineScope {
         if (!synchronizationApi.isSynchronizationRunning()) {
             synchronizationApi.startSynchronization(force = true)
         }
-        synchronizationApi.getSynchronizationState()
-            .onEach { info { "#moveAndUpdate $it" } }
+        val progressJon = synchronizationApi.getSynchronizationState()
             .filterIsInstance<SynchronizationState.InProgress>()
+            .onEach { onChange.invoke(it.progress) }
+            .launchIn(this)
+        synchronizationApi.getSynchronizationState()
+            .filterIsInstance<SynchronizationState.InProgress>()
+            .onEach { onChange.invoke(it.progress) }
             .first()
         synchronizationApi.getSynchronizationState()
-            .onEach { info { "#moveAndUpdate $it" } }
             .filterIsInstance<SynchronizationState.Finished>()
             .first()
+        progressJon.cancelAndJoin()
     }
 
     /**
@@ -124,11 +132,9 @@ class SaveRemoteControlViewModel @Inject constructor(
         originalKey: NotSavedFlipperKey,
     ) {
         viewModelScope.launch {
-            _state.emit(State.Updating)
+            _state.emit(State.InProgress.ModifyingFiles)
             if (lastMoveJob != null) lastMoveJob?.join()
             lastMoveJob = coroutineContext.job
-
-            awaitSynchronization()
 
             val flipperKey = simpleKeyApi.getKey(savedKeyPath) ?: run {
                 _state.emit(State.KeyNotFound)
@@ -153,7 +159,7 @@ class SaveRemoteControlViewModel @Inject constructor(
                     }.toImmutableList()
                 )
             )
-            awaitSynchronization()
+            awaitSynchronization(onChange = { _state.value = State.InProgress.Synchronizing(it) })
             val keyPath = FlipperKeyPath(
                 path = flipperKey.mainFile.path.toNonTempPath(),
                 deleted = false
@@ -164,7 +170,11 @@ class SaveRemoteControlViewModel @Inject constructor(
 
     sealed interface State {
         data object Pending : State
-        data object Updating : State
+        sealed interface InProgress : State {
+            data object ModifyingFiles : InProgress
+            data class Synchronizing(val progress: Float) : InProgress
+        }
+
         data class Finished(val keyPath: FlipperKeyPath) : State
         data object KeyNotFound : State
         data object CouldNotModifyFiles : State
