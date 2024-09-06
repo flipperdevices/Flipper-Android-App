@@ -2,6 +2,8 @@ package com.flipperdevices.remotecontrols.impl.createcontrol.decompose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
@@ -35,6 +37,7 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
             key = null,
             factory = { saveRemoteControlViewModelFactory.get() }
         )
+        val state by saveRemoteControlViewModel.state.collectAsState()
         val rootNavigation = LocalRootNavigation.current
         LaunchedEffect(saveRemoteControlViewModel) {
             saveRemoteControlViewModel.state
@@ -51,7 +54,7 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
                         }
 
                         SaveRemoteControlViewModel.State.Pending,
-                        SaveRemoteControlViewModel.State.Updating -> Unit
+                        is SaveRemoteControlViewModel.State.InProgress -> Unit
                     }
                 }.launchIn(this)
             saveRemoteControlViewModel.moveAndUpdate(
@@ -59,6 +62,6 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
                 originalKey = originalKey,
             )
         }
-        CreateControlComposable()
+        CreateControlComposable(state)
     }
 }
