@@ -138,7 +138,8 @@ class SetupComponentImpl @AssistedInject constructor(
         dispatchSignalApi.reset()
         createCurrentSignalViewModel.load(
             successResults = historyViewModel.state.value.successfulSignals,
-            failedResults = historyViewModel.state.value.failedSignals
+            failedResults = historyViewModel.state.value.failedSignals,
+            skippedResults = historyViewModel.state.value.skippedSignals
         )
         _lastEmulatedSignal.value = null
     }
@@ -160,6 +161,14 @@ class SetupComponentImpl @AssistedInject constructor(
             ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
         historyViewModel.rememberFailed(signalModel)
+        tryLoad()
+    }
+
+    override fun onSkipClicked() {
+        val state = createCurrentSignalViewModel.state.value as? CurrentSignalViewModel.State.Loaded
+            ?: return
+        val signalModel = state.response.signalResponse?.signalModel ?: return
+        historyViewModel.rememberSkipped(signalModel)
         tryLoad()
     }
 
