@@ -13,6 +13,8 @@ import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
+import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -29,7 +31,8 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
-    private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
+    private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory,
+    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
 ) : ArchiveDecomposeComponent<ArchiveNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -62,6 +65,11 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
         ArchiveNavigationConfig.OpenSearch -> searchFactory(
             componentContext = componentContext,
             onItemSelected = null,
+            onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is ArchiveNavigationConfig.RemoteControls -> remoteControlsComponentFactory(
+            componentContext = componentContext,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }

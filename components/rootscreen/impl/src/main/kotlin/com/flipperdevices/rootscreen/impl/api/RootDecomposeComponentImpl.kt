@@ -59,7 +59,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
-    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
     private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
@@ -131,11 +130,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.Changelog -> changelogScreenDecomposeFactory(
             componentContext = componentContext,
             updateRequest = config.updateRequest,
-            onBack = this::internalOnBack
-        )
-
-        is RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
-            componentContext = componentContext,
             onBack = this::internalOnBack
         )
 
