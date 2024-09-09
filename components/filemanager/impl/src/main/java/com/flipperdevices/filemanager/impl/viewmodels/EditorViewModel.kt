@@ -10,7 +10,6 @@ import com.flipperdevices.core.ktx.jre.readText
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.model.DownloadProgress

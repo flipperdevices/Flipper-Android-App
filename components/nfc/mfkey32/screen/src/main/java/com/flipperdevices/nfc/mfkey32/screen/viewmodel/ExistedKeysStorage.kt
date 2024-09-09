@@ -9,7 +9,6 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey

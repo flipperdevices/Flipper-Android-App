@@ -53,6 +53,7 @@ material = "1.12.0" # https://github.com/material-components/material-components
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.7.0" # https://developer.android.com/jetpack/androidx/releases/appcompat
+androidx-core = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
 datastore = "1.1.1" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
@@ -118,6 +119,7 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-general" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+kotlin-serialization-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "serialization-json" }
 
 kotlin-immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlin-immutable-collections" }
 
@@ -219,6 +221,7 @@ lifecycle-test = { module = "androidx.lifecycle:lifecycle-runtime-testing", vers
 fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
 annotations = { module = "androidx.annotation:annotation", version.ref = "annotations" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidx-core" }
 
 # Ktor
 ktor-client = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }

@@ -4,7 +4,6 @@ import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.DecryptHelper

@@ -7,7 +7,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
 import javax.inject.Inject

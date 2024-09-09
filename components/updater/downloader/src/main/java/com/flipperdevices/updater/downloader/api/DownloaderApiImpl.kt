@@ -5,7 +5,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType

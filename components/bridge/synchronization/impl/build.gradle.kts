@@ -16,6 +16,8 @@ commonDependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.progress)
+    implementation(projects.components.core.atomicfile)
+    implementation(projects.components.core.storage)
     implementation(projects.components.core.ui.lifecycle)
 
     implementation(projects.components.bridge.dao.api)
@@ -37,11 +39,12 @@ commonDependencies {
     implementation(libs.compose.material)
 
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.kotlin.serialization.json.okio)
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.okio)
 
     // Dagger deps
     implementation(libs.dagger)
-
 }
 
 jvmSharedTestDependencies {
