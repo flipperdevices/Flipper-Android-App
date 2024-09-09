@@ -3,7 +3,9 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.ifrmvp.api.infrared.InfraredBackendApi
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
+import com.flipperdevices.ifrmvp.api.infrared.FlipperInfraredBackendApi
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel.SignalResultData
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
@@ -16,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CurrentSignalViewModel @AssistedInject constructor(
-    private val infraredBackendApi: InfraredBackendApi,
+    private val infraredBackendApi: FlipperInfraredBackendApi,
     @Assisted private val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onLoaded: (SignalResponseModel) -> Unit
 ) : DecomposeViewModel(), LogTagProvider {
@@ -40,7 +42,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
             infraredBackendApi.getSignal(request)
         }
         result
-            .onFailure { _state.emit(State.Error) }
+            .onFailure { _state.emit(State.Error(it.toFapHubError())) }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not load signal model" } }
             .onSuccess { _state.emit(State.Loaded(it)) }
             .onSuccess(onLoaded)
@@ -52,7 +54,7 @@ class CurrentSignalViewModel @AssistedInject constructor(
 
     sealed interface State {
         data object Loading : State
-        data object Error : State
+        data class Error(val throwable: FapHubError) : State
         data class Loaded(val response: SignalResponseModel) : State
     }
 

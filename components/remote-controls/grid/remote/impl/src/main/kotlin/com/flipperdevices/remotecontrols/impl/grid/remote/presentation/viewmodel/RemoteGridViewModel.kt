@@ -4,6 +4,8 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
@@ -41,13 +43,13 @@ class RemoteGridViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val pagesLayout =
                 pagesRepository.fetchDefaultPageLayout(ifrFileId = param.infraredFileId)
-                    .onFailure { _state.emit(State.Error) }
+                    .onFailure { _state.emit(State.Error(it.toFapHubError())) }
                     .onFailure { throwable -> error(throwable) { "#tryLoad could not load ui model" } }
                     .getOrNull() ?: return@launch
             val pagesLayoutRaw = json.encodeToString(pagesLayout)
 
             val remotesRaw = pagesRepository.fetchKeyContent(param.infraredFileId)
-                .onFailure { _state.emit(State.Error) }
+                .onFailure { _state.emit(State.Error(it.toFapHubError())) }
                 .onFailure { throwable -> error(throwable) { "#tryLoad could not load key content" } }
                 .getOrNull()
                 .orEmpty()
@@ -87,7 +89,7 @@ class RemoteGridViewModel @AssistedInject constructor(
 
     sealed interface State {
         data object Loading : State
-        data object Error : State
+        data class Error(val throwable: FapHubError) : State
         data class Loaded(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,

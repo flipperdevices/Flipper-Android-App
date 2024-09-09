@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
@@ -48,7 +49,7 @@ interface SetupComponent {
             val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
         }
 
-        data object Error : Model
+        data class Error(val throwable: FapHubError) : Model
     }
 
     interface Factory {

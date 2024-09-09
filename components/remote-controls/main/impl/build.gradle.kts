@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.infrared.utils)
 
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.main.api)

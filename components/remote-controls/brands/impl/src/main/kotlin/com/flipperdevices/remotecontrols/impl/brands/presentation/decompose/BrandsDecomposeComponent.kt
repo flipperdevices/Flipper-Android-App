@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -27,7 +28,7 @@ interface BrandsDecomposeComponent {
 
     sealed interface Model {
         data object Loading : Model
-        data object Error : Model
+        data class Error(val throwable: FapHubError) : Model
         class Loaded(
             val brands: ImmutableList<BrandModel>,
             val query: String

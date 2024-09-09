@@ -63,7 +63,7 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
                     }
 
                     is BrandsListViewModel.State.Error -> {
-                        BrandsDecomposeComponent.Model.Error
+                        BrandsDecomposeComponent.Model.Error(pagingState.throwable)
                     }
                 }
             }

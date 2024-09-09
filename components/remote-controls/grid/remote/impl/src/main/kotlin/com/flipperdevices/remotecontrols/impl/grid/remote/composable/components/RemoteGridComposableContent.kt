@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.GridPagesContent
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.grid.remote.impl.R
@@ -29,6 +30,7 @@ import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose
 internal fun RemoteGridComposableContent(
     remoteGridComponent: RemoteGridComponent,
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     model: RemoteGridComponent.Model,
     modifier: Modifier = Modifier
 ) {
@@ -39,10 +41,12 @@ internal fun RemoteGridComposableContent(
         contentKey = { model.contentKey }
     ) { animatedModel ->
         when (animatedModel) {
-            RemoteGridComponent.Model.Error -> {
-                ErrorComposable(
-                    desc = stringResource(R.string.empty_page),
-                    onReload = remoteGridComponent::tryLoad
+            is RemoteGridComponent.Model.Error -> {
+                errorsRenderer.ComposableThrowableError(
+                    throwable = animatedModel.throwable,
+                    onRetry = remoteGridComponent::tryLoad,
+                    fapErrorSize = FapErrorSize.FULLSCREEN,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 

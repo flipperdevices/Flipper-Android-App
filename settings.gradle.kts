@@ -281,6 +281,7 @@ include(
     ":components:notification:noop",
 
     ":components:remote-controls:api-backend",
+    ":components:remote-controls:api-backend-flipper",
     ":components:remote-controls:core-model",
     ":components:remote-controls:core-ui",
     ":components:remote-controls:main:impl",

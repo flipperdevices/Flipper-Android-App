@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.composable.SetupScreen
@@ -12,6 +13,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupScreenDecomposeComponent.Factory::class)
 class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -20,6 +22,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted onIrFileReady: (id: Long) -> Unit,
     setupComponentFactory: SetupComponent.Factory,
     flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
+    private val errorsRenderer: FapHubComposableErrorsRenderer,
 ) : SetupScreenDecomposeComponent(componentContext) {
     private val setupComponent = setupComponentFactory.createSetupComponent(
         componentContext = childContext("SetupComponent"),
@@ -33,6 +36,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     override fun Render() {
         SetupScreen(
             setupComponent = setupComponent,
+            errorsRenderer = errorsRenderer,
             flipperDispatchDialogApi = flipperDispatchDialogApi
         )
     }
