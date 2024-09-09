@@ -6,6 +6,7 @@ import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -23,7 +24,7 @@ interface RemoteGridComponent {
 
     fun pop()
 
-    fun dismissBusyDialog()
+    fun dismissDialog()
 
     fun save()
 
@@ -35,7 +36,7 @@ interface RemoteGridComponent {
         data class Loaded(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,
-            val isFlipperBusy: Boolean = false,
+            val flipperDialog: FlipperDispatchDialogApi.DialogType? = null,
             val emulatedKey: IfrKeyIdentifier? = null,
             val saveState: SaveTempSignalApi.State,
             val connectionState: InfraredEmulateState

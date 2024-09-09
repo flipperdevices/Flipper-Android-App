@@ -10,6 +10,8 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
+import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyemulate.api.EmulateHelper
@@ -27,6 +29,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,6 +38,7 @@ class DispatchSignalViewModel @Inject constructor(
     private val emulateHelper: EmulateHelper,
     private val serviceProvider: FlipperServiceProvider,
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
+    private val flipperTargetProviderApi: FlipperTargetProviderApi,
 ) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider,
@@ -59,6 +63,19 @@ class DispatchSignalViewModel @Inject constructor(
         ffPath: FlipperFilePath,
         onDispatched: () -> Unit
     ) {
+        when (flipperTargetProviderApi.getFlipperTarget().value) {
+            FlipperTarget.NotConnected -> {
+                _state.update { DispatchSignalApi.State.FlipperNotConnected }
+                return
+            }
+
+            FlipperTarget.Unsupported -> {
+                _state.update { DispatchSignalApi.State.FlipperNotSupported }
+                return
+            }
+
+            else -> Unit
+        }
         val i = remotes.indexOfFirst { remote ->
             when (identifier) {
                 is IfrKeyIdentifier.Name -> {

@@ -36,6 +36,8 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     sealed interface State {
         data object Pending : State
         data object FlipperIsBusy : State
+        data object FlipperNotConnected : State
+        data object FlipperNotSupported : State
         data class Emulating(val ifrKeyIdentifier: IfrKeyIdentifier) : State
         data object Error : State
     }
