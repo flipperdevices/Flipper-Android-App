@@ -22,7 +22,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.button.core.EmulatingBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
-import com.flipperdevices.remotecontrols.core.ui.R
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 fun ShutterButtonComposable(
@@ -48,7 +48,7 @@ fun ShutterButtonComposable(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_shutter),
+                painter = painterResource(RemoteControlsR.drawable.ic_rc_shutter),
                 tint = MaterialTheme.colors.onPrimary,
                 contentDescription = null,
                 modifier = Modifier.size(48.sf)

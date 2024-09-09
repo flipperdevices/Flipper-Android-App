@@ -25,7 +25,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.NoConnectionBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.SyncingBox
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
-import com.flipperdevices.remotecontrols.core.ui.R
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Suppress("LongMethod")
 @Composable
@@ -38,7 +38,6 @@ fun NavigationButton(
     modifier: Modifier = Modifier,
     background: Color = LocalPalletV2.current.surface.menu.body.dufault,
     iconTint: Color = MaterialTheme.colors.onPrimary,
-    textColor: Color = MaterialTheme.colors.onPrimary,
 ) {
     Box(
         modifier = modifier
@@ -49,7 +48,7 @@ fun NavigationButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_up),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_up),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -59,7 +58,7 @@ fun NavigationButton(
                 .align(Alignment.TopCenter)
         )
         Icon(
-            painter = painterResource(R.drawable.ic_left),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_left),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -83,7 +82,7 @@ fun NavigationButton(
                 contentAlignment = Alignment.Center,
                 content = {
                     Icon(
-                        painter = painterResource(R.drawable.ic_ok),
+                        painter = painterResource(RemoteControlsR.drawable.ic_rc_ok),
                         tint = MaterialTheme.colors.onPrimary,
                         contentDescription = null,
                         modifier = Modifier.size(48.sf)
@@ -93,7 +92,7 @@ fun NavigationButton(
         }
 
         Icon(
-            painter = painterResource(R.drawable.ic_right),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_right),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
@@ -104,7 +103,7 @@ fun NavigationButton(
         )
 
         Icon(
-            painter = painterResource(R.drawable.ic_down),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_down),
             tint = iconTint,
             contentDescription = null,
             modifier = Modifier
