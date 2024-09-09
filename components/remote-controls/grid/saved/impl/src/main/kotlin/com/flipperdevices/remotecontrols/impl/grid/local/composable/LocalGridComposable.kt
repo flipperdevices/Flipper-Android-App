@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.components.ComposableInfraredDropDown
@@ -30,6 +31,7 @@ import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.
 @Suppress("LongMethod")
 fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
+    flipperDispatchDialogApi: FlipperDispatchDialogApi,
     onCallback: (LocalGridScreenDecomposeComponent.Callback) -> Unit,
     onShare: () -> Unit,
     modifier: Modifier = Modifier
@@ -78,8 +80,11 @@ fun LocalGridComposable(
         content = { scaffoldPaddings ->
             LocalGridComposableContent(
                 localGridComponent = localGridComponent,
+                flipperDispatchDialogApi = flipperDispatchDialogApi,
                 model = model,
-                modifier = Modifier.padding(scaffoldPaddings).navigationBarsPadding()
+                modifier = Modifier
+                    .padding(scaffoldPaddings)
+                    .navigationBarsPadding()
             )
             Box(
                 modifier = Modifier

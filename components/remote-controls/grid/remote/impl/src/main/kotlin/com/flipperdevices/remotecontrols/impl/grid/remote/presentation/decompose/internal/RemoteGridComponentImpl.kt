@@ -97,7 +97,7 @@ class RemoteGridComponentImpl @AssistedInject constructor(
         }
     ).stateIn(coroutineScope, SharingStarted.Eagerly, RemoteGridComponent.Model.Loading())
 
-    override fun dismissBusyDialog() {
+    override fun dismissDialog() {
         dispatchSignalApi.dismissBusyDialog()
     }
 

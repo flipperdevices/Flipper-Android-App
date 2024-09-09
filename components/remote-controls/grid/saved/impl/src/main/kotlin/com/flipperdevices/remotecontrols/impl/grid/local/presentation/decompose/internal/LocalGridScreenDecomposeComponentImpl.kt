@@ -9,6 +9,7 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.LocalGridComposable
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, LocalGridScreenDecomposeComponent.Factory::class)
 class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -28,12 +30,15 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onCallback: (Callback) -> Unit,
     localGridComponentFactory: LocalGridComponent.Factory,
     private val shareBottomUiApi: ShareBottomUIApi,
+    flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
 ) : LocalGridScreenDecomposeComponent(componentContext) {
     private val localGridComponent = localGridComponentFactory.invoke(
         componentContext = childContext("GridComponent_local"),
         keyPath = keyPath,
         onBack = onBack,
     )
+    private val flipperDispatchDialogApi = flipperDispatchDialogApiFactory.invoke(onBack = onBack)
+
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
 
@@ -60,6 +65,7 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
         ) { onShare ->
             LocalGridComposable(
                 localGridComponent = localGridComponent,
+                flipperDispatchDialogApi = flipperDispatchDialogApi,
                 onCallback = onCallback,
                 onShare = onShare
             )
