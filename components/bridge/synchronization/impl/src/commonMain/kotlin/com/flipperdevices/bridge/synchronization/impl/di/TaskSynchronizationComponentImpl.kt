@@ -19,13 +19,14 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMe
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepositoryImpl
+import com.flipperdevices.core.FlipperStorageProvider
 
 class TaskSynchronizationComponentImpl(
     deps: TaskSynchronizationComponentDependencies,
-    storageFeatureApi: FStorageFeatureApi
+    storageFeatureApi: FStorageFeatureApi,
 ) : TaskSynchronizationComponent,
     TaskSynchronizationComponentDependencies by deps {
-    private val manifestStorage = ManifestStorageImpl(context)
+    private val manifestStorage = ManifestStorageImpl(storageProvider)
 
     override val manifestRepository = ManifestRepositoryImpl(
         manifestStorage = manifestStorage
@@ -34,7 +35,7 @@ class TaskSynchronizationComponentImpl(
     private val androidHashRepositoryImpl = AndroidHashRepositoryImpl()
 
     private val flipperHashRepository = FlipperHashRepositoryImpl(
-        flipperStorageApi = flipperStorageApi
+        storageFeatureApi = storageFeatureApi
     )
 
     private val synchronizationRepository = SynchronizationStateRepositoryImpl(

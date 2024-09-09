@@ -1,19 +1,17 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
-import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FileType
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.NameWithHash
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
-import com.flipperdevices.bridge.rpc.api.model.NameWithHash
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressWrapperTracker
-import com.flipperdevices.protobuf.storage.Storage
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
 import javax.inject.Inject
@@ -29,7 +27,7 @@ interface FlipperHashRepository {
 
 @ContributesBinding(TaskGraph::class, FlipperHashRepository::class)
 class FlipperHashRepositoryImpl @Inject constructor(
-    private val storageFeatureApi: FStorageFeatureApi
+    private val listingStorageApi: FListingStorageApi
 ) : FlipperHashRepository, LogTagProvider {
     override val TAG = "HashRepository"
 
@@ -37,8 +35,8 @@ class FlipperHashRepositoryImpl @Inject constructor(
         keyType: FlipperKeyType,
         tracker: ProgressWrapperTracker
     ): List<KeyWithHash> {
-        val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, keyType.flipperDir).path
-        val files = flipperStorageApi.listingDirectoryWithMd5(fileTypePath)
+        val fileTypePath = File("/ext/", keyType.flipperDir).path
+        val files = listingStorageApi.listingDirectoryWithMd5(fileTypePath)
         info { "Receive ${files.size} files" }
         tracker.onProgress(1f)
         return files.filter { isValidFile(it, keyType) }.map {
@@ -47,7 +45,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
     }
 
     private fun isValidFile(nameWithHash: NameWithHash, requestedType: FlipperKeyType): Boolean {
-        if (nameWithHash.type != Storage.File.FileType.FILE) {
+        if (nameWithHash.type != FileType.FILE) {
             debug {
                 "File ${nameWithHash.name} is not file. This is folder. Ignore it"
             }
@@ -56,7 +54,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
         if (nameWithHash.size > SIZE_BYTES_LIMIT) {
             debug {
                 "File ${nameWithHash.name} skip, because current size limit is $SIZE_BYTES_LIMIT, " +
-                    "but file size is ${nameWithHash.size}"
+                        "but file size is ${nameWithHash.size}"
             }
             return false
         }
@@ -88,7 +86,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
         if (fileTypeByExtension != requestedType) {
             debug {
                 "File ${nameWithHash.name} skip, because folder type ($requestedType) " +
-                    "and extension type ($fileTypeByExtension) is not equals"
+                        "and extension type ($fileTypeByExtension) is not equals"
             }
             return false
         }

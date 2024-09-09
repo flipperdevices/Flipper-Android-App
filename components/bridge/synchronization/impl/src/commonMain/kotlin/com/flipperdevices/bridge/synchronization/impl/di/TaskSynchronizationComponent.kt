@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
@@ -24,6 +25,7 @@ interface TaskSynchronizationComponentDependencies {
     val flipperFileApi: FlipperFileApi
     val updateKeyApi: UpdateKeyApi
     val settings: DataStore<Settings>
+    val storageProvider: FlipperStorageProvider
 }
 
 interface TaskSynchronizationComponent {
