@@ -17,6 +17,9 @@ sealed class ArchiveNavigationConfig {
 
     @Serializable
     data object OpenSearch : ArchiveNavigationConfig()
+
+    @Serializable
+    data object RemoteControls : ArchiveNavigationConfig()
 }
 
 fun Deeplink.BottomBar.ArchiveTab?.toArchiveNavigationStack(): List<ArchiveNavigationConfig> {
@@ -35,6 +38,10 @@ fun Deeplink.BottomBar.ArchiveTab?.toArchiveNavigationStack(): List<ArchiveNavig
         }
 
         null -> {
+        }
+
+        Deeplink.BottomBar.ArchiveTab.RemoteControls -> {
+            stack.add(ArchiveNavigationConfig.RemoteControls)
         }
     }
     return stack

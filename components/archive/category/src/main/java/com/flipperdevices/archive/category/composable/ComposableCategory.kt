@@ -29,21 +29,23 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun AddRemoteEndBlock(modifier: Modifier = Modifier) {
-    val rootNavigation = LocalRootNavigation.current
+    val deeplinkHandler = LocalDeeplinkHandler.current
     Text(
         text = stringResource(R.string.add_remote),
         style = LocalTypography.current.buttonB14,
         color = LocalPalletV2.current.text.title.blackOnColor,
         modifier = modifier
             .padding(horizontal = 14.dp)
-            .clickableRipple { rootNavigation.push(RootScreenConfig.RemoteControls) }
+            .clickableRipple {
+                deeplinkHandler.handleDeeplink(Deeplink.BottomBar.ArchiveTab.RemoteControls)
+            }
     )
 }
 

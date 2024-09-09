@@ -36,9 +36,6 @@ sealed class RootScreenConfig {
     data class Changelog(val updateRequest: UpdateRequest) : RootScreenConfig()
 
     @Serializable
-    data object RemoteControls : RootScreenConfig()
-
-    @Serializable
     data class ServerRemoteControl(
         val infraredFileId: Long,
         val remoteName: String

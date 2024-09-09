@@ -14,6 +14,7 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.Companion.toDialogType
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -110,7 +111,7 @@ class SetupComponentImpl @AssistedInject constructor(
                         SaveTempSignalApi.State.Uploaded,
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
-                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                            flipperDialog = dispatchState.toDialogType(),
                             emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
                             connectionState = connectionState
                         )
@@ -129,7 +130,7 @@ class SetupComponentImpl @AssistedInject constructor(
         .filterIsInstance<SetupComponent.Model.Loaded>()
         .mapNotNull { it.response.ifrFileModel }
 
-    override fun dismissBusyDialog() {
+    override fun dismissDialog() {
         dispatchSignalApi.dismissBusyDialog()
     }
 

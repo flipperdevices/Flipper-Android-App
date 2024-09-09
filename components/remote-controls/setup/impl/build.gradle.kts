@@ -25,6 +25,9 @@ dependencies {
     implementation(projects.components.infrared.utils)
     implementation(projects.components.infrared.api)
 
+    implementation(projects.components.faphub.target.api)
+    implementation(projects.components.deeplink.api)
+
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)

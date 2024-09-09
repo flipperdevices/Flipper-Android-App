@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.Companion.toDialogType
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
@@ -51,7 +52,7 @@ class LocalGridComponentImpl @AssistedInject constructor(
                 is LocalGridViewModel.State.Loaded -> LocalGridComponent.Model.Loaded(
                     pagesLayout = gridState.pagesLayout,
                     remotes = gridState.remotes,
-                    isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                    flipperDialog = dispatchState.toDialogType(),
                     emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
                     connectionState = connectionState,
                     keyPath = gridState.keyPath
@@ -80,7 +81,7 @@ class LocalGridComponentImpl @AssistedInject constructor(
 
     override fun pop() = onBack.invoke()
 
-    override fun dismissBusyDialog() {
+    override fun dismissDialog() {
         dispatchSignalApi.dismissBusyDialog()
     }
 }

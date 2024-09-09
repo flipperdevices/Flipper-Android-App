@@ -52,6 +52,9 @@ sealed interface Deeplink {
         @Serializable
         sealed interface ArchiveTab : BottomBar {
             @Serializable
+            data object RemoteControls : ArchiveTab
+
+            @Serializable
             sealed interface ArchiveCategory : ArchiveTab {
                 val category: FlipperKeyType?
 
