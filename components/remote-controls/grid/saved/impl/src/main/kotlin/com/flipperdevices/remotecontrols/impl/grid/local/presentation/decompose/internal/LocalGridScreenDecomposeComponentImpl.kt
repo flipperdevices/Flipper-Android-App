@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, LocalGridScreenDecomposeComponent.Factory::class)
 class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

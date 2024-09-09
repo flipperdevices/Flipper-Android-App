@@ -23,7 +23,6 @@ import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.util.contentKey
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
 
 @Composable
 internal fun LocalGridComposableContent(
@@ -32,7 +31,6 @@ internal fun LocalGridComposableContent(
     model: LocalGridComponent.Model,
     modifier: Modifier = Modifier
 ) {
-    val rootNavigation = LocalRootNavigation.current
     AnimatedContent(
         targetState = model,
         modifier = modifier,

@@ -23,6 +23,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, ArchiveDecomposeComponent.Factory::class)
 class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
