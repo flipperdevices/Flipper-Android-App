@@ -23,7 +23,6 @@ import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
-import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler
@@ -59,7 +58,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
     private val keyScreenFactory: KeyScreenDecomposeComponent.Factory,
     private val screenshotsPreviewFactory: ScreenshotsPreviewDecomposeComponent.Factory,
     private val changelogScreenDecomposeFactory: ChangelogScreenDecomposeComponent.Factory,
-    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
     private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RootDecomposeComponent, ComponentContext by componentContext {
     private val scope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
@@ -131,11 +129,6 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
         is RootScreenConfig.Changelog -> changelogScreenDecomposeFactory(
             componentContext = componentContext,
             updateRequest = config.updateRequest,
-            onBack = this::internalOnBack
-        )
-
-        is RootScreenConfig.RemoteControls -> remoteControlsComponentFactory(
-            componentContext = componentContext,
             onBack = this::internalOnBack
         )
 

@@ -6,6 +6,7 @@ import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ interface SetupComponent {
     fun onSkipClicked()
     fun dispatchSignal()
 
-    fun dismissBusyDialog()
+    fun dismissDialog()
 
     fun tryLoad()
 
@@ -36,7 +37,7 @@ interface SetupComponent {
         data class Loading(val progress: Float) : Model
         data class Loaded(
             val response: SignalResponseModel,
-            val isFlipperBusy: Boolean = false,
+            val flipperDialog: FlipperDispatchDialogApi.DialogType? = null,
             val emulatedKeyIdentifier: IfrKeyIdentifier?,
             val connectionState: InfraredEmulateState
         ) : Model {

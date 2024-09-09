@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.composable.SetupScreen
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -18,6 +19,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted onBack: () -> Unit,
     @Assisted onIrFileReady: (id: Long) -> Unit,
     setupComponentFactory: SetupComponent.Factory,
+    flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
 ) : SetupScreenDecomposeComponent(componentContext) {
     private val setupComponent = setupComponentFactory.createSetupComponent(
         componentContext = childContext("SetupComponent"),
@@ -25,9 +27,13 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
         onBack = onBack,
         onIrFileReady = onIrFileReady
     )
+    private val flipperDispatchDialogApi = flipperDispatchDialogApiFactory.invoke(onBack = onBack)
 
     @Composable
     override fun Render() {
-        SetupScreen(setupComponent = setupComponent)
+        SetupScreen(
+            setupComponent = setupComponent,
+            flipperDispatchDialogApi = flipperDispatchDialogApi
+        )
     }
 }

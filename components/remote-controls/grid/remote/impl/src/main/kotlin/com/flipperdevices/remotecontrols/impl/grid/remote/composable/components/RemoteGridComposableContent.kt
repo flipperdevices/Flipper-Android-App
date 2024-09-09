@@ -15,25 +15,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.GridPagesContent
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.grid.remote.impl.R
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.util.contentKey
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 
 @Composable
 internal fun RemoteGridComposableContent(
     remoteGridComponent: RemoteGridComponent,
+    flipperDispatchDialogApi: FlipperDispatchDialogApi,
     model: RemoteGridComponent.Model,
     modifier: Modifier = Modifier
 ) {
-    val rootNavigation = LocalRootNavigation.current
     AnimatedContent(
         targetState = model,
         modifier = modifier,
@@ -49,15 +47,10 @@ internal fun RemoteGridComposableContent(
             }
 
             is RemoteGridComponent.Model.Loaded -> {
-                if (animatedModel.isFlipperBusy) {
-                    ComposableFlipperBusy(
-                        onDismiss = remoteGridComponent::dismissBusyDialog,
-                        goToRemote = {
-                            remoteGridComponent.dismissBusyDialog()
-                            rootNavigation.push(RootScreenConfig.ScreenStreaming)
-                        }
-                    )
-                }
+                flipperDispatchDialogApi.Render(
+                    dialogType = animatedModel.flipperDialog,
+                    onDismiss = remoteGridComponent::dismissDialog,
+                )
                 GridPagesContent(
                     pagesLayout = animatedModel.pagesLayout,
                     onButtonClick = { _, keyIdentifier ->

@@ -8,4 +8,10 @@
     <string name="point_flipper">Point Flipper Zero at the %s and tap the button</string>
     <string name="setup_title">Set Up Remote</string>
     <string name="setup_subtitle">Add remote</string>
+    <string name="remotecontrols_dialog_flipper_not_connected_title">Flipper Not Connected</string>
+    <string name="remotecontrols_dialog_flipper_not_connected_desc">Connect your Flipper Zero to add remote</string>
+    <string name="remotecontrols_dialog_flipper_not_connected_btn">Go to Connection</string>
+    <string name="remotecontrols_dialog_not_supported_flipper_title">Flipper Firmware Not Supported</string>
+    <string name="remotecontrols_dialog_not_supported_flipper_desc">This feature requires the latest Flipper firmware version</string>
+    <string name="remotecontrols_dialog_not_supported_flipper_btn">Go to Firmware Update</string>
 </resources>

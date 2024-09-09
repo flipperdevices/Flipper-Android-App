@@ -14,6 +14,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Skip infrared signals on setup screen
 - [Feature] Better user-ux when configuring remote control
 - [Feature] Navigate to previous setup item on remote controls
+- [Feature] Add flipper action dialogs into remote control and move it into bottombar
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
