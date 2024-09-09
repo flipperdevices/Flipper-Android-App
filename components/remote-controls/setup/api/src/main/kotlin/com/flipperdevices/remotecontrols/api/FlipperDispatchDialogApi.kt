@@ -1,7 +1,6 @@
 package com.flipperdevices.remotecontrols.api
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 
 interface FlipperDispatchDialogApi {

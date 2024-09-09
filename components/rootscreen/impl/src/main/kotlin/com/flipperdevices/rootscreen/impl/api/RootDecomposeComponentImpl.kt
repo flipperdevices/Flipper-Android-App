@@ -23,7 +23,6 @@ import com.flipperdevices.firstpair.api.FirstPairApi
 import com.flipperdevices.firstpair.api.FirstPairDecomposeComponent
 import com.flipperdevices.keyscreen.api.KeyScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
-import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.rootscreen.api.RootDecomposeComponent
 import com.flipperdevices.rootscreen.impl.deeplink.RootDeeplinkHandler

@@ -32,8 +32,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable

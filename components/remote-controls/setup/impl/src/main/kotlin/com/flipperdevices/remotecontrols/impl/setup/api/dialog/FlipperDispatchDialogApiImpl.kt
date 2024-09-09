@@ -8,11 +8,9 @@ import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.setup.api.dialog.composable.SetupFlipperDialogComposable
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Inject
 
 @ContributesAssistedFactory(AppGraph::class, FlipperDispatchDialogApi.Factory::class)
 class FlipperDispatchDialogApiImpl @AssistedInject constructor(

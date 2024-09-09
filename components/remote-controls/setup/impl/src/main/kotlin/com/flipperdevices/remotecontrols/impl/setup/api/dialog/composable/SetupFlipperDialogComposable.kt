@@ -2,10 +2,7 @@ package com.flipperdevices.remotecontrols.impl.setup.api.dialog.composable
 
 import androidx.compose.runtime.Composable
 import com.flipperdevices.core.ui.dialog.composable.busy.ComposableFlipperBusy
-import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.DialogType
-import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 
