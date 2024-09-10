@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
@@ -137,10 +138,11 @@ class SetupComponentImpl @AssistedInject constructor(
     override fun tryLoad() {
         if (dispatchSignalApi.state.value is DispatchSignalApi.State.Emulating) return
         dispatchSignalApi.reset()
+        val historyData = historyViewModel.data
         createCurrentSignalViewModel.load(
-            successResults = historyViewModel.state.value.successfulSignals,
-            failedResults = historyViewModel.state.value.failedSignals,
-            skippedResults = historyViewModel.state.value.skippedSignals
+            successResults = historyData.successfulSignals,
+            failedResults = historyData.failedSignals,
+            skippedResults = historyData.skippedSignals
         )
         _lastEmulatedSignal.value = null
     }
@@ -202,7 +204,20 @@ class SetupComponentImpl @AssistedInject constructor(
         )
     }
 
-    override fun onBackClick() = onBackClick.invoke()
+    private val backCallback = BackCallback(true) {
+        if (historyViewModel.isEmpty) {
+            onBackClick.invoke()
+        } else {
+            historyViewModel.forgetLast()
+        }
+        tryLoad()
+    }
+
+    override fun onBackClick() = backCallback.onBack()
+
+    init {
+        backHandler.register(backCallback)
+    }
 }
 
 private val ABSOLUTE_TEMP_FOLDER_PATH = "/${FlipperKeyType.INFRARED.flipperDir}/temp"
