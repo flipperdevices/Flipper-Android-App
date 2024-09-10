@@ -49,7 +49,7 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Composable
     override fun Render() {
         shareBottomUiApi.ComposableShareBottomSheet(
-            providerFlipperKeyPath = { keyPath },
+            provideFlipperKeyPath = { keyPath },
             onSheetStateVisible = { isShown, onClose ->
                 val isBackPressHandled by isBackPressHandledFlow.collectAsState()
                 backCallback.isEnabled = isShown

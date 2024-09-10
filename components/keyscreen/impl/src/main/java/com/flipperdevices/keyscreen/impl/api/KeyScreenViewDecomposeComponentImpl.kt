@@ -59,7 +59,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
             keyScreenViewModelFactory(keyPath)
         }
         shareBottomApi.ComposableShareBottomSheet(
-            providerFlipperKeyPath = viewModel::getKeyPath,
+            provideFlipperKeyPath = viewModel::getKeyPath,
             onSheetStateVisible = { isShown, onClose ->
                 val isBackPressHandled by isBackPressHandledFlow.collectAsState()
                 backCallback.isEnabled = isShown

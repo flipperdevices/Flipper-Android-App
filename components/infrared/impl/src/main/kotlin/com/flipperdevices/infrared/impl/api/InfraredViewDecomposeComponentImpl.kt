@@ -56,7 +56,7 @@ class InfraredViewDecomposeComponentImpl @AssistedInject constructor(
         }
 
         shareBottomUiApi.ComposableShareBottomSheet(
-            providerFlipperKeyPath = viewModel::getKeyPath,
+            provideFlipperKeyPath = viewModel::getKeyPath,
             onSheetStateVisible = { isShown, onClose ->
                 val isBackPressHandled by isBackPressHandledFlow.collectAsState()
                 backCallback.isEnabled = isShown
