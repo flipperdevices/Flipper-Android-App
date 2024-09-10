@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 interface ShareBottomUIApi {
     @Composable
     fun ComposableShareBottomSheet(
-        flipperKeyPath: FlipperKeyPath,
+        provideFlipperKeyPath: () -> FlipperKeyPath,
         componentContext: ComponentContext,
         onSheetStateVisible: @Composable (isVisible: Boolean, onClose: () -> Unit) -> Unit,
         screenContent: @Composable (() -> Unit) -> Unit,

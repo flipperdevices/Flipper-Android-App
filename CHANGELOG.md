@@ -15,6 +15,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Better user-ux when configuring remote control
 - [Feature] Add flipper action dialogs into remote control and move it into bottombar
 - [Feature] Add error display into remote controls screens
+- [Feature] Add new icons for remote-controls
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
@@ -38,6 +39,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix flaky test
 - [FIX] Infinite dispatch after screen close on remote-control screens
 - [FIX] Bad bottom sheet animation on infrared setup screen
+- [FIX] Share infrared remote after rename
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules

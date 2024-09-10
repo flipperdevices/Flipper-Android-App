@@ -36,13 +36,13 @@ class UploaderViewModel @AssistedInject constructor(
     private val cryptoStorageApi: CryptoStorageApi,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
-    @Assisted private val flipperKeyPath: FlipperKeyPath
+    @Assisted private val provideFlipperKeyPath: () -> FlipperKeyPath
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "UploaderViewModel"
 
     private val _state = MutableStateFlow<ShareState>(ShareState.Initial)
     fun getState() = _state.asStateFlow()
-    fun getFlipperKeyName() = flipperKeyPath.path.nameWithExtension
+    fun getFlipperKeyName() = provideFlipperKeyPath.invoke().path.nameWithExtension
 
     fun invalidate() {
         viewModelScope.launch {
@@ -52,7 +52,7 @@ class UploaderViewModel @AssistedInject constructor(
     }
 
     private suspend fun parseFlipperKeyPath() {
-        simpleKeyApi.getKeyAsFlow(flipperKeyPath).collectLatest { flipperKey ->
+        simpleKeyApi.getKeyAsFlow(provideFlipperKeyPath.invoke()).collectLatest { flipperKey ->
             if (flipperKey == null) {
                 _state.emit(ShareState.Error(ShareError.OTHER))
                 return@collectLatest
@@ -88,7 +88,7 @@ class UploaderViewModel @AssistedInject constructor(
                 )
                 _state.emit(ShareState.Completed)
             }.onFailure { exception ->
-                error(exception) { "Error on share $flipperKeyPath by file" }
+                error(exception) { "Error on share ${provideFlipperKeyPath.invoke()} by file" }
                 _state.emit(ShareState.Error(ShareError.OTHER))
             }
         }
@@ -157,7 +157,7 @@ class UploaderViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            flipperKeyPath: FlipperKeyPath
+            provideFlipperKeyPath: () -> FlipperKeyPath
         ): UploaderViewModel
     }
 }

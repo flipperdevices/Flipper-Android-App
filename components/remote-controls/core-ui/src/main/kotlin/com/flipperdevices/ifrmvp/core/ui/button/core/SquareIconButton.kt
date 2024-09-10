@@ -37,7 +37,7 @@ fun SquareIconButton(
             tint = iconTint,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.sf)
+                .padding(8.sf)
         )
     }
 }
