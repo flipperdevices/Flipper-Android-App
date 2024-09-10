@@ -37,13 +37,13 @@ class ShareBottomUIImpl @Inject constructor(
     @Composable
     @Suppress("NonSkippableComposable")
     override fun ComposableShareBottomSheet(
-        flipperKeyPath: FlipperKeyPath,
+        provideFlipperKeyPath: () -> FlipperKeyPath,
         componentContext: ComponentContext,
         onSheetStateVisible: @Composable (isVisible: Boolean, onClose: () -> Unit) -> Unit,
         screenContent: @Composable (() -> Unit) -> Unit,
     ) {
-        val viewModel = componentContext.viewModelWithFactory(flipperKeyPath) {
-            uploaderViewModelFactory(flipperKeyPath)
+        val viewModel = componentContext.viewModelWithFactory(provideFlipperKeyPath.invoke()) {
+            uploaderViewModelFactory(provideFlipperKeyPath)
         }
 
         val scrimColor = if (MaterialTheme.colors.isLight) {
