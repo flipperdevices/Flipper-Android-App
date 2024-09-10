@@ -19,7 +19,7 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
-import com.flipperdevices.remotecontrols.core.ui.R as GridUiR
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 internal fun BoxWithConstraintsScope.ButtonsComposable(
@@ -33,7 +33,7 @@ internal fun BoxWithConstraintsScope.ButtonsComposable(
 ) {
     if (pageLayout?.buttons.isNullOrEmpty()) {
         ErrorComposable(
-            desc = stringResource(GridUiR.string.empty_page),
+            desc = stringResource(RemoteControlsR.string.empty_page),
             onReload = onReload
         )
     }

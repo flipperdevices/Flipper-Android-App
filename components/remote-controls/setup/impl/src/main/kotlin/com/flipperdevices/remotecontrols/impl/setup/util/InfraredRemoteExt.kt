@@ -12,6 +12,7 @@ internal fun InfraredRemote.toByteArray(): ByteArray {
         )
 
         is InfraredRemote.Raw -> listOf(
+            type,
             frequency,
             dutyCycle,
             data

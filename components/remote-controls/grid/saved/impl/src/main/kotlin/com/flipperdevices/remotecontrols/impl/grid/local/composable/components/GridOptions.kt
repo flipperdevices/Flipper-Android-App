@@ -31,7 +31,8 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
-import com.flipperdevices.core.ui.res.R as SharedRes
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 @Suppress("LongMethod")
@@ -69,7 +70,7 @@ internal fun ComposableInfraredDropDown(
                 )
                 .size(24.dp),
             tint = moreIconTint,
-            painter = painterResource(SharedRes.drawable.ic_more_points),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_more_points),
             contentDescription = null
         )
         DropdownMenu(
@@ -97,7 +98,7 @@ internal fun ComposableInfraredDropDown(
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
                 text = stringResource(R.string.option_share),
-                painter = painterResource(SharedRes.drawable.ic_upload),
+                painter = painterResource(DesignSystem.drawable.ic_upload),
                 onClick = {
                     onChangeState.invoke()
                     onShare.invoke()
@@ -106,7 +107,7 @@ internal fun ComposableInfraredDropDown(
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
                 text = stringResource(R.string.option_delete),
-                painter = painterResource(SharedRes.drawable.ic_trash_icon),
+                painter = painterResource(DesignSystem.drawable.ic_trash_icon),
                 colorText = LocalPallet.current.keyDelete,
                 colorIcon = LocalPallet.current.keyDelete,
                 onClick = {
