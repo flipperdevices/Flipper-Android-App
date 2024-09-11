@@ -32,7 +32,6 @@ fun LoadedContent(
                     onClick = onDispatchSignalClick,
                     modifier = Modifier.align(Alignment.Center),
                     data = signalResponse.data,
-                    categoryName = signalResponse.categoryName,
                     emulatedKeyIdentifier = model.emulatedKeyIdentifier,
                     isSyncing = model.isSyncing,
                     isConnected = model.isConnected
