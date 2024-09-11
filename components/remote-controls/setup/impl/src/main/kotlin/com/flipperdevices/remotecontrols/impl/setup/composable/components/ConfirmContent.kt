@@ -142,9 +142,7 @@ fun AnimatedConfirmContent(
             ConfirmContent(
                 text = when (contentState) {
                     null -> ""
-                    else ->
-                        contentState.message
-                            .format(contentState.categoryName)
+                    else -> contentState.message
                 },
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onSuccessClick,
