@@ -3,6 +3,7 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,10 +34,6 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
 import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 
 @Composable
 @Suppress("LongMethod")
