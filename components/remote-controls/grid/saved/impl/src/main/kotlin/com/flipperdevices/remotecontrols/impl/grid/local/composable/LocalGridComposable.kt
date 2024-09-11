@@ -1,8 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.composable
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -15,12 +13,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
@@ -129,17 +125,6 @@ fun LocalGridComposable(
                     .padding(scaffoldPaddings)
                     .navigationBarsPadding()
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .navigationBarsPadding()
-                    .padding(14.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                val state = (model as? LocalGridComponent.Model.Loaded)
-                    ?.connectionState
-                    ?: InfraredEmulateState.ALL_GOOD
-            }
         }
     )
 }
