@@ -33,6 +33,7 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
+    implementation(projects.components.faphub.errors.api)
 
     // Compose
     implementation(libs.compose.ui)

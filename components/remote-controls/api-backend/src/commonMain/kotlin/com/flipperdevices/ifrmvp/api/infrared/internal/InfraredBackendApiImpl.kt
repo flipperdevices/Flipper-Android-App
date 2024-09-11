@@ -1,6 +1,7 @@
-package com.flipperdevices.ifrmvp.api.infrared
+package com.flipperdevices.ifrmvp.api.infrared.internal
 
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.ifrmvp.api.infrared.InfraredBackendApi
 import com.flipperdevices.ifrmvp.api.infrared.model.InfraredHost
 import com.flipperdevices.ifrmvp.backend.model.BrandsResponse
 import com.flipperdevices.ifrmvp.backend.model.CategoriesResponse

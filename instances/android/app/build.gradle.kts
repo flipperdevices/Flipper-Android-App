@@ -43,6 +43,7 @@ dependencies {
     implementation(projects.components.filemanager.impl)
 
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.brands.api)

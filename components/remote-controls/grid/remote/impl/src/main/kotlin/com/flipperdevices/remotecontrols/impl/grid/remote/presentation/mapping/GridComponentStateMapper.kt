@@ -14,10 +14,9 @@ internal object GridComponentStateMapper {
         dispatchState: DispatchSignalApi.State,
         connectionState: InfraredConnectionApi.InfraredEmulateState
     ): RemoteGridComponent.Model = when (gridState) {
-        RemoteGridViewModel.State.Error -> RemoteGridComponent.Model.Error
+        is RemoteGridViewModel.State.Error -> RemoteGridComponent.Model.Error(gridState.throwable)
         is RemoteGridViewModel.State.Loaded -> {
             when (saveState) {
-                SaveTempSignalApi.State.Error -> RemoteGridComponent.Model.Error
                 is SaveTempSignalApi.State.Uploading,
                 SaveTempSignalApi.State.Uploaded,
                 SaveTempSignalApi.State.Pending -> {

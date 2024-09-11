@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.categories.composable.DeviceCategoriesScreen
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
@@ -17,6 +18,7 @@ class CategoriesScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted onBackClick: () -> Unit,
     @Assisted onCategoryClick: (categoryId: Long, categoryName: String) -> Unit,
     deviceCategoriesComponentFactory: DeviceCategoriesComponent.Factory,
+    private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : CategoriesScreenDecomposeComponent(componentContext) {
     private val deviceCategoriesComponent = deviceCategoriesComponentFactory.invoke(
         componentContext = childContext("DeviceCategoriesComponent"),
@@ -26,6 +28,9 @@ class CategoriesScreenDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        DeviceCategoriesScreen(deviceCategoriesComponent = deviceCategoriesComponent)
+        DeviceCategoriesScreen(
+            deviceCategoriesComponent = deviceCategoriesComponent,
+            errorsRenderer = errorsRenderer
+        )
     }
 }

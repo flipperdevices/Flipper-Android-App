@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.categories.composable
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -9,7 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.DeviceCategoriesLoadedContent
 import com.flipperdevices.remotecontrols.impl.categories.composable.components.DeviceCategoriesLoadingContent
@@ -19,6 +21,7 @@ import com.flipperdevices.remotecontrols.categories.impl.R as CategoriesR
 @Composable
 internal fun DeviceCategoriesScreen(
     deviceCategoriesComponent: DeviceCategoriesComponent,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier
 ) {
     val model by deviceCategoriesComponent.model.collectAsState()
@@ -35,8 +38,13 @@ internal fun DeviceCategoriesScreen(
     ) { scaffoldPaddings ->
         Crossfade(model) { model ->
             when (model) {
-                DeviceCategoriesComponent.Model.Error -> {
-                    ErrorComposable(onReload = deviceCategoriesComponent::tryLoad)
+                is DeviceCategoriesComponent.Model.Error -> {
+                    errorsRenderer.ComposableThrowableError(
+                        throwable = model.throwable,
+                        onRetry = deviceCategoriesComponent::tryLoad,
+                        fapErrorSize = FapErrorSize.FULLSCREEN,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
                 is DeviceCategoriesComponent.Model.Loaded -> {

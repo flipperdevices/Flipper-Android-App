@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.components.infrared.api)
 
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.grid.main.api)
@@ -31,6 +32,7 @@ dependencies {
     implementation(projects.components.keyedit.api)
 
     implementation(projects.components.rootscreen.api)
+    implementation(projects.components.faphub.errors.api)
 
     // Compose
     implementation(libs.compose.ui)

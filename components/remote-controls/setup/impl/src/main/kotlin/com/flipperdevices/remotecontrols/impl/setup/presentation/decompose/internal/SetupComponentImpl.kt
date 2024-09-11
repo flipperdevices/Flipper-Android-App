@@ -104,10 +104,9 @@ class SetupComponentImpl @AssistedInject constructor(
         transform = { signalState, saveState, dispatchState, connectionState ->
             val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
-                CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
+                is CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error(signalState.throwable)
                 is CurrentSignalViewModel.State.Loaded -> {
                     when (saveState) {
-                        SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
                         is SaveTempSignalApi.State.Uploading,
                         SaveTempSignalApi.State.Uploaded,
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(

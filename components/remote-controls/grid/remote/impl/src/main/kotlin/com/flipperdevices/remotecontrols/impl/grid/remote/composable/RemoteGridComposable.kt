@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.components.RemoteGridComposableContent
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.components.RemoteGridTopBar
@@ -20,6 +21,7 @@ import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose
 fun RemoteGridComposable(
     remoteGridComponent: RemoteGridComponent,
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -49,7 +51,8 @@ fun RemoteGridComposable(
                 model = model,
                 modifier = Modifier
                     .padding(scaffoldPaddings)
-                    .navigationBarsPadding()
+                    .navigationBarsPadding(),
+                errorsRenderer = errorsRenderer
             )
         }
     )

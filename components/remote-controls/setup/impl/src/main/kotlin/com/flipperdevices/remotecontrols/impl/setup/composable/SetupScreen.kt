@@ -16,7 +16,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.ifrmvp.core.ui.layout.shared.ErrorComposable
+import com.flipperdevices.faphub.errors.api.FapErrorSize
+import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.AnimatedConfirmContent
@@ -31,7 +32,7 @@ import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
 
 private val SetupComponent.Model.key: Any
     get() = when (this) {
-        SetupComponent.Model.Error -> "error"
+        is SetupComponent.Model.Error -> "error"
         is SetupComponent.Model.Loaded -> "loaded"
         is SetupComponent.Model.Loading -> "loading"
     }
@@ -40,6 +41,7 @@ private val SetupComponent.Model.key: Any
 @Composable
 fun SetupScreen(
     setupComponent: SetupComponent,
+    errorsRenderer: FapHubComposableErrorsRenderer,
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
     modifier: Modifier = Modifier
 ) {
@@ -77,8 +79,13 @@ fun SetupScreen(
             contentKey = { it.key }
         ) { model ->
             when (model) {
-                SetupComponent.Model.Error -> {
-                    ErrorComposable(onReload = setupComponent::onSuccessClick)
+                is SetupComponent.Model.Error -> {
+                    errorsRenderer.ComposableThrowableError(
+                        throwable = model.throwable,
+                        onRetry = setupComponent::tryLoad,
+                        fapErrorSize = FapErrorSize.FULLSCREEN,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
                 is SetupComponent.Model.Loaded -> {

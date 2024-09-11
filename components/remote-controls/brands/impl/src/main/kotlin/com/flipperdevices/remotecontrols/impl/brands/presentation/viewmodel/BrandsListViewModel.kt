@@ -3,6 +3,8 @@ package com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.data.BrandsRepository
 import dagger.assisted.Assisted
@@ -27,7 +29,9 @@ class BrandsListViewModel @AssistedInject constructor(
         _state.update { State.Loading }
         brandsRepository.fetchBrands(categoryId)
             .onSuccess { _state.emit(State.Loaded(it.toImmutableList())) }
-            .onFailure { _state.emit(State.Error) }
+            .onFailure {
+                _state.emit(State.Error(it.toFapHubError()))
+            }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not load brands" } }
     }
 
@@ -38,7 +42,7 @@ class BrandsListViewModel @AssistedInject constructor(
     sealed interface State {
         data object Loading : State
         data class Loaded(val brands: ImmutableList<BrandModel>) : State
-        data object Error : State
+        data class Error(val throwable: FapHubError) : State
     }
 
     @AssistedFactory

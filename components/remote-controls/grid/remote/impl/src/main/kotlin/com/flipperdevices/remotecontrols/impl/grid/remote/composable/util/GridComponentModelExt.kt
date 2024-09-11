@@ -4,7 +4,7 @@ import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose
 
 internal val RemoteGridComponent.Model.contentKey: Any
     get() = when (this) {
-        RemoteGridComponent.Model.Error -> 0
+        is RemoteGridComponent.Model.Error -> 0
         is RemoteGridComponent.Model.Loaded -> 1
         is RemoteGridComponent.Model.Loading -> 2
     }
