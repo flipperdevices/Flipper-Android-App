@@ -1,35 +1,27 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +31,6 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
-import kotlinx.coroutines.delay
 
 @Composable
 private fun notificationText(state: InfraredEmulateState): String {
@@ -54,15 +45,29 @@ private fun notificationText(state: InfraredEmulateState): String {
 }
 
 @Composable
+private fun animateNotificationColor(state: InfraredEmulateState): State<Color> {
+    return animateColorAsState(
+        targetValue = when (state) {
+            InfraredEmulateState.UPDATE_FLIPPER,
+            InfraredEmulateState.NOT_CONNECTED -> LocalPalletV2.current.action.danger.text.default
+
+            InfraredEmulateState.CONNECTING,
+            InfraredEmulateState.SYNCING -> LocalPalletV2.current.action.blue.text.default
+
+            InfraredEmulateState.ALL_GOOD -> Color.Unspecified
+        }
+    )
+}
+
+@Composable
 private fun NotificationIcon(state: InfraredEmulateState) {
     when (state) {
         InfraredEmulateState.NOT_CONNECTED -> {
             Icon(
                 painter = painterResource(R.drawable.ic_not_connected),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp),
-                tint = LocalPalletV2.current.illustration.blackAndWhite.black
+                modifier = Modifier.size(12.dp),
+                tint = LocalPalletV2.current.action.danger.text.default
             )
         }
 
@@ -84,7 +89,7 @@ private fun NotificationIcon(state: InfraredEmulateState) {
                 painter = painterResource(R.drawable.ic_syncing),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(12.dp)
                     .rotate(angle),
                 tint = LocalPalletV2.current.text.link.default
             )
@@ -95,8 +100,7 @@ private fun NotificationIcon(state: InfraredEmulateState) {
             Icon(
                 painter = painterResource(R.drawable.ic_synced),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp),
+                modifier = Modifier.size(12.dp),
                 tint = LocalPalletV2.current.text.link.default
             )
         }
@@ -104,58 +108,26 @@ private fun NotificationIcon(state: InfraredEmulateState) {
 }
 
 @Composable
-private fun ComposableNotification(
+internal fun ComposableNotification(
     state: InfraredEmulateState,
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(LocalPalletV2.current.surface.popUp.body.default)
-            .padding(14.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Crossfade(state) { state -> NotificationIcon(state) }
         Crossfade(state) { state ->
+            val color by animateNotificationColor(state)
             Text(
-                modifier = Modifier
-                    .padding(top = 9.dp, bottom = 9.dp, end = 12.dp)
-                    .weight(1f),
+                modifier = Modifier.weight(1f),
                 text = notificationText(state),
-                style = LocalTypography.current.subtitleB12
+                style = LocalTypography.current.subtitleM12,
+                color = color
             )
         }
     }
-}
-
-private const val VISIBILITY_DURATION = 2000L
-
-@Composable
-fun ComposableSynchronizationNotification(state: InfraredEmulateState) {
-    var isVisible by remember(Unit) { mutableStateOf(false) }
-    LaunchedEffect(state, isVisible) {
-        when (state) {
-            InfraredEmulateState.NOT_CONNECTED -> isVisible = true
-            InfraredEmulateState.CONNECTING -> isVisible = true
-            InfraredEmulateState.SYNCING -> isVisible = true
-
-            InfraredEmulateState.UPDATE_FLIPPER,
-            InfraredEmulateState.ALL_GOOD -> {
-                if (!isVisible) return@LaunchedEffect
-                SnackbarDuration.Short
-                delay(VISIBILITY_DURATION)
-                isVisible = false
-            }
-        }
-    }
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut(),
-        content = { ComposableNotification(state) }
-    )
 }
 
 @Preview

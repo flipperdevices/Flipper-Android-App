@@ -5,8 +5,8 @@ import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
-import com.flipperdevices.ui.decompose.internal.StatusBarIconStyleProvider
 import com.flipperdevices.ui.decompose.internal.WindowDecorator
+import com.flipperdevices.ui.decompose.statusbar.StatusBarIconStyleProvider
 
 internal class AndroidWindowDecorator(
     private val statusBarIconStyleProvider: StatusBarIconStyleProvider
