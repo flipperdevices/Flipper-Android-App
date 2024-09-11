@@ -55,7 +55,8 @@ class LocalGridComponentImpl @AssistedInject constructor(
                     flipperDialog = dispatchState.toDialogType(),
                     emulatedKey = (dispatchState as? DispatchSignalApi.State.Emulating)?.ifrKeyIdentifier,
                     connectionState = connectionState,
-                    keyPath = gridState.keyPath
+                    keyPath = gridState.keyPath,
+                    isFavorite = gridState.isFavorite
                 )
 
                 LocalGridViewModel.State.Loading -> LocalGridComponent.Model.Loading
@@ -78,6 +79,8 @@ class LocalGridComponentImpl @AssistedInject constructor(
     override fun onRename(onEndAction: (FlipperKeyPath) -> Unit) = localGridViewModel.onRename(onEndAction)
 
     override fun onDelete(onEndAction: () -> Unit) = localGridViewModel.onDelete(onEndAction)
+
+    override fun toggleFavorite() = localGridViewModel.toggleFavorite()
 
     override fun pop() = onBack.invoke()
 

@@ -13,4 +13,6 @@
     <string name="rc_dialog_how_to_use_btn">Got it</string>
     <string name="rc_dialog_how_to_use_title">How to Use</string>
     <string name="rc_dialog_how_to_use_text">Point Flipper Zero at the device. Tap or hold the button on your phone to send the signal remotely.</string>
+    <string name="favorites_add">Add to Favorites</string>
+    <string name="favorites_added">Added</string>
 </resources>

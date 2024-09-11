@@ -17,6 +17,7 @@ interface LocalGridComponent {
     fun onButtonClick(identifier: IfrKeyIdentifier)
     fun onRename(onEndAction: (FlipperKeyPath) -> Unit)
     fun onDelete(onEndAction: () -> Unit)
+    fun toggleFavorite()
     fun pop()
     fun dismissDialog()
 
@@ -28,7 +29,8 @@ interface LocalGridComponent {
             val flipperDialog: FlipperDispatchDialogApi.DialogType? = null,
             val emulatedKey: IfrKeyIdentifier?,
             val connectionState: InfraredEmulateState,
-            val keyPath: FlipperKeyPath
+            val keyPath: FlipperKeyPath,
+            val isFavorite: Boolean
         ) : Model {
             val isSynchronizing = listOf(
                 InfraredEmulateState.SYNCING,
