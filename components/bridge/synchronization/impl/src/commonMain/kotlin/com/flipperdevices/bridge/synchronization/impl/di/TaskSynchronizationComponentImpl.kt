@@ -35,7 +35,7 @@ class TaskSynchronizationComponentImpl(
     private val androidHashRepositoryImpl = AndroidHashRepositoryImpl()
 
     private val flipperHashRepository = FlipperHashRepositoryImpl(
-        storageFeatureApi = storageFeatureApi
+        listingStorageApi = storageFeatureApi.listingApi(),
     )
 
     private val synchronizationRepository = SynchronizationStateRepositoryImpl(

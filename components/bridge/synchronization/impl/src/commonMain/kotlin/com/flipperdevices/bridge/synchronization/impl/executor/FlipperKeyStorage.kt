@@ -3,6 +3,8 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
 import com.flipperdevices.bridge.api.model.wrapToRequest
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
@@ -25,7 +27,8 @@ import javax.inject.Inject
 @StorageType(Platform.FLIPPER)
 @ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
 class FlipperKeyStorage @Inject constructor(
-    private val requestApi: FlipperRequestApi
+    private val uploadApi: FFileUploadApi,
+    private val downloadApi: FFileDownloadApi
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"
 
