@@ -27,6 +27,7 @@ interface SetupComponent {
     fun onFailedClick()
     fun onSkipClicked()
     fun dispatchSignal()
+    fun forgetLastEmulatedSignal()
 
     fun dismissDialog()
 
