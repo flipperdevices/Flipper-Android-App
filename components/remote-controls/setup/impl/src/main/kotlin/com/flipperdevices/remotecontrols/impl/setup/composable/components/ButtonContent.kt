@@ -49,7 +49,6 @@ fun ButtonContent(
     isSyncing: Boolean,
     isConnected: Boolean,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
-    categoryName: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -85,7 +84,6 @@ private fun ComposableConfirmContentDarkPreview() {
         Column {
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY",
                 data = TextButtonData(text = "Hello"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,
@@ -93,7 +91,6 @@ private fun ComposableConfirmContentDarkPreview() {
             )
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "TV/AV"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,
@@ -101,7 +98,6 @@ private fun ComposableConfirmContentDarkPreview() {
             )
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "Hello world"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,
