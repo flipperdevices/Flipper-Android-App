@@ -1,11 +1,13 @@
 package com.flipperdevices.remotecontrols.impl.grid.remote.composable.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,13 +29,17 @@ internal fun RemoteGridTopBar(
     SharedTopBar(
         onBackClick = onBack,
         title = remoteName.orEmpty(),
+        background = LocalPalletV2.current.surface.navBar.body.main,
+        backIconTint = LocalPalletV2.current.icon.blackAndWhite.default,
+        textColor = LocalPalletV2.current.text.title.primary,
         subtitle = when {
             saveProgress == null -> {
                 stringResource(R.string.remote_subtitle)
             }
 
             else -> {
-                stringResource(R.string.uploading_to_flipper).format("$saveProgress%")
+                val progress by animateIntAsState(saveProgress)
+                stringResource(R.string.uploading_to_flipper).format("$progress%")
             }
         },
         actions = {
@@ -45,7 +51,7 @@ internal fun RemoteGridTopBar(
                 Row(modifier = Modifier) {
                     Text(
                         text = stringResource(R.string.save),
-                        color = LocalPalletV2.current.text.title.blackOnColor,
+                        color = LocalPalletV2.current.text.title.primary,
                         style = LocalTypography.current.titleEB18,
                         textAlign = TextAlign.Center,
                         maxLines = 1,

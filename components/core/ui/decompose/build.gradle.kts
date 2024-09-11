@@ -8,6 +8,8 @@ android.namespace = "com.flipperdevices.ui.decompose"
 commonDependencies {
     implementation(projects.components.core.activityholder)
 
+    implementation(projects.components.core.preference)
+
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
 

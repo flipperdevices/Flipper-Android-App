@@ -4,17 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.LocalGridComposable
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.statusbar.ThemeStatusBarIconStyleProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +34,7 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     localGridComponentFactory: LocalGridComponent.Factory,
     private val shareBottomUiApi: ShareBottomUIApi,
     flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
+    dataStore: DataStore<Settings>
 ) : LocalGridScreenDecomposeComponent(componentContext) {
     private val localGridComponent = localGridComponentFactory.invoke(
         componentContext = childContext("GridComponent_local"),
@@ -41,6 +45,7 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
 
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
+    private val themeStatusBarIconStyleProvider = ThemeStatusBarIconStyleProvider(dataStore)
 
     init {
         backHandler.register(backCallback)
@@ -70,5 +75,9 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
                 onShare = onShare
             )
         }
+    }
+
+    override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {
+        return themeStatusBarIconStyleProvider.isStatusBarIconLight(systemIsDark)
     }
 }

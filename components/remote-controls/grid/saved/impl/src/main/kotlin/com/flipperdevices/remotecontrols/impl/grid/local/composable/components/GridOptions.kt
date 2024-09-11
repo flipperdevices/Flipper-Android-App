@@ -52,7 +52,7 @@ internal fun ComposableInfraredDropDown(
     val isDropDownEnabled = isConnected && !isEmulating
     val moreIconTint by animateColorAsState(
         if (isDropDownEnabled) {
-            LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+            LocalPalletV2.current.icon.blackAndWhite.default
         } else {
             LocalPalletV2.current.action.neutral.icon.primary.disabled
         }
