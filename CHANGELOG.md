@@ -41,6 +41,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Infinite dispatch after screen close on remote-control screens
 - [FIX] Bad bottom sheet animation on infrared setup screen
 - [FIX] Share infrared remote after rename
+- [FIX] Fix app bar colors on remote controls
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
