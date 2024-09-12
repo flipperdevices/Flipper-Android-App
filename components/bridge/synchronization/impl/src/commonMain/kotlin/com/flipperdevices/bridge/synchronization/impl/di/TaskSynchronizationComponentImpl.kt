@@ -55,7 +55,9 @@ class TaskSynchronizationComponentImpl(
     )
 
     private val flipperStorage = FlipperKeyStorage(
-        requestApi = requestApi
+        downloadApi = storageFeatureApi.downloadApi(),
+        uploadApi = storageFeatureApi.uploadApi(),
+        deleteApi = storageFeatureApi.deleteApi()
     )
 
     private val diffKeyExecutor = DiffKeyExecutorImpl()

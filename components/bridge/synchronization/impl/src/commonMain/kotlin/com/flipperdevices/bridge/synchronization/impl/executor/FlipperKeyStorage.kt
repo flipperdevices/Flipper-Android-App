@@ -1,19 +1,14 @@
 package com.flipperdevices.bridge.synchronization.impl.executor
 
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDeleteApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
-import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.flow.toList
 import okio.buffer
 import okio.source
 import javax.inject.Inject
@@ -22,7 +17,8 @@ import javax.inject.Inject
 @ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
 class FlipperKeyStorage @Inject constructor(
     private val uploadApi: FFileUploadApi,
-    private val downloadApi: FFileDownloadApi
+    private val downloadApi: FFileDownloadApi,
+    private val deleteApi: FFileDeleteApi
 ) : AbstractKeyStorage, LogTagProvider {
     override val TAG = "FlipperKeyStorage"
 
@@ -53,12 +49,9 @@ class FlipperKeyStorage @Inject constructor(
     }
 
     override suspend fun deleteFile(filePath: FlipperFilePath) {
-        requestApi.request(
-            main {
-                storageDeleteRequest = deleteRequest {
-                    path = filePath.getPathOnFlipper()
-                }
-            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-        ).single()
+        deleteApi.delete(
+            filePath.getPathOnFlipper(),
+            priority = StorageRequestPriority.BACKGROUND
+        )
     }
 }

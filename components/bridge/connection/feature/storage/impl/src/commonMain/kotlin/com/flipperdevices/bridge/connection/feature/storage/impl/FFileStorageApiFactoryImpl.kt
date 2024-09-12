@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.getUnsafe
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.FFileStorageMD5ApiImpl
+import com.flipperdevices.bridge.connection.feature.storage.impl.fm.delete.FFileDeleteApiImpl
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.download.FFileDownloadApiImpl
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing.FListingStorageApiImpl
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing.FlipperListingDelegateDeprecated
@@ -46,7 +47,8 @@ class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
             md5Api = FFileStorageMD5ApiImpl(rpcApi),
             fListingStorageApi = FListingStorageApiImpl(listingDelegate),
             fileUploadApi = FFileUploadApiImpl(rpcApi, scope = scope),
-            fileDownloadApi = FFileDownloadApiImpl(rpcApi, scope = scope)
+            fileDownloadApi = FFileDownloadApiImpl(rpcApi, scope = scope),
+            deleteApi = FFileDeleteApiImpl(rpcApi)
         )
     }
 }
