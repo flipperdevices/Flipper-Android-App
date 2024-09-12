@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.connection.feature.storage.impl.fm.upload
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
+import com.flipperdevices.bridge.connection.feature.storage.impl.utils.copyWithProgress
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.bridge.connection.pbutils.ProtobufConstants
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -30,23 +31,15 @@ class FFileUploadApiImpl(
         progressListener: ProgressListener?,
         priority: StorageRequestPriority
     ): Unit = withContext(FlipperDispatchers.workStealingDispatcher) {
-        val progressWrapper = progressListener?.let { ProgressWrapperTracker(it) }
-        val length = fileSystem.metadata(fileOnAndroid).size
-
         fileSystem.source(fileOnAndroid).buffer().use { source ->
             sink(pathOnFlipper, priority).use { sink ->
-                var totalBytesRead = 0L
-                val buffer = Buffer()
-                while (true) {
-                    val readCount: Long =
-                        source.read(buffer, ProtobufConstants.MAX_FILE_DATA.toLong())
-                    if (readCount == -1L) break
-                    sink.write(buffer, readCount)
-                    totalBytesRead += readCount
-                    if (length != null && progressWrapper != null) {
-                        progressWrapper.report(totalBytesRead, length)
+                source.copyWithProgress(
+                    sink,
+                    progressListener,
+                    sourceLength = {
+                        fileSystem.metadata(fileOnAndroid).size
                     }
-                }
+                )
             }
         }
     }

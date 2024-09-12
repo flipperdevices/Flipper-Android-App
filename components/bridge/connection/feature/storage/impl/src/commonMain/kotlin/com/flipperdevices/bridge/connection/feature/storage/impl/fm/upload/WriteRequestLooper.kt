@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.WriteRequest
@@ -28,7 +29,7 @@ internal class WriteRequestLooper(
     private val result = MutableStateFlow<Result<Main>?>(null)
 
     init {
-        scope.launch {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             result.emit(
                 rpcFeatureApi.request(
                     commandFlow = commands,

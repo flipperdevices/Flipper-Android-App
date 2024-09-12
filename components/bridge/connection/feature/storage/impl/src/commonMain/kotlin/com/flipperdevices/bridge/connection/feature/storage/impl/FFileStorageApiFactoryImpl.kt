@@ -45,8 +45,8 @@ class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
         return FStorageFeatureApiImpl(
             md5Api = FFileStorageMD5ApiImpl(rpcApi),
             fListingStorageApi = FListingStorageApiImpl(listingDelegate),
-            fileUploadApi = FFileUploadApiImpl(rpcApi),
-            fileDownloadApi = FFileDownloadApiImpl(rpcApi)
+            fileUploadApi = FFileUploadApiImpl(rpcApi, scope = scope),
+            fileDownloadApi = FFileDownloadApiImpl(rpcApi, scope = scope)
         )
     }
 }
