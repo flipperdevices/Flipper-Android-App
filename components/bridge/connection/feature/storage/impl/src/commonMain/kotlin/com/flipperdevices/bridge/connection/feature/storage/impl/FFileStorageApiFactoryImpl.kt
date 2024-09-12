@@ -13,6 +13,8 @@ import com.flipperdevices.bridge.connection.feature.storage.impl.fm.download.FFi
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing.FListingStorageApiImpl
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing.FlipperListingDelegateDeprecated
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing.FlipperListingDelegateNew
+import com.flipperdevices.bridge.connection.feature.storage.impl.fm.timestamp.FFileTimestampApiImpl
+import com.flipperdevices.bridge.connection.feature.storage.impl.fm.timestamp.FFileTimestampApiNoop
 import com.flipperdevices.bridge.connection.feature.storage.impl.fm.upload.FFileUploadApiImpl
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.data.SemVer
@@ -25,6 +27,8 @@ private val API_SUPPORTED_MD5_LISTING = SemVer(
     majorVersion = 0,
     minorVersion = 20
 )
+private val API_SUPPORTED_TIMESTAMP = SemVer(majorVersion = 0, minorVersion = 13)
+
 
 @FDeviceFeatureQualifier(FDeviceFeature.STORAGE)
 @ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
@@ -48,7 +52,12 @@ class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
             fListingStorageApi = FListingStorageApiImpl(listingDelegate),
             fileUploadApi = FFileUploadApiImpl(rpcApi, scope = scope),
             fileDownloadApi = FFileDownloadApiImpl(rpcApi, scope = scope),
-            deleteApi = FFileDeleteApiImpl(rpcApi)
+            deleteApi = FFileDeleteApiImpl(rpcApi),
+            timestampApi = if (versionApi.isSupported(API_SUPPORTED_TIMESTAMP)) {
+                FFileTimestampApiImpl(rpcApi)
+            } else {
+                FFileTimestampApiNoop()
+            }
         )
     }
 }

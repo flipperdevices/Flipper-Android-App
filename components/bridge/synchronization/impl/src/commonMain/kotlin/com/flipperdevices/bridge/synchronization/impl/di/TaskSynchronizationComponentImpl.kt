@@ -14,12 +14,11 @@ import com.flipperdevices.bridge.synchronization.impl.repository.android.Android
 import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperFavoritesRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepositoryImpl
-import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationCheckerImpl
+import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMergeHelperImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepositoryImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestStorageImpl
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepositoryImpl
-import com.flipperdevices.core.FlipperStorageProvider
 
 class TaskSynchronizationComponentImpl(
     deps: TaskSynchronizationComponentDependencies,
@@ -78,9 +77,8 @@ class TaskSynchronizationComponentImpl(
         keyDiffApplier = keyDiffApplier,
     )
 
-    private val timestampSynchronizationChecker = TimestampSynchronizationCheckerImpl(
-        requestApi = requestApi,
-        flipperVersionApi = flipperVersionApi
+    private val timestampSynchronizationChecker = TimestampSynchronizationChecker(
+        timestampApi = storageFeatureApi.timestampApi()
     )
 
     private val manifestTimestampRepository = ManifestTimestampRepositoryImpl(

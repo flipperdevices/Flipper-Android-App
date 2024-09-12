@@ -39,7 +39,7 @@ class KeysSynchronizationImpl @Inject constructor(
         progressTracker: ProgressWrapperTracker
     ): Int {
         val typesUpdateTimestamps = timestampSynchronizationChecker.fetchFoldersTimestamp(
-            FlipperKeyType.values(),
+            FlipperKeyType.entries,
             ProgressWrapperTracker(
                 min = 0f,
                 max = PERCENT_FETCH_TIMESTAMP,
