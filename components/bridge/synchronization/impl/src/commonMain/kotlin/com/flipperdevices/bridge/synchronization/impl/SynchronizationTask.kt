@@ -84,8 +84,8 @@ class SynchronizationTaskImpl(
             ?: error("Can't find storage feature api")
 
         startInternal(
-            scope,
             storageFeatureApi,
+            scope,
             ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
                 stateListener(SynchronizationState.InProgress(it))
             })

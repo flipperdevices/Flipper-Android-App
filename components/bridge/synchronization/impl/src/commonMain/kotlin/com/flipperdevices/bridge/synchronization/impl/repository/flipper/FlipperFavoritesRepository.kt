@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
-import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
@@ -34,7 +33,7 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
     override suspend fun getFavorites(flipperKeyStorage: FlipperKeyStorage): List<FlipperFilePath> {
         val favoritesPaths = getFavoritesFromFlipper(flipperKeyStorage)
         return favoritesPaths.map {
-            val relativePath = it.replace(Constants.KEYS_DEFAULT_STORAGE, "").replace("/ext/", "")
+            val relativePath = it.replace("/any/", "").replace("/ext/", "")
             return@map relativePath.substringBefore("/") to relativePath.substringAfter("/")
         }.filter { (keyFolder, keyName) ->
             keyFolder.trim().isNotEmpty() || keyName.trim().isNotEmpty()
