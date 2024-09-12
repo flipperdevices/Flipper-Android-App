@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -120,7 +119,6 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         }
         return@wrapPendingAction response.resultOrError()
     }
-
 
     override suspend fun request(
         commandFlow: Flow<FlipperRequest>,

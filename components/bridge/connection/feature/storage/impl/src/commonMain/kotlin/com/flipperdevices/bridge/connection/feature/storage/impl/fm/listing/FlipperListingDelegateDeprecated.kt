@@ -1,17 +1,12 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing
 
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcStorageNotExistException
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.NameWithHash
 import com.flipperdevices.core.ktx.jre.pmap
-import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
-import com.flipperdevices.protobuf.storage.ListRequest
 import com.flipperdevices.protobuf.storage.Md5sumRequest
-import kotlinx.coroutines.flow.toList
 import okio.Path.Companion.toPath
 
 class FlipperListingDelegateDeprecated(
@@ -41,7 +36,6 @@ class FlipperListingDelegateDeprecated(
 
             val storageMd5Response = md5Response.getOrThrow().storage_md5sum_response
                 ?: error("Can't find md5 response in $md5Response for $fileForMd5")
-
 
             NameWithHash(
                 name = fileForMd5.name,

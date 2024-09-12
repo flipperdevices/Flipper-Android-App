@@ -15,7 +15,9 @@ suspend fun Source.copyWithProgress(
     val progressWrapper = progressListener?.let { ProgressWrapperTracker(it) }
     val calculatedLength = if (progressListener != null) {
         sourceLength?.invoke()
-    } else null
+    } else {
+        null
+    }
 
     var totalBytesRead = 0L
     val buffer = Buffer()

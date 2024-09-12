@@ -13,7 +13,6 @@ commonDependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
 
-
     implementation(projects.components.bridge.connection.feature.provider.api)
 
     api(libs.decompose)

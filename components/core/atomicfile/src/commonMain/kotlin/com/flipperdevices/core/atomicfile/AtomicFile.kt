@@ -14,5 +14,5 @@ interface AtomicFile {
 }
 
 expect fun AtomicFile(
-   baseName: Path
+    baseName: Path
 ): AtomicFile

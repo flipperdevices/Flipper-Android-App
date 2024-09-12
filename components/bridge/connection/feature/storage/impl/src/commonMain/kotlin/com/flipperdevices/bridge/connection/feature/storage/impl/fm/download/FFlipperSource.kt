@@ -29,7 +29,7 @@ class FFlipperSource(
             val newPack = newResponse.storage_read_response?.file_?.data_
             requireNotNull(newPack) {
                 "Storage read response not found. " +
-                        "Response is: $newPack"
+                    "Response is: $newPack"
             }
             val remainingBytesToRead = byteCount - readBytesCount
 
@@ -37,7 +37,8 @@ class FFlipperSource(
                 val packByteArray = newPack.toByteArray()
                 val toRead = packByteArray.copyOf(remainingBytesToRead.toInt())
                 val toBuffer = packByteArray.copyOfRange(
-                    remainingBytesToRead.toInt(), packByteArray.size
+                    remainingBytesToRead.toInt(),
+                    packByteArray.size
                 )
                 sink.read(toRead)
                 buffer.write(toBuffer)

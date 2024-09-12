@@ -10,14 +10,11 @@ import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
-import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.Main
-import com.flipperdevices.protobuf.storage.ReadRequest
 import com.flipperdevices.protobuf.storage.StatRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withContext
-import okio.BufferedSink
 import okio.FileSystem
 import okio.Path
 import okio.Source
@@ -35,7 +32,7 @@ class FFileDownloadApiImpl(
         progressListener: ProgressListener?,
         priority: StorageRequestPriority
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
-        info { "Start download file $pathOnFlipper to ${fileOnAndroid}" }
+        info { "Start download file $pathOnFlipper to $fileOnAndroid" }
 
         fileSystem.sink(fileOnAndroid, mustCreate = true).buffer().use { sink ->
             source(pathOnFlipper, priority).use { source ->
@@ -72,7 +69,7 @@ class FFileDownloadApiImpl(
         if (listingList.size > 1) {
             error(
                 "Listing request return more than one response. " +
-                        "Are you sure that you want download a file, not a directory?"
+                    "Are you sure that you want download a file, not a directory?"
             )
         }
 

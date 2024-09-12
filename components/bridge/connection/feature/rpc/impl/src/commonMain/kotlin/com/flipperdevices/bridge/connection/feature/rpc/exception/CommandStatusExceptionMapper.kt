@@ -38,6 +38,7 @@ fun Main.resultOrError(): Result<Main> {
     }
 }
 
+@Suppress("CyclomaticComplexMethod")
 private fun Main.asException(): FRpcException? = when (command_status) {
     CommandStatus.ERROR_APP_CANT_START -> FRpcAppCantStartException(this)
     CommandStatus.ERROR_APP_CMD_ERROR -> FRpcAppCmdErrorException(this)

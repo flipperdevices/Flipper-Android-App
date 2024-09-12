@@ -8,7 +8,6 @@ import okio.FileSystem
 import okio.Path.Companion.toOkioPath
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, FlipperStorageProvider::class)
 class AndroidFlipperStorageProvider @Inject constructor(
     context: Context

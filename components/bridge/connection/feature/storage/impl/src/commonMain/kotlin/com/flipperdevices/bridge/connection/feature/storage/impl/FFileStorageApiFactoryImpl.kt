@@ -29,7 +29,6 @@ private val API_SUPPORTED_MD5_LISTING = SemVer(
 )
 private val API_SUPPORTED_TIMESTAMP = SemVer(majorVersion = 0, minorVersion = 13)
 
-
 @FDeviceFeatureQualifier(FDeviceFeature.STORAGE)
 @ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Factory {

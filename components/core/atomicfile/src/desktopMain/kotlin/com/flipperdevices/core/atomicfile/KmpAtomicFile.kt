@@ -36,6 +36,7 @@ class KmpAtomicFile(
         return@withContext try {
             fileSystem.sink(mNewName)
         } catch (e: IOException) {
+            error(e) { "Failed sink, try create directory" }
             val parent = mNewName.parent ?: throw IOException("Failed to find parent for $mNewName")
             val isMkdirs = runCatching {
                 fileSystem.createDirectory(parent, mustCreate = true)
@@ -48,13 +49,13 @@ class KmpAtomicFile(
         }.wrap()
     }
 
-    override suspend fun finishWrite(str: SinkWithOutputStream) {
-        if (!sync(str)) {
+    override suspend fun finishWrite(sink: SinkWithOutputStream) {
+        if (!sync(sink)) {
             error { "Failed to sync file output stream" }
         }
         try {
-            str.flush()
-            str.close()
+            sink.flush()
+            sink.close()
         } catch (e: IOException) {
             error(e) { "Failed to close file output stream" }
         }
@@ -94,12 +95,12 @@ class KmpAtomicFile(
         }
     }
 
-    override suspend fun failWrite(str: SinkWithOutputStream) = withContext(Dispatchers.IO) {
-        if (!sync(str)) {
+    override suspend fun failWrite(sink: SinkWithOutputStream) = withContext(Dispatchers.IO) {
+        if (!sync(sink)) {
             error { "Failed to sync file output stream" }
         }
         try {
-            str.close()
+            sink.close()
         } catch (e: java.io.IOException) {
             error(e) { "Failed to close file output stream" }
         }
@@ -110,10 +111,8 @@ class KmpAtomicFile(
         }
     }
 
-
-    private fun sync(stream: Sink): Boolean {
-        return true
-    }
+    @Suppress("UnusedParameter", "FunctionOnlyReturningConstant")
+    private fun sync(stream: Sink) = true
 
     private fun rename(source: Path, target: Path) {
         // We used to delete the target file before rename, but that isn't atomic, and the rename()

@@ -54,7 +54,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
         if (nameWithHash.size > SIZE_BYTES_LIMIT) {
             debug {
                 "File ${nameWithHash.name} skip, because current size limit is $SIZE_BYTES_LIMIT, " +
-                        "but file size is ${nameWithHash.size}"
+                    "but file size is ${nameWithHash.size}"
             }
             return false
         }
@@ -86,7 +86,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
         if (fileTypeByExtension != requestedType) {
             debug {
                 "File ${nameWithHash.name} skip, because folder type ($requestedType) " +
-                        "and extension type ($fileTypeByExtension) is not equals"
+                    "and extension type ($fileTypeByExtension) is not equals"
             }
             return false
         }
