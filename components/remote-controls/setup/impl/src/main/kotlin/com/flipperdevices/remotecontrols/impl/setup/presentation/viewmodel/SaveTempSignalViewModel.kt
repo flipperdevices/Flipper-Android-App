@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlin.math.max
 import javax.inject.Inject
 
 private const val EXT_PATH = "/ext"
@@ -35,11 +36,9 @@ class SaveTempSignalViewModel @Inject constructor(
         onFinished: () -> Unit,
     ) {
         viewModelScope.launch {
-            val maxProgress = filesDesc.size.toFloat()
-            var progressInternal = 0f
             _state.emit(SaveTempSignalApi.State.Uploading(0f))
             launchWithLock(mutex, viewModelScope, "load") {
-                filesDesc.forEach { fileDesc ->
+                filesDesc.forEachIndexed { index, fileDesc ->
                     FlipperStorageProvider.useTemporaryFile(context) { deviceFile ->
                         deviceFile.writeText(fileDesc.textContent)
                         val fAbsolutePath = FlipperFilePath(
@@ -50,10 +49,9 @@ class SaveTempSignalViewModel @Inject constructor(
                         flipperStorageApi.upload(
                             pathOnFlipper = fAbsolutePath,
                             fileOnAndroid = deviceFile,
-                            progressListener = {
-                                progressInternal += it
+                            progressListener = { currentProgress ->
                                 _state.value = SaveTempSignalApi.State.Uploading(
-                                    progressPercent = progressInternal / maxProgress
+                                    progressPercent = index + currentProgress
                                 )
                             }
                         )
