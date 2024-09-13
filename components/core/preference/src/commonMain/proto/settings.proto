@@ -60,5 +60,4 @@ message Settings {
   bool fatal_ble_security_exception_happens = 26;
   bool notification_topic_update_enabled = 27;
   bool notification_dialog_shown = 28;
-  bool show_remote_controls = 29;
 }

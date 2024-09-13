@@ -10,6 +10,9 @@ sealed class ToolsNavigationConfig {
 
     @Serializable
     data object MfKey32 : ToolsNavigationConfig()
+
+    @Serializable
+    data object RemoteControls : ToolsNavigationConfig()
 }
 
 fun Deeplink.BottomBar.ToolsTab?.toConfigStack(): List<ToolsNavigationConfig> {

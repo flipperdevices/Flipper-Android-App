@@ -33,6 +33,9 @@ class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
             hasNotification = hasNotification,
             onOpenMfKey32 = {
                 navigation.pushToFront(ToolsNavigationConfig.MfKey32)
+            },
+            onOpenRemoteControls = {
+                navigation.pushToFront(ToolsNavigationConfig.RemoteControls)
             }
         )
     }
