@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.categories.composable.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -19,7 +20,9 @@ internal fun DeviceCategoriesLoadedContent(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .fillMaxHeight(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
