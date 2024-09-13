@@ -8,6 +8,7 @@ import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
+import com.flipperdevices.keyscreen.model.FavoriteState
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -58,7 +59,8 @@ class LocalGridViewModel @AssistedInject constructor(
                         State.Loaded(
                             pagesLayout = pagesLayout,
                             remotes = remotes,
-                            keyPath = keyPath
+                            keyPath = keyPath,
+                            isFavorite = it.favoriteState == FavoriteState.FAVORITE
                         )
                     }
                 }
@@ -69,13 +71,21 @@ class LocalGridViewModel @AssistedInject constructor(
 
     fun onDelete(onEndAction: () -> Unit) = keyStateHelper.onDelete(onEndAction)
 
+    fun toggleFavorite() {
+        val state = keyStateHelper.getKeyScreenState().value
+        val readyState = state as? KeyScreenState.Ready ?: return
+        val isFavorite = readyState.favoriteState == FavoriteState.FAVORITE
+        keyStateHelper.setFavorite(!isFavorite)
+    }
+
     sealed interface State {
         data object Loading : State
         data object Error : State
         data class Loaded(
             val pagesLayout: PagesLayout,
             val remotes: ImmutableList<InfraredRemote>,
-            val keyPath: FlipperKeyPath
+            val keyPath: FlipperKeyPath,
+            val isFavorite: Boolean
         ) : State
     }
 

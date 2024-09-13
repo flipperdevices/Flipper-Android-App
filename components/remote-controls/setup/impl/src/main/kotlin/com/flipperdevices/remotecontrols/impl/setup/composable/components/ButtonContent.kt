@@ -49,7 +49,6 @@ fun ButtonContent(
     isSyncing: Boolean,
     isConnected: Boolean,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
-    categoryName: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -66,8 +65,7 @@ fun ButtonContent(
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
-            text = stringResource(SetupR.string.point_flipper)
-                .format(categoryName),
+            text = stringResource(SetupR.string.point_flipper),
             style = LocalTypography.current.bodyM14,
             color = LocalPalletV2.current.text.body.secondary,
             textAlign = TextAlign.Center,
@@ -86,7 +84,6 @@ private fun ComposableConfirmContentDarkPreview() {
         Column {
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY",
                 data = TextButtonData(text = "Hello"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,
@@ -94,7 +91,6 @@ private fun ComposableConfirmContentDarkPreview() {
             )
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "TV/AV"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,
@@ -102,7 +98,6 @@ private fun ComposableConfirmContentDarkPreview() {
             )
             ButtonContent(
                 onClick = {},
-                categoryName = "CATEGORY 2",
                 data = TextButtonData(text = "Hello world"),
                 emulatedKeyIdentifier = null,
                 isSyncing = false,

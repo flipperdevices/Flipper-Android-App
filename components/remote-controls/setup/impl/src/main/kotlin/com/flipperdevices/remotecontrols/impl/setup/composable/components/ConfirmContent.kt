@@ -9,11 +9,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -117,6 +121,7 @@ fun AnimatedConfirmContent(
     onNegativeClick: () -> Unit,
     onSuccessClick: () -> Unit,
     onSkipClick: () -> Unit,
+    onDismissConfirm: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -127,30 +132,54 @@ fun AnimatedConfirmContent(
             targetState = lastEmulatedSignal,
             label = lastEmulatedSignal?.signalModel?.id?.toString()
         )
-        transition.AnimatedVisibility(
-            visible = { localLastEmulatedSignal -> localLastEmulatedSignal != null },
-            enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
-            exit = slideOutVertically(targetOffsetY = { it / 2 }) + fadeOut(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
-        ) {
-            val contentState = when (this.transition.targetState) {
-                EnterExitState.Visible -> transition.targetState
-                else -> transition.currentState
+        if (transition.targetState != null || transition.currentState != null || transition.isRunning) {
+            Dialog(
+                onDismissRequest = onDismissConfirm,
+                properties = DialogProperties(
+                    usePlatformDefaultWidth = false,
+                    decorFitsSystemWindows = false,
+                    dismissOnClickOutside = true,
+                    dismissOnBackPress = true
+                )
+            ) {
+                transition.AnimatedVisibility(
+                    visible = { localLastEmulatedSignal -> localLastEmulatedSignal != null },
+                    enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { it / 2 }) + fadeOut(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        // This is required to close dialog when "clicking outside of borders"
+                        // The dialog displayed at bottom, therefore, the dialog itself
+                        // fills entire screen to display content at bottom
+                        .clickable(onClick = onDismissConfirm),
+                ) {
+                    val contentState = when (this.transition.targetState) {
+                        EnterExitState.Visible -> transition.targetState
+                        else -> transition.currentState
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        ConfirmContent(
+                            text = when (contentState) {
+                                null -> ""
+                                else -> contentState.message
+                            },
+                            onNegativeClick = onNegativeClick,
+                            onPositiveClick = onSuccessClick,
+                            onSkipClick = onSkipClick,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
+                                // Redefine clickable listener to not close dialog when clicking on dialog content
+                                .clickable { }
+                        )
+                    }
+                }
             }
-            ConfirmContent(
-                text = when (contentState) {
-                    null -> ""
-                    else ->
-                        contentState.message
-                            .format(contentState.categoryName)
-                },
-                onNegativeClick = onNegativeClick,
-                onPositiveClick = onSuccessClick,
-                onSkipClick = onSkipClick,
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
         }
     }
 }

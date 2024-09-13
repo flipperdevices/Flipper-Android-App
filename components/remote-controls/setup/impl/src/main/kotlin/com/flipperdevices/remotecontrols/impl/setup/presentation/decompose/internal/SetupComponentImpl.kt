@@ -203,6 +203,10 @@ class SetupComponentImpl @AssistedInject constructor(
         )
     }
 
+    override fun forgetLastEmulatedSignal() {
+        _lastEmulatedSignal.value = null
+    }
+
     private val backCallback = BackCallback(true) {
         if (historyViewModel.isEmpty) {
             onBackClick.invoke()

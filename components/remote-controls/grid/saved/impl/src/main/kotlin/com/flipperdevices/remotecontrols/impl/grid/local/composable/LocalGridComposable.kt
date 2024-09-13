@@ -107,9 +107,11 @@ fun LocalGridComposable(
                                 onCallback.invoke(LocalGridScreenDecomposeComponent.Callback.Deleted)
                             }
                         },
+                        onFavorite = localGridComponent::toggleFavorite,
                         onShare = onShare,
                         isEmulating = loadedModel.emulatedKey != null,
-                        isConnected = loadedModel.isConnected
+                        isConnected = loadedModel.isConnected,
+                        isFavorite = loadedModel.isFavorite,
                     )
                 }
             }
