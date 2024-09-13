@@ -112,7 +112,8 @@ fun SetupScreen(
                 .padding(scaffoldPaddings),
             onNegativeClick = setupComponent::onFailedClick,
             onSuccessClick = setupComponent::onSuccessClick,
-            onSkipClick = setupComponent::onSkipClicked
+            onSkipClick = setupComponent::onSkipClicked,
+            onDismissConfirm = setupComponent::forgetLastEmulatedSignal
         )
     }
 }
