@@ -44,6 +44,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix app bar colors on remote controls
 - [FIX] Fix remote controls texts and favorite dropdown
 - [FIX] Fix crash when saving files on remote controls
+- [FIX] Remove share from remote controls
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
