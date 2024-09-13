@@ -3,6 +3,7 @@ package com.flipperdevices.updater.impl.api
 import android.content.Context
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -42,7 +43,8 @@ class UpdaterApiImpl @Inject constructor(
     private val context: Context,
     private val metricApi: MetricApi,
     private val flipperStorageApi: FlipperStorageApi,
-    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper
+    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper,
+    private val storageProvider: FlipperStorageProvider
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
@@ -72,7 +74,8 @@ class UpdaterApiImpl @Inject constructor(
             subGhzProvisioningHelper,
             updateContentDownloader,
             flipperStorageApi,
-            fapNeedUpdatePopUpHelper
+            fapNeedUpdatePopUpHelper,
+            storageProvider
         )
         currentActiveTask = localActiveTask
 

@@ -13,6 +13,8 @@ commonDependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
 
+    implementation(projects.components.bridge.connection.feature.provider.api)
+
     api(libs.decompose)
     implementation(libs.kotlin.coroutines)
     api(libs.essenty.lifecycle)

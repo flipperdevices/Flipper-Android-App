@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
     implementation(projects.components.core.activityholder)
     implementation(projects.components.core.permission.api)
     implementation(projects.components.core.permission.impl)
@@ -26,6 +27,7 @@ dependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.scrollbar)
+
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)

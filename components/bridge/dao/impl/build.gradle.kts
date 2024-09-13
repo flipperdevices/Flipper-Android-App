@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

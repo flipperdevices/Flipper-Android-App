@@ -5,12 +5,12 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.readText
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
@@ -32,7 +32,8 @@ private const val LIMITED_SIZE_BYTES = 1024L * 1024L // 1MB
 class EditorViewModel @AssistedInject constructor(
     @Assisted private val shareFile: ShareFile,
     context: Context,
-    private val serviceProvider: FlipperServiceProvider
+    private val serviceProvider: FlipperServiceProvider,
+    storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG = "EditorViewModel"
 
@@ -48,7 +49,7 @@ class EditorViewModel @AssistedInject constructor(
     private val alreadyStarted = AtomicBoolean(false)
     private val mutex = Mutex()
     private val editorFile by lazy {
-        FlipperStorageProvider.getTemporaryFile(context)
+        storageProvider.getTemporaryFile().toFile()
     }
 
     init {

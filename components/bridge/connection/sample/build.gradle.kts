@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
 
     implementation(projects.components.bridge.connection.transport.ble.api)
     implementation(projects.components.bridge.connection.transport.ble.impl)

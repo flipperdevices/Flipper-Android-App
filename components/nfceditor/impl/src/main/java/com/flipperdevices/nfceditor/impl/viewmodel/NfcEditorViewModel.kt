@@ -10,7 +10,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.hexkeyboard.HexKey
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.keyedit.api.toNotSavedFlipperFile
+import com.flipperdevices.keyedit.api.NotSavedFlipperKeyApi
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.metric.api.MetricApi
@@ -34,7 +34,8 @@ class NfcEditorViewModel @AssistedInject constructor(
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
     private val simpleKeyApi: SimpleKeyApi,
-    private val metricApi: MetricApi
+    private val metricApi: MetricApi,
+    private val notSavedFlipperKeyApi: NotSavedFlipperKeyApi
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "NfcEditorViewModel"
 
@@ -122,7 +123,7 @@ class NfcEditorViewModel @AssistedInject constructor(
                 localNfcEditorState
             )
             val notSavedKey = NotSavedFlipperKey(
-                mainFile = newFlipperKey.mainFile.toNotSavedFlipperFile(application),
+                mainFile = notSavedFlipperKeyApi.toNotSavedFlipperFile(newFlipperKey.mainFile),
                 additionalFiles = listOf(),
                 notes = newFlipperKey.notes
             )

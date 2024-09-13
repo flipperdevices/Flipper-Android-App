@@ -5,11 +5,11 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
@@ -29,7 +29,8 @@ private const val FLIPPER_DICT_PATH = "/ext/nfc/assets/mf_classic_dict.nfc"
 
 class ExistedKeysStorage(
     private val context: Context,
-    private val flipperStorageApi: FlipperStorageApi
+    private val flipperStorageApi: FlipperStorageApi,
+    private val storageProvider: FlipperStorageProvider
 ) : LogTagProvider {
     override val TAG = "ExistedKeysStorage"
     private val foundedInformationStateFlow = MutableStateFlow(FoundedInformation())
@@ -98,15 +99,15 @@ class ExistedKeysStorage(
 
     private suspend fun loadDict(path: String): List<String> {
         return try {
-            FlipperStorageProvider.useTemporaryFile(context) { tmpFile ->
+            storageProvider.useTemporaryFile() { tmpFile ->
                 flipperStorageApi.download(
                     pathOnFlipper = path,
-                    fileOnAndroid = tmpFile,
+                    fileOnAndroid = tmpFile.toFile(),
                     progressListener = {
                         info { "Download dict with progress $it" }
                     }
                 )
-                tmpFile.readLines()
+                tmpFile.toFile().readLines()
                     .filterNot { it.startsWith("/") || it.isEmpty() }
             }
         } catch (e: Throwable) {
