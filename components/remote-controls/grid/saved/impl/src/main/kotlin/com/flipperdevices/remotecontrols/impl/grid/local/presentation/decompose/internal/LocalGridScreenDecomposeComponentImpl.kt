@@ -1,8 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.internal
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.ComponentContext
@@ -15,7 +13,6 @@ import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.local.composable.LocalGridComposable
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
-import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.statusbar.ThemeStatusBarIconStyleProvider
 import dagger.assisted.Assisted
@@ -32,7 +29,6 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted onBack: DecomposeOnBackParameter,
     @Assisted private val onCallback: (Callback) -> Unit,
     localGridComponentFactory: LocalGridComponent.Factory,
-    private val shareBottomUiApi: ShareBottomUIApi,
     flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
     dataStore: DataStore<Settings>
 ) : LocalGridScreenDecomposeComponent(componentContext) {
@@ -53,28 +49,11 @@ class LocalGridScreenDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        shareBottomUiApi.ComposableShareBottomSheet(
-            provideFlipperKeyPath = { keyPath },
-            onSheetStateVisible = { isShown, onClose ->
-                val isBackPressHandled by isBackPressHandledFlow.collectAsState()
-                backCallback.isEnabled = isShown
-
-                LaunchedEffect(isBackPressHandled) {
-                    if (isBackPressHandled) {
-                        onClose()
-                        isBackPressHandledFlow.emit(false)
-                    }
-                }
-            },
-            componentContext = this
-        ) { onShare ->
-            LocalGridComposable(
-                localGridComponent = localGridComponent,
-                flipperDispatchDialogApi = flipperDispatchDialogApi,
-                onCallback = onCallback,
-                onShare = onShare
-            )
-        }
+        LocalGridComposable(
+            localGridComponent = localGridComponent,
+            flipperDispatchDialogApi = flipperDispatchDialogApi,
+            onCallback = onCallback,
+        )
     }
 
     override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {

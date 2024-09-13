@@ -35,7 +35,6 @@ fun LocalGridComposable(
     localGridComponent: LocalGridComponent,
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
     onCallback: (LocalGridScreenDecomposeComponent.Callback) -> Unit,
-    onShare: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -108,7 +107,6 @@ fun LocalGridComposable(
                             }
                         },
                         onFavorite = localGridComponent::toggleFavorite,
-                        onShare = onShare,
                         isEmulating = loadedModel.emulatedKey != null,
                         isConnected = loadedModel.isConnected,
                         isFavorite = loadedModel.isFavorite,

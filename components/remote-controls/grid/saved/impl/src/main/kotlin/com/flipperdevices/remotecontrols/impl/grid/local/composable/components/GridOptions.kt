@@ -39,7 +39,6 @@ import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 @Suppress("LongMethod")
 internal fun ComposableInfraredDropDown(
     onRename: () -> Unit,
-    onShare: () -> Unit,
     onDelete: () -> Unit,
     onFavorite: () -> Unit,
     isEmulating: Boolean,
@@ -105,15 +104,6 @@ internal fun ComposableInfraredDropDown(
                     onRename.invoke()
                 },
                 isActive = !isEmulating
-            )
-            Divider(modifier = Modifier.padding(horizontal = 8.dp))
-            ComposableInfraredDropDownItem(
-                text = stringResource(R.string.option_share),
-                painter = painterResource(DesignSystem.drawable.ic_upload),
-                onClick = {
-                    onChangeState.invoke()
-                    onShare.invoke()
-                }
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
