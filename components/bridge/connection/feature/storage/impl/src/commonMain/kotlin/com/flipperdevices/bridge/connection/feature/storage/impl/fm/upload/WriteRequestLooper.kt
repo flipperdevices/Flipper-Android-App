@@ -10,6 +10,7 @@ import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.WriteRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -54,7 +55,7 @@ internal class WriteRequestLooper(
         data: ByteString,
         hasNext: Boolean = true
     ): Unit = runBlocking {
-        val waiter = MutableSharedFlow<Unit>()
+        val waiter = Channel<Unit>()
         commands.emit(
             FlipperRequest(
                 data = Main(
@@ -66,10 +67,10 @@ internal class WriteRequestLooper(
                 ),
                 priority = priority,
                 onSendCallback = {
-                    waiter.emit(Unit)
+                    waiter.send(Unit)
                 }
             )
         )
-        waiter.first()
+        waiter.receive()
     }
 }
