@@ -6,4 +6,9 @@
     <string name="nfcattack_mifare_classic_title">MIFARE Classic</string>
     <string name="nfcattack_mifare_classic_mfkey32_title">Mfkey32 (Detect Reader)</string>
     <string name="nfcattack_mifare_classic_mfkey32_desc">Calculate keys from Detect Reader</string>
+    <string name="remtoecontrols_title">MIFARE Classic</string>
+    <string name="card_beta">Beta</string>
+    <string name="remotes_library_infrared_title">Infrared</string>
+    <string name="remotes_library_title">Remotes Library</string>
+    <string name="remotes_library_desc">Find remotes for your devices from a wide range of brands and models</string>
 </resources>

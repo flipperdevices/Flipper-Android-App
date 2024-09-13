@@ -94,12 +94,6 @@ private fun DebugCategoryItems(
     )
     GrayDivider()
     SwitchableElement(
-        titleId = R.string.debug_application_show_remote_controls,
-        state = settings.show_remote_controls,
-        onSwitchState = { onSwitch(DebugSettingSwitch.ShowRemoteControls, it) }
-    )
-    GrayDivider()
-    SwitchableElement(
         titleId = R.string.debug_selfupdater,
         state = settings.self_updater_debug,
         onSwitchState = { onSwitch(DebugSettingSwitch.SelfUpdaterDebug, it) }

@@ -43,6 +43,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Share infrared remote after rename
 - [FIX] Fix app bar colors on remote controls
 - [FIX] Fix remote controls texts and favorite dropdown
+- [FIX] Move remote controls into tools tab
 - [FIX] Fix crash when saving files on remote controls
 - [FIX] Remove share from remote controls
 - [CI] Fix merge-queue files diff
