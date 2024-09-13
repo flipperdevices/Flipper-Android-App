@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import okio.Buffer
 import okio.Source
 import okio.Timeout
+import kotlin.math.max
 
 private const val EOF: Byte = -1
 
@@ -23,13 +24,16 @@ class FFlipperSource(
         if (byteCount <= buffer.size) {
             return buffer.read(sink, byteCount)
         }
-        var readBytesCount = buffer.read(sink, byteCount)
+        var readBytesCount = 0L
+        if (buffer.size > 0L) {
+            readBytesCount = buffer.readAll(sink)
+        }
         while (readBytesCount < byteCount) {
             val newResponse = runBlocking { readerLoop.getNextBytePack() }
             val newPack = newResponse.storage_read_response?.file_?.data_
             requireNotNull(newPack) {
                 "Storage read response not found. " +
-                    "Response is: $newPack"
+                        "Response is: $newPack"
             }
             val remainingBytesToRead = byteCount - readBytesCount
 
@@ -40,20 +44,16 @@ class FFlipperSource(
                     remainingBytesToRead.toInt(),
                     packByteArray.size
                 )
-                sink.read(toRead)
+                sink.write(toRead)
+                readBytesCount += toRead.size
                 buffer.write(toBuffer)
             } else {
-                sink.read(newPack.toByteArray())
+                sink.write(newPack.toByteArray())
                 readBytesCount += newPack.size
             }
             if (newResponse.has_next.not()) {
-                if (readBytesCount > byteCount) {
-                    isFinished = true
-                    sink.read(byteArrayOf(EOF))
-                    return readBytesCount
-                } else {
-                    buffer.write(byteArrayOf(EOF))
-                }
+                isFinished = true
+                return readBytesCount
             }
         }
         return readBytesCount
