@@ -17,6 +17,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Add flipper action dialogs into remote control and move it into bottombar
 - [Feature] Add error display into remote controls screens
 - [Feature] Add new icons for remote-controls
+- [Feature] Add experimental option to enable remote controls
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
@@ -43,6 +44,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Share infrared remote after rename
 - [FIX] Fix app bar colors on remote controls
 - [FIX] Fix remote controls texts and favorite dropdown
+- [FIX] Move remote controls into tools tab
 - [FIX] Fix crash when saving files on remote controls
 - [FIX] Remove share from remote controls
 - [CI] Fix merge-queue files diff

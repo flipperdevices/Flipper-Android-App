@@ -1,4 +1,4 @@
-package com.flipperdevices.archive.category.viewmodels
+package com.flipperdevices.toolstab.impl.viewmodel
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.core.preference.pb.Settings
@@ -13,6 +13,6 @@ class DebugSettingsViewModel @Inject constructor(
     settingsDataStore: DataStore<Settings>
 ) : DecomposeViewModel() {
     val showRemoteControls: StateFlow<Boolean> = settingsDataStore.data
-        .map { it.show_remote_controls }
+        .map { it.show_remote_controls && it.enabled_experimental_functions }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 }

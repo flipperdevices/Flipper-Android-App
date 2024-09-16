@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.components.bottombar.api)
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.info.shared)
+    implementation(projects.components.remoteControls.main.api)
 
     // Compose
     implementation(libs.compose.ui)
