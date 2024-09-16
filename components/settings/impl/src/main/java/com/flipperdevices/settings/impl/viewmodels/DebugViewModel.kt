@@ -49,6 +49,7 @@ class DebugViewModel @Inject constructor(
             DebugSettingSwitch.SelfUpdaterDebug -> onSwitchSelfUpdaterDebug(flag)
             DebugSettingSwitch.SkipAutoSync -> onSwitchSkipAutoSync(flag)
             DebugSettingSwitch.SkipProvisioning -> onSwitchIgnoreSubGhzProvisioning(flag)
+            DebugSettingSwitch.ShowRemoteControls -> onShowRemoteControls(flag)
         }
     }
 
@@ -136,6 +137,16 @@ class DebugViewModel @Inject constructor(
                 )
             }
             askRestartApp()
+        }
+    }
+
+    private fun onShowRemoteControls(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.updateData {
+                it.copy(
+                    show_remote_controls = enabled
+                )
+            }
         }
     }
 

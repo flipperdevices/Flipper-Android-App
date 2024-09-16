@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalTypography
 
@@ -14,6 +15,7 @@ fun CategoryElement(
     state: Boolean,
     modifier: Modifier = Modifier,
     @StringRes descriptionId: Int? = null,
+    titleTextStyle: TextStyle = LocalTypography.current.buttonB16,
     onSwitchState: (Boolean) -> Unit
 ) {
     Row(
@@ -24,7 +26,7 @@ fun CategoryElement(
             Modifier.weight(weight = 1f),
             titleId,
             descriptionId,
-            titleTextStyle = LocalTypography.current.buttonB16
+            titleTextStyle = titleTextStyle
         )
         FlipperSwitch(state = state, onSwitchState = onSwitchState)
     }
