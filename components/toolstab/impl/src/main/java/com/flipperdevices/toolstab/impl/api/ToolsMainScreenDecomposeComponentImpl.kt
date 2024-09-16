@@ -37,7 +37,7 @@ class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
 
         ComposableHub(
             hasNotification = hasNotification,
-            showRemoteControls=showRemoteControls,
+            showRemoteControls = showRemoteControls,
             onOpenMfKey32 = {
                 navigation.pushToFront(ToolsNavigationConfig.MfKey32)
             },
