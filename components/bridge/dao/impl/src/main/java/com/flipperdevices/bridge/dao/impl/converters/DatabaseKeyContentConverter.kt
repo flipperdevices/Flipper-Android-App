@@ -7,17 +7,20 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.md5.MD5Converter
 import com.flipperdevices.bridge.dao.impl.md5.MD5FileProvider
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
-import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
+import okio.buffer
+import okio.source
 import javax.inject.Inject
 
 @ProvidedTypeConverter
 class DatabaseKeyContentConverter @Inject constructor(
     private val md5Converter: MD5Converter,
     private val mD5FileProvider: MD5FileProvider,
+    private val flipperStorageProvider: FlipperStorageProvider
 ) : LogTagProvider {
     override val TAG = "DatabaseKeyContentConverter"
 
@@ -44,16 +47,19 @@ class DatabaseKeyContentConverter @Inject constructor(
         val contentMd5 = md5Converter.convert(keyContent.openStream())
 
         val pathToFile = mD5FileProvider.getPathToFile(contentMd5, keyContent)
-        if (pathToFile.exists()) return pathToFile.absolutePath
+        if (flipperStorageProvider.fileSystem.exists(pathToFile)) {
+            return pathToFile.normalized().toString()
+        }
 
-        pathToFile.createNewFileWithMkDirs()
+        flipperStorageProvider.mkdirsParent(pathToFile)
         verbose { "Create new file with hash $contentMd5" }
-        pathToFile.outputStream().use { fileStream ->
-            keyContent.openStream().use { contentStream ->
-                contentStream.copyTo(fileStream)
+
+        flipperStorageProvider.fileSystem.sink(pathToFile).buffer().use { fileSink ->
+            keyContent.openStream().source().buffer().use { contentSource ->
+                fileSink.writeAll(contentSource)
             }
         }
 
-        return pathToFile.absolutePath
+        return pathToFile.normalized().toString()
     }
 }

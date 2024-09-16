@@ -83,7 +83,7 @@ class UpdaterTask(
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
-    ) = storageProvider.useTemporaryFolder() { tempFolder ->
+    ) = storageProvider.useTemporaryFolder { tempFolder ->
         info { "Start update with folder: $tempFolder" }
         val updateContent = input.content
 

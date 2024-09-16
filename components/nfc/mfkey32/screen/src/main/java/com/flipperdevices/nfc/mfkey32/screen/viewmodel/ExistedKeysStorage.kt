@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
-import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.protobuf.streamToCommandFlow
@@ -28,7 +27,6 @@ private const val FLIPPER_DICT_USER_PATH = "/ext/nfc/assets/mf_classic_dict_user
 private const val FLIPPER_DICT_PATH = "/ext/nfc/assets/mf_classic_dict.nfc"
 
 class ExistedKeysStorage(
-    private val context: Context,
     private val flipperStorageApi: FlipperStorageApi,
     private val storageProvider: FlipperStorageProvider
 ) : LogTagProvider {
@@ -99,7 +97,7 @@ class ExistedKeysStorage(
 
     private suspend fun loadDict(path: String): List<String> {
         return try {
-            storageProvider.useTemporaryFile() { tmpFile ->
+            storageProvider.useTemporaryFile { tmpFile ->
                 flipperStorageApi.download(
                     pathOnFlipper = path,
                     fileOnAndroid = tmpFile.toFile(),

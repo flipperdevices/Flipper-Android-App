@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
-import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -46,7 +45,6 @@ const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
 
 class MfKey32ViewModel @Inject constructor(
-    context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
     private val metricApi: MetricApi,
@@ -62,7 +60,7 @@ class MfKey32ViewModel @Inject constructor(
         MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
-    private val existedKeysStorage = ExistedKeysStorage(context, flipperStorageApi, storageProvider)
+    private val existedKeysStorage = ExistedKeysStorage(flipperStorageApi, storageProvider)
     private val fileWithNonce by lazy {
         storageProvider.getTemporaryFile().toFile()
     }

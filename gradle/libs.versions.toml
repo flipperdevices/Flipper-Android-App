@@ -284,6 +284,7 @@ essenty-lifecycle-coroutines = { module = "com.arkivanov.essenty:lifecycle-corou
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+okio-fake = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
 
 [bundles]
 decompose = ["decompose", "decompose-jetpack"]

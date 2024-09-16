@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.dao.network.api
 
-import android.content.Context
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider

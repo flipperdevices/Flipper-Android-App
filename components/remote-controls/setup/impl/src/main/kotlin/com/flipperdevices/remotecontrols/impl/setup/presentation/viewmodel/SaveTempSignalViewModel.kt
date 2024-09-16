@@ -1,6 +1,5 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.core.FlipperStorageProvider
@@ -21,8 +20,7 @@ private const val EXT_PATH = "/ext"
 @ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
 class SaveTempSignalViewModel @Inject constructor(
     private val flipperStorageApi: FlipperStorageApi,
-    private val storageProvider: FlipperStorageProvider,
-    private val context: Context
+    private val storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(),
     LogTagProvider,
     SaveTempSignalApi {
@@ -39,7 +37,7 @@ class SaveTempSignalViewModel @Inject constructor(
             _state.emit(SaveTempSignalApi.State.Uploading(0f))
             launchWithLock(mutex, viewModelScope, "load") {
                 filesDesc.forEachIndexed { index, fileDesc ->
-                    storageProvider.useTemporaryFile() { deviceFile ->
+                    storageProvider.useTemporaryFile { deviceFile ->
                         deviceFile.toFile().writeText(fileDesc.textContent)
                         val fAbsolutePath = FlipperFilePath(
                             folder = fileDesc.extFolderPath,

@@ -28,7 +28,6 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.scrollbar)
 
-
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
 

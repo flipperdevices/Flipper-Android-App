@@ -115,7 +115,6 @@ include(
     ":components:core:atomicfile",
     ":components:core:storage",
 
-
     ":components:bottombar:api",
     ":components:bottombar:impl",
 

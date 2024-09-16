@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.downloader.api
 
-import android.content.Context
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -123,7 +122,7 @@ class DownloaderApiImpl @Inject constructor(
     ): Flow<DownloadProgress> = channelFlow {
         info { "Request download $distributionFile" }
         if (decompress) {
-            storageProvider.useTemporaryFile() { tempFile ->
+            storageProvider.useTemporaryFile { tempFile ->
                 downloadAndUnpackDelegateApi.download(
                     distributionFile,
                     tempFile.toFile()

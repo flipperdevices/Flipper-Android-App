@@ -1,6 +1,5 @@
 package com.flipperdevices.share.cryptostorage
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.FlipperStorageProvider
@@ -37,7 +36,6 @@ private const val STORAGE_NAME = "hakuna-matata"
 class CryptoStorageApiImpl @Inject constructor(
     private val keyParser: KeyParser,
     private val client: HttpClient,
-    private val context: Context,
     private val storageProvider: FlipperStorageProvider
 ) : CryptoStorageApi {
     @OptIn(InternalAPI::class)

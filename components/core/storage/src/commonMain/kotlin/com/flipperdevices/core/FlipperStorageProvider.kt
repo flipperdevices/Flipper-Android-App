@@ -7,7 +7,7 @@ private const val KEYS_DIR = "keysfiles"
 
 abstract class FlipperStorageProvider {
     abstract val fileSystem: FileSystem
-    internal abstract val tmpPath: Path
+    protected abstract val tmpPath: Path
     abstract val rootPath: Path
 
     fun getTemporaryFile(): Path {
@@ -54,4 +54,8 @@ abstract class FlipperStorageProvider {
     }
 
     fun getKeyFolder() = rootPath.resolve(KEYS_DIR)
+
+    fun mkdirsParent(path: Path) {
+        path.parent?.let { fileSystem.createDirectories(it) }
+    }
 }

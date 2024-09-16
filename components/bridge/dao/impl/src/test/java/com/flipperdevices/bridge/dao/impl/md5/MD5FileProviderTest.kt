@@ -3,44 +3,35 @@ package com.flipperdevices.bridge.dao.impl.md5
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.bridge.dao.impl.comparator.DefaultFileComparator
-import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
-import io.mockk.every
+import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
+import com.flipperdevices.core.FlipperStorageProvider
+import com.flipperdevices.core.test.FlipperStorageProviderTestRule
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
-import java.io.File
 
 @RunWith(AndroidJUnit4::class)
 class MD5FileProviderTest {
     private lateinit var context: Context
 
     @get:Rule
-    val folder: TemporaryFolder = TemporaryFolder()
-    private lateinit var tempFolder: File
+    val storageProviderRule = FlipperStorageProviderTestRule()
+    private lateinit var storageProvider: FlipperStorageProvider
 
     @Before
     fun setUp() {
         context = mockk()
-        tempFolder = folder.newFolder()
-        every { context.filesDir } returns tempFolder
-    }
-
-    @After
-    fun onStop() {
-        tempFolder.delete()
+        storageProvider = storageProviderRule.flipperStorageProvider
     }
 
     private fun createMD5FileProvider(): MD5FileProviderImpl {
         return MD5FileProviderImpl(
-            context = context,
-            fileComparator = DefaultFileComparator()
+            fileComparator = FileComparator(storageProvider),
+            storageProvider = storageProvider
         )
     }
 
@@ -53,15 +44,14 @@ class MD5FileProviderTest {
                 contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFileWithMkDirs()
-            file1.writeBytes(emptyKeyContent.bytes)
-            val path1 = file1.path
+            storageProvider.mkdirsParent(file1)
+            storageProvider.fileSystem.write(file1) { write(emptyKeyContent.bytes) }
 
-            val path2 = md5FileProvider.getPathToFile(
+            val actualPath = md5FileProvider.getPathToFile(
                 contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
-            ).path
-            Assert.assertEquals(path1, path2)
+            )
+            Assert.assertEquals(file1, actualPath)
         }
     }
 
@@ -74,15 +64,14 @@ class MD5FileProviderTest {
                 contentMd5 = "STUB_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFileWithMkDirs()
-            file1.writeBytes(emptyKeyContent.bytes)
-            val path1 = file1.path
+            storageProvider.mkdirsParent(file1)
+            storageProvider.fileSystem.write(file1) { write(emptyKeyContent.bytes) }
 
-            val path2 = md5FileProvider.getPathToFile(
+            val actual = md5FileProvider.getPathToFile(
                 contentMd5 = "STUB_MD5",
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
-            ).path
-            Assert.assertNotEquals(path1, path2)
+            )
+            Assert.assertNotEquals(file1, actual)
         }
     }
 
@@ -95,15 +84,14 @@ class MD5FileProviderTest {
                 contentMd5 = "FIRST_MD5",
                 keyContent = emptyKeyContent
             )
-            file1.createNewFileWithMkDirs()
-            file1.writeBytes(emptyKeyContent.bytes)
-            val path1 = file1.path
+            storageProvider.mkdirsParent(file1)
+            storageProvider.fileSystem.write(file1) { write(emptyKeyContent.bytes) }
 
-            val path2 = md5FileProvider.getPathToFile(
+            val actual = md5FileProvider.getPathToFile(
                 contentMd5 = "SECOND_MD5",
                 keyContent = FlipperKeyContent.RawData(byteArrayOf(1))
-            ).path
-            Assert.assertNotEquals(path1, path2)
+            )
+            Assert.assertNotEquals(file1, actual)
         }
     }
 }

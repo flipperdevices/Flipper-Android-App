@@ -1,6 +1,5 @@
 package com.flipperdevices.nfceditor.impl.viewmodel
 
-import android.app.Application
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
@@ -29,7 +28,6 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 class NfcEditorViewModel @AssistedInject constructor(
     @Assisted private val flipperKeyPath: FlipperKeyPath,
-    private val application: Application,
     private val keyParser: KeyParser,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
