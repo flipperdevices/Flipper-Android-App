@@ -2,6 +2,7 @@ package com.flipperdevices.core.preference
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.internal.NewPairSettingsSerializer
 import com.flipperdevices.core.preference.internal.PairSettingsSerializer
@@ -15,7 +16,6 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.plus
-import java.io.File
 import javax.inject.Singleton
 
 @Module
@@ -23,51 +23,56 @@ import javax.inject.Singleton
 class FlipperSharedPreferenceModule {
     @Provides
     @Singleton
-    fun provideDataStoreSettings(scope: CoroutineScope): DataStore<Settings> {
+    fun provideDataStoreSettings(
+        scope: CoroutineScope,
+        storageProvider: FlipperStorageProvider
+    ): DataStore<Settings> {
         return DataStoreFactory.create(
             serializer = SettingsSerializer,
             corruptionHandler = null,
             migrations = emptyList(),
             scope = scope + Dispatchers.IO,
             produceFile = {
-                File(
-                    FlipperStorageProvider.getAppDir(),
-                    SettingsFilePaths.DATASTORE_FILENAME_SETTINGS
-                )
+                storageProvider.rootPath
+                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_SETTINGS).toFile()
             }
         )
     }
 
     @Provides
     @Singleton
-    fun provideDataStorePairSettings(scope: CoroutineScope): DataStore<PairSettings> {
+    fun provideDataStorePairSettings(
+        scope: CoroutineScope,
+        storageProvider: FlipperStorageProvider
+    ): DataStore<PairSettings> {
         return DataStoreFactory.create(
             serializer = PairSettingsSerializer,
             corruptionHandler = null,
             migrations = emptyList(),
             scope = scope + Dispatchers.IO,
             produceFile = {
-                File(
-                    FlipperStorageProvider.getAppDir(),
-                    SettingsFilePaths.DATASTORE_FILENAME_SETTINGS
-                )
+                storageProvider.rootPath
+                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_SETTINGS)
+                    .toFile()
             }
         )
     }
 
     @Provides
     @Singleton
-    fun provideDataStoreNewPairSetting(scope: CoroutineScope): DataStore<NewPairSettings> {
+    fun provideDataStoreNewPairSetting(
+        scope: CoroutineScope,
+        storageProvider: FlipperStorageProvider
+    ): DataStore<NewPairSettings> {
         return DataStoreFactory.create(
             serializer = NewPairSettingsSerializer,
             corruptionHandler = null,
             migrations = emptyList(),
             scope = scope + Dispatchers.IO,
             produceFile = {
-                File(
-                    FlipperStorageProvider.getAppDir(),
-                    SettingsFilePaths.DATASTORE_FILENAME_SETTINGS
-                )
+                storageProvider.rootPath
+                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_SETTINGS)
+                    .toFile()
             }
         )
     }

@@ -25,6 +25,8 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Refactor] Migrate :bridge:connection:* to KMP
 - [Refactor] Migrate :bridge:synchronization, :core:ktx and :core:theme to KMP
 - [Refactor] Remove ktorfit
+- [Refactor] Add `core:storage`
+- [Refactor] Add `core:atomicfile`
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint

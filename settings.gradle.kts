@@ -112,6 +112,8 @@ include(
     ":components:core:permission:api",
     ":components:core:permission:impl",
     ":components:core:kmpparcelize",
+    ":components:core:atomicfile",
+    ":components:core:storage",
 
     ":components:bottombar:api",
     ":components:bottombar:impl",

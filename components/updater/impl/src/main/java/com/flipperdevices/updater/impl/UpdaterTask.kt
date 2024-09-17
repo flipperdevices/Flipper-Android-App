@@ -5,10 +5,10 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.faphub.installedtab.api.FapNeedUpdatePopUpHelper
 import com.flipperdevices.updater.impl.model.IntFlashFullException
@@ -43,7 +43,8 @@ class UpdaterTask(
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
     private val flipperStorageApi: FlipperStorageApi,
-    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper
+    private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper,
+    private val storageProvider: FlipperStorageProvider
 ) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
     LogTagProvider {
     override val TAG = "UpdaterTask"
@@ -82,11 +83,11 @@ class UpdaterTask(
         serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
-    ) = FlipperStorageProvider.useTemporaryFolder(context) { tempFolder ->
-        info { "Start update with folder: ${tempFolder.absolutePath}" }
+    ) = storageProvider.useTemporaryFolder { tempFolder ->
+        info { "Start update with folder: $tempFolder" }
         val updateContent = input.content
 
-        val updaterFolder = File(tempFolder, updateContent.folderName())
+        val updaterFolder = File(tempFolder.toFile(), updateContent.folderName())
         try {
             downloadFirmwareLocal(input.content, updaterFolder, stateListener)
         } catch (e: Throwable) {

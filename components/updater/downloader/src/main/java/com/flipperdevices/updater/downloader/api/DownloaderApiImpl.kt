@@ -1,11 +1,10 @@
 package com.flipperdevices.updater.downloader.api
 
-import android.content.Context
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.model.ArtifactType
@@ -34,9 +33,9 @@ private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/b
 
 @ContributesBinding(AppGraph::class, DownloaderApi::class)
 class DownloaderApiImpl @Inject constructor(
-    private val context: Context,
     private val client: HttpClient,
-    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi
+    private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi,
+    private val storageProvider: FlipperStorageProvider
 ) : DownloaderApi, LogTagProvider {
     override val TAG = "DownloaderApi"
 
@@ -123,17 +122,17 @@ class DownloaderApiImpl @Inject constructor(
     ): Flow<DownloadProgress> = channelFlow {
         info { "Request download $distributionFile" }
         if (decompress) {
-            FlipperStorageProvider.useTemporaryFile(context) { tempFile ->
+            storageProvider.useTemporaryFile { tempFile ->
                 downloadAndUnpackDelegateApi.download(
                     distributionFile,
-                    tempFile
+                    tempFile.toFile()
                 ) { processedBytes, totalBytes ->
                     require(totalBytes > 0) { "Server send total bytes less 0" }
                     send(DownloadProgress.InProgress(processedBytes, totalBytes))
                 }
-                info { "File downloaded in ${tempFile.absolutePath}" }
+                info { "File downloaded in $tempFile" }
 
-                downloadAndUnpackDelegateApi.unpack(tempFile, target)
+                downloadAndUnpackDelegateApi.unpack(tempFile.toFile(), target)
                 info {
                     "Unpack finished in ${target.absolutePath} ${target.listFiles()?.size} files"
                 }

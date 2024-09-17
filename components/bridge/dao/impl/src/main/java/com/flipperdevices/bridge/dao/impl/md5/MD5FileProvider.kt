@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.dao.impl.md5
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import java.io.File
+import okio.Path
 
 interface MD5FileProvider {
     /**
@@ -11,5 +11,5 @@ interface MD5FileProvider {
     suspend fun getPathToFile(
         contentMd5: String,
         keyContent: FlipperKeyContent
-    ): File
+    ): Path
 }

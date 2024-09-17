@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
-import com.flipperdevices.core.preference.FlipperStorageProvider
+import com.flipperdevices.core.storage.AndroidFlipperStorageProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.test.runTest
@@ -114,16 +114,16 @@ class ShouldSynchronizeHelperTest {
 
     @Test
     fun `not edit content of file, just move`() = runTest {
-        FlipperStorageProvider
-            .useTemporaryFile(ApplicationProvider.getApplicationContext()) { tmpFile ->
-                tmpFile.writeText("Hello, world")
+        AndroidFlipperStorageProvider(ApplicationProvider.getApplicationContext())
+            .useTemporaryFile { tmpFile ->
+                tmpFile.toFile().writeText("Hello, world")
                 val newKey = EXAMPLE_FLIPPER_KEY.copy(
                     mainFile = FlipperFile(
                         path = FlipperFilePath(
                             folder = "test",
                             nameWithExtension = "key.nfc"
                         ),
-                        content = FlipperKeyContent.InternalFile(tmpFile.absolutePath)
+                        content = FlipperKeyContent.InternalFile(tmpFile.toString())
                     )
                 )
 
@@ -261,9 +261,9 @@ class ShouldSynchronizeHelperTest {
 
     @Test
     fun `not edit additional file content, just move`() = runTest {
-        FlipperStorageProvider
-            .useTemporaryFile(ApplicationProvider.getApplicationContext()) { tmpFile ->
-                tmpFile.writeText("Hello from additional file")
+        AndroidFlipperStorageProvider(ApplicationProvider.getApplicationContext())
+            .useTemporaryFile { tmpFile ->
+                tmpFile.toFile().writeText("Hello from additional file")
                 val newKey = EXAMPLE_FLIPPER_KEY.copy(
                     additionalFiles = persistentListOf(
                         FlipperFile(
@@ -271,7 +271,7 @@ class ShouldSynchronizeHelperTest {
                                 folder = "test",
                                 nameWithExtension = "additional_file.nfc"
                             ),
-                            content = FlipperKeyContent.InternalFile(tmpFile.absolutePath)
+                            content = FlipperKeyContent.InternalFile(tmpFile.toString())
                         )
                     )
                 )

@@ -1,10 +1,9 @@
 package com.flipperdevices.share.cryptostorage
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.DecryptHelper
@@ -37,7 +36,7 @@ private const val STORAGE_NAME = "hakuna-matata"
 class CryptoStorageApiImpl @Inject constructor(
     private val keyParser: KeyParser,
     private val client: HttpClient,
-    private val context: Context
+    private val storageProvider: FlipperStorageProvider
 ) : CryptoStorageApi {
     @OptIn(InternalAPI::class)
     override suspend fun upload(
@@ -80,7 +79,7 @@ class CryptoStorageApiImpl @Inject constructor(
         name: String,
     ): Result<FlipperKeyContent> {
         return runCatching {
-            val tempFile = FlipperStorageProvider.getTemporaryFile(context)
+            val tempFile = storageProvider.getTemporaryFile().toFile()
             val decryptHelper = DecryptHelper()
 
             val response = client.get(urlString = "${STORAGE_URL}$id/$STORAGE_NAME")

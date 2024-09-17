@@ -6,10 +6,14 @@ plugins {
 android.namespace = "com.flipperdevices.core.test"
 
 commonDependencies {
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.storage)
+
     implementation(libs.kotlin.coroutines)
     implementation(libs.mockk)
-
-    implementation(projects.components.core.ui.lifecycle)
+    implementation(libs.okio)
+    implementation(libs.okio.fake)
+    implementation(libs.junit)
 }
 
 androidDependencies {

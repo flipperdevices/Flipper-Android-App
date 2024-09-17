@@ -17,12 +17,15 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.storage)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.ksp)
 
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.okio)
+    implementation(libs.okio.fake)
 
     // Testing
     testImplementation(projects.components.core.test)
