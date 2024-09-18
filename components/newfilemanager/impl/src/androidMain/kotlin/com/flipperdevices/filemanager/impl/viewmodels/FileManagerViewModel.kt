@@ -1,52 +1,53 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
+import com.flipperdevices.core.ktx.jre.toThrowableFlow
+import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
+import com.flipperdevices.filemanager.impl.model.EditorState
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.Storage
-import com.flipperdevices.protobuf.storage.deleteRequest
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.listRequest
-import com.flipperdevices.protobuf.storage.mkdirRequest
-import com.flipperdevices.protobuf.storage.writeRequest
-import com.google.protobuf.ByteString
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import java.io.File
 
 class FileManagerViewModel @AssistedInject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    @Assisted
-    private val directory: String
+    private val featureProvider: FFeatureProvider, @Assisted private val directory: String
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FileManagerViewModel"
 
     private val mutex = Mutex()
-    private val fileManagerStateFlow =
-        MutableStateFlow(FileManagerState(currentPath = directory))
+    private val fileManagerStateFlow = MutableStateFlow<FileManagerState>(
+        FileManagerState.Ready(
+            currentPath = directory, inProgress = true
+        )
+    )
 
     init {
-        serviceProvider.provideServiceApi(this) {
-            launchWithLock(mutex, viewModelScope, "first_invalidate") {
-                invalidate(it.requestApi)
+        viewModelScope.launch {
+            featureProvider.get<FStorageFeatureApi>().collectLatest {
+                invalidate(it)
             }
         }
     }
@@ -54,10 +55,28 @@ class FileManagerViewModel @AssistedInject constructor(
     fun getFileManagerState(): StateFlow<FileManagerState> = fileManagerStateFlow
 
     fun onCreateAction(
-        createFileManagerAction: CreateFileManagerAction,
-        name: String
+        createFileManagerAction: CreateFileManagerAction, name: String
     ) {
-        fileManagerStateFlow.update { FileManagerState(currentPath = directory) }
+        fileManagerStateFlow.update {
+            FileManagerState.Ready(
+                currentPath = directory,
+                inProgress = true
+            )
+        }
+
+        launchWithLock(mutex, viewModelScope, "create") {
+            fileManagerStateFlow.emit(
+                FileManagerState.Ready(
+                    currentPath = directory, inProgress = true
+                )
+            )
+            val storageApi = featureProvider.getSync<FStorageFeatureApi>()
+            if (storageApi == null) {
+                fileManagerStateFlow.emit(FileManagerState.Error)
+                return@launchWithLock
+            }
+
+        }
         serviceProvider.provideServiceApi(this) { serviceApi ->
             launchWithLock(mutex, viewModelScope, "create") {
                 fileManagerStateFlow.emit(FileManagerState(currentPath = directory))
@@ -70,69 +89,71 @@ class FileManagerViewModel @AssistedInject constructor(
     }
 
     fun onDeleteAction(fileItem: FileItem) {
-        fileManagerStateFlow.update { FileManagerState(currentPath = directory) }
-        serviceProvider.provideServiceApi(this) { serviceApi ->
-            launchWithLock(mutex, viewModelScope, "delete") {
-                fileManagerStateFlow.emit(FileManagerState(currentPath = directory))
-                serviceApi.requestApi.request(
-                    main {
-                        storageDeleteRequest = deleteRequest {
-                            path = fileItem.path
-                            recursive = true
-                        }
-                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-                ).collect()
-                invalidate(serviceApi.requestApi)
-            }
-        }
-    }
+        fileManagerStateFlow.value = FileManagerState.Ready(
+            currentPath = directory, inProgress = true
+        )
 
-    private suspend fun invalidate(requestApi: FlipperRequestApi) {
-        requestApi.request(
-            main {
-                storageListRequest = listRequest {
-                    path = directory
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).map {
-            info { "FileManagerFragment#$directory" }
-            it.storageListResponse.fileList.map { file ->
-                FileItem(
-                    fileName = file.name,
-                    isDirectory = file.type == Storage.File.FileType.DIR,
-                    path = File(directory, file.name).absolutePath,
-                    size = file.size.toLong()
+        launchWithLock(mutex, viewModelScope, "delete") {
+            fileManagerStateFlow.emit(
+                FileManagerState.Ready(
+                    currentPath = directory, inProgress = true
                 )
+            )
+            val storageApi = featureProvider.getSync<FStorageFeatureApi>()
+            if (storageApi == null) {
+                fileManagerStateFlow.emit(FileManagerState.Error)
+                return@launchWithLock
             }
-        }.collect { fileList ->
-            fileManagerStateFlow.update { oldState ->
-                val newSet = oldState.filesInDirectory.plus(fileList)
-                oldState.copy(filesInDirectory = newSet.toImmutableSet())
-            }
-        }
-        fileManagerStateFlow.update {
-            it.copy(inProgress = false)
+            storageApi.deleteApi().delete(fileItem.path, recursive = true)
+                .onSuccess { listFiles(storageApi.listingApi()) }
+                .onFailure { fileManagerStateFlow.emit(FileManagerState.Error) }
         }
     }
 
-    private fun getCreateRequest(
-        createFileManagerAction: CreateFileManagerAction,
-        name: String
-    ): FlipperRequest {
-        val absolutePath = File(directory, name).absolutePath
-        return main {
-            hasNext = false
-            when (createFileManagerAction) {
-                CreateFileManagerAction.FILE -> storageWriteRequest = writeRequest {
-                    path = absolutePath
-                    file = file { data = ByteString.EMPTY }
-                }
+    private suspend fun invalidate(
+        featureStatus: FFeatureStatus<FStorageFeatureApi>
+    ) = withLock(mutex, "invalidate") {
+        when (featureStatus) {
+            FFeatureStatus.NotFound, FFeatureStatus.Unsupported -> fileManagerStateFlow.emit(
+                FileManagerState.Error
+            )
 
-                CreateFileManagerAction.FOLDER -> storageMkdirRequest = mkdirRequest {
-                    path = absolutePath
-                }
+            FFeatureStatus.Retrieving -> fileManagerStateFlow.emit(
+                FileManagerState.Ready(
+                    currentPath = directory, inProgress = true
+                )
+            )
+
+            is FFeatureStatus.Supported -> listFiles(featureStatus.featureApi.listingApi())
+        }
+    }
+
+    private suspend fun listFiles(
+        listingApi: FListingStorageApi
+    ) {
+        listingApi.lsFlow(directory).toThrowableFlow().catch {
+            fileManagerStateFlow.emit(FileManagerState.Error)
+        }.collect { listingItems ->
+            fileManagerStateFlow.update { oldState ->
+                if (oldState is FileManagerState.Ready) {
+                    oldState.copy(
+                        filesInDirectory = oldState.filesInDirectory.plus(listingItems.map { item ->
+                            FileItem(
+                                directory, item
+                            )
+                        }).toPersistentList()
+                    )
+                } else oldState
             }
-        }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+        }
+
+        fileManagerStateFlow.update { oldState ->
+            if (oldState is FileManagerState.Ready) {
+                oldState.copy(
+                    inProgress = false
+                )
+            } else oldState
+        }
     }
 
     @AssistedFactory

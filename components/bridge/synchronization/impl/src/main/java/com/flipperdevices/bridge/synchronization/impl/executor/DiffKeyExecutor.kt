@@ -47,7 +47,7 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
             try {
                 info { "Execute $diff for $source to $target" }
                 execute(source, target, diff)
-                tracker.report(index.toLong(), diffs.size.toLong())
+                tracker.onProgress(index.toLong(), diffs.size.toLong())
                 return@mapIndexedNotNull diff
             } catch (executeError: Exception) {
                 error(executeError) { "While apply diff $diff we have error" }

@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.connection.feature.storage.impl.utils.copyWithP
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.StatRequest
@@ -29,18 +30,20 @@ class FFileDownloadApiImpl(
     override suspend fun download(
         pathOnFlipper: String,
         fileOnAndroid: Path,
-        progressListener: ProgressListener?,
-        priority: StorageRequestPriority
+        priority: StorageRequestPriority,
+        progressListener: FixedProgressListener?
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         info { "Start download file $pathOnFlipper to $fileOnAndroid" }
 
-        fileSystem.sink(fileOnAndroid, mustCreate = true).buffer().use { sink ->
-            source(pathOnFlipper, priority).use { source ->
-                source.copyWithProgress(
-                    sink,
-                    progressListener,
-                    sourceLength = { getTotalSize(pathOnFlipper) }
-                )
+        runCatching {
+            fileSystem.sink(fileOnAndroid, mustCreate = true).buffer().use { sink ->
+                source(pathOnFlipper, priority).use { source ->
+                    source.copyWithProgress(
+                        sink,
+                        progressListener,
+                        sourceLength = { getTotalSize(pathOnFlipper) }
+                    )
+                }
             }
         }
     }
@@ -69,7 +72,7 @@ class FFileDownloadApiImpl(
         if (listingList.size > 1) {
             error(
                 "Listing request return more than one response. " +
-                    "Are you sure that you want download a file, not a directory?"
+                        "Are you sure that you want download a file, not a directory?"
             )
         }
 

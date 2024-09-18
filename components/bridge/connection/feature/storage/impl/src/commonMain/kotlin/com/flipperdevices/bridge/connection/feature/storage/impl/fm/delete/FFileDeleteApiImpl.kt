@@ -15,14 +15,14 @@ class FFileDeleteApiImpl(
         path: String,
         recursive: Boolean,
         priority: StorageRequestPriority
-    ) {
-        rpcApi.requestOnce(
+    ): Result<Unit> {
+        return rpcApi.requestOnce(
             Main(
                 storage_delete_request = DeleteRequest(
                     path = path,
                     recursive = recursive
                 )
             ).wrapToRequest(priority.toRpc())
-        ).getOrThrow()
+        ).map { }
     }
 }

@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.storage.api.fm
 
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
+import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.ProgressListener
 import okio.Path
 import okio.Source
@@ -10,8 +11,8 @@ interface FFileDownloadApi {
         pathOnFlipper: String,
         fileOnAndroid: Path,
         priority: StorageRequestPriority = StorageRequestPriority.DEFAULT,
-        progressListener: ProgressListener? = null
-    )
+        progressListener: FixedProgressListener? = null
+    ): Result<Unit>
 
     fun source(
         pathOnFlipper: String,

@@ -1,6 +1,9 @@
 package com.flipperdevices.filemanager.impl.viewmodels
 
 import android.app.Application
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -23,13 +26,14 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ShareViewModel @AssistedInject constructor(
-    flipperServiceProvider: FlipperServiceProvider,
+    private val featureProvider: FFeatureProvider,
     @Assisted private val shareFile: ShareFile,
     private val application: Application
 ) : DecomposeViewModel(),
@@ -53,12 +57,17 @@ class ShareViewModel @AssistedInject constructor(
     )
 
     init {
-        flipperServiceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
+        viewModelScope.launch {
+            featureProvider.get<FStorageFeatureApi>()
+                .collectLatest {
+                    onFeatureStateChanged(it)
+                }
+        }
     }
 
     fun getShareState(): StateFlow<ShareState> = shareStateFlow
 
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
+    override fun onFeatureStateChanged(serviceApi: FlipperServiceApi) {
         viewModelScope.launch {
             startDownload(serviceApi)
         }

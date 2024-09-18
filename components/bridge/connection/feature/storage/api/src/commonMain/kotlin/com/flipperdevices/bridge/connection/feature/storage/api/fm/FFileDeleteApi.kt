@@ -7,5 +7,5 @@ interface FFileDeleteApi {
         path: String,
         recursive: Boolean = false,
         priority: StorageRequestPriority = StorageRequestPriority.DEFAULT
-    )
+    ): Result<Unit>
 }

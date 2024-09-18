@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.feature.storage.impl.utils.copyWithP
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.ProgressListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
@@ -25,18 +26,21 @@ class FFileUploadApiImpl(
     override suspend fun upload(
         pathOnFlipper: String,
         fileOnAndroid: Path,
-        progressListener: ProgressListener?,
-        priority: StorageRequestPriority
-    ): Unit = withContext(FlipperDispatchers.workStealingDispatcher) {
-        fileSystem.source(fileOnAndroid).buffer().use { source ->
-            sink(pathOnFlipper, priority).use { sink ->
-                source.copyWithProgress(
-                    sink,
-                    progressListener,
-                    sourceLength = {
-                        fileSystem.metadata(fileOnAndroid).size
-                    }
-                )
+        priority: StorageRequestPriority,
+        progressListener: FixedProgressListener?
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
+
+        runCatching {
+            fileSystem.source(fileOnAndroid).buffer().use { source ->
+                sink(pathOnFlipper, priority).use { sink ->
+                    source.copyWithProgress(
+                        sink,
+                        progressListener,
+                        sourceLength = {
+                            fileSystem.metadata(fileOnAndroid).size
+                        }
+                    )
+                }
             }
         }
     }

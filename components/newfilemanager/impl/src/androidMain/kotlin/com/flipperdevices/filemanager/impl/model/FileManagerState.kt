@@ -1,10 +1,17 @@
 package com.flipperdevices.filemanager.impl.model
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 
-data class FileManagerState(
-    val currentPath: String,
-    val filesInDirectory: ImmutableSet<FileItem> = persistentSetOf(),
-    val inProgress: Boolean = true
-)
+sealed interface FileManagerState {
+    data class Ready(
+        val currentPath: String,
+        val filesInDirectory: ImmutableList<FileItem> = persistentListOf(),
+        val inProgress: Boolean
+    ) : FileManagerState
+
+    data object Error : FileManagerState
+
+}

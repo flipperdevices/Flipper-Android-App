@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.protobuf.Main
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface FRpcFeatureApi : FDeviceFeatureApi {
     /**
@@ -12,9 +13,16 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
     fun notificationFlow(): Flow<Main>
 
     /**
-     * Send request and wait answer from them
+     * Send request and wait answer from them.
+     *
+     * You can use the extension Flow<Result<T>>.toThrowableFlow(): Flow<T> for more convenient error catching
      */
-    fun request(command: FlipperRequest): Flow<Main>
+    fun request(command: FlipperRequest): Flow<Result<Main>>
+
+    /**
+     * Send request and wait single answer
+     */
+    suspend fun requestOnce(command: FlipperRequest): Result<Main>
 
     /**
      * Send batch of request in flipper and wait single answer
@@ -22,10 +30,11 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
     suspend fun request(
         commandFlow: Flow<FlipperRequest>,
         onCancel: suspend (Int) -> Unit = {}
-    ): Main
+    ): Result<Main>
 
     /**
      * Send batch request without waiting response
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
 }
+

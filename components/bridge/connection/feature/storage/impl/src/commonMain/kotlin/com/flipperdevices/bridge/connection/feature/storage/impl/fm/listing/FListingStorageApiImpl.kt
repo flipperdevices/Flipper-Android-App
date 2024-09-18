@@ -1,20 +1,38 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing
 
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
-import com.flipperdevices.bridge.connection.feature.storage.api.fm.NameWithHash
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItemWithHash
+import com.flipperdevices.core.ktx.jre.flattenCatching
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.flow.toList
 
 class FListingStorageApiImpl(
     private val listingDelegate: FlipperListingDelegate,
 ) : FListingStorageApi {
-    override suspend fun listingDirectory(pathOnFlipper: String): List<String> {
-        return listingDelegate.listing(
-            pathOnFlipper = pathOnFlipper
-        )
-    }
+    override suspend fun ls(
+        pathOnFlipper: String
+    ) = listingDelegate.listing(
+        pathOnFlipper = pathOnFlipper
+    ).toList().flattenCatching()
 
-    override suspend fun listingDirectoryWithMd5(pathOnFlipper: String): List<NameWithHash> {
-        return listingDelegate.listingWithMd5(
-            pathOnFlipper = pathOnFlipper
-        )
-    }
+    override suspend fun lsWithMd5(
+        pathOnFlipper: String
+    ) = listingDelegate.listingWithMd5(
+        pathOnFlipper = pathOnFlipper
+    ).toList().flattenCatching()
+
+    override suspend fun lsFlow(
+        pathOnFlipper: String
+    ) = listingDelegate.listing(
+        pathOnFlipper = pathOnFlipper
+    )
+
+    override suspend fun lsWithMd5Flow(
+        pathOnFlipper: String
+    ) = listingDelegate.listingWithMd5(
+        pathOnFlipper = pathOnFlipper
+    )
 }
