@@ -22,6 +22,7 @@ androidDependencies {
     implementation(projects.components.core.share)
 
     implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.bridge.connection.feature.serialspeed.api)

@@ -6,10 +6,12 @@ import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
@@ -30,10 +32,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import okio.ByteString
+import okio.buffer
+import kotlin.io.path.Path
 import java.io.File
 
 class FileManagerViewModel @AssistedInject constructor(
-    private val featureProvider: FFeatureProvider, @Assisted private val directory: String
+    private val featureProvider: FFeatureProvider,
+    @Assisted private val directory: String
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FileManagerViewModel"
 
@@ -75,17 +81,29 @@ class FileManagerViewModel @AssistedInject constructor(
                 fileManagerStateFlow.emit(FileManagerState.Error)
                 return@launchWithLock
             }
+            val uploadApi = storageApi.uploadApi()
+            val pathOnFlipper = Path(directory).resolve(name).toString()
+            when (createFileManagerAction) {
+                CreateFileManagerAction.FILE -> runCatching {
+                    uploadApi.sink(
+                        pathOnFlipper = pathOnFlipper,
+                        priority = StorageRequestPriority.FOREGROUND
+                    ).buffer().use {
+                        it.write(ByteString.of())
+                    }
+                }
 
-        }
-        serviceProvider.provideServiceApi(this) { serviceApi ->
-            launchWithLock(mutex, viewModelScope, "create") {
-                fileManagerStateFlow.emit(FileManagerState(currentPath = directory))
-                serviceApi.requestApi.request(
-                    getCreateRequest(createFileManagerAction, name)
-                ).collect()
-                invalidate(serviceApi.requestApi)
+                CreateFileManagerAction.FOLDER -> uploadApi.mkdir(
+                    pathOnFlipper
+                )
+            }.onFailure {
+                error(it) { "Fail create $name $createFileManagerAction" }
+                fileManagerStateFlow.emit(FileManagerState.Error)
+            }.onSuccess {
+                listFiles(storageApi.listingApi())
             }
         }
+
     }
 
     fun onDeleteAction(fileItem: FileItem) {

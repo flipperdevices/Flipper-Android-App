@@ -1,14 +1,16 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.upload
 
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
-import com.flipperdevices.bridge.connection.feature.storage.impl.utils.copyWithProgress
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.progress.FixedProgressListener
-import com.flipperdevices.core.progress.ProgressListener
+import com.flipperdevices.protobuf.Main
+import com.flipperdevices.protobuf.storage.MkdirRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import okio.FileSystem
@@ -29,7 +31,6 @@ class FFileUploadApiImpl(
         priority: StorageRequestPriority,
         progressListener: FixedProgressListener?
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
-
         runCatching {
             fileSystem.source(fileOnAndroid).buffer().use { source ->
                 sink(pathOnFlipper, priority).use { sink ->
@@ -43,6 +44,16 @@ class FFileUploadApiImpl(
                 }
             }
         }
+    }
+
+    override suspend fun mkdir(
+        pathOnFlipper: String
+    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
+        rpcFeatureApi.requestOnce(
+            Main(
+                storage_mkdir_request = MkdirRequest(pathOnFlipper)
+            ).wrapToRequest()
+        ).map { }
     }
 
     override suspend fun sink(

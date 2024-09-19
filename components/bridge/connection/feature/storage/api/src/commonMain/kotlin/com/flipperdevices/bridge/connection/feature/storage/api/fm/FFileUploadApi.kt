@@ -14,8 +14,12 @@ interface FFileUploadApi {
         progressListener: FixedProgressListener? = null
     ): Result<Unit>
 
+    suspend fun mkdir(
+        pathOnFlipper: String
+    ): Result<Unit>
+
     suspend fun sink(
         pathOnFlipper: String,
-        priority: StorageRequestPriority
+        priority: StorageRequestPriority = StorageRequestPriority.DEFAULT
     ): Sink
 }

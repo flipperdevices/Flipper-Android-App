@@ -32,7 +32,7 @@ class FileManagerUploadingComponent @AssistedInject constructor(
             receiveViewModelFactory(config.deeplinkContent, config.path)
         }
         val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
-        val shareState by uploaderViewModel.getReceiveState().collectAsState()
+        val shareState by uploaderViewModel.getShareState().collectAsState()
         ComposableFileManagerUploadedScreen(
             fileManagerState = fileManagerState,
             shareState = shareState,

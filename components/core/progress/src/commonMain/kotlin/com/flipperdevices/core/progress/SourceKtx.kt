@@ -1,15 +1,16 @@
-package com.flipperdevices.bridge.connection.feature.storage.impl.utils
+package com.flipperdevices.core.progress
 
-import com.flipperdevices.bridge.connection.pbutils.ProtobufConstants
-import com.flipperdevices.core.progress.FixedProgressListener
 import okio.Buffer
 import okio.Sink
 import okio.Source
 
+private const val DEFAULT_CHUNK_SIZE = 512L
+
 suspend fun Source.copyWithProgress(
     sink: Sink,
     progressListener: FixedProgressListener? = null,
-    sourceLength: (suspend () -> Long?)? = null
+    sourceLength: (suspend () -> Long?)? = null,
+    chunkSize: Long = DEFAULT_CHUNK_SIZE
 ) {
     val calculatedLength = if (progressListener != null) {
         sourceLength?.invoke()
@@ -20,7 +21,7 @@ suspend fun Source.copyWithProgress(
     var totalBytesRead = 0L
     val buffer = Buffer()
     while (true) {
-        val readCount: Long = read(buffer, ProtobufConstants.MAX_FILE_DATA.toLong())
+        val readCount: Long = read(buffer, chunkSize)
         if (readCount == -1L) break
         sink.write(buffer, readCount)
         totalBytesRead += readCount

@@ -1,16 +1,15 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.download
 
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.toThrowableFlow
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
-import com.flipperdevices.bridge.connection.feature.storage.impl.utils.copyWithProgress
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.FixedProgressListener
-import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.StatRequest
 import kotlinx.coroutines.CoroutineScope
