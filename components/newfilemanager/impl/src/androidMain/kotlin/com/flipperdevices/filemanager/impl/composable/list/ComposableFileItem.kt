@@ -16,13 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.icon
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_file_pic_desc
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_folder_pic_desc
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableFileItem(
@@ -67,7 +70,7 @@ fun ComposableFileImage(
             modifier = modifier,
             painter = painterResource(R.drawable.ic_folder),
             contentDescription = stringResource(
-                com.flipperdevices.filemanager.impl.R.string.filemanager_folder_pic_desc
+                Res.string.filemanager_folder_pic_desc
             )
         )
     } else {
@@ -79,7 +82,7 @@ fun ComposableFileImage(
                 modifier = Modifier.size(size = 48.dp),
                 painter = painterResource(R.drawable.ic_file),
                 contentDescription = stringResource(
-                    com.flipperdevices.filemanager.impl.R.string.filemanager_file_pic_desc
+                    Res.string.filemanager_file_pic_desc
                 )
             )
             val fileIcon = remember(fileItem) {

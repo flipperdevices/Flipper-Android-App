@@ -3,21 +3,19 @@ package com.flipperdevices.filemanager.impl.composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.composable.dialog.ComposableProgressDialog
 import com.flipperdevices.filemanager.impl.composable.list.ComposableFileManagerContent
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.model.ShareState
-
+import com.flipperdevices.filemanager.impl.model.SpeedState
 @Composable
 fun ComposableFileManagerDownloadScreen(
     fileManagerState: FileManagerState,
     shareState: ShareState,
+    speedState: SpeedState,
     onBack: () -> Unit
 ) {
-    if (shareState.processCompleted) {
+    if (shareState is ShareState.Ready && shareState.processCompleted) {
         LaunchedEffect(onBack) {
             onBack()
         }
@@ -26,7 +24,8 @@ fun ComposableFileManagerDownloadScreen(
     ComposableFileManagerDownloadScreenInternal(
         fileManagerState,
         shareState,
-        onCancel = onBack
+        onCancel = onBack,
+        speedState = speedState
     )
 }
 
@@ -34,17 +33,15 @@ fun ComposableFileManagerDownloadScreen(
 private fun ComposableFileManagerDownloadScreenInternal(
     fileManagerState: FileManagerState,
     shareState: ShareState,
+    speedState: SpeedState,
     onCancel: () -> Unit
 ) {
     Box {
         ComposableFileManagerContent(fileManagerState = fileManagerState, onFileClick = {})
         ComposableProgressDialog(
-            title = stringResource(
-                R.string.share_dialog_title,
-                shareState.name
-            ),
-            downloadProgress = shareState.downloadProgress,
-            onCancel = onCancel
+            shareState = shareState,
+            onCancel = onCancel,
+            speedState = speedState
         )
     }
 }

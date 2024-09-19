@@ -21,15 +21,4 @@ sealed class DownloadProgress {
             is Fixed -> progressInternal
             is Infinite -> progressInternal
         }
-
-    fun updateProgress(delta: Long): DownloadProgress {
-        return when (this) {
-            is Fixed -> copy(
-                progressInternal = progressInternal + delta
-            )
-            is Infinite -> copy(
-                progressInternal = progressInternal + delta
-            )
-        }
-    }
 }

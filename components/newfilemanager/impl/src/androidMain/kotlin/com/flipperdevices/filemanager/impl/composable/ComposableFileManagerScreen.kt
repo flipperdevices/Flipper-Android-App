@@ -24,6 +24,14 @@ import com.flipperdevices.filemanager.impl.model.CreateFileManagerAction
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.add_dialog_title_file
+import flipperapp.components.newfilemanager.impl.generated.resources.add_dialog_title_folder
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_add_dialog_file
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_add_dialog_folder
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_open_dialog_delete
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_open_dialog_download
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_open_dialog_edit
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -42,22 +50,22 @@ fun ComposableFileManagerScreen(
 
     if (localFileItem != null) {
         val chooseOptions = if (isAbleToDelete(fileManagerState.currentPath)) {
-            intArrayOf(
-                R.string.filemanager_open_dialog_edit,
-                R.string.filemanager_open_dialog_download,
-                R.string.filemanager_open_dialog_delete
+            arrayOf(
+                Res.string.filemanager_open_dialog_edit,
+                Res.string.filemanager_open_dialog_download,
+                Res.string.filemanager_open_dialog_delete
             )
         } else {
-            intArrayOf(
-                R.string.filemanager_open_dialog_edit,
-                R.string.filemanager_open_dialog_download
+            arrayOf(
+                Res.string.filemanager_open_dialog_edit,
+                Res.string.filemanager_open_dialog_download
             )
         }
         ComposableSelectDialog(chooseOptions, onSelect = {
             when (it) {
-                R.string.filemanager_open_dialog_edit -> onOpenEditor(localFileItem)
-                R.string.filemanager_open_dialog_download -> onDownloadAndShareFile(localFileItem)
-                R.string.filemanager_open_dialog_delete -> {
+                Res.string.filemanager_open_dialog_edit -> onOpenEditor(localFileItem)
+                Res.string.filemanager_open_dialog_download -> onDownloadAndShareFile(localFileItem)
+                Res.string.filemanager_open_dialog_delete -> {
                     fileManagerViewModel.onDeleteAction(localFileItem)
                     pendingDialogItem = null
                 }
@@ -104,8 +112,8 @@ private fun ComposableCreateActionDialog(
     if (localCreateFileManagerAction != null) {
         ComposableInputDialog(
             when (localCreateFileManagerAction) {
-                CreateFileManagerAction.FILE -> R.string.add_dialog_title_file
-                CreateFileManagerAction.FOLDER -> R.string.add_dialog_title_folder
+                CreateFileManagerAction.FILE -> Res.string.add_dialog_title_file
+                CreateFileManagerAction.FOLDER -> Res.string.add_dialog_title_folder
             }
         ) {
             if (it != null) {
@@ -117,15 +125,15 @@ private fun ComposableCreateActionDialog(
     }
 
     ComposableSelectDialog(
-        intArrayOf(
-            R.string.filemanager_add_dialog_file,
-            R.string.filemanager_add_dialog_folder
+        arrayOf(
+            Res.string.filemanager_add_dialog_file,
+            Res.string.filemanager_add_dialog_folder
         ),
         onSelect = {
             when (it) {
-                R.string.filemanager_add_dialog_file ->
+                Res.string.filemanager_add_dialog_file ->
                     createFileManagerAction = CreateFileManagerAction.FILE
-                R.string.filemanager_add_dialog_folder ->
+                Res.string.filemanager_add_dialog_folder ->
                     createFileManagerAction = CreateFileManagerAction.FOLDER
                 else -> onDismiss()
             }

@@ -10,14 +10,16 @@ import com.flipperdevices.filemanager.impl.composable.dialog.ComposableProgressD
 import com.flipperdevices.filemanager.impl.composable.list.ComposableFileManagerContent
 import com.flipperdevices.filemanager.impl.model.FileManagerState
 import com.flipperdevices.filemanager.impl.model.ShareState
+import com.flipperdevices.filemanager.impl.model.SpeedState
 
 @Composable
 fun ComposableFileManagerUploadedScreen(
     fileManagerState: FileManagerState,
     shareState: ShareState,
+    speedState: SpeedState,
     onBack: () -> Unit
 ) {
-    if (shareState.processCompleted) {
+    if (shareState is ShareState.Ready && shareState.processCompleted) {
         LaunchedEffect(onBack) {
             onBack()
         }
@@ -26,6 +28,7 @@ fun ComposableFileManagerUploadedScreen(
     ComposableFileManagerUploadedScreenInternal(
         fileManagerState,
         shareState,
+        speedState,
         onCancel = onBack
     )
 }
@@ -34,16 +37,14 @@ fun ComposableFileManagerUploadedScreen(
 private fun ComposableFileManagerUploadedScreenInternal(
     fileManagerState: FileManagerState,
     shareState: ShareState,
+    speedState: SpeedState,
     onCancel: () -> Unit
 ) {
     Box {
         ComposableFileManagerContent(fileManagerState = fileManagerState, onFileClick = {})
         ComposableProgressDialog(
-            title = stringResource(
-                R.string.receive_dialog_title,
-                shareState.name
-            ),
-            downloadProgress = shareState.downloadProgress,
+            shareState = shareState,
+            speedState = speedState,
             onCancel = onCancel
         )
     }

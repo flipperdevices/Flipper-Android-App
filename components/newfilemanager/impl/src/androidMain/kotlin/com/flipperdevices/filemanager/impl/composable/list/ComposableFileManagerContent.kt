@@ -10,13 +10,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.FileItem
 import com.flipperdevices.filemanager.impl.model.FileManagerState
-import kotlinx.collections.immutable.persistentSetOf
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_empty_folder
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_error
+import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableFileManagerContent(
@@ -28,18 +30,23 @@ fun ComposableFileManagerContent(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        when {
-            fileManagerState.filesInDirectory.isNotEmpty() ->
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(items = fileManagerState.filesInDirectory.toList()) { file ->
-                        ComposableFileItem(file, onFileClick)
+        when (fileManagerState) {
+            is FileManagerState.Error -> Text(stringResource(Res.string.filemanager_error))
+            is FileManagerState.Ready -> when {
+                fileManagerState.filesInDirectory.isNotEmpty() ->
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(items = fileManagerState.filesInDirectory.toList()) { file ->
+                            ComposableFileItem(file, onFileClick)
+                        }
                     }
-                }
-            fileManagerState.inProgress ->
-                CircularProgressIndicator(modifier = Modifier.size(size = 48.dp))
-            else -> Text(text = stringResource(id = R.string.filemanager_empty_folder))
+
+                fileManagerState.inProgress ->
+                    CircularProgressIndicator(modifier = Modifier.size(size = 48.dp))
+
+                else -> Text(text = stringResource(Res.string.filemanager_empty_folder))
+            }
         }
     }
 }
@@ -51,12 +58,13 @@ fun ComposableFileManagerContent(
 @Composable
 private fun ComposableFileManagerPreview() {
     ComposableFileManagerContent(
-        fileManagerState = FileManagerState(
+        fileManagerState = FileManagerState.Ready(
             "/",
-            persistentSetOf(
+            persistentListOf(
                 FileItem.DUMMY_FOLDER,
                 FileItem.DUMMY_FILE
-            )
+            ),
+            inProgress = true
         ),
         onFileClick = {}
     )

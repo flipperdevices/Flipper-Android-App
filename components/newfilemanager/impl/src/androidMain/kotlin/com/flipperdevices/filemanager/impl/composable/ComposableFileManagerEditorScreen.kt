@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +29,13 @@ import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.composable.bar.ComposableEditorTopBar
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.EditorState
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_editor_loading_title
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_editor_saving_title
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_editor_warning
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_error
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableFileManagerEditorScreen(
@@ -61,16 +67,17 @@ private fun ComposableFileManagerEditorScreenInternal(
         )
 
         is EditorState.Loading -> ComposableFileManagerInProgress(
-            textId = R.string.filemanager_editor_loading_title,
+            text = Res.string.filemanager_editor_loading_title,
             progress = editorState.progress
         )
 
         is EditorState.Saving -> ComposableFileManagerInProgress(
-            textId = R.string.filemanager_editor_saving_title,
+            text = Res.string.filemanager_editor_saving_title,
             progress = editorState.progress
         )
 
         EditorState.Saved -> return
+        EditorState.Error -> Text(stringResource(Res.string.filemanager_error))
     }
 }
 
@@ -90,7 +97,7 @@ private fun ComposableFileManagerEditorContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(LocalPallet.current.warningColor),
-                text = stringResource(R.string.filemanager_editor_warning),
+                text = stringResource(Res.string.filemanager_editor_warning),
                 color = LocalPallet.current.textOnWarningBackground
             )
         }
@@ -109,7 +116,7 @@ private fun ComposableFileManagerEditorContent(
 
 @Composable
 private fun ComposableFileManagerInProgress(
-    @StringRes textId: Int,
+    text: StringResource,
     progress: DownloadProgress
 ) {
     Column(
@@ -121,7 +128,7 @@ private fun ComposableFileManagerInProgress(
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(
-                textId,
+                text,
                 if (progress is DownloadProgress.Fixed) {
                     progress.toProgressFloat().roundPercentToString()
                 } else {

@@ -16,22 +16,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.filemanager.impl.R
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
+import com.flipperdevices.filemanager.impl.model.ShareState
+import com.flipperdevices.filemanager.impl.model.SpeedState
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_error
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_error_title
+import flipperapp.components.newfilemanager.impl.generated.resources.share_dialog_btn_close
+import flipperapp.components.newfilemanager.impl.generated.resources.share_dialog_progress_infinite_text
+import flipperapp.components.newfilemanager.impl.generated.resources.share_dialog_progress_text
+import flipperapp.components.newfilemanager.impl.generated.resources.share_dialog_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableProgressDialog(
-    title: String,
-    downloadProgress: DownloadProgress,
+    shareState: ShareState,
+    speedState: SpeedState,
     onCancel: () -> Unit
 ) {
+
     AlertDialog(
         onDismissRequest = { },
         title = {
-            Text(text = title)
+            when (shareState) {
+                ShareState.Error -> stringResource(Res.string.filemanager_error_title)
+                is ShareState.Ready -> Text(
+                    text = stringResource(
+                        Res.string.share_dialog_title,
+                        shareState.name
+                    )
+                )
+            }
         },
         buttons = {
             Box(
@@ -42,14 +59,23 @@ fun ComposableProgressDialog(
                     modifier = Modifier.padding(all = 16.dp),
                     onClick = onCancel
                 ) {
-                    Text(text = stringResource(R.string.share_dialog_btn_close))
+                    Text(text = stringResource(Res.string.share_dialog_btn_close))
                 }
             }
         },
         text = {
-            when (downloadProgress) {
-                is DownloadProgress.Fixed -> ComposableFixedProgress(downloadProgress)
-                is DownloadProgress.Infinite -> ComposableInfiniteProgress(downloadProgress)
+            when (shareState) {
+                ShareState.Error -> Text(stringResource(Res.string.filemanager_error))
+                is ShareState.Ready -> when (shareState.downloadProgress) {
+                    is DownloadProgress.Fixed -> ComposableFixedProgress(
+                        shareState.downloadProgress, speedState
+                    )
+
+                    is DownloadProgress.Infinite -> ComposableInfiniteProgress(
+                        shareState.downloadProgress,
+                        speedState
+                    )
+                }
             }
         }
     )
@@ -58,6 +84,7 @@ fun ComposableProgressDialog(
 @Composable
 fun ComposableFixedProgress(
     fixedProgress: DownloadProgress.Fixed,
+    speedState: SpeedState,
     modifier: Modifier = Modifier
 ) {
     val animatedProgress by animateFloatAsState(
@@ -72,18 +99,15 @@ fun ComposableFixedProgress(
         LocalContext.current,
         fixedProgress.totalSize
     )
-    val speed = Formatter.formatFileSize(
-        LocalContext.current,
-        fixedProgress.speedBytesInSecond
-    )
+
     Column(modifier) {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
-                R.string.share_dialog_progress_text,
+                Res.string.share_dialog_progress_text,
                 downloadedSize,
                 totalSize,
-                "$speed/s"
+                getSpeedText(speedState)
             )
         )
         LinearProgressIndicator(
@@ -95,25 +119,41 @@ fun ComposableFixedProgress(
 }
 
 @Composable
+private fun getSpeedText(speedState: SpeedState): String {
+    return when (speedState) {
+        is SpeedState.Ready -> "${
+            Formatter.formatFileSize(
+                LocalContext.current,
+                speedState.receiveBytesInSec
+            )
+        }/s download/${
+            Formatter.formatFileSize(
+                LocalContext.current,
+                speedState.transmitBytesInSec
+            )
+        }/s upload"
+
+        SpeedState.Unknown -> "Unknown"
+    }
+}
+
+@Composable
 fun ComposableInfiniteProgress(
     infiniteProgress: DownloadProgress.Infinite,
+    speedState: SpeedState,
     modifier: Modifier = Modifier,
 ) {
     val downloadedSize = Formatter.formatFileSize(
         LocalContext.current,
         infiniteProgress.progress
     )
-    val speed = Formatter.formatFileSize(
-        LocalContext.current,
-        infiniteProgress.speedBytesInSecond
-    )
     Column(modifier) {
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(
-                R.string.share_dialog_progress_infinite_text,
+                Res.string.share_dialog_progress_infinite_text,
                 downloadedSize,
-                "$speed/s"
+                getSpeedText(speedState)
             )
         )
         LinearProgressIndicator(

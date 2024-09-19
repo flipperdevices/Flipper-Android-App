@@ -7,8 +7,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import com.flipperdevices.filemanager.impl.R
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_save_action
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableEditorTopBar(
@@ -30,7 +32,7 @@ fun ComposableEditorTopBar(
                         R.drawable.ic_ok
                     ),
                     contentDescription = stringResource(
-                        R.string.filemanager_save_action
+                        Res.string.filemanager_save_action
                     )
                 )
             }

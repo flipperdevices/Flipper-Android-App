@@ -33,10 +33,13 @@ class FileManagerUploadingComponent @AssistedInject constructor(
         }
         val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
         val shareState by uploaderViewModel.getShareState().collectAsState()
+        val speedState by uploaderViewModel.getSpeedState().collectAsState()
+
         ComposableFileManagerUploadedScreen(
             fileManagerState = fileManagerState,
             shareState = shareState,
-            onBack = onBack::invoke
+            onBack = onBack::invoke,
+            speedState = speedState
         )
     }
 

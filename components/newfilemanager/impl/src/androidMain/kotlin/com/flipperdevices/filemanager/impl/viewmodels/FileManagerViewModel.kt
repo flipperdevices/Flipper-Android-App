@@ -78,7 +78,7 @@ class FileManagerViewModel @AssistedInject constructor(
             )
             val storageApi = featureProvider.getSync<FStorageFeatureApi>()
             if (storageApi == null) {
-                fileManagerStateFlow.emit(FileManagerState.Error)
+                fileManagerStateFlow.emit(FileManagerState.Error(directory))
                 return@launchWithLock
             }
             val uploadApi = storageApi.uploadApi()
@@ -98,7 +98,7 @@ class FileManagerViewModel @AssistedInject constructor(
                 )
             }.onFailure {
                 error(it) { "Fail create $name $createFileManagerAction" }
-                fileManagerStateFlow.emit(FileManagerState.Error)
+                fileManagerStateFlow.emit(FileManagerState.Error(directory))
             }.onSuccess {
                 listFiles(storageApi.listingApi())
             }
@@ -119,12 +119,12 @@ class FileManagerViewModel @AssistedInject constructor(
             )
             val storageApi = featureProvider.getSync<FStorageFeatureApi>()
             if (storageApi == null) {
-                fileManagerStateFlow.emit(FileManagerState.Error)
+                fileManagerStateFlow.emit(FileManagerState.Error(directory))
                 return@launchWithLock
             }
             storageApi.deleteApi().delete(fileItem.path, recursive = true)
                 .onSuccess { listFiles(storageApi.listingApi()) }
-                .onFailure { fileManagerStateFlow.emit(FileManagerState.Error) }
+                .onFailure { fileManagerStateFlow.emit(FileManagerState.Error(directory)) }
         }
     }
 
@@ -133,7 +133,7 @@ class FileManagerViewModel @AssistedInject constructor(
     ) = withLock(mutex, "invalidate") {
         when (featureStatus) {
             FFeatureStatus.NotFound, FFeatureStatus.Unsupported -> fileManagerStateFlow.emit(
-                FileManagerState.Error
+                FileManagerState.Error(directory)
             )
 
             FFeatureStatus.Retrieving -> fileManagerStateFlow.emit(
@@ -150,7 +150,7 @@ class FileManagerViewModel @AssistedInject constructor(
         listingApi: FListingStorageApi
     ) {
         listingApi.lsFlow(directory).toThrowableFlow().catch {
-            fileManagerStateFlow.emit(FileManagerState.Error)
+            fileManagerStateFlow.emit(FileManagerState.Error(directory))
         }.collect { listingItems ->
             fileManagerStateFlow.update { oldState ->
                 if (oldState is FileManagerState.Ready) {

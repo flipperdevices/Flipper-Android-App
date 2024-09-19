@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.impl.composable.dialog
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,29 +8,30 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableSelectDialog(
-    options: IntArray,
-    onSelect: (Int?) -> Unit,
+    options: Array<StringResource>,
+    onSelect: (StringResource?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = { onSelect(null) }) {
         Column(modifier = modifier.background(LocalPallet.current.backgroundDialog)) {
-            options.forEachIndexed { index, elementTextId ->
+            options.forEachIndexed { index, elementText ->
                 ComposableDialogOption(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
-                    textId = elementTextId,
+                    text = elementText,
                     onClick = {
-                        onSelect(elementTextId)
+                        onSelect(elementText)
                     }
                 )
                 if (index != options.lastIndex) {
@@ -47,7 +47,7 @@ fun ComposableSelectDialog(
 
 @Composable
 private fun ComposableDialogOption(
-    @StringRes textId: Int,
+    text: StringResource,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -55,7 +55,7 @@ private fun ComposableDialogOption(
         modifier = modifier
             .clickableRipple(onClick = onClick)
             .then(modifier),
-        text = stringResource(textId),
+        text = stringResource(text),
         style = LocalTypography.current.titleM18
     )
 }

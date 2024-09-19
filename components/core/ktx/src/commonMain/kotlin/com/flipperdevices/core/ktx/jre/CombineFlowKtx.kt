@@ -6,10 +6,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 public fun <T1, T2> Flow<T1>.combine(flow: Flow<T2>): Flow<Pair<T1, T2>> =
-    this.combine(flow) { t1, t2 -> t1 to t2 }
-
-public fun <T1, T2> combine(flow1: Flow<T1>, flow2: Flow<T2>): Flow<Pair<T1, T2>> =
-    combine(flow1, flow2) { t1, t2 -> t1 to t2 }
+    combine(flow) { t1, t2 -> t1 to t2 }
 
 fun <T1> Flow<T1>.withFirstElement(firstElement: T1): Flow<T1> {
     return flow {

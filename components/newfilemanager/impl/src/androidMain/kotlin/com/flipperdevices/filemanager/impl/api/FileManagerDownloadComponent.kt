@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.impl.api
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -7,6 +8,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.impl.composable.ComposableFileManagerDownloadScreen
 import com.flipperdevices.filemanager.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.FileManagerViewModel
 import com.flipperdevices.filemanager.impl.viewmodels.ShareViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -14,6 +16,9 @@ import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import flipperapp.components.newfilemanager.impl.generated.resources.Res
+import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_error
+import org.jetbrains.compose.resources.stringResource
 
 class FileManagerDownloadComponent @AssistedInject constructor(
     private val fileManagerViewModelFactory: FileManagerViewModel.Factory,
@@ -33,11 +38,19 @@ class FileManagerDownloadComponent @AssistedInject constructor(
         }
         val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
         val shareState by shareViewModel.getShareState().collectAsState()
-        ComposableFileManagerDownloadScreen(
-            fileManagerState = fileManagerState,
-            shareState = shareState,
-            onBack = onBack::invoke
-        )
+        val speedState by shareViewModel.getSpeedState().collectAsState()
+
+        shareState.let { shareStateLocal ->
+            when (shareStateLocal) {
+                ShareState.Error -> Text(stringResource(Res.string.filemanager_error))
+                is ShareState.Ready -> ComposableFileManagerDownloadScreen(
+                    fileManagerState = fileManagerState,
+                    shareState = shareStateLocal,
+                    onBack = onBack::invoke,
+                    speedState = speedState
+                )
+            }
+        }
     }
 
     @AssistedFactory
