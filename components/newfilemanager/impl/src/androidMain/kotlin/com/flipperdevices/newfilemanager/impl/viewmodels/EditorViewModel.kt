@@ -136,7 +136,6 @@ class EditorViewModel @AssistedInject constructor(
                 )
             )
         }
-
     }
 
     override fun onDestroy() {

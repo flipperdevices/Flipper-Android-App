@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.newfilemanager.impl.R
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import flipperapp.components.newfilemanager.impl.generated.resources.Res
 import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_create_action
 import flipperapp.components.newfilemanager.impl.generated.resources.filemanager_upload_action
 import org.jetbrains.compose.resources.stringResource
+import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
 fun ComposableFileManagerTopBar(

@@ -41,7 +41,6 @@ class FFlipperSinkTest {
         assert(hasNext)
     }
 
-
     @Test
     fun `write one message completly`() {
         val bytes = ByteArray(512) { it.toByte() }

@@ -9,7 +9,6 @@ import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.Md5sumRequest
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import okio.Path.Companion.toPath
 
 class FlipperListingDelegateDeprecated(

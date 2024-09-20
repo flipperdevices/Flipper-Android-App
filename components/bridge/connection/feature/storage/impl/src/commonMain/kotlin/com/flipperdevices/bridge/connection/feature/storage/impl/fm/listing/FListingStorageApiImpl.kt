@@ -1,12 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing
 
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
-import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
-import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItemWithHash
 import com.flipperdevices.core.ktx.jre.flattenCatching
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.flow.toList
 
 class FListingStorageApiImpl(

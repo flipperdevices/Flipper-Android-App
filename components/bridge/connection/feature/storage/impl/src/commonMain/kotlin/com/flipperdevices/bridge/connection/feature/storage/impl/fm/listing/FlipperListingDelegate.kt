@@ -1,19 +1,16 @@
 package com.flipperdevices.bridge.connection.feature.storage.impl.fm.listing
 
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcStorageNotExistException
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItemWithHash
 import com.flipperdevices.core.ktx.jre.mapCatching
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.ListRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 

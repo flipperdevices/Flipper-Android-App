@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.protobuf.Main
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 interface FRpcFeatureApi : FDeviceFeatureApi {
     /**
@@ -37,4 +36,3 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
      */
     suspend fun requestWithoutAnswer(vararg commands: FlipperRequest)
 }
-

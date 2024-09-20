@@ -10,7 +10,6 @@ import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.InfoRequest
 import dagger.assisted.Assisted

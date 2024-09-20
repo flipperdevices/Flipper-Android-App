@@ -30,10 +30,11 @@ class ReceiveViewModel @AssistedInject constructor(
 ) : CommonShareViewModel(
     featureProvider = featureProvider,
     fileName = deeplinkContent.filename() ?: "Unknown",
-    defaultProgress =  deeplinkContent.length()?.let {
+    defaultProgress = deeplinkContent.length()?.let {
         DownloadProgress.Fixed(totalSize = it)
     } ?: DownloadProgress.Infinite()
-), LogTagProvider {
+),
+    LogTagProvider {
     override val TAG = "ReceiveViewModel"
 
     private val contentResolver = context.contentResolver
@@ -69,7 +70,9 @@ class ReceiveViewModel @AssistedInject constructor(
             shareStateFlow.update {
                 if (it is ShareState.Ready) {
                     it.copy(processCompleted = true)
-                } else it
+                } else {
+                    it
+                }
             }
         }.onFailure { exception ->
             error(exception) { "Fail upload file" }

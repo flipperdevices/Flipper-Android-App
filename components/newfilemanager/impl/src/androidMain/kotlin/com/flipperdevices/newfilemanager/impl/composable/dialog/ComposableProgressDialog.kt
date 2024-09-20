@@ -36,7 +36,6 @@ fun ComposableProgressDialog(
     speedState: SpeedState,
     onCancel: () -> Unit
 ) {
-
     AlertDialog(
         onDismissRequest = { },
         title = {
@@ -68,7 +67,8 @@ fun ComposableProgressDialog(
                 ShareState.Error -> Text(stringResource(Res.string.filemanager_error))
                 is ShareState.Ready -> when (shareState.downloadProgress) {
                     is DownloadProgress.Fixed -> ComposableFixedProgress(
-                        shareState.downloadProgress, speedState
+                        shareState.downloadProgress,
+                        speedState
                     )
 
                     is DownloadProgress.Infinite -> ComposableInfiniteProgress(
@@ -121,17 +121,18 @@ fun ComposableFixedProgress(
 @Composable
 private fun getSpeedText(speedState: SpeedState): String {
     return when (speedState) {
-        is SpeedState.Ready -> "${
-            Formatter.formatFileSize(
-                LocalContext.current,
-                speedState.receiveBytesInSec
-            )
-        }/s download/${
-            Formatter.formatFileSize(
-                LocalContext.current,
-                speedState.transmitBytesInSec
-            )
-        }/s upload"
+        is SpeedState.Ready ->
+            "${
+                Formatter.formatFileSize(
+                    LocalContext.current,
+                    speedState.receiveBytesInSec
+                )
+            }/s download/${
+                Formatter.formatFileSize(
+                    LocalContext.current,
+                    speedState.transmitBytesInSec
+                )
+            }/s upload"
 
         SpeedState.Unknown -> "Unknown"
     }

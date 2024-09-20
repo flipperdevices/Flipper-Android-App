@@ -32,7 +32,8 @@ class ShareViewModel @AssistedInject constructor(
     defaultProgress = DownloadProgress.Fixed(
         totalSize = shareFile.size
     )
-), LogTagProvider {
+),
+    LogTagProvider {
     override val TAG = "ShareViewModel"
     private val fileInSharedDir by lazy {
         SharableFile(application, shareFile.name).apply {
@@ -71,7 +72,9 @@ class ShareViewModel @AssistedInject constructor(
         shareStateFlow.update {
             if (it is ShareState.Ready) {
                 it.copy(processCompleted = true)
-            } else it
+            } else {
+                it
+            }
         }
     }
 

@@ -6,14 +6,12 @@ import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiGro
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
-import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.property.GetRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 

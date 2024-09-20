@@ -6,7 +6,7 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.debug.api.StressTestDecomposeComponent
-import com.flipperdevices.newfilemanager.api.navigation.FileManagerDecomposeComponent
+import com.flipperdevices.filemanager.api.navigation.FileManagerDecomposeComponent
 import com.flipperdevices.settings.api.SettingsDecomposeComponent
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent

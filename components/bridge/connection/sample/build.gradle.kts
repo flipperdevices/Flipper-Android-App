@@ -85,7 +85,6 @@ dependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.deeplink.impl)
 
-
     implementation(libs.appcompat)
 
     // Dagger deps

@@ -11,7 +11,6 @@ inline fun <T, R> Flow<Result<T>>.mapCatching(
     }
 }
 
-
 fun <T> Iterable<Result<Iterable<T>>>.flattenCatching(): Result<List<T>> {
     val result = ArrayList<T>()
     for (element in this) {
@@ -21,7 +20,6 @@ fun <T> Iterable<Result<Iterable<T>>>.flattenCatching(): Result<List<T>> {
     }
     return Result.success(result)
 }
-
 
 /**
  * The correct way to handle an error on flow is to use Flow#onError.

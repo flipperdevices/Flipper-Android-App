@@ -40,7 +40,8 @@ class FileManagerViewModel @AssistedInject constructor(
     private val mutex = Mutex()
     private val fileManagerStateFlow = MutableStateFlow<FileManagerState>(
         FileManagerState.Ready(
-            currentPath = directory, inProgress = true
+            currentPath = directory,
+            inProgress = true
         )
     )
 
@@ -55,7 +56,8 @@ class FileManagerViewModel @AssistedInject constructor(
     fun getFileManagerState(): StateFlow<FileManagerState> = fileManagerStateFlow
 
     fun onCreateAction(
-        createFileManagerAction: CreateFileManagerAction, name: String
+        createFileManagerAction: CreateFileManagerAction,
+        name: String
     ) {
         fileManagerStateFlow.update {
             FileManagerState.Ready(
@@ -67,7 +69,8 @@ class FileManagerViewModel @AssistedInject constructor(
         launchWithLock(mutex, viewModelScope, "create") {
             fileManagerStateFlow.emit(
                 FileManagerState.Ready(
-                    currentPath = directory, inProgress = true
+                    currentPath = directory,
+                    inProgress = true
                 )
             )
             val storageApi = featureProvider.getSync<FStorageFeatureApi>()
@@ -97,7 +100,6 @@ class FileManagerViewModel @AssistedInject constructor(
                 listFiles(storageApi.listingApi())
             }
         }
-
     }
 
     fun onDeleteAction(fileItem: FileItem) {
@@ -108,7 +110,8 @@ class FileManagerViewModel @AssistedInject constructor(
         launchWithLock(mutex, viewModelScope, "delete") {
             fileManagerStateFlow.emit(
                 FileManagerState.Ready(
-                    currentPath = directory, inProgress = true
+                    currentPath = directory,
+                    inProgress = true
                 )
             )
             val storageApi = featureProvider.getSync<FStorageFeatureApi>()
@@ -132,7 +135,8 @@ class FileManagerViewModel @AssistedInject constructor(
 
             FFeatureStatus.Retrieving -> fileManagerStateFlow.emit(
                 FileManagerState.Ready(
-                    currentPath = directory, inProgress = true
+                    currentPath = directory,
+                    inProgress = true
                 )
             )
 
@@ -149,13 +153,18 @@ class FileManagerViewModel @AssistedInject constructor(
             fileManagerStateFlow.update { oldState ->
                 if (oldState is FileManagerState.Ready) {
                     oldState.copy(
-                        filesInDirectory = oldState.filesInDirectory.plus(listingItems.map { item ->
-                            FileItem(
-                                directory, item
-                            )
-                        }).toPersistentList()
+                        filesInDirectory = oldState.filesInDirectory.plus(
+                            listingItems.map { item ->
+                                FileItem(
+                                    directory,
+                                    item
+                                )
+                            }
+                        ).toPersistentList()
                     )
-                } else oldState
+                } else {
+                    oldState
+                }
             }
         }
 
@@ -164,7 +173,9 @@ class FileManagerViewModel @AssistedInject constructor(
                 oldState.copy(
                     inProgress = false
                 )
-            } else oldState
+            } else {
+                oldState
+            }
         }
     }
 

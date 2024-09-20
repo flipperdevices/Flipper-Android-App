@@ -59,7 +59,6 @@ class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
                     navigation.pushNew(ConnectionRootConfig.FileManager)
                 }
             )
-
         }
     }
 

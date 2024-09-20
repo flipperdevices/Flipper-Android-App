@@ -6,31 +6,16 @@ import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.ReadResponse
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import okio.Buffer
-import okio.ByteString
 import okio.ByteString.Companion.toByteString
 import okio.buffer
-import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
-import java.util.concurrent.Executors
 
 class FFlipperSourceTest {
     private lateinit var requestLooper: ReaderRequestLooper
@@ -76,7 +61,6 @@ class FFlipperSourceTest {
         assertContentEquals(bytes, result)
     }
 
-
     @Test
     fun `get less bytes than message`() {
         val bytes = ByteArray(1500) { it.toByte() }
@@ -88,7 +72,6 @@ class FFlipperSourceTest {
 
         assertContentEquals(bytes.take(1000).toByteArray(), buffer.readByteArray())
     }
-
 
     @Test
     fun `get huge message with two stage`() {
@@ -102,7 +85,6 @@ class FFlipperSourceTest {
 
         assertContentEquals(bytes, buffer.readByteArray())
     }
-
 
     @Test
     fun `get huge message once`() {
@@ -129,7 +111,6 @@ class FFlipperSourceTest {
         assertContentEquals(bytes, buffer.readByteArray())
     }
 
-
     @Test
     fun `message happens from channel`() = runTest {
         val bytes = ByteArray(512) { it.toByte() }
@@ -154,7 +135,6 @@ class FFlipperSourceTest {
 
         assertContentEquals(bytes, buffer.readByteArray())
     }
-
 
     @Test
     fun `wait until message happens`() = runTest {
