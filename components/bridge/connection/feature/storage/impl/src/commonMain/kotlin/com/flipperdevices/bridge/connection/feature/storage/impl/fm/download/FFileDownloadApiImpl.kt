@@ -35,7 +35,7 @@ class FFileDownloadApiImpl(
         info { "Start download file $pathOnFlipper to $fileOnAndroid" }
 
         runCatching {
-            fileSystem.sink(fileOnAndroid, mustCreate = true).buffer().use { sink ->
+            fileSystem.sink(fileOnAndroid).buffer().use { sink ->
                 source(pathOnFlipper, priority).use { source ->
                     source.copyWithProgress(
                         sink,

@@ -54,7 +54,7 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
         is ConnectionRootConfig.Device ->
             connectionDeviceScreenDecomposeComponentFactory(
                 componentContext = componentContext,
-                onOpenSearch = { navigation.pushToFront(ConnectionRootConfig.Search) }
+                navigation = navigation
             )
 
         ConnectionRootConfig.FileManager -> fileManagerComponentFactory(
