@@ -3,7 +3,7 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.filemanager.api"
+android.namespace = "com.flipperdevices.newfilemanager.api"
 
 commonDependencies {
     implementation(projects.components.deeplink.api)

@@ -9,6 +9,7 @@ enum class FDeviceFeature {
     SERIAL_SPEED,
     VERSION,
     RPC_INFO,
+    STORAGE,
     STORAGE_INFO,
     GET_INFO
 }
