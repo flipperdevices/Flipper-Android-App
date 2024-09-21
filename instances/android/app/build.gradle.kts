@@ -42,6 +42,8 @@ dependencies {
 
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
+    implementation(projects.components.fmsearch.api)
+    implementation(projects.components.fmsearch.impl)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.apiBackendFlipper)

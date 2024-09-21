@@ -33,7 +33,8 @@ fun ComposableFileManagerScreen(
     onOpenFolder: (FileItem) -> Unit,
     onDownloadAndShareFile: (FileItem) -> Unit,
     onOpenEditor: (FileItem) -> Unit,
-    onUploadFile: (path: String, DeeplinkContent) -> Unit
+    onUploadFile: (path: String, DeeplinkContent) -> Unit,
+    onClickToSearch: () -> Unit
 ) {
     val fileManagerState by fileManagerViewModel.getFileManagerState().collectAsState()
 
@@ -89,7 +90,8 @@ fun ComposableFileManagerScreen(
         },
         onAddButton = {
             showAddDialog = true
-        }
+        },
+        onClickToSearch = onClickToSearch
     )
 }
 
@@ -139,7 +141,8 @@ private fun ComposableFileManagerScreenInternal(
     onOpenFolder: (FileItem) -> Unit,
     deepLinkParser: DeepLinkParser,
     onUploadFile: (DeeplinkContent) -> Unit,
-    onAddButton: () -> Unit
+    onAddButton: () -> Unit,
+    onClickToSearch: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -167,7 +170,8 @@ private fun ComposableFileManagerScreenInternal(
                 onClickUploadButton = {
                     pickFileLauncher.launch("*/*")
                 },
-                onClickAddButton = onAddButton
+                onClickAddButton = onAddButton,
+                onClickToSearch = onClickToSearch
             )
         }
     ) { scaffoldPaddings ->

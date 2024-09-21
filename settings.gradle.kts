@@ -85,6 +85,8 @@ include(
 
     ":components:filemanager:api",
     ":components:filemanager:impl",
+    ":components:fmsearch:api",
+    ":components:fmsearch:impl",
 
     ":components:core:di",
     ":components:core:ktx",
