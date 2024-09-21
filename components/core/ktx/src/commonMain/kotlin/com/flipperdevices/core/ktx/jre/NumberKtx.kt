@@ -17,7 +17,7 @@ fun Long.toIntSafe(): Int {
 }
 
 fun Float.roundPercentToString(): String {
-    val processedPercent = if (this > 1.0f) 1.0f else if (this < 0.0f) 0.0f else this
+    val processedPercent = coerceIn(0.0f, 1.0f)
     return "${(processedPercent * PERCENT_MAX).roundToInt()}%"
 }
 
