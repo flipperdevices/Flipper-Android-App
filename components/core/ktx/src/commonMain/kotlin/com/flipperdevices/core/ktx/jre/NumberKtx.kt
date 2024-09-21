@@ -13,15 +13,7 @@ private const val PERCENT_MAX = 100
  * If not, return Int.MIN_VALUE or Int.MAX_VALUE
  */
 fun Long.toIntSafe(): Int {
-    if (this > Int.MAX_VALUE) {
-        return Int.MAX_VALUE
-    }
-
-    if (this < Int.MIN_VALUE) {
-        return Int.MIN_VALUE
-    }
-
-    return this.toInt()
+    return coerceIn(Int.MIN_VALUE.toLong(), Int.MAX_VALUE.toLong()).toInt()
 }
 
 fun Float.roundPercentToString(): String {
