@@ -10,7 +10,6 @@
             android:label="@string/app_name"
             android:name="com.flipperdevices.app.FlipperApplication"
             android:supportsRtl="false"
-            android:localeConfig=""
             android:theme="@style/FlipperTheme">
         <activity
                 android:exported="true"
