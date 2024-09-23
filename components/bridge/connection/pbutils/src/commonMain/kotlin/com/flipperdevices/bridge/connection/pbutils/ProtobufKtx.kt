@@ -34,10 +34,13 @@ fun Main.encodeWithDelimitedSize(): ByteArray {
 
 fun <T> ProtoAdapter<T>.decodeDelimitedPackage(stream: InputStream): T {
     val length = stream.readDelimitedLength()
-    return stream.source().limit(length).buffer().use { limitedSource ->
-        val limitedReader = ProtoReader(limitedSource)
-        decode(limitedReader)
-    }
+    return stream.source()
+        .limit(length, throwOnByteShortage = true)
+        .buffer()
+        .use { limitedSource ->
+            val limitedReader = ProtoReader(limitedSource)
+            decode(limitedReader)
+        }
 }
 
 private fun InputStream.readDelimitedLength(): Long {

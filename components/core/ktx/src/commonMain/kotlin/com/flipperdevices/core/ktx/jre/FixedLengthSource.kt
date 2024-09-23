@@ -10,6 +10,7 @@ internal class FixedLengthSource(
     delegate: Source,
     private val size: Long,
     private val truncate: Boolean,
+    private val throwOnByteShortage: Boolean
 ) : ForwardingSource(delegate) {
     private var bytesReceived = 0L
 
@@ -36,7 +37,12 @@ internal class FixedLengthSource(
         if (result != -1L) bytesReceived += result
 
         // Throw an exception if we received too few bytes or too many.
-        if ((bytesReceived < size && result == -1L) || bytesReceived > size) {
+        if (throwOnByteShortage && bytesReceived < size && result == -1L) {
+            throw IOException("expected $size bytes but got $bytesReceived")
+        }
+
+        // Throw an exception if we received too many bytes.
+        if (bytesReceived > size) {
             if (result > 0L && bytesReceived > size) {
                 // If we received bytes beyond the limit, don't return them to the caller.
                 sink.truncateToSize(sink.size - (bytesReceived - size))
@@ -55,10 +61,11 @@ internal class FixedLengthSource(
     }
 }
 
-fun Source.limit(size: Long): Source {
+fun Source.limit(size: Long, throwOnByteShortage: Boolean = false): Source {
     return FixedLengthSource(
         delegate = this,
         size = size,
-        truncate = true
+        truncate = true,
+        throwOnByteShortage = throwOnByteShortage
     )
 }
