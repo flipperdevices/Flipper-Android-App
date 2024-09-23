@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.synchronization.impl.repository
 
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.synchronization.impl.Delayer
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
@@ -13,8 +12,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.flipperdevices.core.progress.ProgressListener
-import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -39,7 +36,6 @@ class FavoriteSynchronizationImpl @Inject constructor(
             current = 0.5f,
             detail = FavoriteSynchronization.FavoritesProgressDetail
         )
-        Delayer.makeDelay()
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
             .compareFlipperFavoritesWithManifest(favoritesFromFlipper)

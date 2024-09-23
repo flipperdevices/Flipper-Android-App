@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.synchronization.impl.executor
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.synchronization.impl.Delayer
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
@@ -12,10 +11,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.flipperdevices.core.progress.ProgressListener
-import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 interface DiffKeyExecutor {
@@ -61,8 +57,6 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
                     diffs.size.toLong(),
                     DiffKeyExecutor.DiffProgressDetail(diff.newHash.keyPath.nameWithExtension)
                 )
-                Delayer.makeDelay()
-                delay(1000L)
                 execute(source, target, diff)
                 return@mapIndexedNotNull diff
             } catch (executeError: Exception) {

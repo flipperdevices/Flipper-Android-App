@@ -45,7 +45,6 @@ class ManifestStorageImpl @Inject constructor(
     }
 
     override suspend fun load(): ManifestFile? = withLockResult(mutex, "load") {
-        return@withLockResult null
         return@withLockResult loadInternal()
     }
 

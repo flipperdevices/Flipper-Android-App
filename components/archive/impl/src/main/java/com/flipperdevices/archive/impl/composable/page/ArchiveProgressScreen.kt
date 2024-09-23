@@ -180,7 +180,10 @@ private fun ComposableArchiveProgressScreenPreview() {
             inProgressState = SynchronizationState.InProgress.Default(
                 progress = 0.3f,
             ),
-            speed = FlipperSerialSpeed(10L, 10L),
+            speed = FlipperSerialSpeed(
+                receiveBytesInSec = 10L,
+                transmitBytesInSec = 10L
+            ),
             onCancel = {}
         )
     }
@@ -198,7 +201,10 @@ private fun ComposableArchiveProgressFileScreenPreview() {
                 progress = 0.3f,
                 fileName = "file.ir"
             ),
-            speed = FlipperSerialSpeed(10L, 10L),
+            speed = FlipperSerialSpeed(
+                receiveBytesInSec = 10L,
+                transmitBytesInSec = 10L
+            ),
             onCancel = {}
         )
     }

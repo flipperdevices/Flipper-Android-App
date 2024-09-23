@@ -22,9 +22,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.flipperdevices.core.progress.ProgressListener
-
-import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
@@ -34,15 +31,10 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
-object Delayer {
-    suspend fun makeDelay() = delay(800L)
-}
 
 interface SynchronizationTask {
 
@@ -140,7 +132,7 @@ class SynchronizationTaskImpl(
         serviceApi.connectionInformationApi.getConnectionStateFlow()
             .filter {
                 it is ConnectionState.Ready &&
-                        it.supportedState == FlipperSupportedState.READY
+                    it.supportedState == FlipperSupportedState.READY
             }.first()
         startInternal(
             scope,

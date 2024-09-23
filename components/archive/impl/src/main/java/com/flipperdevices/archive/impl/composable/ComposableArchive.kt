@@ -32,6 +32,7 @@ import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTit
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -42,7 +43,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 
 @Composable
 fun ComposableArchive(

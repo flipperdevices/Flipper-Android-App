@@ -12,7 +12,6 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
