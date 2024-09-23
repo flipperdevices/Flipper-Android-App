@@ -9,9 +9,13 @@ class ProgressWrapperTrackerTest {
     @Test
     fun `simple progress`() = runTest {
         var percent = 0f
-        val tracker = ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
-            percent = it
-        })
+        val tracker = ProgressWrapperTracker(
+            min = 0f,
+            max = 1f,
+            progressListener = { progress, _ ->
+                percent = progress
+            }
+        )
 
         tracker.report(5, 10)
 
@@ -21,9 +25,13 @@ class ProgressWrapperTrackerTest {
     @Test
     fun `wrap progress`() = runTest {
         var percent = 0f
-        val originalTracker = ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
-            percent = it
-        })
+        val originalTracker = ProgressWrapperTracker(
+            min = 0f,
+            max = 1f,
+            progressListener = { progress, _ ->
+                percent = progress
+            }
+        )
         val tracker = ProgressWrapperTracker(
             min = 0.25f,
             max = 0.75f,

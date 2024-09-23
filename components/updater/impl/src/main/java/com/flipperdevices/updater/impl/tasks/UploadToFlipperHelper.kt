@@ -51,7 +51,7 @@ class UploadToFlipperHelperImpl @Inject constructor(
             requestApi,
             updaterFolder,
             flipperPath
-        ) { percent ->
+        ) { percent, _ ->
             withContext(FlipperDispatchers.workStealingDispatcher) {
                 stateListener(
                     UpdatingState.UploadOnFlipper(

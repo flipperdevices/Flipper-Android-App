@@ -9,13 +9,19 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.TaskSynchronizationComponent
+import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
+import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
+import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressListener
+import com.flipperdevices.core.progress.ProgressListener.Companion.onProgress
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
@@ -76,6 +82,48 @@ class SynchronizationTaskImpl(
     LogTagProvider {
     override val TAG = "SynchronizationTask"
 
+    private fun mapState(
+        detail: ProgressListener.Detail?,
+        progress: Float,
+        speed: Long
+    ): SynchronizationState.InProgress {
+        return when (detail) {
+            is DiffKeyExecutor.DiffProgressDetail -> {
+                SynchronizationState.InProgress.FileInProgress(
+                    progress = progress,
+                    fileName = detail.fileName,
+                    speed = speed
+                )
+            }
+
+            is TimestampSynchronizationChecker.TimestampsProgressDetail -> {
+                SynchronizationState.InProgress.Prepare(
+                    progress = progress,
+                    speed = speed
+                )
+            }
+
+            is FavoriteSynchronization.FavoritesProgressDetail -> {
+                SynchronizationState.InProgress.Favorites(
+                    progress = progress,
+                    speed = speed
+                )
+            }
+            is FlipperHashRepository.HashesProgressDetail -> {
+                SynchronizationState.InProgress.PrepareHashes(
+                    progress = progress,
+                    speed = speed,
+                    keyType = detail.keyType
+                )
+            }
+
+            else -> SynchronizationState.InProgress.Default(
+                progress = progress,
+                speed = speed
+            )
+        }
+    }
+
     override suspend fun startInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -91,9 +139,15 @@ class SynchronizationTaskImpl(
         startInternal(
             scope,
             serviceApi,
-            ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
-                stateListener(SynchronizationState.InProgress(it))
-            })
+            ProgressWrapperTracker(
+                min = 0f,
+                max = 1f,
+                progressListener = { progress, detail ->
+                    val speed = serviceApi.requestApi.getSpeed().value.transmitBytesInSec
+                    val state = mapState(detail, progress, speed)
+                    stateListener(state)
+                }
+            )
         )
         stateListener(SynchronizationState.Finished)
     }

@@ -10,11 +10,14 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FavoriteSynchronization {
+    data object FavoritesProgressDetail : ProgressListener.Detail
+
     suspend fun syncFavorites(progressTracker: ProgressWrapperTracker)
 }
 
@@ -29,7 +32,10 @@ class FavoriteSynchronizationImpl @Inject constructor(
 
     override suspend fun syncFavorites(progressTracker: ProgressWrapperTracker) {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
-        progressTracker.onProgress(current = 0.5f)
+        progressTracker.onProgress(
+            current = 0.5f,
+            detail = FavoriteSynchronization.FavoritesProgressDetail
+        )
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
             .compareFlipperFavoritesWithManifest(favoritesFromFlipper)
@@ -75,6 +81,9 @@ class FavoriteSynchronizationImpl @Inject constructor(
             favorites = favoritesOnAndroid.map { it.path },
             favoritesOnFlipper = newFavoritesOnFlipper
         )
-        progressTracker.onProgress(current = 1f)
+        progressTracker.onProgress(
+            current = 1f,
+            detail = FavoriteSynchronization.FavoritesProgressDetail
+        )
     }
 }

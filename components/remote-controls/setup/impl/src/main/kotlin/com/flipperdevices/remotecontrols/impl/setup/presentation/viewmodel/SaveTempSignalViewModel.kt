@@ -47,7 +47,7 @@ class SaveTempSignalViewModel @Inject constructor(
                         flipperStorageApi.upload(
                             pathOnFlipper = fAbsolutePath,
                             fileOnAndroid = deviceFile.toFile(),
-                            progressListener = { currentProgress ->
+                            progressListener = { currentProgress, _ ->
                                 _state.value = SaveTempSignalApi.State.Uploading(
                                     progressPercent = index + currentProgress
                                 )

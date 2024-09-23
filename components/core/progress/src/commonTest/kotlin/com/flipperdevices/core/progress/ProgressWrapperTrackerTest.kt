@@ -1,5 +1,6 @@
 package com.flipperdevices.core.progress
 
+import com.flipperdevices.core.progress.ProgressListener.Companion.onProgress
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

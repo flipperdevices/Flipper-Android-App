@@ -10,6 +10,7 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
@@ -20,6 +21,8 @@ import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 interface TimestampSynchronizationChecker {
+    data object TimestampsProgressDetail : ProgressListener.Detail
+
     suspend fun fetchFoldersTimestamp(
         types: Array<FlipperKeyType>,
         progressTracker: ProgressWrapperTracker
@@ -45,6 +48,12 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
 
         val resultCounter = AtomicLong(0)
 
+        progressTracker.report(
+            current = resultCounter.get(),
+            max = types.size.toLong(),
+            detail = TimestampSynchronizationChecker.TimestampsProgressDetail
+        )
+
         val timestampHashes = types.toList().pmap { type ->
             val response = requestApi.request(
                 flowOf(
@@ -55,7 +64,11 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
                     }.wrapToRequest()
                 )
             )
-            progressTracker.report(resultCounter.incrementAndGet(), types.size.toLong())
+            progressTracker.report(
+                current = resultCounter.incrementAndGet(),
+                max = types.size.toLong(),
+                detail = TimestampSynchronizationChecker.TimestampsProgressDetail
+            )
             type to response
         }.associate { (type, response) ->
             val timestamp = if (response.hasStorageTimestampResponse()) {
