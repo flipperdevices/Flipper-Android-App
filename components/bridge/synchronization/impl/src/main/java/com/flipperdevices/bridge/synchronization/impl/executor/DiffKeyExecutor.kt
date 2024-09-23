@@ -9,6 +9,8 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
@@ -17,13 +19,13 @@ import javax.inject.Inject
 interface DiffKeyExecutor {
     data class DiffProgressDetail(
         val fileName: String
-    ) : ProgressListener.Detail
+    ) : DetailedProgressListener.Detail
 
     suspend fun executeBatch(
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyDiff>
 }
 
@@ -41,7 +43,7 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyDiff> {
         return diffs.sortedWith(
             compareBy(

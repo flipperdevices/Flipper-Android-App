@@ -11,7 +11,44 @@ class ProgressWrapperTracker(
     private val min: Float = MIN_PERCENT,
     private val max: Float = MAX_PERCENT
 ) : ProgressListener {
-    override suspend fun onProgress(current: Float, detail: ProgressListener.Detail?) {
+    override suspend fun onProgress(current: Float) {
+        val diff = max - min
+        if (diff <= 0) { // This means that our min and max are originally incorrect
+            return
+        }
+
+        val currentPercent = min + current * diff
+
+        progressListener.onProgress(min(min(currentPercent, max), MAX_PERCENT))
+    }
+
+    suspend fun report(current: Long, max: Long) {
+        if (current > max) {
+            onProgress(MAX_PERCENT)
+            if (BuildKonfig.IS_LOG_ENABLED) {
+                error("Current larger then max (current: $current, max: $max)")
+            }
+            return
+        }
+        if (max == 0L) {
+            onProgress(MAX_PERCENT)
+            if (BuildKonfig.IS_LOG_ENABLED) {
+                error("Max is zero")
+            }
+            return
+        }
+
+        val percent = current.toDouble() / max
+        onProgress(percent.toFloat())
+    }
+}
+
+class DetailedProgressWrapperTracker(
+    private val progressListener: DetailedProgressListener,
+    private val min: Float = MIN_PERCENT,
+    private val max: Float = MAX_PERCENT
+) : DetailedProgressListener {
+    override suspend fun onProgress(current: Float, detail: DetailedProgressListener.Detail) {
         val diff = max - min
         if (diff <= 0) { // This means that our min and max are originally incorrect
             return
@@ -22,7 +59,7 @@ class ProgressWrapperTracker(
         progressListener.onProgress(min(min(currentPercent, max), MAX_PERCENT), detail)
     }
 
-    suspend fun report(current: Long, max: Long, detail: ProgressListener.Detail? = null) {
+    suspend fun report(current: Long, max: Long, detail: DetailedProgressListener.Detail) {
         if (current > max) {
             onProgress(MAX_PERCENT, detail)
             if (BuildKonfig.IS_LOG_ENABLED) {

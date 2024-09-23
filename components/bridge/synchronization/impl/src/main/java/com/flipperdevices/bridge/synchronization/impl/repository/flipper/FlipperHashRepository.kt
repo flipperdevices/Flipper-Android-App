@@ -11,6 +11,8 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.storage.Storage
@@ -23,11 +25,11 @@ const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 interface FlipperHashRepository {
     data class HashesProgressDetail(
         val keyType: FlipperKeyType
-    ) : ProgressListener.Detail
+    ) : DetailedProgressListener.Detail
 
     suspend fun getHashesForType(
         keyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyWithHash>
 }
 
@@ -39,7 +41,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
 
     override suspend fun getHashesForType(
         keyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyWithHash> {
         tracker.onProgress(
             current = 0f,

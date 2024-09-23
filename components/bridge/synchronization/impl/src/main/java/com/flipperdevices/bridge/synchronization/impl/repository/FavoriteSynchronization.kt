@@ -10,15 +10,17 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FavoriteSynchronization {
-    data object FavoritesProgressDetail : ProgressListener.Detail
+    data object FavoritesProgressDetail : DetailedProgressListener.Detail
 
-    suspend fun syncFavorites(progressTracker: ProgressWrapperTracker)
+    suspend fun syncFavorites(progressTracker: DetailedProgressWrapperTracker)
 }
 
 @ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
@@ -30,7 +32,7 @@ class FavoriteSynchronizationImpl @Inject constructor(
 ) : FavoriteSynchronization, LogTagProvider {
     override val TAG = "FavoriteSynchronization"
 
-    override suspend fun syncFavorites(progressTracker: ProgressWrapperTracker) {
+    override suspend fun syncFavorites(progressTracker: DetailedProgressWrapperTracker) {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
         progressTracker.onProgress(
             current = 0.5f,

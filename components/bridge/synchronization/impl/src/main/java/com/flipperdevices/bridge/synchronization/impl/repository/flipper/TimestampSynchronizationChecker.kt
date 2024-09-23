@@ -10,6 +10,8 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.protobuf.main
@@ -21,11 +23,11 @@ import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 interface TimestampSynchronizationChecker {
-    data object TimestampsProgressDetail : ProgressListener.Detail
+    data object TimestampsProgressDetail : DetailedProgressListener.Detail
 
     suspend fun fetchFoldersTimestamp(
         types: Array<FlipperKeyType>,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Map<FlipperKeyType, Long?>
 }
 
@@ -40,7 +42,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
 
     override suspend fun fetchFoldersTimestamp(
         types: Array<FlipperKeyType>,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Map<FlipperKeyType, Long?> {
         if (!flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
             return types.associateWith { null }

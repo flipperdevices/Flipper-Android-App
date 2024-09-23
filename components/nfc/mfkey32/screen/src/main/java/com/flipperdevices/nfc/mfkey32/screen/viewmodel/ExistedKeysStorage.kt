@@ -101,7 +101,7 @@ class ExistedKeysStorage(
                 flipperStorageApi.download(
                     pathOnFlipper = path,
                     fileOnAndroid = tmpFile.toFile(),
-                    progressListener = { progress, _ ->
+                    progressListener = { progress ->
                         info { "Download dict with progress $progress" }
                     }
                 )
