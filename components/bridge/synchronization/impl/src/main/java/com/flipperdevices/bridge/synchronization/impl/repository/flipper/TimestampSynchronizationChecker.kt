@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.wrapToRequest
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.synchronization.impl.Delayer
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
@@ -55,6 +56,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
             max = types.size.toLong(),
             detail = TimestampSynchronizationChecker.TimestampsProgressDetail
         )
+        Delayer.makeDelay()
 
         val timestampHashes = types.toList().pmap { type ->
             val response = requestApi.request(

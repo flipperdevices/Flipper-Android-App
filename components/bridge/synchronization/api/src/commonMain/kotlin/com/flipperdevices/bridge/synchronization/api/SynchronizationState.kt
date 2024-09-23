@@ -9,34 +9,22 @@ sealed interface SynchronizationState {
 
     sealed interface InProgress : SynchronizationState {
         val progress: Float
-        val speed: Long
 
         data class FileInProgress(
             override val progress: Float,
-            override val speed: Long,
             val fileName: String
         ) : InProgress
 
-        data class Default(
-            override val progress: Float,
-            override val speed: Long,
-        ) : InProgress
+        data class Default(override val progress: Float) : InProgress
 
-        data class Prepare(
-            override val progress: Float,
-            override val speed: Long,
-        ) : InProgress
+        data class Prepare(override val progress: Float) : InProgress
 
         data class PrepareHashes(
             override val progress: Float,
-            override val speed: Long,
             val keyType: FlipperKeyType
         ) : InProgress
 
-        data class Favorites(
-            override val progress: Float,
-            override val speed: Long,
-        ) : InProgress
+        data class Favorites(override val progress: Float) : InProgress
     }
 
     data object Finished : SynchronizationState

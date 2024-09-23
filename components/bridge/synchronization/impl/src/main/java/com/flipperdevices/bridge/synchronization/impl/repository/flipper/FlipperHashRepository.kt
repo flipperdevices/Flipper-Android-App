@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFileType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.rpc.api.model.NameWithHash
+import com.flipperdevices.bridge.synchronization.impl.Delayer
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.core.log.LogTagProvider
@@ -50,6 +51,7 @@ class FlipperHashRepositoryImpl @Inject constructor(
         val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, keyType.flipperDir).path
         val files = flipperStorageApi.listingDirectoryWithMd5(fileTypePath)
         info { "Receive ${files.size} files" }
+        Delayer.makeDelay()
         tracker.onProgress(
             current = 1f,
             detail = FlipperHashRepository.HashesProgressDetail(keyType)

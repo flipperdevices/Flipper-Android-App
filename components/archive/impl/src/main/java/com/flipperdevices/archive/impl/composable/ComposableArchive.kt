@@ -42,6 +42,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlinx.collections.immutable.ImmutableList
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 
 @Composable
 fun ComposableArchive(
@@ -55,13 +56,18 @@ fun ComposableArchive(
     categories: ImmutableList<CategoryItem>,
     deletedCategory: CategoryItem,
     lazyListState: LazyListState,
+    speed: FlipperSerialSpeed?,
     onRefresh: () -> Unit,
     cancelSynchronization: () -> Unit
 ) {
     val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
 
     if (synchronizationState is SynchronizationState.InProgress) {
-        ArchiveProgressScreen(synchronizationState, cancelSynchronization)
+        ArchiveProgressScreen(
+            inProgressState = synchronizationState,
+            onCancel = cancelSynchronization,
+            speed = speed
+        )
     } else {
         ComposableArchiveReady(
             synchronizationUiApi = synchronizationUiApi,
@@ -75,7 +81,7 @@ fun ComposableArchive(
             onOpenCategory = onOpenCategory,
             categories = categories,
             deletedCategory = deletedCategory,
-            lazyListState = lazyListState
+            lazyListState = lazyListState,
         )
     }
 }

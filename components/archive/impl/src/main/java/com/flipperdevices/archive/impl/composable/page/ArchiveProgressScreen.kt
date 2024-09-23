@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.R
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.roundPercentToString
 import com.flipperdevices.core.ktx.jre.toFormattedSize
@@ -115,6 +116,7 @@ private fun AnimatedStatusComposable(inProgressState: SynchronizationState.InPro
 fun ArchiveProgressScreen(
     inProgressState: SynchronizationState.InProgress,
     onCancel: () -> Unit,
+    speed: FlipperSerialSpeed?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -143,10 +145,13 @@ fun ArchiveProgressScreen(
         Spacer(Modifier.height(8.dp))
         Text(
             modifier = Modifier,
-            text = LocalContext.current.getString(
-                R.string.archive_speed,
-                inProgressState.speed.toFormattedSize()
-            ),
+            text = when (speed) {
+                null -> ""
+                else -> LocalContext.current.getString(
+                    R.string.archive_speed,
+                    speed.receiveBytesInSec.toFormattedSize()
+                )
+            },
             style = LocalTypography.current.bodyM14,
             color = LocalPalletV2.current.text.body.secondary,
             textAlign = TextAlign.Center
@@ -174,8 +179,8 @@ private fun ComposableArchiveProgressScreenPreview() {
         ArchiveProgressScreen(
             inProgressState = SynchronizationState.InProgress.Default(
                 progress = 0.3f,
-                speed = 10L
             ),
+            speed = FlipperSerialSpeed(10L, 10L),
             onCancel = {}
         )
     }
@@ -191,9 +196,9 @@ private fun ComposableArchiveProgressFileScreenPreview() {
         ArchiveProgressScreen(
             inProgressState = SynchronizationState.InProgress.FileInProgress(
                 progress = 0.3f,
-                speed = 10L,
                 fileName = "file.ir"
             ),
+            speed = FlipperSerialSpeed(10L, 10L),
             onCancel = {}
         )
     }

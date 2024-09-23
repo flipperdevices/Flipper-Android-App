@@ -34,10 +34,15 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+object Delayer {
+    suspend fun makeDelay() = delay(800L)
+}
 
 interface SynchronizationTask {
 
@@ -91,42 +96,36 @@ class SynchronizationTaskImpl(
     private fun mapState(
         detail: DetailedProgressListener.Detail?,
         progress: Float,
-        speed: Long
     ): SynchronizationState.InProgress {
         return when (detail) {
             is DiffKeyExecutor.DiffProgressDetail -> {
                 SynchronizationState.InProgress.FileInProgress(
                     progress = progress,
                     fileName = detail.fileName,
-                    speed = speed
                 )
             }
 
             is TimestampSynchronizationChecker.TimestampsProgressDetail -> {
                 SynchronizationState.InProgress.Prepare(
                     progress = progress,
-                    speed = speed
                 )
             }
 
             is FavoriteSynchronization.FavoritesProgressDetail -> {
                 SynchronizationState.InProgress.Favorites(
                     progress = progress,
-                    speed = speed
                 )
             }
 
             is FlipperHashRepository.HashesProgressDetail -> {
                 SynchronizationState.InProgress.PrepareHashes(
                     progress = progress,
-                    speed = speed,
                     keyType = detail.keyType
                 )
             }
 
             else -> SynchronizationState.InProgress.Default(
                 progress = progress,
-                speed = speed
             )
         }
     }
@@ -150,8 +149,7 @@ class SynchronizationTaskImpl(
                 min = 0f,
                 max = 1f,
                 progressListener = { progress, detail ->
-                    val speed = serviceApi.requestApi.getSpeed().value.transmitBytesInSec
-                    val state = mapState(detail, progress, speed)
+                    val state = mapState(detail, progress)
                     stateListener(state)
                 }
             )
