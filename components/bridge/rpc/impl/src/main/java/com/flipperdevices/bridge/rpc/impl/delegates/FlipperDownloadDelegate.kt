@@ -47,7 +47,7 @@ class FlipperDownloadDelegate @Inject constructor() : LogTagProvider {
             val data = response.storageReadResponse.file.data
             fileOnAndroid.appendBytes(data.toByteArray())
             totalDownloaded += data.size()
-            progressListener.report(
+            progressListener.onProgress(
                 totalDownloaded,
                 totalSize
             )

@@ -10,6 +10,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.deeplink.model.cleanUp
 import com.flipperdevices.filemanager.impl.model.DownloadProgress
 import com.flipperdevices.filemanager.impl.model.ShareState
 import com.flipperdevices.filemanager.impl.viewmodels.helpers.UploadFileHelper

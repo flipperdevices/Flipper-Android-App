@@ -55,7 +55,7 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
                     }.wrapToRequest()
                 )
             )
-            progressTracker.report(resultCounter.incrementAndGet(), types.size.toLong())
+            progressTracker.onProgress(resultCounter.incrementAndGet(), types.size.toLong())
             type to response
         }.associate { (type, response) ->
             val timestamp = if (response.hasStorageTimestampResponse()) {

@@ -6,10 +6,10 @@ import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInforma
 import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
+import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.InfoRequest
 import dagger.assisted.Assisted
@@ -20,6 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -139,19 +140,18 @@ class FStorageInfoFeatureApiImpl @AssistedInject constructor(
                     path = storagePath
                 )
             ).wrapToRequest()
-        ).collect { response ->
-            if (response.command_status != CommandStatus.OK) {
+        ).toThrowableFlow()
+            .catch {
                 spaceInfoReceiver(StorageStats.Error)
-                return@collect
-            }
-            val storageInfoResponse = response.storage_info_response ?: return@collect
-            spaceInfoReceiver(
-                StorageStats.Loaded(
-                    total = storageInfoResponse.total_space,
-                    free = storageInfoResponse.free_space
+            }.collect { response ->
+                val storageInfoResponse = response.storage_info_response ?: return@collect
+                spaceInfoReceiver(
+                    StorageStats.Loaded(
+                        total = storageInfoResponse.total_space,
+                        free = storageInfoResponse.free_space
+                    )
                 )
-            )
-        }
+            }
     }
 
     @AssistedFactory

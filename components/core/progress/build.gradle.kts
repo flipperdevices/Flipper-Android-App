@@ -7,6 +7,7 @@ android.namespace = "com.flipperdevices.core.progress"
 
 commonDependencies {
     implementation(projects.components.core.buildKonfig)
+    implementation(libs.okio)
 }
 
 commonTestDependencies {

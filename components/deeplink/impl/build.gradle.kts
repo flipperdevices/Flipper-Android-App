@@ -15,7 +15,6 @@ dependencies {
     implementation(projects.components.keyparser.api)
 
     implementation(projects.components.deeplink.api)
-    implementation(projects.components.filemanager.api)
     implementation(projects.components.share.api)
 
     implementation(libs.annotations)

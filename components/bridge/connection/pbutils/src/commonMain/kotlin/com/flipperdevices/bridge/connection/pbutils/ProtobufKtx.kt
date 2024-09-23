@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.pbutils
 
-import com.flipperdevices.bridge.connection.pbutils.utils.FixedLengthSource
+import com.flipperdevices.core.ktx.jre.limit
 import com.flipperdevices.protobuf.Main
 import com.squareup.wire.ProtoAdapter
 import com.squareup.wire.ProtoReader
@@ -34,9 +34,13 @@ fun Main.encodeWithDelimitedSize(): ByteArray {
 
 fun <T> ProtoAdapter<T>.decodeDelimitedPackage(stream: InputStream): T {
     val length = stream.readDelimitedLength()
-    val limitedSource = FixedLengthSource(stream.source(), length, truncate = true).buffer()
-    val limitedReader = ProtoReader(limitedSource)
-    return decode(limitedReader)
+    return stream.source()
+        .limit(length, throwOnByteShortage = true)
+        .buffer()
+        .use { limitedSource ->
+            val limitedReader = ProtoReader(limitedSource)
+            decode(limitedReader)
+        }
 }
 
 private fun InputStream.readDelimitedLength(): Long {

@@ -40,7 +40,7 @@ class FlipperUploadDelegate @Inject constructor() : LogTagProvider {
                     data = it,
                     onSendCallback = {
                         currentProgress += it.storageWriteRequest.file.data.size()
-                        progressListener.report(currentProgress, lenght)
+                        progressListener.onProgress(currentProgress, lenght)
                     }
                 )
             }

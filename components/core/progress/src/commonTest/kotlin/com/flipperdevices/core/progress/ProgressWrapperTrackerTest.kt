@@ -37,9 +37,9 @@ class ProgressWrapperTrackerTest {
     }
 
     @Test
-    fun report_whenCurrentIsBiggerThanMax_thenReturnDefaultMaxWithDebugException() = runTest {
+    fun onProgress_whenCurrentIsBiggerThanMax_thenReturnDefaultMaxWithDebugException() = runTest {
         try {
-            subject.report(10, 1)
+            subject.onProgress(10, 1)
             coVerify(exactly = 1) { progressListener.onProgress(100f) }
         } catch (e: Exception) {
             Assert.assertTrue(e is IllegalStateException)
@@ -47,9 +47,9 @@ class ProgressWrapperTrackerTest {
     }
 
     @Test
-    fun report_whenMaxIsEqualToZero_thenReturnDefaultMaxWithDebugException() = runTest {
+    fun onProgress_whenMaxIsEqualToZero_thenReturnDefaultMaxWithDebugException() = runTest {
         try {
-            subject.report(10, 0)
+            subject.onProgress(10, 0)
             coVerify(exactly = 1) { progressListener.onProgress(100f) }
         } catch (e: Exception) {
             Assert.assertTrue(e is IllegalStateException)
@@ -57,8 +57,8 @@ class ProgressWrapperTrackerTest {
     }
 
     @Test
-    fun report_whenWithCorrectValues_thenCalculateValue() = runTest {
-        subject.report(10, 20)
+    fun onProgress_whenWithCorrectValues_thenCalculateValue() = runTest {
+        subject.onProgress(10, 20)
 
         coVerify(exactly = 1) { progressListener.onProgress(1f) }
     }

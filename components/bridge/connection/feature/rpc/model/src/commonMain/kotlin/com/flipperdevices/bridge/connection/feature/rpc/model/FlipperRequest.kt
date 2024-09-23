@@ -6,7 +6,8 @@ import com.flipperdevices.protobuf.Main
 data class FlipperRequest(
     val data: Main,
     val createTimestampNanos: Long = TimeHelper.getNanoTime(),
-    val priority: FlipperRequestPriority = FlipperRequestPriority.DEFAULT
+    val priority: FlipperRequestPriority = FlipperRequestPriority.DEFAULT,
+    val onSendCallback: (suspend () -> Unit)? = null
 )
 
 fun Main.wrapToRequest(

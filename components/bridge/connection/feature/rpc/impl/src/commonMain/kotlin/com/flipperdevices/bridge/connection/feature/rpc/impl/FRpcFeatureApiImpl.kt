@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.feature.rpc.impl
 
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpc.exception.resultOrError
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
@@ -60,7 +61,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
 
     override fun request(
         command: FlipperRequest
-    ): Flow<Main> = lagsDetector.wrapPendingAction(
+    ): Flow<Result<Main>> = lagsDetector.wrapPendingAction(
         command,
         channelFlow {
             verbose { "Pending commands count: ${requestListeners.size}. Request $command" }
@@ -74,7 +75,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
 
             // Add answer listener to listeners
             requestListeners[uniqueId] = {
-                send(it)
+                send(it.resultOrError())
                 if (!it.has_next) {
                     requestListeners.remove(uniqueId)
                     close()
@@ -90,10 +91,39 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
         }
     )
 
+    override suspend fun requestOnce(
+        command: FlipperRequest
+    ): Result<Main> = lagsDetector.wrapPendingAction(command) {
+        // Generate unique ID for each command
+        val uniqueId = findEmptyId()
+
+        val commandAnswerJob = scope.async {
+            val result = awaitCommandAnswer(uniqueId)
+            return@async result
+        }
+
+        val requestWithId = command.copy(
+            data = command.data.copy(
+                command_id = uniqueId
+            )
+        )
+
+        requestStorage.sendRequest(requestWithId)
+
+        val response = try {
+            commandAnswerJob.await()
+        } finally {
+            withContext(NonCancellable) {
+                commandAnswerJob.cancelAndJoin()
+            }
+        }
+        return@wrapPendingAction response.resultOrError()
+    }
+
     override suspend fun request(
         commandFlow: Flow<FlipperRequest>,
         onCancel: suspend (Int) -> Unit
-    ): Main = lagsDetector.wrapPendingAction(null) {
+    ): Result<Main> = lagsDetector.wrapPendingAction(null) {
         verbose { "Pending commands count: ${requestListeners.size}. Request command flow" }
 
         // Generate unique ID for each command
@@ -121,7 +151,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
             }
         }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
 
-        return@wrapPendingAction try {
+        val response = try {
             commandAnswerJob.await()
         } finally {
             withContext(NonCancellable) {
@@ -133,6 +163,8 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
                 }
             }
         }
+
+        return@wrapPendingAction response.resultOrError()
     }
 
     override suspend fun requestWithoutAnswer(vararg commands: FlipperRequest) {

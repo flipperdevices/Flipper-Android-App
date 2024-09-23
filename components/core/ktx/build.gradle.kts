@@ -10,6 +10,7 @@ commonDependencies {
     implementation(projects.components.core.buildKonfig)
 
     implementation(libs.kotlin.coroutines)
+    implementation(libs.okio)
 }
 
 androidDependencies {

@@ -19,7 +19,7 @@ internal class DeprecatedFlipperFullInfoRpcApi : FlipperFullInfoRpcApi<String>(
                 system_device_info_request = DeviceInfoRequest()
             ).wrapToRequest()
         ).collect { response ->
-            val systemDeviceInfoResponse = response.system_device_info_response ?: return@collect
+            val systemDeviceInfoResponse = response.getOrNull()?.system_device_info_response ?: return@collect
             onNewPair(
                 systemDeviceInfoResponse.key,
                 systemDeviceInfoResponse.value_
@@ -30,7 +30,7 @@ internal class DeprecatedFlipperFullInfoRpcApi : FlipperFullInfoRpcApi<String>(
                 system_power_info_request = PowerInfoRequest()
             ).wrapToRequest()
         ).collect { response ->
-            val systemPowerInfoResponse = response.system_power_info_response ?: return@collect
+            val systemPowerInfoResponse = response.getOrNull()?.system_power_info_response ?: return@collect
             onNewPair(
                 systemPowerInfoResponse.key,
                 systemPowerInfoResponse.value_
