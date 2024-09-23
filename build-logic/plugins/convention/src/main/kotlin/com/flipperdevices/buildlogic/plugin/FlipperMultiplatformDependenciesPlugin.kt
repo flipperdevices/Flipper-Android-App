@@ -8,15 +8,7 @@ import org.gradle.kotlin.dsl.create
 class FlipperMultiplatformDependenciesPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.kotlin.sourceSets.forEach { sourceSet ->
-            val fullSourceSetName = sourceSet.name
-            val noMainSourceSetName = if (fullSourceSetName.endsWith(MAIN_SOURCE_SET_POSTFIX)) {
-                fullSourceSetName.replace(
-                    oldValue = MAIN_SOURCE_SET_POSTFIX,
-                    newValue = ""
-                )
-            } else {
-                fullSourceSetName
-            }
+            val noMainSourceSetName = sourceSet.name.removeSuffix(MAIN_SOURCE_SET_POSTFIX)
             sourceSet.dependencies {
                 target.extensions.create(
                     "${noMainSourceSetName}Dependencies",
