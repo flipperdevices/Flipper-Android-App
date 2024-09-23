@@ -1,11 +1,11 @@
-package com.flipperdevices.bridge.connection.pbutils.utils
+package com.flipperdevices.core.ktx.jre
 
 import okio.Buffer
 import okio.ForwardingSource
 import okio.IOException
 import okio.Source
 
-// Copy from okio.internal.FixedLenghtSource
+// Copy from okio.internal.FixedLengthSource
 internal class FixedLengthSource(
     delegate: Source,
     private val size: Long,
@@ -27,6 +27,7 @@ internal class FixedLengthSource(
                 if (remaining == 0L) return -1L // Already read exactly the promised size.
                 minOf(byteCount, remaining)
             }
+
             else -> byteCount
         }
 
@@ -52,4 +53,12 @@ internal class FixedLengthSource(
         write(scratch, newSize)
         scratch.clear()
     }
+}
+
+fun Source.limit(size: Long): Source {
+    return FixedLengthSource(
+        delegate = this,
+        size = size,
+        truncate = true
+    )
 }

@@ -16,5 +16,6 @@ wire {
 }
 
 commonDependencies {
+    implementation(projects.components.core.ktx)
     implementation(libs.okio)
 }

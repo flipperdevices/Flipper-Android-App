@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.FlipperStorageProvider
+import com.flipperdevices.core.ktx.jre.limit
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -23,6 +24,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import okio.buffer
+import okio.use
 
 private const val LIMITED_SIZE_BYTES = 1024L * 1024L // 1MB
 
@@ -119,9 +122,14 @@ class EditorViewModel @AssistedInject constructor(
             error(exception) { "Failed download $shareFile" }
             editorStateFlow.emit(EditorState.Error)
         }.onSuccess {
-            val content = storageProvider.fileSystem.read(editorFile) {
-                readUtf8(LIMITED_SIZE_BYTES)
-            }
+            val content = storageProvider
+                .fileSystem
+                .source(editorFile)
+                .limit(LIMITED_SIZE_BYTES)
+                .buffer()
+                .use {
+                    it.readUtf8()
+                }
             val metaSize = storageProvider.fileSystem.metadataOrNull(editorFile)?.size
             val isTooLarge = if (metaSize != null) {
                 metaSize > LIMITED_SIZE_BYTES
