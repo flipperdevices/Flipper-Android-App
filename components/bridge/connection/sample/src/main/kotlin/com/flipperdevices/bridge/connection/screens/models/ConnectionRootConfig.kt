@@ -11,5 +11,8 @@ sealed class ConnectionRootConfig {
     data object NoPermission : ConnectionRootConfig()
 
     @Serializable
+    data object FileManager : ConnectionRootConfig()
+
+    @Serializable
     data object Device : ConnectionRootConfig()
 }

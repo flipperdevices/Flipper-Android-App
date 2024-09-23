@@ -10,7 +10,7 @@ class ProgressWrapperTracker(
     private val progressListener: ProgressListener,
     private val min: Float = MIN_PERCENT,
     private val max: Float = MAX_PERCENT
-) : ProgressListener {
+) : ProgressListener, FixedProgressListener {
     override suspend fun onProgress(current: Float) {
         val diff = max - min
         if (diff <= 0) { // This means that our min and max are originally incorrect
@@ -22,7 +22,7 @@ class ProgressWrapperTracker(
         progressListener.onProgress(min(min(currentPercent, max), MAX_PERCENT))
     }
 
-    suspend fun report(current: Long, max: Long) {
+    override suspend fun onProgress(current: Long, max: Long) {
         if (current > max) {
             onProgress(MAX_PERCENT)
             if (BuildKonfig.IS_LOG_ENABLED) {

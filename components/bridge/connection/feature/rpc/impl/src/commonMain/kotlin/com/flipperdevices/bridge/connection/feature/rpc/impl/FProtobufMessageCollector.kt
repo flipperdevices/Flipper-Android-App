@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.pbutils.encodeWithDelimitedSize
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.protobuf.CommandStatus
@@ -71,6 +72,11 @@ class FProtobufMessageCollector @AssistedInject constructor(
                 val request = requestStorage.getNextRequest()
                 if (request != null) {
                     serialApi.sendBytes(request.data.encodeWithDelimitedSize())
+                    runCatching {
+                        request.onSendCallback?.invoke()
+                    }.onFailure {
+                        error(it) { "Failed execute callback on send for $request" }
+                    }
                 }
             }
         }

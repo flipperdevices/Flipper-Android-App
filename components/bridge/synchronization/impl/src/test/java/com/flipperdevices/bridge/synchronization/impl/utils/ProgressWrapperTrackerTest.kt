@@ -13,7 +13,7 @@ class ProgressWrapperTrackerTest {
             percent = it
         })
 
-        tracker.report(5, 10)
+        tracker.onProgress(5, 10)
 
         Assert.assertEquals(0.5f, percent, 0.0001f)
     }
@@ -30,7 +30,7 @@ class ProgressWrapperTrackerTest {
             progressListener = originalTracker
         )
 
-        tracker.report(2, 10)
+        tracker.onProgress(2, 10)
 
         Assert.assertEquals(0.35f, percent, 0.0001f)
     }

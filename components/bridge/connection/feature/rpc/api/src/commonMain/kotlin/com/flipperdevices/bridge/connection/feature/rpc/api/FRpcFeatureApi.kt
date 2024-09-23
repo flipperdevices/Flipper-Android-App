@@ -12,9 +12,16 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
     fun notificationFlow(): Flow<Main>
 
     /**
-     * Send request and wait answer from them
+     * Send request and wait answer from them.
+     *
+     * You can use the extension Flow<Result<T>>.toThrowableFlow(): Flow<T> for more convenient error catching
      */
-    fun request(command: FlipperRequest): Flow<Main>
+    fun request(command: FlipperRequest): Flow<Result<Main>>
+
+    /**
+     * Send request and wait single answer
+     */
+    suspend fun requestOnce(command: FlipperRequest): Result<Main>
 
     /**
      * Send batch of request in flipper and wait single answer
@@ -22,7 +29,7 @@ interface FRpcFeatureApi : FDeviceFeatureApi {
     suspend fun request(
         commandFlow: Flow<FlipperRequest>,
         onCancel: suspend (Int) -> Unit = {}
-    ): Main
+    ): Result<Main>
 
     /**
      * Send batch request without waiting response

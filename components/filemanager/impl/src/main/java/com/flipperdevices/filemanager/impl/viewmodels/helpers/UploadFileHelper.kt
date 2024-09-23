@@ -10,6 +10,7 @@ import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.deeplink.model.openStream
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.file
 import com.flipperdevices.protobuf.storage.writeRequest

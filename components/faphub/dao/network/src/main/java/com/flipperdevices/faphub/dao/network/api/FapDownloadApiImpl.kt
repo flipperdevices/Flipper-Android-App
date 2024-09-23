@@ -59,7 +59,7 @@ private suspend fun HttpResponse.saveToFile(
             val bytes = packet.readBytes()
             file.appendBytes(bytes)
             if (totalBytes != null && totalBytes > 0) {
-                listener?.report(file.length(), totalBytes)
+                listener?.onProgress(file.length(), totalBytes)
             }
         }
     }

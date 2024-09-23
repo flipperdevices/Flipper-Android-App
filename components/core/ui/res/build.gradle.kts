@@ -1,9 +1,10 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.core.ui.res"
 
-dependencies {
+androidDependencies {
     implementation(libs.appcompat)
 }

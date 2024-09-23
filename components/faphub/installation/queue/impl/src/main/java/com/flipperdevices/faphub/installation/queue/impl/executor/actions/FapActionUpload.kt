@@ -47,7 +47,7 @@ class FapActionUpload @Inject constructor(
                     onSendCallback = {
                         uploadedBytes += it.storageWriteRequest.file.data.size()
                         runBlocking {
-                            progressWrapper.report(uploadedBytes, totalLength)
+                            progressWrapper.onProgress(uploadedBytes, totalLength)
                         }
                     }
                 )
