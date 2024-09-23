@@ -123,7 +123,7 @@ class UpdateRequestViewModelTest {
 
     @Test
     fun `Open update request with sync`() = runTest {
-        synchronizationState.emit(SynchronizationState.InProgress.Default(0f, 0L))
+        synchronizationState.emit(SynchronizationState.InProgress.Default(0f))
         viewModel.onUpdateRequest(requestServer)
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
