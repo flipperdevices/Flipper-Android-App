@@ -89,6 +89,7 @@ include(
     ":components:filemanager:impl",
     ":components:newfilemanager:api",
     ":components:newfilemanager:impl",
+    ":components:filemngr:ui-components",
 
     ":components:core:di",
     ":components:core:ktx",
