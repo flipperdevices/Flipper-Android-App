@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.filemanager.ui.components.R
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
+import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
 internal fun ItemCardEndBox(
@@ -28,7 +28,7 @@ internal fun ItemCardEndBox(
     when (selectionState) {
         ItemUiSelectionState.NONE -> {
             Icon(
-                painter = painterResource(R.drawable.ic_more_points_white),
+                painter = painterResource(FR.drawable.ic_more_points_white),
                 tint = LocalPalletV2.current.action.neutral.icon.tertiary.default,
                 contentDescription = null,
                 modifier = Modifier

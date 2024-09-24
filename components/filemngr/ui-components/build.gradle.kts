@@ -7,6 +7,7 @@ android.namespace = "com.flipperdevices.filemanager.ui.components"
 
 dependencies {
     implementation(projects.components.core.log)
+    implementation(projects.components.core.ktx)
 
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.ktx)
