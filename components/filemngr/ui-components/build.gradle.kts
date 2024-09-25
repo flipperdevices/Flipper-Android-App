@@ -18,6 +18,9 @@ dependencies {
     implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
 
+    implementation(libs.okio)
+    implementation(libs.okio.fake)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
