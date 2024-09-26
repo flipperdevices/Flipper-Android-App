@@ -11,14 +11,14 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FolderKeySynchronization {
     suspend fun syncFolder(
         flipperKeyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): Int
 }
 
@@ -35,7 +35,7 @@ class FolderKeySynchronizationImpl @Inject constructor(
 
     override suspend fun syncFolder(
         flipperKeyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): Int {
         info { "Start synchronize $flipperKeyType" }
         val androidKeys = simpleKeyApi.getExistKeys(flipperKeyType)
@@ -43,7 +43,7 @@ class FolderKeySynchronizationImpl @Inject constructor(
         info { "Finish receive hashes from Android for $flipperKeyType: $androidHashes" }
         val flipperHashes = flipperHashRepository.getHashesForType(
             flipperKeyType,
-            ProgressWrapperTracker(
+            DetailedProgressWrapperTracker(
                 min = 0f,
                 max = 0.5f,
                 progressListener = tracker
@@ -67,7 +67,7 @@ class FolderKeySynchronizationImpl @Inject constructor(
         keyDiffApplier.applyDiffs(
             diffWithFlipper = diffWithFlipper,
             diffWithAndroid = diffWithAndroid,
-            tracker = ProgressWrapperTracker(
+            tracker = DetailedProgressWrapperTracker(
                 min = 0.5f,
                 max = 1f,
                 progressListener = tracker

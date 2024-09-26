@@ -32,6 +32,7 @@ import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTit
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
+import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
@@ -55,13 +56,18 @@ fun ComposableArchive(
     categories: ImmutableList<CategoryItem>,
     deletedCategory: CategoryItem,
     lazyListState: LazyListState,
+    speed: FlipperSerialSpeed?,
     onRefresh: () -> Unit,
     cancelSynchronization: () -> Unit
 ) {
     val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
 
     if (synchronizationState is SynchronizationState.InProgress) {
-        ArchiveProgressScreen(synchronizationState, cancelSynchronization)
+        ArchiveProgressScreen(
+            inProgressState = synchronizationState,
+            onCancel = cancelSynchronization,
+            speed = speed
+        )
     } else {
         ComposableArchiveReady(
             synchronizationUiApi = synchronizationUiApi,
@@ -75,7 +81,7 @@ fun ComposableArchive(
             onOpenCategory = onOpenCategory,
             categories = categories,
             deletedCategory = deletedCategory,
-            lazyListState = lazyListState
+            lazyListState = lazyListState,
         )
     }
 }

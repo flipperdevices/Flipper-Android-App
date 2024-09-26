@@ -14,7 +14,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.android.Android
 import com.flipperdevices.bridge.synchronization.impl.repository.android.SynchronizationStateRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.progressWrapperTrackerStub
+import com.flipperdevices.bridge.synchronization.impl.utils.detailedProgressWrapperTrackerStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -117,7 +117,7 @@ class FolderKeySynchronizationTest {
             )
         )
 
-        underTest.syncFolder(FlipperKeyType.NFC, progressWrapperTrackerStub())
+        underTest.syncFolder(FlipperKeyType.NFC, detailedProgressWrapperTrackerStub())
 
         coVerify {
             keyDiffApplier.applyDiffs(

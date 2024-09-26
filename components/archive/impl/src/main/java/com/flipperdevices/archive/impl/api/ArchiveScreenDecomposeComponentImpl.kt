@@ -12,6 +12,7 @@ import com.flipperdevices.archive.impl.composable.ComposableArchive
 import com.flipperdevices.archive.impl.model.ArchiveNavigationConfig
 import com.flipperdevices.archive.impl.viewmodel.CategoryViewModel
 import com.flipperdevices.archive.impl.viewmodel.GeneralTabViewModel
+import com.flipperdevices.archive.impl.viewmodel.SpeedViewModel
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
@@ -31,6 +32,7 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     private val synchronizationUiApi: SynchronizationUiApi,
     private val generalTabviewModelProvider: Provider<GeneralTabViewModel>,
     private val categoryViewModelProvider: Provider<CategoryViewModel>,
+    private val speedViewModelProvider: Provider<SpeedViewModel>,
 ) : ScreenDecomposeComponent(componentContext), ResetTabDecomposeHandler {
     private val requestScrollToTopFlow = MutableStateFlow(false)
 
@@ -48,9 +50,13 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
         val categoryViewModel = viewModelWithFactory(key = null) {
             categoryViewModelProvider.get()
         }
+        val speedViewModel = viewModelWithFactory(key = null) {
+            speedViewModelProvider.get()
+        }
 
         val categories by categoryViewModel.getCategoriesFlow().collectAsState()
         val deletedCategory by categoryViewModel.getDeletedFlow().collectAsState()
+        val speed by speedViewModel.speedFlow.collectAsState(null)
 
         val lazyListState = rememberLazyListState()
         val requestScrollToTop by requestScrollToTopFlow.collectAsState()
@@ -81,7 +87,8 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
             cancelSynchronization = tabViewModel::cancelSynchronization,
             categories = categories,
             deletedCategory = deletedCategory,
-            lazyListState = lazyListState
+            lazyListState = lazyListState,
+            speed = speed,
         )
     }
 
