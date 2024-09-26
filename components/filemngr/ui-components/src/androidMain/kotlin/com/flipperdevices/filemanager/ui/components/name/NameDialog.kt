@@ -99,7 +99,10 @@ fun NameDialog(
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
 private fun NameDialogPreview() {
     var isVisible by remember { mutableStateOf(true) }

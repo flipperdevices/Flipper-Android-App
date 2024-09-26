@@ -6,21 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,12 +32,8 @@ import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCard
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardSubtitle
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardTitle
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
-import kotlin.math.abs
+import kotlinx.coroutines.launch
 
-private const val PRECISION = 0.1f
-private const val MAX_FRACTION = 1f
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SwipeToDismissFolderCardListComposable(
     painter: Painter,
@@ -54,20 +47,12 @@ fun SwipeToDismissFolderCardListComposable(
     modifier: Modifier = Modifier,
     cardModifier: Modifier = Modifier
 ) {
-    // Don't confirm state so item won't disappear
-    val dismissState = rememberDismissState(
-        confirmStateChange = { false }
-    )
-    // If fraction is equals 1f then it was dismissed
-    // Getting equals with 0.1 precision value
-    LaunchedEffect(abs(dismissState.progress.fraction - MAX_FRACTION) < PRECISION) {
-        onDelete.invoke()
-    }
-    SwipeToDismiss(
+    val scope = rememberCoroutineScope()
+    val revealState = rememberRevealState()
+    SwipeToReveal(
+        revealState = revealState,
         modifier = modifier,
-        state = dismissState,
-        directions = setOf(DismissDirection.EndToStart),
-        dismissContent = {
+        content = {
             FolderCardListComposable(
                 painter = painter,
                 title = title,
@@ -79,13 +64,20 @@ fun SwipeToDismissFolderCardListComposable(
                 modifier = cardModifier
             )
         },
-        background = {
+
+        actions = {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxHeight()
+                    .wrapContentWidth()
                     .background(LocalPalletV2.current.action.danger.background.tertiary.default)
-                    .padding(12.dp),
+                    .padding(12.dp)
+                    .clickableRipple {
+                        scope.launch {
+                            revealState.animateHide()
+                            onDelete.invoke()
+                        }
+                    },
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
