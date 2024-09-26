@@ -16,15 +16,23 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
@@ -34,12 +42,12 @@ private const val ANIMATION_DURATION_MS = 150
 
 @Composable
 internal fun FlipperTextField(
-    text: String,
+    value: String,
     title: String,
     subtitle: String,
     onTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     isError: Boolean,
+    modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
@@ -59,7 +67,7 @@ internal fun FlipperTextField(
         )
         Spacer(Modifier.height(8.dp))
         FlipperTextBox(
-            text = text,
+            value = value,
             onTextChange = onTextChange,
             interactionSource = interactionSource,
             textStyle = textBoxStyle,
@@ -91,7 +99,7 @@ internal fun FlipperTextField(
 
 @Composable
 private fun FlipperTextBox(
-    text: String,
+    value: String,
     onTextChange: (String) -> Unit,
     interactionSource: MutableInteractionSource,
     textStyle: TextStyle,
@@ -99,18 +107,54 @@ private fun FlipperTextBox(
     enabled: Boolean
 ) {
     val focusManager = LocalFocusManager.current
-    val decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
-        Box {
-            innerTextField()
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+    val dotIndex = value.indexOf(".")
+    var textFieldValueState by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = value,
+                selection = when {
+                    value.isEmpty() -> TextRange.Zero
+                    dotIndex != -1 -> TextRange(dotIndex, dotIndex)
+                    else -> TextRange(value.length, value.length)
+                }
+            )
+        )
+    }
+    val textFieldValue = textFieldValueState.copy(text = value)
+    var lastTextValue by remember(value) { mutableStateOf(value) }
+
+    SideEffect {
+        if (textFieldValue.selection != textFieldValueState.selection ||
+            textFieldValue.composition != textFieldValueState.composition
+        ) {
+            textFieldValueState = textFieldValue
         }
     }
-
     BasicTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = text,
-        onValueChange = onTextChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
+        value = textFieldValue,
+        onValueChange = { newTextFieldValueState ->
+            textFieldValueState = newTextFieldValueState
+
+            val stringChangedSinceLastInvocation = lastTextValue != newTextFieldValueState.text
+            lastTextValue = newTextFieldValueState.text
+
+            if (stringChangedSinceLastInvocation) {
+                onTextChange(newTextFieldValueState.text)
+            }
+        },
         interactionSource = interactionSource,
-        decorationBox = decorationBox,
+        decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
+            Box {
+                innerTextField()
+            }
+        },
         textStyle = textStyle.copy(
             color = LocalPallet.current.text100
         ),

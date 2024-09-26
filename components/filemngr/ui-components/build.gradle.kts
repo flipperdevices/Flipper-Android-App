@@ -20,6 +20,7 @@ dependencies {
 
     implementation(libs.okio)
     implementation(libs.okio.fake)
+    implementation(libs.kotlin.immutable.collections)
 
     // Compose
     implementation(libs.compose.ui)

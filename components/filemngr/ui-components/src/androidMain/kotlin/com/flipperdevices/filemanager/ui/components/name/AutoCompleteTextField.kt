@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun AutoCompleteTextField(
@@ -30,7 +31,7 @@ internal fun AutoCompleteTextField(
     subtitle: String,
     isError: Boolean,
     onTextChange: (String) -> Unit,
-    options: List<String>,
+    options: ImmutableList<String>,
     onOptionSelect: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     needShowOptions: Boolean = true,
@@ -45,7 +46,7 @@ internal fun AutoCompleteTextField(
         FlipperTextField(
             title = title,
             subtitle = subtitle,
-            text = value,
+            value = value,
             onTextChange = onTextChange,
             interactionSource = interactionSource,
             modifier = Modifier.onFocusEvent { isExpanded = it.isFocused },
