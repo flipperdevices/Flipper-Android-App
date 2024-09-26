@@ -10,7 +10,7 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMergeHelper
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ interface KeyDiffApplier {
     suspend fun applyDiffs(
         diffWithFlipper: List<KeyDiff>,
         diffWithAndroid: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     )
 }
 
@@ -36,7 +36,7 @@ class KeyDiffApplierImpl @Inject constructor(
     override suspend fun applyDiffs(
         diffWithFlipper: List<KeyDiff>,
         diffWithAndroid: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ) {
         val mergedDiff = diffMergeHelper.mergeDiffs(diffWithFlipper, diffWithAndroid)
         val diffForFlipper = mergedDiff.filter { it.source == DiffSource.ANDROID }
@@ -58,7 +58,7 @@ class KeyDiffApplierImpl @Inject constructor(
             source = flipperStorage,
             target = androidStorage,
             diffs = diffForAndroid,
-            tracker = ProgressWrapperTracker(
+            tracker = DetailedProgressWrapperTracker(
                 tracker,
                 min = 0f,
                 max = diffForAndroidPercent
@@ -74,7 +74,7 @@ class KeyDiffApplierImpl @Inject constructor(
             source = androidStorage,
             target = flipperStorage,
             diffs = diffForFlipper,
-            tracker = ProgressWrapperTracker(
+            tracker = DetailedProgressWrapperTracker(
                 tracker,
                 min = diffForAndroidPercent,
                 max = 1f

@@ -160,9 +160,9 @@ class MfKey32ViewModel @Inject constructor(
                 pathOnFlipper = PATH_NONCE_LOG,
                 fileOnAndroid = fileWithNonce,
                 progressListener = ProgressWrapperTracker(
-                    progressListener = {
-                        info { "Download file progress $it" }
-                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
+                    progressListener = { progress ->
+                        info { "Download file progress $progress" }
+                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(progress))
                     },
                     max = 0.99f
                 )

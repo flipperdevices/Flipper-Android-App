@@ -11,7 +11,8 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.debug
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.protobuf.storage.Storage
 import com.squareup.anvil.annotations.ContributesBinding
 import java.io.File
@@ -20,9 +21,13 @@ import javax.inject.Inject
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 
 interface FlipperHashRepository {
+    data class HashesProgressDetail(
+        val keyType: FlipperKeyType
+    ) : DetailedProgressListener.Detail
+
     suspend fun getHashesForType(
         keyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyWithHash>
 }
 
@@ -34,12 +39,19 @@ class FlipperHashRepositoryImpl @Inject constructor(
 
     override suspend fun getHashesForType(
         keyType: FlipperKeyType,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyWithHash> {
+        tracker.onProgress(
+            current = 0f,
+            detail = FlipperHashRepository.HashesProgressDetail(keyType)
+        )
         val fileTypePath = File(Constants.KEYS_DEFAULT_STORAGE, keyType.flipperDir).path
         val files = flipperStorageApi.listingDirectoryWithMd5(fileTypePath)
         info { "Receive ${files.size} files" }
-        tracker.onProgress(1f)
+        tracker.onProgress(
+            current = 1f,
+            detail = FlipperHashRepository.HashesProgressDetail(keyType)
+        )
         return files.filter { isValidFile(it, keyType) }.map {
             KeyWithHash(keyPath = FlipperFilePath(keyType.flipperDir, it.name), hash = it.md5)
         }
@@ -54,7 +66,8 @@ class FlipperHashRepositoryImpl @Inject constructor(
         }
         if (nameWithHash.size > SIZE_BYTES_LIMIT) {
             debug {
-                "File ${nameWithHash.name} skip, because current size limit is $SIZE_BYTES_LIMIT, " +
+                "File ${nameWithHash.name} skip," +
+                    " because current size limit is $SIZE_BYTES_LIMIT, " +
                     "but file size is ${nameWithHash.size}"
             }
             return false

@@ -14,7 +14,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.android.Android
 import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepository
-import com.flipperdevices.bridge.synchronization.impl.utils.progressWrapperTrackerStub
+import com.flipperdevices.bridge.synchronization.impl.utils.detailedProgressWrapperTrackerStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -89,7 +89,7 @@ class KeysSynchronizationTest {
             )
         } returns false
 
-        underTest.syncKeys(progressWrapperTrackerStub())
+        underTest.syncKeys(detailedProgressWrapperTrackerStub())
 
         coVerify(exactly = 0) { folderKeySynchronization.syncFolder(any(), any()) }
     }
@@ -124,7 +124,7 @@ class KeysSynchronizationTest {
             )
         )
 
-        underTest.syncKeys(progressWrapperTrackerStub())
+        underTest.syncKeys(detailedProgressWrapperTrackerStub())
 
         coVerify { folderKeySynchronization.syncFolder(eq(FlipperKeyType.NFC), any()) }
     }
@@ -151,7 +151,7 @@ class KeysSynchronizationTest {
             )
         } returns emptyList()
 
-        underTest.syncKeys(progressWrapperTrackerStub())
+        underTest.syncKeys(detailedProgressWrapperTrackerStub())
 
         coVerify(exactly = 0) { manifestTimestampRepository.isUpdateRequired(any(), any()) }
         coVerify { folderKeySynchronization.syncFolder(any(), any()) }
@@ -185,7 +185,7 @@ class KeysSynchronizationTest {
             )
         } returns true
 
-        underTest.syncKeys(progressWrapperTrackerStub())
+        underTest.syncKeys(detailedProgressWrapperTrackerStub())
 
         coVerify { folderKeySynchronization.syncFolder(any(), any()) }
     }

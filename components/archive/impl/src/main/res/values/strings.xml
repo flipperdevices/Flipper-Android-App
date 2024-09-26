@@ -8,4 +8,10 @@
     <string name="archive_sync_progress">Syncing with Flipper…</string>
     <string name="archive_sync_percent">Syncing %1$s</string>
     <string name="archive_sync_cancel">Cancel</string>
+    <string name="archive_speed">Speed: %s/s</string>
+    <string name="archive_updating">Syncing: %s</string>
+    <string name="archive_syncing">Syncing</string>
+    <string name="archive_preparing">Preparing sync: getting files from flipper</string>
+    <string name="archive_favorites">Syncing favorite keys…</string>
+    <string name="archive_hashes">Preparing sync: %s</string>
 </resources>

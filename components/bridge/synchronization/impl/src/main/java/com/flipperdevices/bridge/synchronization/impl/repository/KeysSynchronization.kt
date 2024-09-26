@@ -9,7 +9,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.flipper.Timesta
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepository
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ interface KeysSynchronization {
      * @return keys changed
      */
     suspend fun syncKeys(
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Int
 }
 
@@ -36,11 +36,11 @@ class KeysSynchronizationImpl @Inject constructor(
     override val TAG = "KeysSynchronization"
 
     override suspend fun syncKeys(
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Int {
         val typesUpdateTimestamps = timestampSynchronizationChecker.fetchFoldersTimestamp(
-            FlipperKeyType.values(),
-            ProgressWrapperTracker(
+            FlipperKeyType.entries.toTypedArray(),
+            DetailedProgressWrapperTracker(
                 min = 0f,
                 max = PERCENT_FETCH_TIMESTAMP,
                 progressListener = progressTracker
@@ -59,7 +59,7 @@ class KeysSynchronizationImpl @Inject constructor(
         typesToUpdates.forEach { (type, timestamp) ->
             keysChanged += folderKeySynchronization.syncFolder(
                 type,
-                ProgressWrapperTracker(
+                DetailedProgressWrapperTracker(
                     min = currentMinPercent,
                     max = currentMinPercent + percentForOneType,
                     progressListener = progressTracker

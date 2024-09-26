@@ -10,12 +10,15 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.utils.KeyDiffCombiner
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface FavoriteSynchronization {
-    suspend fun syncFavorites(progressTracker: ProgressWrapperTracker)
+    data object FavoritesProgressDetail : DetailedProgressListener.Detail
+
+    suspend fun syncFavorites(progressTracker: DetailedProgressWrapperTracker)
 }
 
 @ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
@@ -27,9 +30,12 @@ class FavoriteSynchronizationImpl @Inject constructor(
 ) : FavoriteSynchronization, LogTagProvider {
     override val TAG = "FavoriteSynchronization"
 
-    override suspend fun syncFavorites(progressTracker: ProgressWrapperTracker) {
+    override suspend fun syncFavorites(progressTracker: DetailedProgressWrapperTracker) {
         val favoritesFromFlipper = favoritesRepository.getFavorites(flipperStorage)
-        progressTracker.onProgress(current = 0.5f)
+        progressTracker.onProgress(
+            current = 0.5f,
+            detail = FavoriteSynchronization.FavoritesProgressDetail
+        )
         val favoritesFromAndroid = favoriteApi.getFavorites().map { it.path }
         val diffWithManifestAndFlipper = manifestRepository
             .compareFlipperFavoritesWithManifest(favoritesFromFlipper)
@@ -75,6 +81,9 @@ class FavoriteSynchronizationImpl @Inject constructor(
             favorites = favoritesOnAndroid.map { it.path },
             favoritesOnFlipper = newFavoritesOnFlipper
         )
-        progressTracker.onProgress(current = 1f)
+        progressTracker.onProgress(
+            current = 1f,
+            detail = FavoriteSynchronization.FavoritesProgressDetail
+        )
     }
 }

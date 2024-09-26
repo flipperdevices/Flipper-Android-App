@@ -9,14 +9,19 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.TaskSynchronizationComponent
+import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
 import com.flipperdevices.bridge.synchronization.impl.model.RestartSynchronizationException
+import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
+import com.flipperdevices.bridge.synchronization.impl.repository.flipper.FlipperHashRepository
+import com.flipperdevices.bridge.synchronization.impl.repository.flipper.TimestampSynchronizationChecker
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
@@ -32,6 +37,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface SynchronizationTask {
+
+    data object SynchronizationStartedProgressDetail : DetailedProgressListener.Detail
+    data object SynchronizationFinishedProgressDetail : DetailedProgressListener.Detail
+
     fun start(
         input: Unit,
         stateListener: suspend (SynchronizationState) -> Unit
@@ -76,6 +85,43 @@ class SynchronizationTaskImpl(
     LogTagProvider {
     override val TAG = "SynchronizationTask"
 
+    private fun mapState(
+        detail: DetailedProgressListener.Detail?,
+        progress: Float,
+    ): SynchronizationState.InProgress {
+        return when (detail) {
+            is DiffKeyExecutor.DiffProgressDetail -> {
+                SynchronizationState.InProgress.FileInProgress(
+                    progress = progress,
+                    fileName = detail.fileName,
+                )
+            }
+
+            is TimestampSynchronizationChecker.TimestampsProgressDetail -> {
+                SynchronizationState.InProgress.Prepare(
+                    progress = progress,
+                )
+            }
+
+            is FavoriteSynchronization.FavoritesProgressDetail -> {
+                SynchronizationState.InProgress.Favorites(
+                    progress = progress,
+                )
+            }
+
+            is FlipperHashRepository.HashesProgressDetail -> {
+                SynchronizationState.InProgress.PrepareHashes(
+                    progress = progress,
+                    keyType = detail.keyType
+                )
+            }
+
+            else -> SynchronizationState.InProgress.Default(
+                progress = progress,
+            )
+        }
+    }
+
     override suspend fun startInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -91,9 +137,14 @@ class SynchronizationTaskImpl(
         startInternal(
             scope,
             serviceApi,
-            ProgressWrapperTracker(min = 0f, max = 1f, progressListener = {
-                stateListener(SynchronizationState.InProgress(it))
-            })
+            DetailedProgressWrapperTracker(
+                min = 0f,
+                max = 1f,
+                progressListener = { progress, detail ->
+                    val state = mapState(detail, progress)
+                    stateListener(state)
+                }
+            )
         )
         stateListener(SynchronizationState.Finished)
     }
@@ -105,21 +156,27 @@ class SynchronizationTaskImpl(
     private suspend fun startInternal(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ) {
         info { "#startInternal" }
         val mfKey32check = scope.async { checkMfKey32Safe(serviceApi.requestApi) }
         try {
-            progressTracker.onProgress(START_SYNCHRONIZATION_PERCENT)
+            progressTracker.onProgress(
+                current = START_SYNCHRONIZATION_PERCENT,
+                detail = SynchronizationTask.SynchronizationStartedProgressDetail
+            )
             launch(
                 serviceApi,
-                ProgressWrapperTracker(
+                DetailedProgressWrapperTracker(
                     min = START_SYNCHRONIZATION_PERCENT,
                     max = 1.0f,
                     progressListener = progressTracker
                 )
             )
-            progressTracker.onProgress(1.0f)
+            progressTracker.onProgress(
+                current = 1.0f,
+                detail = SynchronizationTask.SynchronizationFinishedProgressDetail
+            )
             mfKey32check.await()
         } catch (
             @Suppress("SwallowedException")
@@ -138,7 +195,7 @@ class SynchronizationTaskImpl(
 
     private suspend fun launch(
         serviceApi: FlipperServiceApi,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val startSynchronizationTime = System.currentTimeMillis()
         val taskComponent = TaskSynchronizationComponent.ManualFactory
@@ -149,14 +206,14 @@ class SynchronizationTaskImpl(
             )
 
         val keysChanged = taskComponent.keysSynchronization.syncKeys(
-            ProgressWrapperTracker(
+            DetailedProgressWrapperTracker(
                 min = 0f,
                 max = 0.90f,
                 progressListener = progressTracker
             )
         )
         taskComponent.favoriteSynchronization.syncFavorites(
-            ProgressWrapperTracker(
+            DetailedProgressWrapperTracker(
                 min = 0.90f,
                 max = 0.95f,
                 progressListener = progressTracker
@@ -170,7 +227,7 @@ class SynchronizationTaskImpl(
         } catch (throwable: Exception) {
             error(throwable) { "Error while try update wearable index" }
         }
-        progressTracker.onProgress(1.0f)
+        progressTracker.onProgress(1.0f, SynchronizationTask.SynchronizationFinishedProgressDetail)
     }
 
     private suspend fun reportSynchronizationEnd(totalTime: Long, keysChanged: Int) {
