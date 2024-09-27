@@ -18,11 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.filemanager.ui.components.R
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardEndBox
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardSubtitle
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardTitle
@@ -84,7 +86,7 @@ private fun FolderCardGridComposablePreview() {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             ItemUiSelectionState.entries.forEach { selectionState ->
                 FolderCardGridComposable(
-                    painter = rememberVectorPainter(Icons.Filled.Folder),
+                    painter = painterResource(R.drawable.ic_folder_black),
                     title = "Short title",
                     subtitle = "Short SubTitle",
                     selectionState = selectionState,
@@ -95,7 +97,7 @@ private fun FolderCardGridComposablePreview() {
             }
             ItemUiSelectionState.entries.forEach { selectionState ->
                 FolderCardGridComposable(
-                    painter = rememberVectorPainter(Icons.Filled.Folder),
+                    painter = painterResource(R.drawable.ic_folder_black),
                     title = "A very very ultra mega super duper log title with some message at the end",
                     subtitle = "A very very ultra mega super duper log title with some message at the end",
                     selectionState = selectionState,

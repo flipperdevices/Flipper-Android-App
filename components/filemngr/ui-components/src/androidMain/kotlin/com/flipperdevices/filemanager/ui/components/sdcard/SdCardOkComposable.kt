@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ktx.jre.toFormattedSize
@@ -63,7 +64,7 @@ fun SdCardOkComposable(
     ) {
         Column(modifier = Modifier.weight(weight = 0.6f)) {
             Text(
-                text = "SD Card", // todo text
+                text = stringResource(FR.string.sd_card_ok_title),
                 style = LocalTypography.current.titleB18,
                 color = LocalPalletV2.current.text.title.primary
             )
@@ -83,11 +84,11 @@ fun SdCardOkComposable(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 StorageSizeVerticalText(
-                    text = "Used", // todo text
+                    text = stringResource(FR.string.sd_card_used),
                     size = used
                 )
                 StorageSizeVerticalText(
-                    text = "Total", // todo text
+                    text = stringResource(FR.string.sd_card_total),
                     size = total
                 )
             }

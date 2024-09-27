@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
@@ -33,6 +33,7 @@ import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCard
 import com.flipperdevices.filemanager.ui.components.itemcard.components.ItemCardTitle
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
 import kotlinx.coroutines.launch
+import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
 fun SwipeToDismissFolderCardListComposable(
@@ -81,7 +82,7 @@ fun SwipeToDismissFolderCardListComposable(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
-                    painter = rememberVectorPainter(Icons.Filled.DeleteOutline), // todo icon
+                    painter = painterResource(FR.drawable.ic_trash_white),
                     tint = LocalPalletV2.current.action.danger.icon.default,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp)
@@ -147,7 +148,7 @@ private fun FolderCardListComposablePreview() {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             ItemUiSelectionState.entries.forEach { selectionState ->
                 SwipeToDismissFolderCardListComposable(
-                    painter = rememberVectorPainter(Icons.Filled.Folder),
+                    painter = painterResource(FR.drawable.ic_folder_black),
                     title = "Short title",
                     subtitle = "Short SubTitle",
                     selectionState = selectionState,
