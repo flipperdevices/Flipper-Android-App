@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.filemanager.ui.components"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
 
