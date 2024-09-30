@@ -26,7 +26,9 @@ androidDependencies {
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
+    implementation(projects.components.bridge.connection.feature.rpcinfo.api)
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.filemngr.uiComponents)

@@ -1,10 +1,7 @@
 package com.flipperdevices.filemanager.listing.impl.api
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,11 +23,13 @@ import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.listing.impl.composable.ListingErrorComposable
-import com.flipperdevices.filemanager.listing.impl.composable.LoadingFilesComposable
 import com.flipperdevices.filemanager.listing.impl.composable.NoFilesComposable
 import com.flipperdevices.filemanager.listing.impl.composable.NoListingFeatureComposable
+import com.flipperdevices.filemanager.listing.impl.composable.SdCardInfoComposable
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardComposable
+import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlaceholderComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asPainter
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asTint
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemCardOrientation
@@ -41,6 +40,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
+import javax.inject.Provider
 
 @ContributesAssistedFactory(AppGraph::class, FilesDecomposeComponent.Factory::class)
 class FilesDecomposeComponentImpl @AssistedInject constructor(
@@ -48,11 +48,11 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onPathChanged: (Path) -> Unit,
+    private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory
 ) : FilesDecomposeComponent(componentContext) {
 
     private val backCallback = BackCallback {
-        println("On back: ${path.segments} ${path.parent}")
         val parent = path.parent
         if (parent == null) {
             onBack.invoke()
@@ -70,6 +70,9 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val filesViewModel = viewModelWithFactory(path.toString()) {
             filesViewModelFactory.invoke(path)
         }
+        val storageInfoViewModel = viewModelWithFactory(path.root.toString()) {
+            storageInfoViewModelFactory.get()
+        }
         val filesListState by filesViewModel.state.collectAsState()
 
         Scaffold(
@@ -82,82 +85,88 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                 )
             }
         ) { contentPadding ->
-            AnimatedContent(
-                targetState = filesListState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding),
-                transitionSpec = { fadeIn().togetherWith(fadeOut()) },
-                contentKey = {
-                    when (it) {
-                        FilesViewModel.State.CouldNotListPath -> 0
-                        is FilesViewModel.State.Loaded -> 1
-                        FilesViewModel.State.Loading -> 2
-                        FilesViewModel.State.Unsupported -> 3
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(14.dp)
+            ) {
+                if (path.root != path) {
+                    item {
+                        PathComposable(
+                            path = path,
+                            onRootPathClick = { path.root?.run(onPathChanged) },
+                            onPathClick = onPathChanged,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(14.dp)
+                        )
                     }
-                },
-                content = { animatedFilesListState ->
-                    when (animatedFilesListState) {
-                        FilesViewModel.State.CouldNotListPath -> {
-                            ListingErrorComposable(
-                                path = path,
-                                onPathChange = onPathChanged
-                            )
-                        }
-
-                        is FilesViewModel.State.Loaded -> {
-                            if (animatedFilesListState.files.isEmpty()) {
-                                NoFilesComposable(
-                                    onUploadFilesClick = {}
-                                )
-                            }
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp),
-                                contentPadding = PaddingValues(14.dp)
-                            ) {
-                                item {
-                                    PathComposable(
-                                        path = path,
-                                        onRootPathClick = { path.root?.run(onPathChanged) },
-                                        onPathClick = onPathChanged,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(14.dp)
-                                    )
-                                }
-                                items(animatedFilesListState.files) { file ->
-                                    FolderCardComposable(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        painter = file.asPainter(),
-                                        iconTint = file.asTint(),
-                                        title = file.fileName,
-                                        subtitle = file.size.toFormattedSize(),
-                                        selectionState = ItemUiSelectionState.NONE,
-                                        onClick = {
-                                            if (file.fileType == FileType.DIR) {
-                                                onPathChanged.invoke(path / file.fileName)
-                                            }
-                                        },
-                                        onCheckChange = {},
-                                        onMoreClick = {},
-                                        onDelete = {},
-                                        orientation = ItemCardOrientation.LIST
-                                    )
-                                }
-                            }
-                        }
-
-                        FilesViewModel.State.Loading -> {
-                            LoadingFilesComposable()
-                        }
-
-                        FilesViewModel.State.Unsupported -> {
-                            NoListingFeatureComposable()
-                        }
+                } else {
+                    item {
+                        SdCardInfoComposable(storageInfoViewModel)
                     }
                 }
-            )
+
+                when (val localFilesListState = filesListState) {
+                    FilesViewModel.State.CouldNotListPath -> {
+                        item {
+                            ListingErrorComposable(
+                                path = path,
+                                onPathChange = onPathChanged,
+                                modifier = Modifier.fillParentMaxSize()
+                            )
+                        }
+                    }
+
+                    is FilesViewModel.State.Loaded -> {
+                        if (localFilesListState.files.isEmpty()) {
+                            item {
+                                NoFilesComposable(
+                                    onUploadFilesClick = {},
+                                    modifier = Modifier.fillParentMaxSize()
+                                )
+                            }
+                        }
+
+                        items(localFilesListState.files) { file ->
+                            Box(modifier = Modifier.animateItemPlacement()) {
+                                FolderCardComposable(
+                                    modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+                                    painter = file.asPainter(),
+                                    iconTint = file.asTint(),
+                                    title = file.fileName,
+                                    subtitle = file.size.toFormattedSize(),
+                                    selectionState = ItemUiSelectionState.NONE,
+                                    onClick = {
+                                        if (file.fileType == FileType.DIR) {
+                                            onPathChanged.invoke(path / file.fileName)
+                                        }
+                                    },
+                                    onCheckChange = {},
+                                    onMoreClick = {},
+                                    onDelete = {},
+                                    orientation = ItemCardOrientation.LIST
+                                )
+                            }
+                        }
+                    }
+
+                    FilesViewModel.State.Loading -> {
+                        items(count = 6) {
+                            Box(modifier = Modifier.animateItemPlacement()) {
+                                FolderCardPlaceholderComposable(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    orientation = ItemCardOrientation.LIST,
+                                )
+                            }
+                        }
+                    }
+
+                    FilesViewModel.State.Unsupported -> {
+                        item { NoListingFeatureComposable() }
+                    }
+                }
+            }
         }
     }
 }
