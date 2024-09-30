@@ -76,6 +76,11 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.connection.pbutils)
 
+    implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.main.impl)
+    implementation(projects.components.filemngr.listing.api)
+    implementation(projects.components.filemngr.listing.impl)
+
     implementation(projects.components.newfilemanager.api)
     implementation(projects.components.newfilemanager.impl)
 

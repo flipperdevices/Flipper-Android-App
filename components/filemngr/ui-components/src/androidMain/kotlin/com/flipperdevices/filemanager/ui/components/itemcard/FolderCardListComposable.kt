@@ -16,10 +16,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
@@ -46,13 +48,15 @@ fun SwipeToDismissFolderCardListComposable(
     onMoreClick: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    cardModifier: Modifier = Modifier
+    iconTint: Color = Color.Unspecified,
 ) {
     val scope = rememberCoroutineScope()
     val revealState = rememberRevealState()
     SwipeToReveal(
         revealState = revealState,
-        modifier = modifier,
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(LocalPalletV2.current.action.danger.background.tertiary.default),
         content = {
             FolderCardListComposable(
                 painter = painter,
@@ -62,30 +66,35 @@ fun SwipeToDismissFolderCardListComposable(
                 onCheckChange = onCheckChange,
                 onMoreClick = onMoreClick,
                 onClick = onClick,
-                modifier = cardModifier
+                iconTint = iconTint,
             )
         },
-
         actions = {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = 12.dp,
+                            bottomEnd = 12.dp
+                        )
+                    )
                     .background(LocalPalletV2.current.action.danger.background.tertiary.default)
-                    .padding(12.dp)
                     .clickableRipple {
                         scope.launch {
                             revealState.animateHide()
                             onDelete.invoke()
                         }
-                    },
+                    }
+                    .padding(12.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
                     painter = painterResource(FR.drawable.ic_trash_white),
                     tint = LocalPalletV2.current.action.danger.icon.default,
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
@@ -101,7 +110,8 @@ fun FolderCardListComposable(
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
     onMoreClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconTint: Color = Color.Unspecified,
 ) {
     Row(
         modifier = modifier
@@ -109,7 +119,7 @@ fun FolderCardListComposable(
             .clickableRipple(onClick = onClick)
             .background(LocalPalletV2.current.surface.contentCard.body.default)
             .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -119,7 +129,7 @@ fun FolderCardListComposable(
         ) {
             Icon(
                 painter = painter,
-                tint = LocalPalletV2.current.icon.blackAndWhite.default,
+                tint = iconTint,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp)
             )

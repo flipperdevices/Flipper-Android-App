@@ -92,6 +92,8 @@ include(
     ":components:filemngr:ui-components",
     ":components:filemngr:main:api",
     ":components:filemngr:main:impl",
+    ":components:filemngr:listing:api",
+    ":components:filemngr:listing:impl",
 
     ":components:core:di",
     ":components:core:ktx",

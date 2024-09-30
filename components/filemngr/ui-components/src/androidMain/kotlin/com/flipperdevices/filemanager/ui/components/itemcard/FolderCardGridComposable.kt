@@ -10,14 +10,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Folder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +37,8 @@ fun FolderCardGridComposable(
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
     onMoreClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconTint: Color = Color.Unspecified,
 ) {
     Row(
         modifier = modifier
@@ -57,7 +56,7 @@ fun FolderCardGridComposable(
         ) {
             Icon(
                 painter = painter,
-                tint = LocalPalletV2.current.icon.blackAndWhite.default,
+                tint = iconTint,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp)
             )

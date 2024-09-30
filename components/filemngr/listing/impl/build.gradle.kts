@@ -4,7 +4,7 @@ plugins {
     id("flipper.anvil-multiplatform")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.filemanager.main.impl"
+android.namespace = "com.flipperdevices.filemanager.listing.impl"
 
 androidDependencies {
     implementation(projects.components.core.di)
@@ -22,9 +22,14 @@ androidDependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.api)
 
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.transport.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.serialspeed.api)
+    implementation(projects.components.bridge.dao.api)
+
     implementation(projects.components.filemngr.uiComponents)
-    implementation(projects.components.filemngr.main.api)
-    implementation(projects.components.newfilemanager.api)
     implementation(projects.components.filemngr.listing.api)
 
     // Compose
@@ -45,4 +50,5 @@ androidDependencies {
 
     implementation(libs.bundles.decompose)
     implementation(libs.okio)
+    implementation(libs.kotlin.immutable.collections)
 }

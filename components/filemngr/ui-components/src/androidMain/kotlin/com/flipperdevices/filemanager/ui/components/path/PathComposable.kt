@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,7 +77,12 @@ fun PathComposable(
         modifier = modifier
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_sd_card_ok),
+            painter = painterResource(
+                when {
+                    MaterialTheme.colors.isLight -> R.drawable.ic_sd_card_ok_black
+                    else -> R.drawable.ic_sd_card_ok_white
+                }
+            ),
             tint = Color.Unspecified,
             contentDescription = null,
             modifier = Modifier
@@ -87,7 +93,9 @@ fun PathComposable(
         SegmentSeparatorComposable(modifier = Modifier.padding(start = 8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             MorePathComposable(
-                isVisible = scrollState.canScrollBackward && !scrollState.isScrollInProgress
+                isVisible = scrollState.canScrollBackward &&
+                    !scrollState.isScrollInProgress &&
+                    scrollState.viewportSize > 0
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -109,7 +117,10 @@ fun PathComposable(
                             .clickableRipple {
                                 val clickedPath = path.segments
                                     .subList(0, index + 1)
-                                    .joinToString(separator = Path.DIRECTORY_SEPARATOR)
+                                    .joinToString(
+                                        separator = Path.DIRECTORY_SEPARATOR,
+                                        prefix = "/"
+                                    )
                                     .toPath()
                                 onPathClick.invoke(clickedPath)
                             }

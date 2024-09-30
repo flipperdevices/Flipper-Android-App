@@ -2,6 +2,7 @@ package com.flipperdevices.filemanager.ui.components.itemcard
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemCardOrientation
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
@@ -15,8 +16,10 @@ fun FolderCardComposable(
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
     onMoreClick: () -> Unit,
+    onDelete: () -> Unit,
     orientation: ItemCardOrientation,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconTint: Color = Color.Unspecified,
 ) {
     when (orientation) {
         ItemCardOrientation.GRID -> {
@@ -28,12 +31,13 @@ fun FolderCardComposable(
                 onClick = onClick,
                 onCheckChange = onCheckChange,
                 onMoreClick = onMoreClick,
-                modifier = modifier
+                modifier = modifier,
+                iconTint = iconTint
             )
         }
 
         ItemCardOrientation.LIST -> {
-            FolderCardListComposable(
+            SwipeToDismissFolderCardListComposable(
                 painter = painter,
                 title = title,
                 subtitle = subtitle,
@@ -41,7 +45,9 @@ fun FolderCardComposable(
                 onClick = onClick,
                 onCheckChange = onCheckChange,
                 onMoreClick = onMoreClick,
-                modifier = modifier
+                modifier = modifier,
+                iconTint = iconTint,
+                onDelete = onDelete
             )
         }
     }

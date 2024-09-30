@@ -1,21 +1,25 @@
-package com.flipperdevices.filemanager.main.impl
+package com.flipperdevices.filemanager.main.impl.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, FileManagerDecomposeComponent.Factory::class)
-class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
+class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    private val filesDecomposeComponentFactory: FilesDecomposeComponent.Factory,
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -32,7 +36,16 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is FileManagerNavigationConfig.FileTree -> {
-            TODO()
+            println("CreateFileTree: ${config.path}")
+            filesDecomposeComponentFactory.invoke(
+                componentContext = componentContext,
+                onBack = { navigation.popOr(onBack::invoke) },
+                path = config.path,
+                onPathChanged = {
+                    println("OnPathChanged: $it")
+                    navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it))
+                }
+            )
         }
     }
 }

@@ -47,9 +47,10 @@ class FileManagerViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            featureProvider.get<FStorageFeatureApi>().collectLatest {
-                invalidate(it)
-            }
+            listFiles(featureProvider.getSync<FStorageFeatureApi>()!!.listingApi() )
+//            featureProvider.get<FStorageFeatureApi>().collectLatest {
+//                invalidate(it)
+//            }
         }
     }
 
