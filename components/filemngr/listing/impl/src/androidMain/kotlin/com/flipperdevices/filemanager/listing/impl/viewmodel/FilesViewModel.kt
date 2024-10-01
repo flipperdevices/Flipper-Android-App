@@ -4,9 +4,11 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
+import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -89,6 +91,18 @@ class FilesViewModel @AssistedInject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    fun tryListFiles() {
+        launchWithLock(mutex, viewModelScope, "try_list_files") {
+            _state.emit(State.Loading)
+            val featureApi = featureProvider.getSync<FStorageFeatureApi>()
+            if (featureApi == null) {
+                _state.emit(State.Unsupported)
+                return@launchWithLock
+            }
+            listFiles(featureApi.listingApi())
+        }
     }
 
     private suspend fun invalidate(

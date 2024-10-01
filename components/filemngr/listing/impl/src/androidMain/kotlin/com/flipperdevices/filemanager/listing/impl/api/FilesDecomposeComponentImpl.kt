@@ -55,6 +55,9 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
 import javax.inject.Provider
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @ContributesAssistedFactory(AppGraph::class, FilesDecomposeComponent.Factory::class)
 class FilesDecomposeComponentImpl @AssistedInject constructor(
@@ -98,6 +101,15 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val createFileState by createFileViewModel.state.collectAsState()
         val filesListState by filesViewModel.state.collectAsState()
         val optionsState by optionsViewModel.state.collectAsState()
+        LaunchedEffect(createFileViewModel) {
+            createFileViewModel.event.onEach {
+                when (it) {
+                    CreateFileViewModel.Event.FilesChanged -> {
+                        filesViewModel.tryListFiles()
+                    }
+                }
+            }.launchIn(this)
+        }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {

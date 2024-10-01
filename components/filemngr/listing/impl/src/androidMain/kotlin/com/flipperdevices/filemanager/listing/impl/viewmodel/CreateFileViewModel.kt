@@ -10,12 +10,15 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.listing.impl.util.FlipperFileNameValidator
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import okio.ByteString
@@ -27,6 +30,9 @@ class CreateFileViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "CreateFolderViewModel"
+
+    private val channel = Channel<Event>()
+    val event = channel.receiveAsFlow()
 
     private val fileNameValidator = FlipperFileNameValidator()
     private val mutex = Mutex()
@@ -86,11 +92,11 @@ class CreateFileViewModel @Inject constructor(
                         pathOnFlipper = pathOnFlipper,
                         priority = StorageRequestPriority.FOREGROUND
                     ).buffer().use { it.write(ByteString.of()) }
-                }
+                }.onSuccess { channel.send(Event.FilesChanged) }
 
-                CreateFileAction.FOLDER -> {
+                CreateFileAction.FOLDER -> runCatching {
                     uploadApi.mkdir(pathOnFlipper)
-                }
+                }.onSuccess { channel.send(Event.FilesChanged) }
             }
             _state.emit(State.Pending)
         }
@@ -122,6 +128,10 @@ class CreateFileViewModel @Inject constructor(
             }.toImmutableList()
             val needShowOptions = !name.contains(".") && options.isNotEmpty()
         }
+    }
+
+    sealed interface Event {
+        data object FilesChanged : Event
     }
 
     enum class CreateFileAction {
