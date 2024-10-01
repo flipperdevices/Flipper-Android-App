@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,7 +47,7 @@ fun FolderCardGridComposable(
             .background(LocalPalletV2.current.surface.contentCard.body.default)
             .padding(12.dp)
             .clickableRipple(onClick = onClick),
-        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top
     ) {
         Column(
@@ -60,7 +61,7 @@ fun FolderCardGridComposable(
                 contentDescription = null,
                 modifier = Modifier.size(32.dp)
             )
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.height(12.dp))
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
