@@ -46,6 +46,7 @@ fun NameDialog(
     subtitle: String,
     needShowOptions: Boolean,
     isError: Boolean,
+    isEnabled: Boolean,
     onTextChange: (String) -> Unit,
     options: ImmutableList<String>,
     onOptionSelect: (index: Int) -> Unit,
@@ -91,7 +92,8 @@ fun NameDialog(
                     text = buttonText,
                     modifier = Modifier.fillMaxWidth(),
                     textPadding = PaddingValues(vertical = 12.dp),
-                    onClick = onFinish
+                    onClick = onFinish,
+                    enabled = isEnabled
                 )
             }
         }
@@ -130,7 +132,8 @@ private fun NameDialogPreview() {
                     onDismissRequest = { isVisible = !isVisible },
                     needShowOptions = File(value).extension.isBlank(),
                     isError = File(value).extension.isBlank(),
-                    onFinish = { }
+                    onFinish = { },
+                    isEnabled = true
                 )
             }
         }

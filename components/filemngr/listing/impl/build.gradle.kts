@@ -55,3 +55,9 @@ androidDependencies {
     implementation(libs.okio)
     implementation(libs.kotlin.immutable.collections)
 }
+
+androidUnitTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.ktx.testing)
+}

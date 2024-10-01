@@ -2,8 +2,8 @@ package com.flipperdevices.filemanager.ui.components.name
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
@@ -55,7 +55,7 @@ internal fun AutoCompleteTextField(
 
         DropdownMenu(
             modifier = Modifier
-                .wrapContentHeight()
+                .heightIn(max = 152.dp)
                 .wrapContentWidth(),
             expanded = isExpanded && needShowOptions && options.isNotEmpty(),
             onDismissRequest = { },

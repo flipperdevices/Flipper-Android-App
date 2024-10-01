@@ -36,6 +36,7 @@ import com.flipperdevices.filemanager.listing.impl.composable.NoFilesComposable
 import com.flipperdevices.filemanager.listing.impl.composable.NoListingFeatureComposable
 import com.flipperdevices.filemanager.listing.impl.composable.SdCardInfoComposable
 import com.flipperdevices.filemanager.listing.impl.composable.options.ListOptionsDropDown
+import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
@@ -45,6 +46,7 @@ import com.flipperdevices.filemanager.ui.components.itemcard.components.asPainte
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asTint
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemCardOrientation
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
+import com.flipperdevices.filemanager.ui.components.name.NameDialog
 import com.flipperdevices.filemanager.ui.components.path.PathComposable
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -62,7 +64,8 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onPathChanged: (Path) -> Unit,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
-    private val filesViewModelFactory: FilesViewModel.Factory
+    private val createFileViewModelFactory: Provider<CreateFileViewModel>,
+    private val filesViewModelFactory: FilesViewModel.Factory,
 ) : FilesDecomposeComponent(componentContext) {
 
     private val backCallback = BackCallback {
@@ -89,6 +92,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val optionsViewModel = viewModelWithFactory(path.root.toString()) {
             optionsInfoViewModelFactory.get()
         }
+        val createFileViewModel = viewModelWithFactory(path.root.toString()) {
+            createFileViewModelFactory.get()
+        }
+        val createFileState by createFileViewModel.state.collectAsState()
         val filesListState by filesViewModel.state.collectAsState()
         val optionsState by optionsViewModel.state.collectAsState()
         Scaffold(
@@ -112,9 +119,15 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                                 onDismiss = optionsViewModel::toggleMenu,
                                 isHiddenFilesVisible = optionsState.isHiddenFilesVisible,
                                 onSelectClick = {},
-                                onCreateFileClick = {},
+                                onCreateFileClick = {
+                                    optionsViewModel.toggleMenu()
+                                    createFileViewModel.onCreateFileClick()
+                                },
                                 onUploadClick = {},
-                                onCreateFolderClick = {},
+                                onCreateFolderClick = {
+                                    optionsViewModel.toggleMenu()
+                                    createFileViewModel.onCreateFolderClick()
+                                },
                                 onGridClick = optionsViewModel::setGridOrientation,
                                 onListClick = optionsViewModel::setListOrientation,
                                 onSortBySizeClick = optionsViewModel::setSizeSort,
@@ -127,6 +140,28 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                 )
             }
         ) { contentPadding ->
+            when (val createFileState = createFileState) {
+                CreateFileViewModel.State.Pending -> Unit
+                is CreateFileViewModel.State.Visible -> {
+                    NameDialog(
+                        value = createFileState.name,
+                        title = "Enter Name:",
+                        buttonText = when (createFileState.currentAction) {
+                            CreateFileViewModel.CreateFileAction.FILE -> "Create File"
+                            CreateFileViewModel.CreateFileAction.FOLDER -> "Create Folder"
+                        },
+                        subtitle = "Allowed characters",
+                        onFinish = { createFileViewModel.onCreate(path) },
+                        isError = !createFileState.isValid,
+                        isEnabled = !createFileState.isLoading,
+                        needShowOptions = createFileState.needShowOptions,
+                        onTextChange = createFileViewModel::onNameChange,
+                        onDismissRequest = createFileViewModel::dismiss,
+                        onOptionSelect = createFileViewModel::onOptionSelected,
+                        options = createFileState.options
+                    )
+                }
+            }
             val uiOrientation = remember(optionsState.orientation) {
                 when (optionsState.orientation) {
                     is FileManagerOrientation.Unrecognized,
