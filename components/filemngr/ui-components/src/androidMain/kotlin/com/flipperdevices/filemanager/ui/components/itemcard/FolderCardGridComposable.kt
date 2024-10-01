@@ -44,9 +44,9 @@ fun FolderCardGridComposable(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
+            .clickableRipple(onClick = onClick)
             .background(LocalPalletV2.current.surface.contentCard.body.default)
-            .padding(12.dp)
-            .clickableRipple(onClick = onClick),
+            .padding(12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top
     ) {
