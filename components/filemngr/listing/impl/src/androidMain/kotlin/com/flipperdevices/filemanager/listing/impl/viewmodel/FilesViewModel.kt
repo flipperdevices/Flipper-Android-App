@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.listing.impl.viewmodel
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
@@ -9,6 +10,8 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingIte
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.preference.pb.FileManagerSort
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -16,24 +19,58 @@ import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
 
 class FilesViewModel @AssistedInject constructor(
     private val featureProvider: FFeatureProvider,
-    @Assisted private val path: Path
+    @Assisted private val path: Path,
+    private val settingsDataStore: DataStore<Settings>
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FilesViewModel"
 
     private val mutex = Mutex()
 
     private val _state = MutableStateFlow<State>(State.Loading)
-    val state = _state.asStateFlow()
+    val state = combine(
+        flow = settingsDataStore.data,
+        flow2 = _state,
+        transform = { settings, state ->
+            when (state) {
+                State.CouldNotListPath -> state
+                State.Loading -> state
+                State.Unsupported -> state
+                is State.Loaded -> {
+                    state.copy(
+                        files = state.files
+                            .filter {
+                                if (settings.show_hidden_files_on_flipper) {
+                                    true
+                                } else {
+                                    !it.fileName.startsWith(".")
+                                }
+                            }
+                            .sortedByDescending {
+                                when (settings.file_manager_sort) {
+                                    is FileManagerSort.Unrecognized,
+                                    FileManagerSort.DEFAULT -> null
+
+                                    FileManagerSort.SIZE -> it.size
+                                }
+                            }
+                            .toImmutableList()
+                    )
+                }
+            }
+        }
+    ).stateIn(viewModelScope, SharingStarted.Eagerly, State.Loading)
 
     private suspend fun listFiles(listingApi: FListingStorageApi) {
         listingApi.lsFlow(path.toString())
@@ -84,7 +121,9 @@ class FilesViewModel @AssistedInject constructor(
         data object Loading : State
         data object Unsupported : State
         data object CouldNotListPath : State
-        data class Loaded(val files: ImmutableList<ListingItem>) : State
+        data class Loaded(
+            val files: ImmutableList<ListingItem>,
+        ) : State
     }
 
     @AssistedFactory

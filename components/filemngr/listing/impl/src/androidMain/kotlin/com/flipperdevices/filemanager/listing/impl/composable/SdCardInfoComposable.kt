@@ -15,11 +15,14 @@ import com.flipperdevices.filemanager.ui.components.sdcard.SdCardMissingComposab
 import com.flipperdevices.filemanager.ui.components.sdcard.SdCardOkComposable
 
 @Composable
-fun SdCardInfoComposable(storageInfoViewModel: StorageInfoViewModel) {
+fun SdCardInfoComposable(
+    storageInfoViewModel: StorageInfoViewModel,
+    modifier: Modifier = Modifier
+) {
     val state by storageInfoViewModel.state.collectAsState()
     AnimatedContent(
         targetState = state,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
         contentKey = { it::class.simpleName },
