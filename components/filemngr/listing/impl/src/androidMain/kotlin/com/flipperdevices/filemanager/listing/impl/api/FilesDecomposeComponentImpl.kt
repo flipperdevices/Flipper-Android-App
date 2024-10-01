@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.listing.impl.api
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,12 +33,14 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
+import com.flipperdevices.filemanager.listing.impl.composable.DeleteFileDialog
 import com.flipperdevices.filemanager.listing.impl.composable.ListingErrorComposable
 import com.flipperdevices.filemanager.listing.impl.composable.NoFilesComposable
 import com.flipperdevices.filemanager.listing.impl.composable.NoListingFeatureComposable
 import com.flipperdevices.filemanager.listing.impl.composable.SdCardInfoComposable
 import com.flipperdevices.filemanager.listing.impl.composable.options.ListOptionsDropDown
 import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
@@ -51,13 +55,12 @@ import com.flipperdevices.filemanager.ui.components.path.PathComposable
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
 import javax.inject.Provider
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @ContributesAssistedFactory(AppGraph::class, FilesDecomposeComponent.Factory::class)
 class FilesDecomposeComponentImpl @AssistedInject constructor(
@@ -68,6 +71,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
     private val createFileViewModelFactory: Provider<CreateFileViewModel>,
+    private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory,
 ) : FilesDecomposeComponent(componentContext) {
 
@@ -98,15 +102,25 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val createFileViewModel = viewModelWithFactory(path.root.toString()) {
             createFileViewModelFactory.get()
         }
+        val deleteFileViewModel = viewModelWithFactory(path.toString()) {
+            deleteFilesViewModelFactory.get()
+        }
         val createFileState by createFileViewModel.state.collectAsState()
         val filesListState by filesViewModel.state.collectAsState()
         val optionsState by optionsViewModel.state.collectAsState()
-        LaunchedEffect(createFileViewModel) {
+        val deleteFileState by deleteFileViewModel.state.collectAsState()
+        LaunchedEffect(createFileViewModel, deleteFileViewModel) {
             createFileViewModel.event.onEach {
                 when (it) {
                     CreateFileViewModel.Event.FilesChanged -> {
                         filesViewModel.tryListFiles()
                     }
+                }
+            }.launchIn(this)
+            deleteFileViewModel.event.onEach {
+                when (it) {
+                    DeleteFilesViewModel.Event.CouldNotDeleteFile -> Unit
+                    is DeleteFilesViewModel.Event.FileDeleted -> filesViewModel.fileDeleted(it.path)
                 }
             }.launchIn(this)
         }
@@ -174,6 +188,17 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                     )
                 }
             }
+            when (val state = deleteFileState) {
+                is DeleteFilesViewModel.State.Confirm -> {
+                    DeleteFileDialog(
+                        paths = state.paths,
+                        onCancel = deleteFileViewModel::onCancel,
+                        onConfirm = deleteFileViewModel::onDeleteConfirm
+                    )
+                }
+
+                else -> Unit
+            }
             val uiOrientation = remember(optionsState.orientation) {
                 when (optionsState.orientation) {
                     is FileManagerOrientation.Unrecognized,
@@ -232,25 +257,36 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                 when (val localFilesListState = filesListState) {
                     is FilesViewModel.State.Loaded -> {
                         items(localFilesListState.files) { file ->
-                            FolderCardComposable(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .animateItemPlacement(),
-                                painter = file.asPainter(),
-                                iconTint = file.asTint(),
-                                title = file.fileName,
-                                subtitle = file.size.toFormattedSize(),
-                                selectionState = ItemUiSelectionState.NONE,
-                                onClick = {
-                                    if (file.fileType == FileType.DIR) {
-                                        onPathChanged.invoke(path / file.fileName)
-                                    }
-                                },
-                                onCheckChange = {},
-                                onMoreClick = {},
-                                onDelete = {},
-                                orientation = ItemCardOrientation.LIST
-                            )
+                            val isFileLoading = deleteFileState.fileNamesOrNull
+                                .orEmpty()
+                                .contains(file.fileName)
+                            Crossfade(isFileLoading) {
+                                if (it) {
+                                    FolderCardPlaceholderComposable(orientation = uiOrientation)
+                                } else {
+                                    FolderCardComposable(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .animateItemPlacement(),
+                                        painter = file.asPainter(),
+                                        iconTint = file.asTint(),
+                                        title = file.fileName,
+                                        subtitle = file.size.toFormattedSize(),
+                                        selectionState = ItemUiSelectionState.NONE,
+                                        onClick = {
+                                            if (file.fileType == FileType.DIR) {
+                                                onPathChanged.invoke(path / file.fileName)
+                                            }
+                                        },
+                                        onCheckChange = {},
+                                        onMoreClick = {},
+                                        onDelete = {
+                                            deleteFileViewModel.tryDelete(setOf(path.resolve(file.fileName)))
+                                        },
+                                        orientation = uiOrientation
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -259,7 +295,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                             Box(modifier = Modifier.animateItemPlacement()) {
                                 FolderCardPlaceholderComposable(
                                     modifier = Modifier.fillMaxWidth(),
-                                    orientation = ItemCardOrientation.LIST,
+                                    orientation = uiOrientation,
                                 )
                             }
                         }

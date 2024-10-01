@@ -17,6 +17,7 @@ androidDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.dialog)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.service.api)

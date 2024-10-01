@@ -93,6 +93,16 @@ class FilesViewModel @AssistedInject constructor(
             }.launchIn(viewModelScope)
     }
 
+    fun fileDeleted(path: Path) {
+        val loadedState = _state.value as? State.Loaded ?: return
+        _state.update {
+            val newFileList = loadedState.files
+                .filter { it.fileName != path.name }
+                .toImmutableList()
+            loadedState.copy(files = newFileList)
+        }
+    }
+
     fun tryListFiles() {
         launchWithLock(mutex, viewModelScope, "try_list_files") {
             _state.emit(State.Loading)
