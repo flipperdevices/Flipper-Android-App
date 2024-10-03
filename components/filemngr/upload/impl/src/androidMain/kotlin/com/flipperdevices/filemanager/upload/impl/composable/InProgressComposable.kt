@@ -31,7 +31,7 @@ internal fun InProgressComposable(
     fileName: String,
     uploadedFileSize: Long,
     uploadFileTotalSize: Long,
-    speed: Long,
+    speed: Long?,
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = if (uploadFileTotalSize == 0L) 0f else uploadedFileSize / uploadFileTotalSize.toFloat(),
@@ -71,16 +71,18 @@ internal fun InProgressComposable(
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(8.dp))
-        Text(
-            text = stringResource(
-                FUR.string.fm_in_progress_speed,
-                speed.toFormattedSize(),
-            ),
-            style = LocalTypography.current.subtitleM12,
-            color = LocalPalletV2.current.text.body.secondary,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+        speed?.let {
+            Text(
+                text = stringResource(
+                    FUR.string.fm_in_progress_speed,
+                    speed.toFormattedSize(),
+                ),
+                style = LocalTypography.current.subtitleM12,
+                color = LocalPalletV2.current.text.body.secondary,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

@@ -24,6 +24,7 @@ import com.flipperdevices.filemanager.upload.impl.R as FUR
 @Composable
 fun UploadingComposable(
     state: UploadViewModel.State.Uploading,
+    speed: Long?,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +62,7 @@ fun UploadingComposable(
             fileName = state.fileName,
             uploadedFileSize = state.uploadedFileSize,
             uploadFileTotalSize = state.uploadFileTotalSize,
-            speed = 0L
+            speed = speed
         )
     }
 }

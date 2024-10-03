@@ -4,6 +4,7 @@ import android.content.Context
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -15,9 +16,13 @@ import com.flipperdevices.deeplink.model.openStream
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -38,6 +43,12 @@ class UploadViewModel @Inject constructor(
 
     private val _state = MutableStateFlow<State>(State.Pending)
     val state = _state.asStateFlow()
+
+    val speedState = featureProvider.get<FSpeedFeatureApi>()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, FFeatureStatus.Retrieving)
+        .filterIsInstance<FFeatureStatus.Supported<FSpeedFeatureApi>>()
+        .map { it.featureApi }
+        .map { it.getSpeed().value.transmitBytesInSec }
 
     private var lastJob: Job? = null
 

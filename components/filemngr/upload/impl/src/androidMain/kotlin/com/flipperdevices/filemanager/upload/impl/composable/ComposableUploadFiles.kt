@@ -17,6 +17,7 @@ fun ComposableUploadFiles(
     modifier: Modifier = Modifier
 ) {
     val state by uploadViewModel.state.collectAsState()
+    val speedState by uploadViewModel.speedState.collectAsState(null)
     Scaffold(
         modifier = modifier
             .fillMaxSize()
@@ -27,6 +28,7 @@ fun ComposableUploadFiles(
             is UploadViewModel.State.Uploading -> {
                 UploadingComposable(
                     state = localState,
+                    speed = speedState,
                     onCancel = { uploadViewModel.onCancel() },
                     modifier = Modifier.padding(contentPadding)
                 )
