@@ -24,9 +24,7 @@ internal class FFlipperSink(
 
         requestLooper.writeSync(buffer.readByteString(), hasNext = false)
 
-        requestLooper.awaitResult()
-            .onFailure { it.printStackTrace() }
-            .getOrThrow()
+        requestLooper.awaitResult().getOrThrow()
     }
 
     @Synchronized

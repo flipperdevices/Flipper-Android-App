@@ -61,11 +61,6 @@ class FFileUploadApiImpl(
         pathOnFlipper: String,
         priority: StorageRequestPriority
     ): Sink = FFlipperSink(
-        requestLooper = WriteRequestLooper(
-            rpcFeatureApi = rpcFeatureApi,
-            pathOnFlipper = pathOnFlipper,
-            priority = priority.toRpc(),
-            scope = scope
-        ),
+        requestLooper = WriteRequestLooper(rpcFeatureApi, pathOnFlipper, priority.toRpc(), scope),
     )
 }
