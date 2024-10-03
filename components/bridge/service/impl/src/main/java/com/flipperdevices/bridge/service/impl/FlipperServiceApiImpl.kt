@@ -89,7 +89,6 @@ class FlipperServiceApiImpl @Inject constructor(
         flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
 
-
     override suspend fun disconnect(isForce: Boolean) = withLock(mutex, "disconnect") {
         if (isForce) {
             disconnectForced = true

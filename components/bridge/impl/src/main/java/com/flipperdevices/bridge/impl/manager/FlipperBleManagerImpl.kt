@@ -182,7 +182,6 @@ class FlipperBleManagerImpl @Inject constructor(
         return@launchWithLock
     }
 
-
     override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
         if (BuildConfig.INTERNAL) {
             gatt.services.forEach { service ->
@@ -230,5 +229,4 @@ class FlipperBleManagerImpl @Inject constructor(
         restartRPCApi.reset(this@FlipperBleManagerImpl)
         info { "RestartRPCApi reset done" }
     }
-
 }
