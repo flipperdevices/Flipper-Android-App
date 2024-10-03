@@ -2,11 +2,14 @@ package com.flipperdevices.filemanager.main.impl.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
@@ -20,6 +23,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val filesDecomposeComponentFactory: FilesDecomposeComponent.Factory,
+    private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -36,15 +40,21 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is FileManagerNavigationConfig.FileTree -> {
-            println("CreateFileTree: ${config.path}")
             filesDecomposeComponentFactory.invoke(
+                componentContext = componentContext,
+                path = config.path,
+                onBack = { navigation.popOr(onBack::invoke) },
+                onPathChanged = { navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it)) },
+                onUploadClick = { navigation.pushNew(FileManagerNavigationConfig.Upload(config.path)) }
+            )
+        }
+
+        is FileManagerNavigationConfig.Upload -> {
+            uploadDecomposeComponentFactory.invoke(
                 componentContext = componentContext,
                 onBack = { navigation.popOr(onBack::invoke) },
                 path = config.path,
-                onPathChanged = {
-                    println("OnPathChanged: $it")
-                    navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it))
-                }
+                onFinish = navigation::pop
             )
         }
     }

@@ -1,11 +1,11 @@
-package com.flipperdevices.filemanager.listing.api
+package com.flipperdevices.filemanager.upload.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import okio.Path
 
-abstract class FilesDecomposeComponent(
+abstract class UploadDecomposeComponent(
     componentContext: ComponentContext
 ) : ScreenDecomposeComponent(componentContext) {
     fun interface Factory {
@@ -13,8 +13,7 @@ abstract class FilesDecomposeComponent(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             path: Path,
-            onPathChanged: (Path) -> Unit,
-            onUploadClick: () -> Unit
-        ): FilesDecomposeComponent
+            onFinish: () -> Unit
+        ): UploadDecomposeComponent
     }
 }

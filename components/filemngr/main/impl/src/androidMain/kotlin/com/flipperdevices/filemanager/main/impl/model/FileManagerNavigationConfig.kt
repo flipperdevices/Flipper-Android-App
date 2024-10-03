@@ -15,6 +15,12 @@ sealed interface FileManagerNavigationConfig {
         val path: Path
     ) : FileManagerNavigationConfig
 
+    @Serializable
+    data class Upload(
+        @Serializable(with = PathSerializer::class)
+        val path: Path
+    ) : FileManagerNavigationConfig
+
     companion object {
         val DefaultFileTree: FileTree
             get() = FileTree("/".toPath())

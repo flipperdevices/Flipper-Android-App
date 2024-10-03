@@ -12,6 +12,8 @@ import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.MkdirRequest
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import okio.FileSystem
 import okio.Path
@@ -60,6 +62,11 @@ class FFileUploadApiImpl(
         pathOnFlipper: String,
         priority: StorageRequestPriority
     ): Sink = FFlipperSink(
-        requestLooper = WriteRequestLooper(rpcFeatureApi, pathOnFlipper, priority.toRpc(), scope),
+        requestLooper = WriteRequestLooper(
+            rpcFeatureApi = rpcFeatureApi,
+            pathOnFlipper = pathOnFlipper,
+            priority = priority.toRpc(),
+            scope = scope
+        ),
     )
 }

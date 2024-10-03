@@ -68,6 +68,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onPathChanged: (Path) -> Unit,
+    @Assisted private val onUploadClick: () -> Unit,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
     private val createFileViewModelFactory: Provider<CreateFileViewModel>,
@@ -149,7 +150,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                                     optionsViewModel.toggleMenu()
                                     createFileViewModel.onCreateFileClick()
                                 },
-                                onUploadClick = {},
+                                onUploadClick = onUploadClick,
                                 onCreateFolderClick = {
                                     optionsViewModel.toggleMenu()
                                     createFileViewModel.onCreateFolderClick()
