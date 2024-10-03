@@ -3,7 +3,7 @@ package com.flipperdevices.nfceditor.sample
 import android.app.Application
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.nfceditor.sample.di.AppComponent
-import com.flipperdevices.nfceditor.sample.di.DaggerAppComponent
+import com.flipperdevices.nfceditor.sample.di.DaggerMergedAppComponent
 import timber.log.Timber
 
 class NfcEditorApplication : Application() {
@@ -13,7 +13,7 @@ class NfcEditorApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.factory()
+        appComponent = DaggerMergedAppComponent.factory()
             .create(
                 context = this,
                 application = this,
