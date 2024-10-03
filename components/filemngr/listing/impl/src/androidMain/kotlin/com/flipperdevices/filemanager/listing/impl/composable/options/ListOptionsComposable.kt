@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
+import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
@@ -44,52 +46,52 @@ fun ListOptionsDropDown(
         onDismissRequest = { onAction.invoke(Action.ToggleMenu) },
     ) {
         IconDropdownItem(
-            text = "Select",
+            text = stringResource(FML.string.fml_otp_select),
             painter = painterResource(FR.drawable.ic_select),
             onClick = onSelectClick
         )
         IconDropdownItem(
-            text = "Create Folder",
+            text = stringResource(FML.string.fml_otp_create_folder),
             painter = painterResource(FR.drawable.ic_create_fodler),
             onClick = onCreateFolderClick
         )
 
         IconDropdownItem(
-            text = "Create File",
+            text = stringResource(FML.string.fml_otp_create_file),
             painter = painterResource(FR.drawable.ic_create_file),
             onClick = onCreateFileClick,
             isEnabled = canCreateFiles
         )
         IconDropdownItem(
-            text = "Upload",
+            text = stringResource(FML.string.fml_otp_upload),
             painter = painterResource(FR.drawable.ic_upload),
             onClick = onUploadClick,
         )
         Divider()
         IconDropdownItem(
-            text = "List",
+            text = stringResource(FML.string.fml_otp_display_list),
             painter = painterResource(FR.drawable.ic_list),
             onClick = { onAction.invoke(Action.DisplayList) }
         )
         IconDropdownItem(
-            text = "Grid",
+            text = stringResource(FML.string.fml_otp_display_grid),
             painter = painterResource(FR.drawable.ic_grid),
             onClick = { onAction.invoke(Action.DisplayGrid) }
         )
         Divider()
         IconDropdownItem(
-            text = "Sort by Default",
+            text = stringResource(FML.string.fml_otp_sort_default),
             painter = painterResource(FR.drawable.ic_sort_default),
             onClick = { onAction.invoke(Action.SortByDefault) }
         )
         IconDropdownItem(
-            text = "Sort by Size",
+            text = stringResource(FML.string.fml_otp_sort_size),
             painter = painterResource(FR.drawable.ic_sort_size),
             onClick = { onAction.invoke(Action.SortBySize) }
         )
         Divider()
         RadioDropdownItem(
-            text = "Show Hidden Files",
+            text = stringResource(FML.string.fml_otp_show_hidden),
             onClick = { onAction.invoke(Action.ToggleHidden) },
             selected = isHiddenFilesVisible
         )

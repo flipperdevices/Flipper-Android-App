@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
@@ -21,6 +22,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import okio.Path
+import com.flipperdevices.filemanager.listing.impl.R as FML
 
 @Suppress("LongMethod")
 @Composable
@@ -45,7 +47,7 @@ fun ComposableFileListScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             OrangeAppBar(
-                title = "File Manager",
+                title = stringResource(FML.string.fml_appbar_title),
                 endBlock = {
                     MoreIconComposable(
                         optionsState = optionsState,
@@ -68,11 +70,6 @@ fun ComposableFileListScreen(
         DeleteFileDialog(
             deleteFileState = deleteFileState,
             deleteFileViewModel = deleteFileViewModel
-        )
-        FilesFailComposable(
-            filesListState = filesListState,
-            onPathChange = onPathChange,
-            path = path
         )
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
@@ -115,5 +112,11 @@ fun ComposableFileListScreen(
                 FilesViewModel.State.CouldNotListPath -> Unit
             }
         }
+        FilesFailComposable(
+            filesListState = filesListState,
+            onPathChange = onPathChange,
+            path = path,
+            onUploadClick = onUploadClick
+        )
     }
 }

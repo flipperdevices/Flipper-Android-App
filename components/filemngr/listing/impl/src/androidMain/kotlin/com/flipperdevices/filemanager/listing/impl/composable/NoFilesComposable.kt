@@ -16,12 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
@@ -39,7 +41,7 @@ fun NoFilesComposable(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "No Files Yet",
+                text = stringResource(FML.string.fml_no_files),
                 style = LocalTypography.current.titleB18,
                 color = LocalPalletV2.current.text.title.primary
             )
@@ -58,7 +60,7 @@ fun NoFilesComposable(
                     .padding(16.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .clickableRipple(onClick = onUploadFilesClick),
-                text = "Upload Files",
+                text = stringResource(FML.string.fml_upload_files),
                 style = LocalTypography.current.buttonB14,
                 color = LocalPalletV2.current.action.blue.text.default
             )

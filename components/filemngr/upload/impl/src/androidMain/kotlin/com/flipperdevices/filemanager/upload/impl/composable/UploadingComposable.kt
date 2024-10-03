@@ -12,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.filemanager.upload.impl.viewmodel.UploadViewModel
+import com.flipperdevices.filemanager.upload.impl.R as FUR
 
 @Composable
 fun UploadingComposable(
@@ -36,7 +38,7 @@ fun UploadingComposable(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Uploading...",
+                text = stringResource(FUR.string.fm_uploading),
                 style = LocalTypography.current.titleB18,
                 color = LocalPalletV2.current.text.title.primary,
                 modifier = Modifier.fillMaxWidth(),
@@ -44,7 +46,7 @@ fun UploadingComposable(
             )
 
             Text(
-                text = "Cancel Upload",
+                text = stringResource(FUR.string.fm_cancel),
                 style = LocalTypography.current.bodyM14,
                 color = LocalPalletV2.current.action.danger.text.default,
                 modifier = Modifier

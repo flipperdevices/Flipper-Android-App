@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.filemanager.upload.impl.R as FUR
 
 @Composable
 internal fun InProgressComposable(
@@ -56,8 +58,13 @@ internal fun InProgressComposable(
             percent = animatedProgress
         )
         Spacer(Modifier.height(8.dp))
+
         Text(
-            text = "Size: ${uploadedFileSize.toFormattedSize()} of ${uploadFileTotalSize.toFormattedSize()}",
+            text = stringResource(
+                FUR.string.fm_in_progress_file_size,
+                uploadedFileSize.toFormattedSize(),
+                uploadFileTotalSize.toFormattedSize()
+            ),
             style = LocalTypography.current.subtitleM12,
             color = LocalPalletV2.current.text.body.secondary,
             modifier = Modifier.fillMaxWidth(),
@@ -65,7 +72,10 @@ internal fun InProgressComposable(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Speed: ${speed.toFormattedSize()}/s",
+            text = stringResource(
+                FUR.string.fm_in_progress_speed,
+                speed.toFormattedSize(),
+            ),
             style = LocalTypography.current.subtitleM12,
             color = LocalPalletV2.current.text.body.secondary,
             modifier = Modifier.fillMaxWidth(),

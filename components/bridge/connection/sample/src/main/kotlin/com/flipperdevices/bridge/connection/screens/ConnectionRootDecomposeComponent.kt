@@ -13,7 +13,6 @@ import com.flipperdevices.bridge.connection.screens.device.ConnectionDeviceScree
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
 import com.flipperdevices.bridge.connection.screens.nopermission.ConnectionNoPermissionDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.search.ConnectionSearchDecomposeComponent
-import com.flipperdevices.newfilemanager.api.navigation.FileManagerDecomposeComponent
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
@@ -25,7 +24,8 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
     private val context: Context,
     private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory,
     private val connectionDeviceScreenDecomposeComponentFactory: ConnectionDeviceScreenDecomposeComponent.Factory,
-    private val fileManagerComponentFactory: FileManagerDecomposeComponent.Factory
+    private val fileManagerComponentFactory:
+    com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent.Factory
 ) : CompositeDecomposeComponent<ConnectionRootConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<ConnectionRootConfig, DecomposeComponent>> = childStack(
         source = navigation,

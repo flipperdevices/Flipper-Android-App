@@ -10,6 +10,7 @@ import okio.Path
 fun FilesFailComposable(
     filesListState: FilesViewModel.State,
     onPathChange: (Path) -> Unit,
+    onUploadClick: () -> Unit,
     path: Path,
     modifier: Modifier = Modifier
 ) {
@@ -25,7 +26,7 @@ fun FilesFailComposable(
         is FilesViewModel.State.Loaded -> {
             if (localFilesListState.files.isEmpty()) {
                 NoFilesComposable(
-                    onUploadFilesClick = {},
+                    onUploadFilesClick = onUploadClick,
                     modifier = modifier.fillMaxSize()
                 )
             }

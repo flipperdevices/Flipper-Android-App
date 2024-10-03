@@ -52,7 +52,6 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         is FileManagerNavigationConfig.Upload -> {
             uploadDecomposeComponentFactory.invoke(
                 componentContext = componentContext,
-                onBack = { navigation.popOr(onBack::invoke) },
                 path = config.path,
                 onFinish = navigation::pop
             )
