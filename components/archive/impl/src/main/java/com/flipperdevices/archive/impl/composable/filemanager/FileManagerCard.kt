@@ -25,6 +25,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun FileManagerCard(
@@ -59,7 +60,7 @@ fun FileManagerCard(
                         tint = Color.Unspecified
                     )
                     Text(
-                        text = "File Manager",
+                        text = stringResource(R.string.archive_card_file_manager_title),
                         style = LocalTypography.current.buttonB16,
                         color = LocalPalletV2.current.text.title.primary
                     )
@@ -72,7 +73,7 @@ fun FileManagerCard(
                 )
             }
             Text(
-                text = "Manage files and assets on your Flipper Zero",
+                text = stringResource(R.string.archive_card_file_manager_desc),
                 style = LocalTypography.current.bodyR14,
                 color = LocalPalletV2.current.text.caption.secondary
             )

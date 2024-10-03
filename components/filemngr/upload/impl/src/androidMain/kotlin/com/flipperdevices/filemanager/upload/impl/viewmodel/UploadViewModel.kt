@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
 import okio.source
@@ -122,18 +123,20 @@ class UploadViewModel @Inject constructor(
                 }
                 val storageApi = it.featureApi
                 val uploadApi = storageApi.uploadApi()
-                lastJob?.cancelAndJoin()
-                lastJob = launchWithLock(mutex, viewModelScope, "upload") {
-                    contents.forEachIndexed { fileIndex, deeplinkContent ->
-                        uploadFile(
-                            uploadApi = uploadApi,
-                            deeplinkContent = deeplinkContent,
-                            folderPath = path,
-                            currentFileIndex = fileIndex,
-                            totalFilesAmount = totalFilesAmount
-                        )
+                launchWithLock(mutex, viewModelScope, "upload") {
+                    lastJob?.cancelAndJoin()
+                    lastJob = launch {
+                        contents.forEachIndexed { fileIndex, deeplinkContent ->
+                            uploadFile(
+                                uploadApi = uploadApi,
+                                deeplinkContent = deeplinkContent,
+                                folderPath = path,
+                                currentFileIndex = fileIndex,
+                                totalFilesAmount = totalFilesAmount
+                            )
+                        }
+                        _state.emit(State.Uploaded)
                     }
-                    _state.emit(State.Uploaded)
                 }
             }.launchIn(viewModelScope)
     }

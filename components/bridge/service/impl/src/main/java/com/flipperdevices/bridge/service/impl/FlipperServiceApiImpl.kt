@@ -74,22 +74,21 @@ class FlipperServiceApiImpl @Inject constructor(
         }
     }
 
-    override fun connectIfNotForceDisconnect() {
-        launchWithLock(mutex, scope, "connect_soft") {
-            if (disconnectForced) {
-                return@launchWithLock
-            }
-            if (unhandledExceptionApi.isBleConnectionForbiddenFlow().first()) {
-                info { "Failed soft connect, because ble connection forbidden" }
-                return@launchWithLock
-            }
-            if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
-                return@launchWithLock
-            }
-            val deviceId = pairSettingsStore.data.first().device_id
-            flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
+    override fun connectIfNotForceDisconnect() = launchWithLock(mutex, scope, "connect_soft") {
+        if (disconnectForced) {
+            return@launchWithLock
         }
+        if (unhandledExceptionApi.isBleConnectionForbiddenFlow().first()) {
+            info { "Failed soft connect, because ble connection forbidden" }
+            return@launchWithLock
+        }
+        if (bleManager.isConnected() || flipperSafeConnectWrapper.isTryingConnected()) {
+            return@launchWithLock
+        }
+        val deviceId = pairSettingsStore.data.first().device_id
+        flipperSafeConnectWrapper.onActiveDeviceUpdate(deviceId)
     }
+
 
     override suspend fun disconnect(isForce: Boolean) = withLock(mutex, "disconnect") {
         if (isForce) {

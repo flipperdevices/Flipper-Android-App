@@ -14,4 +14,6 @@
     <string name="archive_preparing">Preparing sync: getting files from flipper</string>
     <string name="archive_favorites">Syncing favorite keys…</string>
     <string name="archive_hashes">Preparing sync: %s</string>
+    <string name="archive_card_file_manager_title">File Manager</string>
+    <string name="archive_card_file_manager_desc">Manage files and assets on your Flipper Zero</string>
 </resources>

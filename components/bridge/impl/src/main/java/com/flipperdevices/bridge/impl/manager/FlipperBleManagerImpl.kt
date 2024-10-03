@@ -131,58 +131,57 @@ class FlipperBleManagerImpl @Inject constructor(
         }
     }
 
-    override fun onDeviceReady() {
-        launchWithLock(bleMutex, scope, "init") {
-            // Set up large MTU
-            // Also does not work with small MTU because of a bug in Flipper Zero firmware
-            requestMtu(Constants.BLE.MAX_MTU).enqueue()
-            requestConnectionPriority(
-                ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
-            ).enqueue()
+    override fun onDeviceReady() = launchWithLock(bleMutex, scope, "init") {
+        // Set up large MTU
+        // Also does not work with small MTU because of a bug in Flipper Zero firmware
+        requestMtu(Constants.BLE.MAX_MTU).enqueue()
+        requestConnectionPriority(
+            ConnectionPriorityRequest.CONNECTION_PRIORITY_HIGH
+        ).enqueue()
 
-            info { "On device ready called" }
-            informationApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize information api" }
-                serviceErrorListener.onError(
-                    FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
-                )
-            }
-            flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize version api" }
-                serviceErrorListener.onError(
-                    FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
-                )
-            }
-
-            flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize request api" }
-                serviceErrorListener.onError(
-                    FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
-                )
-            }
-            restartRPCApi.initializeSafe(this@FlipperBleManagerImpl) {
-                error(it) { "Error while initialize restart api" }
-                serviceErrorListener.onError(
-                    FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
-                )
-            }
-            runCatching {
-                flipperRtcUpdateService.initialize(flipperRequestApi)
-            }.onFailure {
-                error(it) { "Error while initialize RTC" }
-            }
-
-            flipperReadyListeners.forEach { listener ->
-                runCatching {
-                    listener.onFlipperReady(scope)
-                }.onFailure { error ->
-                    error(error) { "Failed notify flipper ready listener" }
-                }
-            }
-
-            return@launchWithLock
+        info { "On device ready called" }
+        informationApi.initializeSafe(this@FlipperBleManagerImpl) {
+            error(it) { "Error while initialize information api" }
+            serviceErrorListener.onError(
+                FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT
+            )
         }
+        flipperVersionApi.initializeSafe(this@FlipperBleManagerImpl) {
+            error(it) { "Error while initialize version api" }
+            serviceErrorListener.onError(
+                FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT
+            )
+        }
+
+        flipperRequestApi.initializeSafe(this@FlipperBleManagerImpl) {
+            error(it) { "Error while initialize request api" }
+            serviceErrorListener.onError(
+                FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
+            )
+        }
+        restartRPCApi.initializeSafe(this@FlipperBleManagerImpl) {
+            error(it) { "Error while initialize restart api" }
+            serviceErrorListener.onError(
+                FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT
+            )
+        }
+        runCatching {
+            flipperRtcUpdateService.initialize(flipperRequestApi)
+        }.onFailure {
+            error(it) { "Error while initialize RTC" }
+        }
+
+        flipperReadyListeners.forEach { listener ->
+            runCatching {
+                listener.onFlipperReady(scope)
+            }.onFailure { error ->
+                error(error) { "Failed notify flipper ready listener" }
+            }
+        }
+
+        return@launchWithLock
     }
+
 
     override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
         if (BuildConfig.INTERNAL) {
@@ -221,16 +220,15 @@ class FlipperBleManagerImpl @Inject constructor(
         return true
     }
 
-    override fun onServicesInvalidated() {
-        launchWithLock(bleMutex, scope, "reset") {
-            informationApi.reset(this@FlipperBleManagerImpl)
-            info { "Information api reset done" }
-            flipperVersionApi.reset(this@FlipperBleManagerImpl)
-            info { "FlipperVersionApi reset done" }
-            flipperRequestApi.reset(this@FlipperBleManagerImpl)
-            info { "FlipperRequestApi reset done" }
-            restartRPCApi.reset(this@FlipperBleManagerImpl)
-            info { "RestartRPCApi reset done" }
-        }
+    override fun onServicesInvalidated() = launchWithLock(bleMutex, scope, "reset") {
+        informationApi.reset(this@FlipperBleManagerImpl)
+        info { "Information api reset done" }
+        flipperVersionApi.reset(this@FlipperBleManagerImpl)
+        info { "FlipperVersionApi reset done" }
+        flipperRequestApi.reset(this@FlipperBleManagerImpl)
+        info { "FlipperRequestApi reset done" }
+        restartRPCApi.reset(this@FlipperBleManagerImpl)
+        info { "RestartRPCApi reset done" }
     }
+
 }
