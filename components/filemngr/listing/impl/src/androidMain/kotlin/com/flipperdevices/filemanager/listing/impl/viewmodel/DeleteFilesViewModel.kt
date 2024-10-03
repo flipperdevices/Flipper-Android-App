@@ -1,8 +1,10 @@
 package com.flipperdevices.filemanager.listing.impl.viewmodel
 
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
-import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDeleteApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -10,8 +12,13 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
@@ -30,32 +37,42 @@ class DeleteFilesViewModel @Inject constructor(
 
     private val mutex = Mutex()
 
-    fun tryDelete(paths: Set<Path>) {
-        _state.update { State.Confirm(paths.toImmutableSet()) }
+    private val featureState = featureProvider.get<FStorageFeatureApi>()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, FFeatureStatus.Retrieving)
+
+    val canDeleteFiles = featureState
+        .filterIsInstance<FFeatureStatus.Supported<FStorageFeatureApi>>()
+        .map { true }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    fun tryDelete(vararg paths: Path) {
+        _state.update { State.Confirm(paths.toList().toImmutableSet()) }
     }
 
     fun onCancel() {
         _state.update { State.Pending }
     }
 
+    private suspend fun deleteFiles(deleteApi: FFileDeleteApi, paths: Set<Path>) {
+        val failureCount = paths.map { path ->
+            deleteApi
+                .delete(path.toString(), recursive = true)
+                .onSuccess { channel.send(Event.FileDeleted(path)) }
+        }.count { it.isFailure }
+        if (failureCount > 0) {
+            channel.send(Event.CouldNotDeleteSomeFiles)
+        }
+    }
+
     fun onDeleteConfirm() {
         val state = state.value as? State.Confirm ?: return
         launchWithLock(mutex, viewModelScope, "delete") {
             _state.emit(State.Deleting(state.paths))
-            val storageApi = featureProvider.getSync<FStorageFeatureApi>()
-            if (storageApi == null) {
-                channel.send(Event.CouldNotDeleteFile)
-                _state.emit(State.Pending)
-                return@launchWithLock
-            }
-            val failureCount = state.paths.map { path ->
-                storageApi.deleteApi()
-                    .delete(path.toString(), recursive = true)
-                    .onSuccess { channel.send(Event.FileDeleted(path)) }
-            }.count { it.isFailure }
-            if (failureCount > 0) {
-                channel.send(Event.CouldNotDeleteFile)
-            }
+            val storageApi = featureState
+                .filterIsInstance<FFeatureStatus.Supported<FStorageFeatureApi>>()
+                .first()
+                .featureApi
+            deleteFiles(storageApi.deleteApi(), state.paths)
             _state.emit(State.Pending)
         }
     }
@@ -75,6 +92,6 @@ class DeleteFilesViewModel @Inject constructor(
 
     sealed interface Event {
         data class FileDeleted(val path: Path) : Event
-        data object CouldNotDeleteFile : Event
+        data object CouldNotDeleteSomeFiles : Event
     }
 }

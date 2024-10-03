@@ -109,17 +109,19 @@ class FapManifestApiImpl @Inject constructor(
         }
     }
 
-    override fun invalidateAsync() = launchWithLock(jobInvalidateMutex, scope) {
-        val oldJob = job
-        job = scope.launch {
-            oldJob?.cancelAndJoin()
-            loader.invalidate()
-            loader.getManifestLoaderState()
-                .collectLatest { manifestLoaderState ->
-                    withLock(mutex, "invalidate") {
-                        fapManifestStateFlow.emit(manifestLoaderState.toManifestState())
+    override fun invalidateAsync() {
+        launchWithLock(jobInvalidateMutex, scope) {
+            val oldJob = job
+            job = scope.launch {
+                oldJob?.cancelAndJoin()
+                loader.invalidate()
+                loader.getManifestLoaderState()
+                    .collectLatest { manifestLoaderState ->
+                        withLock(mutex, "invalidate") {
+                            fapManifestStateFlow.emit(manifestLoaderState.toManifestState())
+                        }
                     }
-                }
+            }
         }
     }
 }

@@ -25,7 +25,8 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
     private val context: Context,
     private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory,
     private val connectionDeviceScreenDecomposeComponentFactory: ConnectionDeviceScreenDecomposeComponent.Factory,
-    private val fileManagerComponentFactory: com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent.Factory
+    private val fileManagerComponentFactory:
+    com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent.Factory
 ) : CompositeDecomposeComponent<ConnectionRootConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<ConnectionRootConfig, DecomposeComponent>> = childStack(
         source = navigation,

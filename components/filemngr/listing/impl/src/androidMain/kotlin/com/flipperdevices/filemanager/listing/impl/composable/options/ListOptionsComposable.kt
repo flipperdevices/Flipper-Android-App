@@ -23,28 +23,25 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
 fun ListOptionsDropDown(
     isVisible: Boolean,
-    onDismiss: () -> Unit,
+    canCreateFiles: Boolean,
     isHiddenFilesVisible: Boolean,
+    onAction: (Action) -> Unit,
     onSelectClick: () -> Unit,
     onCreateFolderClick: () -> Unit,
     onCreateFileClick: () -> Unit,
     onUploadClick: () -> Unit,
-    onListClick: () -> Unit,
-    onGridClick: () -> Unit,
-    onSortByDefaultClick: () -> Unit,
-    onSortBySizeClick: () -> Unit,
-    onShowHiddenFilesClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     DropdownMenu(
         modifier = modifier,
         expanded = isVisible,
-        onDismissRequest = onDismiss,
+        onDismissRequest = { onAction.invoke(Action.ToggleMenu) },
     ) {
         IconDropdownItem(
             text = "Select",
@@ -60,39 +57,40 @@ fun ListOptionsDropDown(
         IconDropdownItem(
             text = "Create File",
             painter = painterResource(FR.drawable.ic_create_file),
-            onClick = onCreateFileClick
+            onClick = onCreateFileClick,
+            isEnabled = canCreateFiles
         )
         IconDropdownItem(
             text = "Upload",
             painter = painterResource(FR.drawable.ic_upload),
-            onClick = onUploadClick
+            onClick = onUploadClick,
         )
         Divider()
         IconDropdownItem(
             text = "List",
             painter = painterResource(FR.drawable.ic_list),
-            onClick = onListClick
+            onClick = { onAction.invoke(Action.DisplayList) }
         )
         IconDropdownItem(
             text = "Grid",
             painter = painterResource(FR.drawable.ic_grid),
-            onClick = onGridClick
+            onClick = { onAction.invoke(Action.DisplayGrid) }
         )
         Divider()
         IconDropdownItem(
             text = "Sort by Default",
             painter = painterResource(FR.drawable.ic_sort_default),
-            onClick = onSortByDefaultClick
+            onClick = { onAction.invoke(Action.SortByDefault) }
         )
         IconDropdownItem(
             text = "Sort by Size",
             painter = painterResource(FR.drawable.ic_sort_size),
-            onClick = onSortBySizeClick
+            onClick = { onAction.invoke(Action.SortBySize) }
         )
         Divider()
         RadioDropdownItem(
             text = "Show Hidden Files",
-            onClick = onShowHiddenFilesClick,
+            onClick = { onAction.invoke(Action.ToggleHidden) },
             selected = isHiddenFilesVisible
         )
     }

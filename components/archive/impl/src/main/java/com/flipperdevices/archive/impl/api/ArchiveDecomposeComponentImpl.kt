@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.navigate
-import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.archive.api.CategoryDecomposeComponent
@@ -14,7 +13,6 @@ import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
-import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -33,7 +31,6 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory,
-    private val fileManagerFactory: FileManagerDecomposeComponent.Factory,
 ) : ArchiveDecomposeComponent<ArchiveNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -55,7 +52,6 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
         ArchiveNavigationConfig.ArchiveObject -> archiveScreenFactory(
             componentContext = componentContext,
             navigation = navigation,
-            onOpenFileManager = { navigation.pushToFront(ArchiveNavigationConfig.FileManager) }
         )
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
@@ -67,11 +63,6 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
         ArchiveNavigationConfig.OpenSearch -> searchFactory(
             componentContext = componentContext,
             onItemSelected = null,
-            onBack = { navigation.popOr(onBack::invoke) }
-        )
-
-        ArchiveNavigationConfig.FileManager -> fileManagerFactory(
-            componentContext = componentContext,
             onBack = { navigation.popOr(onBack::invoke) }
         )
     }

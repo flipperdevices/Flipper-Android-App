@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.archive.impl.R
 import com.flipperdevices.archive.impl.composable.category.ComposableCategoryCard
-import com.flipperdevices.archive.impl.composable.filemanager.FileManagerCard
 import com.flipperdevices.archive.impl.composable.page.ArchiveProgressScreen
 import com.flipperdevices.archive.impl.composable.page.ComposableAllKeysTitle
 import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTitle
@@ -59,7 +58,6 @@ fun ComposableArchive(
     lazyListState: LazyListState,
     speed: FlipperSerialSpeed?,
     onRefresh: () -> Unit,
-    onFileManagerClick: () -> Unit,
     cancelSynchronization: () -> Unit
 ) {
     val isKeysPresented = favoriteKeys.isNotEmpty() || !keys.isNullOrEmpty()
@@ -84,7 +82,6 @@ fun ComposableArchive(
             categories = categories,
             deletedCategory = deletedCategory,
             lazyListState = lazyListState,
-            onFileManagerClick = onFileManagerClick
         )
     }
 }
@@ -96,7 +93,6 @@ private fun ComposableArchiveReady(
     favoriteKeys: ImmutableList<FlipperKey>,
     lazyListState: LazyListState,
     onRefresh: () -> Unit,
-    onFileManagerClick: () -> Unit,
     synchronizationState: SynchronizationState,
     isKeysPresented: Boolean,
     categories: ImmutableList<CategoryItem>,
@@ -126,17 +122,6 @@ private fun ComposableArchiveReady(
                         onOpenCategory = onOpenCategory,
                         categories = categories,
                         deletedCategory = deletedCategory
-                    )
-                }
-                item {
-                    FileManagerCard(
-                        onClick = onFileManagerClick,
-                        modifier = Modifier.padding(
-                            top = 14.dp,
-                            start = 14.dp,
-                            end = 14.dp,
-                            bottom = 2.dp
-                        )
                     )
                 }
                 if (isKeysPresented) {

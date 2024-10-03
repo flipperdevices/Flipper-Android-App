@@ -16,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemCardOrientation
 
 @Composable
 fun FolderCardPlaceholderComposable(
-    orientation: ItemCardOrientation,
+    orientation: FileManagerOrientation,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -48,13 +48,14 @@ fun FolderCardPlaceholderComposable(
             )
         }
         when (orientation) {
-            ItemCardOrientation.GRID -> {
+            FileManagerOrientation.GRID -> {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OrientationContent()
                 }
             }
 
-            ItemCardOrientation.LIST -> {
+            is FileManagerOrientation.Unrecognized,
+            FileManagerOrientation.LIST -> {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -71,7 +72,10 @@ fun FolderCardPlaceholderComposable(
 private fun FolderCardPlaceholderComposablePreview() {
     FlipperThemeInternal {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            ItemCardOrientation.entries.forEach { orientation ->
+            listOf(
+                FileManagerOrientation.LIST,
+                FileManagerOrientation.GRID
+            ).forEach { orientation ->
                 FolderCardPlaceholderComposable(orientation = orientation)
             }
         }

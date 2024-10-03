@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemCardOrientation
+import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
 
 @Composable
@@ -13,16 +13,17 @@ fun FolderCardComposable(
     title: String,
     subtitle: String,
     selectionState: ItemUiSelectionState,
+    canDeleteFiles: Boolean,
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
     onMoreClick: () -> Unit,
     onDelete: () -> Unit,
-    orientation: ItemCardOrientation,
+    orientation: FileManagerOrientation,
     modifier: Modifier = Modifier,
     iconTint: Color = Color.Unspecified,
 ) {
     when (orientation) {
-        ItemCardOrientation.GRID -> {
+        FileManagerOrientation.GRID -> {
             FolderCardGridComposable(
                 painter = painter,
                 title = title,
@@ -36,7 +37,8 @@ fun FolderCardComposable(
             )
         }
 
-        ItemCardOrientation.LIST -> {
+        FileManagerOrientation.LIST,
+        is FileManagerOrientation.Unrecognized -> {
             SwipeToDismissFolderCardListComposable(
                 painter = painter,
                 title = title,
@@ -47,7 +49,8 @@ fun FolderCardComposable(
                 onMoreClick = onMoreClick,
                 modifier = modifier,
                 iconTint = iconTint,
-                onDelete = onDelete
+                onDelete = onDelete,
+                canDeleteFiles = canDeleteFiles,
             )
         }
     }

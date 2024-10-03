@@ -71,6 +71,17 @@ class OptionsViewModel @Inject constructor(
         setSort(FileManagerSort.SIZE)
     }
 
+    fun onAction(action: Action) {
+        when (action) {
+            Action.DisplayGrid -> setGridOrientation()
+            Action.DisplayList -> setListOrientation()
+            Action.SortByDefault -> setDefaultSort()
+            Action.SortBySize -> setSizeSort()
+            Action.ToggleHidden -> toggleHiddenFiles()
+            Action.ToggleMenu -> toggleMenu()
+        }
+    }
+
     init {
         settingsDataStore.data
             .onEach { settings ->
@@ -90,4 +101,13 @@ class OptionsViewModel @Inject constructor(
         val orientation: FileManagerOrientation = FileManagerOrientation.LIST,
         val sortType: FileManagerSort = FileManagerSort.DEFAULT
     )
+
+    sealed interface Action {
+        data object ToggleMenu : Action
+        data object DisplayGrid : Action
+        data object DisplayList : Action
+        data object SortBySize : Action
+        data object SortByDefault : Action
+        data object ToggleHidden : Action
+    }
 }

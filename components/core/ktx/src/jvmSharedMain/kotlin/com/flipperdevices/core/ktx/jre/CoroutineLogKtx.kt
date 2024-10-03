@@ -5,6 +5,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -35,8 +36,8 @@ fun LogTagProvider.launchWithLock(
     scope: CoroutineScope,
     tag: String? = null,
     action: suspend CoroutineScope.() -> Unit
-) {
-    scope.launch(FlipperDispatchers.workStealingDispatcher) {
+): Job {
+    return scope.launch(FlipperDispatchers.workStealingDispatcher) {
         withLock(mutex, tag) { action.invoke(this) }
     }
 }

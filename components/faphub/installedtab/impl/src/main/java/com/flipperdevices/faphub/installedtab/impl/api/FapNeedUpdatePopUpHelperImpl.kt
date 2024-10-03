@@ -39,21 +39,23 @@ class FapNeedUpdatePopUpHelperImpl @Inject constructor(
     private val mutex = Mutex()
     private var notificationJob: Job? = null
 
-    override fun notifyIfUpdateAvailable() = launchWithLock(mutex, globalScope, "notify") {
-        val oldJob = notificationJob
-        notificationJob = globalScope.launch {
-            oldJob?.cancelAndJoin()
-            installedFapsNetworkProducer.refresh(force = false)
-            val loadedFaps = installedFapsNetworkProducer.getLoadedFapsFlow()
-                .filterIsInstance<FapInstalledInternalLoadingState.Loaded>()
-                .first()
-            info { "Loaded faps $loadedFaps" }
-            val readyToUpdateCount = loadedFaps
-                .faps
-                .count { (_, state) -> state is FapInstalledInternalState.ReadyToUpdate }
-            info { "Ready to update count $loadedFaps" }
-            if (readyToUpdateCount > 0) {
-                inAppNotificationStorage.addNotification(InAppNotification.ReadyToUpdateFaps)
+    override fun notifyIfUpdateAvailable() {
+        launchWithLock(mutex, globalScope, "notify") {
+            val oldJob = notificationJob
+            notificationJob = globalScope.launch {
+                oldJob?.cancelAndJoin()
+                installedFapsNetworkProducer.refresh(force = false)
+                val loadedFaps = installedFapsNetworkProducer.getLoadedFapsFlow()
+                    .filterIsInstance<FapInstalledInternalLoadingState.Loaded>()
+                    .first()
+                info { "Loaded faps $loadedFaps" }
+                val readyToUpdateCount = loadedFaps
+                    .faps
+                    .count { (_, state) -> state is FapInstalledInternalState.ReadyToUpdate }
+                info { "Ready to update count $loadedFaps" }
+                if (readyToUpdateCount > 0) {
+                    inAppNotificationStorage.addNotification(InAppNotification.ReadyToUpdateFaps)
+                }
             }
         }
     }

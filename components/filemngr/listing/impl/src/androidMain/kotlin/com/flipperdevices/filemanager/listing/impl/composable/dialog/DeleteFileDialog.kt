@@ -1,10 +1,11 @@
-package com.flipperdevices.filemanager.listing.impl.composable
+package com.flipperdevices.filemanager.listing.impl.composable.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import kotlinx.collections.immutable.ImmutableSet
 import okio.Path
 
@@ -28,4 +29,22 @@ fun DeleteFileDialog(
             .build()
     }
     FlipperMultiChoiceDialog(model = dialogModel)
+}
+
+@Composable
+fun DeleteFileDialog(
+    deleteFileState: DeleteFilesViewModel.State,
+    deleteFileViewModel: DeleteFilesViewModel
+) {
+    when (val state = deleteFileState) {
+        is DeleteFilesViewModel.State.Confirm -> {
+            DeleteFileDialog(
+                paths = state.paths,
+                onCancel = deleteFileViewModel::onCancel,
+                onConfirm = deleteFileViewModel::onDeleteConfirm
+            )
+        }
+
+        else -> Unit
+    }
 }

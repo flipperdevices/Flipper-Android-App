@@ -13,6 +13,7 @@ androidDependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.bridge.dao.api)

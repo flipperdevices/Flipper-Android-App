@@ -29,7 +29,6 @@ import javax.inject.Provider
 class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val navigation: StackNavigation<ArchiveNavigationConfig>,
-    @Assisted private val onOpenFileManager: () -> Unit,
     private val synchronizationUiApi: SynchronizationUiApi,
     private val generalTabviewModelProvider: Provider<GeneralTabViewModel>,
     private val categoryViewModelProvider: Provider<CategoryViewModel>,
@@ -90,7 +89,6 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
             deletedCategory = deletedCategory,
             lazyListState = lazyListState,
             speed = speed,
-            onFileManagerClick = onOpenFileManager
         )
     }
 
@@ -103,7 +101,6 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             navigation: StackNavigation<ArchiveNavigationConfig>,
-            onOpenFileManager: () -> Unit
         ): ArchiveScreenDecomposeComponentImpl
     }
 }

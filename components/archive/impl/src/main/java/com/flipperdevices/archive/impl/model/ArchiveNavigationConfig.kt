@@ -10,9 +10,6 @@ sealed class ArchiveNavigationConfig {
     data object ArchiveObject : ArchiveNavigationConfig()
 
     @Serializable
-    data object FileManager : ArchiveNavigationConfig()
-
-    @Serializable
     data class OpenCategory(
         val categoryType: CategoryType,
         val deeplink: Deeplink.BottomBar.ArchiveTab.ArchiveCategory?

@@ -43,6 +43,7 @@ fun SwipeToDismissFolderCardListComposable(
     title: String,
     subtitle: String,
     selectionState: ItemUiSelectionState,
+    canDeleteFiles: Boolean,
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
     onMoreClick: () -> Unit,
@@ -70,32 +71,34 @@ fun SwipeToDismissFolderCardListComposable(
             )
         },
         actions = {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .wrapContentWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topEnd = 12.dp,
-                            bottomEnd = 12.dp
+            if (canDeleteFiles) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .wrapContentWidth()
+                        .clip(
+                            RoundedCornerShape(
+                                topEnd = 12.dp,
+                                bottomEnd = 12.dp
+                            )
                         )
-                    )
-                    .background(LocalPalletV2.current.action.danger.background.tertiary.default)
-                    .clickableRipple {
-                        scope.launch {
-                            revealState.animateHide()
-                            onDelete.invoke()
+                        .background(LocalPalletV2.current.action.danger.background.tertiary.default)
+                        .clickableRipple {
+                            scope.launch {
+                                revealState.animateHide()
+                                onDelete.invoke()
+                            }
                         }
-                    }
-                    .padding(12.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Icon(
-                    painter = painterResource(FR.drawable.ic_trash_white),
-                    tint = LocalPalletV2.current.action.danger.icon.default,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
+                        .padding(12.dp),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Icon(
+                        painter = painterResource(FR.drawable.ic_trash_white),
+                        tint = LocalPalletV2.current.action.danger.icon.default,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     )
@@ -162,6 +165,7 @@ private fun FolderCardListComposablePreview() {
                     title = "Short title",
                     subtitle = "Short SubTitle",
                     selectionState = selectionState,
+                    canDeleteFiles = true,
                     onClick = {},
                     onCheckChange = {},
                     onMoreClick = {},
@@ -174,6 +178,7 @@ private fun FolderCardListComposablePreview() {
                     title = "A very very ultra mega super duper log title with some message at the end",
                     subtitle = "A very very ultra mega super duper log title with some message at the end",
                     selectionState = selectionState,
+                    canDeleteFiles = true,
                     onClick = {},
                     onCheckChange = {},
                     onMoreClick = {},

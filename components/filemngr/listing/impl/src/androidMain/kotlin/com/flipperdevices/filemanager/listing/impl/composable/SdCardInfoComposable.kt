@@ -28,15 +28,15 @@ fun SdCardInfoComposable(
         contentKey = { it::class.simpleName },
         content = { animatedState ->
             when (animatedState) {
-                StorageInfoViewModel.Model.Error -> {
+                StorageInfoViewModel.State.Error -> {
                     SdCardMissingComposable()
                 }
 
-                is StorageInfoViewModel.Model.Loaded -> {
+                is StorageInfoViewModel.State.Loaded -> {
                     SdCardOkComposable(used = animatedState.used, animatedState.free)
                 }
 
-                StorageInfoViewModel.Model.Loading -> {
+                StorageInfoViewModel.State.Loading -> {
                     SdCardLoadingComposable()
                 }
             }

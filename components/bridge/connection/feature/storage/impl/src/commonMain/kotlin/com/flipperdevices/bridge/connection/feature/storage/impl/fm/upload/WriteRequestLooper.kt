@@ -5,27 +5,19 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.WriteRequest
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okio.ByteString
-import java.util.concurrent.Executors
 
 internal class WriteRequestLooper(
     private val rpcFeatureApi: FRpcFeatureApi,
@@ -35,14 +27,13 @@ internal class WriteRequestLooper(
 ) {
     private val commands = MutableSharedFlow<FlipperRequest>()
     private val result = MutableStateFlow<Result<Main>?>(null)
-    private val dispatcher = Executors.newFixedThreadPool(4).asCoroutineDispatcher()
+
     init {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
             result.emit(
                 rpcFeatureApi.request(
                     commandFlow = commands,
                     onCancel = {
-                        info { "#MAKEEVRSERGWriteRequestLooperInit onCancel" }
                         withContext(NonCancellable) {
                             rpcFeatureApi.requestOnce(
                                 Main(
@@ -57,15 +48,13 @@ internal class WriteRequestLooper(
         }
     }
 
-    fun awaitResult() = runBlocking(dispatcher) { result.filterNotNull().first() }
+    fun awaitResult() = runBlocking { result.filterNotNull().first() }
 
     fun writeSync(
         data: ByteString,
         hasNext: Boolean = true
-    ): Unit = runBlocking(dispatcher) {
-        info { "#MAKEEVRSERGwriteSync" }
+    ): Unit = runBlocking {
         val waiter = MutableStateFlow<Unit?>(null)
-        info { "#MAKEEVRSERGwriteSync emit" }
         commands.emit(
             FlipperRequest(
                 data = Main(
@@ -77,13 +66,10 @@ internal class WriteRequestLooper(
                 ),
                 priority = priority,
                 onSendCallback = {
-                    info { "#MAKEEVRSERGwriteSync onSedCallback" }
                     waiter.emit(Unit)
                 }
             )
         )
-        info { "#MAKEEVRSERGwriteSync waiter.receive()" }
         waiter.filterNotNull().first()
-        info { "#MAKEEVRSERGwriteSync waiter.received!" }
     }
 }

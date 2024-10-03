@@ -64,6 +64,27 @@ private fun MorePathComposable(isVisible: Boolean) {
 }
 
 @Composable
+private fun SdCardIcon(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Icon(
+        painter = painterResource(
+            when {
+                MaterialTheme.colors.isLight -> R.drawable.ic_sd_card_ok_black
+                else -> R.drawable.ic_sd_card_ok_white
+            }
+        ),
+        tint = Color.Unspecified,
+        contentDescription = null,
+        modifier = modifier
+            .size(24.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .clickableRipple(onClick = onClick)
+    )
+}
+
+@Composable
 fun PathComposable(
     path: Path,
     onRootPathClick: () -> Unit,
@@ -76,20 +97,7 @@ fun PathComposable(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        Icon(
-            painter = painterResource(
-                when {
-                    MaterialTheme.colors.isLight -> R.drawable.ic_sd_card_ok_black
-                    else -> R.drawable.ic_sd_card_ok_white
-                }
-            ),
-            tint = Color.Unspecified,
-            contentDescription = null,
-            modifier = Modifier
-                .size(24.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .clickableRipple(onClick = onRootPathClick)
-        )
+        SdCardIcon(onClick = onRootPathClick)
         SegmentSeparatorComposable(modifier = Modifier.padding(start = 8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             MorePathComposable(
