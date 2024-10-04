@@ -5,14 +5,15 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.File
 import com.flipperdevices.protobuf.storage.WriteRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -25,15 +26,18 @@ internal class WriteRequestLooper(
     private val pathOnFlipper: String,
     private val priority: FlipperRequestPriority,
     scope: CoroutineScope
-) {
-    private val commands = MutableSharedFlow<FlipperRequest>()
+) : LogTagProvider {
+    override val TAG = "WriteRequestLooper"
+
+    // We can't send to channel when it has zero subscribers
+    private val commands = Channel<FlipperRequest>()
     private val result = MutableStateFlow<Result<Main>?>(null)
 
     init {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
             result.emit(
                 rpcFeatureApi.request(
-                    commandFlow = commands,
+                    commandFlow = commands.consumeAsFlow(),
                     onCancel = {
                         withContext(NonCancellable) {
                             rpcFeatureApi.requestOnce(
@@ -56,7 +60,7 @@ internal class WriteRequestLooper(
         hasNext: Boolean = true
     ): Unit = runBlocking {
         val waiter = Channel<Unit>()
-        commands.emit(
+        commands.send(
             FlipperRequest(
                 data = Main(
                     has_next = hasNext,
