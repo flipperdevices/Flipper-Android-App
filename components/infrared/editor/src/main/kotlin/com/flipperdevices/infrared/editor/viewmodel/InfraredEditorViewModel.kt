@@ -3,6 +3,7 @@ package com.flipperdevices.infrared.editor.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
@@ -13,6 +14,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.editor.R
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
@@ -28,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.nio.charset.Charset
 
@@ -40,7 +43,8 @@ class InfraredEditorViewModel @AssistedInject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val updateKeyApi: UpdateKeyApi,
     private val synchronizationApi: SynchronizationApi,
-    context: Context
+    context: Context,
+    private val settings: DataStore<Settings>
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG: String = "InfraredEditorViewModel"
 
@@ -105,7 +109,10 @@ class InfraredEditorViewModel @AssistedInject constructor(
         info { "Errors remote: $errorRemotes count ${errorRemotes.size}" }
 
         if (errorRemotes.isNotEmpty()) {
-            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+            vibrator?.vibrateCompat(
+                VIBRATOR_TIME_MS,
+                settings.data.first().disabled_vibration
+            )
             keyStateFlow.emit(
                 InfraredEditorState.Ready(
                     remotes = currentState.remotes,
@@ -199,7 +206,10 @@ class InfraredEditorViewModel @AssistedInject constructor(
         var value = FlipperSymbolFilter.filterUnacceptableSymbol(source)
         if (value.length > MAX_SIZE_REMOTE_LENGTH) {
             value = value.substring(0, MAX_SIZE_REMOTE_LENGTH)
-            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+            vibrator?.vibrateCompat(
+                VIBRATOR_TIME_MS,
+                runBlocking { settings.data.first().disabled_vibration }
+            )
         }
         viewModelScope.launch {
             val remotes = currentState.remotes.toMutableList()

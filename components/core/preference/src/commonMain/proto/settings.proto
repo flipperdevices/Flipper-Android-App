@@ -61,4 +61,6 @@ message Settings {
   bool notification_topic_update_enabled = 27;
   bool notification_dialog_shown = 28;
   bool show_remote_controls = 29;
+
+  bool disabled_vibration = 33;
 }

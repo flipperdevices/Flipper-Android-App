@@ -3,9 +3,11 @@ package com.flipperdevices.screenstreaming.impl.viewmodel
 import android.app.Application
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.android.vibrateCompat
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.screen.Gui
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
@@ -18,6 +20,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 private const val VIBRATOR_TIME_MS = 10L
 
@@ -27,6 +31,7 @@ class ScreenStreamingViewModel @AssistedInject constructor(
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
+    private val settings: DataStore<Settings>
 ) : DecomposeViewModel() {
     private val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
@@ -51,7 +56,10 @@ class ScreenStreamingViewModel @AssistedInject constructor(
         buttonEnum: ButtonEnum,
         inputType: Gui.InputType
     ) {
-        vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+        vibrator?.vibrateCompat(
+            VIBRATOR_TIME_MS,
+            runBlocking { settings.data.first().disabled_vibration }
+        )
 
         val uuid = buttonStackRepository.onNewStackButton(buttonEnum.animEnum)
         flipperButtonRepository.pressOnButton(

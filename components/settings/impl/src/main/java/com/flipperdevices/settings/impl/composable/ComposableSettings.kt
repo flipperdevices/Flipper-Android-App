@@ -66,7 +66,9 @@ fun ComposableSettings(
                 theme = settings.selected_theme,
                 onSelectTheme = settingsViewModel::onChangeSelectedTheme,
                 notificationState = notificationState,
-                onChangeNotificationState = notificationViewModel::switchToggle
+                onChangeNotificationState = notificationViewModel::switchToggle,
+                vibrationState = !settings.disabled_vibration,
+                onSwitchVibration = settingsViewModel::onSwitchVibration
             )
             if (settings.expert_mode) {
                 DebugCategory(
