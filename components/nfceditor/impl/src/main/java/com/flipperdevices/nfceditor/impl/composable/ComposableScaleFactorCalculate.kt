@@ -1,14 +1,13 @@
 package com.flipperdevices.nfceditor.impl.composable
 
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
-import androidx.compose.foundation.text.InternalFoundationTextApi
-import androidx.compose.foundation.text.TextDelegate
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
@@ -42,23 +41,10 @@ fun BoxWithConstraintsScope.calculateScaleFactor(maxIndexCount: Int): Float {
     }
 }
 
-@OptIn(InternalFoundationTextApi::class)
 @Composable
 private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor: Float): Boolean {
     val textStyle = LocalTextStyle.current
-
-    // Represent line without index and paddings
-    val textDelegate = TextDelegate(
-        AnnotatedString("00".repeat(NFC_LINE_BYTE_COUNT)),
-        textStyle.copy(
-            fontSize = textStyle.fontSize * scaleFactor
-        ),
-        maxLines = 1,
-        softWrap = false,
-        overflow = TextOverflow.Visible,
-        density = LocalDensity.current,
-        fontFamilyResolver = LocalFontFamilyResolver.current
-    )
+    val textMeasurer = rememberTextMeasurer()
 
     val otherWidthsDpWithoutScaleFactor = (maxIndexCount * WIDTH_LINE_INDEX_DP) +
         (PADDING_CELL_DP * 2 * NFC_LINE_BYTE_COUNT)
@@ -72,10 +58,17 @@ private fun BoxWithConstraintsScope.shouldShrink(maxIndexCount: Int, scaleFactor
         maxWidth = Integer.max(0, constraints.maxWidth - otherWidthsPx.roundToInt())
     )
 
-    val textLayoutResult = textDelegate.layout(
-        textConstraints,
-        LocalLayoutDirection.current
-    )
-
-    return textLayoutResult.hasVisualOverflow
+    return textMeasurer.measure(
+        AnnotatedString("00".repeat(NFC_LINE_BYTE_COUNT)),
+        textStyle.copy(
+            fontSize = textStyle.fontSize * scaleFactor
+        ),
+        maxLines = 1,
+        softWrap = false,
+        overflow = TextOverflow.Visible,
+        density = LocalDensity.current,
+        fontFamilyResolver = LocalFontFamilyResolver.current,
+        constraints = textConstraints,
+        layoutDirection = LocalLayoutDirection.current
+    ).hasVisualOverflow
 }

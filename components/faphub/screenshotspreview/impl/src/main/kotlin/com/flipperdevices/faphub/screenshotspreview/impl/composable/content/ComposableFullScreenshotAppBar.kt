@@ -91,7 +91,7 @@ internal fun ComposableFullScreenshotAppBar(
 
 @Preview
 @Composable
-private fun FullScreenshotAppBar() {
+private fun PreviewFullScreenshotAppBar() {
     FlipperThemeInternal {
         ComposableFullScreenshotAppBar(
             onBack = {},

@@ -64,8 +64,8 @@ private fun SearchTextBox(
         ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search,
-            autoCorrect = false
+            autoCorrectEnabled = false,
+            imeAction = ImeAction.Search
         ),
         keyboardActions = KeyboardActions(onSearch = {
             focusManager.clearFocus()

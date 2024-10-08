@@ -41,8 +41,7 @@ internal fun ComposableFlipperButtonAnimation(
         ) {
             val button = buttons[it]
             Image(
-                modifier = Modifier
-                    .animateItemPlacement()
+                modifier = Modifier.animateItem(fadeInSpec = null, fadeOutSpec = null)
                     .size(24.dp),
                 painter = painterResource(
                     if (MaterialTheme.colors.isLight) {

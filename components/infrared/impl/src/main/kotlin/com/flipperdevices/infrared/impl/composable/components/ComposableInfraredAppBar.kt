@@ -42,7 +42,7 @@ internal fun ComposableInfraredAppBar(
 
 @Preview
 @Composable
-private fun InfraredAppBar() {
+private fun PreviewInfraredAppBar() {
     FlipperThemeInternal {
         ComposableInfraredAppBar(
             onBack = {},

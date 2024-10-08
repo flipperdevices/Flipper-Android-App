@@ -1,13 +1,12 @@
 package com.flipperdevices.core.markdown
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -39,28 +38,11 @@ fun ClickableUrlText(
     modifier: Modifier = Modifier,
     style: TextStyle = TextStyle.Default
 ) {
-    ClickableUrlText(
-        annotatedStringFromMarkdown(markdownResId),
-        modifier,
-        style
-    )
-}
-
-@Composable
-fun ClickableUrlText(
-    text: AnnotatedString,
-    modifier: Modifier = Modifier,
-    style: TextStyle = TextStyle.Default
-) {
     val textStyle = LocalTextStyle.current.merge(style)
-    val uriHandler = LocalUriHandler.current
-    ClickableText(
+
+    Text(
+        text = annotatedStringFromMarkdown(markdownResId),
         modifier = modifier,
-        text = text,
-        style = textStyle,
-        onClick = { index ->
-            text.getStringAnnotations(ANNOTATED_STRING_TAG_URL, index, index)
-                .firstOrNull()?.let { url -> uriHandler.openUri(url.item) }
-        }
+        style = textStyle
     )
 }

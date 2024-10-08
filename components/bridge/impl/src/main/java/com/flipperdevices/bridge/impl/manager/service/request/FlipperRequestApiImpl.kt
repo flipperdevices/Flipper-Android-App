@@ -202,8 +202,8 @@ class FlipperRequestApiImpl @Inject constructor(
     ): Flipper.Main = suspendCancellableCoroutine { cont ->
         requestListeners[uniqueId] = {
             requestListeners.remove(uniqueId)
-            cont.resume(it) { throwable ->
-                error(throwable) { "Error on resume execution of $uniqueId command. Answer is $it" }
+            cont.resume(it) { cause, _, _ ->
+                error(cause) { "Error on resume execution of $uniqueId command. Answer is $it" }
             }
         }
 

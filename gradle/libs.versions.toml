@@ -17,10 +17,10 @@ compose-wear = "1.4.0" # https://developer.android.com/jetpack/androidx/releases
 compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
 compose-accompanist = "0.36.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
-compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
+compose-constraint = "0.4.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
 compose-paging = "3.3.2" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.6.11" # https://github.com/JetBrains/compose-multiplatform/releases
+compose-multiplatform = "1.7.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
 # 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
 # androidx.navigation:navigation-compose:2.8.0-beta0 requires Android API 35
 # Android API 35 not supported by roboelectric
@@ -157,7 +157,7 @@ compose-pager = { module = "com.google.accompanist:accompanist-pager", version.r
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
 compose-placeholder = { module = "io.github.fornewid:placeholder-foundation", version.ref = "compose-placeholder" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
-compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
+compose-constraint = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "compose-constraint" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
 
