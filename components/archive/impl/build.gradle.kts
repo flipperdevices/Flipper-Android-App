@@ -33,6 +33,8 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.api)
 
+    implementation(projects.components.filemngr.main.api)
+
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

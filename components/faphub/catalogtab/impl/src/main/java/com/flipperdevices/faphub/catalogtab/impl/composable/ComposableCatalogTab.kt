@@ -46,7 +46,7 @@ fun ComposableCatalogTabScreen(
             .map { categoriesErrorLoadState -> categoriesErrorLoadState.throwable.toFapHubError() }
     }.collectAsState(initial = null)
 
-    val refreshAll = {
+    val refreshAll: () -> Unit = {
         fapsListViewModel.refreshManifest()
         fapsList.refresh()
         categoriesViewModel.onRefresh()

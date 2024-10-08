@@ -12,6 +12,7 @@ import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.MkdirRequest
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import okio.FileSystem
 import okio.Path

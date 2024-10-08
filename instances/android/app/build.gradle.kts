@@ -43,6 +43,9 @@ dependencies {
     implementation(projects.components.filemanager.api)
     implementation(projects.components.filemanager.impl)
 
+    implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.main.impl)
+
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)

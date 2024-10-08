@@ -100,7 +100,7 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            navigation: StackNavigation<ArchiveNavigationConfig>
+            navigation: StackNavigation<ArchiveNavigationConfig>,
         ): ArchiveScreenDecomposeComponentImpl
     }
 }

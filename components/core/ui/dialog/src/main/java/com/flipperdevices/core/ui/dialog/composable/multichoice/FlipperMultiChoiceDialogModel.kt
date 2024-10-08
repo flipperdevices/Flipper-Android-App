@@ -33,12 +33,14 @@ class FlipperMultiChoiceDialogModel private constructor(
 
         fun setTitle(@StringRes textId: Int): Builder {
             titleComposable = {
-                Text(
-                    text = stringResource(textId),
-                    style = LocalTypography.current.bodySSB14,
-                    textAlign = TextAlign.Center,
-                    color = LocalPallet.current.text100
-                )
+                ComposableTitle(stringResource(textId))
+            }
+            return this
+        }
+
+        fun setTitle(text: String): Builder {
+            titleComposable = {
+                ComposableTitle(text)
             }
             return this
         }
@@ -66,6 +68,16 @@ class FlipperMultiChoiceDialogModel private constructor(
         fun setImage(content: @Composable () -> Unit): Builder {
             imageComposable = content
             return this
+        }
+
+        @Composable
+        private fun ComposableTitle(text: String) {
+            Text(
+                text = text,
+                style = LocalTypography.current.bodySSB14,
+                textAlign = TextAlign.Center,
+                color = LocalPallet.current.text100
+            )
         }
 
         @Composable

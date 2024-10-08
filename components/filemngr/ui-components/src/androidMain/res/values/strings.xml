@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sd_card_missing_title">No SD Card</string>
+    <string name="sd_card_ok_title">SD Card</string>
+    <string name="sd_card_missing_desc">Insert a microSD card in Flipper Zero to access Files</string>
+    <string name="sd_card_used">Used</string>
+    <string name="sd_card_total">Total</string>
+</resources>

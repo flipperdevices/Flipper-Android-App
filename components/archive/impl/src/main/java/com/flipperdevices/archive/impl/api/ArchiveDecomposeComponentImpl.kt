@@ -51,7 +51,7 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         ArchiveNavigationConfig.ArchiveObject -> archiveScreenFactory(
             componentContext = componentContext,
-            navigation = navigation
+            navigation = navigation,
         )
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
