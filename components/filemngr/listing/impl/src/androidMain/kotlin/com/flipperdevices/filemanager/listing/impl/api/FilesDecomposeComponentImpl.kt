@@ -12,6 +12,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -33,6 +34,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val createFileViewModelFactory: Provider<CreateFileViewModel>,
     private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory,
+    private val createSelectionViewModel: Provider<SelectionViewModel>
 ) : FilesDecomposeComponent(componentContext) {
 
     private val backCallback = BackCallback {
@@ -65,6 +67,9 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val deleteFileViewModel = viewModelWithFactory(path.toString()) {
             deleteFilesViewModelFactory.get()
         }
+        val selectionViewModel = viewModelWithFactory(path.toString()) {
+            createSelectionViewModel.get()
+        }
         LaunchedEventsComposable(
             createFileViewModel = createFileViewModel,
             deleteFilesViewModel = deleteFileViewModel,
@@ -78,6 +83,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             filesViewModel = filesViewModel,
             optionsViewModel = optionsViewModel,
             storageInfoViewModel = storageInfoViewModel,
+            selectionViewModel = selectionViewModel,
             onBack = onBack::invoke,
             onUploadClick = onUploadClick,
             onPathChange = onPathChanged

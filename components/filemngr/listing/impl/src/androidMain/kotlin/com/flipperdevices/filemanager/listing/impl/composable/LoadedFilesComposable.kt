@@ -11,6 +11,7 @@ import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlaceholderComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asPainter
@@ -22,10 +23,12 @@ import okio.Path
 fun LazyGridScope.LoadedFilesComposable(
     path: Path,
     deleteFileState: DeleteFilesViewModel.State,
+    selectionState: SelectionViewModel.State,
     filesState: FilesViewModel.State.Loaded,
     orientation: FileManagerOrientation,
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
+    onCheckToggle: (Path) -> Unit,
     onDelete: (Path) -> Unit
 ) {
     items(filesState.files) { file ->
@@ -38,6 +41,9 @@ fun LazyGridScope.LoadedFilesComposable(
             if (animatedIsFileLoading) {
                 FolderCardPlaceholderComposable(orientation = orientation)
             } else {
+                val filePath = remember(path, file.fileName) {
+                    path.resolve(file.fileName)
+                }
                 FolderCardComposable(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -47,13 +53,17 @@ fun LazyGridScope.LoadedFilesComposable(
                     title = file.fileName,
                     canDeleteFiles = canDeleteFiles,
                     subtitle = file.size.toFormattedSize(),
-                    selectionState = ItemUiSelectionState.NONE,
+                    selectionState = when {
+                        selectionState.selected.contains(filePath) -> ItemUiSelectionState.SELECTED
+                        selectionState.isEnabled -> ItemUiSelectionState.UNSELECTED
+                        else -> ItemUiSelectionState.NONE
+                    },
                     onClick = {
                         if (file.fileType == FileType.DIR) {
                             onPathChanged.invoke(path / file.fileName)
                         }
                     },
-                    onCheckChange = {},
+                    onCheckChange = { onCheckToggle.invoke(filePath) },
                     onMoreClick = {},
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation

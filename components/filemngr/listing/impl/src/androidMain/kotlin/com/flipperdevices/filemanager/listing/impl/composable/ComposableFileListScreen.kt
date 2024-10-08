@@ -1,5 +1,12 @@
 package com.flipperdevices.filemanager.listing.impl.composable
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +19,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
+import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.filemanager.listing.impl.composable.appbar.CloseSelectionAppBar
 import com.flipperdevices.filemanager.listing.impl.composable.dialog.CreateFileDialogComposable
 import com.flipperdevices.filemanager.listing.impl.composable.dialog.DeleteFileDialog
 import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import okio.Path
 import com.flipperdevices.filemanager.listing.impl.R as FML
@@ -33,6 +44,7 @@ fun ComposableFileListScreen(
     filesViewModel: FilesViewModel,
     optionsViewModel: OptionsViewModel,
     storageInfoViewModel: StorageInfoViewModel,
+    selectionViewModel: SelectionViewModel,
     onBack: () -> Unit,
     onUploadClick: () -> Unit,
     onPathChange: (Path) -> Unit,
@@ -43,24 +55,52 @@ fun ComposableFileListScreen(
     val filesListState by filesViewModel.state.collectAsState()
     val optionsState by optionsViewModel.state.collectAsState()
     val deleteFileState by deleteFileViewModel.state.collectAsState()
+    val selectionState by selectionViewModel.state.collectAsState()
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            OrangeAppBar(
-                title = stringResource(FML.string.fml_appbar_title),
-                endBlock = {
-                    MoreIconComposable(
-                        optionsState = optionsState,
-                        onAction = optionsViewModel::onAction,
-                        canCreateFiles = canCreateFiles,
-                        onUploadClick = onUploadClick,
-                        onSelectClick = {},
-                        onCreateFolderClick = createFileViewModel::onCreateFolderClick,
-                        onCreateFileClick = createFileViewModel::onCreateFileClick
+            AnimatedContent(
+                modifier = Modifier
+                    .background(LocalPalletV2.current.surface.navBar.body.accentBrand),
+                targetState = selectionState.isEnabled,
+                contentKey = { it },
+                transitionSpec = {
+                    fadeIn()
+                        .plus(slideInHorizontally())
+                        .togetherWith(fadeOut().plus(slideOutHorizontally()))
+                }
+            ) { isSelectionEnabled ->
+                if (isSelectionEnabled) {
+                    CloseSelectionAppBar(
+                        onClose = selectionViewModel::toggleMode,
+                        onSelectAll = {
+                            val paths = (filesListState as? FilesViewModel.State.Loaded)
+                                ?.files
+                                .orEmpty()
+                                .map(ListingItem::fileName)
+                                .map(path::resolve)
+                            selectionViewModel.select(paths)
+                        },
+                        onDeselectAll = selectionViewModel::deselectAll
                     )
-                },
-                onBack = onBack::invoke,
-            )
+                } else {
+                    OrangeAppBar(
+                        title = stringResource(FML.string.fml_appbar_title),
+                        endBlock = {
+                            MoreIconComposable(
+                                optionsState = optionsState,
+                                onAction = optionsViewModel::onAction,
+                                canCreateFiles = canCreateFiles,
+                                onUploadClick = onUploadClick,
+                                onSelectClick = selectionViewModel::toggleMode,
+                                onCreateFolderClick = createFileViewModel::onCreateFolderClick,
+                                onCreateFileClick = createFileViewModel::onCreateFileClick
+                            )
+                        },
+                        onBack = onBack::invoke,
+                    )
+                }
+            }
         }
     ) { contentPadding ->
         CreateFileDialogComposable(
@@ -97,7 +137,9 @@ fun ComposableFileListScreen(
                         orientation = optionsState.orientation,
                         canDeleteFiles = canDeleteFiles,
                         onPathChanged = onPathChange,
-                        onDelete = deleteFileViewModel::tryDelete
+                        onDelete = deleteFileViewModel::tryDelete,
+                        selectionState = selectionState,
+                        onCheckToggle = selectionViewModel::togglePath
                     )
                 }
 
