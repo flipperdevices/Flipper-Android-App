@@ -136,7 +136,7 @@ private fun FDropdownItem(
 }
 
 @Composable
-private fun IconDropdownItem(
+fun IconDropdownItem(
     text: String,
     painter: Painter,
     isEnabled: Boolean = true,

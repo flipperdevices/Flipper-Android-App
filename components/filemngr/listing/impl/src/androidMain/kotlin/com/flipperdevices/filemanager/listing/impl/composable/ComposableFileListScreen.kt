@@ -34,6 +34,12 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import okio.Path
 import com.flipperdevices.filemanager.listing.impl.R as FML
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Alignment
 
 @Suppress("LongMethod")
 @Composable
@@ -160,5 +166,27 @@ fun ComposableFileListScreen(
             path = path,
             onUploadClick = onUploadClick
         )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(14.dp)
+                .padding(contentPadding),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            AnimatedVisibility(
+                selectionState.isEnabled && filesListState is FilesViewModel.State.Loaded,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
+                exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
+            ) {
+                BottomBarOptions(
+                    canRename = true,
+                    onMove = {},
+                    onRename = {},
+                    onDelete = {},
+                    onExport = {},
+                    onCopyTo = {}
+                )
+            }
+        }
     }
 }
