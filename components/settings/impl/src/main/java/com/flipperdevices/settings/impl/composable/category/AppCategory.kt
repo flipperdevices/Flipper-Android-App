@@ -11,6 +11,7 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.notification.model.UpdateNotificationState
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.GrayDivider
+import com.flipperdevices.settings.impl.composable.components.SwitchableElement
 import com.flipperdevices.settings.impl.composable.elements.PushNotificationElement
 import com.flipperdevices.settings.impl.composable.elements.ThemeChangerElement
 
@@ -20,6 +21,8 @@ fun AppCategory(
     onSelectTheme: (SelectedTheme) -> Unit,
     notificationState: UpdateNotificationState,
     onChangeNotificationState: (Boolean) -> Unit,
+    vibrationState: Boolean,
+    onSwitchVibration: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CardCategory(modifier = modifier) {
@@ -36,6 +39,13 @@ fun AppCategory(
         PushNotificationElement(
             notificationState = notificationState,
             onChangeNotificationState = onChangeNotificationState
+        )
+        GrayDivider()
+        SwitchableElement(
+            state = vibrationState,
+            titleId = R.string.app_vibration_title,
+            descriptionId = R.string.app_vibration_desc,
+            onSwitchState = onSwitchVibration
         )
     }
 }

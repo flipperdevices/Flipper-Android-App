@@ -100,4 +100,14 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun onSwitchVibration(vibration: Boolean) {
+        viewModelScope.launch {
+            dataStoreSettings.updateData {
+                it.copy(
+                    disabled_vibration = !vibration
+                )
+            }
+        }
+    }
 }

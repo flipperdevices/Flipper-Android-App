@@ -4,7 +4,10 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 
-fun Vibrator.vibrateCompat(milliseconds: Long) {
+fun Vibrator.vibrateCompat(milliseconds: Long, ignoreVibration: Boolean) {
+    if (ignoreVibration) {
+        return
+    }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         vibrate(
             VibrationEffect.createOneShot(

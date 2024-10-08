@@ -1,6 +1,7 @@
 package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -8,6 +9,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class InfraredViewModel @Inject constructor(
@@ -27,13 +30,15 @@ class InfraredViewModel @Inject constructor(
     private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
-    application: Application
+    application: Application,
+    private val settings: DataStore<Settings>
 ) : EmulateViewModel(
     serviceProvider,
     emulateHelper,
     synchronizationApi,
     closeEmulateAppTaskHolder,
-    application
+    application,
+    settings
 ) {
     override val TAG = "InfraredViewModel"
 
@@ -56,7 +61,10 @@ class InfraredViewModel @Inject constructor(
 
     fun onSinglePress(config: EmulateConfig) {
         info { "#onSinglePress $config" }
-        vibrator?.vibrateCompat(VIBRATOR_TIME)
+        vibrator?.vibrateCompat(
+            VIBRATOR_TIME,
+            runBlocking { settings.data.first().disabled_vibration }
+        )
         if (config.keyType != FlipperKeyType.INFRARED) {
             return
         }

@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
+    implementation(projects.components.core.preference)
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.tabswitch)

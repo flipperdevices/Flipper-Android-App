@@ -11,6 +11,8 @@
     <string name="app_title">App</string>
     <string name="app_notification_title">Push Notifications</string>
     <string name="app_notification_desc">Notify about new firmware releases</string>
+    <string name="app_vibration_title">Vibration</string>
+    <string name="app_vibration_desc">Vibration feedback in the app</string>
 
     <string name="debug_options">Debug Options</string>
     <string name="debug_options_desc">Features for developers and testing</string>

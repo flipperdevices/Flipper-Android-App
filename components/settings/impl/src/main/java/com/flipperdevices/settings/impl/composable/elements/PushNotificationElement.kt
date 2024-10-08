@@ -33,7 +33,7 @@ fun PushNotificationElement(
             modifier = Modifier.weight(weight = 1f),
             titleId = R.string.app_notification_title,
             descriptionId = R.string.app_notification_desc,
-            titleTextStyle = LocalTypography.current.buttonB16
+            titleTextStyle = LocalTypography.current.bodyR14
         )
         AnimatedSwitch(
             modifier = Modifier.padding(all = 12.dp),
