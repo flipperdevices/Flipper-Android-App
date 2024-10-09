@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.io.File
 
-private const val FLIPPER_STORAGE_NAME = "/any/"
+private const val FLIPPER_STORAGE_NAME = "/ext/"
 
 /**
  * Describe name and path for key.
