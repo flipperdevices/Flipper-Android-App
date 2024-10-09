@@ -1,32 +1,32 @@
 [versions]
 # You also need to bump the version of ksp
 kotlin-general = "2.0.20" # https://kotlinlang.org/docs/releases.html#release-details
-kotlin-immutable-collections = "0.3.7" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
+kotlin-immutable-collections = "0.3.8" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
-kotlinx = "1.8.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.0.20-1.0.24" # https://github.com/google/ksp/releases
+kotlinx = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
+ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta11" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
-android-gradle = "8.6.0" # https://developer.android.com/studio/releases/gradle-plugin
-protobuf = "4.28.0" # https://github.com/protocolbuffers/protobuf/releases
+android-gradle = "8.7.0" # https://developer.android.com/studio/releases/gradle-plugin
+protobuf = "4.28.2" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
-compose-material = "1.6.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-foundation = "1.6.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-ui = "1.6.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-wear = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
+compose-material = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-foundation = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-ui = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-wear = "1.4.0" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
-compose-accompanist = "0.34.0" # https://github.com/google/accompanist/releases
+compose-accompanist = "0.36.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
-compose-constraint = "1.0.1" # https://developer.android.com/jetpack/compose/layouts/constraintlayout
+compose-constraint = "0.4.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
 compose-paging = "3.3.2" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.6.11" # https://github.com/JetBrains/compose-multiplatform/releases
+compose-multiplatform = "1.7.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
 # 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
 # androidx.navigation:navigation-compose:2.8.0-beta0 requires Android API 35
 # Android API 35 not supported by roboelectric
 horologist = "0.6.17" # https://github.com/google/horologist/releases
 # Until fix https://github.com/Kotlin/kotlinx.serialization/issues/2803
-serialization-json = "1.7.1" # https://github.com/Kotlin/kotlinx.serialization/releases
+serialization-json = "1.7.3" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "18.2.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google
 wear-interaction-phone = "1.1.0-alpha04" # https://developer.android.com/jetpack/androidx/releases/wear
@@ -39,9 +39,9 @@ sentry-runtime = "7.14.0" # https://github.com/getsentry/sentry-java/releases
 sentry-gradle = "4.11.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
-ktx-activity = "1.9.1" # https://developer.android.com/jetpack/androidx/releases/activity
+ktx-activity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.2.1" # https://developer.android.com/jetpack/androidx/releases/test
-lifecycle = "2.8.4" # https://developer.android.com/jetpack/androidx/releases/lifecycle
+lifecycle = "2.8.6" # https://developer.android.com/jetpack/androidx/releases/lifecycle
 fastutil = "8.5.14" # https://github.com/vigna/fastutil/tags
 ble = "2.8.0" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
@@ -49,7 +49,7 @@ ble-kotlin = "1.1.0" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library
 # don't update to 2.x, unless the ble-kotlin is also updated. PR: https://github.com/arcao/slf4j-timber/pull/12
 slf4j = "1.7.36" # https://github.com/qos-ch/slf4j/tags
 slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
-lottie = "6.5.1" # https://github.com/airbnb/lottie/blob/master/android-compose.md
+lottie = "6.5.2" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.12.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/annotation
@@ -58,18 +58,18 @@ androidx-core = "1.13.1" # https://developer.android.com/jetpack/androidx/releas
 datastore = "1.1.1" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
-markdown = "0.25.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
+markdown = "0.26.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
 ktor = "2.3.12" # https://ktor.io/
 apache-compress = "1.27.1" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.17.1" # https://mvnrepository.com/artifact/commons-codec/commons-codec
-countly = "24.7.2" # https://github.com/Countly/countly-sdk-android/releases
+countly = "24.7.4" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
 work = "2.9.1" # https://developer.android.com/jetpack/androidx/releases/work
 coil = "2.7.0" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 decompose = "3.1.0" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.1.0" # https://github.com/arkivanov/Essenty/releases
-zoomable = "1.6.1" #https://github.com/usuiat/Zoomable
+zoomable = "1.6.2" #https://github.com/usuiat/Zoomable
 # Testing
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
 mockito = "5.4.0" # https://github.com/mockito/mockito/releases
@@ -79,26 +79,26 @@ mockk = "1.13.12" # https://mockk.io/
 # Testing UI
 espresso-core = "3.6.1" # https://github.com/android/android-test
 uiautomator = "2.3.0" # https://developer.android.com/training/testing/other-components/ui-automator#set-ui
-benchmark-macro-junit4 = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/benchmark
-baselineprofile = "1.3.0" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
-profileinstaller = "1.3.1" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
+benchmark-macro-junit4 = "1.3.2" # https://developer.android.com/jetpack/androidx/releases/benchmark
+baselineprofile = "1.3.2" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
+profileinstaller = "1.4.1" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
 
 # Linters
-detekt = "1.23.6" # https://detekt.dev/docs/gettingstarted/gradle/
+detekt = "1.23.7" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.4" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
-detekt-ruleset-compose = "0.4.11" # https://github.com/mrmans0n/compose-rules/releases
+detekt-ruleset-compose = "0.4.15" # https://github.com/mrmans0n/compose-rules/releases
 detekt-ruleset-decompose = "1.0.1" # https://github.com/LionZXY/detekt-decompose-rule/releases
 
 # Firebase
 google-gms-gradle = "4.4.2" # https://developers.google.com/android/guides/google-services-plugin
-google-gms-firebase = "24.0.1" # https://firebase.google.com/docs/android/setup#kotlin:~:text=com.google.firebase%3Afirebase%2Dmessaging
+google-gms-firebase = "24.0.2" # https://firebase.google.com/docs/android/setup#kotlin:~:text=com.google.firebase%3Afirebase%2Dmessaging
 
 # Build Config
-buildkonfig = "5.4.0"
+buildkonfig = "5.5.0"
 
-wire = "5.0.0"
-okio = "3.9.0"
+wire = "5.1.0"
+okio = "3.9.1"
 
 [libraries]
 # Gradle - Core
@@ -157,7 +157,7 @@ compose-pager = { module = "com.google.accompanist:accompanist-pager", version.r
 compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "compose-accompanist" }
 compose-placeholder = { module = "io.github.fornewid:placeholder-foundation", version.ref = "compose-placeholder" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
-compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraint" }
+compose-constraint = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "compose-constraint" }
 compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
 

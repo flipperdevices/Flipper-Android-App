@@ -32,7 +32,7 @@ internal fun ComposableInAppNotificationSelfUpdateError() {
     fontScale = 2.0f
 )
 @Composable
-private fun ComposableInAppNotificationSelfUpdateErrorPreviewX2Font() {
+private fun PreviewComposableInAppNotificationSelfUpdateErrorPreviewX2Font() {
     FlipperThemeInternal {
         ComposableInAppNotificationSelfUpdateError()
     }
@@ -42,7 +42,7 @@ private fun ComposableInAppNotificationSelfUpdateErrorPreviewX2Font() {
     fontScale = 1.5f
 )
 @Composable
-private fun ComposableInAppNotificationSelfUpdateErrorPreviewX15Font() {
+private fun PreviewComposableInAppNotificationSelfUpdateErrorPreviewX15Font() {
     FlipperThemeInternal {
         ComposableInAppNotificationSelfUpdateError()
     }
@@ -50,7 +50,7 @@ private fun ComposableInAppNotificationSelfUpdateErrorPreviewX15Font() {
 
 @Preview
 @Composable
-private fun ComposableInAppNotificationSelfUpdateErrorPreview() {
+private fun PreviewComposableInAppNotificationSelfUpdateErrorPreview() {
     FlipperThemeInternal {
         ComposableInAppNotificationSelfUpdateError()
     }

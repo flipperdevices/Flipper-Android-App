@@ -23,8 +23,8 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun ComposableCategoryItem(
     categoryItem: CategoryItem,
-    modifier: Modifier = Modifier,
     onOpenCategory: (CategoryType) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier

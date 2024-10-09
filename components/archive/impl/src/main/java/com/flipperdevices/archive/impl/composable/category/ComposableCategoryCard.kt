@@ -18,8 +18,8 @@ import kotlinx.collections.immutable.ImmutableList
 fun ComposableCategoryCard(
     categories: ImmutableList<CategoryItem>,
     deletedCategory: CategoryItem,
-    modifier: Modifier = Modifier,
     onOpenCategory: (CategoryType) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.padding(top = 14.dp, start = 14.dp, end = 14.dp, bottom = 2.dp)

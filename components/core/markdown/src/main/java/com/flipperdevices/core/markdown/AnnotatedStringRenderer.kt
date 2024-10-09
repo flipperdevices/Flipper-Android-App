@@ -3,6 +3,7 @@ package com.flipperdevices.core.markdown
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -21,8 +22,6 @@ import com.vladsch.flexmark.ast.OrderedList
 import com.vladsch.flexmark.ast.StrongEmphasis
 import com.vladsch.flexmark.ast.Text
 import com.vladsch.flexmark.util.ast.Node
-
-const val ANNOTATED_STRING_TAG_URL = "URL"
 
 /**
  * Now support only:
@@ -56,6 +55,7 @@ class AnnotatedStringRenderer(
                     child = child.next
                 }
             }
+
             is BulletList -> {
                 var child = node.firstChild
                 while (child != null) {
@@ -65,6 +65,7 @@ class AnnotatedStringRenderer(
                     child = child.next
                 }
             }
+
             else -> renderChildren(node, builder)
         }
     }
@@ -87,9 +88,8 @@ class AnnotatedStringRenderer(
             textDecoration = TextDecoration.Underline
         )
 
-        addStringAnnotation(
-            tag = ANNOTATED_STRING_TAG_URL,
-            annotation = url.toString(),
+        addLink(
+            url = LinkAnnotation.Url(url.toString()),
             start = startIndex,
             end = endIndex
         )
