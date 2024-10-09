@@ -25,4 +25,15 @@
 
     <string name="fml_no_files">No Files Yet</string>
     <string name="fml_upload_files">Upload Files</string>
+    <string name="fml_selection_select_all">Select All</string>
+    <string name="fml_selection_deselect_all">Deselect All</string>
+
+    <string name="fml_file">File</string>
+    <string name="fml_folder">Folder</string>
+    <string name="fml_copy_to">Copy to</string>
+    <string name="fml_move_to">Move to</string>
+    <string name="fml_move">Move</string>
+    <string name="fml_export">Export</string>
+    <string name="fml_rename">Rename</string>
+    <string name="fml_more">More</string>
 </resources>

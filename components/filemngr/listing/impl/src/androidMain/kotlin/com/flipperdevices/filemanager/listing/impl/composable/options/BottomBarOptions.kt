@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
@@ -34,7 +36,7 @@ private fun MoreBototmBarOptions(
     var isExpanded by remember { mutableStateOf(false) }
     Box(modifier = modifier) {
         VerticalTextIconButton(
-            text = "More",
+            text = stringResource(FML.string.fml_more),
             painter = painterResource(FR.drawable.ic_more_points_white),
             onClick = { isExpanded = !isExpanded }
         )
@@ -44,13 +46,13 @@ private fun MoreBototmBarOptions(
             onDismissRequest = { isExpanded = !isExpanded },
         ) {
             IconDropdownItem(
-                text = "Rename",
+                text = stringResource(FML.string.fml_rename),
                 painter = painterResource(FR.drawable.ic_edit),
                 onClick = onRename,
                 isActive = canRename
             )
             IconDropdownItem(
-                text = "Copy to",
+                text = stringResource(FML.string.fml_rename),
                 painter = painterResource(FR.drawable.ic_copy_to),
                 onClick = onCopyTo
             )
@@ -84,7 +86,7 @@ fun BottomBarOptions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         VerticalTextIconButton(
-            text = "Delete",
+            text = stringResource(FML.string.fml_dialog_delete_btn),
             painter = painterResource(FR.drawable.ic_trash_white),
             iconTint = LocalPalletV2.current.action.danger.icon.default,
             textColor = LocalPalletV2.current.action.danger.text.default,
@@ -92,13 +94,13 @@ fun BottomBarOptions(
         )
 
         VerticalTextIconButton(
-            text = "Move",
+            text = stringResource(FML.string.fml_move),
             painter = painterResource(FR.drawable.ic_move),
             onClick = onMove
         )
 
         VerticalTextIconButton(
-            text = "Export",
+            text = stringResource(FML.string.fml_export),
             painter = painterResource(FR.drawable.ic_upload),
             onClick = onExport
         )
