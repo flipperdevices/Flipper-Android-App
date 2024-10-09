@@ -10,11 +10,8 @@ import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
 import com.flipperdevices.bridge.rpcinfo.model.externalStorageRequestInProgress
-import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
 import com.flipperdevices.bridge.rpcinfo.model.flashSdStats
-import com.flipperdevices.bridge.rpcinfo.model.internalStorageRequestInProgress
 import com.flipperdevices.bridge.rpcinfo.model.isExtStorageEnding
-import com.flipperdevices.bridge.rpcinfo.model.isIntStorageEnding
 import com.flipperdevices.bridge.rpcinfo.model.toString
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -69,13 +66,6 @@ private fun ComposableInfoCardContentInternal(
     }
     ComposableInfoDivider()
     val storageInfo = flipperBasicInfo.storageInfo
-    ComposableDeviceInfoRowWithText(
-        R.string.info_device_info_int_flash,
-        firmwareVersionInProgress || storageInfo.internalStorageRequestInProgress,
-        storageInfo.flashIntStats?.toString(LocalContext.current),
-        color = if (storageInfo.isIntStorageEnding()) LocalPallet.current.warningColor else null
-    )
-    ComposableInfoDivider()
     ComposableDeviceInfoRowWithText(
         R.string.info_device_info_ext_flash,
         firmwareVersionInProgress || storageInfo.externalStorageRequestInProgress,

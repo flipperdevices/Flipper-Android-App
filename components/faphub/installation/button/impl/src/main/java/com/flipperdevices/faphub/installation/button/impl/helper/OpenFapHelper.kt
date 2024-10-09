@@ -95,7 +95,6 @@ class OpenFapHelperImpl @Inject constructor(
                 main {
                     appStartRequest = startRequest {
                         name = path
-                        args = Constants.RPC_START_REQUEST_ARG
                     }
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
