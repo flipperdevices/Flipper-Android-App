@@ -94,9 +94,9 @@ class EditFileViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private suspend fun uploadFolder(uploadApi: FFileUploadApi, pathOnFlipper: Path) {
-        runCatching {
-            uploadApi.mkdir(pathOnFlipper.toString())
-        }.onSuccess { channel.send(Event.FilesChanged) }
+        uploadApi.mkdir(pathOnFlipper.toString())
+            .onSuccess { channel.send(Event.FilesChanged) }
+            .onFailure { error(it) { "Could not create folder" } }
     }
 
     private suspend fun uploadFile(uploadApi: FFileUploadApi, pathOnFlipper: Path) {
@@ -106,6 +106,7 @@ class EditFileViewModel @Inject constructor(
                 priority = StorageRequestPriority.FOREGROUND
             ).buffer().use { it.write(ByteString.of()) }
         }.onSuccess { channel.send(Event.FilesChanged) }
+            .onFailure { error(it) { "Could not create file" } }
     }
 
     fun onFinish() {
