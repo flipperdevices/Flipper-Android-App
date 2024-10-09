@@ -1,0 +1,127 @@
+package com.flipperdevices.filemanager.listing.impl.composable.modal
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
+import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.filemanager.ui.components.R
+import okio.Path
+import okio.Path.Companion.toPath
+
+
+@Composable
+fun BottomSheetOptionsContent(
+    fileType: FileType,
+    path: Path,
+    onCopyTo: () -> Unit,
+    onMoveTo: () -> Unit,
+    onExport: () -> Unit,
+    onRename: () -> Unit,
+    onSelect: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = when (fileType) {
+                    FileType.FILE -> "File"
+                    FileType.DIR -> "Folder"
+                },
+                style = LocalTypography.current.bodyR14,
+                color = LocalPalletV2.current.text.label.primary
+            )
+            Text(
+                text = path.name,
+                style = LocalTypography.current.titleB18,
+                color = LocalPalletV2.current.text.label.primary
+            )
+        }
+        Spacer(Modifier.height(32.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Copy to",
+                painter = painterResource(R.drawable.ic_copy_to),
+                onClick = onCopyTo
+            )
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Move to",
+                painter = painterResource(R.drawable.ic_move),
+                onClick = onMoveTo
+            )
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Export",
+                painter = painterResource(R.drawable.ic_upload),
+                onClick = onExport
+            )
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Rename",
+                painter = painterResource(R.drawable.ic_edit),
+                onClick = onRename
+            )
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Select",
+                painter = painterResource(R.drawable.ic_select),
+                onClick = onSelect
+            )
+            Divider()
+            HorizontalTextIconButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Delete",
+                painter = painterResource(R.drawable.ic_trash_white),
+                iconTint = LocalPalletV2.current.action.danger.icon.default,
+                textColor = LocalPalletV2.current.action.danger.text.default,
+                onClick = onDelete
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun BottomSheetOptionsPreview() {
+    FlipperThemeInternal {
+        BottomSheetOptionsContent(
+            fileType = FileType.DIR,
+            path = "some_file.ir".toPath(),
+            onExport = {},
+            onDelete = {},
+            onCopyTo = {},
+            onRename = {},
+            onSelect = {},
+            onMoveTo = {}
+        )
+    }
+}

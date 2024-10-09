@@ -41,6 +41,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewMode
 import okio.Path
 import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.listing.impl.composable.options.BottomBarOptions
+import com.flipperdevices.filemanager.listing.impl.model.BottomSheetFile
 
 @Suppress("LongMethod")
 @Composable
@@ -55,6 +56,7 @@ fun ComposableFileListScreen(
     onBack: () -> Unit,
     onUploadClick: () -> Unit,
     onPathChange: (Path) -> Unit,
+    onFileMoreClick: (BottomSheetFile) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val canCreateFiles by createFileViewModel.canCreateFiles.collectAsState()
@@ -146,7 +148,8 @@ fun ComposableFileListScreen(
                         onPathChanged = onPathChange,
                         onDelete = deleteFileViewModel::tryDelete,
                         selectionState = selectionState,
-                        onCheckToggle = selectionViewModel::togglePath
+                        onCheckToggle = selectionViewModel::togglePath,
+                        onFileMoreClick = onFileMoreClick,
                     )
                 }
 

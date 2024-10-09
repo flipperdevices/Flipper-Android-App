@@ -1,7 +1,15 @@
 package com.flipperdevices.filemanager.listing.impl.api
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
+import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
@@ -9,6 +17,8 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.listing.impl.composable.ComposableFileListScreen
 import com.flipperdevices.filemanager.listing.impl.composable.LaunchedEventsComposable
+import com.flipperdevices.filemanager.listing.impl.composable.modal.BottomSheetOptionsContent
+import com.flipperdevices.filemanager.listing.impl.model.BottomSheetFile
 import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
@@ -16,8 +26,10 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.makeevrserg.astralearner.core.ui.bottomsheet.SlotModalBottomSheet
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.serialization.builtins.serializer
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
 import javax.inject.Provider
@@ -38,6 +50,13 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val createSelectionViewModel: Provider<SelectionViewModel>
 ) : FilesDecomposeComponent(componentContext) {
 
+    private val slotNavigation = SlotNavigation<BottomSheetFile>()
+    val fileOptionsSlot: Value<ChildSlot<*, BottomSheetFile>> = childSlot(
+        source = slotNavigation,
+        handleBackButton = true,
+        serializer = BottomSheetFile.serializer(),
+        childFactory = { bottomSheetFile, _ -> bottomSheetFile }
+    )
 
     private val selectionViewModel = instanceKeeper.getOrCreate(path.toString()) {
         createSelectionViewModel.get()
@@ -101,7 +120,31 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             selectionViewModel = selectionViewModel,
             onBack = onBack::invoke,
             onUploadClick = onUploadClick,
-            onPathChange = onPathChanged
+            onPathChange = onPathChanged,
+            onFileMoreClick = slotNavigation::activate
+        )
+        SlotModalBottomSheet(
+            childSlotValue = fileOptionsSlot,
+            onDismiss = { slotNavigation.dismiss() },
+            content = {
+                BottomSheetOptionsContent(
+                    modifier = Modifier.navigationBarsPadding(),
+                    fileType = it.fileType,
+                    path = it.path,
+                    onCopyTo = {},
+                    onSelect = {
+                        selectionViewModel.select(it.path)
+                        slotNavigation.dismiss()
+                    },
+                    onRename = {},
+                    onExport = {},
+                    onDelete = {
+                        deleteFileViewModel.tryDelete(it.path)
+                        slotNavigation.dismiss()
+                    },
+                    onMoveTo = {}
+                )
+            }
         )
     }
 }

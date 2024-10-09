@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
+import com.flipperdevices.filemanager.listing.impl.model.BottomSheetFile
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
@@ -29,7 +30,8 @@ fun LazyGridScope.LoadedFilesComposable(
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
     onCheckToggle: (Path) -> Unit,
-    onDelete: (Path) -> Unit
+    onDelete: (Path) -> Unit,
+    onFileMoreClick: (BottomSheetFile) -> Unit
 ) {
     items(filesState.files) { file ->
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
@@ -69,7 +71,14 @@ fun LazyGridScope.LoadedFilesComposable(
                         }
                     },
                     onCheckChange = { onCheckToggle.invoke(filePath) },
-                    onMoreClick = {},
+                    onMoreClick = {
+                        onFileMoreClick.invoke(
+                            BottomSheetFile(
+                                fileType = file.fileType ?: FileType.DIR,
+                                path = filePath
+                            )
+                        )
+                    },
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation
                 )

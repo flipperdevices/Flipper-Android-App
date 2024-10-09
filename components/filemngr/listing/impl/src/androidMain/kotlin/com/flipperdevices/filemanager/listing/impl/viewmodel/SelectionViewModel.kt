@@ -34,7 +34,10 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
 
     fun select(paths: List<Path>) {
         _state.update {
-            it.copy(selected = it.selected.plus(paths).toImmutableSet())
+            it.copy(
+                selected = it.selected.plus(paths).toImmutableSet(),
+                isEnabled = true
+            )
         }
     }
 
