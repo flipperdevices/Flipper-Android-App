@@ -74,4 +74,5 @@ message Settings {
   FileManagerOrientation file_manager_orientation = 30;
   FileManagerSort file_manager_sort = 31;
   bool show_hidden_files_on_flipper = 32;
+  bool disabled_vibration = 33;
 }

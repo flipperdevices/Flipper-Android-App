@@ -46,7 +46,7 @@ fun ThemeChangerElement(
             modifier = Modifier.weight(weight = 1f),
             titleId = R.string.app_theme_options,
             descriptionId = R.string.app_theme_options_desc,
-            titleTextStyle = LocalTypography.current.buttonB16
+            titleTextStyle = LocalTypography.current.bodyR14
         )
 
         Box {

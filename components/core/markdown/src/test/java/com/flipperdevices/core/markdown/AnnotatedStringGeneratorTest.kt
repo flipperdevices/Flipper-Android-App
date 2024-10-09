@@ -1,6 +1,7 @@
 package com.flipperdevices.core.markdown
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -57,12 +58,11 @@ class AnnotatedStringGeneratorTest {
             annotatedString.subSequence(spanStyle.start, spanStyle.end).toString()
         )
 
-        val stringAnnotation = annotatedString.getStringAnnotations(
-            ANNOTATED_STRING_TAG_URL,
+        val linkAnnotation = annotatedString.getLinkAnnotations(
             0,
             annotatedString.length
         )
-        assertEquals(1, stringAnnotation.size)
-        assertEquals("https://google.com", stringAnnotation.first().item)
+        assertEquals(1, linkAnnotation.size)
+        assertEquals("https://google.com", (linkAnnotation.first().item as LinkAnnotation.Url).url)
     }
 }

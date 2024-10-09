@@ -766,6 +766,7 @@ Compose:
     active: true
   PreviewNaming:
     active: true
+    previewNamingStrategy: anywhere
   PreviewPublic:
     active: true
   RememberMissing:
@@ -780,6 +781,9 @@ Compose:
     active: false
   ModifierNotUsedAtRoot:
     active: true
+  LambdaParameterEventTrailing:
+    active: false
+
 
 DecomposeRule:
   PushForbiddenRule:

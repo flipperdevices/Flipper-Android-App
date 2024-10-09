@@ -3,12 +3,14 @@ package com.flipperdevices.keyedit.impl.viewmodel
 import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.wtf
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
@@ -18,9 +20,11 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 private const val VIBRATOR_TIME_MS = 500L
 
@@ -28,12 +32,13 @@ class KeyEditViewModel @AssistedInject constructor(
     context: Context,
     @Assisted private val editableKey: EditableKey,
     private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
-    private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>
+    private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>,
+    private val settings: DataStore<Settings>
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
 
     private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
-    private val lengthFilter = LengthFilter(context)
+    private val lengthFilter = LengthFilter(context, settings)
 
     private val keyEditState = MutableStateFlow<KeyEditState>(KeyEditState.Loading)
 
@@ -58,7 +63,10 @@ class KeyEditViewModel @AssistedInject constructor(
 
         if (filteredName.length != newName.length) {
             // String contains forbidden characters
-            vibrator?.vibrateCompat(VIBRATOR_TIME_MS)
+            vibrator?.vibrateCompat(
+                VIBRATOR_TIME_MS,
+                runBlocking { settings.data.first().disabled_vibration }
+            )
         }
 
         lengthFilter.nameLengthFilter(filteredName) { limitedName ->

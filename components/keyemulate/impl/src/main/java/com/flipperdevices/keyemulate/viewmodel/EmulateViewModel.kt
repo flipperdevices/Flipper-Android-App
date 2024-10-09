@@ -2,6 +2,7 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.utils.Constants.API_SUPPORTED_REMOTE_EMULATE
@@ -14,6 +15,7 @@ import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
@@ -29,10 +31,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import android.app.Application as FlipperApp
 
 const val VIBRATOR_TIME = 100L
@@ -42,7 +46,8 @@ abstract class EmulateViewModel(
     private val emulateHelper: EmulateHelper,
     private val synchronizationApi: SynchronizationApi,
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
-    application: FlipperApp
+    application: FlipperApp,
+    private val settings: DataStore<Settings>
 ) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
 
     protected val emulateButtonStateFlow =
@@ -60,7 +65,10 @@ abstract class EmulateViewModel(
         config: EmulateConfig
     ) {
         info { "#onStartEmulate" }
-        vibrator?.vibrateCompat(VIBRATOR_TIME)
+        vibrator?.vibrateCompat(
+            VIBRATOR_TIME,
+            runBlocking { settings.data.first().disabled_vibration }
+        )
 
         emulateButtonStateFlow.update {
             when (it) {
@@ -70,6 +78,7 @@ abstract class EmulateViewModel(
                     progress = EmulateProgress.Infinite,
                     config = config
                 )
+
                 is EmulateButtonState.Active -> return
             }
         }
@@ -126,7 +135,10 @@ abstract class EmulateViewModel(
                 }
             }
         }
-        vibrator?.vibrateCompat(VIBRATOR_TIME)
+        vibrator?.vibrateCompat(
+            VIBRATOR_TIME,
+            runBlocking { settings.data.first().disabled_vibration }
+        )
     }
 
     fun closeDialog() {
