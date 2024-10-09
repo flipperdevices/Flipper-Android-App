@@ -125,12 +125,12 @@ fun BottomBarOptions(
 
 @Composable
 fun FullScreenBottomBarOptions(
-    modifier: Modifier = Modifier,
     deleteFileViewModel: DeleteFilesViewModel,
     editFileViewModel: EditFileViewModel,
     selectionViewModel: SelectionViewModel,
     filesListState: FilesViewModel.State,
-    selectionState: SelectionViewModel.State
+    selectionState: SelectionViewModel.State,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

@@ -33,10 +33,11 @@ fun FileListAppBar(
     canCreateFiles: Boolean,
     onUploadClick: () -> Unit,
     editFileViewModel: EditFileViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AnimatedContent(
-        modifier = Modifier
+        modifier = modifier
             .background(LocalPalletV2.current.surface.navBar.body.accentBrand),
         targetState = selectionState.isEnabled,
         contentKey = { it },
