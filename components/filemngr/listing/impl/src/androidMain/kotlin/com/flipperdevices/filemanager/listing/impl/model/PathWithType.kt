@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 import okio.Path
 
 @Serializable
-data class BottomSheetFile(
+data class PathWithType(
     val fileType: FileType,
     @Serializable(PathSerializer::class)
-    val path: Path
+    val fullPath: Path
 )

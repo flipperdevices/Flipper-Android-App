@@ -1,4 +1,4 @@
-package com.makeevrserg.astralearner.core.ui.bottomsheet
+package com.flipperdevices.filemanager.listing.impl.composable.modal
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -13,7 +13,7 @@ import androidx.compose.runtime.snapshotFlow
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
-import com.makeevrserg.astralearner.core.ui.bottomsheet.util.zero
+import com.flipperdevices.filemanager.listing.impl.composable.modal.util.zero
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 

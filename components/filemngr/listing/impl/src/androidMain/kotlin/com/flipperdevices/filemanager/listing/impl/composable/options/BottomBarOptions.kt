@@ -25,6 +25,40 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
+private fun MoreBototmBarOptions(
+    onCopyTo: () -> Unit,
+    canRename: Boolean,
+    onRename: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    Box(modifier = modifier) {
+        VerticalTextIconButton(
+            text = "More",
+            painter = painterResource(FR.drawable.ic_more_points_white),
+            onClick = { isExpanded = !isExpanded }
+        )
+        DropdownMenu(
+            modifier = Modifier,
+            expanded = isExpanded,
+            onDismissRequest = { isExpanded = !isExpanded },
+        ) {
+            IconDropdownItem(
+                text = "Rename",
+                painter = painterResource(FR.drawable.ic_edit),
+                onClick = onRename,
+                isActive = canRename
+            )
+            IconDropdownItem(
+                text = "Copy to",
+                painter = painterResource(FR.drawable.ic_copy_to),
+                onClick = onCopyTo
+            )
+        }
+    }
+}
+
+@Composable
 fun BottomBarOptions(
     canRename: Boolean,
     onRename: () -> Unit,
@@ -32,9 +66,10 @@ fun BottomBarOptions(
     onMove: () -> Unit,
     onCopyTo: () -> Unit,
     onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
@@ -67,32 +102,11 @@ fun BottomBarOptions(
             painter = painterResource(FR.drawable.ic_upload),
             onClick = onExport
         )
-        var isExpanded by remember { mutableStateOf(false) }
-
-        Box {
-            VerticalTextIconButton(
-                text = "More",
-                painter = painterResource(FR.drawable.ic_more_points_white),
-                onClick = { isExpanded = !isExpanded }
-            )
-            DropdownMenu(
-                modifier = Modifier,
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = !isExpanded },
-            ) {
-                IconDropdownItem(
-                    text = "Rename",
-                    painter = painterResource(FR.drawable.ic_edit),
-                    onClick = onRename,
-                    isActive = canRename
-                )
-                IconDropdownItem(
-                    text = "Copy to",
-                    painter = painterResource(FR.drawable.ic_copy_to),
-                    onClick = onCopyTo
-                )
-            }
-        }
+        MoreBototmBarOptions(
+            onCopyTo = onCopyTo,
+            canRename = canRename,
+            onRename = onRename,
+        )
     }
 }
 

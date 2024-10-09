@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
@@ -139,12 +138,14 @@ private fun FDropdownItem(
 fun IconDropdownItem(
     text: String,
     painter: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     isActive: Boolean = true,
     colorText: Color = LocalPalletV2.current.action.blackAndWhite.text.default,
     colorIcon: Color = LocalPalletV2.current.action.blackAndWhite.icon.default,
-    onClick: () -> Unit,
 ) {
     FDropdownItem(
+        modifier = modifier,
         onClick = onClick,
         colorText = animateColorAsState(
             if (isActive) {

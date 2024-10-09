@@ -4,6 +4,7 @@ package com.flipperdevices.core.log
 interface LogTagProvider {
     @Suppress("VariableNaming")
     val TAG: String
+    class Default(override val TAG: String) : LogTagProvider
 }
 
 expect inline fun LogTagProvider.error(logMessage: () -> String)

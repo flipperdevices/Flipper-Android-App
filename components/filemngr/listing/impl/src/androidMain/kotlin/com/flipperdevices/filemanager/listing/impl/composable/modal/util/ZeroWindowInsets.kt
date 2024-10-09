@@ -1,4 +1,4 @@
-package com.makeevrserg.astralearner.core.ui.bottomsheet.util
+package com.flipperdevices.filemanager.listing.impl.composable.modal.util
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.ui.unit.Density

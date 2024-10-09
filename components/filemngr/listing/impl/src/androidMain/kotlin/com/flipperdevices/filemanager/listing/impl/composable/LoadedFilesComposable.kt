@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
-import com.flipperdevices.filemanager.listing.impl.model.BottomSheetFile
+import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
@@ -29,9 +29,9 @@ fun LazyGridScope.LoadedFilesComposable(
     orientation: FileManagerOrientation,
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
-    onCheckToggle: (Path) -> Unit,
+    onCheckToggle: (PathWithType) -> Unit,
     onDelete: (Path) -> Unit,
-    onFileMoreClick: (BottomSheetFile) -> Unit
+    onFileMoreClick: (PathWithType) -> Unit
 ) {
     items(filesState.files) { file ->
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
@@ -48,8 +48,9 @@ fun LazyGridScope.LoadedFilesComposable(
                     orientation = orientation,
                 )
             } else {
-                val filePath = remember(path, file.fileName) {
-                    path.resolve(file.fileName)
+                val filePathWithType = remember(path, file.fileName) {
+                    val fullPath = path.resolve(file.fileName)
+                    PathWithType(file.fileType ?: FileType.FILE, fullPath)
                 }
                 FolderCardComposable(
                     modifier = Modifier
@@ -61,7 +62,7 @@ fun LazyGridScope.LoadedFilesComposable(
                     canDeleteFiles = canDeleteFiles,
                     subtitle = file.size.toFormattedSize(),
                     selectionState = when {
-                        selectionState.selected.contains(filePath) -> ItemUiSelectionState.SELECTED
+                        selectionState.selected.contains(filePathWithType) -> ItemUiSelectionState.SELECTED
                         selectionState.isEnabled -> ItemUiSelectionState.UNSELECTED
                         else -> ItemUiSelectionState.NONE
                     },
@@ -70,14 +71,11 @@ fun LazyGridScope.LoadedFilesComposable(
                             onPathChanged.invoke(path / file.fileName)
                         }
                     },
-                    onCheckChange = { onCheckToggle.invoke(filePath) },
+                    onCheckChange = {
+                        onCheckToggle.invoke(filePathWithType)
+                    },
                     onMoreClick = {
-                        onFileMoreClick.invoke(
-                            BottomSheetFile(
-                                fileType = file.fileType ?: FileType.DIR,
-                                path = filePath
-                            )
-                        )
+                        onFileMoreClick.invoke(filePathWithType)
                     },
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation

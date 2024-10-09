@@ -1,20 +1,20 @@
 package com.flipperdevices.filemanager.listing.impl.viewmodel
 
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import okio.Path
 import javax.inject.Inject
 
 class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
 
-    fun togglePath(path: Path) {
+    fun togglePath(path: PathWithType) {
         if (state.value.selected.contains(path)) {
             deselect(path)
         } else {
@@ -22,17 +22,17 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
         }
     }
 
-    fun deselect(path: Path) {
+    fun deselect(path: PathWithType) {
         _state.update {
             it.copy(selected = it.selected.minus(path).toImmutableSet())
         }
     }
 
-    fun select(path: Path) {
+    fun select(path: PathWithType) {
         select(listOf(path))
     }
 
-    fun select(paths: List<Path>) {
+    fun select(paths: List<PathWithType>) {
         _state.update {
             it.copy(
                 selected = it.selected.plus(paths).toImmutableSet(),
@@ -55,7 +55,7 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
     }
 
     data class State(
-        val selected: ImmutableSet<Path> = persistentSetOf(),
+        val selected: ImmutableSet<PathWithType> = persistentSetOf(),
         val isEnabled: Boolean = false
     ) {
         val canRename: Boolean = selected.size == 1
