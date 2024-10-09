@@ -1,10 +1,16 @@
 package com.flipperdevices.filemanager.listing.impl.composable.options
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.filemanager.listing.impl.model.PathWithType
+import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.ui.components.R as FR
 
@@ -109,6 +120,45 @@ fun BottomBarOptions(
             canRename = canRename,
             onRename = onRename,
         )
+    }
+}
+
+@Composable
+fun FullScreenBottomBarOptions(
+    modifier: Modifier = Modifier,
+    deleteFileViewModel: DeleteFilesViewModel,
+    editFileViewModel: EditFileViewModel,
+    selectionViewModel: SelectionViewModel,
+    filesListState: FilesViewModel.State,
+    selectionState: SelectionViewModel.State
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(14.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        AnimatedVisibility(
+            selectionState.isEnabled && filesListState is FilesViewModel.State.Loaded,
+            enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
+            exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
+        ) {
+            BottomBarOptions(
+                canRename = selectionState.canRename,
+                onMove = {}, // todo
+                onRename = {
+                    val path = selectionState.selected.firstOrNull() ?: return@BottomBarOptions
+                    selectionViewModel.toggleMode()
+                    editFileViewModel.onRename(path)
+                },
+                onDelete = {
+                    deleteFileViewModel.tryDelete(selectionState.selected.map(PathWithType::fullPath))
+                    selectionViewModel.toggleMode()
+                },
+                onExport = {}, // todo
+                onCopyTo = {} // todo
+            )
+        }
     }
 }
 

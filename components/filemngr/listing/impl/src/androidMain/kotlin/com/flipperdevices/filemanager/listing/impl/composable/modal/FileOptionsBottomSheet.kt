@@ -29,7 +29,7 @@ fun FileOptionsBottomSheet(
                 modifier = modifier.navigationBarsPadding(),
                 fileType = it.fileType,
                 path = it.fullPath,
-                onCopyTo = {},
+                onCopyTo = {}, // todo
                 onSelect = {
                     selectionViewModel.select(it)
                     slotNavigation.dismiss()
@@ -38,12 +38,12 @@ fun FileOptionsBottomSheet(
                     createFileViewModel.onRename(it)
                     slotNavigation.dismiss()
                 },
-                onExport = {},
+                onExport = {}, // todo
                 onDelete = {
                     deleteFileViewModel.tryDelete(it.fullPath)
                     slotNavigation.dismiss()
                 },
-                onMoveTo = {}
+                onMoveTo = {} // todo
             )
         }
     )
