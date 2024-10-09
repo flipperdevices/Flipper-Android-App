@@ -52,6 +52,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix remote controls texts and favorite dropdown
 - [FIX] Move remote controls into tools tab
 - [FIX] Fix crash when saving files on remote controls
+- [FIX] Replace /any/ to /ext/, because /any/ is deprecated
 - [FIX] Remove share from remote controls
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
