@@ -21,7 +21,7 @@ data class FileItem(
     )
 
     companion object {
-        val DUMMY_FOLDER = FileItem("Test Directory", true, "/any/Test Directory", 0)
-        val DUMMY_FILE = FileItem("testfile.ibtn", false, "/any/Test Directory/testfile.ibtn", 1000)
+        val DUMMY_FOLDER = FileItem("Test Directory", true, "/ext/Test Directory", 0)
+        val DUMMY_FILE = FileItem("testfile.ibtn", false, "/ext/Test Directory/testfile.ibtn", 1000)
     }
 }

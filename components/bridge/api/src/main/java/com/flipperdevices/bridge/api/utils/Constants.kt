@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val DEVICENAME_PREFIX = "Flipper"
     const val MAC_PREFIX = "80:E1:26:"
-    const val KEYS_DEFAULT_STORAGE = "/any/"
+    const val KEYS_DEFAULT_STORAGE = "/ext/"
     const val RPC_START_REQUEST_ARG = "RPC"
     val API_SUPPORTED_UNLOCK = SemVer(
         majorVersion = 0,
