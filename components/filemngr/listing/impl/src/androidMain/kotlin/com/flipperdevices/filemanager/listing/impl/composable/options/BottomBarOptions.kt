@@ -63,7 +63,7 @@ private fun MoreBototmBarOptions(
                 isActive = canRename
             )
             IconDropdownItem(
-                text = stringResource(FML.string.fml_rename),
+                text = stringResource(FML.string.fml_copy_to),
                 painter = painterResource(FR.drawable.ic_copy_to),
                 onClick = onCopyTo
             )
