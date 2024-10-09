@@ -45,8 +45,12 @@ class DeleteFilesViewModel @Inject constructor(
         .map { true }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    fun tryDelete(vararg paths: Path) {
-        _state.update { State.Confirm(paths.toList().toImmutableSet()) }
+    fun tryDelete(path: Path) {
+        tryDelete(listOf(path))
+    }
+
+    fun tryDelete(paths: Iterable<Path>) {
+        _state.update { State.Confirm(paths.toImmutableSet()) }
     }
 
     fun onCancel() {

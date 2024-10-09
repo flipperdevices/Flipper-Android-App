@@ -40,6 +40,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
 import okio.Path
 import com.flipperdevices.filemanager.listing.impl.R as FML
+import com.flipperdevices.filemanager.listing.impl.composable.options.BottomBarOptions
 
 @Suppress("LongMethod")
 @Composable
@@ -179,10 +180,13 @@ fun ComposableFileListScreen(
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 })
             ) {
                 BottomBarOptions(
-                    canRename = true,
+                    canRename = selectionState.canRename,
                     onMove = {},
                     onRename = {},
-                    onDelete = {},
+                    onDelete = {
+                        deleteFileViewModel.tryDelete(selectionState.selected)
+                        selectionViewModel.toggleMode()
+                    },
                     onExport = {},
                     onCopyTo = {}
                 )

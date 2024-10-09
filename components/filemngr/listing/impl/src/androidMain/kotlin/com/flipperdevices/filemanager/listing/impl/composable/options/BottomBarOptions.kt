@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.listing.impl.composable
+package com.flipperdevices.filemanager.listing.impl.composable.options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +30,6 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.listing.impl.composable.options.IconDropdownItem
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
@@ -122,7 +121,8 @@ fun BottomBarOptions(
                 IconDropdownItem(
                     text = "Rename",
                     painter = painterResource(FR.drawable.ic_edit),
-                    onClick = onRename
+                    onClick = onRename,
+                    isActive = canRename
                 )
                 IconDropdownItem(
                     text = "Copy to",

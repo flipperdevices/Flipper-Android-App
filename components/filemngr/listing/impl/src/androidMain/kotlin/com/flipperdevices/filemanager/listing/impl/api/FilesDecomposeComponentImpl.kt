@@ -3,6 +3,7 @@ package com.flipperdevices.filemanager.listing.impl.api
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.backhandler.BackCallback
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
@@ -37,12 +38,29 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val createSelectionViewModel: Provider<SelectionViewModel>
 ) : FilesDecomposeComponent(componentContext) {
 
+
+    private val selectionViewModel = instanceKeeper.getOrCreate(path.toString()) {
+        createSelectionViewModel.get()
+    }
+
     private val backCallback = BackCallback {
         val parent = path.parent
-        if (parent == null) {
-            onBack.invoke()
-        } else {
-            onPathChanged.invoke(parent)
+        when {
+            selectionViewModel.state.value.isEnabled -> {
+                selectionViewModel.toggleMode()
+            }
+
+            parent == null -> {
+                onBack.invoke()
+            }
+
+            parent != null -> {
+                onPathChanged.invoke(parent)
+            }
+
+            else -> {
+                onBack.invoke()
+            }
         }
     }
 
@@ -66,9 +84,6 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         }
         val deleteFileViewModel = viewModelWithFactory(path.toString()) {
             deleteFilesViewModelFactory.get()
-        }
-        val selectionViewModel = viewModelWithFactory(path.toString()) {
-            createSelectionViewModel.get()
         }
         LaunchedEventsComposable(
             createFileViewModel = createFileViewModel,

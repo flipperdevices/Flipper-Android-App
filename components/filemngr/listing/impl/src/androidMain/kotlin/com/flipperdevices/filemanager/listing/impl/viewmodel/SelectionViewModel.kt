@@ -54,5 +54,7 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
     data class State(
         val selected: ImmutableSet<Path> = persistentSetOf(),
         val isEnabled: Boolean = false
-    )
+    ) {
+        val canRename: Boolean = selected.size == 1
+    }
 }

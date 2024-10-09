@@ -60,7 +60,7 @@ fun ListOptionsDropDown(
             text = stringResource(FML.string.fml_otp_create_file),
             painter = painterResource(FR.drawable.ic_create_file),
             onClick = onCreateFileClick,
-            isEnabled = canCreateFiles
+            isActive = canCreateFiles
         )
         IconDropdownItem(
             text = stringResource(FML.string.fml_otp_upload),
@@ -105,7 +105,7 @@ private fun FDropdownItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isActive: Boolean = true,
-    colorText: Color = LocalPallet.current.text100,
+    colorText: Color = LocalPalletV2.current.action.blackAndWhite.text.default,
 ) {
     DropdownMenuItem(
         modifier = modifier,
@@ -128,7 +128,7 @@ private fun FDropdownItem(
                 color = if (isActive) {
                     colorText
                 } else {
-                    LocalPallet.current.keyScreenDisabled
+                    LocalPalletV2.current.action.blackAndWhite.text.disabled
                 }
             )
         }
@@ -139,25 +139,31 @@ private fun FDropdownItem(
 fun IconDropdownItem(
     text: String,
     painter: Painter,
-    isEnabled: Boolean = true,
-    colorText: Color = LocalPallet.current.text100,
-    colorIcon: Color = LocalPallet.current.text100,
+    isActive: Boolean = true,
+    colorText: Color = LocalPalletV2.current.action.blackAndWhite.text.default,
+    colorIcon: Color = LocalPalletV2.current.action.blackAndWhite.icon.default,
     onClick: () -> Unit,
 ) {
     FDropdownItem(
         onClick = onClick,
-        colorText = colorText,
+        colorText = animateColorAsState(
+            if (isActive) {
+                colorText
+            } else {
+                LocalPalletV2.current.action.blackAndWhite.text.disabled
+            }
+        ).value,
         text = text,
-        isActive = isEnabled,
+        isActive = isActive,
         icon = {
             Icon(
                 modifier = Modifier.size(20.dp),
                 painter = painter,
                 tint = animateColorAsState(
-                    if (isEnabled) {
+                    if (isActive) {
                         colorIcon
                     } else {
-                        LocalPallet.current.keyScreenDisabled
+                        LocalPalletV2.current.action.blackAndWhite.icon.disabled
                     }
                 ).value,
                 contentDescription = null
@@ -173,7 +179,7 @@ private fun RadioDropdownItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    colorText: Color = LocalPallet.current.text100,
+    colorText: Color = LocalPalletV2.current.action.blackAndWhite.text.default,
 ) {
     FDropdownItem(
         modifier = modifier,
