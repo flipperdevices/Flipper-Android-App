@@ -9,8 +9,10 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
+import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlaceholderComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asPainter
@@ -22,11 +24,14 @@ import okio.Path
 fun LazyGridScope.LoadedFilesComposable(
     path: Path,
     deleteFileState: DeleteFilesViewModel.State,
+    selectionState: SelectionViewModel.State,
     filesState: FilesViewModel.State.Loaded,
     orientation: FileManagerOrientation,
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
-    onDelete: (Path) -> Unit
+    onCheckToggle: (PathWithType) -> Unit,
+    onDelete: (Path) -> Unit,
+    onFileMoreClick: (PathWithType) -> Unit
 ) {
     items(filesState.files) { file ->
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
@@ -36,8 +41,17 @@ fun LazyGridScope.LoadedFilesComposable(
         }
         Crossfade(isFileLoading) { animatedIsFileLoading ->
             if (animatedIsFileLoading) {
-                FolderCardPlaceholderComposable(orientation = orientation)
+                FolderCardPlaceholderComposable(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItemPlacement(),
+                    orientation = orientation,
+                )
             } else {
+                val filePathWithType = remember(path, file.fileName) {
+                    val fullPath = path.resolve(file.fileName)
+                    PathWithType(file.fileType ?: FileType.FILE, fullPath)
+                }
                 FolderCardComposable(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -47,14 +61,22 @@ fun LazyGridScope.LoadedFilesComposable(
                     title = file.fileName,
                     canDeleteFiles = canDeleteFiles,
                     subtitle = file.size.toFormattedSize(),
-                    selectionState = ItemUiSelectionState.NONE,
+                    selectionState = when {
+                        selectionState.selected.contains(filePathWithType) -> ItemUiSelectionState.SELECTED
+                        selectionState.isEnabled -> ItemUiSelectionState.UNSELECTED
+                        else -> ItemUiSelectionState.NONE
+                    },
                     onClick = {
                         if (file.fileType == FileType.DIR) {
                             onPathChanged.invoke(path / file.fileName)
                         }
                     },
-                    onCheckChange = {},
-                    onMoreClick = {},
+                    onCheckChange = {
+                        onCheckToggle.invoke(filePathWithType)
+                    },
+                    onMoreClick = {
+                        onFileMoreClick.invoke(filePathWithType)
+                    },
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation
                 )

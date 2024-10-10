@@ -21,4 +21,9 @@ interface FFileUploadApi {
         pathOnFlipper: String,
         priority: StorageRequestPriority = StorageRequestPriority.DEFAULT
     ): Sink
+
+    suspend fun move(
+        oldPath: Path,
+        newPath: Path,
+    ): Result<Unit>
 }

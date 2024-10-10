@@ -35,7 +35,7 @@ fun MoreIconComposable(
                 .clickableRipple(onClick = { onAction.invoke(Action.ToggleMenu) }),
             painter = painterResource(R.drawable.ic_more_points),
             contentDescription = null,
-            tint = LocalPalletV2.current.icon.blackAndWhite.default
+            tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
         )
         ListOptionsDropDown(
             isVisible = optionsState.isVisible,

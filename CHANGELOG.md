@@ -19,6 +19,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Add new icons for remote-controls
 - [Feature] Add experimental option to enable remote controls
 - [Feature] Better information during synchronization
+- [Feature] New File Manager listing and uploading
 - [Feature] Add vibration off switch
 - [Feature] New File Manager listing and uploading
 - [Refactor] Load RemoteControls from flipper, emulating animation

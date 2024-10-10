@@ -2,23 +2,23 @@ package com.flipperdevices.filemanager.listing.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.flipperdevices.filemanager.listing.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
+import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okio.Path
 
 @Composable
 fun LaunchedEventsComposable(
-    createFileViewModel: CreateFileViewModel,
+    editFileViewModel: EditFileViewModel,
     deleteFilesViewModel: DeleteFilesViewModel,
     onFileListChange: () -> Unit,
     onFileRemove: (Path) -> Unit
 ) {
-    LaunchedEffect(createFileViewModel, deleteFilesViewModel) {
-        createFileViewModel.event.onEach {
+    LaunchedEffect(editFileViewModel, deleteFilesViewModel) {
+        editFileViewModel.event.onEach {
             when (it) {
-                CreateFileViewModel.Event.FilesChanged -> {
+                EditFileViewModel.Event.FilesChanged -> {
                     onFileListChange.invoke()
                 }
             }

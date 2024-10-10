@@ -11,6 +11,7 @@ import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.MkdirRequest
+import com.flipperdevices.protobuf.storage.RenameRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -63,4 +64,16 @@ class FFileUploadApiImpl(
     ): Sink = FFlipperSink(
         requestLooper = WriteRequestLooper(rpcFeatureApi, pathOnFlipper, priority.toRpc(), scope),
     )
+
+    override suspend fun move(
+        oldPath: Path,
+        newPath: Path,
+    ): Result<Unit> = rpcFeatureApi.requestOnce(
+        command = Main(
+            storage_rename_request = RenameRequest(
+                old_path = oldPath.toString(),
+                new_path = newPath.toString()
+            )
+        ).wrapToRequest()
+    ).map { }
 }

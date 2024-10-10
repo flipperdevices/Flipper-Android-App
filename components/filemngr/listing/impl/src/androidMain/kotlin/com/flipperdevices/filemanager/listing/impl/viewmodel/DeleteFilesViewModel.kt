@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureA
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDeleteApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableSet
@@ -45,8 +46,12 @@ class DeleteFilesViewModel @Inject constructor(
         .map { true }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    fun tryDelete(vararg paths: Path) {
-        _state.update { State.Confirm(paths.toList().toImmutableSet()) }
+    fun tryDelete(path: Path) {
+        tryDelete(listOf(path))
+    }
+
+    fun tryDelete(paths: Iterable<Path>) {
+        _state.update { State.Confirm(paths.toImmutableSet()) }
     }
 
     fun onCancel() {
@@ -58,6 +63,7 @@ class DeleteFilesViewModel @Inject constructor(
             deleteApi
                 .delete(path.toString(), recursive = true)
                 .onSuccess { channel.send(Event.FileDeleted(path)) }
+                .onFailure { error(it) { "Could not delete file $path" } }
         }.count { it.isFailure }
         if (failureCount > 0) {
             channel.send(Event.CouldNotDeleteSomeFiles)
