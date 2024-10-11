@@ -22,6 +22,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] New File Manager listing and uploading
 - [Feature] Add vibration off switch
 - [Feature] New File Manager listing and uploading
+- [Feature] New File Manager search
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
