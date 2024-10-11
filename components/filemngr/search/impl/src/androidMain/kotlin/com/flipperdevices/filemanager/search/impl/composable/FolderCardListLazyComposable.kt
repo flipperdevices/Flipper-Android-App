@@ -13,6 +13,7 @@ import com.flipperdevices.filemanager.ui.components.itemcard.components.asTint
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
 import okio.Path
 
+@Suppress("FunctionNaming")
 fun LazyListScope.FolderCardListLazyComposable(
     searchState: SearchViewModel.State.Loaded,
     onFolderSelect: (Path) -> Unit,
