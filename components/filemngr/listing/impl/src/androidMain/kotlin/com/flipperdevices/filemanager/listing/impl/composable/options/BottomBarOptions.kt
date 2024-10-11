@@ -38,7 +38,7 @@ import com.flipperdevices.filemanager.listing.impl.R as FML
 import com.flipperdevices.filemanager.ui.components.R as FR
 
 @Composable
-private fun MoreBototmBarOptions(
+private fun MoreBottomBarOptions(
     onCopyTo: () -> Unit,
     canRename: Boolean,
     onRename: () -> Unit,
@@ -115,7 +115,7 @@ fun BottomBarOptions(
             painter = painterResource(FR.drawable.ic_upload),
             onClick = onExport
         )
-        MoreBototmBarOptions(
+        MoreBottomBarOptions(
             onCopyTo = onCopyTo,
             canRename = canRename,
             onRename = onRename,
