@@ -34,6 +34,13 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
         val searchViewModel = viewModelWithFactory(path) {
             searchViewModelFactory.invoke(path)
         }
+        val rootSearchViewModel = path.root
+            .takeIf { !path.isRoot }
+            ?.let { rootPath ->
+                viewModelWithFactory(rootPath) {
+                    searchViewModelFactory.invoke(rootPath)
+                }
+            }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -41,14 +48,17 @@ class SearchDecomposeComponentImpl @AssistedInject constructor(
                 ComposableSearchBar(
                     hint = "",
                     text = queryState.query,
-                    onChangeText = searchViewModel::onQueryChange,
+                    onChangeText = {
+                        searchViewModel.onQueryChange(it)
+                        rootSearchViewModel?.onQueryChange(it)
+                    },
                     onBack = onBack::invoke
                 )
             }
         ) { contentPadding ->
             ComposableFilesSearchScreen(
-                path = path,
                 searchViewModel = searchViewModel,
+                rootSearchViewModel = rootSearchViewModel,
                 onFolderSelect = onFolderSelect::invoke,
                 modifier = Modifier.padding(contentPadding)
             )

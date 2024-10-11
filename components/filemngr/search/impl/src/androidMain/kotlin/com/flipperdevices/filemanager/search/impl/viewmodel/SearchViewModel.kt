@@ -116,12 +116,15 @@ class SearchViewModel @AssistedInject constructor(
                             }
                         }
                         _state.update { oldState ->
-                            val state = (oldState as? State.Loaded) ?: State.Loaded(isSearching = true)
+                            val state = (oldState as? State.Loaded) ?: State.Loaded(
+                                isSearching = true,
+                                path = path
+                            )
                             state.copy(items = state.items.plus(filteredItems).toImmutableList())
                         }
                     }.collect()
                 _state.update { oldState ->
-                    val state = (oldState as? State.Loaded) ?: State.Loaded()
+                    val state = (oldState as? State.Loaded) ?: State.Loaded(path = path)
                     state.copy(isSearching = false)
                 }
             }
@@ -155,7 +158,8 @@ class SearchViewModel @AssistedInject constructor(
         data object Unsupported : State
         data class Loaded(
             val items: ImmutableList<SearchItem> = persistentListOf(),
-            val isSearching: Boolean = false
+            val isSearching: Boolean = false,
+            val path: Path
         ) : State
     }
 

@@ -15,16 +15,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.search.impl.viewmodel.SearchViewModel
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import okio.Path
 
 @Composable
 fun ComposableFilesSearchScreen(
-    path: Path,
     searchViewModel: SearchViewModel,
+    rootSearchViewModel: SearchViewModel?,
     onFolderSelect: (Path) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val searchState by searchViewModel.state.collectAsState()
+    val rootSearchState by (rootSearchViewModel?.state ?: emptyFlow())
+        .filterIsInstance<SearchViewModel.State.Loaded>()
+        .collectAsState(null)
 
     Column(modifier = modifier) {
         AnimatedContent(
@@ -37,8 +42,8 @@ fun ComposableFilesSearchScreen(
                 is SearchViewModel.State.Loaded -> {
                     SearchItemsComposable(
                         currentDirState = currentDirState,
+                        rootSearchState = rootSearchState,
                         onFolderSelect = onFolderSelect,
-                        path = path
                     )
                 }
 
