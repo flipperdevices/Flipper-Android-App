@@ -1,6 +1,7 @@
 package com.flipperdevices.filemanager.listing.impl.composable
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.items
@@ -44,7 +45,8 @@ fun LazyGridScope.LoadedFilesComposable(
                 FolderCardPlaceholderComposable(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItemPlacement(),
+                        .animateItem()
+                        .animateContentSize(),
                     orientation = orientation,
                 )
             } else {
@@ -55,7 +57,8 @@ fun LazyGridScope.LoadedFilesComposable(
                 FolderCardComposable(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItemPlacement(),
+                        .animateItem()
+                        .animateContentSize(),
                     painter = file.asPainter(),
                     iconTint = file.asTint(),
                     title = file.fileName,

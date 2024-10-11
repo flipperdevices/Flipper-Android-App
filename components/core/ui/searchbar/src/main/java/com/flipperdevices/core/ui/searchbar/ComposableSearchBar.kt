@@ -26,7 +26,7 @@ fun ComposableSearchBar(
     onBack: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
-    ComposableSearchBarInternal(
+    ComposableSearchBar(
         hint = hint,
         text = text,
         onChangeText = {
@@ -38,14 +38,16 @@ fun ComposableSearchBar(
 }
 
 @Composable
-private fun ComposableSearchBarInternal(
+fun ComposableSearchBar(
     hint: String,
     text: String,
     onChangeText: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.background(LocalPallet.current.background)
+        modifier = modifier
+            .background(LocalPallet.current.background)
             .statusBarsPadding(),
         verticalAlignment = Alignment.CenterVertically
     ) {

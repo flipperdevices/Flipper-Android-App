@@ -9,12 +9,22 @@ abstract class FilesDecomposeComponent(
     componentContext: ComponentContext
 ) : ScreenDecomposeComponent(componentContext) {
     fun interface Factory {
+        @Suppress("LongParameterList")
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             path: Path,
             onPathChanged: (Path) -> Unit,
-            onUploadClick: () -> Unit
+            searchCallback: SearchCallback,
+            uploadCallback: UploadCallback
         ): FilesDecomposeComponent
+    }
+
+    fun interface SearchCallback {
+        fun invoke()
+    }
+
+    fun interface UploadCallback {
+        fun invoke()
     }
 }

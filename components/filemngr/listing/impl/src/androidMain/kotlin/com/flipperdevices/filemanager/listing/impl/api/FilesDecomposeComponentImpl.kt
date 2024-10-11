@@ -36,7 +36,8 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onPathChanged: (Path) -> Unit,
-    @Assisted private val onUploadClick: () -> Unit,
+    @Assisted private val searchCallback: SearchCallback,
+    @Assisted private val uploadCallback: UploadCallback,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
     private val editFileViewModelFactory: Provider<EditFileViewModel>,
@@ -114,9 +115,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             storageInfoViewModel = storageInfoViewModel,
             selectionViewModel = selectionViewModel,
             onBack = onBack::invoke,
-            onUploadClick = onUploadClick,
+            onUploadClick = uploadCallback::invoke,
             onPathChange = onPathChanged,
-            onFileMoreClick = slotNavigation::activate
+            onFileMoreClick = slotNavigation::activate,
+            onSearchClick = searchCallback::invoke
         )
         FileOptionsBottomSheet(
             fileOptionsSlot = fileOptionsSlot,

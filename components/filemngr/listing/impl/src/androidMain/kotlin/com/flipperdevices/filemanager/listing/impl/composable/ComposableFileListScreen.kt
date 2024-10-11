@@ -38,6 +38,7 @@ fun ComposableFileListScreen(
     selectionViewModel: SelectionViewModel,
     onBack: () -> Unit,
     onUploadClick: () -> Unit,
+    onSearchClick: () -> Unit,
     onPathChange: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
@@ -61,7 +62,8 @@ fun ComposableFileListScreen(
                 canCreateFiles = canCreateFiles,
                 onUploadClick = onUploadClick,
                 editFileViewModel = editFileViewModel,
-                onBack = onBack
+                onBack = onBack,
+                onSearchClick = onSearchClick
             )
         }
     ) { contentPadding ->

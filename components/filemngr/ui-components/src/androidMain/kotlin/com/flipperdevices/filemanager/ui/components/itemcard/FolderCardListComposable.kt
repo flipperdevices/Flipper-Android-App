@@ -115,6 +115,7 @@ fun FolderCardListComposable(
     onMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
     iconTint: Color = Color.Unspecified,
+    showEndBox: Boolean = true
 ) {
     Row(
         modifier = modifier
@@ -146,11 +147,13 @@ fun FolderCardListComposable(
             }
         }
 
-        ItemCardEndBox(
-            selectionState = selectionState,
-            onCheckChange = onCheckChange,
-            onMoreClick = onMoreClick
-        )
+        if (showEndBox) {
+            ItemCardEndBox(
+                selectionState = selectionState,
+                onCheckChange = onCheckChange,
+                onMoreClick = onMoreClick
+            )
+        }
     }
 }
 
