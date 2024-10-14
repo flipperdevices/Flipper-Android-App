@@ -14,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.unhandledexception.impl.R
 
@@ -33,7 +35,7 @@ fun ComposableUnhandledExceptionDialog(
                     contentDescription = stringResource(R.string.unhandledexception_dialog_title)
                 )
             }
-            .setDescription { ComposableUnhandledExceptionDialogText() }
+            .setDescription(content = { ComposableUnhandledExceptionDialogText() })
             .addButton(
                 R.string.unhandledexception_dialog_btn_go_to_settings,
                 {

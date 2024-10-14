@@ -5,9 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.updater.card.R
 import com.flipperdevices.updater.model.FirmwareVersion
 
@@ -92,7 +94,7 @@ fun FlipperDialogSynchronization(
 
 @Composable
 fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
-    FlipperDialog(
+    FlipperDialogAndroid(
         imageId = R.drawable.pic_wrong_file,
         titleId = R.string.update_card_dialog_file_big_title,
         textId = R.string.update_card_dialog_file_big_desc,
@@ -104,7 +106,7 @@ fun FlipperDialogFileVeryBig(onDismiss: () -> Unit) {
 
 @Composable
 fun FlipperDialogFileExtension(onDismiss: () -> Unit) {
-    FlipperDialog(
+    FlipperDialogAndroid(
         imageId = R.drawable.pic_wrong_file,
         titleId = R.string.update_card_dialog_extension_title,
         textId = R.string.update_card_dialog_extension_desc,
@@ -122,7 +124,7 @@ fun FlipperDialogLowBattery(onDismiss: () -> Unit) {
         R.drawable.pic_flipper_low_battery_dark
     }
 
-    FlipperDialog(
+    FlipperDialogAndroid(
         imageId = imageId,
         titleId = R.string.update_card_dialog_battery_title,
         textId = R.string.update_card_dialog_battery_desc,

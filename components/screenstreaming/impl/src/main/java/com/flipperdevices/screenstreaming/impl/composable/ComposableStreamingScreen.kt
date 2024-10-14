@@ -92,11 +92,11 @@ private fun ComposableDeprecatedLockDialog(
     onDismiss: () -> Unit
 ) {
     FlipperDialog(
-        buttonTextId = R.string.control_options_dialog_btn,
+        buttonText = stringResource(R.string.control_options_dialog_btn),
         onClickButton = onDismiss,
         onDismissRequest = onDismiss,
-        titleId = R.string.control_options_dialog_title,
-        textId = R.string.control_options_dialog_desc,
+        title = stringResource(R.string.control_options_dialog_title),
+        text = stringResource(R.string.control_options_dialog_desc),
         imageComposable = {
             Image(
                 modifier = Modifier.size(size = 96.dp),

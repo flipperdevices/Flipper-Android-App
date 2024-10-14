@@ -4,6 +4,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +32,7 @@ fun ComposableSuccessfulUpdate(
 
     FlipperDialog(
         modifier = modifier,
-        imageId = imageId,
+        painter = painterResource(imageId),
         titleComposable = {
             Text(
                 text = stringResource(R.string.update_card_dialog_successful_title),
@@ -40,7 +41,7 @@ fun ComposableSuccessfulUpdate(
                 color = LocalPallet.current.successfullyColor
             )
         },
-        buttonTextId = R.string.update_card_dialog_successful_btn,
+        buttonText = stringResource(R.string.update_card_dialog_successful_btn),
         onClickButton = onDismiss,
         onDismissRequest = onDismiss,
         textComposable = {
@@ -65,11 +66,13 @@ fun ComposableFailedUpdate(
 ) {
     FlipperDialog(
         modifier = modifier,
-        imageId = if (MaterialTheme.colors.isLight) {
-            R.drawable.pic_update_failed
-        } else {
-            R.drawable.pic_update_failed_dark
-        },
+        painter = painterResource(
+            id = if (MaterialTheme.colors.isLight) {
+                R.drawable.pic_update_failed
+            } else {
+                R.drawable.pic_update_failed_dark
+            }
+        ),
         titleComposable = {
             Text(
                 text = stringResource(R.string.update_card_dialog_failed_title),
@@ -78,7 +81,7 @@ fun ComposableFailedUpdate(
                 color = LocalPallet.current.warningColor
             )
         },
-        buttonTextId = R.string.update_card_dialog_failed_btn,
+        buttonText = stringResource(R.string.update_card_dialog_failed_btn),
         onClickButton = onDismiss,
         onDismissRequest = onDismiss,
         textComposable = {

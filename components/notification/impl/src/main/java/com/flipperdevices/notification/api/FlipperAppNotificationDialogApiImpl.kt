@@ -14,6 +14,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setDescription
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.notification.impl.R
@@ -53,7 +56,8 @@ class FlipperAppNotificationDialogApiImpl @Inject constructor(
                             contentDescription = stringResource(R.string.notification_dialog_title)
                         )
                     }.setTitle(R.string.notification_dialog_title)
-                    .setDescription(R.string.notification_dialog_desc).addButton(
+                    .setDescription(R.string.notification_dialog_desc)
+                    .addButton(
                         textId = R.string.notification_dialog_btn_enable,
                         onClick = dialogViewModel::onEnableNotification,
                         isActive = true
