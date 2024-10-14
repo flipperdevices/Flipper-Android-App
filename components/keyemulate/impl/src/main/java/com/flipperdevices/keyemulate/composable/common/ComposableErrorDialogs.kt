@@ -29,9 +29,9 @@ fun ComposableErrorDialogs(
 @Composable
 private fun ComposableForbiddenFrequencyDialog(onCloseDialog: () -> Unit) {
     FlipperDialog(
-        titleId = R.string.forbidden_dialog_title,
-        textId = R.string.forbidden_dialog_desc,
-        buttonTextId = R.string.forbidden_dialog_btn,
+        title = stringResource(R.string.forbidden_dialog_title),
+        text = stringResource(R.string.forbidden_dialog_desc),
+        buttonText = stringResource(R.string.forbidden_dialog_btn),
         onClickButton = onCloseDialog,
         onDismissRequest = onCloseDialog,
         imageComposable = {

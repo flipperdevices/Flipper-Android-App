@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
+val namespace = "com.flipperdevices.core.ui.dialog"
+android.namespace = namespace
 
-android.namespace = "com.flipperdevices.core.ui.dialog"
-
-dependencies {
+commonDependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.theme)
@@ -15,3 +16,9 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }
+
+// compose.resources {
+//    publicResClass = true
+//    packageOfResClass = namespace
+//    generateResClass = auto
+// }

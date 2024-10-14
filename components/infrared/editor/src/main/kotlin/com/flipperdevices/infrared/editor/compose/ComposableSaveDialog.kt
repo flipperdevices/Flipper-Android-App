@@ -6,6 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setDescription
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.infrared.editor.R
 

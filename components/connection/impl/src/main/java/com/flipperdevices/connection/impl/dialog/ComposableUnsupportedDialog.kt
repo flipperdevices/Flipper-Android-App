@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.connection.impl.R
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private var inThisSessionAlreadyHided = false
@@ -31,7 +31,7 @@ fun ComposableUnsupportedDialog(
     }
 
     when (supportedState) {
-        FlipperSupportedState.DEPRECATED_FLIPPER -> FlipperDialog(
+        FlipperSupportedState.DEPRECATED_FLIPPER -> FlipperDialogAndroid(
             imageId = DesignSystem.drawable.ic_firmware_flipper_deprecated,
             titleId = R.string.dialog_unsupported_title,
             textId = R.string.dialog_unsupported_description,
@@ -43,7 +43,7 @@ fun ComposableUnsupportedDialog(
         FlipperSupportedState.DEPRECATED_APPLICATION -> {
             val url = stringResource(R.string.dialog_unsupported_application_link)
             val context = LocalContext.current
-            FlipperDialog(
+            FlipperDialogAndroid(
                 imageId = if (MaterialTheme.colors.isLight) {
                     DesignSystem.drawable.ic_firmware_application_deprecated
                 } else {

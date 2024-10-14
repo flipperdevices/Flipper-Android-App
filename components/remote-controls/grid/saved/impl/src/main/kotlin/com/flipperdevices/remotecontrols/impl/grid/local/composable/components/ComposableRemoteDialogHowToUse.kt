@@ -2,7 +2,7 @@ package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 
 @Composable
@@ -20,7 +20,7 @@ internal fun ComposableRemoteDialogHowToUse(
         R.drawable.ir_flipper_format_dark
     }
 
-    FlipperDialog(
+    FlipperDialogAndroid(
         buttonTextId = R.string.rc_dialog_how_to_use_btn,
         onClickButton = onClose,
         onDismissRequest = onClose,
