@@ -19,14 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.ui.components.R as FR
+import flipperapp.components.filemngr.ui_components.generated.resources.Res
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_error_black
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_error_white
+import flipperapp.components.filemngr.ui_components.generated.resources.sd_card_missing_desc
+import flipperapp.components.filemngr.ui_components.generated.resources.sd_card_missing_title
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 fun SdCardMissingComposable(modifier: Modifier = Modifier) {
@@ -46,6 +49,7 @@ fun SdCardMissingComposable(modifier: Modifier = Modifier) {
                 .weight(weight = 0.6f),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+            Res
             Text(
                 text = stringResource(FR.string.sd_card_missing_title),
                 style = LocalTypography.current.titleB18,
@@ -74,13 +78,5 @@ fun SdCardMissingComposable(modifier: Modifier = Modifier) {
                 modifier = Modifier
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun SdCardOkComposablePreview() {
-    FlipperThemeInternal {
-        SdCardMissingComposable()
     }
 }

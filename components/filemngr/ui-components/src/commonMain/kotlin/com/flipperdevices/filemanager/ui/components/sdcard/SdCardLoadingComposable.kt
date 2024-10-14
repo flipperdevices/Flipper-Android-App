@@ -20,15 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.ui.components.R as FR
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_black
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_white
+import flipperapp.components.filemngr.ui_components.generated.resources.sd_card_ok_title
+import flipperapp.components.filemngr.ui_components.generated.resources.sd_card_total
+import flipperapp.components.filemngr.ui_components.generated.resources.sd_card_used
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 private fun StorageSizeVerticalPlaceholder(text: String) {
@@ -102,13 +105,5 @@ fun SdCardLoadingComposable(
                 modifier = Modifier
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun SdCardOkComposablePreview() {
-    FlipperThemeInternal {
-        SdCardLoadingComposable()
     }
 }

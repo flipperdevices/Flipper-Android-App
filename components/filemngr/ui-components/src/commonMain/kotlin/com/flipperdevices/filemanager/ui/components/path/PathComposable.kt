@@ -7,35 +7,30 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.ui.components.R
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_black
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_white
 import okio.Path
 import okio.Path.Companion.toPath
+import org.jetbrains.compose.resources.painterResource
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 private fun SegmentSeparatorComposable(modifier: Modifier = Modifier) {
@@ -71,8 +66,8 @@ private fun SdCardIcon(
     Icon(
         painter = painterResource(
             when {
-                MaterialTheme.colors.isLight -> R.drawable.ic_sd_card_ok_black
-                else -> R.drawable.ic_sd_card_ok_white
+                MaterialTheme.colors.isLight -> FR.drawable.ic_sd_card_ok_black
+                else -> FR.drawable.ic_sd_card_ok_white
             }
         ),
         tint = Color.Unspecified,
@@ -136,25 +131,6 @@ fun PathComposable(
                     )
                 }
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun PathComposablePreview() {
-    var path by remember { mutableStateOf("/folder/folder2/folder3/folder4/folder6/folder7/folder8".toPath()) }
-    FlipperThemeInternal {
-        Column(modifier = Modifier.width(500.dp)) {
-            PathComposable(
-                path = path,
-                onPathClick = {
-                    path = it
-                },
-                onRootPathClick = {
-                    path = "/".toPath()
-                }
-            )
         }
     }
 }

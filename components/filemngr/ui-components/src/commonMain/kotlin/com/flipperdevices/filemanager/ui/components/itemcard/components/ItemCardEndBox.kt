@@ -13,12 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
-import com.flipperdevices.filemanager.ui.components.R as FR
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_more_points_white
+import org.jetbrains.compose.resources.painterResource
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 internal fun ItemCardEndBox(

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
-import com.flipperdevices.bridge.dao.api.model.icon
+import com.flipperdevices.bridge.dao.api.model.iconId
 import com.flipperdevices.core.ui.ktx.R
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -35,7 +35,7 @@ fun ComposableKeyType(
     colorKey: Color = colorByFlipperKeyType(type),
     minWidth: Dp? = 110.dp
 ) {
-    val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
+    val icon = type?.iconId ?: DesignSystem.drawable.ic_fileformat_unknown
     val title = type?.humanReadableName
         ?: stringResource(R.string.ktx_fileformat_unknown)
 
