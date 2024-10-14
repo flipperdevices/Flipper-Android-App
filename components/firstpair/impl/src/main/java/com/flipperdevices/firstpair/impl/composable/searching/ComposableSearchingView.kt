@@ -14,6 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setDescription
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.firstpair.impl.R
 import com.flipperdevices.firstpair.impl.composable.searching.ComposableSearchingScreen
 import com.flipperdevices.firstpair.impl.model.SearchingContent

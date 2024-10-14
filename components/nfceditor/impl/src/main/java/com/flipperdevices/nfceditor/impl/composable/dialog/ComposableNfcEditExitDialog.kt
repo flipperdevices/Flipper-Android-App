@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setDescription
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.nfceditor.impl.R
 
 @Composable
