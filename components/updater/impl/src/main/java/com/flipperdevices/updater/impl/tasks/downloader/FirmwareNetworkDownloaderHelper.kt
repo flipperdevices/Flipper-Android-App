@@ -34,11 +34,17 @@ class FirmwareDownloaderHelperImpl @Inject constructor(
             when (it) {
                 DownloadProgress.Finished ->
                     stateListener(UpdatingState.DownloadingFromNetwork(1.0f))
-                is DownloadProgress.InProgress -> stateListener(
-                    UpdatingState.DownloadingFromNetwork(
-                        it.processedBytes.toFloat() / it.totalBytes.toFloat()
-                    )
-                )
+
+                is DownloadProgress.InProgress -> {
+                    val totalBytes = it.totalBytes
+                    val progress = if (totalBytes == null) {
+                        0f
+                    } else {
+                        it.processedBytes.toFloat() / totalBytes.toFloat()
+                    }
+                    stateListener(UpdatingState.DownloadingFromNetwork(progress))
+                }
+
                 DownloadProgress.NotStarted -> stateListener(UpdatingState.NotStarted)
             }
         }
