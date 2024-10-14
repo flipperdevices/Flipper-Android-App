@@ -33,3 +33,7 @@ commonDependencies {
 
     implementation(libs.bundles.decompose)
 }
+
+compose.resources {
+    publicResClass = true
+}

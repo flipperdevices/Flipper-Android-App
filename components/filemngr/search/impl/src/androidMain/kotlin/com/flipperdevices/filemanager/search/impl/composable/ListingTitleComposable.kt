@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.ui.components.R
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_black
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_sd_card_ok_white
 import okio.Path
+import org.jetbrains.compose.resources.painterResource
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 fun ListingTitleComposable(
@@ -40,8 +42,8 @@ fun ListingTitleComposable(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(
                     when {
-                        MaterialTheme.colors.isLight -> R.drawable.ic_sd_card_ok_black
-                        else -> R.drawable.ic_sd_card_ok_white
+                        MaterialTheme.colors.isLight -> FR.drawable.ic_sd_card_ok_black
+                        else -> FR.drawable.ic_sd_card_ok_white
                     }
                 ),
                 tint = Color.Unspecified,
