@@ -16,9 +16,3 @@ commonDependencies {
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
 }
-
-// compose.resources {
-//    publicResClass = true
-//    packageOfResClass = namespace
-//    generateResClass = auto
-// }
