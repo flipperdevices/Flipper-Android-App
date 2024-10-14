@@ -66,7 +66,7 @@ apache-codec = "1.17.1" # https://mvnrepository.com/artifact/commons-codec/commo
 countly = "24.7.4" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
 work = "2.9.1" # https://developer.android.com/jetpack/androidx/releases/work
-coil = "2.7.0" # https://github.com/coil-kt/coil/releases
+coil = "3.0.0-rc01" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 decompose = "3.1.0" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.1.0" # https://github.com/arkivanov/Essenty/releases
@@ -169,9 +169,10 @@ compose-gradle = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin
 
 
 # Coil
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil" }
 
 # Markdown
 flexmark-core = { module = "com.vladsch.flexmark:flexmark", version.ref = "flexmark" }

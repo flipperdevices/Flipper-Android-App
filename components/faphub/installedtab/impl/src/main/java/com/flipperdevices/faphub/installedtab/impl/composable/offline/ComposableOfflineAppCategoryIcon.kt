@@ -15,10 +15,11 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.AsyncImage
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.transformations
 import com.flipperdevices.core.ui.ktx.image.WhiteToAlphaTransformation
 import com.flipperdevices.core.ui.ktx.placeholderConnecting
 import com.flipperdevices.core.ui.theme.LocalPallet
