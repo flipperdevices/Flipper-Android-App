@@ -1,9 +1,11 @@
 package com.flipperdevices.app
 
 import android.app.Application
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.decode.SvgDecoder
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
+import coil3.request.crossfade
+import coil3.svg.SvgDecoder
 import com.flipperdevices.app.di.DaggerAppComponent
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
@@ -19,7 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
-class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
+class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagProvider {
     override val TAG = "FlipperApplication"
 
     private val applicationScope = CoroutineScope(SupervisorJob() + FlipperDispatchers.workStealingDispatcher)
@@ -64,8 +66,8 @@ class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
         component.permissionRequestHandlerImpl.get().register(this)
     }
 
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
+        return ImageLoader.Builder(context.applicationContext)
             .components {
                 add(SvgDecoder.Factory())
             }
