@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,10 +17,17 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.ui.components.R
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_copy_to
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_edit
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_move
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_select
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_trash_white
+import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
 import okio.Path
 import okio.Path.Companion.toPath
+import org.jetbrains.compose.resources.painterResource
 import com.flipperdevices.filemanager.listing.impl.R as FML
+import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
 
 @Composable
 private fun Title(fileType: FileType, path: Path) {
@@ -73,38 +79,38 @@ fun BottomSheetOptionsContent(
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_copy_to),
-                painter = painterResource(R.drawable.ic_copy_to),
+                painter = painterResource(FR.drawable.ic_copy_to),
                 onClick = onCopyTo
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_move_to),
-                painter = painterResource(R.drawable.ic_move),
+                painter = painterResource(FR.drawable.ic_move),
                 onClick = onMoveTo
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_export),
-                painter = painterResource(R.drawable.ic_upload),
+                painter = painterResource(FR.drawable.ic_upload),
                 onClick = onExport
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_rename),
-                painter = painterResource(R.drawable.ic_edit),
+                painter = painterResource(FR.drawable.ic_edit),
                 onClick = onRename
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_otp_select),
-                painter = painterResource(R.drawable.ic_select),
+                painter = painterResource(FR.drawable.ic_select),
                 onClick = onSelect
             )
             Divider()
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_dialog_delete_btn),
-                painter = painterResource(R.drawable.ic_trash_white),
+                painter = painterResource(FR.drawable.ic_trash_white),
                 iconTint = LocalPalletV2.current.action.danger.icon.default,
                 textColor = LocalPalletV2.current.action.danger.text.default,
                 onClick = onDelete
