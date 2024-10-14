@@ -13,10 +13,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
-import io.ktor.util.InternalAPI
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.ByteWriteChannel
 import java.io.FileNotFoundException
@@ -38,7 +38,6 @@ class CryptoStorageApiImpl @Inject constructor(
     private val client: HttpClient,
     private val storageProvider: FlipperStorageProvider
 ) : CryptoStorageApi {
-    @OptIn(InternalAPI::class)
     override suspend fun upload(
         keyContent: FlipperKeyContent,
         path: String,
@@ -50,11 +49,13 @@ class CryptoStorageApiImpl @Inject constructor(
             val response = client.put(
                 urlString = "$STORAGE_URL$STORAGE_NAME"
             ) {
-                body = object : OutgoingContent.WriteChannelContent() {
-                    override suspend fun writeTo(channel: ByteWriteChannel) {
-                        encryptHelper.writeEncrypt(channel)
+                setBody(
+                    object : OutgoingContent.WriteChannelContent() {
+                        override suspend fun writeTo(channel: ByteWriteChannel) {
+                            encryptHelper.writeEncrypt(channel)
+                        }
                     }
-                }
+                )
             }
 
             when (response.status) {

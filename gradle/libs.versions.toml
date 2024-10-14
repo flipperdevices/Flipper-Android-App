@@ -1,10 +1,10 @@
 [versions]
 # You also need to bump the version of ksp
-kotlin-general = "2.0.20" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "2.0.21" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.8" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
+ksp = "2.0.21-1.0.25" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta11" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.7.0" # https://developer.android.com/studio/releases/gradle-plugin
@@ -36,7 +36,7 @@ room = "2.6.1" # https://developer.android.com/jetpack/androidx/releases/room
 dagger = "2.52" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.1.2" # https://github.com/bastienpaulfr/Treessence/tags
-sentry-runtime = "7.14.0" # https://github.com/getsentry/sentry-java/releases
+sentry-runtime = "7.15.0" # https://github.com/getsentry/sentry-java/releases
 sentry-gradle = "4.11.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
@@ -60,7 +60,7 @@ datastore = "1.1.1" # https://developer.android.com/topic/libraries/architecture
 # https://github.com/vsch/flexmark-java/issues/442
 flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
 markdown = "0.26.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
-ktor = "2.3.12" # https://ktor.io/
+ktor = "3.0.0" # https://ktor.io/
 apache-compress = "1.27.1" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.17.1" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "24.7.4" # https://github.com/Countly/countly-sdk-android/releases
@@ -75,7 +75,7 @@ zoomable = "1.6.2" #https://github.com/usuiat/Zoomable
 junit = "4.13.2" # https://github.com/junit-team/junit4/releases
 mockito = "5.4.0" # https://github.com/mockito/mockito/releases
 roboelectric = "4.13" # https://github.com/robolectric/robolectric/releases
-mockk = "1.13.12" # https://mockk.io/
+mockk = "1.13.13" # https://mockk.io/
 
 # Testing UI
 espresso-core = "3.6.1" # https://github.com/android/android-test
@@ -88,7 +88,7 @@ profileinstaller = "1.4.1" # https://developer.android.com/topic/performance/bas
 detekt = "1.23.7" # https://detekt.dev/docs/gettingstarted/gradle/
 detekt-ruleset-compiler = "0.0.4" # https://github.com/BraisGabin/detekt-compiler-rules/releases
 detekt-ruleset-ktlint = "0.50.0" # https://github.com/pinterest/ktlint/releases
-detekt-ruleset-compose = "0.4.15" # https://github.com/mrmans0n/compose-rules/releases
+detekt-ruleset-compose = "0.4.16" # https://github.com/mrmans0n/compose-rules/releases
 detekt-ruleset-decompose = "1.0.1" # https://github.com/LionZXY/detekt-decompose-rule/releases
 
 # Firebase

@@ -127,7 +127,6 @@ class DownloaderApiImpl @Inject constructor(
                     distributionFile,
                     tempFile.toFile()
                 ) { processedBytes, totalBytes ->
-                    require(totalBytes > 0) { "Server send total bytes less 0" }
                     send(DownloadProgress.InProgress(processedBytes, totalBytes))
                 }
                 info { "File downloaded in $tempFile" }

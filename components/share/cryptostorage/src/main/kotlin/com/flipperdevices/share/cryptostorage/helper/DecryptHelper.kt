@@ -7,8 +7,9 @@ import com.flipperdevices.share.cryptostorage.BIT_SIZE
 import com.flipperdevices.share.cryptostorage.IV_LENGTH
 import com.flipperdevices.share.cryptostorage.TAG_LENGTH
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.withContext
+import kotlinx.io.readByteArray
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Base64
@@ -39,7 +40,7 @@ class DecryptHelper {
 
         while (!inputStream.isClosedForRead) {
             val packet = inputStream.readRemaining()
-            val bytes = packet.readBytes()
+            val bytes = packet.readByteArray()
 
             if (cipher == null) {
                 val iv = bytes.copyOfRange(0, IV_LENGTH)
