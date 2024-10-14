@@ -8,6 +8,7 @@ import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.model.DistributionFile
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
+import io.ktor.client.content.ProgressListener
 import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
@@ -33,7 +34,7 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
     override suspend fun download(
         distributionFile: DistributionFile,
         target: File,
-        onProgress: (suspend (Long, Long) -> Unit)?
+        onProgress: (suspend (Long, Long?) -> Unit)?
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         var tryCount = 0
         var isSuccess = false
@@ -54,7 +55,7 @@ class DownloadAndUnpackDelegateApiImpl @Inject constructor(
     private suspend fun downloadInternal(
         distributionFile: DistributionFile,
         target: File,
-        onProgress: (suspend (Long, Long) -> Unit)? = null
+        onProgress: ProgressListener? = null
     ) {
         val channel = client.get(distributionFile.url) {
             onDownload(onProgress)
