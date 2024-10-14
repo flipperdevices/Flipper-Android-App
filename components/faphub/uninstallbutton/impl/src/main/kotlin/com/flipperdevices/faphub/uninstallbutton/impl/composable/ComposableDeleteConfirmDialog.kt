@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.faphub.uninstallbutton.impl.R
@@ -37,24 +38,26 @@ fun ComposableDeleteConfirmDialog(
             )
             .addButton(textId = R.string.faphub_delete_dialog_cancel, onClick = onDismiss)
             .setOnDismissRequest(onDismiss)
-            .setDescription {
-                Column {
-                    dialogAppBox(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 24.dp)
-                    )
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
-                        text = stringResource(R.string.faphub_delete_dialog_title),
-                        textAlign = TextAlign.Center,
-                        color = LocalPallet.current.text100,
-                        style = LocalTypography.current.bodyM14
-                    )
+            .setDescription(
+                content = {
+                    Column {
+                        dialogAppBox(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 24.dp)
+                        )
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
+                            text = stringResource(R.string.faphub_delete_dialog_title),
+                            textAlign = TextAlign.Center,
+                            color = LocalPallet.current.text100,
+                            style = LocalTypography.current.bodyM14
+                        )
+                    }
                 }
-            }
+            )
             .build()
     }
     FlipperMultiChoiceDialog(model = config, modifier = modifier)

@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -107,7 +107,7 @@ private fun SelfUpdaterNoUpdatesDialog(
         R.drawable.pic_self_updates_not_found_dark
     }
 
-    FlipperDialog(
+    FlipperDialogAndroid(
         buttonTextId = R.string.check_no_updates_button,
         imageId = imageId,
         titleId = R.string.check_no_updates_title,

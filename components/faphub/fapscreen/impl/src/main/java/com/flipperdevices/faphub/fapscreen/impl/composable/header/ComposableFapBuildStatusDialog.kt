@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.placeholderByLocalProvider
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -74,7 +75,7 @@ private fun ComposableFapBuildStatusReadyToReleaseDialog(
     onOpenDeviceTab: () -> Unit
 ) {
     FlipperDialog(
-        titleId = R.string.fapscreen_building_dialog_not_connected_title,
+        title = stringResource(R.string.fapscreen_building_dialog_not_connected_title),
         textComposable = {
             val preText = stringResource(R.string.fapscreen_building_dialog_not_connected_desc_pre)
             val channelText = stringResource(
@@ -108,13 +109,13 @@ private fun ComposableFapBuildStatusReadyToReleaseDialog(
                 textAlign = TextAlign.Center
             )
         },
-        buttonTextId = R.string.fapscreen_building_dialog_not_connected_btn,
+        buttonText = stringResource(R.string.fapscreen_building_dialog_not_connected_btn),
         onDismissRequest = onDismiss,
         onClickButton = {
             onDismiss()
             onOpenDeviceTab()
         },
-        imageId = DesignSystem.drawable.ic_flipper_upload_failed
+        painter = painterResource(DesignSystem.drawable.ic_flipper_upload_failed)
     )
 }
 
@@ -124,9 +125,9 @@ private fun ComposableFapBuildStatusBuildRunningDialog(
     onDismiss: () -> Unit
 ) {
     FlipperDialog(
-        titleId = R.string.fapscreen_building_dialog_running_title,
-        textId = R.string.fapscreen_building_dialog_running_desc,
-        buttonTextId = R.string.fapscreen_building_dialog_running_btn,
+        title = stringResource(R.string.fapscreen_building_dialog_running_title),
+        text = stringResource(R.string.fapscreen_building_dialog_running_desc),
+        buttonText = stringResource(R.string.fapscreen_building_dialog_running_btn),
         onDismissRequest = onDismiss,
         onClickButton = onDismiss,
         imageComposable = {
@@ -221,7 +222,7 @@ private fun ComposableFapBuildStatusFlipperOutdatedDialog(
     onDismiss: () -> Unit,
     onOpenDeviceTab: () -> Unit
 ) {
-    FlipperDialog(
+    FlipperDialogAndroid(
         titleId = R.string.fapscreen_building_dialog_outdated_flipper_title,
         textId = R.string.fapscreen_building_dialog_outdated_flipper_desc,
         buttonTextId = R.string.fapscreen_building_dialog_outdated_flipper_btn,

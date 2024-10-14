@@ -2,7 +2,7 @@ package com.flipperdevices.infrared.impl.composable.components
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
+import com.flipperdevices.core.ui.dialog.composable.FlipperDialogAndroid
 import com.flipperdevices.infrared.impl.R
 
 @Composable
@@ -20,7 +20,7 @@ internal fun ComposableInfraredDialogHowToUse(
         R.drawable.pic_how_to_use_dark
     }
 
-    FlipperDialog(
+    FlipperDialogAndroid(
         buttonTextId = R.string.infrared_dialog_how_to_use_btn,
         onClickButton = onClose,
         onDismissRequest = onClose,

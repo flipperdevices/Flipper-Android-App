@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setDescription
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.nfc.mfkey32.screen.R
 import com.flipperdevices.nfc.mfkey32.screen.composable.output.AllKeys

@@ -6,6 +6,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
+import com.flipperdevices.core.ui.dialog.composable.multichoice.addButton
+import com.flipperdevices.core.ui.dialog.composable.multichoice.setTitle
 import com.flipperdevices.info.impl.R
 
 @Composable
