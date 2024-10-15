@@ -12,17 +12,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import flipperapp.components.filemngr.ui_components.generated.resources.ic__no_files_black
 import flipperapp.components.filemngr.ui_components.generated.resources.ic__no_files_white
 import org.jetbrains.compose.resources.painterResource
-import com.flipperdevices.filemanager.search.impl.R as FMS
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
+import flipperapp.components.filemngr.search.impl.generated.resources.Res as FMS
+import flipperapp.components.filemngr.search.impl.generated.resources.fms_no_files
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun NoFilesComposable(
@@ -56,10 +55,3 @@ fun NoFilesComposable(
     }
 }
 
-@Preview
-@Composable
-private fun NoFilesComposablePreview() {
-    FlipperThemeInternal {
-        NoFilesComposable()
-    }
-}
