@@ -130,7 +130,7 @@ class SearchViewModel @AssistedInject constructor(
     init {
         combine(
             flow = featureState,
-            flow2 = _searchState.debounceAfterFirst(timeout = 400.milliseconds),
+            flow2 = _searchState.debounceAfterFirst(timeout = 1000.milliseconds),
             transform = { featureState, _ ->
                 when (featureState) {
                     FFeatureStatus.NotFound -> _state.emit(State.Unsupported)
