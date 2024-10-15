@@ -51,6 +51,8 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 
+    implementation(libs.appcompat)
+
     implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)
     implementation(libs.essenty.lifecycle.coroutines)

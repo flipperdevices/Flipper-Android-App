@@ -34,7 +34,7 @@ private fun SignalResponseButton(
 ) {
     ButtonItemComposable(
         buttonData = data,
-        onKeyDataClick = { onClick.invoke() },
+        onKeyDataClick = { _, _ -> onClick.invoke() },
         modifier = Modifier.size(64.dp),
         emulatedKeyIdentifier = emulatedKeyIdentifier,
         isSyncing = isSyncing,

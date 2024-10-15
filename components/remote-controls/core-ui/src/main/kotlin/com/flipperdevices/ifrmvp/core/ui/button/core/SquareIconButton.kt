@@ -17,7 +17,7 @@ import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
 
 @Composable
 fun SquareIconButton(
-    onClick: () -> Unit,
+    onClick: (ButtonClickEvent) -> Unit,
     painter: Painter,
     background: Color,
     iconTint: Color,
@@ -42,7 +42,7 @@ fun SquareIconButton(
 
 @Composable
 fun SquareImageButton(
-    onClick: () -> Unit,
+    onClick: (ButtonClickEvent) -> Unit,
     bitmap: ImageBitmap,
     background: Color,
     iconTint: Color,
@@ -72,7 +72,7 @@ fun SquareIconButton(
     iconTint: Color = Color.White,
     background: Color = buttonBackgroundColor,
     contentDescription: String? = null,
-    onClick: () -> Unit,
+    onClick: (ButtonClickEvent) -> Unit,
 ) {
     SquareButton(
         modifier = modifier,

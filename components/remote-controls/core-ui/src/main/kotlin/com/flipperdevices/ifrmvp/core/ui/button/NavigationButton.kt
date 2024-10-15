@@ -2,7 +2,6 @@ package com.flipperdevices.ifrmvp.core.ui.button
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,9 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundColor
 import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundVariantColor
+import com.flipperdevices.ifrmvp.core.ui.button.core.onScrollHoldPress
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
@@ -29,11 +30,11 @@ import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 @Suppress("LongMethod")
 @Composable
 fun NavigationButton(
-    onUpClick: () -> Unit,
-    onRightClick: () -> Unit,
-    onDownClick: () -> Unit,
-    onLeftClick: () -> Unit,
-    onOkClick: (() -> Unit)?,
+    onUpClick: (ButtonClickEvent) -> Unit,
+    onRightClick: (ButtonClickEvent) -> Unit,
+    onDownClick: (ButtonClickEvent) -> Unit,
+    onLeftClick: (ButtonClickEvent) -> Unit,
+    onOkClick: ((ButtonClickEvent) -> Unit)?,
     modifier: Modifier = Modifier,
     background: Color = buttonBackgroundColor,
     iconTint: Color = Color.White,
@@ -54,7 +55,7 @@ fun NavigationButton(
                 modifier = Modifier
                     .size(32.sf)
                     .clip(CircleShape)
-                    .clickable(onClick = onUpClick)
+                    .onScrollHoldPress { onUpClick.invoke(it) }
                     .align(Alignment.TopCenter)
             )
             Icon(
@@ -64,7 +65,7 @@ fun NavigationButton(
                 modifier = Modifier
                     .size(32.sf)
                     .clip(CircleShape)
-                    .clickable(onClick = onLeftClick)
+                    .onScrollHoldPress { onLeftClick.invoke(it) }
                     .align(Alignment.CenterStart)
             )
             onOkClick?.let {
@@ -77,7 +78,7 @@ fun NavigationButton(
                         .clip(CircleShape)
                         .background(buttonBackgroundVariantColor)
                         .clip(CircleShape)
-                        .clickable(onClick = onOkClick)
+                        .onScrollHoldPress { onOkClick.invoke(it) }
                         .align(Alignment.Center),
                     contentAlignment = Alignment.Center,
                     content = {
@@ -98,7 +99,7 @@ fun NavigationButton(
                 modifier = Modifier
                     .size(32.sf)
                     .clip(CircleShape)
-                    .clickable(onClick = onRightClick)
+                    .onScrollHoldPress { onRightClick.invoke(it) }
                     .align(Alignment.CenterEnd)
             )
 
@@ -109,7 +110,7 @@ fun NavigationButton(
                 modifier = Modifier
                     .size(32.sf)
                     .clip(CircleShape)
-                    .clickable(onClick = onDownClick)
+                    .onScrollHoldPress { onDownClick.invoke(it) }
                     .align(Alignment.BottomCenter)
             )
         }

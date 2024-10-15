@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundColor
@@ -20,8 +21,8 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
 @Composable
 fun VerticalDoubleButton(
-    onFirstClick: () -> Unit,
-    onLastClick: () -> Unit,
+    onFirstClick: (ButtonClickEvent) -> Unit,
+    onLastClick: (ButtonClickEvent) -> Unit,
     firstText: String,
     lastText: String,
     modifier: Modifier = Modifier,
@@ -59,8 +60,8 @@ fun VerticalDoubleButton(
 
 @Composable
 fun VolumeButton(
-    onAddClick: () -> Unit,
-    onReduceClick: () -> Unit,
+    onAddClick: (ButtonClickEvent) -> Unit,
+    onReduceClick: (ButtonClickEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     VerticalDoubleButton(
@@ -75,8 +76,8 @@ fun VolumeButton(
 
 @Composable
 fun ChannelButton(
-    onNextClick: () -> Unit,
-    onPrevClick: () -> Unit,
+    onNextClick: (ButtonClickEvent) -> Unit,
+    onPrevClick: (ButtonClickEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     VerticalDoubleButton(

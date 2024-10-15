@@ -16,17 +16,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundVariantColor
+import com.flipperdevices.ifrmvp.core.ui.button.core.onScrollHoldPress
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 fun ShutterButtonComposable(
-    onClick: () -> Unit,
+    onClick: (ButtonClickEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -45,7 +46,7 @@ fun ShutterButtonComposable(
                     .padding(12.sf)
                     .clip(CircleShape)
                     .background(buttonBackgroundVariantColor)
-                    .clickableRipple(onClick = onClick),
+                    .onScrollHoldPress { onClick.invoke(it) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

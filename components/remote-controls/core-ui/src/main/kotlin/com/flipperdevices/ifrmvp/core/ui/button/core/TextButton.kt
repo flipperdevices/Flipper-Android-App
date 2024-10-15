@@ -15,7 +15,7 @@ fun TextButton(
     modifier: Modifier = Modifier,
     background: Color = buttonBackgroundColor,
     textColor: Color = Color.White,
-    onClick: (() -> Unit)?
+    onClick: ((ButtonClickEvent) -> Unit)?
 ) {
     SquareButton(
         onClick = onClick,
