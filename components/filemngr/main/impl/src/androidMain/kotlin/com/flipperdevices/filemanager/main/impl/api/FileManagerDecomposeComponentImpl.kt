@@ -4,11 +4,13 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfig
+import com.flipperdevices.filemanager.search.api.SearchDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -24,6 +26,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val filesDecomposeComponentFactory: FilesDecomposeComponent.Factory,
     private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
+    private val searchDecomposeComponentFactory: SearchDecomposeComponent.Factory,
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -45,7 +48,8 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 path = config.path,
                 onBack = { navigation.popOr(onBack::invoke) },
                 onPathChanged = { navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it)) },
-                onUploadClick = { navigation.pushNew(FileManagerNavigationConfig.Upload(config.path)) }
+                uploadCallback = { navigation.pushNew(FileManagerNavigationConfig.Upload(config.path)) },
+                searchCallback = { navigation.pushNew(FileManagerNavigationConfig.Search(config.path)) },
             )
         }
 
@@ -54,6 +58,15 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 path = config.path,
                 onFinish = navigation::pop
+            )
+        }
+
+        is FileManagerNavigationConfig.Search -> {
+            searchDecomposeComponentFactory.invoke(
+                componentContext = componentContext,
+                path = config.path,
+                onBack = navigation::pop,
+                onFolderSelect = { navigation.replaceAll(FileManagerNavigationConfig.FileTree(it)) }
             )
         }
     }

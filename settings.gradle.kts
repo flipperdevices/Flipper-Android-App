@@ -96,6 +96,8 @@ include(
     ":components:filemngr:listing:impl",
     ":components:filemngr:upload:api",
     ":components:filemngr:upload:impl",
+    ":components:filemngr:search:api",
+    ":components:filemngr:search:impl",
 
     ":components:core:di",
     ":components:core:ktx",
