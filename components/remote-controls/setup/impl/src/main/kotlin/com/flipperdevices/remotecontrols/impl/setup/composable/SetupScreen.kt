@@ -67,7 +67,7 @@ fun SetupScreen(
         topBar = {
             SharedTopBar(
                 title = stringResource(SetupR.string.setup_title),
-                subtitle = stringResource(SetupR.string.setup_subtitle),
+                subtitle = stringResource(SetupR.string.rcs_step_3),
                 onBackClick = setupComponent::onBackClick
             )
         }

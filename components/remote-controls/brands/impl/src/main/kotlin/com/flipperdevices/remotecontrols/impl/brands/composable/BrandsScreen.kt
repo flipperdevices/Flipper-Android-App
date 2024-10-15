@@ -73,7 +73,7 @@ fun BrandsScreen(
                 } else {
                     SharedTopBar(
                         title = stringResource(BrandsR.string.brands_title),
-                        subtitle = stringResource(BrandsR.string.brands_subtitle),
+                        subtitle = stringResource(BrandsR.string.rcb_step_2),
                         onBackClick = brandsDecomposeComponent::onBackClick,
                         actions = {
                             Icon(
