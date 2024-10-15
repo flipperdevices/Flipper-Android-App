@@ -3,15 +3,17 @@ package com.flipperdevices.ifrmvp.core.ui.button
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderComposition
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
+import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundColor
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.Base64ImageButtonData
@@ -43,11 +45,13 @@ fun ButtonItemComposable(
                 isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
-                    SquareIconButton(
-                        iconType = buttonData.iconId,
-                        modifier = modifier,
-                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                    )
+                    ButtonPlaceholderBox {
+                        SquareIconButton(
+                            iconType = buttonData.iconId,
+                            modifier = modifier,
+                            onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                        )
+                    }
                 }
             )
         }
@@ -137,12 +141,14 @@ fun ButtonItemComposable(
                 isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
-                    TextButton(
-                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                        text = buttonData.text,
-                        background = LocalPalletV2.current.surface.menu.body.dufault,
-                        modifier = modifier,
-                    )
+                    ButtonPlaceholderBox {
+                        TextButton(
+                            onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                            text = buttonData.text,
+                            background = buttonBackgroundColor,
+                            modifier = modifier,
+                        )
+                    }
                 }
             )
         }
@@ -153,11 +159,13 @@ fun ButtonItemComposable(
                 isConnected = isConnected,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
-                    Base64ImageButton(
-                        base64Icon = buttonData.pngBase64,
-                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                        modifier = modifier,
-                    )
+                    ButtonPlaceholderBox {
+                        Base64ImageButton(
+                            base64Icon = buttonData.pngBase64,
+                            onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                            modifier = modifier,
+                        )
+                    }
                 }
             )
         }
@@ -182,13 +190,15 @@ fun ButtonItemComposable(
                 isSyncing = isSyncing,
                 isEmulating = emulatedKeyIdentifier == buttonData.keyIdentifier,
                 content = {
-                    SquareIconButton(
-                        iconType = IconButtonData.IconType.POWER,
-                        modifier = modifier,
-                        onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
-                        background = LocalPalletV2.current.icon.danger.primary,
-                        iconTint = MaterialTheme.colors.onPrimary
-                    )
+                    ButtonPlaceholderBox {
+                        SquareIconButton(
+                            iconType = IconButtonData.IconType.POWER,
+                            modifier = modifier,
+                            onClick = { onKeyDataClick.invoke(buttonData.keyIdentifier) },
+                            background = LocalPalletV2.current.icon.danger.primary,
+                            iconTint = Color.White
+                        )
+                    }
                 }
             )
         }

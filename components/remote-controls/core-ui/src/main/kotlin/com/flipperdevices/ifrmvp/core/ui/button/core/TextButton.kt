@@ -13,8 +13,8 @@ import com.flipperdevices.ifrmvp.core.ui.layout.core.sfp
 fun TextButton(
     text: String,
     modifier: Modifier = Modifier,
-    background: Color = MaterialTheme.colors.primaryVariant,
-    textColor: Color = MaterialTheme.colors.onPrimary,
+    background: Color = buttonBackgroundColor,
+    textColor: Color = Color.White,
     onClick: (() -> Unit)?
 ) {
     SquareButton(

@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -14,15 +15,30 @@ import io.github.fornewid.placeholder.foundation.placeholder
 import io.github.fornewid.placeholder.foundation.shimmer
 
 @Suppress("ModifierComposed") // MOB-1039
-fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
+fun Modifier.placeholderConnecting(
+    shape: Int = 4,
+    color: Color,
+    highlightColor: Color
+) = composed {
     this.then(
         placeholder(
             visible = true,
             shape = RoundedCornerShape(shape.dp),
-            color = LocalPallet.current.placeholder.copy(alpha = 0.2f),
+            color = color,
             highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalPallet.current.placeholder
+                highlightColor = highlightColor
             )
+        )
+    )
+}
+
+@Suppress("ModifierComposed") // MOB-1039
+fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
+    this.then(
+        placeholderConnecting(
+            shape = shape,
+            color = LocalPallet.current.placeholder.copy(alpha = 0.2f),
+            highlightColor = LocalPallet.current.placeholder
         )
     )
 }
