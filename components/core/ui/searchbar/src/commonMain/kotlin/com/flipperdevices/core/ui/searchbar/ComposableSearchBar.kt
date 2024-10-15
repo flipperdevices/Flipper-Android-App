@@ -32,6 +32,7 @@ fun ComposableSearchBar(
     ComposableSearchBar(
         hint = hint,
         text = text,
+        onClear = { onChangeText.invoke("") },
         onChangeText = {
             text = it
             onChangeText(it)
@@ -45,6 +46,7 @@ fun ComposableSearchBar(
     hint: String,
     text: String,
     onChangeText: (String) -> Unit,
+    onClear: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,7 +68,7 @@ fun ComposableSearchBar(
         Icon(
             modifier = Modifier
                 .padding(end = 20.dp, top = 14.dp, bottom = 14.dp)
-                .clickableRipple(bounded = false) { onChangeText("") },
+                .clickableRipple(bounded = false, onClick = onClear),
             painter = painterResource(Res.drawable.ic_clear),
             contentDescription = null
         )
