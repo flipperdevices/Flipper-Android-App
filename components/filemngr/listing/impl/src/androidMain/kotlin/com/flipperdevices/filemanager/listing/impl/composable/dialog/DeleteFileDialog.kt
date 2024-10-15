@@ -9,7 +9,13 @@ import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoi
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import kotlinx.collections.immutable.ImmutableSet
 import okio.Path
-import com.flipperdevices.filemanager.listing.impl.R as FML
+import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_cancel_btn
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_file
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_files
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_desc
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DeleteFileDialog(
@@ -17,29 +23,34 @@ fun DeleteFileDialog(
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
-    val context = LocalContext.current
     val dialogModel = remember(onConfirm, onCancel) {
-        val title = when (paths.size) {
-            1 -> context.getString(
-                FML.string.fml_dialog_delete_file,
-                paths.first().name
-            )
-
-            else -> context.getString(
-                FML.string.fml_dialog_delete_files,
-                paths.size.toString()
-            )
-        }
         FlipperMultiChoiceDialogModel.Builder()
-            .setTitle(title)
-            .setDescription(AnnotatedString(context.getString(FML.string.fml_dialog_desc)))
+            .setTitle(
+                composableText = {
+                    when (paths.size) {
+                        1 -> stringResource(
+                            FML.string.fml_dialog_delete_file,
+                            paths.first().name
+                        )
+
+                        else -> stringResource(
+                            FML.string.fml_dialog_delete_files,
+                            paths.size.toString()
+                        )
+                    }
+                }
+            )
+            .setDescription(composableText = { stringResource(FML.string.fml_dialog_desc) })
             .setOnDismissRequest(onCancel)
             .addButton(
-                context.getString(FML.string.fml_dialog_delete_btn),
-                onConfirm,
+                textComposable = { stringResource(FML.string.fml_dialog_delete_btn) },
+                onClick = onConfirm,
                 isActive = true
             )
-            .addButton(context.getString(FML.string.fml_dialog_cancel_btn), onCancel)
+            .addButton(
+                textComposable = { stringResource(FML.string.fml_dialog_cancel_btn) },
+                onClick = onCancel
+            )
             .build()
     }
     FlipperMultiChoiceDialog(model = dialogModel)

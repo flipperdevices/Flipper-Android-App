@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.stringResource
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -32,8 +32,17 @@ import flipperapp.components.filemngr.ui_components.generated.resources.ic_sort_
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_sort_size
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
 import org.jetbrains.compose.resources.painterResource
-import com.flipperdevices.filemanager.listing.impl.R as FML
+import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_create_file
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_create_folder
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_display_grid
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_display_list
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_select
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_show_hidden
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_sort_default
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_sort_size
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_upload
 
 @Composable
 fun ListOptionsDropDown(
