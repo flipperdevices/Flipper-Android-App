@@ -7,7 +7,7 @@ private const val NOTIFICATION_UPDATE_MS = 5000L
 private const val NOTIFICATION_REPORT_APP_MS = 3000L
 private const val NOTIFICATION_APP_UPDATE_MS = 10000L
 private const val NOTIFICATION_HIDE_APP_MS = 5000L
-private const val NOTIFICATION_DURATION_MS = 3 * 1000L
+private const val NOTIFICATION_DURATION_MS = 5 * 1000L
 
 @Immutable
 sealed class InAppNotification {
