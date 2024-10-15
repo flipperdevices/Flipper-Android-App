@@ -16,22 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import com.flipperdevices.filemanager.listing.impl.composable.MoreIconComposable
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
-import okio.Path
-import com.flipperdevices.core.ui.res.R as DesignSystem
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_appbar_title
+import okio.Path
+import org.jetbrains.compose.resources.stringResource
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 
 @Suppress("LongMethod")
 @Composable

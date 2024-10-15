@@ -2,20 +2,18 @@ package com.flipperdevices.filemanager.listing.impl.composable.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.AnnotatedString
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import kotlinx.collections.immutable.ImmutableSet
-import okio.Path
-import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_cancel_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_file
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_files
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_desc
+import kotlinx.collections.immutable.ImmutableSet
+import okio.Path
 import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 
 @Composable
 fun DeleteFileDialog(

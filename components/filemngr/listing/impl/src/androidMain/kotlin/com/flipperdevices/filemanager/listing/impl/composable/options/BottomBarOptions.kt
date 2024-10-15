@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -33,6 +32,12 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewMode
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_copy_to
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_export
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_more
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_move
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_rename
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_copy_to
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_edit
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_more_points_white
@@ -40,14 +45,9 @@ import flipperapp.components.filemngr.ui_components.generated.resources.ic_move
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_trash_white
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_copy_to
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_export
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_more
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_move
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_rename
 
 @Composable
 private fun MoreBottomBarOptions(
