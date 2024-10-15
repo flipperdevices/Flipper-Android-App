@@ -14,8 +14,8 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.contentLength
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.core.isEmpty
-import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.readRemaining
+import kotlinx.io.readByteArray
 import java.io.File
 import javax.inject.Inject
 
@@ -55,8 +55,8 @@ private suspend fun HttpResponse.saveToFile(
     val totalBytes = contentLength()
     while (!channel.isClosedForRead) {
         val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
-        while (!packet.isEmpty) {
-            val bytes = packet.readBytes()
+        while (!packet.exhausted()) {
+            val bytes = packet.readByteArray()
             file.appendBytes(bytes)
             if (totalBytes != null && totalBytes > 0) {
                 listener?.onProgress(file.length(), totalBytes)
