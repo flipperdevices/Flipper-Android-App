@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.inte
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
@@ -13,6 +14,8 @@ import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.Companion.toDialogType
@@ -36,9 +39,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
+import com.flipperdevices.remotecontrols.setup.impl.R
+import kotlinx.coroutines.flow.launchIn
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
@@ -47,6 +53,7 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
     @Assisted private val onIfrFileFound: (id: Long) -> Unit,
+    private val inAppNotificationStorage: InAppNotificationStorage,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
@@ -129,6 +136,14 @@ class SetupComponentImpl @AssistedInject constructor(
     override val remoteFoundFlow: Flow<IfrFileModel> = modelFlow
         .filterIsInstance<SetupComponent.Model.Loaded>()
         .mapNotNull { it.response.ifrFileModel }
+        .onEach {
+            inAppNotificationStorage.addNotification(
+                InAppNotification.Successful(
+                    titleId = R.string.rcs_notification_found_title,
+                    descId = R.string.rcs_notification_found_desc
+                )
+            )
+        }
 
     override fun dismissDialog() {
         dispatchSignalApi.dismissBusyDialog()

@@ -29,6 +29,8 @@ dependencies {
     implementation(projects.components.infrared.utils)
     implementation(projects.components.infrared.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.deeplink.api)
 
