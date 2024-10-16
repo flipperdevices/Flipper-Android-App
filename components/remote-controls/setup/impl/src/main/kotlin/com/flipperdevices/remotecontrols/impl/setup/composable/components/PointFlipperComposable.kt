@@ -30,7 +30,7 @@ fun PointFlipperComposable(modifier: Modifier = Modifier) {
             .border(
                 width = 1.dp,
                 shape = RoundedCornerShape(12.dp),
-                color = LocalPallet.current.reportBorder
+                color = LocalPallet.current.text12
             )
             .padding(12.dp)
     ) {
