@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Settings-->
+    <string name="rcm_pause_sync_dialog_title">Pause Synchronization?</string>
+    <string name="rcm_pause_sync_dialog_proceed">Pause &amp; Proceed</string>
+    <string name="rcm_pause_sync_dialog_cancel">Cancel</string>
+    <string name="rcm_pause_sync_dialog_desc">This feature can\'t be used during device synchronization. Wait for sync to finish or pause it.</string>
+</resources>

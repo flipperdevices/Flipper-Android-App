@@ -10,6 +10,8 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
 
+    implementation(projects.components.bridge.synchronization.api)
+
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
@@ -22,6 +24,7 @@ dependencies {
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.categories.api)
+    implementation(projects.components.remoteControls.main.api)
 
     // Compose
     implementation(libs.compose.ui)
