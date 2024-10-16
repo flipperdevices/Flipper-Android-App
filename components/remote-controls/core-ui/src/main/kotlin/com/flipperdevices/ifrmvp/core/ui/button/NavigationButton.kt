@@ -78,7 +78,7 @@ fun NavigationButton(
                         .clip(CircleShape)
                         .background(buttonBackgroundVariantColor)
                         .clip(CircleShape)
-                        .onScrollHoldPress { onOkClick.invoke(it) }
+                        .onScrollHoldPress { clickEvent -> onOkClick.invoke(clickEvent) }
                         .align(Alignment.Center),
                     contentAlignment = Alignment.Center,
                     content = {
