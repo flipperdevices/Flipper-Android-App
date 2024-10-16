@@ -95,6 +95,5 @@ internal fun <T> HeadersComposable(
                 }
             )
         }
-        Spacer(Modifier.navigationBarsPadding())
     }
 }
