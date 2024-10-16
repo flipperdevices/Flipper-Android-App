@@ -46,9 +46,9 @@ fun ComposableSearchBar(
     hint: String,
     text: String,
     onChangeText: (String) -> Unit,
-    onClear: () -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClear: () -> Unit = { onChangeText.invoke("") }
 ) {
     Row(
         modifier = modifier
