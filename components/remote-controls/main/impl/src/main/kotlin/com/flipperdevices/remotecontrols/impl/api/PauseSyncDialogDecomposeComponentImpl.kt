@@ -6,29 +6,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialog
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
-import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.PauseSyncDialogDecomposeComponent
-import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.device.select.impl.R
-import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.remotecontrols.impl.viewmodel.PauseSyncViewModel
-import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import javax.inject.Provider
 import me.gulya.anvil.assisted.ContributesAssistedFactory
+import javax.inject.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, PauseSyncDialogDecomposeComponent.Factory::class)
@@ -71,5 +60,4 @@ class PauseSyncDialogDecomposeComponentImpl @AssistedInject constructor(
             FlipperMultiChoiceDialog(model = dialogModel)
         }
     }
-
 }

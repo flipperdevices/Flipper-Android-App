@@ -48,7 +48,6 @@ fun Deeplink.BottomBar.ArchiveTab?.toArchiveNavigationStack(): List<ArchiveNavig
         }
 
         null -> {}
-
     }
     return stack
 }

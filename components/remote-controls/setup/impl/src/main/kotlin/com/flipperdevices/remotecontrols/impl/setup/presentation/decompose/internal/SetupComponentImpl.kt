@@ -26,6 +26,7 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.inter
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
+import com.flipperdevices.remotecontrols.setup.impl.R
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -43,8 +44,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
-import com.flipperdevices.remotecontrols.setup.impl.R
-import kotlinx.coroutines.flow.launchIn
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)

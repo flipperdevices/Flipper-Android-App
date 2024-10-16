@@ -14,8 +14,6 @@ import com.flipperdevices.remotecontrols.api.CreateControlDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.createcontrol.composable.CreateControlComposable
 import com.flipperdevices.remotecontrols.impl.createcontrol.viewmodel.SaveRemoteControlViewModel
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -47,7 +45,9 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
                     when (it) {
                         is SaveRemoteControlViewModel.State.Finished -> {
                             onBack.invoke()
-                            deeplinkHandler.handleDeeplink(Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenSavedRemoteControl(it.keyPath))
+                            deeplinkHandler.handleDeeplink(
+                                Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenSavedRemoteControl(it.keyPath)
+                            )
                         }
 
                         SaveRemoteControlViewModel.State.CouldNotModifyFiles,

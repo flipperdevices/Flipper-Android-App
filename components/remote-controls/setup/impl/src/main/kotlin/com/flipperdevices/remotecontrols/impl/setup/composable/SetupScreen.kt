@@ -24,8 +24,6 @@ import com.flipperdevices.remotecontrols.impl.setup.composable.components.Animat
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
@@ -90,7 +88,8 @@ fun SetupScreen(
                     LoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onDispatchSignalClick = setupComponent::dispatchSignal
+                        onDispatchSignalClick = setupComponent::dispatchSignal,
+                        onSkipClick = setupComponent::onSkipClicked,
                     )
                 }
 

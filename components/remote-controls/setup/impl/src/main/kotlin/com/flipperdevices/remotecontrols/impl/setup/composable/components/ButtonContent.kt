@@ -63,13 +63,6 @@ fun ButtonContent(
             isSyncing = isSyncing,
             isConnected = isConnected,
         )
-        Spacer(modifier = Modifier.height(14.dp))
-        Text(
-            text = stringResource(SetupR.string.point_flipper),
-            style = LocalTypography.current.bodyM14,
-            color = LocalPalletV2.current.text.body.secondary,
-            textAlign = TextAlign.Center,
-        )
     }
 }
 
