@@ -45,7 +45,6 @@ fun SetupScreen(
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
     modifier: Modifier = Modifier
 ) {
-    val rootNavigation = LocalRootNavigation.current
     val coroutineScope = rememberCoroutineScope()
     val model by remember(setupComponent, coroutineScope) {
         setupComponent.model(coroutineScope)
@@ -54,11 +53,6 @@ fun SetupScreen(
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
-            val configuration = RootScreenConfig.ServerRemoteControl(
-                it.id,
-                setupComponent.param.remoteName
-            )
-            rootNavigation.push(configuration)
         }.launchIn(this)
     }
     Scaffold(

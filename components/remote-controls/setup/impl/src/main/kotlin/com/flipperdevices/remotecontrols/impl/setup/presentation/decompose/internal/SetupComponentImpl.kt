@@ -52,7 +52,7 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: (id: Long) -> Unit,
+    @Assisted private val onIfrFileFound: (id: Long, name: String) -> Unit,
     private val inAppNotificationStorage: InAppNotificationStorage,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
@@ -162,7 +162,7 @@ class SetupComponentImpl @AssistedInject constructor(
     }
 
     override fun onFileFound(ifrFileModel: IfrFileModel) {
-        onIfrFileFound.invoke(ifrFileModel.id)
+        onIfrFileFound.invoke(ifrFileModel.id, param.remoteName)
     }
 
     override fun onSuccessClick() {

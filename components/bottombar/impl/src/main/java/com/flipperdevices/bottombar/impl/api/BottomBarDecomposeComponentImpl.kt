@@ -1,5 +1,6 @@
 package com.flipperdevices.bottombar.impl.api
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
 import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.findChildByConfig
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
@@ -174,10 +176,12 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     override fun handleDeeplink(deeplink: Deeplink.BottomBar) {
         when (deeplink) {
             is Deeplink.BottomBar.ArchiveTab -> {
-                val instance = stack.findComponentByConfig(BottomBarTabConfig.Archive::class)
+                val child = stack.findChildByConfig(BottomBarTabConfig.Archive::class)
+                val instance = child?.instance
                 if (instance == null || instance !is ArchiveDecomposeComponent<*>) {
                     navigation.bringToFront(BottomBarTabConfig.Archive(deeplink))
                 } else {
+                    navigation.bringToFront(child.configuration)
                     instance.handleDeeplink(deeplink)
                 }
             }

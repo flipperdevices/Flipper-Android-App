@@ -148,6 +148,7 @@ class SaveRemoteControlViewModel @Inject constructor(
             updateKeyApi.updateKey(
                 oldKey = flipperKey,
                 newKey = flipperKey.copy(
+                    synchronized = true,
                     mainFile = flipperKey.mainFile.copy(
                         path = flipperKey.mainFile.path.toNonTempPath()
                     ),

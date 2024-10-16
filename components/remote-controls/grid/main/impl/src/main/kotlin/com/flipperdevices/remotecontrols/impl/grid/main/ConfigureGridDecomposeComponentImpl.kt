@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
@@ -54,8 +55,7 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
                     navigation.popOr(onBack::invoke)
                     return@invoke
                 }
-                navigation.pop()
-                navigation.replaceCurrent(
+                navigation.replaceAll(
                     GridNavigationConfig.Configuring(
                         savedKey.getKeyPath(),
                         config.notSavedFlipperKey
