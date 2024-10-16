@@ -21,18 +21,14 @@ import com.flipperdevices.core.ui.searchbar.ComposableSearchBar
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.SharedTopBar
 import com.flipperdevices.remotecontrols.brands.impl.R
-import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
 
 @Composable
 internal fun ComposableBrandsAppBar(
-    model: BrandsDecomposeComponent.Model,
+    query: String,
     onQueryChange: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     var isQueryShown by rememberSaveable {
-        val query = (model as? BrandsDecomposeComponent.Model.Loaded)
-            ?.query
-            .orEmpty()
         mutableStateOf(query.isNotBlank())
     }
     AnimatedContent(
@@ -40,7 +36,6 @@ internal fun ComposableBrandsAppBar(
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
     ) { localIsQueryShown ->
         if (localIsQueryShown) {
-            val query = (model as? BrandsDecomposeComponent.Model.Loaded)?.query.orEmpty()
             ComposableSearchBar(
                 text = query,
                 hint = stringResource(R.string.rcb_search_hint),
@@ -64,7 +59,7 @@ internal fun ComposableBrandsAppBar(
                             .clickableRipple(onClick = { isQueryShown = !isQueryShown }),
                         painter = painterResource(com.flipperdevices.core.ui.res.R.drawable.ic_search),
                         contentDescription = null,
-                        tint = LocalPalletV2.current.icon.blackAndWhite.default
+                        tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
                     )
                 }
             )

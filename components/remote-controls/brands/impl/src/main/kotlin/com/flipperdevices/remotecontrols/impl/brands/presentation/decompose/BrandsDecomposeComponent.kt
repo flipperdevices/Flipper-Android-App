@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface BrandsDecomposeComponent {
+    val query: StateFlow<String>
+
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onQueryChanged(query: String)

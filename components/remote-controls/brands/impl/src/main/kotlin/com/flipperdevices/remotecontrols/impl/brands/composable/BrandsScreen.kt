@@ -16,6 +16,7 @@ import com.flipperdevices.remotecontrols.impl.brands.composable.composable.Brand
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.BrandsLoadingComposable
 import com.flipperdevices.remotecontrols.impl.brands.composable.composable.ComposableBrandsAppBar
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun BrandsScreen(
@@ -31,8 +32,9 @@ fun BrandsScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
+            val query by brandsDecomposeComponent.query.collectAsState(Dispatchers.Main.immediate)
             ComposableBrandsAppBar(
-                model = model,
+                query = query,
                 onQueryChange = brandsDecomposeComponent::onQueryChanged,
                 onBackClick = brandsDecomposeComponent::onBackClick
             )
