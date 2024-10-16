@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,6 @@ import com.flipperdevices.ifrmvp.model.buttondata.TextButtonData
 import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
-import androidx.compose.material.MaterialTheme
 
 @Composable
 fun LoadedContent(
