@@ -1,4 +1,4 @@
-package com.flipperdevices.remotecontrols.api.model
+package com.flipperdevices.remotecontrols.grid.remote.api.model
 
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.UI_INFRARED_EXTENSION

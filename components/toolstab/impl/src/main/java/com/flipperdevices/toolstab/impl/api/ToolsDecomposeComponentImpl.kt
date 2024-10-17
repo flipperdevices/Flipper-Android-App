@@ -22,6 +22,7 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, ToolsDecomposeComponent.Factory::class)
+@Suppress("LongParameterList")
 class ToolsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ToolsTab?,

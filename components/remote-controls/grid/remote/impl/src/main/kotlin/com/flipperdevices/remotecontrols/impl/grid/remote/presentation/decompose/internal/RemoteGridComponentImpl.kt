@@ -10,7 +10,7 @@ import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping.GridComponentStateMapper
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.ConnectionViewModel

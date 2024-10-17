@@ -29,7 +29,6 @@ dependencies {
     implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
-    implementation(projects.components.remoteControls.grid.main.api)
     implementation(projects.components.remoteControls.grid.remote.api)
     implementation(projects.components.remoteControls.setup.api)
     implementation(projects.components.keyedit.api)

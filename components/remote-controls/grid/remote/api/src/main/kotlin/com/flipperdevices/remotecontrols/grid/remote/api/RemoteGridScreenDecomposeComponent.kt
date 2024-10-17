@@ -2,7 +2,7 @@ package com.flipperdevices.remotecontrols.grid.remote.api
 
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 
