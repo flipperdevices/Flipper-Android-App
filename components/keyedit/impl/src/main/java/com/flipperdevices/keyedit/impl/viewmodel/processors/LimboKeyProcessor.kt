@@ -1,6 +1,5 @@
 package com.flipperdevices.keyedit.impl.viewmodel.processors
 
-import android.util.Log
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
@@ -63,10 +62,6 @@ class LimboKeyProcessor @Inject constructor(
 
         val newKey = editableKey.notSavedFlipperKey.toFlipperKey(newPath).copy(
             notes = editState.notes
-        )
-        Log.d(
-            "SaveRemoteControlViewModel",
-            "onSave: newKey: ${newKey.path} addFiles: ${newKey.additionalFiles.map { it.path }}"
         )
 
         simpleKeyApi.insertKey(newKey)
