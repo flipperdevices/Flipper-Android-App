@@ -30,7 +30,7 @@ internal fun DeviceCategoriesScreen(
         topBar = {
             SharedTopBar(
                 title = stringResource(CategoriesR.string.categories_title),
-                subtitle = stringResource(CategoriesR.string.categories_subtitle),
+                subtitle = stringResource(CategoriesR.string.rcc_step_1),
                 onBackClick = deviceCategoriesComponent::onBackClick
             )
         },

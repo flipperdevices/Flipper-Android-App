@@ -33,6 +33,8 @@ internal fun ButtonPlaceholderComposition(
     }
     CompositionLocalProvider(
         value = LocalButtonPlaceholder provides buttonPlaceholderState,
-        content = content
+        content = {
+            content.invoke()
+        }
     )
 }

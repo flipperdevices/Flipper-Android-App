@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PagesLayout
@@ -14,7 +15,7 @@ import com.flipperdevices.ifrmvp.model.PagesLayout
 @Composable
 fun GridPagesContent(
     pagesLayout: PagesLayout,
-    onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
+    onButtonClick: (IfrButton, ButtonClickEvent, IfrKeyIdentifier) -> Unit,
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     isSyncing: Boolean,
     isConnected: Boolean,
@@ -46,7 +47,7 @@ private fun LoadedContentEmptyPreview() {
     FlipperThemeInternal {
         GridPagesContent(
             pagesLayout = PagesLayout(emptyList()),
-            onButtonClick = { _, _ -> },
+            onButtonClick = { _, _, _ -> },
             onReload = {},
             emulatedKeyIdentifier = null,
             isSyncing = false,

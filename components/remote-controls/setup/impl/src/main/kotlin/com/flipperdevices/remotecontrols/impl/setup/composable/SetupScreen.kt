@@ -24,8 +24,6 @@ import com.flipperdevices.remotecontrols.impl.setup.composable.components.Animat
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.LoadedContent
 import com.flipperdevices.remotecontrols.impl.setup.composable.components.SetupLoadingContent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import com.flipperdevices.remotecontrols.setup.impl.R as SetupR
@@ -45,7 +43,6 @@ fun SetupScreen(
     flipperDispatchDialogApi: FlipperDispatchDialogApi,
     modifier: Modifier = Modifier
 ) {
-    val rootNavigation = LocalRootNavigation.current
     val coroutineScope = rememberCoroutineScope()
     val model by remember(setupComponent, coroutineScope) {
         setupComponent.model(coroutineScope)
@@ -54,11 +51,6 @@ fun SetupScreen(
     LaunchedEffect(setupComponent.remoteFoundFlow) {
         setupComponent.remoteFoundFlow.onEach {
             setupComponent.onFileFound(it)
-            val configuration = RootScreenConfig.ServerRemoteControl(
-                it.id,
-                setupComponent.param.remoteName
-            )
-            rootNavigation.push(configuration)
         }.launchIn(this)
     }
     Scaffold(
@@ -67,7 +59,7 @@ fun SetupScreen(
         topBar = {
             SharedTopBar(
                 title = stringResource(SetupR.string.setup_title),
-                subtitle = stringResource(SetupR.string.setup_subtitle),
+                subtitle = stringResource(SetupR.string.rcs_step_3),
                 onBackClick = setupComponent::onBackClick
             )
         }
@@ -96,7 +88,8 @@ fun SetupScreen(
                     LoadedContent(
                         model = model,
                         modifier = Modifier.padding(scaffoldPaddings),
-                        onDispatchSignalClick = setupComponent::dispatchSignal
+                        onDispatchSignalClick = setupComponent::dispatchSignal,
+                        onSkipClick = setupComponent::onSkipClicked,
                     )
                 }
 

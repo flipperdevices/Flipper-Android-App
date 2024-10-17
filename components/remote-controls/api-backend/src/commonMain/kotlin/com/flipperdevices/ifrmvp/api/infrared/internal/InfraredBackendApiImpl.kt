@@ -25,10 +25,10 @@ import javax.inject.Inject
 @ContributesBinding(AppGraph::class, InfraredBackendApi::class)
 class InfraredBackendApiImpl(
     private val httpClient: HttpClient,
-    private val host: InfraredHost = InfraredHost.DEV
+    private val host: InfraredHost = InfraredHost.PROD
 ) : InfraredBackendApi {
     @Inject
-    constructor(httpClient: HttpClient) : this(httpClient, InfraredHost.DEV)
+    constructor(httpClient: HttpClient) : this(httpClient, InfraredHost.PROD)
 
     override suspend fun getCategories(): CategoriesResponse {
         return httpClient.get {

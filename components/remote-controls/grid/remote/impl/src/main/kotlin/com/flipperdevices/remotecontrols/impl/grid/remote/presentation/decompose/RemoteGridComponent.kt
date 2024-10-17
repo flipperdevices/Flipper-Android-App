@@ -22,6 +22,8 @@ interface RemoteGridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClick(identifier: IfrKeyIdentifier)
+    fun onButtonLongClick(identifier: IfrKeyIdentifier)
+    fun onButtonRelease()
     fun tryLoad()
 
     fun pop()

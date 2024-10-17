@@ -40,10 +40,11 @@ internal class ScrollState<T>(
 
     fun onScrolled(listState: LazyListState) {
         if (_isScrollingToIndex.value) return
-        val ch = items.elementAt(listState.firstVisibleItemIndex)
+        val ch = items.elementAtOrNull(listState.firstVisibleItemIndex)
             ?.let(toHeader) ?: return
         val i = headers.indexOfFirst { it.uppercaseChar() == ch }
             .coerceIn(0, listState.layoutInfo.totalItemsCount)
+        if (i == -1) return
         _selectedHeaderIndex.intValue = i
     }
 

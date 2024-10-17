@@ -12,8 +12,9 @@ import com.flipperdevices.core.log.TaggedLogger
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareImageButton
+import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundColor
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -67,13 +68,13 @@ fun rememberImageBitmap(base64Image: String): ImageBitmap? {
 fun Base64ImageButton(
     base64Icon: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: (ButtonClickEvent) -> Unit
 ) {
     val imageBitmap = rememberImageBitmap(base64Icon)
     if (imageBitmap != null) {
         SquareImageButton(
             onClick = onClick,
-            background = LocalPalletV2.current.surface.menu.body.dufault,
+            background = buttonBackgroundColor,
             bitmap = imageBitmap,
             iconTint = Color.Unspecified,
             modifier = modifier,

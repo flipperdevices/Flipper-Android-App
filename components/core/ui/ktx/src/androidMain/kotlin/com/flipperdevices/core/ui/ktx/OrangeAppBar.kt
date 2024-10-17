@@ -112,7 +112,7 @@ fun OrangeAppBarWithIcon(
                     .clickableRipple(onClick = onEndClick),
                 painter = endIconPainter,
                 contentDescription = null,
-                tint = LocalPalletV2.current.icon.blackAndWhite.default
+                tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
             )
         }
     )
@@ -190,7 +190,7 @@ private fun OrangeAppBarEndBlockPreview() {
                         .size(24.dp),
                     painter = rememberVectorPainter(Icons.Filled.Settings),
                     contentDescription = null,
-                    tint = LocalPalletV2.current.icon.blackAndWhite.default
+                    tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
                 )
             }
         )

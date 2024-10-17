@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface BrandsDecomposeComponent {
+    val query: StateFlow<String>
+
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onQueryChanged(query: String)
@@ -34,9 +36,11 @@ interface BrandsDecomposeComponent {
             val query: String
         ) : Model {
             private val groupedBrands by lazy {
-                brands.groupBy { brandModel ->
-                    brandModel.charSection()
-                }.toList().sortedBy { it.first }
+                brands
+                    .filter { it.name.contains(query, ignoreCase = true) }
+                    .groupBy { brandModel -> brandModel.charSection() }
+                    .toList()
+                    .sortedBy { it.first }
             }
 
             val sortedBrands by lazy {

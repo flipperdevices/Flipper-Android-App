@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
 
+    implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
@@ -22,6 +23,8 @@ dependencies {
     implementation(projects.components.bridge.api)
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.infrared.utils)
+
+    implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.apiBackendFlipper)

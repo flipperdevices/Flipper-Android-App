@@ -8,12 +8,12 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.CreateControlDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.createcontrol.composable.CreateControlComposable
 import com.flipperdevices.remotecontrols.impl.createcontrol.viewmodel.SaveRemoteControlViewModel
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
+import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -38,14 +38,16 @@ class CreateControlDecomposeComponentImpl @AssistedInject constructor(
             factory = { saveRemoteControlViewModelFactory.get() }
         )
         val state by saveRemoteControlViewModel.state.collectAsState()
-        val rootNavigation = LocalRootNavigation.current
+        val deeplinkHandler = LocalDeeplinkHandler.current
         LaunchedEffect(saveRemoteControlViewModel) {
             saveRemoteControlViewModel.state
                 .onEach {
                     when (it) {
                         is SaveRemoteControlViewModel.State.Finished -> {
                             onBack.invoke()
-                            rootNavigation.push(RootScreenConfig.OpenKey(it.keyPath))
+                            deeplinkHandler.handleDeeplink(
+                                Deeplink.BottomBar.ArchiveTab.ArchiveCategory.OpenSavedRemoteControl(it.keyPath)
+                            )
                         }
 
                         SaveRemoteControlViewModel.State.CouldNotModifyFiles,

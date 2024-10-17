@@ -13,6 +13,7 @@ import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -31,6 +32,7 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
     private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory,
+    private val localGridScreenDecomposeComponentFactory: LocalGridScreenDecomposeComponent.Factory,
 ) : ArchiveDecomposeComponent<ArchiveNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -64,6 +66,13 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onItemSelected = null,
             onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is ArchiveNavigationConfig.InArchiveRemoteControl -> localGridScreenDecomposeComponentFactory.invoke(
+            componentContext = componentContext,
+            keyPath = config.keyPath,
+            onBack = { navigation.popOr(onBack::invoke) },
+            onCallback = { navigation.popOr(onBack::invoke) }
         )
     }
 

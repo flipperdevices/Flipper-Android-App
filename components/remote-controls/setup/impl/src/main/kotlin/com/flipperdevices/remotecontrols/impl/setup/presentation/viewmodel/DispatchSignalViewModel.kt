@@ -1,14 +1,20 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
+import android.content.Context
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
@@ -29,6 +35,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,11 +46,15 @@ class DispatchSignalViewModel @Inject constructor(
     private val serviceProvider: FlipperServiceProvider,
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
+    private val settings: DataStore<Settings>,
+    private val context: Context
 ) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider,
     DispatchSignalApi {
     override val TAG: String = "DispatchSignalViewModel"
+
+    private val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
 
     private val _state = MutableStateFlow<DispatchSignalApi.State>(DispatchSignalApi.State.Pending)
     override val state = _state.asStateFlow()
@@ -59,6 +70,7 @@ class DispatchSignalViewModel @Inject constructor(
 
     override fun dispatch(
         identifier: IfrKeyIdentifier,
+        isOneTime: Boolean,
         remotes: List<InfraredRemote>,
         ffPath: FlipperFilePath,
         onDispatched: () -> Unit
@@ -104,7 +116,12 @@ class DispatchSignalViewModel @Inject constructor(
             args = remote.name,
             index = i
         )
-        dispatch(config, identifier, onDispatched)
+        dispatch(
+            config = config,
+            identifier = identifier,
+            isOneTime = isOneTime,
+            onDispatched = onDispatched
+        )
     }
 
     override fun dismissBusyDialog() {
@@ -114,6 +131,7 @@ class DispatchSignalViewModel @Inject constructor(
     override fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
+        isOneTime: Boolean,
         onDispatched: () -> Unit
     ) {
         if (latestDispatchJob?.isActive == true) return
@@ -124,6 +142,10 @@ class DispatchSignalViewModel @Inject constructor(
                 onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launch {
+                        vibrator?.vibrateCompat(
+                            VIBRATOR_TIME,
+                            settings.data.first().disabled_vibration
+                        )
                         _state.emit(DispatchSignalApi.State.Emulating(identifier))
                         try {
                             emulateHelper.startEmulate(
@@ -131,16 +153,37 @@ class DispatchSignalViewModel @Inject constructor(
                                 serviceApi = serviceApi,
                                 config = config
                             )
-                            delay(DEFAULT_SIGNAL_DELAY)
-                            emulateHelper.stopEmulate(this, serviceApi.requestApi)
-                            _state.emit(DispatchSignalApi.State.Pending)
-                            onDispatched.invoke()
+                            if (isOneTime) {
+                                delay(DEFAULT_SIGNAL_DELAY)
+                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                                _state.emit(DispatchSignalApi.State.Pending)
+                                onDispatched.invoke()
+                            }
                         } catch (ignored: AlreadyOpenedAppException) {
                             _state.emit(DispatchSignalApi.State.FlipperIsBusy)
                         } catch (e: Exception) {
                             error(e) { "#tryLoad uncaught exception: could not dispatch signal" }
                             _state.emit(DispatchSignalApi.State.Pending)
                         }
+                    }
+                }
+            )
+        }
+    }
+
+    override fun stopEmulate() {
+        viewModelScope.launch(Dispatchers.Main) {
+            serviceProvider.provideServiceApi(
+                lifecycleOwner = this@DispatchSignalViewModel,
+                onError = { _state.value = DispatchSignalApi.State.Error },
+                onBleManager = { serviceApi ->
+                    launch {
+                        vibrator?.vibrateCompat(
+                            VIBRATOR_TIME,
+                            settings.data.first().disabled_vibration
+                        )
+                        emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                        _state.emit(DispatchSignalApi.State.Pending)
                     }
                 }
             )
@@ -158,5 +201,6 @@ class DispatchSignalViewModel @Inject constructor(
 
     companion object {
         private const val DEFAULT_SIGNAL_DELAY = 500L
+        private const val VIBRATOR_TIME = 100L
     }
 }

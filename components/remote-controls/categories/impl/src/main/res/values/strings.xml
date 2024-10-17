@@ -2,4 +2,5 @@
 <resources>
     <string name="categories_title">Select Device</string>
     <string name="categories_subtitle">Add remote</string>
+    <string name="rcc_step_1">Step 1 of 3</string>
 </resources>

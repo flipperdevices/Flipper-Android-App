@@ -23,6 +23,8 @@ dependencies {
     implementation(projects.components.infrared.utils)
     implementation(projects.components.infrared.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)

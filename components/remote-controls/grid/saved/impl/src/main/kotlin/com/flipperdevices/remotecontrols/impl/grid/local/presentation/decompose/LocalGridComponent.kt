@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface LocalGridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
     fun onButtonClick(identifier: IfrKeyIdentifier)
+    fun onButtonLongClick(identifier: IfrKeyIdentifier)
+    fun onButtonRelease()
     fun onRename(onEndAction: (FlipperKeyPath) -> Unit)
     fun onDelete(onEndAction: () -> Unit)
     fun toggleFavorite()

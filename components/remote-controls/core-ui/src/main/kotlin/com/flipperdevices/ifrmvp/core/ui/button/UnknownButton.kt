@@ -10,12 +10,13 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.button.core.SquareIconButton
 
 @Composable
 fun UnknownButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: (ButtonClickEvent) -> Unit,
 ) {
     SquareIconButton(
         onClick = onClick,

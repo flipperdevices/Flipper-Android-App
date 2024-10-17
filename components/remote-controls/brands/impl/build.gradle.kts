@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.searchbar)
 
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.remoteControls.apiBackendFlipper)
