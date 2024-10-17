@@ -14,8 +14,9 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
 
+    implementation(projects.components.deeplink.api)
+
     implementation(projects.components.remoteControls.grid.main.api)
-    implementation(projects.components.remoteControls.grid.createControl.api)
     implementation(projects.components.remoteControls.grid.remote.api)
     implementation(projects.components.remoteControls.grid.saved.api)
     implementation(projects.components.keyedit.api)

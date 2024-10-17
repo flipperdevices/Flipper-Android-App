@@ -26,6 +26,7 @@ class ToolsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ToolsTab?,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onDeeplink: (Deeplink.BottomBar) -> Unit,
     private val hubMainFactory: ToolsMainScreenDecomposeComponentImpl.Factory,
     private val mfKey32Factory: MfKey32DecomposeComponent.Factory,
     private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
@@ -56,7 +57,8 @@ class ToolsDecomposeComponentImpl @AssistedInject constructor(
 
         ToolsNavigationConfig.RemoteControls -> remoteControlsComponentFactory(
             componentContext = componentContext,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            onDeeplink = onDeeplink
         )
     }
 

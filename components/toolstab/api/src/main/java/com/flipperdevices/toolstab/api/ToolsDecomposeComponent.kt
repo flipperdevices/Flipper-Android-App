@@ -13,6 +13,7 @@ abstract class ToolsDecomposeComponent<C : Any> : CompositeDecomposeComponent<C>
             componentContext: ComponentContext,
             deeplink: Deeplink.BottomBar.ToolsTab?,
             onBack: DecomposeOnBackParameter,
+            onDeeplink: (Deeplink.BottomBar) -> Unit
         ): ToolsDecomposeComponent<*>
     }
 }

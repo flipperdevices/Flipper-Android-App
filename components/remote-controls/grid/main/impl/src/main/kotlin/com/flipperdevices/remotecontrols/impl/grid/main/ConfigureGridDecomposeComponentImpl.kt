@@ -4,12 +4,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pushNew
-import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
-import com.flipperdevices.remotecontrols.api.CreateControlDecomposeComponent
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.grid.remote.api.RemoteGridScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.grid.main.model.GridNavigationConfig
@@ -26,9 +25,9 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: ServerRemoteControlParam,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onDeeplink: (Deeplink.BottomBar) -> Unit,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
     private val remoteGridComponentFactory: RemoteGridScreenDecomposeComponent.Factory,
-    private val createControlComponentFactory: CreateControlDecomposeComponent.Factory,
 ) : ConfigureGridDecomposeComponent<GridNavigationConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<GridNavigationConfig, DecomposeComponent>> = childStack(
         source = navigation,
@@ -53,12 +52,12 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
                     navigation.popOr(onBack::invoke)
                     return@invoke
                 }
-                navigation.replaceAll(
-                    GridNavigationConfig.Configuring(
-                        savedKey.getKeyPath(),
-                        config.notSavedFlipperKey
-                    )
-                )
+                val deeplink = Deeplink.BottomBar
+                    .ArchiveTab
+                    .ArchiveCategory
+                    .OpenSavedRemoteControl(savedKey.getKeyPath())
+                onDeeplink.invoke(deeplink)
+                onBack.invoke()
             },
             notSavedFlipperKey = config.notSavedFlipperKey,
             title = null
@@ -74,13 +73,6 @@ class ConfigureGridDecomposeComponentImpl @AssistedInject constructor(
             onSaveKey = {
                 navigation.pushNew(GridNavigationConfig.Rename(it))
             }
-        )
-
-        is GridNavigationConfig.Configuring -> createControlComponentFactory.invoke(
-            componentContext = componentContext,
-            savedKey = config.keyPath,
-            originalKey = config.notSavedFlipperKey,
-            onBack = onBack
         )
     }
 }

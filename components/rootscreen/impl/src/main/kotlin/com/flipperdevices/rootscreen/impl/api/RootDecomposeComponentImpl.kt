@@ -139,6 +139,7 @@ class RootDecomposeComponentImpl @AssistedInject constructor(
                 remoteName = config.remoteName
             ),
             onBack = this::internalOnBack,
+            onDeeplink = ::handleDeeplink
         )
     }
 

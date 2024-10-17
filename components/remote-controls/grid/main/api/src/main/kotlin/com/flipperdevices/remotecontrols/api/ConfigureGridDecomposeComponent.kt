@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.api
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -11,6 +12,7 @@ abstract class ConfigureGridDecomposeComponent<C : Any> : CompositeDecomposeComp
             componentContext: ComponentContext,
             param: ServerRemoteControlParam,
             onBack: DecomposeOnBackParameter,
+            onDeeplink: (Deeplink.BottomBar) -> Unit
         ): ConfigureGridDecomposeComponent<*>
     }
 }

@@ -6,6 +6,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
@@ -26,6 +27,7 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onDeeplink: (Deeplink.BottomBar) -> Unit,
     private val categoriesScreenDecomposeComponentFactory: CategoriesScreenDecomposeComponent.Factory,
     private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
     private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
@@ -120,6 +122,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 remoteName = config.remoteName
             ),
             onBack = navigation::popOr,
+            onDeeplink = onDeeplink
         )
     }
 }

@@ -24,6 +24,8 @@ dependencies {
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.infrared.utils)
 
+    implementation(projects.components.deeplink.api)
+
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.remoteControls.apiBackend)

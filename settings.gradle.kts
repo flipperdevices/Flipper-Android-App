@@ -307,8 +307,6 @@ include(
     ":components:remote-controls:categories:api",
     ":components:remote-controls:grid:main:impl",
     ":components:remote-controls:grid:main:api",
-    ":components:remote-controls:grid:create-control:impl",
-    ":components:remote-controls:grid:create-control:api",
     ":components:remote-controls:grid:remote:impl",
     ":components:remote-controls:grid:remote:api",
     ":components:remote-controls:grid:saved:impl",

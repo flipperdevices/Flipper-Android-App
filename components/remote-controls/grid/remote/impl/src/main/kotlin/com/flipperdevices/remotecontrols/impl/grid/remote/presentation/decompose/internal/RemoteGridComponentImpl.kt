@@ -101,6 +101,8 @@ class RemoteGridComponentImpl @AssistedInject constructor(
         dispatchSignalApi.dismissBusyDialog()
     }
 
+    private fun FlipperFilePath.toNonTempPath() = copy(folder = folder.replace("/temp", ""))
+
     override fun save() {
         val rawRemotes = remoteGridViewModel.getRawRemotesContent() ?: return
         val rawUi = remoteGridViewModel.getRawPagesContent() ?: return
@@ -110,7 +112,7 @@ class RemoteGridComponentImpl @AssistedInject constructor(
                 FlipperFilePath(
                     folder = param.extTempFolderPath,
                     nameWithExtension = param.nameWithExtension
-                ),
+                ).toNonTempPath(),
                 content = FlipperKeyContent.RawData(rawRemotes.toByteArray())
             ),
             additionalFiles = listOf(
@@ -118,7 +120,7 @@ class RemoteGridComponentImpl @AssistedInject constructor(
                     path = FlipperFilePath(
                         folder = param.extTempFolderPath,
                         nameWithExtension = param.uiFileNameWithExtension
-                    ),
+                    ).toNonTempPath(),
                     content = FlipperKeyContent.RawData(rawUi.toByteArray())
                 )
             ),
