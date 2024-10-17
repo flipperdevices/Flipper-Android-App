@@ -78,14 +78,6 @@ fun ComposableSettings(
                     onDebugSettingSwitch = debugViewModel::onSwitch
                 )
             }
-            ExperimentalCategory(
-                settings = settings,
-                onSwitchExperimental = settingsViewModel::onSwitchExperimental,
-                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
-                onSwitchRemoteControls = {
-                    debugViewModel.onSwitch(DebugSettingSwitch.ShowRemoteControls, it)
-                }
-            )
             ExportKeysCategory(
                 exportState = exportState,
                 onExport = { settingsViewModel.onMakeExport(context) }
