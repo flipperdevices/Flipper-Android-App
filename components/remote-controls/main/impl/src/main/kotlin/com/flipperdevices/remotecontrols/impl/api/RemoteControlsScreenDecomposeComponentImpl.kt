@@ -9,6 +9,8 @@ import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
+import com.flipperdevices.metric.api.MetricApi
+import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
@@ -36,6 +38,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     private val infraredsScreenDecomposeComponentFactory: InfraredsScreenDecomposeComponent.Factory,
     private val remoteGridComponentFactory: RemoteGridScreenDecomposeComponent.Factory,
     private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
+    private val metricApi: MetricApi
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -134,6 +137,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     navigation.popOr(onBack::invoke)
                     return@invoke
                 }
+                metricApi.reportSimpleEvent(SimpleEvent.SAVE_INFRARED_LIBRARY)
                 val deeplink = Deeplink.BottomBar
                     .ArchiveTab
                     .ArchiveCategory
