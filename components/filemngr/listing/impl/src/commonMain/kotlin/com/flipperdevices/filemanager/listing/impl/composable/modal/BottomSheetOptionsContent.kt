@@ -11,10 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_copy_to
@@ -24,7 +22,6 @@ import flipperapp.components.filemngr.ui_components.generated.resources.ic_selec
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_trash_white
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
 import okio.Path
-import okio.Path.Companion.toPath
 import org.jetbrains.compose.resources.painterResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
@@ -127,19 +124,3 @@ fun BottomSheetOptionsContent(
     }
 }
 
-@Preview
-@Composable
-private fun BottomSheetOptionsPreview() {
-    FlipperThemeInternal {
-        BottomSheetOptionsContent(
-            fileType = FileType.DIR,
-            path = "some_file.ir".toPath(),
-            onExport = {},
-            onDelete = {},
-            onCopyTo = {},
-            onRename = {},
-            onSelect = {},
-            onMoveTo = {}
-        )
-    }
-}

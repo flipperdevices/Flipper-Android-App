@@ -10,7 +10,7 @@ import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlacehold
 @Suppress("FunctionNaming")
 fun LazyGridScope.FilesPlaceholderComposable(uiOrientation: FileManagerOrientation) {
     items(count = 6) {
-        Box(modifier = Modifier.animateItemPlacement()) {
+        Box(modifier = Modifier.animateItem()) {
             FolderCardPlaceholderComposable(
                 modifier = Modifier.fillMaxWidth(),
                 orientation = uiOrientation,

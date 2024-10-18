@@ -24,9 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
@@ -174,17 +172,3 @@ fun FullScreenBottomBarOptions(
     }
 }
 
-@Preview
-@Composable
-private fun BottomBarOptionsPreview() {
-    FlipperThemeInternal {
-        BottomBarOptions(
-            onDelete = {},
-            onExport = {},
-            onRename = {},
-            onCopyTo = {},
-            onMove = {},
-            canRename = true
-        )
-    }
-}

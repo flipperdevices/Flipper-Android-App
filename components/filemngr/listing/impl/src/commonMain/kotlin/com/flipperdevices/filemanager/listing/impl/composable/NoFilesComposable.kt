@@ -16,10 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import flipperapp.components.filemngr.ui_components.generated.resources.ic__no_files_black
@@ -72,10 +70,3 @@ fun NoFilesComposable(
     }
 }
 
-@Preview
-@Composable
-private fun NoFilesComposablePreview() {
-    FlipperThemeInternal {
-        NoFilesComposable(onUploadFilesClick = {})
-    }
-}

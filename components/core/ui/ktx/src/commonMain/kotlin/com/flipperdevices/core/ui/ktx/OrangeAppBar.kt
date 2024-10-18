@@ -1,7 +1,6 @@
 package com.flipperdevices.core.ui.ktx
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -13,22 +12,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import flipperapp.components.core.ui.res.generated.resources.ic_back
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun OrangeAppBar(
@@ -67,7 +60,7 @@ fun OrangeAppBar(
                         .padding(top = 11.dp, bottom = 11.dp, start = 16.dp, end = 2.dp)
                         .size(24.dp)
                         .clickableRipple(bounded = false, onClick = onBack),
-                    painter = painterResource(DesignSystem.drawable.ic_back),
+                    painter = painterResource(CoreUiRes.drawable.ic_back),
                     contentDescription = null
                 )
             }
@@ -116,83 +109,4 @@ fun OrangeAppBarWithIcon(
             )
         }
     )
-}
-
-@Composable
-fun OrangeAppBar(
-    @StringRes titleId: Int,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-    endBlock: (@Composable (Modifier) -> Unit)? = null
-) {
-    OrangeAppBar(
-        modifier = modifier,
-        title = stringResource(titleId),
-        onBack = onBack,
-        endBlock = endBlock
-    )
-}
-
-@Composable
-fun OrangeAppBarWithIcon(
-    @StringRes titleId: Int,
-    @DrawableRes endIconId: Int,
-    onBack: (() -> Unit)? = null,
-    onEndClick: () -> Unit
-) {
-    OrangeAppBarWithIcon(
-        title = stringResource(titleId),
-        onBack = onBack,
-        endIconId = endIconId,
-        onEndClick = onEndClick
-    )
-}
-
-@Composable
-fun OrangeAppBarWithIcon(
-    title: String,
-    @DrawableRes endIconId: Int,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-    onEndClick: () -> Unit
-) {
-    OrangeAppBarWithIcon(
-        title = title,
-        endIconPainter = painterResource(endIconId),
-        modifier = modifier,
-        onBack = onBack,
-        onEndClick = onEndClick
-    )
-}
-
-@Preview
-@Composable
-private fun OrangeAppBarPreview() {
-    FlipperThemeInternal {
-        OrangeAppBar(
-            title = "Screenname",
-            onBack = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun OrangeAppBarEndBlockPreview() {
-    FlipperThemeInternal {
-        OrangeAppBar(
-            title = "Screenname",
-            onBack = {},
-            endBlock = {
-                Icon(
-                    modifier = Modifier
-                        .padding(end = 14.dp)
-                        .size(24.dp),
-                    painter = rememberVectorPainter(Icons.Filled.Settings),
-                    contentDescription = null,
-                    tint = LocalPalletV2.current.icon.blackAndWhite.default
-                )
-            }
-        )
-    }
 }

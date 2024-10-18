@@ -6,14 +6,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.res.R
+import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.composable.options.ListOptionsDropDown
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
+import flipperapp.components.core.ui.res.generated.resources.ic_more_points
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MoreIconComposable(
@@ -33,7 +34,7 @@ fun MoreIconComposable(
                 .padding(end = 14.dp)
                 .size(24.dp)
                 .clickableRipple(onClick = { onAction.invoke(Action.ToggleMenu) }),
-            painter = painterResource(R.drawable.ic_more_points),
+            painter = painterResource(CoreUiRes.drawable.ic_more_points),
             contentDescription = null,
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
         )

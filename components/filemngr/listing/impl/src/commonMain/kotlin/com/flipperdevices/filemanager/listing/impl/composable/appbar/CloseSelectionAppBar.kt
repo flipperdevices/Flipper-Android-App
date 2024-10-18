@@ -18,11 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
@@ -87,14 +85,3 @@ fun CloseSelectionAppBar(
     )
 }
 
-@Preview
-@Composable
-private fun OrangeAppBarTestPreview() {
-    FlipperThemeInternal {
-        CloseSelectionAppBar(
-            onClose = {},
-            onDeselectAll = {},
-            onSelectAll = {}
-        )
-    }
-}

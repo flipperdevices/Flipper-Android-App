@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
@@ -30,8 +29,10 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import okio.Path
-import com.flipperdevices.core.ui.res.R as DesignSystem
+import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
+import flipperapp.components.core.ui.res.generated.resources.ic_search
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_appbar_title
+import org.jetbrains.compose.resources.painterResource
 
 @Suppress("LongMethod")
 @Composable
@@ -88,7 +89,7 @@ fun FileListAppBar(
                             modifier = Modifier
                                 .size(24.dp)
                                 .clickableRipple(onClick = onSearchClick),
-                            painter = painterResource(DesignSystem.drawable.ic_search),
+                            painter = painterResource(CoreUiRes.drawable.ic_search),
                             contentDescription = null,
                             tint = Color.Unspecified
                         )
