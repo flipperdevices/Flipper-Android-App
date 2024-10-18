@@ -16,16 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_selection_deselect_all
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_selection_select_all
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 
 @Composable
 fun CloseSelectionAppBar(
@@ -84,4 +84,3 @@ fun CloseSelectionAppBar(
         }
     )
 }
-

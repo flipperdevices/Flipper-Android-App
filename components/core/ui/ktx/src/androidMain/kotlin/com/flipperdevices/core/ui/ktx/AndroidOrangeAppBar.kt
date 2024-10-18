@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 
-
 @Composable
 fun OrangeAppBar(
     @StringRes titleId: Int,

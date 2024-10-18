@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.ktx
 
-import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -22,6 +21,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import flipperapp.components.core.ui.res.generated.resources.ic_back
 import org.jetbrains.compose.resources.painterResource
+import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 
 @Composable
 fun OrangeAppBar(

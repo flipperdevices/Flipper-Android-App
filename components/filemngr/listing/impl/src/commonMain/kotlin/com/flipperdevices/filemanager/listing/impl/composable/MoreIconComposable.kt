@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.composable.options.ListOptionsDropDown
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
 import flipperapp.components.core.ui.res.generated.resources.ic_more_points
 import org.jetbrains.compose.resources.painterResource
+import flipperapp.components.core.ui.res.generated.resources.Res as CoreUiRes
 
 @Composable
 fun MoreIconComposable(
