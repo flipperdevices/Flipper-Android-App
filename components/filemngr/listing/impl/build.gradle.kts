@@ -19,11 +19,6 @@ commonDependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
 
-//    implementation(projects.components.bridge.dao.api)
-//    implementation(projects.components.bridge.service.api)
-//    implementation(projects.components.bridge.pbutils)
-//    implementation(projects.components.bridge.api)
-
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
