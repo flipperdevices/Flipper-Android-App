@@ -127,18 +127,30 @@ class RemoteGridComponentImpl @AssistedInject constructor(
         onSaveKey.invoke(notSavedFlipperFile)
     }
 
-    override fun onButtonClick(identifier: IfrKeyIdentifier) {
-        val gridLoadedState =
-            (remoteGridViewModel.state.value as? RemoteGridViewModel.State.Loaded) ?: return
-        val remotes = gridLoadedState.remotes
+    private fun onButtonClick(identifier: IfrKeyIdentifier, isOneTime: Boolean) {
+        val gridLoadedState = (remoteGridViewModel.state.value as? RemoteGridViewModel.State.Loaded)
+            ?: return
         dispatchSignalApi.dispatch(
             identifier = identifier,
-            remotes = remotes,
+            remotes = gridLoadedState.remotes,
+            isOneTime = isOneTime,
             ffPath = FlipperFilePath(
                 folder = param.extTempFolderPath,
                 nameWithExtension = param.nameWithExtension
             )
         )
+    }
+
+    override fun onButtonClick(identifier: IfrKeyIdentifier) {
+        onButtonClick(identifier, true)
+    }
+
+    override fun onButtonLongClick(identifier: IfrKeyIdentifier) {
+        onButtonClick(identifier, false)
+    }
+
+    override fun onButtonRelease() {
+        dispatchSignalApi.stopEmulate()
     }
 
     override fun tryLoad() = remoteGridViewModel.tryLoad()

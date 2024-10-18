@@ -11,7 +11,6 @@ import com.flipperdevices.toolstab.impl.composable.elements.RemoteControlsCompos
 @Composable
 fun ComposableHub(
     hasNotification: Boolean,
-    showRemoteControls: Boolean,
     onOpenMfKey32: () -> Unit,
     onOpenRemoteControls: () -> Unit,
     modifier: Modifier = Modifier
@@ -24,10 +23,8 @@ fun ComposableHub(
             hasMfKey32Notification = hasNotification,
             onOpenMfKey32 = onOpenMfKey32
         )
-        if (showRemoteControls) {
-            RemoteControlsComposable(
-                onOpenRemoteControls = onOpenRemoteControls
-            )
-        }
+        RemoteControlsComposable(
+            onOpenRemoteControls = onOpenRemoteControls
+        )
     }
 }

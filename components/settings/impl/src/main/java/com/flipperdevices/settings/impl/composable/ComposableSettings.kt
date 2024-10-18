@@ -22,12 +22,10 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.AppCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
-import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
 import com.flipperdevices.settings.impl.model.DebugSettingAction
-import com.flipperdevices.settings.impl.model.DebugSettingSwitch
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import com.flipperdevices.settings.impl.viewmodels.DebugViewModel
 import com.flipperdevices.settings.impl.viewmodels.NotificationViewModel
@@ -78,14 +76,6 @@ fun ComposableSettings(
                     onDebugSettingSwitch = debugViewModel::onSwitch
                 )
             }
-            ExperimentalCategory(
-                settings = settings,
-                onSwitchExperimental = settingsViewModel::onSwitchExperimental,
-                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
-                onSwitchRemoteControls = {
-                    debugViewModel.onSwitch(DebugSettingSwitch.ShowRemoteControls, it)
-                }
-            )
             ExportKeysCategory(
                 exportState = exportState,
                 onExport = { settingsViewModel.onMakeExport(context) }

@@ -11,6 +11,7 @@ import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
@@ -131,6 +132,7 @@ class SaveRemoteControlViewModel @Inject constructor(
         savedKeyPath: FlipperKeyPath,
         originalKey: NotSavedFlipperKey,
     ) {
+        info { "#moveAndUpdate savedKeyPath: $savedKeyPath; originalKey: $originalKey" }
         viewModelScope.launch {
             _state.emit(State.InProgress.ModifyingFiles)
             if (lastMoveJob != null) lastMoveJob?.join()
@@ -148,6 +150,7 @@ class SaveRemoteControlViewModel @Inject constructor(
             updateKeyApi.updateKey(
                 oldKey = flipperKey,
                 newKey = flipperKey.copy(
+                    synchronized = true,
                     mainFile = flipperKey.mainFile.copy(
                         path = flipperKey.mainFile.path.toNonTempPath()
                     ),

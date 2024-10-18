@@ -29,6 +29,8 @@ dependencies {
     implementation(projects.components.infrared.utils)
     implementation(projects.components.infrared.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.deeplink.api)
 
@@ -50,6 +52,8 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.immutable.collections)
+
+    implementation(libs.appcompat)
 
     implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)

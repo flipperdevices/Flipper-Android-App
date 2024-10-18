@@ -4,12 +4,15 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushToFront
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
 import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -27,6 +30,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
     private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
     private val infraredsScreenDecomposeComponentFactory: InfraredsScreenDecomposeComponent.Factory,
+    private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -38,6 +42,7 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
         childFactory = ::child,
     )
 
+    @Suppress("LongMethod")
     private fun child(
         config: RemoteControlsNavigationConfig,
         componentContext: ComponentContext
@@ -89,7 +94,14 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                     categoryName = config.categoryName
                 ),
                 onBack = navigation::pop,
-                onIrFileReady = { navigation.pop() }
+                onIrFileReady = { id, name ->
+                    navigation.replaceCurrent(
+                        RemoteControlsNavigationConfig.ServerRemoteControl(
+                            infraredFileId = id,
+                            remoteName = name
+                        )
+                    )
+                }
             )
         }
 
@@ -100,5 +112,14 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 onBack = navigation::popOr,
             )
         }
+
+        is RemoteControlsNavigationConfig.ServerRemoteControl -> serverRemoteControlFactory(
+            componentContext = componentContext,
+            param = ServerRemoteControlParam(
+                infraredFileId = config.infraredFileId,
+                remoteName = config.remoteName
+            ),
+            onBack = navigation::popOr,
+        )
     }
 }

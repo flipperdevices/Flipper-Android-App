@@ -61,6 +61,13 @@ sealed interface Deeplink {
                 ) : ArchiveCategory {
                     override val category = keyPath.path.keyType
                 }
+
+                @Serializable
+                data class OpenSavedRemoteControl(
+                    val keyPath: FlipperKeyPath
+                ) : ArchiveCategory {
+                    override val category = keyPath.path.keyType
+                }
             }
         }
 
