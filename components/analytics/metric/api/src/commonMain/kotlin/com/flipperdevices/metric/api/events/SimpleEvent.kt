@@ -20,4 +20,6 @@ enum class SimpleEvent(val id: String) {
     OPEN_FAPHUB_APP("open_faphub_app"),
     INSTALL_FAPHUB_APP("install_faphub_app"),
     HIDE_FAPHUB_APP("hide_faphub_app"),
+    OPEN_INFRARED_LIBRARY("open_infrared_library"),
+    SAVE_INFRARED_LIBRARY("save_infrared_library"),
 }
