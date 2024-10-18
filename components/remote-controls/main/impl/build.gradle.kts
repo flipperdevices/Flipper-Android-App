@@ -24,6 +24,8 @@ dependencies {
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.infrared.utils)
 
+    implementation(projects.components.deeplink.api)
+
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.remoteControls.apiBackend)
@@ -33,8 +35,10 @@ dependencies {
     implementation(projects.components.remoteControls.main.api)
     implementation(projects.components.remoteControls.brands.api)
     implementation(projects.components.remoteControls.categories.api)
-    implementation(projects.components.remoteControls.grid.main.api)
+    implementation(projects.components.remoteControls.grid.remote.api)
     implementation(projects.components.remoteControls.setup.api)
+
+    implementation(projects.components.keyedit.api)
 
     // Compose
     implementation(libs.compose.ui)

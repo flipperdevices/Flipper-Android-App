@@ -3,16 +3,19 @@ package com.flipperdevices.remotecontrols.impl.api
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.ConfigureGridDecomposeComponent
 import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
+import com.flipperdevices.remotecontrols.grid.remote.api.RemoteGridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.api.model.RemoteControlsNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -26,11 +29,13 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onDeeplink: (Deeplink.BottomBar) -> Unit,
     private val categoriesScreenDecomposeComponentFactory: CategoriesScreenDecomposeComponent.Factory,
     private val brandsScreenDecomposeComponentFactory: BrandsScreenDecomposeComponent.Factory,
     private val setupScreenDecomposeComponentFactory: SetupScreenDecomposeComponent.Factory,
     private val infraredsScreenDecomposeComponentFactory: InfraredsScreenDecomposeComponent.Factory,
-    private val serverRemoteControlFactory: ConfigureGridDecomposeComponent.Factory
+    private val remoteGridComponentFactory: RemoteGridScreenDecomposeComponent.Factory,
+    private val editorKeyFactory: KeyEditDecomposeComponent.Factory,
 ) : RemoteControlsScreenDecomposeComponent<RemoteControlsNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -110,16 +115,46 @@ class RemoteControlsScreenDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 brandId = config.brandId,
                 onBack = navigation::popOr,
+                onRemoteFound = { id, name ->
+                    navigation.replaceCurrent(
+                        RemoteControlsNavigationConfig.ServerRemoteControl(
+                            infraredFileId = id,
+                            remoteName = name
+                        )
+                    )
+                }
             )
         }
 
-        is RemoteControlsNavigationConfig.ServerRemoteControl -> serverRemoteControlFactory(
+        is RemoteControlsNavigationConfig.Rename -> editorKeyFactory.invoke(
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) },
+            onSave = { savedKey ->
+                if (savedKey == null) {
+                    navigation.popOr(onBack::invoke)
+                    return@invoke
+                }
+                val deeplink = Deeplink.BottomBar
+                    .ArchiveTab
+                    .ArchiveCategory
+                    .OpenSavedRemoteControl(savedKey.getKeyPath())
+                onDeeplink.invoke(deeplink)
+                onBack.invoke()
+            },
+            notSavedFlipperKey = config.notSavedFlipperKey,
+            title = null
+        )
+
+        is RemoteControlsNavigationConfig.ServerRemoteControl -> remoteGridComponentFactory.invoke(
             componentContext = componentContext,
             param = ServerRemoteControlParam(
-                infraredFileId = config.infraredFileId,
-                remoteName = config.remoteName
+                config.infraredFileId,
+                config.remoteName
             ),
-            onBack = navigation::popOr,
+            onBack = { navigation.popOr(onBack::invoke) },
+            onSaveKey = {
+                navigation.pushNew(RemoteControlsNavigationConfig.Rename(it))
+            }
         )
     }
 }

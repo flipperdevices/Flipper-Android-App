@@ -138,7 +138,8 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         is BottomBarTabConfig.Tools -> toolsScreenFactory(
             componentContext = componentContext,
             deeplink = config.deeplink,
-            onBack = { navigation.popOr(onBack::invoke) }
+            onBack = { navigation.popOr(onBack::invoke) },
+            onDeeplink = ::handleDeeplink
         )
 
         is BottomBarTabConfig.Apps -> fapHubScreenFactory(

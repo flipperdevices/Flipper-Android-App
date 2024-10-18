@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseFile
 import com.flipperdevices.bridge.dao.impl.ktx.toDatabaseKey
 import com.flipperdevices.bridge.dao.impl.ktx.toFlipperKey
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
@@ -72,6 +73,12 @@ class SimpleKeyApiImpl @Inject constructor(
 
     override suspend fun insertKey(key: FlipperKey) = withContext(FlipperDispatchers.workStealingDispatcher) {
         simpleKeyDao.insert(key.toDatabaseKey())
+        simpleKeyDao.getByPath(path = key.path.pathToKey, deleted = key.deleted)?.uid?.let { uid ->
+            key.additionalFiles
+                .map { it.toDatabaseFile(uid) }
+                .forEach { additionalFileDao.insert(it) }
+        }
+        Unit
     }
 
     override suspend fun updateKeyContent(keyPath: FlipperKeyPath, content: FlipperKeyContent) {

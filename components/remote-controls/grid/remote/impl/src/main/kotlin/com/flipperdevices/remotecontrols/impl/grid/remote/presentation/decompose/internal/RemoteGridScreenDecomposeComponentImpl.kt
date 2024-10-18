@@ -9,8 +9,8 @@ import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.grid.remote.api.RemoteGridScreenDecomposeComponent
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.composable.RemoteGridComposable
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.decompose.RemoteGridComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter

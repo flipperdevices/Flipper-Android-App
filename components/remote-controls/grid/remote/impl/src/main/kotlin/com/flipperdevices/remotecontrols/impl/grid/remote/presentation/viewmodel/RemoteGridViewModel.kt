@@ -9,7 +9,7 @@ import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.ifrmvp.model.PagesLayout
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.data.pages.PagesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
