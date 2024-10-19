@@ -88,6 +88,8 @@ class ClickhouseApiImpl @Inject constructor(
             SimpleEvent.OPEN_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_APP
             SimpleEvent.INSTALL_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.INSTALL_FAPHUB_APP
             SimpleEvent.HIDE_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.HIDE_FAPHUB_APP
+            SimpleEvent.OPEN_INFRARED_LIBRARY -> OpenOuterClass.Open.OpenTarget.OPEN_INFRARED_LIBRARY
+            SimpleEvent.SAVE_INFRARED_LIBRARY -> OpenOuterClass.Open.OpenTarget.SAVE_INFRARED_LIBRARY
         }
 
         scope.launch {
