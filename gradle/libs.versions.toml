@@ -7,21 +7,21 @@ kotlinx = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "2.0.21-1.0.25" # https://github.com/google/ksp/releases
 anvil = "2.5.0-beta11" # https://github.com/square/anvil/releases
 anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
-android-gradle = "8.7.0" # https://developer.android.com/studio/releases/gradle-plugin
+android-gradle = "8.7.1" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "4.28.2" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
-compose-material = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-material = "1.7.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-material3 = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-foundation = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-ui = "1.7.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-foundation = "1.7.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-ui = "1.7.4" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.4.0" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
 compose-accompanist = "0.36.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
-compose-constraint = "0.4.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
+compose-constraint = "0.5.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
 compose-paging = "3.3.2" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.7.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
+compose-multiplatform = "1.7.0" # https://github.com/JetBrains/compose-multiplatform/releases
 # 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
 # androidx.navigation:navigation-compose:2.8.0-beta0 requires Android API 35
 # Android API 35 not supported by roboelectric
@@ -37,13 +37,13 @@ dagger = "2.52" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.1.2" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "7.15.0" # https://github.com/getsentry/sentry-java/releases
-sentry-gradle = "4.11.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
+sentry-gradle = "4.12.0" # https://github.com/getsentry/sentry-android-gradle-plugin/releases
 zip4j = "2.11.5" # https://github.com/srikanth-lingala/zip4j/releases
 ktx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
-ktx-activity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
+ktx-activity = "1.9.3" # https://developer.android.com/jetpack/androidx/releases/activity
 ktx-testing = "1.2.1" # https://developer.android.com/jetpack/androidx/releases/test
 lifecycle = "2.8.6" # https://developer.android.com/jetpack/androidx/releases/lifecycle
-fastutil = "8.5.14" # https://github.com/vigna/fastutil/tags
+fastutil = "8.5.15" # https://github.com/vigna/fastutil/tags
 ble = "2.8.0" # https://github.com/NordicSemiconductor/Android-BLE-Library/releases
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 ble-kotlin = "1.1.0" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library/releases
@@ -53,7 +53,7 @@ slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
 lottie = "6.5.2" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.12.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
-annotations = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/annotation
+annotations = "1.9.0" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.7.0" # https://developer.android.com/jetpack/androidx/releases/appcompat
 androidx-core = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
 datastore = "1.1.1" # https://developer.android.com/topic/libraries/architecture/datastore
@@ -80,8 +80,8 @@ mockk = "1.13.13" # https://mockk.io/
 # Testing UI
 espresso-core = "3.6.1" # https://github.com/android/android-test
 uiautomator = "2.3.0" # https://developer.android.com/training/testing/other-components/ui-automator#set-ui
-benchmark-macro-junit4 = "1.3.2" # https://developer.android.com/jetpack/androidx/releases/benchmark
-baselineprofile = "1.3.2" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
+benchmark-macro-junit4 = "1.3.3" # https://developer.android.com/jetpack/androidx/releases/benchmark
+baselineprofile = "1.3.3" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
 profileinstaller = "1.4.1" # https://developer.android.com/topic/performance/baselineprofiles/overview#recommended-versions
 
 # Linters
