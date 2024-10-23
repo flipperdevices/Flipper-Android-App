@@ -49,16 +49,16 @@ jobs:
       matrix:
         target: [ "gh_gms", "gh_nogms", "googleplay" ]
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
         with:
           submodules: 'recursive'
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16
+      - uses: actions/download-artifact@d0ce8fd1167ed839810201de977912a090ab10a7
         name: "Download ${{ needs.create_internal_baseline.outputs.BUILD_VARIANT_NAME }} baseline file"
         with:
           name: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_ID }}
           path: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_PATH }}
       - name: Set up JDK 1.17
-        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -109,7 +109,7 @@ jobs:
           cp instances/android/app/build/outputs/mapping/internal/mapping.txt artifacts/mapping-${{ matrix.target }}.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
         with:
           name: artifacts-${{ matrix.target }}
           path: ${{ steps.artifacts_copy.outputs.path }}
@@ -118,11 +118,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_number
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -171,7 +171,7 @@ jobs:
           cp instances/wearable/build/outputs/mapping/internal/mapping.txt artifacts/mapping-wearos.txt
           echo "path=artifacts/" >> $GITHUB_OUTPUT
       - name: Upload Artifacts
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
         with:
           name: artifacts-wearos
           path: ${{ steps.artifacts_copy.outputs.path }}

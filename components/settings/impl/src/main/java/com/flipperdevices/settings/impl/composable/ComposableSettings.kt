@@ -22,7 +22,6 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.AppCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
-import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
@@ -65,7 +64,9 @@ fun ComposableSettings(
                 theme = settings.selected_theme,
                 onSelectTheme = settingsViewModel::onChangeSelectedTheme,
                 notificationState = notificationState,
-                onChangeNotificationState = notificationViewModel::switchToggle
+                onChangeNotificationState = notificationViewModel::switchToggle,
+                vibrationState = !settings.disabled_vibration,
+                onSwitchVibration = settingsViewModel::onSwitchVibration
             )
             if (settings.expert_mode) {
                 DebugCategory(
@@ -75,11 +76,6 @@ fun ComposableSettings(
                     onDebugSettingSwitch = debugViewModel::onSwitch
                 )
             }
-            ExperimentalCategory(
-                settings = settings,
-                onSwitchExperimental = settingsViewModel::onSwitchExperimental,
-                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
-            )
             ExportKeysCategory(
                 exportState = exportState,
                 onExport = { settingsViewModel.onMakeExport(context) }

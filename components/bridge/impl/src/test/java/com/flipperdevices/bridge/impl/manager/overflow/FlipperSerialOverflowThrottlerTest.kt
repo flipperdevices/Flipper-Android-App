@@ -11,7 +11,7 @@ import com.google.protobuf.ByteString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import no.nordicsemi.android.ble.data.Data
 import org.junit.Assert
 import org.junit.Before
@@ -58,7 +58,7 @@ class FlipperSerialOverflowThrottlerTest {
     }
 
     @Test
-    fun `Send request fitting in buffer size`() = runBlockingTest {
+    fun `Send request fitting in buffer size`() = runTest {
         val testRequest = main { systemPingRequest = pingRequest { } }.wrapToRequest()
         val bufferSize = testRequest.data.toDelimitedBytes().size
 
@@ -70,7 +70,7 @@ class FlipperSerialOverflowThrottlerTest {
     }
 
     @Test
-    fun `Send request if we fit in buffer`() = runBlockingTest {
+    fun `Send request if we fit in buffer`() = runTest {
         val testRequest = main {
             systemPingRequest = pingRequest { data = ByteString.EMPTY }
         }.wrapToRequest()
@@ -87,7 +87,7 @@ class FlipperSerialOverflowThrottlerTest {
     }
 
     @Test
-    fun `Send request larger than buffer`() = runBlockingTest {
+    fun `Send request larger than buffer`() = runTest {
         val testRequest = main {
             storageWriteRequest = writeRequest {
                 file = file {

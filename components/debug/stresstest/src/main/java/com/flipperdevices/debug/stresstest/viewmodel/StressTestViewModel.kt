@@ -43,7 +43,7 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 const val BUFFER_SIZE = 20 * 1024
-const val TEST_FILE = "/any/stresstest_mobile.tmp"
+const val TEST_FILE = "/ext/stresstest_mobile.tmp"
 
 @Suppress("TooManyFunctions")
 class StressTestViewModel @Inject constructor(

@@ -3,6 +3,7 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,25 +32,29 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
-import com.flipperdevices.core.ui.res.R as SharedRes
+import com.flipperdevices.core.ui.res.R as DesignSystem
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 @Suppress("LongMethod")
 internal fun ComposableInfraredDropDown(
-    onRemoteInfo: () -> Unit,
     onRename: () -> Unit,
-    onShare: () -> Unit,
     onDelete: () -> Unit,
+    onFavorite: () -> Unit,
     isEmulating: Boolean,
     isConnected: Boolean,
+    isFavorite: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var isShowHowToUseDialog by remember { mutableStateOf(false) }
+    ComposableRemoteDialogHowToUse(isShowHowToUseDialog) { isShowHowToUseDialog = false }
+
     var isShowMoreOptions by remember { mutableStateOf(false) }
     val onChangeState = { isShowMoreOptions = !isShowMoreOptions }
     val isDropDownEnabled = isConnected && !isEmulating
     val moreIconTint by animateColorAsState(
         if (isDropDownEnabled) {
-            LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+            LocalPalletV2.current.icon.blackAndWhite.default
         } else {
             LocalPalletV2.current.action.neutral.icon.primary.disabled
         }
@@ -67,20 +72,28 @@ internal fun ComposableInfraredDropDown(
                 )
                 .size(24.dp),
             tint = moreIconTint,
-            painter = painterResource(SharedRes.drawable.ic_more_points),
+            painter = painterResource(RemoteControlsR.drawable.ic_rc_more_points),
             contentDescription = null
         )
         DropdownMenu(
             expanded = isShowMoreOptions,
-            onDismissRequest = { isShowMoreOptions = false }
+            onDismissRequest = { isShowMoreOptions = false },
+            modifier = Modifier.animateContentSize()
         ) {
             ComposableInfraredDropDownItem(
-                text = stringResource(R.string.option_remote_info),
-                painter = painterResource(R.drawable.ic_how_to_use),
+                text = when (isFavorite) {
+                    true -> stringResource(R.string.favorites_added)
+                    false -> stringResource(R.string.favorites_add)
+                },
+                painter = when (isFavorite) {
+                    true -> painterResource(com.flipperdevices.core.ui.res.R.drawable.ic_star_enabled)
+                    false -> painterResource(com.flipperdevices.core.ui.res.R.drawable.ic_star_disabled)
+                },
+                colorIcon = LocalPallet.current.keyFavorite,
                 onClick = {
-                    onRemoteInfo.invoke()
-                    onChangeState.invoke()
-                }
+                    onFavorite.invoke()
+                },
+                isActive = !isEmulating
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
@@ -94,17 +107,17 @@ internal fun ComposableInfraredDropDown(
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
-                text = stringResource(R.string.option_share),
-                painter = painterResource(SharedRes.drawable.ic_upload),
+                text = stringResource(R.string.option_how_to_use),
+                painter = painterResource(R.drawable.ic_how_to_use),
                 onClick = {
+                    isShowHowToUseDialog = !isShowHowToUseDialog
                     onChangeState.invoke()
-                    onShare.invoke()
                 }
             )
             Divider(modifier = Modifier.padding(horizontal = 8.dp))
             ComposableInfraredDropDownItem(
                 text = stringResource(R.string.option_delete),
-                painter = painterResource(SharedRes.drawable.ic_trash_icon),
+                painter = painterResource(DesignSystem.drawable.ic_trash_icon),
                 colorText = LocalPallet.current.keyDelete,
                 colorIcon = LocalPallet.current.keyDelete,
                 onClick = {

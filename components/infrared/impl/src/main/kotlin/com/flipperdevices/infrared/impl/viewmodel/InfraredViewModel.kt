@@ -10,6 +10,7 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
+import com.flipperdevices.keyscreen.model.KeyScreenState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -19,15 +20,22 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class InfraredViewModel @AssistedInject constructor(
-    @Assisted val keyPath: FlipperKeyPath, // For get value to bottom sheet
+    @Assisted private val paramKeyPath: FlipperKeyPath, // For get value to bottom sheet
     keyStateHelperApi: KeyStateHelperApi.Builder,
     serviceProvider: FlipperServiceProvider,
     private val infraredConnectionApi: InfraredConnectionApi
 ) : DecomposeViewModel(), FlipperBleServiceConsumer, LogTagProvider {
     override val TAG: String = "InfraredViewModel"
 
-    private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
+    private val keyStateHelper = keyStateHelperApi.build(paramKeyPath, viewModelScope)
     fun getState() = keyStateHelper.getKeyScreenState()
+
+    fun getKeyPath(): FlipperKeyPath {
+        return (keyStateHelper.getKeyScreenState().value as? KeyScreenState.Ready)
+            ?.flipperKey
+            ?.getKeyPath()
+            ?: paramKeyPath
+    }
 
     private val emulateStateFlow = MutableStateFlow<InfraredEmulateState?>(null)
     fun getEmulateState() = emulateStateFlow.asStateFlow()

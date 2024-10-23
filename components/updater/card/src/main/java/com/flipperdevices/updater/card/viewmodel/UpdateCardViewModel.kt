@@ -99,8 +99,10 @@ class UpdateCardViewModel @AssistedInject constructor(
 
     override fun onServiceApiReady(
         serviceApi: FlipperServiceApi
-    ) = launchWithLock(mutex, viewModelScope, "onServiceApiReady") {
-        invalidateUnsafe(serviceApi)
+    ) {
+        launchWithLock(mutex, viewModelScope, "onServiceApiReady") {
+            invalidateUnsafe(serviceApi)
+        }
     }
 
     private suspend fun invalidateUnsafe(serviceApi: FlipperServiceApi) {

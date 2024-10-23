@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.categories.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.ifrmvp.backend.model.DeviceCategory
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
@@ -18,7 +19,7 @@ interface DeviceCategoriesComponent {
     sealed interface Model {
         data object Loading : Model
         class Loaded(val deviceTypes: ImmutableList<DeviceCategory>) : Model
-        data object Error : Model
+        data class Error(val throwable: FapHubError) : Model
     }
 
     fun interface Factory {

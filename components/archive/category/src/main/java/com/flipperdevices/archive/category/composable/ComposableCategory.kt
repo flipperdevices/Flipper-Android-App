@@ -20,32 +20,14 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.archive.shared.composable.ComposableKeyCard
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType.Companion.colorByFlipperKeyType
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
-import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import kotlinx.collections.immutable.ImmutableList
-
-@Composable
-fun AddRemoteEndBlock(modifier: Modifier = Modifier) {
-    val rootNavigation = LocalRootNavigation.current
-    Text(
-        text = stringResource(R.string.add_remote),
-        style = LocalTypography.current.buttonB14,
-        color = LocalPalletV2.current.text.title.blackOnColor,
-        modifier = modifier
-            .padding(horizontal = 14.dp)
-            .clickableRipple { rootNavigation.push(RootScreenConfig.RemoteControls) }
-    )
-}
 
 @Composable
 fun ComposableCategory(
@@ -53,7 +35,6 @@ fun ComposableCategory(
     categoryState: CategoryState,
     synchronizationState: SynchronizationState,
     synchronizationUiApi: SynchronizationUiApi,
-    showRemoteControls: Boolean,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onOpenKeyScreen: (FlipperKeyPath) -> Unit
@@ -62,11 +43,6 @@ fun ComposableCategory(
         OrangeAppBar(
             title = categoryType.fileType.humanReadableName,
             onBack = onBack,
-            endBlock = {
-                if (categoryType.fileType == FlipperKeyType.INFRARED && showRemoteControls) {
-                    AddRemoteEndBlock()
-                }
-            }
         )
         ComposableCategoryContent(
             categoryType = categoryType,

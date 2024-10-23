@@ -12,6 +12,7 @@ abstract class InfraredsScreenDecomposeComponent(
             componentContext: ComponentContext,
             brandId: Long,
             onBack: () -> Unit,
+            onRemoteFound: (Long, String) -> Unit
         ): InfraredsScreenDecomposeComponent
     }
 }

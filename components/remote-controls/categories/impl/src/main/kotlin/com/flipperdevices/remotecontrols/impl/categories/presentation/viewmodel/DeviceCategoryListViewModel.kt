@@ -3,6 +3,7 @@ package com.flipperdevices.remotecontrols.impl.categories.presentation.viewmodel
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.flipperdevices.faphub.errors.api.throwable.toFapHubError
 import com.flipperdevices.remotecontrols.impl.categories.presentation.data.DeviceCategoriesRepository
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
 import kotlinx.collections.immutable.toImmutableList
@@ -23,7 +24,9 @@ class DeviceCategoryListViewModel @Inject constructor(
     fun tryLoad() = viewModelScope.launch {
         _model.emit(DeviceCategoriesComponent.Model.Loading)
         deviceCategoriesRepository.fetchCategories()
-            .onFailure { _model.emit(DeviceCategoriesComponent.Model.Error) }
+            .onFailure {
+                _model.emit(DeviceCategoriesComponent.Model.Error(it.toFapHubError()))
+            }
             .onFailure { throwable -> error(throwable) { "#tryLoad could not fetch categories" } }
             .onSuccess { categories ->
                 _model.emit(DeviceCategoriesComponent.Model.Loaded(categories.toImmutableList()))

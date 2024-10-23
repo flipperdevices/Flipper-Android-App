@@ -15,11 +15,14 @@ dependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
+    implementation(projects.components.core.ui.searchbar)
 
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
     implementation(projects.components.remoteControls.brands.api)
+    implementation(projects.components.faphub.errors.api)
 
     implementation(projects.components.rootscreen.api)
 

@@ -23,6 +23,7 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.getinfo.api)
 

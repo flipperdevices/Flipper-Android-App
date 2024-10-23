@@ -1,7 +1,9 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.internal
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
@@ -12,8 +14,11 @@ import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
+import com.flipperdevices.inappnotification.api.InAppNotificationStorage
+import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.Companion.toDialogType
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
@@ -21,6 +26,7 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.inter
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.CurrentSignalViewModel
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
+import com.flipperdevices.remotecontrols.setup.impl.R
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -34,6 +40,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
@@ -44,7 +51,8 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: (id: Long) -> Unit,
+    @Assisted private val onIfrFileFound: (id: Long, name: String) -> Unit,
+    private val inAppNotificationStorage: InAppNotificationStorage,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
     createSaveTempSignalApi: Provider<SaveTempSignalApi>,
@@ -102,15 +110,14 @@ class SetupComponentImpl @AssistedInject constructor(
         transform = { signalState, saveState, dispatchState, connectionState ->
             val emulatingState = (dispatchState as? DispatchSignalApi.State.Emulating)
             when (signalState) {
-                CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error
+                is CurrentSignalViewModel.State.Error -> SetupComponent.Model.Error(signalState.throwable)
                 is CurrentSignalViewModel.State.Loaded -> {
                     when (saveState) {
-                        SaveTempSignalApi.State.Error -> SetupComponent.Model.Error
                         is SaveTempSignalApi.State.Uploading,
                         SaveTempSignalApi.State.Uploaded,
                         SaveTempSignalApi.State.Pending -> SetupComponent.Model.Loaded(
                             response = signalState.response,
-                            isFlipperBusy = dispatchState is DispatchSignalApi.State.FlipperIsBusy,
+                            flipperDialog = dispatchState.toDialogType(),
                             emulatedKeyIdentifier = emulatingState?.ifrKeyIdentifier,
                             connectionState = connectionState
                         )
@@ -128,23 +135,33 @@ class SetupComponentImpl @AssistedInject constructor(
     override val remoteFoundFlow: Flow<IfrFileModel> = modelFlow
         .filterIsInstance<SetupComponent.Model.Loaded>()
         .mapNotNull { it.response.ifrFileModel }
+        .onEach {
+            inAppNotificationStorage.addNotification(
+                InAppNotification.Successful(
+                    titleId = R.string.rcs_notification_found_title,
+                    descId = R.string.rcs_notification_found_desc
+                )
+            )
+        }
 
-    override fun dismissBusyDialog() {
+    override fun dismissDialog() {
         dispatchSignalApi.dismissBusyDialog()
     }
 
     override fun tryLoad() {
         if (dispatchSignalApi.state.value is DispatchSignalApi.State.Emulating) return
         dispatchSignalApi.reset()
+        val historyData = historyViewModel.data
         createCurrentSignalViewModel.load(
-            successResults = historyViewModel.state.value.successfulSignals,
-            failedResults = historyViewModel.state.value.failedSignals
+            successResults = historyData.successfulSignals,
+            failedResults = historyData.failedSignals,
+            skippedResults = historyData.skippedSignals
         )
         _lastEmulatedSignal.value = null
     }
 
     override fun onFileFound(ifrFileModel: IfrFileModel) {
-        onIfrFileFound.invoke(ifrFileModel.id)
+        onIfrFileFound.invoke(ifrFileModel.id, param.remoteName)
     }
 
     override fun onSuccessClick() {
@@ -160,6 +177,14 @@ class SetupComponentImpl @AssistedInject constructor(
             ?: return
         val signalModel = state.response.signalResponse?.signalModel ?: return
         historyViewModel.rememberFailed(signalModel)
+        tryLoad()
+    }
+
+    override fun onSkipClicked() {
+        val state = createCurrentSignalViewModel.state.value as? CurrentSignalViewModel.State.Loaded
+            ?: return
+        val signalModel = state.response.signalResponse?.signalModel ?: return
+        historyViewModel.rememberSkipped(signalModel)
         tryLoad()
     }
 
@@ -192,7 +217,24 @@ class SetupComponentImpl @AssistedInject constructor(
         )
     }
 
-    override fun onBackClick() = onBackClick.invoke()
+    override fun forgetLastEmulatedSignal() {
+        _lastEmulatedSignal.value = null
+    }
+
+    private val backCallback = BackCallback(true) {
+        if (historyViewModel.isEmpty) {
+            onBackClick.invoke()
+        } else {
+            historyViewModel.forgetLast()
+        }
+        tryLoad()
+    }
+
+    override fun onBackClick() = backCallback.onBack()
+
+    init {
+        backHandler.register(backCallback)
+    }
 }
 
 private val ABSOLUTE_TEMP_FOLDER_PATH = "/${FlipperKeyType.INFRARED.flipperDir}/temp"

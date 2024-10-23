@@ -20,8 +20,6 @@ fun <T> FlipperInformationStatus<T>.dataOrNull() = when (this) {
 
 private const val ENDING = 20 * 1024 // 20 Kb
 
-val FlipperStorageInformation.internalStorageRequestInProgress: Boolean
-    get() = internalStorageStatus is FlipperInformationStatus.InProgress
 val FlipperStorageInformation.externalStorageRequestInProgress: Boolean
     get() = externalStorageStatus is FlipperInformationStatus.InProgress
 val FlipperStorageInformation.flashIntStats: StorageStats?
@@ -29,7 +27,6 @@ val FlipperStorageInformation.flashIntStats: StorageStats?
 val FlipperStorageInformation.flashSdStats: StorageStats?
     get() = (externalStorageStatus as? FlipperInformationStatus.Ready)?.data
 
-fun FlipperStorageInformation.isIntStorageEnding(): Boolean = isStorageEnding(flashIntStats)
 fun FlipperStorageInformation.isExtStorageEnding(): Boolean = isStorageEnding(flashSdStats)
 
 private fun isStorageEnding(flash: StorageStats?): Boolean {

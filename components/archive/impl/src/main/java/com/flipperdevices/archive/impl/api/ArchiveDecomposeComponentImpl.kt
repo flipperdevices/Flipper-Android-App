@@ -13,6 +13,7 @@ import com.flipperdevices.archive.impl.model.toArchiveNavigationStack
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
+import com.flipperdevices.remotecontrols.impl.grid.local.api.LocalGridScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
@@ -22,6 +23,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, ArchiveDecomposeComponent.Factory::class)
 class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -29,7 +31,8 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val openCategoryFactory: CategoryDecomposeComponent.Factory,
     private val searchFactory: SearchDecomposeComponent.Factory,
-    private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory
+    private val archiveScreenFactory: ArchiveScreenDecomposeComponentImpl.Factory,
+    private val localGridScreenDecomposeComponentFactory: LocalGridScreenDecomposeComponent.Factory,
 ) : ArchiveDecomposeComponent<ArchiveNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -50,7 +53,7 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
     ): DecomposeComponent = when (config) {
         ArchiveNavigationConfig.ArchiveObject -> archiveScreenFactory(
             componentContext = componentContext,
-            navigation = navigation
+            navigation = navigation,
         )
 
         is ArchiveNavigationConfig.OpenCategory -> openCategoryFactory(
@@ -63,6 +66,13 @@ class ArchiveDecomposeComponentImpl @AssistedInject constructor(
             componentContext = componentContext,
             onItemSelected = null,
             onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        is ArchiveNavigationConfig.InArchiveRemoteControl -> localGridScreenDecomposeComponentFactory.invoke(
+            componentContext = componentContext,
+            keyPath = config.keyPath,
+            onBack = { navigation.popOr(onBack::invoke) },
+            onCallback = { navigation.popOr(onBack::invoke) }
         )
     }
 

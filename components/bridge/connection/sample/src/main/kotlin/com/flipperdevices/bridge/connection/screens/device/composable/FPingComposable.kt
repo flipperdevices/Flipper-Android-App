@@ -19,6 +19,7 @@ fun FPingComposable(
     logs: PersistentList<String>,
     onSendPing: () -> Unit,
     invalidateRpcInfo: () -> Unit,
+    onOpenFM: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -46,6 +47,12 @@ fun FPingComposable(
             onClick = invalidateRpcInfo
         ) {
             Text(text = "Get device info")
+        }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onOpenFM
+        ) {
+            Text(text = "File Manager")
         }
     }
 }

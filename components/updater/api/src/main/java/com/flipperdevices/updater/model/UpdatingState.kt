@@ -31,12 +31,12 @@ sealed class UpdatingState(
         val percent: Float
     ) : UpdatingState(false)
 
-    object Rebooting : UpdatingState(true)
+    data object Rebooting : UpdatingState(true)
 
-    object Complete : UpdatingState(true)
+    data object Complete : UpdatingState(true)
 
     /**
      * When update process is correct, but after restart version mismatch
      */
-    object Failed : UpdatingState(true)
+    data object Failed : UpdatingState(true)
 }

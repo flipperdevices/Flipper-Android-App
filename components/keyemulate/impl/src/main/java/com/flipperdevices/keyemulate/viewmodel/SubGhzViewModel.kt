@@ -1,6 +1,7 @@
 package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -8,6 +9,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
@@ -16,8 +18,10 @@ import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SubGhzViewModel @Inject constructor(
@@ -26,12 +30,14 @@ class SubGhzViewModel @Inject constructor(
     synchronizationApi: SynchronizationApi,
     closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: Application,
+    private val settings: DataStore<Settings>
 ) : EmulateViewModel(
     serviceProvider,
     emulateHelper,
     synchronizationApi,
     closeEmulateAppTaskHolder,
-    application
+    application,
+    settings
 ) {
     override val TAG = "SubGhzViewModel"
 
@@ -50,7 +56,10 @@ class SubGhzViewModel @Inject constructor(
 
     fun onSinglePress(config: EmulateConfig) {
         info { "#onSinglePress" }
-        vibrator?.vibrateCompat(VIBRATOR_TIME)
+        vibrator?.vibrateCompat(
+            VIBRATOR_TIME,
+            runBlocking { settings.data.first().disabled_vibration }
+        )
         if (config.keyType != FlipperKeyType.SUB_GHZ) {
             return
         }

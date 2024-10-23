@@ -58,11 +58,6 @@ private fun ComposableKeysListLoading() {
 }
 
 @Composable
-@Preview(
-    showSystemUi = true,
-    showBackground = true,
-    device = WearDevices.LARGE_ROUND
-)
 private fun ComposableKeysListEmpty() {
     ComposableWearOsScrollableColumn {
         Image(
@@ -105,4 +100,14 @@ private fun ComposableKeysListInternal(
             ComposableKeysListElement(it) { onKeyOpen(it) }
         }
     }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true,
+    device = WearDevices.LARGE_ROUND
+)
+@Composable
+private fun PreviewComposableKeysListEmpty() {
+    ComposableKeysListLoading()
 }

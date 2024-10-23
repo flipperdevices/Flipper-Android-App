@@ -9,6 +9,7 @@ import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.nfc.mfkey32.api.MfKey32DecomposeComponent
+import com.flipperdevices.remotecontrols.api.RemoteControlsScreenDecomposeComponent
 import com.flipperdevices.toolstab.api.ToolsDecomposeComponent
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
 import com.flipperdevices.toolstab.impl.model.toConfigStack
@@ -21,12 +22,15 @@ import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, ToolsDecomposeComponent.Factory::class)
+@Suppress("LongParameterList")
 class ToolsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted deeplink: Deeplink.BottomBar.ToolsTab?,
     @Assisted private val onBack: DecomposeOnBackParameter,
+    @Assisted private val onDeeplink: (Deeplink.BottomBar) -> Unit,
     private val hubMainFactory: ToolsMainScreenDecomposeComponentImpl.Factory,
-    private val mfKey32Factory: MfKey32DecomposeComponent.Factory
+    private val mfKey32Factory: MfKey32DecomposeComponent.Factory,
+    private val remoteControlsComponentFactory: RemoteControlsScreenDecomposeComponent.Factory,
 ) : ToolsDecomposeComponent<ToolsNavigationConfig>(),
     ComponentContext by componentContext,
     ResetTabDecomposeHandler {
@@ -50,6 +54,12 @@ class ToolsDecomposeComponentImpl @AssistedInject constructor(
         ToolsNavigationConfig.MfKey32 -> mfKey32Factory(
             componentContext = componentContext,
             onBack = { navigation.popOr(onBack::invoke) }
+        )
+
+        ToolsNavigationConfig.RemoteControls -> remoteControlsComponentFactory(
+            componentContext = componentContext,
+            onBack = { navigation.popOr(onBack::invoke) },
+            onDeeplink = onDeeplink
         )
     }
 

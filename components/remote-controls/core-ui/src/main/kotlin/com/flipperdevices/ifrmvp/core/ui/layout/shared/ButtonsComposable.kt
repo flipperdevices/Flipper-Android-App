@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.ifrmvp.core.ui.button.ButtonItemComposable
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.layout.core.GridItemComposable
 import com.flipperdevices.ifrmvp.core.ui.layout.core.LocalScaleFactor
 import com.flipperdevices.ifrmvp.core.ui.layout.core.rememberScaleFactor
@@ -19,7 +20,7 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
-import com.flipperdevices.remotecontrols.core.ui.R as GridUiR
+import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
 
 @Composable
 internal fun BoxWithConstraintsScope.ButtonsComposable(
@@ -27,13 +28,13 @@ internal fun BoxWithConstraintsScope.ButtonsComposable(
     emulatedKeyIdentifier: IfrKeyIdentifier?,
     isSyncing: Boolean,
     isConnected: Boolean,
-    onButtonClick: (IfrButton, IfrKeyIdentifier) -> Unit,
+    onButtonClick: (IfrButton, ButtonClickEvent, IfrKeyIdentifier) -> Unit,
     modifier: Modifier = Modifier,
     onReload: (() -> Unit)? = null,
 ) {
     if (pageLayout?.buttons.isNullOrEmpty()) {
         ErrorComposable(
-            desc = stringResource(GridUiR.string.empty_page),
+            desc = stringResource(RemoteControlsR.string.empty_page),
             onReload = onReload
         )
     }
@@ -62,8 +63,8 @@ internal fun BoxWithConstraintsScope.ButtonsComposable(
                                     emulatedKeyIdentifier = emulatedKeyIdentifier,
                                     isSyncing = isSyncing,
                                     isConnected = isConnected,
-                                    onKeyDataClick = { keyIdentifier ->
-                                        onButtonClick.invoke(button, keyIdentifier)
+                                    onKeyDataClick = { clickType, keyIdentifier ->
+                                        onButtonClick.invoke(button, clickType, keyIdentifier)
                                     }
                                 )
                             }

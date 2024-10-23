@@ -10,52 +10,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
-import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.TextButton
+import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundColor
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 
 @Composable
 fun VerticalDoubleButton(
-    onFirstClick: () -> Unit,
-    onLastClick: () -> Unit,
+    onFirstClick: (ButtonClickEvent) -> Unit,
+    onLastClick: (ButtonClickEvent) -> Unit,
     firstText: String,
     lastText: String,
     modifier: Modifier = Modifier,
+    background: Color = buttonBackgroundColor,
     text: String? = null,
 ) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.sf))
-            .background(LocalPalletV2.current.surface.menu.body.dufault),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TextButton(
-            onClick = onFirstClick,
-            text = firstText,
-            background = LocalPalletV2.current.surface.menu.body.dufault,
-        )
-        text?.let {
+    ButtonPlaceholderBox {
+        Column(
+            modifier = modifier
+                .clip(RoundedCornerShape(8.sf))
+                .background(background),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             TextButton(
-                onClick = null,
-                text = text,
-                background = LocalPalletV2.current.surface.menu.body.dufault,
+                onClick = onFirstClick,
+                text = firstText,
+                background = Color.Transparent,
+            )
+            text?.let {
+                TextButton(
+                    onClick = null,
+                    text = text,
+                    background = Color.Transparent,
+                )
+            }
+            TextButton(
+                onClick = onLastClick,
+                text = lastText,
+                background = Color.Transparent,
             )
         }
-        TextButton(
-            onClick = onLastClick,
-            text = lastText,
-            background = LocalPalletV2.current.surface.menu.body.dufault,
-        )
     }
 }
 
 @Composable
 fun VolumeButton(
-    onAddClick: () -> Unit,
-    onReduceClick: () -> Unit,
+    onAddClick: (ButtonClickEvent) -> Unit,
+    onReduceClick: (ButtonClickEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     VerticalDoubleButton(
@@ -70,8 +76,8 @@ fun VolumeButton(
 
 @Composable
 fun ChannelButton(
-    onNextClick: () -> Unit,
-    onPrevClick: () -> Unit,
+    onNextClick: (ButtonClickEvent) -> Unit,
+    onPrevClick: (ButtonClickEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     VerticalDoubleButton(

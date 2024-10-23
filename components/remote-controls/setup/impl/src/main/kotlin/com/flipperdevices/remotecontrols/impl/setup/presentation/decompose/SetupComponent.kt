@@ -1,11 +1,13 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.ifrmvp.backend.model.IfrFileModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponse
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
+import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.coroutines.CoroutineScope
@@ -23,9 +25,11 @@ interface SetupComponent {
 
     fun onSuccessClick()
     fun onFailedClick()
+    fun onSkipClicked()
     fun dispatchSignal()
+    fun forgetLastEmulatedSignal()
 
-    fun dismissBusyDialog()
+    fun dismissDialog()
 
     fun tryLoad()
 
@@ -35,7 +39,7 @@ interface SetupComponent {
         data class Loading(val progress: Float) : Model
         data class Loaded(
             val response: SignalResponseModel,
-            val isFlipperBusy: Boolean = false,
+            val flipperDialog: FlipperDispatchDialogApi.DialogType? = null,
             val emulatedKeyIdentifier: IfrKeyIdentifier?,
             val connectionState: InfraredEmulateState
         ) : Model {
@@ -46,7 +50,7 @@ interface SetupComponent {
             val isConnected = connectionState != InfraredEmulateState.NOT_CONNECTED
         }
 
-        data object Error : Model
+        data class Error(val throwable: FapHubError) : Model
     }
 
     interface Factory {
@@ -54,7 +58,7 @@ interface SetupComponent {
             componentContext: ComponentContext,
             param: SetupScreenDecomposeComponent.Param,
             onBack: DecomposeOnBackParameter,
-            onIrFileReady: (id: Long) -> Unit
+            onIrFileReady: (id: Long, name: String) -> Unit
         ): SetupComponent
     }
 }

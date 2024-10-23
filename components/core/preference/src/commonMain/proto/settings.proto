@@ -31,6 +31,16 @@ enum SelectedCatalogSort {
   NAME_ASC = 5;
 }
 
+enum FileManagerOrientation {
+  LIST = 0;
+  GRID = 1;
+}
+
+enum FileManagerSort {
+  DEFAULT = 0;
+  SIZE = 1;
+}
+
 message Settings {
   reserved 7; // Already unused tags
   reserved 12; // Already unused  first_synchronization_passed
@@ -61,4 +71,8 @@ message Settings {
   bool notification_topic_update_enabled = 27;
   bool notification_dialog_shown = 28;
   bool show_remote_controls = 29;
+  FileManagerOrientation file_manager_orientation = 30;
+  FileManagerSort file_manager_sort = 31;
+  bool show_hidden_files_on_flipper = 32;
+  bool disabled_vibration = 33;
 }

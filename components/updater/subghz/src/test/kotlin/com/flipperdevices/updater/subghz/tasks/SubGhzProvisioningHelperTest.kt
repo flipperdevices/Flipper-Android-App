@@ -64,9 +64,9 @@ class SubGhzProvisioningHelperTest(
             }
         }
         downloaderApi = DownloaderApiImpl(
-            context = mockk(),
             client = client,
-            downloadAndUnpackDelegateApi = mockk()
+            downloadAndUnpackDelegateApi = mockk(),
+            storageProvider = mockk()
         )
         regionProvisioningHelper = mockk()
 

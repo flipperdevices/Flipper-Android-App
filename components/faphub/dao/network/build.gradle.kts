@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)
+    implementation(projects.components.core.storage)
     implementation(projects.components.core.progress)
     implementation(projects.components.core.preference)
 

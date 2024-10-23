@@ -1,10 +1,9 @@
 package com.flipperdevices.share.cryptostorage
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.DecryptHelper
@@ -14,10 +13,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.put
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
-import io.ktor.util.InternalAPI
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.ByteWriteChannel
 import java.io.FileNotFoundException
@@ -37,9 +36,8 @@ private const val STORAGE_NAME = "hakuna-matata"
 class CryptoStorageApiImpl @Inject constructor(
     private val keyParser: KeyParser,
     private val client: HttpClient,
-    private val context: Context
+    private val storageProvider: FlipperStorageProvider
 ) : CryptoStorageApi {
-    @OptIn(InternalAPI::class)
     override suspend fun upload(
         keyContent: FlipperKeyContent,
         path: String,
@@ -51,11 +49,13 @@ class CryptoStorageApiImpl @Inject constructor(
             val response = client.put(
                 urlString = "$STORAGE_URL$STORAGE_NAME"
             ) {
-                body = object : OutgoingContent.WriteChannelContent() {
-                    override suspend fun writeTo(channel: ByteWriteChannel) {
-                        encryptHelper.writeEncrypt(channel)
+                setBody(
+                    object : OutgoingContent.WriteChannelContent() {
+                        override suspend fun writeTo(channel: ByteWriteChannel) {
+                            encryptHelper.writeEncrypt(channel)
+                        }
                     }
-                }
+                )
             }
 
             when (response.status) {
@@ -80,7 +80,7 @@ class CryptoStorageApiImpl @Inject constructor(
         name: String,
     ): Result<FlipperKeyContent> {
         return runCatching {
-            val tempFile = FlipperStorageProvider.getTemporaryFile(context)
+            val tempFile = storageProvider.getTemporaryFile().toFile()
             val decryptHelper = DecryptHelper()
 
             val response = client.get(urlString = "${STORAGE_URL}$id/$STORAGE_NAME")

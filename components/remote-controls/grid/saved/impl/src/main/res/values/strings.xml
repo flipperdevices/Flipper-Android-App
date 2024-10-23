@@ -4,10 +4,15 @@
     <string name="sync_state_not_connected">Flipper not connected</string>
     <string name="sync_state_syncing">Syncing…</string>
     <string name="sync_state_synced">Synced!</string>
-    <string name="option_remote_info">Remote Info</string>
+    <string name="option_how_to_use">How to use</string>
     <string name="option_rename">Rename</string>
     <string name="option_share">Share</string>
     <string name="option_delete">Delete</string>
     <string name="loading_remote">Loading Remote…</string>
     <string name="remote_subtitle">Remote</string>
+    <string name="rc_dialog_how_to_use_btn">Got it</string>
+    <string name="rc_dialog_how_to_use_title">How to Use</string>
+    <string name="rc_dialog_how_to_use_text">Point Flipper Zero at the device. Tap or hold the button on your phone to send the signal remotely.</string>
+    <string name="favorites_add">Add to Favorites</string>
+    <string name="favorites_added">Added</string>
 </resources>

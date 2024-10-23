@@ -5,7 +5,6 @@ import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
 import com.flipperdevices.bridge.rpcinfo.model.StorageStats
 import com.flipperdevices.bridge.rpcinfo.model.isExtStorageEnding
-import com.flipperdevices.bridge.rpcinfo.model.isIntStorageEnding
 import com.flipperdevices.bridge.rpcinfo.model.toString
 import io.mockk.every
 import io.mockk.mockk
@@ -20,42 +19,6 @@ class FlipperStorageInformationTest {
     @Before
     fun setup() {
         context = mockk()
-    }
-
-    @Test
-    fun `int storage ending`() {
-        Assert.assertTrue(
-            FlipperStorageInformation(
-                internalStorageStatus = FlipperInformationStatus.Ready(
-                    StorageStats.Loaded(
-                        total = 0,
-                        free = 20 * 1024
-                    )
-                )
-            ).isIntStorageEnding()
-        )
-
-        Assert.assertTrue(
-            FlipperStorageInformation(
-                internalStorageStatus = FlipperInformationStatus.Ready(
-                    StorageStats.Loaded(
-                        total = 0,
-                        free = 20 * 1024 - 1
-                    )
-                )
-            ).isIntStorageEnding()
-        )
-
-        Assert.assertFalse(
-            FlipperStorageInformation(
-                internalStorageStatus = FlipperInformationStatus.Ready(
-                    StorageStats.Loaded(
-                        total = 0,
-                        free = 20 * 1024 + 1
-                    )
-                )
-            ).isIntStorageEnding()
-        )
     }
 
     @Test

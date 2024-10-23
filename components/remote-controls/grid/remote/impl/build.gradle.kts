@@ -16,21 +16,25 @@ dependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.infrared.utils)
     implementation(projects.components.infrared.api)
 
+    implementation(projects.components.inappnotification.api)
+
     implementation(projects.components.remoteControls.apiBackend)
+    implementation(projects.components.remoteControls.apiBackendFlipper)
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
-    implementation(projects.components.remoteControls.grid.main.api)
     implementation(projects.components.remoteControls.grid.remote.api)
     implementation(projects.components.remoteControls.setup.api)
     implementation(projects.components.keyedit.api)
 
     implementation(projects.components.rootscreen.api)
+    implementation(projects.components.faphub.errors.api)
 
     // Compose
     implementation(libs.compose.ui)

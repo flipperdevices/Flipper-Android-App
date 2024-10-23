@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_dialog_close">Close dialog</string>
+
+    <string name="core_ui_dialog_flipper_busy_title">Flipper is Busy</string>
+    <string name="core_ui_dialog_flipper_busy_desc">Exit the current app on Flipper to use this feature</string>
+    <string name="core_ui_dialog_flipper_busy_action">Go to Remote Control</string>
+</resources>

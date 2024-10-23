@@ -7,8 +7,6 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.composable.InfraredsScreen
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.InfraredsListViewModel
-import com.flipperdevices.rootscreen.api.LocalRootNavigation
-import com.flipperdevices.rootscreen.model.RootScreenConfig
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
@@ -18,6 +16,7 @@ class InfraredFilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val brandId: Long,
     @Assisted private val onBackClick: () -> Unit,
+    @Assisted private val onRemoteFound: (Long, String) -> Unit,
     private val infraredsListViewModelFactory: InfraredsListViewModel.Factory,
 ) : InfraredsScreenDecomposeComponent(componentContext) {
 
@@ -26,13 +25,12 @@ class InfraredFilesDecomposeComponentImpl @AssistedInject constructor(
         val viewModel = viewModelWithFactory(null) {
             infraredsListViewModelFactory.invoke(brandId)
         }
-        val navigation = LocalRootNavigation.current
         InfraredsScreen(
             viewModel = viewModel,
             onBack = onBackClick,
             onReload = viewModel::tryLoad,
             onClick = {
-                navigation.push(RootScreenConfig.ServerRemoteControl(it.id, it.folderName))
+                onRemoteFound.invoke(it.id, it.folderName)
             },
         )
     }

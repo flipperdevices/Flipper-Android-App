@@ -1,6 +1,5 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
-import android.content.Context
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.model.wrapToRequest
@@ -8,11 +7,11 @@ import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.metric.api.MetricApi
@@ -46,12 +45,12 @@ const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f
 
 class MfKey32ViewModel @Inject constructor(
-    context: Context,
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
     private val metricApi: MetricApi,
     flipperServiceProvider: FlipperServiceProvider,
-    private val flipperStorageApi: FlipperStorageApi
+    private val flipperStorageApi: FlipperStorageApi,
+    storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
     override val TAG = "MfKey32ViewModel"
     private val bruteforceDispatcher = Executors.newFixedThreadPool(
@@ -61,9 +60,9 @@ class MfKey32ViewModel @Inject constructor(
         MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
-    private val existedKeysStorage = ExistedKeysStorage(context, flipperStorageApi)
+    private val existedKeysStorage = ExistedKeysStorage(flipperStorageApi, storageProvider)
     private val fileWithNonce by lazy {
-        FlipperStorageProvider.getTemporaryFile(context)
+        storageProvider.getTemporaryFile().toFile()
     }
     private var stateJob: Job? = null
     private val mutex = Mutex()
@@ -161,9 +160,9 @@ class MfKey32ViewModel @Inject constructor(
                 pathOnFlipper = PATH_NONCE_LOG,
                 fileOnAndroid = fileWithNonce,
                 progressListener = ProgressWrapperTracker(
-                    progressListener = {
-                        info { "Download file progress $it" }
-                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(it))
+                    progressListener = { progress ->
+                        info { "Download file progress $progress" }
+                        mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(progress))
                     },
                     max = 0.99f
                 )

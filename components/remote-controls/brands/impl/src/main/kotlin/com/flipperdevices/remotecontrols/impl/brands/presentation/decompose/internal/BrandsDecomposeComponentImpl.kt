@@ -45,6 +45,8 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
         }
     )
 
+    override val query: StateFlow<String> = queryFeature.query
+
     override fun model(coroutineScope: CoroutineScope): StateFlow<BrandsDecomposeComponent.Model> =
         combine(
             flow = queryFeature.query,
@@ -63,7 +65,7 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
                     }
 
                     is BrandsListViewModel.State.Error -> {
-                        BrandsDecomposeComponent.Model.Error
+                        BrandsDecomposeComponent.Model.Error(pagingState.throwable)
                     }
                 }
             }

@@ -1,28 +1,30 @@
 package com.flipperdevices.bridge.dao.impl.md5
 
-import android.content.Context
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.verbose
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.squareup.anvil.annotations.ContributesBinding
-import java.io.File
+import okio.Path
+import okio.buffer
+import okio.source
+import okio.use
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, MD5FileProvider::class)
 class MD5FileProviderImpl @Inject constructor(
-    context: Context,
     private val fileComparator: FileComparator,
+    private val storageProvider: FlipperStorageProvider
 ) : MD5FileProvider {
-    private val keyFolder: File = FlipperStorageProvider.getKeyFolder(context)
+    private val keyFolder = storageProvider.getKeyFolder()
 
     /**
      * @return list of files with same MD5 signature
      */
-    private fun getSameMd5Files(md5: String): List<File> {
-        return keyFolder.listFiles()
-            ?.filterNotNull()
+    private fun getSameMd5Files(md5: String): List<Path> {
+        return runCatching { storageProvider.fileSystem.list(keyFolder) }
+            .getOrNull()
             ?.filter { file -> file.name.startsWith(md5) }
             .orEmpty()
     }
@@ -32,7 +34,7 @@ class MD5FileProviderImpl @Inject constructor(
      * 4bdb3a2214c898d7463ef3b0d1aeca37_2
      * @return the index of MD5 named file
      */
-    private fun getMd5FileIndex(file: File): Int {
+    private fun getMd5FileIndex(file: Path): Int {
         if (!file.name.contains("_")) return 0
         return file.name.split("_").last().toIntOrNull() ?: 0
     }
@@ -47,16 +49,20 @@ class MD5FileProviderImpl @Inject constructor(
     private suspend fun getSameContentFile(
         contentMd5: String,
         keyContent: FlipperKeyContent
-    ): File? = getSameMd5Files(contentMd5).firstOrNull { sameMD5File ->
-        fileComparator.isSameContent(
-            keyContent.openStream(),
-            sameMD5File.inputStream()
-        )
+    ): Path? = getSameMd5Files(contentMd5).firstOrNull { sameMD5File ->
+        keyContent.openStream().source().buffer().use { keyContentSource ->
+            storageProvider.fileSystem.source(sameMD5File).buffer().use { fileSource ->
+                fileComparator.isSameContent(
+                    keyContentSource,
+                    fileSource
+                )
+            }
+        }
     }
 
-    override suspend fun getPathToFile(contentMd5: String, keyContent: FlipperKeyContent): File {
-        val pathToFile = File(keyFolder, contentMd5)
-        if (!pathToFile.exists()) return pathToFile
+    override suspend fun getPathToFile(contentMd5: String, keyContent: FlipperKeyContent): Path {
+        val pathToFile = keyFolder.resolve(contentMd5)
+        if (!storageProvider.fileSystem.exists(pathToFile)) return pathToFile
 
         val sameContentFile = getSameContentFile(contentMd5, keyContent)
         if (sameContentFile != null) {
@@ -66,6 +72,6 @@ class MD5FileProviderImpl @Inject constructor(
 
         verbose { "Already find file with hash $contentMd5" }
         val index = getMaxMD5FileIndex(contentMd5) + 1
-        return File(keyFolder, contentMd5 + "_$index")
+        return keyFolder.resolve("${contentMd5}_$index")
     }
 }

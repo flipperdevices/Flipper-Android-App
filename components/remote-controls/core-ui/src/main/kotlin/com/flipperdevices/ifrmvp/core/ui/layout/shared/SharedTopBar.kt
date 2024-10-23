@@ -15,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,14 +30,16 @@ import com.flipperdevices.core.ui.res.R as DesignSystem
 @Composable
 fun SharedTopBar(
     onBackClick: () -> Unit,
+    title: @Composable () -> Unit,
+    subtitle: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    title: String = "",
-    subtitle: String = "",
+    background: Color = LocalPalletV2.current.surface.navBar.body.accentBrand,
+    backIconTint: Color = LocalPalletV2.current.icon.blackAndWhite.blackOnColor,
     actions: @Composable BoxScope.() -> Unit = {}
 ) {
     Row(
         modifier = modifier
-            .background(LocalPalletV2.current.surface.navBar.body.accentBrand)
+            .background(background)
             .statusBarsPadding()
             .padding(horizontal = 14.dp, vertical = 16.dp)
             .fillMaxWidth(),
@@ -53,7 +56,7 @@ fun SharedTopBar(
                         .clickableRipple(bounded = false, onClick = onBackClick),
                     painter = painterResource(DesignSystem.drawable.ic_back),
                     contentDescription = null,
-                    tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
+                    tint = backIconTint
                 )
             }
         )
@@ -63,20 +66,9 @@ fun SharedTopBar(
                 .weight(weight = 2f, fill = false)
                 .padding(horizontal = 8.dp)
         ) {
-            Text(
-                text = title,
-                color = LocalPalletV2.current.text.title.blackOnColor,
-                style = LocalTypography.current.titleEB18,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+            title.invoke()
 
-            Text(
-                text = subtitle,
-                color = LocalPalletV2.current.text.title.blackOnColor,
-                style = LocalTypography.current.subtitleM12
-            )
+            subtitle.invoke()
         }
         Box(
             modifier = Modifier.weight(weight = 1f),
@@ -86,6 +78,43 @@ fun SharedTopBar(
             }
         )
     }
+}
+
+@Composable
+fun SharedTopBar(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    background: Color = LocalPalletV2.current.surface.navBar.body.accentBrand,
+    backIconTint: Color = LocalPalletV2.current.icon.blackAndWhite.blackOnColor,
+    textColor: Color = LocalPalletV2.current.text.title.blackOnColor,
+    title: String = "",
+    subtitle: String = "",
+    actions: @Composable BoxScope.() -> Unit = {}
+) {
+    SharedTopBar(
+        onBackClick = onBackClick,
+        actions = actions,
+        modifier = modifier,
+        background = background,
+        backIconTint = backIconTint,
+        title = {
+            Text(
+                text = title,
+                color = textColor,
+                style = LocalTypography.current.titleEB18,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        subtitle = {
+            Text(
+                text = subtitle,
+                color = textColor,
+                style = LocalTypography.current.subtitleM12
+            )
+        }
+    )
 }
 
 @Preview

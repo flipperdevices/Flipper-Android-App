@@ -10,7 +10,8 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.flipperdevices.protobuf.main
 import com.flipperdevices.protobuf.storage.timestampRequest
 import com.squareup.anvil.annotations.ContributesBinding
@@ -20,9 +21,11 @@ import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 interface TimestampSynchronizationChecker {
+    data object TimestampsProgressDetail : DetailedProgressListener.Detail
+
     suspend fun fetchFoldersTimestamp(
         types: Array<FlipperKeyType>,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Map<FlipperKeyType, Long?>
 }
 
@@ -37,13 +40,19 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
 
     override suspend fun fetchFoldersTimestamp(
         types: Array<FlipperKeyType>,
-        progressTracker: ProgressWrapperTracker
+        progressTracker: DetailedProgressWrapperTracker
     ): Map<FlipperKeyType, Long?> {
         if (!flipperVersionApi.isSupported(SUPPORTED_VERSION)) {
             return types.associateWith { null }
         }
 
         val resultCounter = AtomicLong(0)
+
+        progressTracker.report(
+            current = resultCounter.get(),
+            max = types.size.toLong(),
+            detail = TimestampSynchronizationChecker.TimestampsProgressDetail
+        )
 
         val timestampHashes = types.toList().pmap { type ->
             val response = requestApi.request(
@@ -55,7 +64,11 @@ class TimestampSynchronizationCheckerImpl @Inject constructor(
                     }.wrapToRequest()
                 )
             )
-            progressTracker.report(resultCounter.incrementAndGet(), types.size.toLong())
+            progressTracker.report(
+                current = resultCounter.incrementAndGet(),
+                max = types.size.toLong(),
+                detail = TimestampSynchronizationChecker.TimestampsProgressDetail
+            )
             type to response
         }.associate { (type, response) ->
             val timestamp = if (response.hasStorageTimestampResponse()) {

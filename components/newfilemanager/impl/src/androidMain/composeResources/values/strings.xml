@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filemanager_folder_pic_desc">Folder</string>
+    <string name="filemanager_file_pic_desc">File</string>
+    <string name="filemanager_save_action">Save file</string>
+    <string name="filemanager_upload_action">Upload file</string>
+    <string name="filemanager_create_action">Create file or folder</string>
+    <string name="filemanager_empty_folder">Empty folder</string>
+    <string name="receive_dialog_title">Upload file %1$s</string>
+    <string name="share_dialog_title">Download file %1$s</string>
+    <string name="share_picker_title">Share key %1$s</string>
+    <string name="share_dialog_progress_text">%1$s out of %2$s with speed: %3$s</string>
+    <string name="share_dialog_progress_infinite_text">%1$s with speed: %2$s</string>
+    <string name="share_dialog_btn_ok">OK</string>
+    <string name="share_dialog_btn_close">Cancel</string>
+    <string name="filemanager_editor_loading_title">Uploading a file to your phone for editing (%1$s)</string>
+    <string name="filemanager_editor_saving_title">Uploading a file to the flipper (%1$s)</string>
+    <string name="filemanager_editor_warning">The file is larger than 1MB and therefore only part of the file is shown. The content will be overwritten when you save it!</string>
+    <string name="filemanager_open_dialog_edit">Edit</string>
+    <string name="filemanager_open_dialog_download">Download &amp; Share</string>
+    <string name="filemanager_open_dialog_delete">Delete</string>
+    <string name="filemanager_add_dialog_file">Create file</string>
+    <string name="filemanager_add_dialog_folder">Create folder</string>
+    <string name="filemanager_error">There should be a description of the error here, but we haven\'t added it yet</string>
+    <string name="filemanager_error_title">Error</string>
+    <string name="add_dialog_title_file">Enter file name</string>
+    <string name="add_dialog_title_folder">Enter folder name</string>
+    <string name="add_dialog_error_empty">The file name cannot be empty</string>
+    <string name="add_dialog_error_too_long">The file name too long</string>
+    <string name="add_dialog_error_wrong_character">The file name can only contain numbers, characters of the Latin alphabet and the following characters: !#$%&amp;\'()-@^_`{}~</string>
+
+</resources>

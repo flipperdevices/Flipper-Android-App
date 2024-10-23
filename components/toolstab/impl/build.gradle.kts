@@ -17,6 +17,8 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.decompose)
 
+    implementation(projects.components.analytics.metric.api)
+
     implementation(libs.appcompat)
 
     implementation(projects.components.nfc.mfkey32.api)
@@ -24,6 +26,7 @@ dependencies {
     implementation(projects.components.bottombar.api)
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.info.shared)
+    implementation(projects.components.remoteControls.main.api)
 
     // Compose
     implementation(libs.compose.ui)

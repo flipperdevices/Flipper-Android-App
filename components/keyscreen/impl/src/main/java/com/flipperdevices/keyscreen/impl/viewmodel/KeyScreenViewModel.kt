@@ -14,13 +14,20 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("LongParameterList")
 class KeyScreenViewModel @AssistedInject constructor(
-    @Assisted val keyPath: FlipperKeyPath, // For get value to bottom sheet
+    @Assisted val paramKeyPath: FlipperKeyPath, // For get value to bottom sheet
     keyStateHelperApi: KeyStateHelperApi.Builder,
     private val metricApi: MetricApi
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyScreenViewModel"
 
-    private val keyStateHelper = keyStateHelperApi.build(keyPath, viewModelScope)
+    private val keyStateHelper = keyStateHelperApi.build(paramKeyPath, viewModelScope)
+
+    fun getKeyPath(): FlipperKeyPath {
+        return (keyStateHelper.getKeyScreenState().value as? KeyScreenState.Ready)
+            ?.flipperKey
+            ?.getKeyPath()
+            ?: paramKeyPath
+    }
 
     fun getKeyScreenState(): StateFlow<KeyScreenState> = keyStateHelper.getKeyScreenState()
 

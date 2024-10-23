@@ -26,8 +26,13 @@ dependencies {
     implementation(projects.components.bottombar.api)
     implementation(projects.components.rootscreen.api)
 
+    implementation(projects.components.remoteControls.main.api)
+    implementation(projects.components.remoteControls.grid.saved.api)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.api)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

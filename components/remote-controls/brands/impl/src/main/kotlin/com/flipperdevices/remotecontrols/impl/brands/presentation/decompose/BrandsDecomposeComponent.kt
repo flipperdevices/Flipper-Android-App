@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.brands.presentation.decompose
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.util.charSection
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
@@ -11,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 interface BrandsDecomposeComponent {
+    val query: StateFlow<String>
+
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onQueryChanged(query: String)
@@ -27,15 +30,17 @@ interface BrandsDecomposeComponent {
 
     sealed interface Model {
         data object Loading : Model
-        data object Error : Model
+        data class Error(val throwable: FapHubError) : Model
         class Loaded(
             val brands: ImmutableList<BrandModel>,
             val query: String
         ) : Model {
             private val groupedBrands by lazy {
-                brands.groupBy { brandModel ->
-                    brandModel.charSection()
-                }.toList().sortedBy { it.first }
+                brands
+                    .filter { it.name.contains(query, ignoreCase = true) }
+                    .groupBy { brandModel -> brandModel.charSection() }
+                    .toList()
+                    .sortedBy { it.first }
             }
 
             val sortedBrands by lazy {

@@ -14,7 +14,6 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
-import com.flipperdevices.core.preference.pb.SelectedTheme
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -25,13 +24,12 @@ import com.flipperdevices.keyscreen.impl.viewmodel.KeyScreenViewModel
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
+import com.flipperdevices.ui.decompose.statusbar.ThemeStatusBarIconStyleProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 
 @Suppress("LongParameterList")
 class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
@@ -43,10 +41,11 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     private val shareBottomApi: ShareBottomUIApi,
     private val synchronizationUiApi: SynchronizationUiApi,
     private val keyEmulateApi: KeyEmulateApi,
-    private val dataStore: DataStore<Settings>
+    dataStore: DataStore<Settings>
 ) : ScreenDecomposeComponent(componentContext) {
     private val isBackPressHandledFlow = MutableStateFlow(false)
     private val backCallback = BackCallback(false) { isBackPressHandledFlow.update { true } }
+    private val themeStatusBarIconStyleProvider = ThemeStatusBarIconStyleProvider(dataStore)
 
     init {
         backHandler.register(backCallback)
@@ -59,7 +58,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
             keyScreenViewModelFactory(keyPath)
         }
         shareBottomApi.ComposableShareBottomSheet(
-            flipperKeyPath = viewModel.keyPath,
+            provideFlipperKeyPath = viewModel::getKeyPath,
             onSheetStateVisible = { isShown, onClose ->
                 val isBackPressHandled by isBackPressHandledFlow.collectAsState()
                 backCallback.isEnabled = isShown
@@ -96,14 +95,7 @@ class KeyScreenViewDecomposeComponentImpl @AssistedInject constructor(
     }
 
     override fun isStatusBarIconLight(systemIsDark: Boolean): Boolean {
-        val settings = runBlocking { dataStore.data.first() }
-        return when (settings.selected_theme) {
-            SelectedTheme.SYSTEM,
-            is SelectedTheme.Unrecognized -> systemIsDark
-
-            SelectedTheme.DARK -> true
-            SelectedTheme.LIGHT -> false
-        }
+        return themeStatusBarIconStyleProvider.isStatusBarIconLight(systemIsDark)
     }
 
     @AssistedFactory

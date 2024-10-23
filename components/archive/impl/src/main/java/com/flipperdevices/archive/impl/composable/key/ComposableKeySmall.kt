@@ -20,8 +20,8 @@ import com.flipperdevices.core.ui.theme.LocalTypography
 fun ComposableKeySmall(
     keyPath: FlipperKeyPath,
     synchronizationContent: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
-    onOpenKey: () -> Unit
+    onOpenKey: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.padding(horizontal = 7.dp, vertical = 6.dp)

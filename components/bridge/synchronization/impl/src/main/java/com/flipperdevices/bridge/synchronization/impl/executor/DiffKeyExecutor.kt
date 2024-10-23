@@ -9,16 +9,21 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.progress.ProgressWrapperTracker
+import com.flipperdevices.core.progress.DetailedProgressListener
+import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 interface DiffKeyExecutor {
+    data class DiffProgressDetail(
+        val fileName: String
+    ) : DetailedProgressListener.Detail
+
     suspend fun executeBatch(
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyDiff>
 }
 
@@ -36,7 +41,7 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
         source: AbstractKeyStorage,
         target: AbstractKeyStorage,
         diffs: List<KeyDiff>,
-        tracker: ProgressWrapperTracker
+        tracker: DetailedProgressWrapperTracker
     ): List<KeyDiff> {
         return diffs.sortedWith(
             compareBy(
@@ -46,8 +51,13 @@ class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvide
         ).mapIndexedNotNull { index, diff ->
             try {
                 info { "Execute $diff for $source to $target" }
+
+                tracker.report(
+                    index.toLong(),
+                    diffs.size.toLong(),
+                    DiffKeyExecutor.DiffProgressDetail(diff.newHash.keyPath.nameWithExtension)
+                )
                 execute(source, target, diff)
-                tracker.report(index.toLong(), diffs.size.toLong())
                 return@mapIndexedNotNull diff
             } catch (executeError: Exception) {
                 error(executeError) { "While apply diff $diff we have error" }

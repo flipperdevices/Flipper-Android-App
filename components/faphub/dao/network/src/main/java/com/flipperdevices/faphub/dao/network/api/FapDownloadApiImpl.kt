@@ -1,10 +1,9 @@
 package com.flipperdevices.faphub.dao.network.api
 
-import android.content.Context
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.core.preference.FlipperStorageProvider
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
@@ -15,15 +14,15 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.contentLength
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.core.isEmpty
-import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.readRemaining
+import kotlinx.io.readByteArray
 import java.io.File
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FapDownloadApi::class)
 class FapDownloadApiImpl @Inject constructor(
     private val bundleApi: FapNetworkBundleApi,
-    private val context: Context
+    private val storageProvider: FlipperStorageProvider
 ) : FapDownloadApi, LogTagProvider {
     override val TAG = "FapDownloadApi"
 
@@ -34,7 +33,7 @@ class FapDownloadApiImpl @Inject constructor(
     ): File {
         info { "Start download bundle for $versionUid and $target" }
 
-        val file = FlipperStorageProvider.getTemporaryFile(context)
+        val file = storageProvider.getTemporaryFile().toFile()
 
         bundleApi
             .downloadBundle(versionUid, target.target, target.sdk.toString())
@@ -56,11 +55,11 @@ private suspend fun HttpResponse.saveToFile(
     val totalBytes = contentLength()
     while (!channel.isClosedForRead) {
         val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
-        while (!packet.isEmpty) {
-            val bytes = packet.readBytes()
+        while (!packet.exhausted()) {
+            val bytes = packet.readByteArray()
             file.appendBytes(bytes)
             if (totalBytes != null && totalBytes > 0) {
-                listener?.report(file.length(), totalBytes)
+                listener?.onProgress(file.length(), totalBytes)
             }
         }
     }

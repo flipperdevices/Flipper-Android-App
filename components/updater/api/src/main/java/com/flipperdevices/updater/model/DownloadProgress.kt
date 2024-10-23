@@ -5,8 +5,8 @@ sealed class DownloadProgress {
 
     data class InProgress(
         val processedBytes: Long,
-        val totalBytes: Long
+        val totalBytes: Long?
     ) : DownloadProgress()
 
-    object Finished : DownloadProgress()
+    data object Finished : DownloadProgress()
 }

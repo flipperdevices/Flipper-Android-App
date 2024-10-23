@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mfkey32_title">Mfkey32 (Detect Reader)</string>
+    <string name="mfkey32_title">Mfkey32 (Extract MF Keys)</string>
     <string name="mfkey32_error_title">The file for bruteforce was not found. Perform reader attack on the flipper first</string>
     <string name="mfkey32_downloading_title">Calculation Started…</string>
     <string name="mfkey32_downloading_desc">Downloading raw file from Flipper…</string>
@@ -23,17 +23,17 @@
 
     <string name="mfkey32_not_found_title">Reader Data Not Found</string>
     <string name="mfkey32_not_found_desc">To extract keys from the reader, collect nonces with your Flipper Zero first:</string>
-    <string name="mfkey32_not_found_md_1">1. On your Flipper Zero, go to **NFC → Detect Reader**</string>
+    <string name="mfkey32_not_found_md_1">1. On your Flipper Zero, go to **NFC → Extract MF Keys**</string>
     <string name="mfkey32_not_found_md_2">2. Hold Flipper Zero close to the reader</string>
     <string name="mfkey32_not_found_md_3">3. Wait until you collect enough nonсes</string>
     <string name="mfkey32_not_found_md_4">4. Сomplete nonce collection</string>
-    <string name="mfkey32_not_found_md_5">5. In Flipper Mobile App, synchronize with your Flipper Zero and run the **Mfkey32 (Detect Reader)**</string>
+    <string name="mfkey32_not_found_md_5">5. In Flipper Mobile App, synchronize with your Flipper Zero and run the **Mfkey32 (Extract MF Keys)**</string>
 
     <string name="mfkey32_error_connect_title">Flipper Not Connected</string>
     <string name="mfkey32_error_connect_desc_1">1. Check Bluetooth connection with Flipper</string>
     <string name="mfkey32_error_connect_desc_2">2. Make sure Flipper is Turned on</string>
     <string name="mfkey32_error_connect_desc_3">3. If Flipper doesn’t respond, reboot it and connect to the app via Bluetooth</string>
-    <string name="mfkey32_error_connect_desc_4">4. Restart **Mfkey32 (Detect Reader)**</string>
+    <string name="mfkey32_error_connect_desc_4">4. Restart **Mfkey32 (Extract MF Keys)**</string>
     <string name="mfkey32_error_readwrite_title">SD Card is Full or Not Accessible</string>
     <string name="mfkey32_error_readwrite_desc">Unable to save keys. The SD Card is not accessible or there is not enough space</string>
 

@@ -3,4 +3,6 @@
     <string name="brands_title">Select Brand</string>
     <string name="infrareds_title">Select File</string>
     <string name="brands_subtitle">Add remote</string>
+    <string name="rcb_search_hint">Brand name</string>
+    <string name="rcb_step_2">Step 2 of 3</string>
 </resources>

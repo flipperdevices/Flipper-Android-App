@@ -82,7 +82,7 @@ private fun LoadedContentPreview() {
                     )
                 )
             ),
-            onButtonClick = { _, _ -> },
+            onButtonClick = { _, _, _ -> },
             onReload = {},
             emulatedKeyIdentifier = null,
             isSyncing = false,
