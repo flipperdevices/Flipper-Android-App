@@ -18,8 +18,11 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
+        isOneTime: Boolean = true,
         onDispatched: () -> Unit = {}
     )
+
+    fun stopEmulate()
 
     fun reset()
 
@@ -28,6 +31,7 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
      */
     fun dispatch(
         identifier: IfrKeyIdentifier,
+        isOneTime: Boolean = true,
         remotes: List<InfraredRemote>,
         ffPath: FlipperFilePath,
         onDispatched: () -> Unit = {}

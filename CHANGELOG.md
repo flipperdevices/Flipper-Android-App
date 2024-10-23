@@ -23,6 +23,8 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] Add vibration off switch
 - [Feature] New File Manager listing and uploading
 - [Feature] New File Manager search
+- [Feature] Add illustrations, search, hold to dispatch into RemoteControls
+- [Feature] Add metrics to infrared remotes
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
@@ -34,6 +36,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Refactor] Add `core:atomicfile`
 - [Refactor] Migrate filemanager to new ble api
 - [Refactor] Migrate more core:ui modules into multiplatform
+- [FIX] Small UI fixes for mfkey32 feature
 - [Refactor] Migrate filemengr modules into MPP
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
@@ -59,6 +62,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Replace /any/ to /ext/, because /any/ is deprecated
 - [FIX] Remove share from remote controls
 - [FIX] Remove "RPC" argument from screen streaming request
+- [FIX] Fix remote-controls duplication ir files
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules

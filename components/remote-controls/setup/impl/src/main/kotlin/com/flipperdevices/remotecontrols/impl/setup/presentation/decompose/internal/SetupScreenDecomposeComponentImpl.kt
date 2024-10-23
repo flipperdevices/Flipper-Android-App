@@ -19,7 +19,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: SetupScreenDecomposeComponent.Param,
     @Assisted onBack: () -> Unit,
-    @Assisted onIrFileReady: (id: Long) -> Unit,
+    @Assisted onIrFileReady: (id: Long, name: String) -> Unit,
     setupComponentFactory: SetupComponent.Factory,
     flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
     private val errorsRenderer: FapHubComposableErrorsRenderer,

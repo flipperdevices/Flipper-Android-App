@@ -4,6 +4,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="skip">Skip</string>
+    <string name="rcs_skip_this_button">Skip This Button</string>
     <string name="not_found_signal">Not found signal for your preferences</string>
     <string name="point_flipper">Point your Flipper Zero at the device and tap the button above</string>
     <string name="setup_title">Set Up Remote</string>
@@ -14,4 +15,9 @@
     <string name="remotecontrols_dialog_not_supported_flipper_title">Flipper Firmware Not Supported</string>
     <string name="remotecontrols_dialog_not_supported_flipper_desc">This feature requires the latest Flipper firmware version</string>
     <string name="remotecontrols_dialog_not_supported_flipper_btn">Go to Firmware Update</string>
+    <string name="rcs_step_3">Step 3 of 3</string>
+    <string name="rcs_notification_found_title">Remote Found</string>
+    <string name="rcs_notification_found_desc">This remote should match your device</string>
+    <string name="rcs_image_tutorial_title">Let\'s test some buttons to find the right remote:</string>
+    <string name="rcs_image_tutorial_desc">1. Point your Flipper Zero at the device.\n2. Tap the button below.</string>
 </resources>

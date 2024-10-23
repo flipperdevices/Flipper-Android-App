@@ -105,7 +105,7 @@ fun OrangeAppBarWithIcon(
                     .clickableRipple(onClick = onEndClick),
                 painter = endIconPainter,
                 contentDescription = null,
-                tint = LocalPalletV2.current.icon.blackAndWhite.default
+                tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
             )
         }
     )

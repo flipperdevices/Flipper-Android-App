@@ -26,7 +26,6 @@ dependencies {
 
     implementation(projects.components.remoteControls.coreModel)
     implementation(projects.components.remoteControls.coreUi)
-    implementation(projects.components.remoteControls.grid.main.api)
     implementation(projects.components.remoteControls.grid.saved.api)
     implementation(projects.components.remoteControls.setup.api)
 

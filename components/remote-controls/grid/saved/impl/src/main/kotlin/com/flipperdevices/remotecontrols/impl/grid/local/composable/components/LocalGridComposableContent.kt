@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.grid.local.composable.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonClickEvent
 import com.flipperdevices.ifrmvp.core.ui.layout.shared.GridPagesContent
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
@@ -48,8 +50,21 @@ internal fun LocalGridComposableContent(
                 )
                 GridPagesContent(
                     pagesLayout = animatedModel.pagesLayout,
-                    onButtonClick = { _, keyIdentifier ->
-                        localGridComponent.onButtonClick(keyIdentifier)
+                    onButtonClick = { _, clickType, keyIdentifier ->
+                        Log.d("MAKEEVRSERG", "clickType: $clickType")
+                        when (clickType) {
+                            ButtonClickEvent.SINGLE_CLICK -> {
+                                localGridComponent.onButtonClick(keyIdentifier)
+                            }
+
+                            ButtonClickEvent.HOLD -> {
+                                localGridComponent.onButtonLongClick(keyIdentifier)
+                            }
+
+                            ButtonClickEvent.RELEASE -> {
+                                localGridComponent.onButtonRelease()
+                            }
+                        }
                     },
                     emulatedKeyIdentifier = animatedModel.emulatedKey,
                     isSyncing = animatedModel.isSynchronizing,

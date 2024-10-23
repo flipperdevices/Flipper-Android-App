@@ -1,6 +1,7 @@
 package com.flipperdevices.remotecontrols.impl.api.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -26,5 +27,16 @@ sealed interface RemoteControlsNavigationConfig {
         val brandId: Long,
         val categoryName: String,
         val brandName: String
+    ) : RemoteControlsNavigationConfig
+
+    @Serializable
+    data class ServerRemoteControl(
+        val infraredFileId: Long,
+        val remoteName: String
+    ) : RemoteControlsNavigationConfig
+
+    @Serializable
+    data class Rename(
+        val notSavedFlipperKey: NotSavedFlipperKey
     ) : RemoteControlsNavigationConfig
 }

@@ -9,8 +9,7 @@ import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
-import com.flipperdevices.remotecontrols.api.model.ServerRemoteControlParam
-import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.RemoteGridViewModel.State
+import com.flipperdevices.remotecontrols.grid.remote.api.model.ServerRemoteControlParam
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +21,8 @@ interface RemoteGridComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
 
     fun onButtonClick(identifier: IfrKeyIdentifier)
+    fun onButtonLongClick(identifier: IfrKeyIdentifier)
+    fun onButtonRelease()
     fun tryLoad()
 
     fun pop()

@@ -17,7 +17,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -98,7 +97,7 @@ private fun NotificationIcon(state: InfraredEmulateState) {
         InfraredEmulateState.UPDATE_FLIPPER,
         InfraredEmulateState.ALL_GOOD -> {
             Icon(
-                painter = painterResource(R.drawable.ic_synced),
+                painter = painterResource(R.drawable.ic_remote_synced),
                 contentDescription = null,
                 modifier = Modifier.size(12.dp),
                 tint = LocalPalletV2.current.text.link.default
