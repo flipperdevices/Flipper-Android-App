@@ -4,7 +4,7 @@ import android.app.Application
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.wearable.di.DaggerAppComponent
+import com.flipperdevices.wearable.di.DaggerMergedAppComponent
 import com.flipperdevices.wearable.di.WearableComponent
 import timber.log.Timber
 
@@ -14,7 +14,7 @@ class FlipperApplication : Application() {
 
         CurrentActivityHolder.register(this)
 
-        val appComponent = DaggerAppComponent.factory()
+        val appComponent = DaggerMergedAppComponent.factory()
             .create(
                 context = this,
                 application = this,

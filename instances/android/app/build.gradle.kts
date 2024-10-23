@@ -6,8 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.kapt")
-    id("kotlin-kapt")
+    id("flipper.anvil.entrypoint")
     alias(libs.plugins.google.gms)
     alias(libs.plugins.baselineprofile)
 }
@@ -277,7 +276,7 @@ dependencies {
     implementation(libs.ktx.activity)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
 

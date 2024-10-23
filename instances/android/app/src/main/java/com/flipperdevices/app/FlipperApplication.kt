@@ -4,7 +4,7 @@ import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.decode.SvgDecoder
-import com.flipperdevices.app.di.DaggerAppComponent
+import com.flipperdevices.app.di.DaggerMergedAppComponent
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
@@ -28,7 +28,7 @@ class FlipperApplication : Application(), ImageLoaderFactory, LogTagProvider {
 
         CurrentActivityHolder.register(this)
 
-        val appComponent = DaggerAppComponent.factory()
+        val appComponent = DaggerMergedAppComponent.factory()
             .create(
                 context = this,
                 application = this,
