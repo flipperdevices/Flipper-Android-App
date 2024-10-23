@@ -6,7 +6,7 @@ plugins {
 }
 android.namespace = "com.flipperdevices.filemanager.search.impl"
 
-androidDependencies {
+commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -19,11 +19,6 @@ androidDependencies {
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.searchbar)
-
-    implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.transport.common.api)
@@ -58,10 +53,4 @@ androidDependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.okio)
     implementation(libs.kotlin.immutable.collections)
-}
-
-androidUnitTestDependencies {
-    implementation(projects.components.core.test)
-    implementation(libs.junit)
-    implementation(libs.ktx.testing)
 }

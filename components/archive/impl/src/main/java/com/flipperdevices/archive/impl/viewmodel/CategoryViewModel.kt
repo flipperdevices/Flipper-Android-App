@@ -7,7 +7,7 @@ import com.flipperdevices.archive.model.CategoryType
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.dao.api.model.icon
+import com.flipperdevices.bridge.dao.api.model.iconId
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import java.util.TreeMap
 import javax.inject.Inject
 
@@ -32,7 +31,7 @@ class CategoryViewModel @Inject constructor(
 
     private val categoriesMapFlow = MutableStateFlow<Map<FlipperKeyType, CategoryItem>>(
         FlipperKeyType.entries.map {
-            it to CategoryItem(it.icon, it.humanReadableName, null, CategoryType.ByFileType(it))
+            it to CategoryItem(it.iconId, it.humanReadableName, null, CategoryType.ByFileType(it))
         }.toMap(TreeMap())
     )
     private val categoriesFlow = MutableStateFlow<PersistentList<CategoryItem>>(persistentListOf())
@@ -70,7 +69,7 @@ class CategoryViewModel @Inject constructor(
                 categoriesMapFlow.update {
                     val mutableMap = TreeMap(it)
                     mutableMap[fileType] = CategoryItem(
-                        fileType.icon,
+                        fileType.iconId,
                         fileType.humanReadableName,
                         keys.size,
                         categoryType = CategoryType.ByFileType(fileType)

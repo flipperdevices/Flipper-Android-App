@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.RemoteViews
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.dao.api.model.icon
+import com.flipperdevices.bridge.dao.api.model.iconId
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.widget.impl.R
@@ -25,7 +25,7 @@ class PendingWidgetStateRenderer @Inject constructor(
 
     override fun render(widgetId: Int, flipperKeyPath: FlipperKeyPath?): RemoteViews? {
         val keyPath = flipperKeyPath ?: return null
-        val iconId = keyPath.path.keyType?.icon
+        val iconId = keyPath.path.keyType?.iconId
             ?: DesignSystem.drawable.ic_fileformat_unknown
         val layoutId = when (flipperKeyPath.path.keyType) {
             FlipperKeyType.SUB_GHZ -> R.layout.widget_layout_send

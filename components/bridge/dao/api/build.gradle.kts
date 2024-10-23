@@ -14,13 +14,10 @@ compose.resources {
 commonDependencies {
     implementation(projects.components.core.kmpparcelize)
     implementation(projects.components.core.ui.theme)
+    implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ktx)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)
-}
-
-androidDependencies {
-    implementation(projects.components.core.ui.res)
 }
