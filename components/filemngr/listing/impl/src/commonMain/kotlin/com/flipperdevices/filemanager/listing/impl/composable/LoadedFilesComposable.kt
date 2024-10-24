@@ -30,6 +30,7 @@ fun LazyGridScope.LoadedFilesComposable(
     orientation: FileManagerOrientation,
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
+    onEditFileClick: (Path) -> Unit,
     onCheckToggle: (PathWithType) -> Unit,
     onDelete: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit
@@ -70,8 +71,16 @@ fun LazyGridScope.LoadedFilesComposable(
                         else -> ItemUiSelectionState.NONE
                     },
                     onClick = {
-                        if (file.fileType == FileType.DIR) {
-                            onPathChanged.invoke(path / file.fileName)
+                        when (file.fileType) {
+                            FileType.DIR -> {
+                                onPathChanged.invoke(filePathWithType.fullPath)
+                            }
+
+                            FileType.FILE -> {
+                                onEditFileClick(filePathWithType.fullPath)
+                            }
+
+                            null -> Unit
                         }
                     },
                     onCheckChange = {

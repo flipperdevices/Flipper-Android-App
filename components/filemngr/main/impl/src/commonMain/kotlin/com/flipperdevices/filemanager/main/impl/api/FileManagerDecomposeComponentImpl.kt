@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.filemanager.editor.api.FileManagerEditorDecomposeComponent
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfig
@@ -27,6 +28,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     private val filesDecomposeComponentFactory: FilesDecomposeComponent.Factory,
     private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
     private val searchDecomposeComponentFactory: SearchDecomposeComponent.Factory,
+    private val editorDecomposeComponentFactory: FileManagerEditorDecomposeComponent.Factory,
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
     ComponentContext by componentContext {
 
@@ -47,7 +49,12 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 path = config.path,
                 onBack = { navigation.popOr(onBack::invoke) },
-                onPathChanged = { navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it)) },
+                pathChangedCallback = {
+                    navigation.replaceCurrent(FileManagerNavigationConfig.FileTree(it))
+                },
+                fileSelectedCallback = {
+                    navigation.pushNew(FileManagerNavigationConfig.Edit(it))
+                },
                 uploadCallback = { navigation.pushNew(FileManagerNavigationConfig.Upload(config.path)) },
                 searchCallback = { navigation.pushNew(FileManagerNavigationConfig.Search(config.path)) },
             )
@@ -67,6 +74,14 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 path = config.path,
                 onBack = navigation::pop,
                 onFolderSelect = { navigation.replaceAll(FileManagerNavigationConfig.FileTree(it)) }
+            )
+        }
+
+        is FileManagerNavigationConfig.Edit -> {
+            editorDecomposeComponentFactory.invoke(
+                componentContext = componentContext,
+                path = config.path,
+                onBack = { navigation.popOr(onBack::invoke) },
             )
         }
     }

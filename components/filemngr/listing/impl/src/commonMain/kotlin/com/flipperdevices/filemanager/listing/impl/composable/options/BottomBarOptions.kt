@@ -46,6 +46,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
+import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
 
 @Composable
 private fun MoreBottomBarOptions(
