@@ -12,10 +12,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent.State
 import com.flipperdevices.filemanager.upload.impl.deeplink.DeeplinkContentProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,7 +48,7 @@ class UploadViewModel @Inject constructor(
     private val _state = MutableStateFlow<State>(State.Pending)
     val state = _state.asStateFlow()
 
-    val speedState = featureProvider.get<FSpeedFeatureApi>()
+    val speedState: Flow<Long> = featureProvider.get<FSpeedFeatureApi>()
         .stateIn(viewModelScope, SharingStarted.Eagerly, FFeatureStatus.Retrieving)
         .filterIsInstance<FFeatureStatus.Supported<FSpeedFeatureApi>>()
         .map { it.featureApi }
@@ -207,19 +210,5 @@ class UploadViewModel @Inject constructor(
                     lastJob?.join()
                 }
             }.launchIn(viewModelScope)
-    }
-
-    sealed interface State {
-        data object Pending : State
-        data object Error : State
-        data object Uploaded : State
-        data object Cancelled : State
-        data class Uploading(
-            val fileIndex: Int,
-            val totalFiles: Int,
-            val uploadedFileSize: Long,
-            val uploadFileTotalSize: Long,
-            val fileName: String
-        ) : State
     }
 }

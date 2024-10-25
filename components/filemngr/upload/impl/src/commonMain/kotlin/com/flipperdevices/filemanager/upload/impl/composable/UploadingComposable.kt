@@ -22,10 +22,11 @@ import flipperapp.components.filemngr.upload.impl.generated.resources.fm_cancel
 import flipperapp.components.filemngr.upload.impl.generated.resources.fm_uploading
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.upload.impl.generated.resources.Res as FUR
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 
 @Composable
 fun UploadingComposable(
-    state: UploadViewModel.State.Uploading,
+    state: UploaderDecomposeComponent.State.Uploading,
     speed: Long?,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
