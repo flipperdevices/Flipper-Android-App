@@ -108,7 +108,7 @@ private fun Project.suppressOptIn() {
                     "kotlin.time.ExperimentalTime",
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",
-                    "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
+                    "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
                     "androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }

@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.protobuf.gradle)
     implementation(libs.grgit.gradle)
     implementation(libs.kotlin.ksp.gradle)
-    implementation(libs.square.anvil.gradle)
+    implementation(libs.zacsweers.anvil.gradle)
     implementation(libs.compose.multiplatform.gradle)
     implementation(libs.compose.gradle)
     implementation(libs.kotlin.jvm.gradle)

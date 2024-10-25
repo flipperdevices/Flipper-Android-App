@@ -6,7 +6,7 @@ kotlin-datetime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "2.0.21-1.0.25" # https://github.com/google/ksp/releases
 anvil = "0.3.3" # https://github.com/ZacSweers/anvil/releases
-anvil-utils = "0.2.1-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
+anvil-utils = "0.3.0-beta01" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.7.0" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "4.28.2" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.4" # https://github.com/google/protobuf-gradle-plugin/releases
@@ -190,11 +190,11 @@ anvil-utils-annotations = { module = "me.gulya.anvil:annotations", version.ref =
 anvil-utils-compiler = { module = "me.gulya.anvil:compiler", version.ref = "anvil-utils" }
 
 # Dependency Injection - Anvil
-square-anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
-square-anvil-compiler-api = { module = "dev.zacsweers.anvil:compiler-api", version.ref = "anvil" }
-square-anvil-compiler-core = { module = "dev.zacsweers.anvil:compiler", version.ref = "anvil" }
-square-anvil-compiler-utils = { module = "dev.zacsweers.anvil:compiler-utils", version.ref = "anvil" }
-square-anvil-gradle = { module = "dev.zacsweers.anvil:gradle-plugin", version.ref = "anvil" }
+zacsweers-anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
+zacsweers-anvil-compiler-api = { module = "dev.zacsweers.anvil:compiler-api", version.ref = "anvil" }
+zacsweers-anvil-compiler-core = { module = "dev.zacsweers.anvil:compiler", version.ref = "anvil" }
+zacsweers-anvil-compiler-utils = { module = "dev.zacsweers.anvil:compiler-utils", version.ref = "anvil" }
+zacsweers-anvil-gradle = { module = "dev.zacsweers.anvil:gradle-plugin", version.ref = "anvil" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -301,7 +301,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-ge
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle" }
-square-anvil = { id = "dev.zacsweers.anvil", version.ref = "anvil" }
+zacsweers-anvil = { id = "dev.zacsweers.anvil", version.ref = "anvil" }
 google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-general" }

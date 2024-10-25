@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
-
 plugins {
     id("flipper.multiplatform")
     id("com.squareup.anvil")
@@ -21,7 +19,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(libs.dagger)
-            implementation(libs.square.anvil.annotations)
+            implementation(libs.zacsweers.anvil.annotations)
             implementation(libs.anvil.utils.annotations)
         }
     }

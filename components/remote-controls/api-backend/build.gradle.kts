@@ -14,7 +14,7 @@ commonDependencies {
     implementation(projects.components.remoteControls.coreModel)
 
     implementation(libs.dagger)
-    implementation(libs.square.anvil.annotations)
+    implementation(libs.zacsweers.anvil.annotations)
     implementation(libs.ktor.client)
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
