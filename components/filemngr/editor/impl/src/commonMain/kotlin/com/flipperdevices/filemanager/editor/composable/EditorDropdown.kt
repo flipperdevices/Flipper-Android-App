@@ -42,7 +42,7 @@ internal fun EditorDropdown(
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
         )
         DropdownMenu(
-            modifier = modifier,
+            modifier = Modifier,
             expanded = isDropdownVisible,
             onDismissRequest = { isDropdownVisible = !isDropdownVisible },
         ) {

@@ -34,6 +34,7 @@ commonDependencies {
 
     implementation(projects.components.filemngr.uiComponents)
     implementation(projects.components.filemngr.editor.api)
+    implementation(projects.components.filemngr.upload.api)
     implementation(projects.components.filemngr.main.api)
 
     // Compose
@@ -56,7 +57,6 @@ commonDependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.okio)
     implementation(libs.kotlin.immutable.collections)
-
 }
 
 commonTestDependencies {

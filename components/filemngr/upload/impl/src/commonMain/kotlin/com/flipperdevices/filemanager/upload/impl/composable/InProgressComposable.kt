@@ -14,17 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.ui.ktx.elements.FlipperProgressIndicator
-import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.upload.impl.R as FUR
+import flipperapp.components.filemngr.upload.impl.generated.resources.fm_in_progress_file_size
+import flipperapp.components.filemngr.upload.impl.generated.resources.fm_in_progress_speed
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.upload.impl.generated.resources.Res as FUR
 
 @Composable
 internal fun InProgressComposable(
@@ -54,11 +54,10 @@ internal fun InProgressComposable(
             modifier = Modifier.padding(horizontal = 32.dp),
             accentColor = LocalPalletV2.current.action.blue.border.primary.default,
             secondColor = LocalPallet.current.actionOnFlipperProgress,
-            iconId = null,
+            painter = null,
             percent = animatedProgress
         )
         Spacer(Modifier.height(8.dp))
-
         Text(
             text = stringResource(
                 FUR.string.fm_in_progress_file_size,
@@ -83,18 +82,5 @@ internal fun InProgressComposable(
                 textAlign = TextAlign.Center
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun InProgressComposablePreview() {
-    FlipperThemeInternal {
-        InProgressComposable(
-            fileName = "file_name.txt",
-            uploadedFileSize = 1234L,
-            uploadFileTotalSize = 1234567L,
-            speed = 1222L
-        )
     }
 }

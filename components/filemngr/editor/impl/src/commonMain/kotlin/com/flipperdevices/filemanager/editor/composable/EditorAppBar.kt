@@ -1,7 +1,6 @@
 package com.flipperdevices.filemanager.editor.composable
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
@@ -11,7 +10,6 @@ import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.filemanager.editor.model.EditorEncodingEnum
 import okio.Path
-
 
 @Composable
 internal fun EditorAppBar(
@@ -56,4 +54,3 @@ internal fun EditorAppBar(
         }
     )
 }
-

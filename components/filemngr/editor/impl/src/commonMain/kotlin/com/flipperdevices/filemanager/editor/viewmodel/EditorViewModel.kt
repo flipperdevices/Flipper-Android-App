@@ -3,9 +3,7 @@ package com.flipperdevices.filemanager.editor.viewmodel
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
-import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
-import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.ktx.jre.limit
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -22,12 +20,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
 import okio.buffer
 import okio.use
-
 
 class EditorViewModel @AssistedInject constructor(
     @Assisted private val path: Path,
@@ -43,44 +39,9 @@ class EditorViewModel @AssistedInject constructor(
 
     private val editorFile by lazy { storageProvider.getTemporaryFile() }
 
-    private suspend fun uploadFileSafe(
-        uploadApi: FFileUploadApi,
-        textBytes: ByteArray
-    ) = withLock(mutex, "save") {
-        storageProvider.fileSystem.write(editorFile) {
-            write(textBytes)
-        }
-
-        uploadApi.upload(
-            pathOnFlipper = path.toString(),
-            fileOnAndroid = editorFile,
-            progressListener = { current, max ->
-                _state.emit(
-                    State.Saving(
-                        current,
-                        max
-                    )
-                )
-            }
-        ).onFailure { exception ->
-            error(exception) { "Failed saved $path" }
-            _state.emit(State.Error)
-        }.onSuccess {
-            _state.emit(State.Saved)
-        }
-    }
-
-    fun onSaveFile(text: String) {
-        val textBytes = text.toByteArray()
-        viewModelScope.launch {
-            _state.emit(State.Preparing)
-            val storageApi = featureProvider.getSync<FStorageFeatureApi>()
-            if (storageApi == null) {
-                _state.emit(State.Error)
-                return@launch
-            }
-            uploadFileSafe(storageApi.uploadApi(), textBytes)
-        }
+    fun getRawContent(): ByteArray? {
+        val hexString = (state.value as? EditorViewModel.State.Loaded)?.hexString ?: return null
+        return HexConverter.fromHexString(hexString).content.toByteArray()
     }
 
     private suspend fun onFileDownloaded() {
@@ -194,7 +155,6 @@ class EditorViewModel @AssistedInject constructor(
             val isTooLarge: Boolean,
             val encoding: EditorEncodingEnum = EditorEncodingEnum.TEXT
         ) : State
-
 
         data object Saved : State
 

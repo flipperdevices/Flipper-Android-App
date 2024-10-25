@@ -1,27 +1,12 @@
 package com.flipperdevices.filemanager.listing.impl.composable.options
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel.Action
+import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
+import com.flipperdevices.filemanager.ui.components.dropdown.RadioDropdownItem
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_create_file
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_create_folder
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_otp_display_grid
@@ -43,8 +28,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
-import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
-import com.flipperdevices.filemanager.ui.components.dropdown.RadioDropdownItem
 
 @Composable
 fun ListOptionsDropDown(
@@ -115,5 +98,3 @@ fun ListOptionsDropDown(
         )
     }
 }
-
-

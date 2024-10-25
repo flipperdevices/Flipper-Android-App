@@ -34,7 +34,7 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    private val editorViewModelFactory: EditorViewModel.Factory
+    private val editorViewModelFactory: EditorViewModel.Factory,
 ) : FileManagerEditorDecomposeComponent(componentContext) {
 
     @Composable
@@ -47,8 +47,11 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
             topBar = {
                 EditorAppBar(
                     path = path,
-                    onSaveClick = {},
-                    onSaveAsClick = {},
+                    onSaveClick = onSaveClick@{
+                        val rawContent = editorViewModel.getRawContent() ?: return@onSaveClick
+                    },
+                    onSaveAsClick = {
+                    },
                     onBack = onBack::invoke,
                     editorEncodingEnum = (editorState as? EditorViewModel.State.Loaded)?.encoding,
                     canSave = (editorState is EditorViewModel.State.Loaded),
@@ -72,7 +75,9 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
 
                 is EditorViewModel.State.Loaded -> {
                     Column {
-                        var text by remember(localEditorState.hexString) { mutableStateOf(localEditorState.hexString.content) }
+                        var text by remember(
+                            localEditorState.hexString
+                        ) { mutableStateOf(localEditorState.hexString.content) }
                         if (localEditorState.isTooLarge) {
                             Text(
                                 modifier = Modifier

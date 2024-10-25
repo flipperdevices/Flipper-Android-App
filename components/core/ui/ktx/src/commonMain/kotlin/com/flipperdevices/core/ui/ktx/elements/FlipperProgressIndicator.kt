@@ -1,6 +1,5 @@
 package com.flipperdevices.core.ui.ktx.elements
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -19,9 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import kotlin.math.roundToInt
@@ -33,7 +32,7 @@ private const val PERCENT_MIN = 0.0001f
 fun FlipperProgressIndicator(
     accentColor: Color,
     secondColor: Color,
-    @DrawableRes iconId: Int?,
+    painter: Painter?,
     percent: Float?,
     modifier: Modifier = Modifier
 ) {
@@ -49,12 +48,12 @@ fun FlipperProgressIndicator(
             ComposableProgressRow(percent, accentColor)
         }
 
-        if (iconId != null) {
+        if (painter != null) {
             Icon(
                 modifier = Modifier
                     .padding(8.dp)
                     .size(28.dp),
-                painter = painterResourceByKey(iconId),
+                painter = painter,
                 contentDescription = null,
                 tint = LocalPallet.current.onFirmwareUpdateProgress
             )

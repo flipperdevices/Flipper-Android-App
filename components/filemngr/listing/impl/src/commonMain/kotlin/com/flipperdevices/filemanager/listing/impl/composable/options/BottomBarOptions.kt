@@ -30,6 +30,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewMode
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
+import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_copy_to
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_export
@@ -46,7 +47,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
-import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
 
 @Composable
 private fun MoreBottomBarOptions(

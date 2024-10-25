@@ -1,20 +1,21 @@
 package com.flipperdevices.filemanager.upload.impl.viewmodel
 
-import android.content.Context
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.deeplink.model.openStream
+import com.flipperdevices.filemanager.upload.impl.deeplink.DeeplinkContentProvider
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,22 +25,22 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
-import okio.source
 import javax.inject.Inject
 
 class UploadViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,
-    context: Context,
+    private val deeplinkContentProvider: DeeplinkContentProvider,
+    private val storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(), LogTagProvider {
 
     private val mutex = Mutex()
 
     override val TAG: String = "UploadViewModel"
-
-    private val contentResolver = context.contentResolver
 
     private val _state = MutableStateFlow<State>(State.Pending)
     val state = _state.asStateFlow()
@@ -53,17 +54,21 @@ class UploadViewModel @Inject constructor(
     private var lastJob: Job? = null
 
     fun onCancel() {
-        _state.update { State.Cancelled }
+        viewModelScope.launch {
+            lastJob?.cancelAndJoin()
+            _state.update { State.Cancelled }
+        }
     }
 
     private suspend fun uploadFile(
         uploadApi: FFileUploadApi,
         deeplinkContent: DeeplinkContent,
         folderPath: Path,
+        fileName: String? = deeplinkContent.filename(),
         currentFileIndex: Int,
         totalFilesAmount: Int
     ) {
-        val fileStream = deeplinkContent.openStream(contentResolver) ?: run {
+        val fileStream = deeplinkContentProvider.source(deeplinkContent) ?: run {
             _state.emit(State.Error)
             return
         }
@@ -71,21 +76,26 @@ class UploadViewModel @Inject constructor(
             _state.emit(State.Error)
             return
         }
-        val fileName = deeplinkContent.filename() ?: run {
+        if (fileName == null) {
             _state.emit(State.Error)
             return
         }
         val pathOnFlipper = folderPath.resolve(fileName)
         runCatching {
-            fileStream.use { outputStream ->
+            fileStream.use { deeplinkSource ->
                 uploadApi.sink(pathOnFlipper.toString())
                     .use { sink ->
-                        outputStream.source().copyWithProgress(
+                        deeplinkSource.copyWithProgress(
                             sink = sink,
                             sourceLength = {
                                 deeplinkContent.length()
                             },
                             progressListener = { current, max ->
+                                if (!currentCoroutineContext().isActive) {
+                                    sink.close()
+                                    deeplinkSource.close()
+                                    return@copyWithProgress
+                                }
                                 val progress = when (max) {
                                     0L -> 0f
                                     else -> current / max.toFloat()
@@ -108,8 +118,55 @@ class UploadViewModel @Inject constructor(
         }.onFailure { it.printStackTrace() }
     }
 
+    fun uploadRaw(
+        folderPath: Path,
+        fileName: String,
+        content: ByteArray,
+    ) {
+        val temporaryFile = storageProvider.getTemporaryFile()
+        storageProvider.fileSystem.write(temporaryFile) {
+            write(content)
+        }
+        val deeplinkContent = DeeplinkContent.InternalStorageFile(
+            filePath = temporaryFile.toString()
+        )
+        _state.update {
+            State.Uploading(
+                fileIndex = 0,
+                totalFiles = 1,
+                uploadedFileSize = 0L,
+                uploadFileTotalSize = 0L,
+                fileName = fileName
+            )
+        }
+        featureProvider.get<FStorageFeatureApi>()
+            .onEach {
+                if (it !is FFeatureStatus.Supported<FStorageFeatureApi>) {
+                    _state.emit(State.Error)
+                    return@onEach
+                }
+                val storageApi = it.featureApi
+                val uploadApi = storageApi.uploadApi()
+                launchWithLock(mutex, viewModelScope, "uploadRaw") {
+                    lastJob?.cancelAndJoin()
+                    lastJob = coroutineContext.job
+                    uploadFile(
+                        uploadApi = uploadApi,
+                        deeplinkContent = deeplinkContent,
+                        fileName = fileName,
+                        folderPath = folderPath,
+                        currentFileIndex = 0,
+                        totalFilesAmount = 1
+                    )
+                    storageProvider.fileSystem.delete(temporaryFile)
+                    _state.emit(State.Uploaded)
+                    lastJob?.join()
+                }
+            }.launchIn(viewModelScope)
+    }
+
     fun tryUpload(
-        path: Path,
+        folderPath: Path,
         contents: List<DeeplinkContent>
     ) {
         if (contents.isEmpty()) {
@@ -134,20 +191,20 @@ class UploadViewModel @Inject constructor(
                 }
                 val storageApi = it.featureApi
                 val uploadApi = storageApi.uploadApi()
-                launchWithLock(mutex, viewModelScope, "upload") {
+                launchWithLock(mutex, viewModelScope, "tryUpload") {
                     lastJob?.cancelAndJoin()
-                    lastJob = launch {
-                        contents.forEachIndexed { fileIndex, deeplinkContent ->
-                            uploadFile(
-                                uploadApi = uploadApi,
-                                deeplinkContent = deeplinkContent,
-                                folderPath = path,
-                                currentFileIndex = fileIndex,
-                                totalFilesAmount = totalFilesAmount
-                            )
-                        }
-                        _state.emit(State.Uploaded)
+                    lastJob = coroutineContext.job
+                    contents.forEachIndexed { fileIndex, deeplinkContent ->
+                        uploadFile(
+                            uploadApi = uploadApi,
+                            deeplinkContent = deeplinkContent,
+                            folderPath = folderPath,
+                            currentFileIndex = fileIndex,
+                            totalFilesAmount = totalFilesAmount
+                        )
                     }
+                    _state.emit(State.Uploaded)
+                    lastJob?.join()
                 }
             }.launchIn(viewModelScope)
     }
