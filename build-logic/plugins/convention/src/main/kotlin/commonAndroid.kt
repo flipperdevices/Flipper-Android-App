@@ -98,6 +98,8 @@ private fun Project.suppressOptIn() {
             compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_11)
 
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+
                 optIn.addAll(
                     "com.google.accompanist.pager.ExperimentalPagerApi",
                     "androidx.compose.ui.ExperimentalComposeUiApi",
