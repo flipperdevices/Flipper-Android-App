@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.dao.api.model.icon
+import com.flipperdevices.bridge.dao.api.model.iconId
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.wearable.sync.wear.impl.model.FlipperWearKey
 import com.flipperdevices.core.ui.res.R as DesignSystem
@@ -65,7 +65,7 @@ fun ComposableKeysListElement(
     onClick: () -> Unit
 ) {
     val type = flipperWearKey.path.path.keyType
-    val icon = type?.icon ?: DesignSystem.drawable.ic_fileformat_unknown
+    val icon = type?.iconId ?: DesignSystem.drawable.ic_fileformat_unknown
     Row(
         modifier = modifier
             .fillMaxWidth()

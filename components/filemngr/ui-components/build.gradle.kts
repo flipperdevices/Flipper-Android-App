@@ -5,7 +5,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.filemanager.ui.components"
 
-androidDependencies {
+commonDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
 
@@ -32,4 +32,8 @@ androidDependencies {
     implementation(libs.compose.placeholder)
 
     implementation(libs.bundles.decompose)
+}
+
+compose.resources {
+    publicResClass = true
 }

@@ -37,6 +37,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Refactor] Migrate filemanager to new ble api
 - [Refactor] Migrate more core:ui modules into multiplatform
 - [FIX] Small UI fixes for mfkey32 feature
+- [Refactor] Migrate filemengr modules into MPP
 - [FIX] Distinct fap items by id in paging sources
 - [FIX] Battery level charge
 - [FIX] Button arrow tint
