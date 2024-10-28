@@ -82,13 +82,6 @@ private fun BaseExtension.configureBuildFeatures() {
     // TODO: Disable by default
     //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
     buildFeatures.buildConfig = true
-    // Disable by default. ViewBinding needed only for few modules.
-    // No need to enable this feature for all modules.
-    buildFeatures.viewBinding = false
-    buildFeatures.aidl = false
-    buildFeatures.compose = false
-    buildFeatures.prefab = false
-    buildFeatures.renderScript = false
     buildFeatures.resValues = false
     buildFeatures.shaders = false
 }
@@ -105,6 +98,8 @@ private fun Project.suppressOptIn() {
             compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_11)
 
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+
                 optIn.addAll(
                     "com.google.accompanist.pager.ExperimentalPagerApi",
                     "androidx.compose.ui.ExperimentalComposeUiApi",
@@ -115,7 +110,7 @@ private fun Project.suppressOptIn() {
                     "kotlin.time.ExperimentalTime",
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",
-                    "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi", // ktlint-disable max-line-length
+                    "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
                     "androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }

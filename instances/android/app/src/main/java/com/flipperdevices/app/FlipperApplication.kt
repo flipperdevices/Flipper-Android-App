@@ -6,7 +6,7 @@ import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
-import com.flipperdevices.app.di.DaggerAppComponent
+import com.flipperdevices.app.di.DaggerMergedAppComponent
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
@@ -30,7 +30,7 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
 
         CurrentActivityHolder.register(this)
 
-        val appComponent = DaggerAppComponent.factory()
+        val appComponent = DaggerMergedAppComponent.factory()
             .create(
                 context = this,
                 application = this,
