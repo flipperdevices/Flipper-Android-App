@@ -9,3 +9,5 @@ plugins {
 configure<BaseExtension> {
     commonAndroid(project)
 }
+
+includeCommonKspConfigurationTo("ksp")

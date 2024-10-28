@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kotlin.ksp) apply false
-    alias(libs.plugins.square.anvil) apply false
+    alias(libs.plugins.zacsweers.anvil) apply false
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.google.gms) apply false
     alias(libs.plugins.android.test) apply false
