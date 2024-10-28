@@ -39,18 +39,18 @@ class SelectedTabViewModel @Inject constructor(
         }
     }
 
-    fun getSelectedTab() = runBlocking {
-        val settings = settingsDataStore.data.first()
+    fun getSelectedTab(): BottomBarTabConfig {
+        val settings = runBlocking { settingsDataStore.data.first() }
         if (settings.infrared_remotes_tab_shown) {
-            return@runBlocking toConfig(settings.selected_tab)
+            return toConfig(settings.selected_tab)
         }
         // wasStartDialogShown indicates that flipper was already connected at least one time
         val wasStartDialogShown = settings.notification_dialog_shown
         if (!wasStartDialogShown) {
             setRemoteFeaturePromoted()
-            return@runBlocking toConfig(settings.selected_tab)
+            return toConfig(settings.selected_tab)
         }
         setRemoteFeaturePromoted()
-        return@runBlocking Tools(null)
+        return Tools(null)
     }
 }
