@@ -57,12 +57,13 @@ sealed interface BottomBarTabConfig {
             }
             return runBlocking {
                 when (dataStore.data.first().selected_tab) {
-                    SelectedTab.DEVICE,
-                    is SelectedTab.Unrecognized -> Device(null)
+                    SelectedTab.DEVICE -> Device(null)
 
                     SelectedTab.ARCHIVE -> Archive(null)
                     SelectedTab.APPS -> Apps(null)
                     SelectedTab.TOOLS -> Tools(null)
+
+                    is SelectedTab.Unrecognized -> Tools(null)
                 }
             }
         }

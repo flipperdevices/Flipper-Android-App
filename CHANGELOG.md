@@ -25,6 +25,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [Feature] New File Manager search
 - [Feature] Add illustrations, search, hold to dispatch into RemoteControls
 - [Feature] Add metrics to infrared remotes
+- [Feature] One-time open tools tab
 - [Refactor] Load RemoteControls from flipper, emulating animation
 - [Refactor] Update to Kotlin 2.0
 - [Refactor] Replace Ktorfit with Ktor requests in remote-controls
