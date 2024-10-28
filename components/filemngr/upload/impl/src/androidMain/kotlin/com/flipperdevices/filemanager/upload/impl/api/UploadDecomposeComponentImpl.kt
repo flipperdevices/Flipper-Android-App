@@ -1,6 +1,6 @@
 package com.flipperdevices.filemanager.upload.impl.api
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -12,14 +12,12 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.essenty.backhandler.BackCallback
-import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import com.flipperdevices.filemanager.upload.impl.composable.PickFilesEffect
-import com.flipperdevices.filemanager.upload.impl.composable.UploadingComposable
-import com.flipperdevices.filemanager.upload.impl.viewmodel.UploadViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.filter
@@ -27,7 +25,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
-import javax.inject.Provider
 
 @ContributesAssistedFactory(AppGraph::class, UploadDecomposeComponent.Factory::class)
 class UploadDecomposeComponentImpl @AssistedInject constructor(
@@ -35,7 +32,7 @@ class UploadDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val path: Path,
     @Assisted private val onFinish: () -> Unit,
     private val deepLinkParser: DeepLinkParser,
-    private val uploaderDecomposeComponentFactory: UploaderDecomposeComponent.Factory
+    uploaderDecomposeComponentFactory: UploaderDecomposeComponent.Factory
 ) : UploadDecomposeComponent(componentContext) {
     private val uploaderDecomposeComponent = uploaderDecomposeComponentFactory.invoke(
         componentContext = childContext("uploaderDecomposeComponent_$path")
@@ -71,19 +68,15 @@ class UploadDecomposeComponentImpl @AssistedInject constructor(
                 )
             }
         )
-        Box(
+        uploaderDecomposeComponent.Render(
+            state = state,
+            speedState = speedState,
+            onCancel = uploaderDecomposeComponent::onCancel,
             modifier = Modifier
                 .fillMaxSize()
+                .background(LocalPalletV2.current.surface.backgroundMain.body)
                 .navigationBarsPadding()
                 .systemBarsPadding(),
-            content = {
-                uploaderDecomposeComponent.Render(
-                    state = state,
-                    speedState = speedState,
-                    onCancel = uploaderDecomposeComponent::onCancel,
-                    modifier = Modifier
-                )
-            }
         )
     }
 }

@@ -12,7 +12,6 @@ interface UploaderDecomposeComponent {
     val state: StateFlow<State>
     val speedState: Flow<Long>
 
-
     fun onCancel()
 
     fun uploadRaw(

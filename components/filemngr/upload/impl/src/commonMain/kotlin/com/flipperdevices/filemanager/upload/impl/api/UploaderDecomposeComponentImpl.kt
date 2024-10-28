@@ -60,6 +60,7 @@ class UploaderDecomposeComponentImpl @AssistedInject constructor(
                     state = localState,
                     speed = speedState,
                     onCancel = onCancel,
+                    modifier = modifier
                 )
             }
 

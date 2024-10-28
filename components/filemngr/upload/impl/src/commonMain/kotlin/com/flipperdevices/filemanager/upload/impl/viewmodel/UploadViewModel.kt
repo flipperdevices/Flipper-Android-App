@@ -7,12 +7,11 @@ import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatur
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.FlipperStorageProvider
-import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent.State
 import com.flipperdevices.filemanager.upload.impl.deeplink.DeeplinkContentProvider
 import kotlinx.coroutines.Job
@@ -29,9 +28,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import okio.Path
 import javax.inject.Inject
 
@@ -72,14 +71,17 @@ class UploadViewModel @Inject constructor(
         totalFilesAmount: Int
     ) {
         val fileStream = deeplinkContentProvider.source(deeplinkContent) ?: run {
+            error { "#uploadFile could not get deeplink source" }
             _state.emit(State.Error)
             return
         }
         val totalLength = deeplinkContent.length() ?: run {
+            error { "#uploadFile could not get deeplink totalLength" }
             _state.emit(State.Error)
             return
         }
         if (fileName == null) {
+            error { "#uploadFile fileName is null" }
             _state.emit(State.Error)
             return
         }
@@ -118,7 +120,7 @@ class UploadViewModel @Inject constructor(
                         )
                     }
             }
-        }.onFailure { it.printStackTrace() }
+        }.onFailure { throwable -> error(throwable) { "#uploadFile could not upload file" } }
     }
 
     fun uploadRaw(
@@ -150,20 +152,22 @@ class UploadViewModel @Inject constructor(
                 }
                 val storageApi = it.featureApi
                 val uploadApi = storageApi.uploadApi()
-                launchWithLock(mutex, viewModelScope, "uploadRaw") {
-                    lastJob?.cancelAndJoin()
-                    lastJob = coroutineContext.job
-                    uploadFile(
-                        uploadApi = uploadApi,
-                        deeplinkContent = deeplinkContent,
-                        fileName = fileName,
-                        folderPath = folderPath,
-                        currentFileIndex = 0,
-                        totalFilesAmount = 1
-                    )
-                    storageProvider.fileSystem.delete(temporaryFile)
-                    _state.emit(State.Uploaded)
-                    lastJob?.join()
+                viewModelScope.launch {
+                    mutex.withLock("uploadRaw") {
+                        lastJob?.cancelAndJoin()
+                        lastJob = launch {
+                            uploadFile(
+                                uploadApi = uploadApi,
+                                deeplinkContent = deeplinkContent,
+                                fileName = fileName,
+                                folderPath = folderPath,
+                                currentFileIndex = 0,
+                                totalFilesAmount = 1
+                            )
+                            storageProvider.fileSystem.delete(temporaryFile)
+                            _state.emit(State.Uploaded)
+                        }
+                    }
                 }
             }.launchIn(viewModelScope)
     }
@@ -194,20 +198,22 @@ class UploadViewModel @Inject constructor(
                 }
                 val storageApi = it.featureApi
                 val uploadApi = storageApi.uploadApi()
-                launchWithLock(mutex, viewModelScope, "tryUpload") {
-                    lastJob?.cancelAndJoin()
-                    lastJob = coroutineContext.job
-                    contents.forEachIndexed { fileIndex, deeplinkContent ->
-                        uploadFile(
-                            uploadApi = uploadApi,
-                            deeplinkContent = deeplinkContent,
-                            folderPath = folderPath,
-                            currentFileIndex = fileIndex,
-                            totalFilesAmount = totalFilesAmount
-                        )
+                viewModelScope.launch {
+                    mutex.withLock("tryUpload") {
+                        lastJob?.cancelAndJoin()
+                        lastJob = launch {
+                            contents.forEachIndexed { fileIndex, deeplinkContent ->
+                                uploadFile(
+                                    uploadApi = uploadApi,
+                                    deeplinkContent = deeplinkContent,
+                                    folderPath = folderPath,
+                                    currentFileIndex = fileIndex,
+                                    totalFilesAmount = totalFilesAmount
+                                )
+                            }
+                            _state.emit(State.Uploaded)
+                        }
                     }
-                    _state.emit(State.Uploaded)
-                    lastJob?.join()
                 }
             }.launchIn(viewModelScope)
     }

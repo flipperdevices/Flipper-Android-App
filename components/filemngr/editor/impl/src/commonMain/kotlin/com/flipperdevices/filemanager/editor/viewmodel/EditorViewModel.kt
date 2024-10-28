@@ -41,7 +41,20 @@ class EditorViewModel @AssistedInject constructor(
 
     fun getRawContent(): ByteArray? {
         val hexString = (state.value as? EditorViewModel.State.Loaded)?.hexString ?: return null
-        return HexConverter.fromHexString(hexString).content.toByteArray()
+        return kotlin.runCatching { HexConverter.fromHexString(hexString).content.toByteArray() }
+            .onFailure { error(it) { "#onEditorTypeChange could not transform hex" } }
+            .getOrNull()
+    }
+
+    fun onTextChanged(text: String) {
+        _state.update { state ->
+            (state as? State.Loaded)?.let { loadedState ->
+                when (loadedState.hexString) {
+                    is HexString.Hex -> loadedState.copy(hexString = HexString.Hex(text))
+                    is HexString.Text -> loadedState.copy(hexString = HexString.Text(text))
+                }
+            } ?: state
+        }
     }
 
     private suspend fun onFileDownloaded() {
@@ -115,10 +128,10 @@ class EditorViewModel @AssistedInject constructor(
         _state.update { state ->
             val loaded = (state as? State.Loaded) ?: return@update state
             if (loaded.encoding == type) return@update state
-
-            loaded.copy(
-                encoding = type,
-                hexString = when (type) {
+            // We can't always transform hex into string
+            // As example, user can write letters beyond 0..F
+            val hexStringResult = kotlin.runCatching {
+                when (type) {
                     EditorEncodingEnum.TEXT -> {
                         HexConverter.fromHexString(loaded.hexString)
                     }
@@ -127,6 +140,13 @@ class EditorViewModel @AssistedInject constructor(
                         HexConverter.toHexString(loaded.hexString)
                     }
                 }
+            }.onFailure { error(it) { "#onEditorTypeChange could not transform hex" } }
+
+            loaded.copy(
+                encoding = type
+                    .takeIf { hexStringResult.isSuccess }
+                    ?: loaded.encoding,
+                hexString = hexStringResult.getOrElse { loaded.hexString }
             )
         }
     }

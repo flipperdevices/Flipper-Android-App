@@ -17,12 +17,11 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.filemanager.upload.impl.viewmodel.UploadViewModel
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import flipperapp.components.filemngr.upload.impl.generated.resources.fm_cancel
 import flipperapp.components.filemngr.upload.impl.generated.resources.fm_uploading
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.upload.impl.generated.resources.Res as FUR
-import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 
 @Composable
 fun UploadingComposable(

@@ -1,4 +1,5 @@
 plugins {
+    id("flipper.multiplatform-compose")
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
 }
