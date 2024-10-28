@@ -3,10 +3,10 @@
     <string name="fml_create_file_title">Enter Name:</string>
     <string name="fml_create_file_file_btn">Create File</string>
     <string name="fml_create_file_folder_btn">Create Folder</string>
-    <string name="fml_create_file_allowed_chars">Allowed characters: %s</string>
+    <string name="fml_create_file_allowed_chars">Allowed characters: %1$s</string>
 
-    <string name="fml_dialog_delete_file">Delete %s?</string>
-    <string name="fml_dialog_delete_files">Delete %s items?</string>
+    <string name="fml_dialog_delete_file">Delete %1$s?</string>
+    <string name="fml_dialog_delete_files">Delete %1$s items?</string>
     <string name="fml_dialog_desc">This action cannot be undone</string>
     <string name="fml_dialog_delete_btn">Delete</string>
     <string name="fml_dialog_cancel_btn">Cancel</string>
