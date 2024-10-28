@@ -104,11 +104,11 @@ private fun RemoteControls(
     Text(
         text = stringResource(R.string.card_beta),
         style = LocalTypography.current.subtitleR12,
-        color = LocalPallet.current.text30,
+        color = LocalPalletV2.current.action.fwUpdate.background.primary.default,
         modifier = Modifier
             .border(
                 1.dp,
-                LocalPalletV2.current.action.neutral.border.secondary.default,
+                LocalPalletV2.current.action.fwUpdate.background.primary.default,
                 RoundedCornerShape(30.dp)
             )
             .clip(RoundedCornerShape(30.dp))
