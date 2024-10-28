@@ -1,11 +1,6 @@
 package com.flipperdevices.bottombar.impl.model
 
-import androidx.datastore.core.DataStore
-import com.flipperdevices.core.preference.pb.SelectedTab
-import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.deeplink.model.Deeplink
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -42,7 +37,7 @@ sealed interface BottomBarTabConfig {
 
     companion object {
         fun getInitialConfig(
-            dataStore: DataStore<Settings>,
+            getSavedTab: () -> BottomBarTabConfig,
             deeplink: Deeplink.BottomBar?
         ): BottomBarTabConfig {
             if (deeplink != null) {
@@ -55,16 +50,7 @@ sealed interface BottomBarTabConfig {
                         .toConfig()
                 }
             }
-            return runBlocking {
-                when (dataStore.data.first().selected_tab) {
-                    SelectedTab.DEVICE,
-                    is SelectedTab.Unrecognized -> Device(null)
-
-                    SelectedTab.ARCHIVE -> Archive(null)
-                    SelectedTab.APPS -> Apps(null)
-                    SelectedTab.TOOLS -> Tools(null)
-                }
-            }
+            return getSavedTab.invoke()
         }
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("Filename")
+
 import org.gradle.api.Project
 
 fun Project.includeCommonKspConfigurationTo(
