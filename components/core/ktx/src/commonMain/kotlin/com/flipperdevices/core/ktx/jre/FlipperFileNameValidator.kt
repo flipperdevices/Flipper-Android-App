@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.listing.impl.util
+package com.flipperdevices.core.ktx.jre
 
 /**
  * Validates name for files which can be created on flippers

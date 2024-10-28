@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.listing.impl.util
 
+import com.flipperdevices.core.ktx.jre.FlipperFileNameValidator
 import org.junit.Assert
 import org.junit.Test
 

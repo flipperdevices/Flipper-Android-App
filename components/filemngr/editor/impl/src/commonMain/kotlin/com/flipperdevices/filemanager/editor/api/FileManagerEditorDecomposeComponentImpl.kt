@@ -26,14 +26,17 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import com.flipperdevices.filemanager.editor.composable.CreateFileDialogComposable
 import com.flipperdevices.filemanager.editor.composable.EditorAppBar
 import com.flipperdevices.filemanager.editor.viewmodel.EditorViewModel
+import com.flipperdevices.filemanager.editor.viewmodel.FileNameViewModel
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
+import javax.inject.Provider
 
 @ContributesAssistedFactory(AppGraph::class, FileManagerEditorDecomposeComponent.Factory::class)
 class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
@@ -41,7 +44,8 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val editorViewModelFactory: EditorViewModel.Factory,
-    uploaderDecomposeComponentFactory: UploaderDecomposeComponent.Factory
+    uploaderDecomposeComponentFactory: UploaderDecomposeComponent.Factory,
+    private val fileNameViewModelProvider: Provider<FileNameViewModel>
 ) : FileManagerEditorDecomposeComponent(componentContext) {
     private val uploaderDecomposeComponent = uploaderDecomposeComponentFactory.invoke(
         componentContext = childContext("file_editor_$path")
@@ -49,11 +53,25 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
+        val fileNameViewModel = viewModelWithFactory(null) {
+            fileNameViewModelProvider.get()
+        }
         val editorViewModel = viewModelWithFactory(path.toString()) {
             editorViewModelFactory.invoke(path)
         }
         val editorState by editorViewModel.state.collectAsState()
 
+        CreateFileDialogComposable(
+            fileNameViewModel = fileNameViewModel,
+            onFinish = onSaveClick@{ fileName ->
+                val rawContent = editorViewModel.getRawContent() ?: return@onSaveClick
+                uploaderDecomposeComponent.uploadRaw(
+                    folderPath = path.parent ?: return@onSaveClick,
+                    fileName = fileName,
+                    content = rawContent
+                )
+            }
+        )
         Scaffold(
             topBar = {
                 EditorAppBar(
@@ -67,6 +85,7 @@ class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
                         )
                     },
                     onSaveAsClick = {
+                        fileNameViewModel.show()
                     },
                     onBack = onBack::invoke,
                     editorEncodingEnum = (editorState as? EditorViewModel.State.Loaded)?.encoding,
