@@ -4,9 +4,9 @@ option java_package = "com.flipperdevices.core.preference.pb";
 option java_multiple_files = true;
 
 enum SelectedTab {
-  TOOLS = 0;
+  DEVICE = 0;
   ARCHIVE = 1;
-  DEVICE = 2;
+  TOOLS = 2;
   APPS = 3;
 }
 
@@ -42,7 +42,6 @@ enum FileManagerSort {
 }
 
 message Settings {
-  reserved 5; // Already unused SelectedTab
   reserved 7; // Already unused tags
   reserved 12; // Already unused  first_synchronization_passed
   reserved 16; // Already unused last_provided_region
@@ -56,6 +55,7 @@ message Settings {
   bool used_foreground_service = 2;
   bool enabled_debug_settings = 3;
   bool enabled_experimental_functions = 4;
+  SelectedTab selected_tab = 5;
   bool ignore_unsupported_version = 6;
   bool always_update = 8;
   SelectedChannel selected_channel = 10;
@@ -75,5 +75,5 @@ message Settings {
   FileManagerSort file_manager_sort = 31;
   bool show_hidden_files_on_flipper = 32;
   bool disabled_vibration = 33;
-  SelectedTab selected_tab = 34;
+  bool infrared_remotes_tab_shown = 34;
 }

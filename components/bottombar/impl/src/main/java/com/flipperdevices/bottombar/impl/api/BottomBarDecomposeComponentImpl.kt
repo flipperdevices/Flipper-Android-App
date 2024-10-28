@@ -14,6 +14,7 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
+import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.archive.api.ArchiveDecomposeComponent
 import com.flipperdevices.bottombar.api.BottomBarDecomposeComponent
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
@@ -24,6 +25,7 @@ import com.flipperdevices.bottombar.impl.model.toBottomBarTabEnum
 import com.flipperdevices.bottombar.impl.model.toConfig
 import com.flipperdevices.bottombar.impl.viewmodel.BottomBarViewModel
 import com.flipperdevices.bottombar.impl.viewmodel.InAppNotificationViewModel
+import com.flipperdevices.bottombar.impl.viewmodel.SelectedTabViewModel
 import com.flipperdevices.connection.api.ConnectionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
@@ -63,13 +65,22 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
     private val unhandledExceptionRendererApi: UnhandledExceptionRenderApi,
     private val appNotificationApi: FlipperAppNotificationDialogApi,
     private val bottomBarViewModelProvider: Provider<BottomBarViewModel>,
+    private val selectedTabViewModelProvider: Provider<SelectedTabViewModel>,
     private val inAppNotificationViewModelFactory: InAppNotificationViewModel.Factory
 ) : BottomBarDecomposeComponent<BottomBarTabConfig>(), ComponentContext by componentContext {
+
     override val stack: Value<ChildStack<BottomBarTabConfig, DecomposeComponent>> =
         childStack(
             source = navigation,
             serializer = BottomBarTabConfig.serializer(),
-            initialConfiguration = BottomBarTabConfig.getInitialConfig(settingsDataStore, deeplink),
+            initialConfiguration = BottomBarTabConfig.getInitialConfig(
+                getSavedTab = {
+                    instanceKeeper.getOrCreate("bbdc_st_vm") {
+                        selectedTabViewModelProvider.get()
+                    }.getSelectedTab()
+                },
+                deeplink = deeplink
+            ),
             childFactory = ::child,
         )
 
