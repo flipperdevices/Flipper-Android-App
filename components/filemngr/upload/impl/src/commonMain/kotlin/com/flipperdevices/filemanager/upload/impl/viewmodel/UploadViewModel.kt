@@ -62,6 +62,7 @@ class UploadViewModel @Inject constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     private suspend fun uploadFile(
         uploadApi: FFileUploadApi,
         deeplinkContent: DeeplinkContent,

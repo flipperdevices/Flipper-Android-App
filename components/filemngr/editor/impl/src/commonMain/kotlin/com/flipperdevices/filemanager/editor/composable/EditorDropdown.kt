@@ -17,7 +17,11 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.ui.components.dropdown.TextDropdownItem
 import flipperapp.components.core.ui.res.generated.resources.Res
 import flipperapp.components.core.ui.res.generated.resources.ic_more_points
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_file
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 
 @Composable
 internal fun EditorDropdown(
@@ -34,9 +38,7 @@ internal fun EditorDropdown(
             modifier = Modifier
                 .padding(end = 14.dp)
                 .size(24.dp)
-                .clickableRipple(onClick = {
-                    isDropdownVisible = !isDropdownVisible
-                }),
+                .clickableRipple(onClick = { isDropdownVisible = !isDropdownVisible }),
             painter = painterResource(Res.drawable.ic_more_points),
             contentDescription = null,
             tint = LocalPalletV2.current.icon.blackAndWhite.blackOnColor
@@ -47,11 +49,11 @@ internal fun EditorDropdown(
             onDismissRequest = { isDropdownVisible = !isDropdownVisible },
         ) {
             TextDropdownItem(
-                text = "Save",
+                text = stringResource(FME.string.fme_save),
                 onClick = onSaveClick
             )
             TextDropdownItem(
-                text = "Save File as...",
+                text = stringResource(FME.string.fme_save_as_file),
                 onClick = onSaveAsClick
             )
         }

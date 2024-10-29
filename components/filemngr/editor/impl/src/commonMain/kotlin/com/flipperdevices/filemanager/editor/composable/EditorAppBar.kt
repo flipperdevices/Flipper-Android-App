@@ -25,9 +25,10 @@ internal fun EditorAppBar(
     OrangeAppBar(
         title = path.name,
         onBack = onBack,
+        modifier = modifier,
         endBlock = {
             Row(
-                modifier = modifier.background(LocalPallet.current.accent),
+                modifier = Modifier.background(LocalPallet.current.accent),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AnimatedVisibility(

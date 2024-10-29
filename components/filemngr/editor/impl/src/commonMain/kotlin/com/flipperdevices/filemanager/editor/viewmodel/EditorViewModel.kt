@@ -176,8 +176,6 @@ class EditorViewModel @AssistedInject constructor(
             val encoding: EditorEncodingEnum = EditorEncodingEnum.TEXT
         ) : State
 
-        data object Saved : State
-
         data object Error : State
     }
 

@@ -1,10 +1,15 @@
-package com.flipperdevices.filemanager.editor.composable
+package com.flipperdevices.filemanager.editor.composable.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.flipperdevices.filemanager.editor.viewmodel.FileNameViewModel
 import com.flipperdevices.filemanager.ui.components.name.NameDialog
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_button
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_chars
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_title
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 
 private const val AVAILABLE_CHARACTERS = "“0-9”, “A-Z”, “a-z”, “!#\\\$%&'()-@^_`{}~”"
 
@@ -18,9 +23,12 @@ fun CreateFileDialogComposable(
         is FileNameViewModel.State.Editing -> {
             NameDialog(
                 value = localState.name,
-                title = "Save as file",
-                buttonText = "Save",
-                subtitle = "Allowed characters: $AVAILABLE_CHARACTERS",
+                title = stringResource(FME.string.fme_save_as_dialog_title),
+                buttonText = stringResource(FME.string.fme_save_as_dialog_button),
+                subtitle = stringResource(
+                    resource = FME.string.fme_save_as_dialog_chars,
+                    AVAILABLE_CHARACTERS
+                ),
                 onFinish = {
                     onFinish(localState.name)
                     fileNameViewModel.dismiss()

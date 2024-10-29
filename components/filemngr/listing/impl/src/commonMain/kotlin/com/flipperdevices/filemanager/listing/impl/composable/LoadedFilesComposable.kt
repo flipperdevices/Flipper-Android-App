@@ -37,9 +37,7 @@ fun LazyGridScope.LoadedFilesComposable(
 ) {
     items(filesState.files) { file ->
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
-            deleteFileState.fileNamesOrNull
-                .orEmpty()
-                .contains(file.fileName)
+            deleteFileState.fileNamesOrNull.orEmpty().contains(file.fileName)
         }
         Crossfade(isFileLoading) { animatedIsFileLoading ->
             if (animatedIsFileLoading) {
@@ -83,12 +81,8 @@ fun LazyGridScope.LoadedFilesComposable(
                             null -> Unit
                         }
                     },
-                    onCheckChange = {
-                        onCheckToggle.invoke(filePathWithType)
-                    },
-                    onMoreClick = {
-                        onFileMoreClick.invoke(filePathWithType)
-                    },
+                    onCheckChange = { onCheckToggle.invoke(filePathWithType) },
+                    onMoreClick = { onFileMoreClick.invoke(filePathWithType) },
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation
                 )
