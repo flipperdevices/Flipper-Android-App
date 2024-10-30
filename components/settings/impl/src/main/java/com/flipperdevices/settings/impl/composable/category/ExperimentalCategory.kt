@@ -3,7 +3,6 @@ package com.flipperdevices.settings.impl.composable.category
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.components.CategoryElement
 import com.flipperdevices.settings.impl.composable.components.ClickableElement
