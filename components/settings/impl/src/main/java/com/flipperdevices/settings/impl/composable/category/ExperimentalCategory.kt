@@ -13,7 +13,6 @@ fun ExperimentalCategory(
     settings: Settings,
     onOpenFM: () -> Unit,
     onSwitchExperimental: (Boolean) -> Unit,
-    onSwitchRemoteControls: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     CardCategory(modifier = modifier) {
@@ -28,13 +27,6 @@ fun ExperimentalCategory(
                 titleId = R.string.experimental_file_manager,
                 descriptionId = R.string.experimental_file_manager_desc,
                 onClick = onOpenFM
-            )
-            CategoryElement(
-                titleId = R.string.experimental_remote_control,
-                descriptionId = R.string.experimental_remote_control_desc,
-                state = settings.show_remote_controls,
-                onSwitchState = onSwitchRemoteControls,
-                titleTextStyle = LocalTypography.current.bodyR14
             )
         }
     }

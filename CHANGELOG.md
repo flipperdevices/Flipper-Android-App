@@ -65,6 +65,7 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Remove "RPC" argument from screen streaming request
 - [FIX] Fix remote-controls duplication ir files
 - [FIX] Fix infrared remotes card beta text color
+- [FIX] Fix disappeared file manager
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
