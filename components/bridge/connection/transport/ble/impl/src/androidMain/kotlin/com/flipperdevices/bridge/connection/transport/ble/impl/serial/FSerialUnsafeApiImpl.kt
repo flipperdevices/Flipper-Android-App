@@ -3,9 +3,11 @@ package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
+import javax.inject.Provider
 
 private const val DAGGER_ID_CHARACTERISTIC_RX = "rx_service"
 private const val DAGGER_ID_CHARACTERISTIC_TX = "tx_service"
@@ -31,9 +34,12 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
     @Assisted(DAGGER_ID_CHARACTERISTIC_RX) val rxCharacteristic: ClientBleGattCharacteristic,
     @Assisted(DAGGER_ID_CHARACTERISTIC_TX) val txCharacteristic: ClientBleGattCharacteristic,
     @Assisted scope: CoroutineScope,
-    private val context: Context
+    private val context: Context,
+    flipperActionNotifierProvider: Provider<FlipperActionNotifier>
 ) : FSerialDeviceApi, LogTagProvider {
     override val TAG = "FSerialUnsafeApiImpl"
+
+    private val actionNotifier by flipperActionNotifierProvider
 
     private val receiverByteFlow = MutableSharedFlow<ByteArray>()
 
@@ -46,6 +52,7 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
             rxCharacteristic.getNotifications(
                 bufferOverflow = BufferOverflow.SUSPEND
             ).collect {
+                launch { actionNotifier.notifyAboutAction() }
                 receiverByteFlow.emit(it.value)
                 rxSpeed.onReceiveBytes(it.size)
             }
