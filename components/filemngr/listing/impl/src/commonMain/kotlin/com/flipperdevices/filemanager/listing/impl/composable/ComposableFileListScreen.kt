@@ -40,6 +40,7 @@ fun ComposableFileListScreen(
     onUploadClick: () -> Unit,
     onSearchClick: () -> Unit,
     onPathChange: (Path) -> Unit,
+    onEditFileClick: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -104,6 +105,7 @@ fun ComposableFileListScreen(
                         selectionState = selectionState,
                         onCheckToggle = selectionViewModel::togglePath,
                         onFileMoreClick = onFileMoreClick,
+                        onEditFileClick = onEditFileClick
                     )
                 }
 

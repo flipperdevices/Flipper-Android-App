@@ -30,15 +30,14 @@ fun LazyGridScope.LoadedFilesComposable(
     orientation: FileManagerOrientation,
     canDeleteFiles: Boolean,
     onPathChanged: (Path) -> Unit,
+    onEditFileClick: (Path) -> Unit,
     onCheckToggle: (PathWithType) -> Unit,
     onDelete: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit
 ) {
     items(filesState.files) { file ->
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
-            deleteFileState.fileNamesOrNull
-                .orEmpty()
-                .contains(file.fileName)
+            deleteFileState.fileNamesOrNull.orEmpty().contains(file.fileName)
         }
         Crossfade(isFileLoading) { animatedIsFileLoading ->
             if (animatedIsFileLoading) {
@@ -70,16 +69,20 @@ fun LazyGridScope.LoadedFilesComposable(
                         else -> ItemUiSelectionState.NONE
                     },
                     onClick = {
-                        if (file.fileType == FileType.DIR) {
-                            onPathChanged.invoke(path / file.fileName)
+                        when (file.fileType) {
+                            FileType.DIR -> {
+                                onPathChanged.invoke(filePathWithType.fullPath)
+                            }
+
+                            FileType.FILE -> {
+                                onEditFileClick(filePathWithType.fullPath)
+                            }
+
+                            null -> Unit
                         }
                     },
-                    onCheckChange = {
-                        onCheckToggle.invoke(filePathWithType)
-                    },
-                    onMoreClick = {
-                        onFileMoreClick.invoke(filePathWithType)
-                    },
+                    onCheckChange = { onCheckToggle.invoke(filePathWithType) },
+                    onMoreClick = { onFileMoreClick.invoke(filePathWithType) },
                     onDelete = { onDelete.invoke(path.resolve(file.fileName)) },
                     orientation = orientation
                 )

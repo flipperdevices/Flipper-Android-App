@@ -7,6 +7,12 @@ plugins {
 android.namespace = "com.flipperdevices.filemanager.upload.impl"
 
 androidDependencies {
+    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.service.api)
+}
+
+commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
@@ -19,11 +25,9 @@ androidDependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
     implementation(projects.components.core.ui.dialog)
+    implementation(projects.components.core.storage)
 
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.transport.common.api)
@@ -64,7 +68,7 @@ androidDependencies {
     implementation(libs.kotlin.immutable.collections)
 }
 
-androidUnitTestDependencies {
+commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
     implementation(libs.ktx.testing)

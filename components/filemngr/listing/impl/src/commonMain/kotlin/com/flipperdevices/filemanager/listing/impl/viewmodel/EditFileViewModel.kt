@@ -8,12 +8,12 @@ import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadAp
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
+import com.flipperdevices.core.ktx.jre.FlipperFileNameValidator
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
-import com.flipperdevices.filemanager.listing.impl.util.FlipperFileNameValidator
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

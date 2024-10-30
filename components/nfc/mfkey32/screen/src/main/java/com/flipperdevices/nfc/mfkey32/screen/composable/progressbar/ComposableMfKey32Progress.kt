@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.HardwareColor
-import com.flipperdevices.core.ui.ktx.elements.FlipperProgressIndicator
+import com.flipperdevices.core.ui.ktx.image.AndroidFlipperProgressIndicator
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.nfc.mfkey32.screen.R
@@ -113,7 +113,7 @@ private fun ComposableMfKey32ProgressInternal(
                 label = "Progress"
             )
 
-            FlipperProgressIndicator(
+            AndroidFlipperProgressIndicator(
                 modifier = Modifier.padding(horizontal = 32.dp),
                 accentColor = accentColor,
                 secondColor = secondColor,
@@ -121,7 +121,7 @@ private fun ComposableMfKey32ProgressInternal(
                 percent = animatedProgress
             )
         } else {
-            FlipperProgressIndicator(
+            AndroidFlipperProgressIndicator(
                 modifier = Modifier.padding(horizontal = 32.dp),
                 accentColor = accentColor,
                 secondColor = secondColor,
