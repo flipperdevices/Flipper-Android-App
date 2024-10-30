@@ -22,6 +22,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.settings.impl.R
 import com.flipperdevices.settings.impl.composable.category.AppCategory
 import com.flipperdevices.settings.impl.composable.category.DebugCategory
+import com.flipperdevices.settings.impl.composable.category.ExperimentalCategory
 import com.flipperdevices.settings.impl.composable.category.ExportKeysCategory
 import com.flipperdevices.settings.impl.composable.category.OtherSettingsCategory
 import com.flipperdevices.settings.impl.composable.category.VersionCategory
@@ -76,6 +77,11 @@ fun ComposableSettings(
                     onDebugSettingSwitch = debugViewModel::onSwitch
                 )
             }
+            ExperimentalCategory(
+                settings = settings,
+                onSwitchExperimental = settingsViewModel::onSwitchExperimental,
+                onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
+            )
             ExportKeysCategory(
                 exportState = exportState,
                 onExport = { settingsViewModel.onMakeExport(context) }
