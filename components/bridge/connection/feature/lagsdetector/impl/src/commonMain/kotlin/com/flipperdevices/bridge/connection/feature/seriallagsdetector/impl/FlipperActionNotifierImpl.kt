@@ -1,24 +1,20 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
-import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.coroutines.launch
 
-@Singleton
-@ContributesBinding(AppGraph::class, FlipperActionNotifier::class)
-class FlipperActionNotifierImpl @Inject constructor() : FlipperActionNotifier {
+class FlipperActionNotifierImpl(
+    private val scope: CoroutineScope
+) {
     private val actionFlow = MutableSharedFlow<Unit>()
 
-    override fun getActionFlow(): Flow<Unit> = actionFlow
+    fun getActionFlow(): Flow<Unit> = actionFlow
 
-    override suspend fun notifyAboutAction() {
-        withContext(FlipperDispatchers.workStealingDispatcher) {
+    fun notifyAboutAction() {
+        scope.launch(FlipperDispatchers.workStealingDispatcher) {
             actionFlow.emit(Unit)
         }
     }

@@ -15,8 +15,6 @@ androidDependencies {
 
     implementation(projects.components.bridge.connection.transport.common.api)
 
-    implementation(projects.components.bridge.connection.feature.lagsdetector.api)
-
     implementation(libs.ble.kotlin.scanner)
     implementation(libs.ble.kotlin.client)
 

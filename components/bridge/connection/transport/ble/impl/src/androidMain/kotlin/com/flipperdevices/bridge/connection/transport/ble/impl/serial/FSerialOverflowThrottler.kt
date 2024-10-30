@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -14,14 +15,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.timeout
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
+import kotlin.time.Duration.Companion.milliseconds
 
 // How much time we next command
 // Small size increase count of ble packet
@@ -105,10 +110,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
                 break
             }
 
-            val (bytesToSend, pendingBytesInternal) = getPendingCommands(
-                remainingBufferSize,
-                waitInfiniteForFirstRequest = pendingBytesToSend.isEmpty()
-            )
+            val (bytesToSend, pendingBytesInternal) = getPendingCommands(remainingBufferSize)
             check(remainingBufferSize >= bytesToSend.size) {
                 "getPendingCommands can't return bytes (${bytesToSend.size}) " +
                     "more than buffer ($remainingBufferSize)"
@@ -121,23 +123,18 @@ class FSerialOverflowThrottler @AssistedInject constructor(
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun getPendingCommands(
-        maxReadBytes: Int,
-        waitInfiniteForFirstRequest: Boolean
-    ): Pair<ByteArray, ByteArray?> {
+    private suspend fun getPendingCommands(maxReadBytes: Int): Pair<ByteArray, ByteArray?> {
         var remainBufferSize = maxReadBytes
         val byteStream = ByteArrayOutputStream()
         var pendingBytes: ByteArray? = null
 
-        var bytesToSend = if (waitInfiniteForFirstRequest) {
-            channel.receive()
-        } else {
-            withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
-                channel.receive()
-            }
-        }
+        while (remainBufferSize > 0) {
+            val bytesToSend = flow { emit(channel.receive()) }
+                .timeout(SERIAL_SEND_WAIT_TIMEOUT_MS.milliseconds)
+                .catch { error(it) { "Timed out waiting for byte array" } }
+                .firstOrNull()
+                ?: break
 
-        while (remainBufferSize > 0 && bytesToSend != null) {
             if (remainBufferSize >= bytesToSend.size) {
                 // Just send byte
                 remainBufferSize -= bytesToSend.size
@@ -147,10 +144,6 @@ class FSerialOverflowThrottler @AssistedInject constructor(
                 byteStream.write(bytesToSend.copyOf(remainBufferSize))
                 pendingBytes = bytesToSend.copyOfRange(remainBufferSize, bytesToSend.size)
                 remainBufferSize = 0 // here we end the while cycle
-            }
-
-            bytesToSend = withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
-                channel.receive()
             }
         }
 

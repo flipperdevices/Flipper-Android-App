@@ -156,14 +156,12 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
             }
         }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
 
-
         val pingJob = scope.launch {
             while (isActive && flowCollectJob.isActive) {
-                info { "#pingJob send ping" }
                 requestOnce(Main(system_ping_request = PingRequest()).wrapToRequest())
                     .onFailure { error(it) { "#pingJob ping failed" } }
                     .onSuccess { info { "#pingJob ping success: $it" } }
-                delay(2000L)
+                delay(timeMillis = 2000L)
             }
         }
 
