@@ -98,6 +98,8 @@ include(
     ":components:filemngr:upload:impl",
     ":components:filemngr:search:api",
     ":components:filemngr:search:impl",
+    ":components:filemngr:editor:api",
+    ":components:filemngr:editor:impl",
 
     ":components:core:di",
     ":components:core:ktx",

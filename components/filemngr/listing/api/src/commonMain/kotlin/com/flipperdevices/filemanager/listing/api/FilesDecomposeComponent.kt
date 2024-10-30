@@ -14,10 +14,19 @@ abstract class FilesDecomposeComponent(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
             path: Path,
-            onPathChanged: (Path) -> Unit,
+            pathChangedCallback: PathChangedCallback,
+            fileSelectedCallback: FileSelectedCallback,
             searchCallback: SearchCallback,
             uploadCallback: UploadCallback
         ): FilesDecomposeComponent
+    }
+
+    fun interface PathChangedCallback {
+        fun invoke(path: Path)
+    }
+
+    fun interface FileSelectedCallback {
+        fun invoke(path: Path)
     }
 
     fun interface SearchCallback {

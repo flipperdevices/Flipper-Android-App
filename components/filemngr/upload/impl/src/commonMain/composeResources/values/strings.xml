@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fm_in_progress_file_size">Size: %1$s of %2$s</string>
+    <string name="fm_in_progress_speed">Speed: %1$s/s</string>
+    <string name="fm_uploading">Uploading...</string>
+    <string name="fm_cancel">Cancel Upload</string>
+</resources>

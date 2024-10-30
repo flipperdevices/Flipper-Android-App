@@ -30,6 +30,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewMode
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
+import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_copy_to
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_dialog_delete_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_export

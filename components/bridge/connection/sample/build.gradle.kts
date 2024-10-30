@@ -83,6 +83,8 @@ dependencies {
     implementation(projects.components.filemngr.upload.impl)
     implementation(projects.components.filemngr.search.api)
     implementation(projects.components.filemngr.search.impl)
+    implementation(projects.components.filemngr.editor.api)
+    implementation(projects.components.filemngr.editor.impl)
 
     implementation(projects.components.newfilemanager.api)
     implementation(projects.components.newfilemanager.impl)
