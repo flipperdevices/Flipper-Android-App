@@ -111,7 +111,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
             )
             check(remainingBufferSize >= bytesToSend.size) {
                 "getPendingCommands can't return bytes (${bytesToSend.size}) " +
-                        "more than buffer ($remainingBufferSize)"
+                    "more than buffer ($remainingBufferSize)"
             }
             remainingBufferSize -= bytesToSend.size
             pendingBytes = pendingBytesInternal
