@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFe
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.exception.resultOrError
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
-import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.connection.feature.rpc.storage.FRequestStorage
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
@@ -15,7 +14,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.protobuf.Main
-import com.flipperdevices.protobuf.system.PingRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -25,14 +23,11 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -156,22 +151,12 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
             }
         }.launchIn(scope + FlipperDispatchers.workStealingDispatcher)
 
-        val pingJob = scope.launch {
-            while (isActive && flowCollectJob.isActive) {
-                requestOnce(Main(system_ping_request = PingRequest()).wrapToRequest())
-                    .onFailure { error(it) { "#pingJob ping failed" } }
-                    .onSuccess { info { "#pingJob ping success: $it" } }
-                delay(timeMillis = 2000L)
-            }
-        }
-
         val response = try {
             commandAnswerJob.await()
         } finally {
             withContext(NonCancellable) {
                 flowCollectJob.cancelAndJoin()
                 commandAnswerJob.cancelAndJoin()
-                pingJob.cancelAndJoin()
                 if (!isFinished) {
                     info { "Requests with flow with id $uniqueId is canceled" }
                     onCancel(uniqueId)
