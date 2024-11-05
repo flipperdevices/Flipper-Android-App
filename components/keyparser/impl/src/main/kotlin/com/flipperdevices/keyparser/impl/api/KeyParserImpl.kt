@@ -10,6 +10,7 @@ import com.flipperdevices.core.data.PredefinedEnumMap
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
@@ -108,23 +109,29 @@ class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     }
 
     override fun parseUriToCryptoKeyData(uri: Uri): FlipperKeyCrypto? {
-        val fragment = uri.encodedFragment ?: return null
+        val fragment = uri.encodedFragment
+        if (fragment == null) {
+            info { "Failed parse $uri because fragment is null" }
+            return null
+        }
         val parsedFragment = urlDecoder.decodeQuery(fragment)
 
         val path = parsedFragment
             .firstOrNull { it.first == QUERY_KEY_PATH }
             ?.second
-            ?: return null
 
         val key = parsedFragment
             .firstOrNull { it.first == QUERY_KEY }
             ?.second
-            ?: return null
 
         val fileId = parsedFragment
             .firstOrNull { it.first == QUERY_ID }
             ?.second
-            ?: return null
+
+        if (path == null || key == null || fileId == null) {
+            info { "Failed parse uri $uri because path, key or fileId is null ($path,$key,$fileId)" }
+            return null
+        }
 
         return FlipperKeyCrypto(
             fileId = fileId,

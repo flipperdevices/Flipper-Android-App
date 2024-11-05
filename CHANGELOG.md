@@ -67,6 +67,8 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Fix remote-controls duplication ir files
 - [FIX] Fix infrared remotes card beta text color
 - [FIX] Fix disappeared file manager
+- [FIX] Add deeplink fallback for flipper scheme uri
+- [FIX] Change description of remotes library card
 - [FIX] Fix bytes race in new api
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
