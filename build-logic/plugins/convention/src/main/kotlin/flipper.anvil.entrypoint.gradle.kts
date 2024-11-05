@@ -1,7 +1,7 @@
 import com.google.devtools.ksp.gradle.KspExtension
 
 plugins {
-    id("com.squareup.anvil")
+    id("dev.zacsweers.anvil")
 }
 
 anvil {

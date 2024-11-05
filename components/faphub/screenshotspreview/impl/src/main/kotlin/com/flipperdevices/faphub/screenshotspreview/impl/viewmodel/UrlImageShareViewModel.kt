@@ -21,6 +21,7 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import android.graphics.Bitmap.Config
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"
@@ -57,7 +58,7 @@ class UrlImageShareViewModel @Inject constructor(
 
     // Images have transparent background thus we need to fill it with accent color
     private fun Bitmap.fillBackground(): Bitmap {
-        val newBitmap = Bitmap.createBitmap(width, height, config)
+        val newBitmap = Bitmap.createBitmap(width, height, config ?: Config.ARGB_8888)
         val canvas = Canvas(newBitmap)
         canvas.drawColor(applicationContext.getColor(DesignSystem.color.accent))
         val noBlurPaint = Paint().apply {
