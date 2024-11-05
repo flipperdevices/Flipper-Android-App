@@ -281,4 +281,60 @@ class FSerialOverflowThrottlerTest {
 
         childScope.cancel()
     }
+
+    @Test
+    fun `when send multiple async requests then no bytes missing`() = runTest {
+        val childScope = TestScope(this.testScheduler)
+        val serialDeviceApi = FSerialOverflowThrottler(
+            scope = childScope,
+            serialApi = serialApi,
+            overflowCharacteristic = overflowCharacteristic,
+            context = context
+        )
+
+        fun getByteArray() = ByteArray(4)
+            .let(ByteBuffer::wrap)
+            .apply { putInt(1024) }
+            .array()
+            .let(::DataByteArray)
+
+        fun indexFilledByteArray(size: Int) = ByteArray(
+            size = size,
+            init = { index -> index.toByte() }
+        )
+
+        overflowByteArrayFlow.emit(getByteArray())
+        // 2500 in total
+        // Need to be delivered separately and async
+        listOf(
+            512,
+            512,
+            512,
+            512,
+            452
+        ).forEach { size -> launch { serialDeviceApi.sendBytes(indexFilledByteArray(size)) } }
+        // First portion of 1024
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        // Second portion of 1024
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        // Last portion of 452
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(1024))) }
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(1024))) }
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(452))) }
+
+        childScope.cancel()
+    }
 }
