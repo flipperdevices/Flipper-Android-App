@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider

@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.connection.feature.seriallagsdetector.api
+package com.flipperdevices.bridge.connection.feature.actionnotifier.api
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow

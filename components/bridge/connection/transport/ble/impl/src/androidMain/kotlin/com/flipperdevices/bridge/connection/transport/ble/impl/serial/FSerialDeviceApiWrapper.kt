@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifierProvider
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -26,7 +25,7 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
     @Assisted serviceFlow: StateFlow<ClientBleGattServices?>,
     @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     serialApiFactory: SerialApiFactory
-) : FSerialDeviceApi, LogTagProvider, FlipperActionNotifierProvider {
+) : FSerialDeviceApi, LogTagProvider {
     override val TAG = "FSerialDeviceApiWrapper"
     private var serialApiScope: CoroutineScope? = null
     private var delegateSerialApi: FSerialDeviceApi? = null

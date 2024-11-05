@@ -3,8 +3,7 @@ package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifierProvider
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
@@ -37,8 +36,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
     @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     private val context: Context
 ) : FSerialDeviceApi,
-    LogTagProvider,
-    FlipperActionNotifierProvider {
+    LogTagProvider {
     override val TAG = "FlipperSerialOverflowThrottler"
 
     private val channel = Channel<ByteArray>()

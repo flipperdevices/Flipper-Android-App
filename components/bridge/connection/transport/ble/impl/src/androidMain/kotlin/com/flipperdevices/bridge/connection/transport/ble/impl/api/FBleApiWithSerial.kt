@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifierProvider
 import com.flipperdevices.bridge.connection.transport.ble.api.GATTCharacteristicAddress
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialRestartApiImpl
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
@@ -19,8 +18,6 @@ class FBleApiWithSerial(
     statusListener: FTransportConnectionStatusListener,
     serialDeviceApi: FSerialDeviceApi,
     serialRestartApi: FSerialRestartApiImpl,
-    flipperActionNotifierProvider: FlipperActionNotifierProvider
 ) : FBleApiImpl(scope, client, statusListener, metaInfoGattMap),
     FSerialDeviceApi by serialDeviceApi,
-    FSerialRestartApi by serialRestartApi,
-    FlipperActionNotifierProvider by flipperActionNotifierProvider
+    FSerialRestartApi by serialRestartApi

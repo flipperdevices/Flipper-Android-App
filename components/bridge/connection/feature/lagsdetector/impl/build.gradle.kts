@@ -8,6 +8,7 @@ android.namespace = "com.flipperdevices.bridge.connection.feature.seriallagsdete
 
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
+    implementation(projects.components.bridge.connection.feature.actionnotifier.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

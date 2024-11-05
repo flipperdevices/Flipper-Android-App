@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.ble.api.GATTCharacteristicAddress
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialDeviceApiWrapper
@@ -43,7 +43,6 @@ class FBleApiWithSerialFactory @Inject constructor(
             statusListener = statusListener,
             serialDeviceApi = serialDeviceApi,
             serialRestartApi = restartApi,
-            flipperActionNotifierProvider = serialDeviceApi
         )
     }
 }

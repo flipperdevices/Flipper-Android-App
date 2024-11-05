@@ -1,6 +1,6 @@
-package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
+package com.flipperdevices.bridge.connection.feature.actionnotifier.impl
 
-import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import dagger.assisted.Assisted
