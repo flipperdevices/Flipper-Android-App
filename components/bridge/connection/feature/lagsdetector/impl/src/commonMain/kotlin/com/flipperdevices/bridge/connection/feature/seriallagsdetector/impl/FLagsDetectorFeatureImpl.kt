@@ -23,12 +23,12 @@ import kotlinx.coroutines.launch
 class FLagsDetectorFeatureImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi,
-    private val flipperActionNotifier: FlipperActionNotifier
+    @Assisted private val flipperActionNotifier: FlipperActionNotifier
 ) : FLagsDetectorFeature, LogTagProvider {
     override val TAG = "FlipperLagsDetector-${hashCode()}"
 
     private val pendingResponseCounter = PendingResponseCounter(
-        onAction = { scope.launch { flipperActionNotifier::notifyAboutAction } }
+        onAction = flipperActionNotifier::notifyAboutAction
     )
 
     init {
@@ -81,6 +81,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
         operator fun invoke(
             scope: CoroutineScope,
             restartRpcFeatureApi: FRestartRpcFeatureApi,
+            flipperActionNotifier: FlipperActionNotifier
         ): FLagsDetectorFeatureImpl
     }
 }

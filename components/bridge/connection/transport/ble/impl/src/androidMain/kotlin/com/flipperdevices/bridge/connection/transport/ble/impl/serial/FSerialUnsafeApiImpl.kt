@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifier
+import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifierProvider
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
@@ -32,9 +33,9 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
     @Assisted(DAGGER_ID_CHARACTERISTIC_RX) val rxCharacteristic: ClientBleGattCharacteristic,
     @Assisted(DAGGER_ID_CHARACTERISTIC_TX) val txCharacteristic: ClientBleGattCharacteristic,
     @Assisted scope: CoroutineScope,
+    @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     private val context: Context,
-    private val flipperActionNotifier: FlipperActionNotifier
-) : FSerialDeviceApi, LogTagProvider {
+) : FSerialDeviceApi, LogTagProvider, FlipperActionNotifierProvider {
     override val TAG = "FSerialUnsafeApiImpl"
 
     private val receiverByteFlow = MutableSharedFlow<ByteArray>()
@@ -42,6 +43,8 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
     private val txSpeed = SpeedMeter(scope)
     private val rxSpeed = SpeedMeter(scope)
     private val speedFlowState = MutableStateFlow(FlipperSerialSpeed())
+
+    override fun getActionNotifier() = flipperActionNotifier
 
     init {
         scope.launch {
@@ -56,7 +59,7 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
             rxSpeed.getSpeed(),
             txSpeed.getSpeed()
         ) { rxBPS, txBPS ->
-            scope.launch { flipperActionNotifier.notifyAboutAction() }
+            flipperActionNotifier.notifyAboutAction()
             speedFlowState.emit(
                 FlipperSerialSpeed(receiveBytesInSec = rxBPS, transmitBytesInSec = txBPS)
             )
@@ -84,6 +87,7 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
             @Assisted(DAGGER_ID_CHARACTERISTIC_RX) rxCharacteristic: ClientBleGattCharacteristic,
             @Assisted(DAGGER_ID_CHARACTERISTIC_TX) txCharacteristic: ClientBleGattCharacteristic,
             scope: CoroutineScope,
+            flipperActionNotifier: FlipperActionNotifier
         ): FSerialUnsafeApiImpl
     }
 }

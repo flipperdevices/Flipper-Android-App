@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
+import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FlipperActionNotifierProvider
 import com.flipperdevices.bridge.connection.transport.ble.api.GATTCharacteristicAddress
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialRestartApiImpl
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
@@ -10,6 +11,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 
+@Suppress("LongParameterList")
 class FBleApiWithSerial(
     scope: CoroutineScope,
     client: ClientBleGatt,
@@ -17,6 +19,8 @@ class FBleApiWithSerial(
     statusListener: FTransportConnectionStatusListener,
     serialDeviceApi: FSerialDeviceApi,
     serialRestartApi: FSerialRestartApiImpl,
+    flipperActionNotifierProvider: FlipperActionNotifierProvider
 ) : FBleApiImpl(scope, client, statusListener, metaInfoGattMap),
     FSerialDeviceApi by serialDeviceApi,
-    FSerialRestartApi by serialRestartApi
+    FSerialRestartApi by serialRestartApi,
+    FlipperActionNotifierProvider by flipperActionNotifierProvider
