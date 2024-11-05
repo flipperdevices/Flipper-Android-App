@@ -10,7 +10,6 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 
-@Suppress("LongParameterList")
 class FBleApiWithSerial(
     scope: CoroutineScope,
     client: ClientBleGatt,
