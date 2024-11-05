@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.sourceOrEmpty
@@ -13,9 +12,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class FileComparatorTest {
     private lateinit var fileComparator: FileComparator
 

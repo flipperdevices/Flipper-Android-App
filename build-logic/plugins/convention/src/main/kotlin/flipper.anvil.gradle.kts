@@ -1,5 +1,5 @@
 plugins {
-    id("com.squareup.anvil")
+    id("dev.zacsweers.anvil")
 }
 
 anvil {

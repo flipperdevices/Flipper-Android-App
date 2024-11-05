@@ -2,7 +2,6 @@ package com.flipperdevices.bridge.service.impl.provider
 
 import android.content.Context
 import android.content.ServiceConnection
-import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
@@ -11,6 +10,7 @@ import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
 import com.flipperdevices.bridge.service.impl.FlipperService
 import com.flipperdevices.bridge.service.impl.FlipperServiceBinder
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.test.TimberRule
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ import org.mockito.kotlin.verify
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class FlipperServiceProviderTest {
     private lateinit var applicationContext: Context
     private lateinit var subject: FlipperServiceProviderImpl

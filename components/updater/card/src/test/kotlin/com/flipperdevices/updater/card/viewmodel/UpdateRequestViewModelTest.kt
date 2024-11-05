@@ -3,13 +3,13 @@ package com.flipperdevices.updater.card.viewmodel
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.api.model.FlipperGATTInformation
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.ktx.android.filename
 import com.flipperdevices.core.ktx.android.length
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -47,7 +47,7 @@ private val requestServer = UpdatePending.Request(
 )
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class UpdateRequestViewModelTest {
     private lateinit var serviceProvider: FlipperServiceProvider
     private lateinit var serviceApi: FlipperServiceApi

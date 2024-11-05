@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.decompose)
 
     // Testing
+    testImplementation(projects.components.core.buildKonfig)
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutines.test)
     testImplementation(libs.roboelectric)

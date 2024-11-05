@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.bridge.api.scanner.FlipperScanner
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -30,7 +31,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.util.ReflectionHelpers
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class FlipperScannerImplTest {
     private lateinit var scanner: BluetoothLeScannerCompat
     private lateinit var bluetoothAdapter: BluetoothAdapter

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
@@ -62,7 +63,9 @@ fun markdownTypography(
     h4Style: TextStyle = LocalTypography.current.bodySB14,
     h5Style: TextStyle = LocalTypography.current.bodySB14,
     h6Style: TextStyle = LocalTypography.current.bodySB14,
+    inlineCode: TextStyle = LocalTypography.current.monoSpaceM14,
     listStyle: TextStyle = LocalTypography.current.bodyR14,
+    linkStyle: TextStyle = LocalTypography.current.bodyR14.copy(textDecoration = TextDecoration.Underline),
     orderedStyle: TextStyle = LocalTypography.current.bodyR14,
     paragraphStyle: TextStyle = LocalTypography.current.bodyR14,
     quoteStyle: TextStyle = LocalTypography.current.bodyR14,
@@ -77,6 +80,8 @@ fun markdownTypography(
         override val h4 = h4Style.merge(additionalTextStyle)
         override val h5 = h5Style.merge(additionalTextStyle)
         override val h6 = h6Style.merge(additionalTextStyle)
+        override val inlineCode = inlineCode.merge(additionalTextStyle)
+        override val link = linkStyle.merge(additionalTextStyle)
         override val list = listStyle.merge(additionalTextStyle)
         override val ordered = orderedStyle.merge(additionalTextStyle)
         override val paragraph = paragraphStyle.merge(additionalTextStyle)

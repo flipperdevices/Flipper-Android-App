@@ -1,6 +1,6 @@
 plugins {
     id("flipper.multiplatform")
-    id("com.squareup.anvil")
+    id("dev.zacsweers.anvil")
     id("com.google.devtools.ksp")
 }
 
