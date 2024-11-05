@@ -1,3 +1,4 @@
+import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.CURRENT_FLAVOR_TYPE
 
 plugins {
@@ -25,5 +26,10 @@ buildConfig {
         Boolean::class.java,
         "LOGGING_PENDING_COMMANDS",
         CURRENT_FLAVOR_TYPE.loggingPendingCommands
+    )
+    buildConfigField(
+        Integer::class.java,
+        "ROBOELECTRIC_SDK_VERSION",
+        ApkConfig.ROBOELECTRIC_SDK_VERSION
     )
 }

@@ -1,10 +1,10 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.manifest
 
 import android.content.Context
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.test.readTestAsset
 import io.mockk.every
 import io.mockk.mockk
@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 import java.io.File
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class ManifestStorageTest {
     @get:Rule
     var folder = TemporaryFolder()

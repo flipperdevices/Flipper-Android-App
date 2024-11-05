@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.screenshotspreview.impl.viewmodel
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Bitmap.Config
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -21,7 +22,6 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import android.graphics.Bitmap.Config
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"
 private const val TIMEFORMAT = "yyyy-MM-dd-HH-mm-ss"

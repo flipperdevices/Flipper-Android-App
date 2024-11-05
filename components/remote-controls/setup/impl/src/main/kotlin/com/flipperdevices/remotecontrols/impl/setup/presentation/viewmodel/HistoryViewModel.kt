@@ -1,5 +1,6 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
+import com.flipperdevices.core.ktx.jre.safeRemoveLast
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.backend.model.SignalModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel.SignalResultData
@@ -24,7 +25,7 @@ class HistoryViewModel @Inject constructor() : DecomposeViewModel() {
         get() = flatData.isEmpty()
 
     fun forgetLast() {
-        flatData.removeLast()
+        flatData.safeRemoveLast()
     }
 
     fun rememberSuccessful(signalModel: SignalModel) {

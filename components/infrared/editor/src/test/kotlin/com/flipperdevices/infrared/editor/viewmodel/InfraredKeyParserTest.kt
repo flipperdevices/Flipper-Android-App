@@ -1,8 +1,8 @@
 package com.flipperdevices.infrared.editor.viewmodel
 
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.test.readTestAssetString
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class InfraredKeyParserTest {
 
     @Test

@@ -19,6 +19,7 @@ dependencies {
 
     // Testing
     testImplementation(projects.components.core.test)
+    testImplementation(projects.components.core.buildKonfig)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.ktx.testing)

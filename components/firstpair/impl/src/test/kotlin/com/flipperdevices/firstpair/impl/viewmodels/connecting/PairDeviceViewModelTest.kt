@@ -1,11 +1,11 @@
 package com.flipperdevices.firstpair.impl.viewmodels.connecting
 
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
 import com.flipperdevices.bridge.api.manager.ktx.stateAsFlow
 import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.test.TimberRule
 import com.flipperdevices.core.test.mockScope
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModelCoroutineScopeProvider
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class PairDeviceViewModelTest {
     @get:Rule
     var timberRule = TimberRule()
