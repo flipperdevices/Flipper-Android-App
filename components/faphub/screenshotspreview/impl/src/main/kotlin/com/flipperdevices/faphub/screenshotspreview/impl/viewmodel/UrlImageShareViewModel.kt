@@ -2,6 +2,7 @@ package com.flipperdevices.faphub.screenshotspreview.impl.viewmodel
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Bitmap.Config
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -57,7 +58,7 @@ class UrlImageShareViewModel @Inject constructor(
 
     // Images have transparent background thus we need to fill it with accent color
     private fun Bitmap.fillBackground(): Bitmap {
-        val newBitmap = Bitmap.createBitmap(width, height, config)
+        val newBitmap = Bitmap.createBitmap(width, height, config ?: Config.ARGB_8888)
         val canvas = Canvas(newBitmap)
         canvas.drawColor(applicationContext.getColor(DesignSystem.color.accent))
         val noBlurPaint = Paint().apply {

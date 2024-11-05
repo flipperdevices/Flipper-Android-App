@@ -1,12 +1,12 @@
 package com.flipperdevices.bridge.dao.impl.api.key
 
-import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.storage.AndroidFlipperStorageProvider
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -39,7 +39,7 @@ private val EXAMPLE_FLIPPER_KEY = FlipperKey(
 )
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class ShouldSynchronizeHelperTest {
     @Test
     fun `edit name of key`() = runTest {

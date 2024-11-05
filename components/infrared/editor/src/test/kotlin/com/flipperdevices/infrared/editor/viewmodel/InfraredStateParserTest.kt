@@ -1,11 +1,11 @@
 package com.flipperdevices.infrared.editor.viewmodel
 
-import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.flipperdevices.bridge.dao.api.model.FlipperFile
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.test.readTestAssetString
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class InfraredStateParserTest {
 
     @Test

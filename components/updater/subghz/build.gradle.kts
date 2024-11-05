@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.compose.material)
 
     // Testing
+    testImplementation(projects.components.core.buildKonfig)
     testImplementation(projects.components.core.test)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

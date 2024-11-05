@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.dagger)
 
     testImplementation(projects.components.core.test)
+    testImplementation(projects.components.core.buildKonfig)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.ktx.testing)

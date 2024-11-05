@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.LocaleList
 import android.telephony.TelephonyManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelperImpl
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
@@ -27,7 +28,7 @@ import org.robolectric.util.ReflectionHelpers
 import java.util.Locale
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.TIRAMISU])
+@Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class RegionProvisioningHelperTest {
     @OptIn(DelicateCoroutinesApi::class)
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
