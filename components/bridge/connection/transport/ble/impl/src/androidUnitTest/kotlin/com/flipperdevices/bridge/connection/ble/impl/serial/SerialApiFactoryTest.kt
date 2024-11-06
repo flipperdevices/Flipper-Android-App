@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.ble.impl.serial
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.ble.api.OverflowControlConfig
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialOverflowThrottler
@@ -11,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattService
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import java.util.UUID
 
@@ -23,6 +25,13 @@ private val config = FBleDeviceSerialConfig(
 )
 
 class SerialApiFactoryTest {
+    private lateinit var flipperActionNotifier: FlipperActionNotifier
+
+    @Before
+    fun setUp() {
+        flipperActionNotifier = mockk(relaxed = true)
+    }
+
     @Test
     fun `return null if serial service is empty`() {
         val underTest = SerialApiFactory(
@@ -32,6 +41,7 @@ class SerialApiFactoryTest {
         val result = underTest.build(
             config = config,
             scope = mockk(),
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
@@ -53,6 +63,7 @@ class SerialApiFactoryTest {
         val result = underTest.build(
             config = config,
             scope = mockk(),
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
@@ -81,6 +92,7 @@ class SerialApiFactoryTest {
         val result = underTest.build(
             config = config,
             scope = mockk(),
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
@@ -111,7 +123,8 @@ class SerialApiFactoryTest {
                     invoke(
                         rxCharacteristic = eq(rxCharacteristic),
                         txCharacteristic = eq(txCharacteristic),
-                        scope = eq(scope)
+                        scope = eq(scope),
+                        flipperActionNotifier = flipperActionNotifier,
                     )
                 } returns unsafeApiImpl
             },
@@ -121,6 +134,7 @@ class SerialApiFactoryTest {
         val result = underTest.build(
             config = config,
             scope = scope,
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
@@ -152,7 +166,8 @@ class SerialApiFactoryTest {
                     invoke(
                         rxCharacteristic = eq(rxCharacteristic),
                         txCharacteristic = eq(txCharacteristic),
-                        scope = eq(scope)
+                        scope = eq(scope),
+                        flipperActionNotifier = flipperActionNotifier,
                     )
                 } returns unsafeApiImpl
             },
@@ -164,6 +179,7 @@ class SerialApiFactoryTest {
                 overflowControl = OverflowControlConfig(UUID.fromString("00000000-0000-0000-0000-000000000005"))
             ),
             scope = scope,
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
@@ -199,7 +215,8 @@ class SerialApiFactoryTest {
                     invoke(
                         rxCharacteristic = eq(rxCharacteristic),
                         txCharacteristic = eq(txCharacteristic),
-                        scope = eq(scope)
+                        scope = eq(scope),
+                        flipperActionNotifier = flipperActionNotifier,
                     )
                 } returns unsafeApiImpl
             },
@@ -208,7 +225,8 @@ class SerialApiFactoryTest {
                     invoke(
                         serialApi = eq(unsafeApiImpl),
                         scope = eq(scope),
-                        overflowCharacteristic = eq(overflowCharacteristic)
+                        overflowCharacteristic = eq(overflowCharacteristic),
+                        flipperActionNotifier = flipperActionNotifier,
                     )
                 } returns throttlerApi
             }
@@ -219,6 +237,7 @@ class SerialApiFactoryTest {
                 overflowControl = OverflowControlConfig(UUID.fromString("00000000-0000-0000-0000-000000000005"))
             ),
             scope = scope,
+            flipperActionNotifier = flipperActionNotifier,
             services = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))

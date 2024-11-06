@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.ble.impl.serial
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialOverflowThrottler
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import io.mockk.coEvery
@@ -29,11 +30,13 @@ class FSerialOverflowThrottlerTest {
     private lateinit var overflowCharacteristic: ClientBleGattCharacteristic
     private lateinit var serialApi: FSerialDeviceApi
     private lateinit var context: Context
+    private lateinit var flipperActionNotifier: FlipperActionNotifier
 
     @Before
     fun setUp() {
         serialApi = mockk(relaxUnitFun = true)
         overflowByteArrayFlow = MutableSharedFlow(replay = 1)
+        flipperActionNotifier = mockk(relaxed = true)
         overflowCharacteristic = mockk(relaxUnitFun = true) {
             coEvery { getNotifications(any(), any()) } returns overflowByteArrayFlow
             coEvery { read() } returns DataByteArray()
@@ -50,7 +53,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -76,7 +80,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
 
         val result = runCatching {
@@ -103,7 +108,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -140,7 +146,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -164,7 +171,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -200,7 +208,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -245,7 +254,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -278,6 +288,63 @@ class FSerialOverflowThrottlerTest {
         coVerify { serialApi.sendBytes(eq(firstArray)) }
         coVerify { serialApi.sendBytes(eq(secondArray)) }
         coVerify { serialApi.sendBytes(eq(thirdArray)) }
+
+        childScope.cancel()
+    }
+
+    @Test
+    fun `when send multiple async requests then no bytes missing`() = runTest {
+        val childScope = TestScope(this.testScheduler)
+        val serialDeviceApi = FSerialOverflowThrottler(
+            scope = childScope,
+            serialApi = serialApi,
+            overflowCharacteristic = overflowCharacteristic,
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
+        )
+
+        fun getByteArray() = ByteArray(4)
+            .let(ByteBuffer::wrap)
+            .apply { putInt(1024) }
+            .array()
+            .let(::DataByteArray)
+
+        fun indexFilledByteArray(size: Int) = ByteArray(
+            size = size,
+            init = { index -> index.toByte() }
+        )
+
+        overflowByteArrayFlow.emit(getByteArray())
+        // 2500 in total
+        // Need to be delivered separately and async
+        listOf(
+            512,
+            512,
+            512,
+            512,
+            452
+        ).forEach { size -> launch { serialDeviceApi.sendBytes(indexFilledByteArray(size)) } }
+        // First portion of 1024
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        // Second portion of 1024
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        // Last portion of 452
+        childScope.advanceUntilIdle()
+        childScope.advanceTimeBy(100L) // Timeout for reading buffer
+        childScope.advanceUntilIdle()
+        overflowByteArrayFlow.emit(getByteArray())
+
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(1024))) }
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(1024))) }
+        coVerify { serialApi.sendBytes(eq(indexFilledByteArray(452))) }
 
         childScope.cancel()
     }

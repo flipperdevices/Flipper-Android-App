@@ -3,6 +3,7 @@ package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnectionPermissionException
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
@@ -32,6 +33,7 @@ class FSerialOverflowThrottler @AssistedInject constructor(
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val scope: CoroutineScope,
     @Assisted private val overflowCharacteristic: ClientBleGattCharacteristic,
+    @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     private val context: Context
 ) : FSerialDeviceApi,
     LogTagProvider {
@@ -40,6 +42,8 @@ class FSerialOverflowThrottler @AssistedInject constructor(
     private val channel = Channel<ByteArray>()
 
     private var pendingBytes: ByteArray? = null
+
+    override fun getActionNotifier() = flipperActionNotifier
 
     /**
      * Bytes waiting to be sent to the device
@@ -149,8 +153,10 @@ class FSerialOverflowThrottler @AssistedInject constructor(
                 remainBufferSize = 0 // here we end the while cycle
             }
 
-            bytesToSend = withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
-                channel.receive()
+            if (remainBufferSize > 0) {
+                bytesToSend = withTimeoutOrNull(SERIAL_SEND_WAIT_TIMEOUT_MS) {
+                    channel.receive()
+                }
             }
         }
 
@@ -175,7 +181,8 @@ class FSerialOverflowThrottler @AssistedInject constructor(
         operator fun invoke(
             serialApi: FSerialDeviceApi,
             scope: CoroutineScope,
-            overflowCharacteristic: ClientBleGattCharacteristic
+            overflowCharacteristic: ClientBleGattCharacteristic,
+            flipperActionNotifier: FlipperActionNotifier
         ): FSerialOverflowThrottler
     }
 }

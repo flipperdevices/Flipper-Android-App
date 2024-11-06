@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -22,12 +23,15 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     @Assisted config: FBleDeviceSerialConfig,
     @Assisted serviceFlow: StateFlow<ClientBleGattServices?>,
+    @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     serialApiFactory: SerialApiFactory
 ) : FSerialDeviceApi, LogTagProvider {
     override val TAG = "FSerialDeviceApiWrapper"
     private var serialApiScope: CoroutineScope? = null
     private var delegateSerialApi: FSerialDeviceApi? = null
     private val lock = WaitNotifyLock()
+
+    override fun getActionNotifier(): FlipperActionNotifier = flipperActionNotifier
 
     init {
         scope.launch {
@@ -46,7 +50,8 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
                     val serialApi = serialApiFactory.build(
                         config = config,
                         services = services,
-                        scope = newSerialApiScope
+                        scope = newSerialApiScope,
+                        flipperActionNotifier = flipperActionNotifier
                     )
                     if (serialApi == null) {
                         delegateSerialApi = null
@@ -83,7 +88,8 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
         operator fun invoke(
             scope: CoroutineScope,
             config: FBleDeviceSerialConfig,
-            services: StateFlow<ClientBleGattServices?>
+            services: StateFlow<ClientBleGattServices?>,
+            flipperActionNotifier: FlipperActionNotifier
         ): FSerialDeviceApiWrapper
     }
 }

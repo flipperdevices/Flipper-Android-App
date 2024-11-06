@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.serial
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
@@ -11,13 +12,14 @@ import javax.inject.Inject
 
 class SerialApiFactory @Inject constructor(
     private val unsafeApiImplFactory: FSerialUnsafeApiImpl.Factory,
-    private val throttlerApiFactory: FSerialOverflowThrottler.Factory
+    private val throttlerApiFactory: FSerialOverflowThrottler.Factory,
 ) : LogTagProvider {
     override val TAG = "SerialApiCombinedFactory"
     fun build(
         config: FBleDeviceSerialConfig,
         services: ClientBleGattServices,
-        scope: CoroutineScope
+        scope: CoroutineScope,
+        flipperActionNotifier: FlipperActionNotifier
     ): FSerialDeviceApi? {
         val serialService = services.findService(config.serialServiceUuid)
         val rxCharacteristic = serialService?.findCharacteristic(config.rxServiceCharUuid)
@@ -32,7 +34,8 @@ class SerialApiFactory @Inject constructor(
         var deviceApi: FSerialDeviceApi = unsafeApiImplFactory(
             rxCharacteristic = rxCharacteristic,
             txCharacteristic = txCharacteristic,
-            scope = scope
+            scope = scope,
+            flipperActionNotifier = flipperActionNotifier
         )
 
         val overflowControlConfig = config.overflowControl
@@ -47,7 +50,8 @@ class SerialApiFactory @Inject constructor(
             deviceApi = throttlerApiFactory(
                 serialApi = deviceApi,
                 scope = scope,
-                overflowCharacteristic = overflowCharacteristic
+                overflowCharacteristic = overflowCharacteristic,
+                flipperActionNotifier = flipperActionNotifier
             )
         }
 

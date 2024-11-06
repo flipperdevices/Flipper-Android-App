@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQua
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
@@ -23,9 +24,13 @@ class FLagsDetectorFeatureFactoryImpl @Inject constructor(
     ): FDeviceFeatureApi? {
         val restartRpcFeature =
             unsafeFeatureDeviceApi.getUnsafe(FRestartRpcFeatureApi::class) ?: return null
+        val flipperActionNotifier = (connectedDevice as? FSerialDeviceApi)
+            ?.getActionNotifier()
+            ?: return null
         return lagsDetectorFeatureFactory(
             scope = scope,
-            restartRpcFeatureApi = restartRpcFeature
+            restartRpcFeatureApi = restartRpcFeature,
+            flipperActionNotifier = flipperActionNotifier
         )
     }
 }

@@ -38,7 +38,8 @@ class FLagsDetectorFeatureTest {
 
         underTest = FLagsDetectorFeatureImpl(
             scope = childScope,
-            restartRpcFeatureApi = restartRpcFeatureApi
+            restartRpcFeatureApi = restartRpcFeatureApi,
+            flipperActionNotifier = FlipperActionNotifierImpl(childScope)
         )
         val backgroundJob = backgroundScope.launch {
             underTest.wrapPendingAction(mockk(relaxed = true)) {
@@ -65,7 +66,8 @@ class FLagsDetectorFeatureTest {
 
         underTest = FLagsDetectorFeatureImpl(
             scope = childScope,
-            restartRpcFeatureApi = restartRpcFeatureApi
+            restartRpcFeatureApi = restartRpcFeatureApi,
+            flipperActionNotifier = FlipperActionNotifierImpl(childScope)
         )
         val backgroundJob = backgroundScope.launch {
             underTest.wrapPendingAction(mockk()) {

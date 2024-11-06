@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.api
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.ble.api.GATTCharacteristicAddress
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialDeviceApiWrapper
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class FBleApiWithSerialFactory @Inject constructor(
     private val serialDeviceApiWrapperFactory: FSerialDeviceApiWrapper.Factory,
-    private val fSerialRestartApiFactory: FSerialRestartApiImpl.Factory
+    private val fSerialRestartApiFactory: FSerialRestartApiImpl.Factory,
+    private val flipperActionNotifierFactory: FlipperActionNotifier.Factory
 ) {
     fun build(
         scope: CoroutineScope,
@@ -22,7 +24,13 @@ class FBleApiWithSerialFactory @Inject constructor(
         metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
         statusListener: FTransportConnectionStatusListener
     ): FBleApiWithSerial {
-        val serialDeviceApi = serialDeviceApiWrapperFactory(scope, serialConfig, client.services)
+        val flipperActionNotifier = flipperActionNotifierFactory.invoke(scope)
+        val serialDeviceApi = serialDeviceApiWrapperFactory(
+            scope = scope,
+            config = serialConfig,
+            services = client.services,
+            flipperActionNotifier = flipperActionNotifier
+        )
         val restartApi = fSerialRestartApiFactory(
             services = client.services,
             serialServiceUuid = serialConfig.serialServiceUuid,
@@ -34,7 +42,7 @@ class FBleApiWithSerialFactory @Inject constructor(
             metaInfoGattMap = metaInfoGattMap,
             statusListener = statusListener,
             serialDeviceApi = serialDeviceApi,
-            serialRestartApi = restartApi
+            serialRestartApi = restartApi,
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
@@ -20,12 +21,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class FLagsDetectorFeatureImpl @AssistedInject constructor(
-    @Assisted scope: CoroutineScope,
+    @Assisted private val scope: CoroutineScope,
     @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi,
+    @Assisted private val flipperActionNotifier: FlipperActionNotifier
 ) : FLagsDetectorFeature, LogTagProvider {
     override val TAG = "FlipperLagsDetector-${hashCode()}"
-
-    private val flipperActionNotifier = FlipperActionNotifierImpl(scope = scope)
 
     private val pendingResponseCounter = PendingResponseCounter(
         onAction = flipperActionNotifier::notifyAboutAction
@@ -49,7 +49,9 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
         }
     }
 
-    override fun notifyAboutAction() = flipperActionNotifier.notifyAboutAction()
+    override fun notifyAboutAction() {
+        flipperActionNotifier.notifyAboutAction()
+    }
 
     override suspend fun <T> wrapPendingAction(
         request: FlipperRequest?,
@@ -79,6 +81,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
         operator fun invoke(
             scope: CoroutineScope,
             restartRpcFeatureApi: FRestartRpcFeatureApi,
+            flipperActionNotifier: FlipperActionNotifier
         ): FLagsDetectorFeatureImpl
     }
 }
