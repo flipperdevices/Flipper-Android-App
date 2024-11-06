@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.ble.impl.serial
 
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceSerialConfig
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialDeviceApiWrapper
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.SerialApiFactory
@@ -22,6 +23,7 @@ class FSerialDeviceApiWrapperTest {
     private lateinit var config: FBleDeviceSerialConfig
     private lateinit var serviceFlow: MutableStateFlow<ClientBleGattServices?>
     private lateinit var serialApiFactory: SerialApiFactory
+    private lateinit var flipperActionNotifier: FlipperActionNotifier
 
     @Before
     fun setUp() {
@@ -32,9 +34,10 @@ class FSerialDeviceApiWrapperTest {
             overflowControl = null,
             resetCharUUID = UUID.fromString("00000000-0000-0000-0000-000000000004")
         )
+        flipperActionNotifier = mockk(relaxed = true)
         serviceFlow = MutableStateFlow(null)
         serialApiFactory = mockk {
-            every { build(any(), any(), any()) } returns null
+            every { build(any(), any(), any(), any()) } returns null
         }
     }
 
@@ -45,7 +48,8 @@ class FSerialDeviceApiWrapperTest {
             scope = childScope,
             config = config,
             serviceFlow = serviceFlow,
-            serialApiFactory = serialApiFactory
+            serialApiFactory = serialApiFactory,
+            flipperActionNotifier = flipperActionNotifier
         )
         val services: ClientBleGattServices = mockk()
         val serialApi: FSerialDeviceApi = mockk(relaxUnitFun = true)
@@ -54,7 +58,8 @@ class FSerialDeviceApiWrapperTest {
             serialApiFactory.build(
                 config = eq(config),
                 services = eq(services),
-                scope = any()
+                scope = any(),
+                flipperActionNotifier = any()
             )
         } returns serialApi
 
@@ -80,7 +85,8 @@ class FSerialDeviceApiWrapperTest {
             scope = childScope,
             config = config,
             serviceFlow = serviceFlow,
-            serialApiFactory = serialApiFactory
+            serialApiFactory = serialApiFactory,
+            flipperActionNotifier = flipperActionNotifier
         )
         val services: ClientBleGattServices = mockk()
         val serialApi: FSerialDeviceApi = mockk(relaxUnitFun = true)
@@ -89,7 +95,8 @@ class FSerialDeviceApiWrapperTest {
             serialApiFactory.build(
                 config = eq(config),
                 services = eq(services),
-                scope = any()
+                scope = any(),
+                flipperActionNotifier = any()
             )
         } returns serialApi
 
@@ -113,7 +120,8 @@ class FSerialDeviceApiWrapperTest {
             scope = childScope,
             config = config,
             serviceFlow = serviceFlow,
-            serialApiFactory = serialApiFactory
+            serialApiFactory = serialApiFactory,
+            flipperActionNotifier = flipperActionNotifier
         )
         val services: ClientBleGattServices = mockk()
         val serialApi: FSerialDeviceApi = mockk(relaxUnitFun = true)
@@ -122,7 +130,8 @@ class FSerialDeviceApiWrapperTest {
             serialApiFactory.build(
                 config = eq(config),
                 services = eq(services),
-                scope = any()
+                scope = any(),
+                flipperActionNotifier = any()
             )
         } returns null
 
@@ -148,7 +157,8 @@ class FSerialDeviceApiWrapperTest {
             scope = childScope,
             config = config,
             serviceFlow = serviceFlow,
-            serialApiFactory = serialApiFactory
+            serialApiFactory = serialApiFactory,
+            flipperActionNotifier = flipperActionNotifier
         )
         val services: ClientBleGattServices = mockk()
         val serialApi: FSerialDeviceApi = mockk(relaxUnitFun = true)
@@ -157,7 +167,8 @@ class FSerialDeviceApiWrapperTest {
             serialApiFactory.build(
                 config = eq(config),
                 services = eq(services),
-                scope = any()
+                scope = any(),
+                flipperActionNotifier = any()
             )
         } returns serialApi
 

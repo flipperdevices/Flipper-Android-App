@@ -50,7 +50,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
     }
 
     override fun notifyAboutAction() {
-        scope.launch { flipperActionNotifier.notifyAboutAction() }
+        flipperActionNotifier.notifyAboutAction()
     }
 
     override suspend fun <T> wrapPendingAction(

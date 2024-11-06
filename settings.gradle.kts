@@ -83,7 +83,6 @@ include(
     ":components:bridge:connection:feature:lagsdetector:api",
     ":components:bridge:connection:feature:lagsdetector:impl",
     ":components:bridge:connection:feature:actionnotifier:api",
-    ":components:bridge:connection:feature:actionnotifier:impl",
     ":components:bridge:connection:feature:serialspeed:api",
     ":components:bridge:connection:feature:serialspeed:impl",
 

@@ -48,7 +48,6 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.lagsdetector.api)
     implementation(projects.components.bridge.connection.feature.lagsdetector.impl)
     implementation(projects.components.bridge.connection.feature.actionnotifier.api)
-    implementation(projects.components.bridge.connection.feature.actionnotifier.impl)
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
     implementation(projects.components.bridge.connection.feature.protocolversion.impl)
     implementation(projects.components.bridge.connection.feature.provider.api)

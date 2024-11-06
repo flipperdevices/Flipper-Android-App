@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.ble.impl.serial
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.ble.impl.serial.FSerialOverflowThrottler
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import io.mockk.coEvery
@@ -29,11 +30,13 @@ class FSerialOverflowThrottlerTest {
     private lateinit var overflowCharacteristic: ClientBleGattCharacteristic
     private lateinit var serialApi: FSerialDeviceApi
     private lateinit var context: Context
+    private lateinit var flipperActionNotifier: FlipperActionNotifier
 
     @Before
     fun setUp() {
         serialApi = mockk(relaxUnitFun = true)
         overflowByteArrayFlow = MutableSharedFlow(replay = 1)
+        flipperActionNotifier = mockk(relaxed = true)
         overflowCharacteristic = mockk(relaxUnitFun = true) {
             coEvery { getNotifications(any(), any()) } returns overflowByteArrayFlow
             coEvery { read() } returns DataByteArray()
@@ -50,7 +53,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -76,7 +80,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
 
         val result = runCatching {
@@ -103,7 +108,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -140,7 +146,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -164,7 +171,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -200,7 +208,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -245,7 +254,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
         val byteBuffer = ByteBuffer.wrap(ByteArray(4))
         byteBuffer.putInt(1024)
@@ -289,7 +299,8 @@ class FSerialOverflowThrottlerTest {
             scope = childScope,
             serialApi = serialApi,
             overflowCharacteristic = overflowCharacteristic,
-            context = context
+            context = context,
+            flipperActionNotifier = flipperActionNotifier
         )
 
         fun getByteArray() = ByteArray(4)

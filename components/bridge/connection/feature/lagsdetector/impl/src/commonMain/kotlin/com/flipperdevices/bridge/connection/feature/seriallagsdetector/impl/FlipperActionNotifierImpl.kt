@@ -1,4 +1,4 @@
-package com.flipperdevices.bridge.connection.feature.actionnotifier.impl
+package com.flipperdevices.bridge.connection.feature.seriallagsdetector.impl
 
 import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.core.di.AppGraph
