@@ -16,12 +16,6 @@ sealed interface FileManagerNavigationConfig {
     ) : FileManagerNavigationConfig
 
     @Serializable
-    data class Upload(
-        @Serializable(with = PathSerializer::class)
-        val path: Path
-    ) : FileManagerNavigationConfig
-
-    @Serializable
     data class Edit(
         @Serializable(with = PathSerializer::class)
         val path: Path

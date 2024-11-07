@@ -6,6 +6,8 @@ import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -70,24 +72,17 @@ class UploadViewModel @Inject constructor(
         fileName: String? = deeplinkContent.filename(),
         currentFileIndex: Int,
         totalFilesAmount: Int
-    ) {
-        val fileStream = deeplinkContentProvider.source(deeplinkContent) ?: run {
-            error { "#uploadFile could not get deeplink source" }
-            _state.emit(State.Error)
-            return
-        }
-        val totalLength = deeplinkContent.length() ?: run {
-            error { "#uploadFile could not get deeplink totalLength" }
-            _state.emit(State.Error)
-            return
-        }
-        if (fileName == null) {
-            error { "#uploadFile fileName is null" }
-            _state.emit(State.Error)
-            return
-        }
-        val pathOnFlipper = folderPath.resolve(fileName)
-        runCatching {
+    ): Result<ListingItem> {
+        return runCatching {
+            fileName ?: error("#uploadFile fileName is null")
+            val fileStream = deeplinkContentProvider
+                .source(deeplinkContent)
+                ?: error("#uploadFile could not get deeplink source")
+            val totalLength = deeplinkContent
+                .length()
+                ?: error("#uploadFile could not get deeplink totalLength")
+
+            val pathOnFlipper = folderPath.resolve(fileName)
             fileStream.use { deeplinkSource ->
                 uploadApi.sink(pathOnFlipper.toString())
                     .use { sink ->
@@ -118,6 +113,11 @@ class UploadViewModel @Inject constructor(
                                     )
                                 }
                             }
+                        )
+                        ListingItem(
+                            fileName = fileName,
+                            fileType = FileType.FILE,
+                            size = totalLength
                         )
                     }
             }
@@ -157,16 +157,16 @@ class UploadViewModel @Inject constructor(
                     mutex.withLock("uploadRaw") {
                         lastJob?.cancelAndJoin()
                         lastJob = launch {
-                            uploadFile(
+                            val uploadedItems = uploadFile(
                                 uploadApi = uploadApi,
                                 deeplinkContent = deeplinkContent,
                                 fileName = fileName,
                                 folderPath = folderPath,
                                 currentFileIndex = 0,
                                 totalFilesAmount = 1
-                            )
+                            ).getOrNull().let(::listOf).filterNotNull()
                             storageProvider.fileSystem.delete(temporaryFile)
-                            _state.emit(State.Uploaded)
+                            _state.emit(State.Uploaded(uploadedItems))
                         }
                     }
                 }
@@ -203,16 +203,17 @@ class UploadViewModel @Inject constructor(
                     mutex.withLock("tryUpload") {
                         lastJob?.cancelAndJoin()
                         lastJob = launch {
-                            contents.forEachIndexed { fileIndex, deeplinkContent ->
+                            val uploadedItems = contents.mapIndexed { fileIndex, deeplinkContent ->
                                 uploadFile(
                                     uploadApi = uploadApi,
                                     deeplinkContent = deeplinkContent,
                                     folderPath = folderPath,
                                     currentFileIndex = fileIndex,
                                     totalFilesAmount = totalFilesAmount
-                                )
-                            }
-                            _state.emit(State.Uploaded)
+                                ).getOrNull()
+                            }.filterNotNull()
+
+                            _state.emit(State.Uploaded(uploadedItems))
                         }
                     }
                 }

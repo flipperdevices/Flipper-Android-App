@@ -3,6 +3,7 @@ package com.flipperdevices.filemanager.upload.api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,14 +30,14 @@ interface UploaderDecomposeComponent {
     fun Render(
         state: State,
         speedState: Long?,
-        onCancel: () -> Unit,
+        onCancelClick: () -> Unit,
         modifier: Modifier
     )
 
     sealed interface State {
         data object Pending : State
         data object Error : State
-        data object Uploaded : State
+        data class Uploaded(val items: List<ListingItem>) : State
         data object Cancelled : State
         data class Uploading(
             val fileIndex: Int,
