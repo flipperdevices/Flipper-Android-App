@@ -14,6 +14,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.deeplink.model.DeeplinkContent
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent.State
 import com.flipperdevices.filemanager.upload.impl.deeplink.DeeplinkContentProvider
 import kotlinx.coroutines.Job
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -70,19 +72,19 @@ class UploadViewModel @Inject constructor(
         deeplinkContent: DeeplinkContent,
         folderPath: Path,
         fileName: String? = deeplinkContent.filename(),
-        currentFileIndex: Int,
-        totalFilesAmount: Int
     ): Result<ListingItem> {
         return runCatching {
-            fileName ?: error("#uploadFile fileName is null")
+            fileName ?: error("fileName is null")
             val fileStream = deeplinkContentProvider
                 .source(deeplinkContent)
-                ?: error("#uploadFile could not get deeplink source")
+                ?: error("Could not get deeplink source")
             val totalLength = deeplinkContent
                 .length()
-                ?: error("#uploadFile could not get deeplink totalLength")
+                ?: error("Could not get deeplink totalLength")
+            check(state.first() is State.Uploading) { "State should be Uploading" }
 
             val pathOnFlipper = folderPath.resolve(fileName)
+            var prevProgressValue: Long = 0
             fileStream.use { deeplinkSource ->
                 uploadApi.sink(pathOnFlipper.toString())
                     .use { sink ->
@@ -92,6 +94,8 @@ class UploadViewModel @Inject constructor(
                                 deeplinkContent.length()
                             },
                             progressListener = { current, max ->
+                                val diff = current - prevProgressValue
+                                prevProgressValue = current
                                 if (!currentCoroutineContext().isActive) {
                                     sink.close()
                                     deeplinkSource.close()
@@ -101,15 +105,18 @@ class UploadViewModel @Inject constructor(
                                     0L -> 0f
                                     else -> current / max.toFloat()
                                 }
-                                _state.update {
-                                    State.Uploading(
-                                        fileIndex = currentFileIndex,
-                                        totalFiles = totalFilesAmount,
-                                        uploadedFileSize = progress
-                                            .times(totalLength)
-                                            .toLong(),
-                                        uploadFileTotalSize = totalLength,
-                                        fileName = fileName
+                                _state.update { state ->
+                                    val uploading = (state as? State.Uploading)
+                                        ?: error("Uploading state changed during file uploading")
+                                    uploading.copy(
+                                        uploadedSize = uploading.uploadedSize + diff,
+                                        currentItem = UploaderDecomposeComponent.UploadingItem(
+                                            fileName = fileName,
+                                            uploadedSize = progress
+                                                .times(totalLength)
+                                                .toLong(),
+                                            totalSize = totalLength
+                                        )
                                     )
                                 }
                             }
@@ -138,11 +145,15 @@ class UploadViewModel @Inject constructor(
         )
         _state.update {
             State.Uploading(
-                fileIndex = 0,
-                totalFiles = 1,
-                uploadedFileSize = 0L,
-                uploadFileTotalSize = 0L,
-                fileName = fileName
+                currentItemIndex = 0,
+                totalItemsAmount = 1,
+                uploadedSize = 0L,
+                totalSize = content.size.toLong(),
+                currentItem = UploaderDecomposeComponent.UploadingItem(
+                    fileName = fileName,
+                    uploadedSize = 0L,
+                    totalSize = content.size.toLong()
+                )
             )
         }
         featureProvider.get<FStorageFeatureApi>()
@@ -162,8 +173,6 @@ class UploadViewModel @Inject constructor(
                                 deeplinkContent = deeplinkContent,
                                 fileName = fileName,
                                 folderPath = folderPath,
-                                currentFileIndex = 0,
-                                totalFilesAmount = 1
                             ).getOrNull().let(::listOf).filterNotNull()
                             storageProvider.fileSystem.delete(temporaryFile)
                             _state.emit(State.Uploaded(uploadedItems))
@@ -182,13 +191,18 @@ class UploadViewModel @Inject constructor(
             return
         }
         val totalFilesAmount = contents.size
+        val totalSize = contents.sumOf { it.length() ?: 0L }
         _state.update {
             State.Uploading(
-                fileIndex = 0,
-                totalFiles = totalFilesAmount,
-                uploadedFileSize = 0L,
-                uploadFileTotalSize = 0L,
-                fileName = contents.firstOrNull()?.filename().orEmpty()
+                currentItemIndex = 0,
+                totalItemsAmount = totalFilesAmount,
+                uploadedSize = 0L,
+                totalSize = totalSize,
+                currentItem = UploaderDecomposeComponent.UploadingItem(
+                    fileName = contents.firstOrNull()?.filename().orEmpty(),
+                    uploadedSize = 0L,
+                    totalSize = contents.firstOrNull()?.length() ?: 0L
+                )
             )
         }
         featureProvider.get<FStorageFeatureApi>()
@@ -204,12 +218,18 @@ class UploadViewModel @Inject constructor(
                         lastJob?.cancelAndJoin()
                         lastJob = launch {
                             val uploadedItems = contents.mapIndexed { fileIndex, deeplinkContent ->
+                                _state.update { state ->
+                                    val uploading = (state as? State.Uploading)
+                                        ?.copy(currentItemIndex = fileIndex)
+                                    if (uploading == null) {
+                                        error { "#tryUpload state was not uploading during $fileIndex'th uploading" }
+                                    }
+                                    uploading ?: state
+                                }
                                 uploadFile(
                                     uploadApi = uploadApi,
                                     deeplinkContent = deeplinkContent,
                                     folderPath = folderPath,
-                                    currentFileIndex = fileIndex,
-                                    totalFilesAmount = totalFilesAmount
                                 ).getOrNull()
                             }.filterNotNull()
 

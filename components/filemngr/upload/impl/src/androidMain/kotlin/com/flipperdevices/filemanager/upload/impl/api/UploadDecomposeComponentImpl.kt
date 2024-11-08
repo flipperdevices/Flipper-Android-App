@@ -92,9 +92,9 @@ class UploadDecomposeComponentImpl @AssistedInject constructor(
                                 backHandler.register(backCallback)
                             }
                             val item = ListingItem(
-                                fileName = it.fileName,
+                                fileName = it.currentItem.fileName,
                                 fileType = FileType.FILE,
-                                size = it.uploadedFileSize
+                                size = it.currentItem.uploadedSize
                             )
                             onFilesChanged.invoke(listOf(item))
                         }

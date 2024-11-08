@@ -2,6 +2,8 @@
 <resources>
     <string name="fm_in_progress_file_size">Size: %1$s of %2$s</string>
     <string name="fm_in_progress_speed">Speed: %1$s/s</string>
+    <string name="fm_in_progress_items">%1$s/%2$s items</string>
     <string name="fm_uploading">Uploading...</string>
+    <string name="fm_uploading_file">Uploading: %1$s [%2$s/%3$s]</string>
     <string name="fm_cancel">Cancel Upload</string>
 </resources>

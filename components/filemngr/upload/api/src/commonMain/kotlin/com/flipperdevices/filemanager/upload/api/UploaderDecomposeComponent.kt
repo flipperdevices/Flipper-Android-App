@@ -40,13 +40,19 @@ interface UploaderDecomposeComponent {
         data class Uploaded(val items: List<ListingItem>) : State
         data object Cancelled : State
         data class Uploading(
-            val fileIndex: Int,
-            val totalFiles: Int,
-            val uploadedFileSize: Long,
-            val uploadFileTotalSize: Long,
-            val fileName: String
+            val currentItemIndex: Int,
+            val totalItemsAmount: Int,
+            val uploadedSize: Long,
+            val totalSize: Long,
+            val currentItem: UploadingItem,
         ) : State
     }
+
+    data class UploadingItem(
+        val fileName: String,
+        val uploadedSize: Long,
+        val totalSize: Long
+    )
 
     fun interface Factory {
         operator fun invoke(
