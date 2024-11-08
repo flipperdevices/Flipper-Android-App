@@ -79,7 +79,7 @@ class UploadDecomposeComponentImpl @AssistedInject constructor(
                 .onEach {
                     when (it) {
                         is UploaderDecomposeComponent.State.Uploaded,
-                        UploaderDecomposeComponent.State.Pending,
+                        is UploaderDecomposeComponent.State.Pending,
                         UploaderDecomposeComponent.State.Error,
                         UploaderDecomposeComponent.State.Cancelled -> {
                             if (backHandler.isRegistered(backCallback)) {
@@ -91,22 +91,6 @@ class UploadDecomposeComponentImpl @AssistedInject constructor(
                             if (!backHandler.isRegistered(backCallback)) {
                                 backHandler.register(backCallback)
                             }
-                        }
-                    }
-                }
-                .onEach {
-                    when (it) {
-                        is UploaderDecomposeComponent.State.Pending -> Unit
-                        UploaderDecomposeComponent.State.Error,
-                        UploaderDecomposeComponent.State.Cancelled -> {
-                            onFilesChanged.invoke(emptyList())
-                        }
-
-                        is UploaderDecomposeComponent.State.Uploaded -> {
-                            onFilesChanged.invoke(it.items)
-                        }
-
-                        is UploaderDecomposeComponent.State.Uploading -> {
                             val item = ListingItem(
                                 fileName = it.fileName,
                                 fileType = FileType.FILE,
