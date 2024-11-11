@@ -1,3 +1,7 @@
-- Bottom Bar redesign: We’ve divided Hub into two different tabs: Apps and Tools. Access these features faster with just one tap
-- Updater: Check what’s new before updating firmware
-- Fix for a vulnerability causing write access to internal application files (kudos to @LiveOverflow)
+🟠 New Features
+- Infrared Remotes Library: Find, save and use various remotes with a convenient UI right from your phone. Saved remotes are stored in the mobile app's Archive and transferred to your Flipper Zero (with a simplified UI).
+- Vibration settings: Toggle in Options.
+🟠 Improved Synchronization: Track individual file sync progress.
+🟠 Bug Fixes
+- Resolved app crashes in the Apps Catalog.
+- Fixed a bug that caused connection issues when switching between official and custom firmware.
