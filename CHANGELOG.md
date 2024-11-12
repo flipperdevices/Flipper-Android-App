@@ -2,6 +2,8 @@
 
 # 1.8.1 - In Progress
 
+- [FIX] Fix build when no metrics enabled
+
 # 1.8.0
 Attention: don't forget to add the flag for F-Droid before release
 
@@ -71,7 +73,6 @@ Attention: don't forget to add the flag for F-Droid before release
 - [FIX] Add deeplink fallback for flipper scheme uri
 - [FIX] Change description of remotes library card
 - [FIX] Fix bytes race in new api
-- [FIX] Fix build when no metrics enabled
 - [CI] Fix merge-queue files diff
 - [CI] Add https://github.com/LionZXY/detekt-decompose-rule
 - [CI] Enabling detekt module for android and kmp modules
