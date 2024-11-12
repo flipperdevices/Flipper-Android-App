@@ -1,9 +1,8 @@
 # Changelog
 
 # 1.8.1 - In Progress
-- 
-- [FIX] New file manager uploading progress
 
+- [FIX] New file manager uploading progress
 - [FIX] Fix build when no metrics enabled
 
 # 1.8.0
