@@ -1,8 +1,9 @@
 # Changelog
 
-# 1.7.2 - In Progress
-Attention: don't forget to add the flag for F-Droid before release
+# 1.8.1 - In Progress
 
+# 1.8.0
+Attention: don't forget to add the flag for F-Droid before release
 
 - [Feature] Add rpcinfo feature to new BLE api
 - [Feature] Infrared controls
