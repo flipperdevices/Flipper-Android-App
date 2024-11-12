@@ -2,6 +2,8 @@
 
 # 1.8.1 - In Progress
 
+- [FIX] Fix build when no metrics enabled
+
 # 1.8.0
 Attention: don't forget to add the flag for F-Droid before release
 
