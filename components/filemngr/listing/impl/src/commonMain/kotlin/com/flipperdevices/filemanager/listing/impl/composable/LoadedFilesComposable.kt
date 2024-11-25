@@ -69,7 +69,7 @@ fun LazyGridScope.LoadedFilesComposable(
                     subtitle = when (file) {
                         is ExtendedListingItem.File -> file.size.toFormattedSize()
                         is ExtendedListingItem.Folder -> stringResource(
-                            resource = FML.string.fml_items_in_foilder,
+                            resource = FML.string.fml_items_in_folder,
                             file.itemsCount ?: 0
                         )
                     },
