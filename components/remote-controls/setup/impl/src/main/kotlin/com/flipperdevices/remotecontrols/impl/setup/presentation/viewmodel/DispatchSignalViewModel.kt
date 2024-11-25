@@ -32,7 +32,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -151,11 +150,10 @@ class DispatchSignalViewModel @Inject constructor(
                             emulateHelper.startEmulate(
                                 scope = this,
                                 serviceApi = serviceApi,
-                                config = config
+                                config = config,
+                                isPressRelease = isOneTime
                             )
                             if (isOneTime) {
-                                delay(DEFAULT_SIGNAL_DELAY)
-                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
                                 _state.emit(DispatchSignalApi.State.Pending)
                                 onDispatched.invoke()
                             }
@@ -200,7 +198,6 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     companion object {
-        private const val DEFAULT_SIGNAL_DELAY = 500L
         private const val VIBRATOR_TIME = 100L
     }
 }

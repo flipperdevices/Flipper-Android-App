@@ -19,6 +19,7 @@ import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application
+import com.flipperdevices.protobuf.app.appButtonPressReleaseRequest
 import com.flipperdevices.protobuf.app.appButtonPressRequest
 import com.flipperdevices.protobuf.app.appLoadFileRequest
 import com.flipperdevices.protobuf.main
@@ -32,9 +33,14 @@ private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 
 interface StartEmulateHelper {
+    /**
+     * @param isPressRelease one-time emulate for infrared-only
+     */
+    @Suppress("LongParameterList")
     suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
+        isPressRelease: Boolean = false,
         config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit
@@ -52,6 +58,7 @@ class StartEmulateHelperImpl @Inject constructor(
     override suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
+        isPressRelease: Boolean,
         config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit,
@@ -103,7 +110,8 @@ class StartEmulateHelperImpl @Inject constructor(
             config = config,
             onResultTime = onResultTime,
             serviceApi = serviceApi,
-            isIndexEmulateSupport = indexEmulateSupported
+            isIndexEmulateSupport = indexEmulateSupported,
+            isPressRelease = isPressRelease
         )
     }
 
@@ -115,6 +123,7 @@ class StartEmulateHelperImpl @Inject constructor(
     private suspend fun processButtonPress(
         config: EmulateConfig,
         isIndexEmulateSupport: Boolean,
+        isPressRelease: Boolean,
         onResultTime: (Long) -> Unit,
         serviceApi: FlipperServiceApi
     ): Boolean {
@@ -125,7 +134,17 @@ class StartEmulateHelperImpl @Inject constructor(
         val appButtonPressResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
-                    appButtonPressRequest = getAppButtonPressRequest(config, isIndexEmulateSupport)
+                    if (isPressRelease) {
+                        appButtonPressReleaseRequest = getAppButtonPressReleaseRequest(
+                            config,
+                            isIndexEmulateSupport
+                        )
+                    } else {
+                        appButtonPressRequest = getAppButtonPressRequest(
+                            config,
+                            isIndexEmulateSupport
+                        )
+                    }
                 }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
             )
         )
@@ -164,6 +183,29 @@ class StartEmulateHelperImpl @Inject constructor(
         }
     }
 
+    private fun getAppButtonPressReleaseRequest(
+        config: EmulateConfig,
+        isIndexEmulateSupport: Boolean,
+    ): Application.AppButtonPressReleaseRequest {
+        return when (config.keyType) {
+            FlipperKeyType.INFRARED -> if (isIndexEmulateSupport) {
+                val indexArgs = config.index ?: error("Index args is null")
+                info { "#getAppButtonPressReleaseRequest by index with $config" }
+                appButtonPressReleaseRequest {
+                    index = indexArgs
+                }
+            } else {
+                val configArgs = config.args ?: error("Config args is null")
+                info { "#getAppButtonPressReleaseRequest by args with $config" }
+                appButtonPressReleaseRequest {
+                    args = configArgs
+                }
+            }
+
+            else -> error("#getAppButtonPressReleaseRequest Unknown button press request with config $config")
+        }
+    }
+
     private fun getAppButtonPressRequest(
         config: EmulateConfig,
         isIndexEmulateSupport: Boolean,
@@ -183,6 +225,7 @@ class StartEmulateHelperImpl @Inject constructor(
                     args = configArgs
                 }
             }
+
             else -> error("Unknown button press request with config $config")
         }
     }
