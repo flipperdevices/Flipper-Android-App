@@ -115,6 +115,19 @@ class FilesViewModel @AssistedInject constructor(
         }
     }
 
+    fun onFilesChanged(items: List<ListingItem>) {
+        _state.update { state ->
+            (state as? State.Loaded)?.let { loadedState ->
+                val newItemsNames = items.map(ListingItem::fileName)
+                val newFiles = loadedState.files
+                    .filter { item -> !newItemsNames.contains(item.fileName) }
+                    .plus(items)
+                    .toImmutableList()
+                loadedState.copy(files = newFiles)
+            } ?: state
+        }
+    }
+
     private suspend fun invalidate(
         featureStatus: FFeatureStatus<FStorageFeatureApi>
     ) = withLock(mutex, "invalidate") {
