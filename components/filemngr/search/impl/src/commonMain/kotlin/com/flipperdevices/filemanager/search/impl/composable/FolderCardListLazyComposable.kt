@@ -29,6 +29,7 @@ fun LazyListScope.FolderCardListLazyComposable(
             subtitle = file.fullPath.parent
                 ?.toString()
                 ?: file.instance.size.toFormattedSize(),
+            isSubtitleLoading = false,
             selectionState = ItemUiSelectionState.NONE,
             onClick = {
                 when (file.instance.fileType) {

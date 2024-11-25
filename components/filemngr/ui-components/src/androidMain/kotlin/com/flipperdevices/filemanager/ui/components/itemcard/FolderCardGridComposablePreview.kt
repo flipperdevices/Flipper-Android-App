@@ -24,7 +24,8 @@ private fun FolderCardGridComposablePreview() {
                     selectionState = selectionState,
                     onClick = {},
                     onCheckChange = {},
-                    onMoreClick = {}
+                    onMoreClick = {},
+                    isSubtitleLoading = false
                 )
             }
             ItemUiSelectionState.entries.forEach { selectionState ->
@@ -35,7 +36,20 @@ private fun FolderCardGridComposablePreview() {
                     selectionState = selectionState,
                     onClick = {},
                     onCheckChange = {},
-                    onMoreClick = {}
+                    onMoreClick = {},
+                    isSubtitleLoading = false
+                )
+            }
+            ItemUiSelectionState.entries.forEach { selectionState ->
+                FolderCardGridComposable(
+                    painter = painterResource(FR.drawable.ic_folder_black),
+                    title = "A very very ultra mega super duper log title with some message at the end",
+                    subtitle = "A very very ultra mega super duper log title with some message at the end",
+                    selectionState = selectionState,
+                    onClick = {},
+                    onCheckChange = {},
+                    onMoreClick = {},
+                    isSubtitleLoading = true
                 )
             }
         }

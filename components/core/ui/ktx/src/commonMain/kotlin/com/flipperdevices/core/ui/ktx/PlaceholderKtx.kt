@@ -14,10 +14,13 @@ import io.github.fornewid.placeholder.foundation.placeholder
 import io.github.fornewid.placeholder.foundation.shimmer
 
 @Suppress("ModifierComposed") // MOB-1039
-fun Modifier.placeholderConnecting(shape: Int = 4) = composed {
+fun Modifier.placeholderConnecting(
+    shape: Int = 4,
+    visible: Boolean = true
+) = composed {
     this.then(
         placeholder(
-            visible = true,
+            visible = visible,
             shape = RoundedCornerShape(shape.dp),
             color = LocalPallet.current.placeholder.copy(alpha = 0.2f),
             highlight = PlaceholderHighlight.shimmer(

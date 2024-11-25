@@ -29,6 +29,7 @@ fun FolderCardGridComposable(
     painter: Painter,
     title: String,
     subtitle: String,
+    isSubtitleLoading: Boolean,
     selectionState: ItemUiSelectionState,
     onClick: () -> Unit,
     onCheckChange: (Boolean) -> Unit,
@@ -62,7 +63,10 @@ fun FolderCardGridComposable(
                 horizontalAlignment = Alignment.Start
             ) {
                 ItemCardTitle(title)
-                ItemCardSubtitle(subtitle)
+                ItemCardSubtitle(
+                    text = subtitle,
+                    isLoading = isSubtitleLoading
+                )
             }
         }
 
