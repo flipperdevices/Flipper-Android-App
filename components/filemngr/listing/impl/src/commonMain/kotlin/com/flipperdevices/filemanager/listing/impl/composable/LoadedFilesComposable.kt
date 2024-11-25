@@ -20,7 +20,7 @@ import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlacehold
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asPainter
 import com.flipperdevices.filemanager.ui.components.itemcard.components.asTint
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
-import flipperapp.components.filemngr.listing.impl.generated.resources.fml_items_in_foilder
+import flipperapp.components.filemngr.listing.impl.generated.resources.fml_items_in_folder
 import okio.Path
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
