@@ -61,9 +61,7 @@ fun UploadingComposable(
             )
         }
         InProgressComposable(
-            fileName = state.fileName,
-            uploadedFileSize = state.uploadedFileSize,
-            uploadFileTotalSize = state.uploadFileTotalSize,
+            state = state,
             speed = speed
         )
     }

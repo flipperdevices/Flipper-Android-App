@@ -21,20 +21,63 @@ import com.flipperdevices.core.ui.ktx.elements.FlipperProgressIndicator
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import flipperapp.components.filemngr.upload.impl.generated.resources.fm_in_progress_file_size
+import flipperapp.components.filemngr.upload.impl.generated.resources.fm_in_progress_items
 import flipperapp.components.filemngr.upload.impl.generated.resources.fm_in_progress_speed
+import flipperapp.components.filemngr.upload.impl.generated.resources.fm_uploading_file
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.upload.impl.generated.resources.Res as FUR
 
 @Composable
+private fun InProgressDetailComposable(
+    state: UploaderDecomposeComponent.State.Uploading,
+    modifier: Modifier = Modifier
+) {
+    if (state.totalItemsAmount > 1) {
+        Text(
+            text = stringResource(
+                FUR.string.fm_uploading_file,
+                state.currentItem.fileName,
+                state.currentItem.uploadedSize.toFormattedSize(),
+                state.currentItem.totalSize.toFormattedSize()
+            ),
+            style = LocalTypography.current.subtitleM12,
+            color = LocalPalletV2.current.text.body.secondary,
+            modifier = modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun InProgressTitleComposable(
+    state: UploaderDecomposeComponent.State.Uploading,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = when {
+            state.totalItemsAmount == 1 -> state.currentItem.fileName
+            else -> stringResource(
+                FUR.string.fm_in_progress_items,
+                state.currentItemIndex.plus(1),
+                state.totalItemsAmount
+            )
+        },
+        style = LocalTypography.current.titleB18,
+        color = LocalPalletV2.current.text.title.primary,
+        modifier = modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
 internal fun InProgressComposable(
-    fileName: String,
-    uploadedFileSize: Long,
-    uploadFileTotalSize: Long,
+    state: UploaderDecomposeComponent.State.Uploading,
     speed: Long?,
 ) {
     val animatedProgress by animateFloatAsState(
-        targetValue = if (uploadFileTotalSize == 0L) 0f else uploadedFileSize / uploadFileTotalSize.toFloat(),
+        targetValue = if (state.totalSize == 0L) 0f else state.uploadedSize / state.totalSize.toFloat(),
         animationSpec = tween(durationMillis = 500, easing = LinearEasing),
         label = "Progress"
     )
@@ -42,13 +85,7 @@ internal fun InProgressComposable(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = fileName,
-            style = LocalTypography.current.titleB18,
-            color = LocalPalletV2.current.text.title.primary,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+        InProgressTitleComposable(state)
         Spacer(Modifier.height(12.dp))
         FlipperProgressIndicator(
             modifier = Modifier.padding(horizontal = 32.dp),
@@ -58,11 +95,12 @@ internal fun InProgressComposable(
             percent = animatedProgress
         )
         Spacer(Modifier.height(8.dp))
+        InProgressDetailComposable(state)
         Text(
             text = stringResource(
                 FUR.string.fm_in_progress_file_size,
-                uploadedFileSize.toFormattedSize(),
-                uploadFileTotalSize.toFormattedSize()
+                state.uploadedSize.toFormattedSize(),
+                state.totalSize.toFormattedSize()
             ),
             style = LocalTypography.current.subtitleM12,
             color = LocalPalletV2.current.text.body.secondary,

@@ -2,6 +2,7 @@ package com.flipperdevices.filemanager.listing.impl.api
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
@@ -22,6 +23,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
+import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -38,13 +40,13 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val pathChangedCallback: PathChangedCallback,
     @Assisted private val fileSelectedCallback: FileSelectedCallback,
     @Assisted private val searchCallback: SearchCallback,
-    @Assisted private val uploadCallback: UploadCallback,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
     private val editFileViewModelFactory: Provider<EditFileViewModel>,
     private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory,
-    private val createSelectionViewModel: Provider<SelectionViewModel>
+    private val createSelectionViewModel: Provider<SelectionViewModel>,
+    private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
 ) : FilesDecomposeComponent(componentContext) {
 
     private val slotNavigation = SlotNavigation<PathWithType>()
@@ -55,8 +57,19 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         childFactory = { bottomSheetFile, _ -> bottomSheetFile }
     )
 
-    private val selectionViewModel = instanceKeeper.getOrCreate(path.toString()) {
+    private val selectionViewModel = instanceKeeper.getOrCreate("selectionViewModel_$path") {
         createSelectionViewModel.get()
+    }
+
+    val filesViewModel = instanceKeeper.getOrCreate("filesViewModel_$path") {
+        filesViewModelFactory.invoke(path)
+    }
+
+    private val uploadDecomposeComponent by lazy {
+        uploadDecomposeComponentFactory.invoke(
+            componentContext = childContext("FilesDecomposeComponent_uploadDecomposeComponent"),
+            onFilesChanged = filesViewModel::onFilesChanged,
+        )
     }
 
     private val backCallback = BackCallback {
@@ -86,9 +99,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
 
     @Composable
     override fun Render() {
-        val filesViewModel = viewModelWithFactory(path.toString()) {
-            filesViewModelFactory.invoke(path)
-        }
+        val multipleFilesPicker = uploadDecomposeComponent.rememberMultipleFilesPicker(path)
         val storageInfoViewModel = viewModelWithFactory(path.root.toString()) {
             storageInfoViewModelFactory.get()
         }
@@ -116,7 +127,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             storageInfoViewModel = storageInfoViewModel,
             selectionViewModel = selectionViewModel,
             onBack = onBack::invoke,
-            onUploadClick = uploadCallback::invoke,
+            onUploadClick = multipleFilesPicker::startFilePicker,
             onPathChange = pathChangedCallback::invoke,
             onFileMoreClick = slotNavigation::activate,
             onSearchClick = searchCallback::invoke,
@@ -129,5 +140,6 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             createFileViewModel = createFileViewModel,
             deleteFileViewModel = deleteFileViewModel
         )
+        uploadDecomposeComponent.Render()
     }
 }

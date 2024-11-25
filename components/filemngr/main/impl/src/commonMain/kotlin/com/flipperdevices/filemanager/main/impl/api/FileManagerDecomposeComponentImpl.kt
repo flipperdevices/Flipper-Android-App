@@ -12,7 +12,6 @@ import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfig
 import com.flipperdevices.filemanager.search.api.SearchDecomposeComponent
-import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
@@ -26,7 +25,6 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
     private val filesDecomposeComponentFactory: FilesDecomposeComponent.Factory,
-    private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
     private val searchDecomposeComponentFactory: SearchDecomposeComponent.Factory,
     private val editorDecomposeComponentFactory: FileManagerEditorDecomposeComponent.Factory,
 ) : FileManagerDecomposeComponent<FileManagerNavigationConfig>(),
@@ -55,16 +53,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 fileSelectedCallback = {
                     navigation.pushNew(FileManagerNavigationConfig.Edit(it))
                 },
-                uploadCallback = { navigation.pushNew(FileManagerNavigationConfig.Upload(config.path)) },
                 searchCallback = { navigation.pushNew(FileManagerNavigationConfig.Search(config.path)) },
-            )
-        }
-
-        is FileManagerNavigationConfig.Upload -> {
-            uploadDecomposeComponentFactory.invoke(
-                componentContext = componentContext,
-                path = config.path,
-                onFinish = navigation::pop
             )
         }
 
