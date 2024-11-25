@@ -212,7 +212,6 @@ class FilesViewModel @AssistedInject constructor(
                 .filterIsInstance<State.Loaded>()
                 .distinctUntilChangedBy { it.files.size },
             transform = { feature, state ->
-                info { "#init updated feature, state" }
                 updateFiles(
                     items = state.files,
                     listingApi = feature.featureApi.listingApi()
