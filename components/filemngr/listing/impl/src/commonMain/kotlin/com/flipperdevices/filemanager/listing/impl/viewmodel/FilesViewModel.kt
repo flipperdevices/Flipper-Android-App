@@ -8,6 +8,7 @@ import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
 import com.flipperdevices.core.ktx.jre.withLock
@@ -119,29 +120,29 @@ class FilesViewModel @AssistedInject constructor(
             }
     }
 
+    private fun ListingItem.toExtended(): ExtendedListingItem {
+        return when (fileType) {
+            FileType.DIR -> {
+                ExtendedListingItem.Folder(
+                    path = fileName.toPath(),
+                    itemsCount = null
+                )
+            }
+
+            null, FileType.FILE -> {
+                ExtendedListingItem.File(
+                    path = fileName.toPath(),
+                    size = size
+                )
+            }
+        }
+    }
+
     private suspend fun listFiles(listingApi: FListingStorageApi) {
         listingApi.lsFlow(path.toString())
             .toThrowableFlow()
             .catch { _state.emit(State.CouldNotListPath) }
-            .map { files ->
-                files.map {
-                    when (it.fileType) {
-                        FileType.DIR -> {
-                            ExtendedListingItem.Folder(
-                                path = it.fileName.toPath(),
-                                itemsCount = null
-                            )
-                        }
-
-                        null, FileType.FILE -> {
-                            ExtendedListingItem.File(
-                                path = it.fileName.toPath(),
-                                size = it.size
-                            )
-                        }
-                    }
-                }
-            }
+            .map { items -> items.map { item -> item.toExtended() } }
             .onEach { files ->
                 _state.updateAndGet { state ->
                     when (state) {
@@ -184,8 +185,8 @@ class FilesViewModel @AssistedInject constructor(
             (state as? State.Loaded)?.let { loadedState ->
                 val newItemsNames = items.map(ListingItem::fileName)
                 val newFiles = loadedState.files
-                    .filter { item -> !newItemsNames.contains(item.fileName) }
-                    .plus(items)
+                    .filter { item -> !newItemsNames.contains(item.itemName) }
+                    .plus(items.map { item -> item.toExtended() })
                     .toImmutableList()
                 loadedState.copy(files = newFiles)
             } ?: state
