@@ -35,8 +35,8 @@ class FapHubSearchViewModel @Inject constructor(
         }
         Pager(PagingConfig(pageSize = FAPS_PAGE_SIZE)) {
             FapsSearchPagingSource(fapNetworkApi, searchRequest, target, hiddenItems)
-        }.flow
-    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
+        }.flow.distinctBy { it.id }
+    }.flatMapLatest { it }.cachedIn(viewModelScope)
 
     fun getSearchRequest() = searchRequestFlow.asStateFlow()
 

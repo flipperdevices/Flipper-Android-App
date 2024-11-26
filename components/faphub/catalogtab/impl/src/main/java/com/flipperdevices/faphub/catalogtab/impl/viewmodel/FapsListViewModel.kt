@@ -59,8 +59,8 @@ class FapsListViewModel @Inject constructor(
             PagingConfig(pageSize = FAPS_PAGE_SIZE)
         ) {
             FapsPagingSource(fapNetworkApi, sortType, target, hiddenItems)
-        }.flow
-    }.flatMapLatest { it }.distinctBy { it.id }.cachedIn(viewModelScope)
+        }.flow.distinctBy { it.id }
+    }.flatMapLatest { it }.cachedIn(viewModelScope)
 
     fun getFapsFlow(): Flow<PagingData<FapItemShort>> = faps
 
