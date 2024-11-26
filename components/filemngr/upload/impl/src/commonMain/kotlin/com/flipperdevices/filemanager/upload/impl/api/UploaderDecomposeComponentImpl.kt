@@ -51,7 +51,7 @@ class UploaderDecomposeComponentImpl @AssistedInject constructor(
     override fun Render(
         state: UploaderDecomposeComponent.State,
         speedState: Long?,
-        onCancel: () -> Unit,
+        onCancelClick: () -> Unit,
         modifier: Modifier
     ) {
         when (val localState = state) {
@@ -59,7 +59,7 @@ class UploaderDecomposeComponentImpl @AssistedInject constructor(
                 UploadingComposable(
                     state = localState,
                     speed = speedState,
-                    onCancel = onCancel,
+                    onCancel = onCancelClick,
                     modifier = modifier
                 )
             }
@@ -67,7 +67,7 @@ class UploaderDecomposeComponentImpl @AssistedInject constructor(
             UploaderDecomposeComponent.State.Cancelled,
             UploaderDecomposeComponent.State.Error,
             UploaderDecomposeComponent.State.Pending,
-            UploaderDecomposeComponent.State.Uploaded -> Unit
+            is UploaderDecomposeComponent.State.Uploaded -> Unit
         }
     }
 }

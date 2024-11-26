@@ -27,7 +27,7 @@ fun UploaderDecomposeComponent.RenderLoadingScreen(modifier: Modifier = Modifier
         Render(
             state = uploaderState,
             speedState = speedState,
-            onCancel = ::onCancel,
+            onCancelClick = ::onCancel,
             modifier = Modifier
                 .fillMaxSize()
                 .background(LocalPalletV2.current.surface.backgroundMain.body)
