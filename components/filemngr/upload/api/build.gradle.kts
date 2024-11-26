@@ -10,6 +10,8 @@ commonDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.deeplink.api)
 
+    implementation(projects.components.bridge.connection.feature.storage.api)
+
     implementation(libs.compose.ui)
     implementation(libs.decompose)
 

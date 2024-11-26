@@ -1,17 +1,22 @@
 package com.flipperdevices.filemanager.upload.api
 
+import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import okio.Path
 
-abstract class UploadDecomposeComponent(
-    componentContext: ComponentContext
-) : ScreenDecomposeComponent(componentContext) {
+interface UploadDecomposeComponent {
+
+    @Composable
+    fun rememberMultipleFilesPicker(path: Path): MultipleFilesPicker
+
+    @Composable
+    fun Render()
+
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            path: Path,
-            onFinish: () -> Unit
+            onFilesChanged: (List<ListingItem>) -> Unit,
         ): UploadDecomposeComponent
     }
 }

@@ -17,7 +17,6 @@ abstract class FilesDecomposeComponent(
             pathChangedCallback: PathChangedCallback,
             fileSelectedCallback: FileSelectedCallback,
             searchCallback: SearchCallback,
-            uploadCallback: UploadCallback
         ): FilesDecomposeComponent
     }
 
