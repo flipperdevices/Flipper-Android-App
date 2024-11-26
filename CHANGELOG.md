@@ -2,6 +2,7 @@
 
 # 1.8.1 - In Progress
 
+- [FIX] Fix empty response in faphub category
 - [FIX] New file manager uploading progress
 - [FIX] Fix build when no metrics enabled
 
