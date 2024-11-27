@@ -43,6 +43,10 @@ class ReaderRequestLooper(
         }
     }
 
+    /**
+     * Implementation like this is required because after coroutine
+     * is cancelled, the queue.receive() will lasts forever
+     */
     suspend fun getNextBytePack(): Main {
         while (scope.isActive) {
             val value = queue.tryReceive().getOrNull()
