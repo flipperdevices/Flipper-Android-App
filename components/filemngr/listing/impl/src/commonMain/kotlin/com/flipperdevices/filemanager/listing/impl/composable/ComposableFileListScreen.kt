@@ -42,6 +42,7 @@ fun ComposableFileListScreen(
     onPathChange: (Path) -> Unit,
     onEditFileClick: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit,
+    onRename: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val canCreateFiles by editFileViewModel.canCreateFiles.collectAsState()
@@ -131,8 +132,8 @@ fun ComposableFileListScreen(
             selectionState = selectionState,
             filesListState = filesListState,
             selectionViewModel = selectionViewModel,
-            editFileViewModel = editFileViewModel,
             deleteFileViewModel = deleteFileViewModel,
+            onRename = onRename
         )
     }
 }

@@ -150,7 +150,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             onPathChange = pathChangedCallback::invoke,
             onFileMoreClick = slotNavigation::activate,
             onSearchClick = searchCallback::invoke,
-            onEditFileClick = fileSelectedCallback::invoke
+            onEditFileClick = fileSelectedCallback::invoke,
+            onRename = { pathWithType ->
+                renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
+            }
         )
         FileOptionsBottomSheet(
             fileOptionsSlot = fileOptionsSlot,

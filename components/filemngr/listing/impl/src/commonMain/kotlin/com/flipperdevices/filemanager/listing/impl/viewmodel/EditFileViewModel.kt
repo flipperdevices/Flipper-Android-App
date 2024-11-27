@@ -12,7 +12,6 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
@@ -55,17 +54,6 @@ class EditFileViewModel @Inject constructor(
                 itemType = fileType,
                 path = path,
                 isValid = false
-            )
-        }
-    }
-
-    fun onRename(pathWithType: PathWithType) {
-        _state.update {
-            State.Edit.Rename(
-                name = pathWithType.fullPath.name,
-                itemType = pathWithType.fileType,
-                fullPath = pathWithType.fullPath,
-                isValid = true
             )
         }
     }
@@ -136,19 +124,6 @@ class EditFileViewModel @Inject constructor(
                         )
                     }
                 }
-
-                is State.Edit.Rename -> {
-                    val pathOnFlipper = state.fullPath.parent?.resolve(state.name) ?: run {
-                        error { "#onFinish could not move file because parent is null ${state.fullPath}" }
-                        return@launchWithLock
-                    }
-                    // todo folders doesn't rename
-                    uploadApi.move(
-                        oldPath = state.fullPath,
-                        newPath = pathOnFlipper
-                    ).onSuccess { channel.send(Event.FilesChanged) }
-                        .onFailure { error(it) { "#onFinish could not move file ${state.fullPath} -> $pathOnFlipper" } }
-                }
             }
 
             _state.emit(State.Pending)
@@ -187,22 +162,6 @@ class EditFileViewModel @Inject constructor(
                 override val isLoading: Boolean = false,
             ) : Edit {
                 override fun with(name: String, isValid: Boolean, isLoading: Boolean): Create {
-                    return copy(
-                        name = name,
-                        isValid = isValid,
-                        isLoading = isLoading
-                    )
-                }
-            }
-
-            data class Rename(
-                val fullPath: Path,
-                override val name: String = "",
-                override val isValid: Boolean = false,
-                override val itemType: FileType,
-                override val isLoading: Boolean = false
-            ) : Edit {
-                override fun with(name: String, isValid: Boolean, isLoading: Boolean): Rename {
                     return copy(
                         name = name,
                         isValid = isValid,
