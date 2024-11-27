@@ -12,14 +12,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.filemanager.listing.impl.composable.appbar.FileListAppBar
-import com.flipperdevices.filemanager.listing.impl.composable.dialog.CreateFileDialogComposable
 import com.flipperdevices.filemanager.listing.impl.composable.dialog.DeleteFileDialog
 import com.flipperdevices.filemanager.listing.impl.composable.options.FullScreenBottomBarOptions
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
@@ -30,7 +29,7 @@ import okio.Path
 @Composable
 fun ComposableFileListScreen(
     path: Path,
-    editFileViewModel: EditFileViewModel,
+    canCreateFiles: Boolean,
     deleteFileViewModel: DeleteFilesViewModel,
     filesViewModel: FilesViewModel,
     optionsViewModel: OptionsViewModel,
@@ -42,10 +41,10 @@ fun ComposableFileListScreen(
     onPathChange: (Path) -> Unit,
     onEditFileClick: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit,
+    onCreate: (FileType) -> Unit,
     onRename: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val canCreateFiles by editFileViewModel.canCreateFiles.collectAsState()
     val canDeleteFiles by deleteFileViewModel.canDeleteFiles.collectAsState()
     val filesListState by filesViewModel.state.collectAsState()
     val optionsState by optionsViewModel.state.collectAsState()
@@ -61,17 +60,14 @@ fun ComposableFileListScreen(
                 filesListState = filesListState,
                 optionsState = optionsState,
                 optionsViewModel = optionsViewModel,
-                canCreateFiles = canCreateFiles,
                 onUploadClick = onUploadClick,
-                editFileViewModel = editFileViewModel,
                 onBack = onBack,
-                onSearchClick = onSearchClick
+                onSearchClick = onSearchClick,
+                onCreate = onCreate,
+                canCreateFiles = canCreateFiles
             )
         }
     ) { contentPadding ->
-        CreateFileDialogComposable(
-            editFileViewModel = editFileViewModel,
-        )
         DeleteFileDialog(
             deleteFileState = deleteFileState,
             deleteFileViewModel = deleteFileViewModel

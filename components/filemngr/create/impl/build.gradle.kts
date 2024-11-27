@@ -4,7 +4,7 @@ plugins {
     id("flipper.anvil-multiplatform")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.filemanager.listing.impl"
+android.namespace = "com.flipperdevices.filemanager.create.impl"
 
 commonDependencies {
     implementation(projects.components.core.di)
@@ -28,23 +28,15 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
     implementation(projects.components.bridge.dao.api)
 
-    implementation(projects.components.filemngr.uiComponents)
-    implementation(projects.components.filemngr.listing.api)
-    implementation(projects.components.filemngr.main.api)
-    implementation(projects.components.filemngr.upload.api)
-    implementation(projects.components.filemngr.download.api)
-    implementation(projects.components.filemngr.rename.api)
-    implementation(projects.components.filemngr.create.api)
     implementation(projects.components.filemngr.util)
+    implementation(projects.components.filemngr.uiComponents)
+    implementation(projects.components.filemngr.create.api)
 
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons.core)
-    implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)
@@ -57,10 +49,4 @@ commonDependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.okio)
     implementation(libs.kotlin.immutable.collections)
-}
-
-commonTestDependencies {
-    implementation(projects.components.core.test)
-    implementation(libs.junit)
-    implementation(libs.ktx.testing)
 }

@@ -106,6 +106,8 @@ include(
     ":components:filemngr:download:impl",
     ":components:filemngr:rename:api",
     ":components:filemngr:rename:impl",
+    ":components:filemngr:create:api",
+    ":components:filemngr:create:impl",
 
     ":components:core:di",
     ":components:core:ktx",
