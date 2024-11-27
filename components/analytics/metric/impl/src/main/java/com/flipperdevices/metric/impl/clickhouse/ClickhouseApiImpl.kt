@@ -50,7 +50,7 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
-const val METRIC_API_URL = "https://metric.flipperdevices.com/report"
+const val METRIC_API_URL = "https://metric.flipp.dev/report"
 
 @Singleton
 @ContributesBinding(AppGraph::class, ClickhouseApi::class)
