@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageReq
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.protobuf.Main

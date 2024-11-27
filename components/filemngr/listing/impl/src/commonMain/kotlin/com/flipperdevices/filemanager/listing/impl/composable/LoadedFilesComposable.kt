@@ -55,7 +55,11 @@ fun LazyGridScope.LoadedFilesComposable(
             } else {
                 val filePathWithType = remember(path, file.itemName) {
                     val fullPath = path.resolve(file.itemName)
-                    PathWithType(file.itemType, fullPath, file.size)
+                    PathWithType(
+                        fileType = file.itemType,
+                        fullPath = fullPath,
+                        size = file.sizeOrNull ?: 0
+                    )
                 }
                 FolderCardComposable(
                     modifier = Modifier
