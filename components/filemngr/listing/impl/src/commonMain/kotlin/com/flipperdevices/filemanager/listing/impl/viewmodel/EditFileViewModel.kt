@@ -7,13 +7,13 @@ import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureA
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
-import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ktx.jre.FlipperFileNameValidator
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
+import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -213,9 +213,9 @@ class EditFileViewModel @Inject constructor(
 
             val options
                 get() = when (itemType) {
-                    FileType.FILE -> listOf("txt")
-                        .plus(FlipperKeyType.entries.map { it.extension })
-                        .map { extension -> "$name.$extension" }
+                    FileType.FILE ->
+                        FileManagerConstants.FILE_EXTENSION_HINTS
+                            .map { extension -> "$name.$extension" }
 
                     FileType.DIR -> emptyList()
                 }.toImmutableList()

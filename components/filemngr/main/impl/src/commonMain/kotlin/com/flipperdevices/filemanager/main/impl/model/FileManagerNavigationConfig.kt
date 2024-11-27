@@ -1,7 +1,7 @@
 package com.flipperdevices.filemanager.main.impl.model
 
 import androidx.compose.runtime.Stable
-import com.flipperdevices.filemanager.main.serialization.PathSerializer
+import com.flipperdevices.filemanager.util.serialization.PathSerializer
 import kotlinx.serialization.Serializable
 import okio.Path
 import okio.Path.Companion.toPath

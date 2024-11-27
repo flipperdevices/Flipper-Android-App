@@ -6,14 +6,13 @@ import androidx.compose.runtime.getValue
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.ui.components.name.NameDialog
+import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_create_file_allowed_chars
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_create_file_file_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_create_file_folder_btn
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_create_file_title
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
-
-private const val AVAILABLE_CHARACTERS = "“0-9”, “A-Z”, “a-z”, “!#\\\$%&'()-@^_`{}~”"
 
 @Composable
 fun CreateFileDialogComposable(
@@ -35,7 +34,7 @@ fun CreateFileDialogComposable(
                 ),
                 subtitle = stringResource(
                     FML.string.fml_create_file_allowed_chars,
-                    AVAILABLE_CHARACTERS
+                    FileManagerConstants.FILE_NAME_AVAILABLE_CHARACTERS
                 ),
                 onFinish = { editFileViewModel.onFinish() },
                 isError = !localCreateFileState.isValid,

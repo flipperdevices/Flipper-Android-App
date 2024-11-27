@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.main.serialization
+package com.flipperdevices.filemanager.util.serialization
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

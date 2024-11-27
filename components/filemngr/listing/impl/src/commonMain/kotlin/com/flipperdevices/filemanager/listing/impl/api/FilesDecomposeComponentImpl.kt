@@ -24,6 +24,7 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
+import com.flipperdevices.filemanager.rename.api.RenameDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -49,9 +50,11 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val downloadDecomposeComponentFactory: DownloadDecomposeComponent.Factory,
     private val createSelectionViewModel: Provider<SelectionViewModel>,
     private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
+    private val renameDecomposeComponentFactory: RenameDecomposeComponent.Factory,
 ) : FilesDecomposeComponent(componentContext) {
 
     private val slotNavigation = SlotNavigation<PathWithType>()
+
     val fileOptionsSlot: Value<ChildSlot<*, PathWithType>> = childSlot(
         source = slotNavigation,
         handleBackButton = true,
@@ -76,6 +79,15 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val downloadDecomposeComponent by lazy {
         downloadDecomposeComponentFactory.invoke(
             componentContext = childContext("FilesDecomposeComponent_downloadDecomposeComponent")
+        )
+    }
+
+    private val renameDecomposeComponent by lazy {
+        renameDecomposeComponentFactory.invoke(
+            componentContext = childContext("FilesDecomposeComponent_renameDecomposeComponent"),
+            renamedCallback = { oldFullPath, newFullPath ->
+                filesViewModel.fileRenamed(oldFullPath, newFullPath)
+            }
         )
     }
 
@@ -144,11 +156,14 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             fileOptionsSlot = fileOptionsSlot,
             slotNavigation = slotNavigation,
             selectionViewModel = selectionViewModel,
-            createFileViewModel = createFileViewModel,
             deleteFileViewModel = deleteFileViewModel,
-            onDownloadFile = downloadDecomposeComponent::download
+            onDownloadFile = downloadDecomposeComponent::download,
+            onRename = { pathWithType ->
+                renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
+            }
         )
         uploadDecomposeComponent.Render()
         downloadDecomposeComponent.Render()
+        renameDecomposeComponent.Render()
     }
 }

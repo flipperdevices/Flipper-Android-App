@@ -74,7 +74,8 @@ fun NameDialog(
                     needShowOptions = needShowOptions,
                     title = title,
                     subtitle = subtitle,
-                    isError = isError
+                    isError = isError,
+                    isEnabled = isEnabled
                 )
 
                 Spacer(Modifier.height(24.dp))

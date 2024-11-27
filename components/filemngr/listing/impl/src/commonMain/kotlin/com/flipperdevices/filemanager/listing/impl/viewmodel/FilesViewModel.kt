@@ -168,6 +168,21 @@ class FilesViewModel @AssistedInject constructor(
         }
     }
 
+    fun fileRenamed(oldPath: Path, newPath: Path) {
+        _state.update { state ->
+            (state as? State.Loaded)?.let { loadedState ->
+                val mutableFiles = loadedState.files.toMutableList()
+                val i = mutableFiles.indexOfFirst { item -> item.path.name == oldPath.name }
+                if (i == -1) return@let loadedState
+                mutableFiles[i] = when (val item = mutableFiles[i]) {
+                    is ExtendedListingItem.File -> item.copy(path = newPath.name.toPath())
+                    is ExtendedListingItem.Folder -> item.copy(path = newPath.name.toPath())
+                }
+                loadedState.copy(files = mutableFiles.toImmutableList())
+            } ?: state
+        }
+    }
+
     fun tryListFiles() {
         launchWithLock(mutex, viewModelScope, "try_list_files") {
             _state.emit(State.Loading)

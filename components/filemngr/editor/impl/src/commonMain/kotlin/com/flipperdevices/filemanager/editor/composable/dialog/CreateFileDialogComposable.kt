@@ -5,13 +5,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.flipperdevices.filemanager.editor.viewmodel.FileNameViewModel
 import com.flipperdevices.filemanager.ui.components.name.NameDialog
+import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_button
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_chars
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_save_as_dialog_title
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
-
-private const val AVAILABLE_CHARACTERS = "“0-9”, “A-Z”, “a-z”, “!#\\\$%&'()-@^_`{}~”"
 
 @Composable
 fun CreateFileDialogComposable(
@@ -27,7 +26,7 @@ fun CreateFileDialogComposable(
                 buttonText = stringResource(FME.string.fme_save_as_dialog_button),
                 subtitle = stringResource(
                     resource = FME.string.fme_save_as_dialog_chars,
-                    AVAILABLE_CHARACTERS
+                    FileManagerConstants.FILE_NAME_AVAILABLE_CHARACTERS
                 ),
                 onFinish = {
                     onFinish(localState.name)
