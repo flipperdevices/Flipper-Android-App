@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageReq
 import com.flipperdevices.bridge.connection.feature.storage.impl.utils.toRpc
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.FixedProgressListener
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.protobuf.Main
@@ -23,7 +22,6 @@ import okio.use
 
 class FFileDownloadApiImpl(
     private val rpcFeatureApi: FRpcFeatureApi,
-    private val scope: CoroutineScope,
     private val fileSystem: FileSystem = FileSystem.SYSTEM
 ) : FFileDownloadApi {
     override suspend fun download(
@@ -35,19 +33,24 @@ class FFileDownloadApiImpl(
         info { "Start download file $pathOnFlipper to $fileOnAndroid" }
 
         runCatching {
+            val sourceLength = getTotalSize(pathOnFlipper)
             fileSystem.sink(fileOnAndroid).buffer().use { sink ->
-                source(pathOnFlipper, priority).use { source ->
+                source(pathOnFlipper, this, priority).use { source ->
                     source.copyWithProgress(
-                        sink,
-                        progressListener,
-                        sourceLength = { getTotalSize(pathOnFlipper) }
+                        sink = sink,
+                        progressListener = progressListener,
+                        sourceLength = { sourceLength }
                     )
                 }
             }
         }
     }
 
-    override fun source(pathOnFlipper: String, priority: StorageRequestPriority): Source {
+    override fun source(
+        pathOnFlipper: String,
+        scope: CoroutineScope,
+        priority: StorageRequestPriority
+    ): Source {
         return FFlipperSource(
             readerLoop = ReaderRequestLooper(
                 rpcFeatureApi = rpcFeatureApi,

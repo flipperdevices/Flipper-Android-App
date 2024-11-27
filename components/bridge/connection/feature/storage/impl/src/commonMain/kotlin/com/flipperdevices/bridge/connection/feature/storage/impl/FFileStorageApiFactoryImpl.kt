@@ -50,7 +50,7 @@ class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
             md5Api = FFileStorageMD5ApiImpl(rpcApi),
             fListingStorageApi = FListingStorageApiImpl(listingDelegate),
             fileUploadApi = FFileUploadApiImpl(rpcApi, scope = scope),
-            fileDownloadApi = FFileDownloadApiImpl(rpcApi, scope = scope),
+            fileDownloadApi = FFileDownloadApiImpl(rpcApi),
             deleteApi = FFileDeleteApiImpl(rpcApi),
             timestampApi = if (versionApi.isSupported(API_SUPPORTED_TIMESTAMP)) {
                 FFileTimestampApiImpl(rpcApi)

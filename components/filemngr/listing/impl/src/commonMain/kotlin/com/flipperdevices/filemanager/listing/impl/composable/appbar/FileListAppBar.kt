@@ -71,7 +71,8 @@ fun FileListAppBar(
                         .map {
                             PathWithType(
                                 fileType = it.fileType ?: FileType.FILE,
-                                fullPath = path.resolve(it.fileName)
+                                fullPath = path.resolve(it.fileName),
+                                size = it.size
                             )
                         }
                     selectionViewModel.select(paths)
