@@ -43,12 +43,14 @@ fun LazyGridScope.LoadedFilesComposable(
         val isFileLoading = remember(deleteFileState.fileNamesOrNull) {
             deleteFileState.fileNamesOrNull.orEmpty().contains(file.itemName)
         }
-        Crossfade(isFileLoading) { animatedIsFileLoading ->
+        Crossfade(
+            targetState = isFileLoading,
+            modifier = Modifier.animateItem()
+        ) { animatedIsFileLoading ->
             if (animatedIsFileLoading) {
                 FolderCardPlaceholderComposable(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem()
                         .animateContentSize(),
                     orientation = orientation,
                 )
@@ -64,7 +66,6 @@ fun LazyGridScope.LoadedFilesComposable(
                 FolderCardComposable(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem()
                         .animateContentSize(),
                     painter = file.asListingItem().asPainter(),
                     iconTint = file.asListingItem().asTint(),
