@@ -23,6 +23,7 @@
 
     <string name="fml_appbar_title">File Manager</string>
 
+    <string name="fml_items_in_folder">%1$s items</string>
     <string name="fml_no_files">No Files Yet</string>
     <string name="fml_upload_files">Upload Files</string>
     <string name="fml_selection_select_all">Select All</string>
