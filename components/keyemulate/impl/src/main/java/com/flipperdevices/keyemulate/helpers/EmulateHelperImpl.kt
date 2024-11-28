@@ -50,8 +50,7 @@ class EmulateHelperImpl @Inject constructor(
     override suspend fun startEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        config: EmulateConfig,
-        isPressRelease: Boolean
+        config: EmulateConfig
     ) = withLockResult(mutex, "start") {
         val requestApi = serviceApi.requestApi
         if (currentKeyEmulating.value != null) {
@@ -61,10 +60,9 @@ class EmulateHelperImpl @Inject constructor(
         currentKeyEmulating.emit(config)
         val isEmulateStarted = try {
             startEmulateHelper.onStart(
-                scope = scope,
-                serviceApi = serviceApi,
-                config = config,
-                isPressRelease = isPressRelease,
+                scope,
+                serviceApi,
+                config,
                 onStop = { stopEmulateHelper.onStop(requestApi) },
                 onResultTime = { time -> stopEmulateTimeAllowedMs = time }
             )

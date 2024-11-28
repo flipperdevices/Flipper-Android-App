@@ -33,14 +33,10 @@ private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 
 interface StartEmulateHelper {
-    /**
-     * @param isPressRelease one-time emulate for infrared-only
-     */
     @Suppress("LongParameterList")
     suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        isPressRelease: Boolean = false,
         config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit
@@ -58,7 +54,6 @@ class StartEmulateHelperImpl @Inject constructor(
     override suspend fun onStart(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        isPressRelease: Boolean,
         config: EmulateConfig,
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit,
@@ -111,7 +106,6 @@ class StartEmulateHelperImpl @Inject constructor(
             onResultTime = onResultTime,
             serviceApi = serviceApi,
             isIndexEmulateSupport = indexEmulateSupported,
-            isPressRelease = isPressRelease
         )
     }
 
@@ -123,7 +117,6 @@ class StartEmulateHelperImpl @Inject constructor(
     private suspend fun processButtonPress(
         config: EmulateConfig,
         isIndexEmulateSupport: Boolean,
-        isPressRelease: Boolean,
         onResultTime: (Long) -> Unit,
         serviceApi: FlipperServiceApi
     ): Boolean {
@@ -134,7 +127,7 @@ class StartEmulateHelperImpl @Inject constructor(
         val appButtonPressResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
-                    if (isPressRelease) {
+                    if (config.isPressRelease) {
                         appButtonPressReleaseRequest = getAppButtonPressReleaseRequest(
                             config,
                             isIndexEmulateSupport

@@ -11,15 +11,10 @@ const val INFRARED_DEFAULT_TIMEOUT_MS = 500L
 
 interface EmulateHelper {
     fun getCurrentEmulatingKey(): StateFlow<EmulateConfig?>
-
-    /**
-     * @param isPressRelease one-time emulate for infrared-only
-     */
     suspend fun startEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
-        config: EmulateConfig,
-        isPressRelease: Boolean = false
+        config: EmulateConfig
     ): Boolean
 
     suspend fun stopEmulate(

@@ -18,7 +18,6 @@ interface DispatchSignalApi : InstanceKeeper.Instance {
     fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
-        isOneTime: Boolean = true,
         onDispatched: () -> Unit = {}
     )
 

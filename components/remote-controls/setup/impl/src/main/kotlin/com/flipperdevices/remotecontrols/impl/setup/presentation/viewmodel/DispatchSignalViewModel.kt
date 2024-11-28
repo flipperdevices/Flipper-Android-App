@@ -113,12 +113,12 @@ class DispatchSignalViewModel @Inject constructor(
             keyPath = ffPath,
             keyType = FlipperKeyType.INFRARED,
             args = remote.name,
-            index = i
+            index = i,
+            isPressRelease = isOneTime
         )
         dispatch(
             config = config,
             identifier = identifier,
-            isOneTime = isOneTime,
             onDispatched = onDispatched
         )
     }
@@ -130,7 +130,6 @@ class DispatchSignalViewModel @Inject constructor(
     override fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
-        isOneTime: Boolean,
         onDispatched: () -> Unit
     ) {
         if (latestDispatchJob?.isActive == true) return
@@ -151,9 +150,8 @@ class DispatchSignalViewModel @Inject constructor(
                                 scope = this,
                                 serviceApi = serviceApi,
                                 config = config,
-                                isPressRelease = isOneTime
                             )
-                            if (isOneTime) {
+                            if (config.isPressRelease) {
                                 _state.emit(DispatchSignalApi.State.Pending)
                                 onDispatched.invoke()
                             }

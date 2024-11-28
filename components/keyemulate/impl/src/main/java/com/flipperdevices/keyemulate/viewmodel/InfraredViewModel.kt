@@ -131,7 +131,6 @@ class InfraredViewModel @Inject constructor(
                 scope = scope,
                 serviceApi = serviceApi,
                 config = config,
-                isPressRelease = oneTimePress
             )
             if (appStarted && timeout != null) {
                 if (oneTimePress) {

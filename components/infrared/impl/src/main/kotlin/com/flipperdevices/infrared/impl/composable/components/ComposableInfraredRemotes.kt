@@ -116,7 +116,7 @@ private fun KeyScreenState.Ready.toEmulateConfigs(): ImmutableList<EmulateConfig
             keyType = FlipperKeyType.INFRARED,
             keyPath = this.flipperKey.path,
             args = name,
-            index = index
+            index = index,
         )
     }.toImmutableList()
 }

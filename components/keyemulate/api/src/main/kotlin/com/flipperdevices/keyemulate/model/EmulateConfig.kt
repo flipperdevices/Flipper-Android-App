@@ -7,13 +7,17 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 /*
     Override equals and hashCode to compare emulate key, because emulate time not important
  */
+/**
+ * @param isPressRelease one-time emulate for infrared-only
+ */
 @Immutable
 data class EmulateConfig(
     val keyType: FlipperKeyType,
     val keyPath: FlipperFilePath,
     val minEmulateTime: Long? = null,
     val args: String? = null,
-    val index: Int? = null
+    val index: Int? = null,
+    val isPressRelease: Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
