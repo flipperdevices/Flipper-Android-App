@@ -13,7 +13,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.share.PlatformShareHelper
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.download.impl.composable.DownloadingComposable
@@ -32,7 +31,6 @@ import javax.inject.Provider
 class DownloadDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val downloadViewModelFactory: Provider<DownloadViewModel>,
-    private val platformShareHelper: PlatformShareHelper
 ) : DownloadDecomposeComponent(componentContext) {
     private val downloadViewModel = instanceKeeper.getOrCreate {
         downloadViewModelFactory.get()

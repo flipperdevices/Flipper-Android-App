@@ -14,6 +14,7 @@ import com.flipperdevices.filemanager.main.impl.model.FileManagerNavigationConfi
 import com.flipperdevices.filemanager.search.api.SearchDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -71,6 +72,12 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
                 componentContext = componentContext,
                 path = config.path,
                 onBack = { navigation.popOr(onBack::invoke) },
+                onFileChanged = { item ->
+                    val component = stack.findComponentByConfig(
+                        configClazz = FileManagerNavigationConfig.FileTree::class
+                    ) as? FilesDecomposeComponent
+                    component?.onFileChanged(item)
+                }
             )
         }
     }
