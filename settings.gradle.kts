@@ -108,6 +108,8 @@ include(
     ":components:filemngr:rename:impl",
     ":components:filemngr:create:api",
     ":components:filemngr:create:impl",
+    ":components:filemngr:transfer:api",
+    ":components:filemngr:transfer:impl",
 
     ":components:core:di",
     ":components:core:ktx",

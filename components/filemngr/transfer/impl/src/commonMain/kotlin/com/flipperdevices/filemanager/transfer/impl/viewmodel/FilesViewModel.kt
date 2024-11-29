@@ -1,17 +1,14 @@
-package com.flipperdevices.filemanager.listing.impl.viewmodel
+package com.flipperdevices.filemanager.transfer.impl.viewmodel
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
-import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
-import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.ktx.jre.toThrowableFlow
-import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.FileManagerSort
@@ -45,8 +42,6 @@ class FilesViewModel @AssistedInject constructor(
     private val settingsDataStore: DataStore<Settings>
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "FilesViewModel"
-
-    private val mutex = Mutex()
 
     private val _state = MutableStateFlow<State>(State.Loading)
     val state = combine(
@@ -89,7 +84,25 @@ class FilesViewModel @AssistedInject constructor(
         }
     ).stateIn(viewModelScope, SharingStarted.Eagerly, State.Loading)
 
-    private suspend fun updateFiles(
+    private fun ListingItem.toExtended(): ExtendedListingItem {
+        return when (fileType) {
+            FileType.DIR -> {
+                ExtendedListingItem.Folder(
+                    path = fileName.toPath(),
+                    itemsCount = null
+                )
+            }
+
+            null, FileType.FILE -> {
+                ExtendedListingItem.File(
+                    path = fileName.toPath(),
+                    size = size
+                )
+            }
+        }
+    }
+
+    private suspend fun updateSubfoldersCount(
         items: List<ExtendedListingItem>,
         listingApi: FListingStorageApi
     ) {
@@ -120,24 +133,6 @@ class FilesViewModel @AssistedInject constructor(
             }
     }
 
-    private fun ListingItem.toExtended(): ExtendedListingItem {
-        return when (fileType) {
-            FileType.DIR -> {
-                ExtendedListingItem.Folder(
-                    path = fileName.toPath(),
-                    itemsCount = null
-                )
-            }
-
-            null, FileType.FILE -> {
-                ExtendedListingItem.File(
-                    path = fileName.toPath(),
-                    size = size
-                )
-            }
-        }
-    }
-
     private suspend fun listFiles(listingApi: FListingStorageApi) {
         listingApi.lsFlow(path.toString())
             .toThrowableFlow()
@@ -158,80 +153,29 @@ class FilesViewModel @AssistedInject constructor(
             }.launchIn(viewModelScope)
     }
 
-    fun fileDeleted(path: Path) {
-        val loadedState = _state.value as? State.Loaded ?: return
-        _state.update {
-            val newFileList = loadedState.files
-                .filter { it.path.name != path.name }
-                .toImmutableList()
-            loadedState.copy(files = newFileList)
-        }
-    }
-
-    fun fileRenamed(oldPath: Path, newPath: Path) {
-        _state.update { state ->
-            (state as? State.Loaded)?.let { loadedState ->
-                val mutableFiles = loadedState.files.toMutableList()
-                val i = mutableFiles.indexOfFirst { item -> item.path.name == oldPath.name }
-                if (i == -1) return@let loadedState
-                mutableFiles[i] = when (val item = mutableFiles[i]) {
-                    is ExtendedListingItem.File -> item.copy(path = newPath.name.toPath())
-                    is ExtendedListingItem.Folder -> item.copy(path = newPath.name.toPath())
-                }
-                loadedState.copy(files = mutableFiles.toImmutableList())
-            } ?: state
-        }
-    }
-
-    fun tryListFiles() {
-        launchWithLock(mutex, viewModelScope, "try_list_files") {
-            _state.emit(State.Loading)
-            val featureApi = featureProvider.getSync<FStorageFeatureApi>()
-            if (featureApi == null) {
-                _state.emit(State.Unsupported)
-                return@launchWithLock
-            }
-            listFiles(featureApi.listingApi())
-        }
-    }
-
-    fun onFilesChanged(items: List<ListingItem>) {
-        _state.update { state ->
-            (state as? State.Loaded)?.let { loadedState ->
-                val newItemsNames = items.map(ListingItem::fileName)
-                val newFiles = loadedState.files
-                    .filter { item -> !newItemsNames.contains(item.itemName) }
-                    .plus(items.map { item -> item.toExtended() })
-                    .toImmutableList()
-                loadedState.copy(files = newFiles)
-            } ?: state
-        }
-    }
-
-    private suspend fun invalidate(
-        featureStatus: FFeatureStatus<FStorageFeatureApi>
-    ) = withLock(mutex, "invalidate") {
-        when (featureStatus) {
-            FFeatureStatus.Unsupported,
-            FFeatureStatus.NotFound -> {
-                _state.emit(State.Unsupported)
-            }
-
-            is FFeatureStatus.Supported -> {
-                listFiles(featureStatus.featureApi.listingApi())
-            }
-
-            FFeatureStatus.Retrieving -> {
-                _state.emit(State.Loading)
-            }
-        }
-    }
-
-    init {
+    private fun startListFiles() {
         featureProvider
             .get<FStorageFeatureApi>()
-            .onEach { featureStatus -> invalidate(featureStatus) }
+            .onEach { featureStatus ->
+                when (featureStatus) {
+                    FFeatureStatus.Unsupported,
+                    FFeatureStatus.NotFound -> {
+                        _state.emit(State.Unsupported)
+                    }
+
+                    is FFeatureStatus.Supported -> {
+                        listFiles(featureStatus.featureApi.listingApi())
+                    }
+
+                    FFeatureStatus.Retrieving -> {
+                        _state.emit(State.Loading)
+                    }
+                }
+            }
             .launchIn(viewModelScope)
+    }
+
+    private fun startSubfolderCountUpdater() {
         combine(
             flow = featureProvider
                 .get<FStorageFeatureApi>()
@@ -240,12 +184,17 @@ class FilesViewModel @AssistedInject constructor(
                 .filterIsInstance<State.Loaded>()
                 .distinctUntilChangedBy { it.files.size },
             transform = { feature, state ->
-                updateFiles(
+                updateSubfoldersCount(
                     items = state.files,
                     listingApi = feature.featureApi.listingApi()
                 )
             }
         ).launchIn(viewModelScope)
+    }
+
+    init {
+        startListFiles()
+        startSubfolderCountUpdater()
     }
 
     sealed interface State {

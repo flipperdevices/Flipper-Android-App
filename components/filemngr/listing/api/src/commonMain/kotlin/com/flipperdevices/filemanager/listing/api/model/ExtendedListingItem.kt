@@ -1,4 +1,4 @@
-package com.flipperdevices.filemanager.listing.impl.model
+package com.flipperdevices.filemanager.listing.api.model
 
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
