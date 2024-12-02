@@ -52,6 +52,6 @@ internal class PendingResponseCounter(
     }
 
     companion object {
-        internal const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
+        internal const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 30 * 1000L // 30 seconds
     }
 }

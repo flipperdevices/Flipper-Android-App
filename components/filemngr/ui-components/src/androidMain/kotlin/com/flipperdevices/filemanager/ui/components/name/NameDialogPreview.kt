@@ -46,7 +46,8 @@ private fun NameDialogPreview() {
                     needShowOptions = File(value).extension.isBlank(),
                     isError = File(value).extension.isBlank(),
                     onFinish = { },
-                    isEnabled = true
+                    isEnabled = true,
+                    isLoading = false
                 )
             }
         }

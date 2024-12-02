@@ -135,7 +135,6 @@ class TransferDecomposeComponentImpl @AssistedInject constructor(
                             span = { GridItemSpan(maxLineSpan) },
                             content = { Box(Modifier.fillMaxSize().background(Color.Red)) }
                         )
-
                     }
 
                     is FilesViewModel.State.Loaded -> {
@@ -190,9 +189,10 @@ class TransferDecomposeComponentImpl @AssistedInject constructor(
                     ComposableFlipperButton(
                         text = "Move Here",
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = !isMoving
-                                && !param.fullPathToMove.contains(param.path)
-                                && !param.fullPathToMove.mapNotNull(Path::parent).contains(param.path),
+                        isLoading = isMoving,
+                        enabled = !isMoving &&
+                            !param.fullPathToMove.contains(param.path) &&
+                            !param.fullPathToMove.mapNotNull(Path::parent).contains(param.path),
                         onClick = {
                             transferViewModel.move(
                                 oldPaths = param.fullPathToMove,

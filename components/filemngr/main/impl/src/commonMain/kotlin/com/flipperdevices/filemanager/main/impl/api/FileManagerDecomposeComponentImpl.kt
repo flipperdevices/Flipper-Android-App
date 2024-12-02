@@ -21,7 +21,6 @@ import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import okio.Path.Companion.toPath
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, FileManagerDecomposeComponent.Factory::class)

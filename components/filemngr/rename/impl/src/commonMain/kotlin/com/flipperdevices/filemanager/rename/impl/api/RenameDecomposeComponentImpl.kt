@@ -70,7 +70,8 @@ class RenameDecomposeComponentImpl @AssistedInject constructor(
                     onTextChange = renameViewModel::onNameChange,
                     onDismissRequest = renameViewModel::dismiss,
                     onOptionSelect = renameViewModel::onOptionSelected,
-                    options = localState.options
+                    options = localState.options,
+                    isLoading = localState.isRenaming
                 )
             }
         }
