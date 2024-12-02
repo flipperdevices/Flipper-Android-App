@@ -42,6 +42,7 @@ class FileManagerDecomposeComponentImpl @AssistedInject constructor(
         childFactory = ::child,
     )
 
+    @Suppress("LongMethod")
     private fun child(
         config: FileManagerNavigationConfig,
         componentContext: ComponentContext

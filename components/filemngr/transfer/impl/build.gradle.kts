@@ -38,6 +38,7 @@ commonDependencies {
     implementation(projects.components.filemngr.uiComponents)
     implementation(projects.components.filemngr.transfer.api)
     implementation(projects.components.filemngr.listing.api)
+    implementation(projects.components.filemngr.create.api)
 
     implementation(projects.components.deeplink.api)
 

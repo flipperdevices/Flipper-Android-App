@@ -101,6 +101,18 @@ class FilesViewModel @AssistedInject constructor(
         }
     }
 
+    fun onFolderCreated(listingItem: ListingItem) {
+        _state.update { state ->
+            (state as? State.Loaded)?.let { loadedState ->
+                val newItems = loadedState.files
+                    .filter { it.path.name != listingItem.fileName }
+                    .plus(listingItem.toExtended())
+                    .toImmutableList()
+                loadedState.copy(files = newItems)
+            } ?: state
+        }
+    }
+
     private suspend fun updateSubfoldersCount(
         items: List<ExtendedListingItem>,
         listingApi: FListingStorageApi
