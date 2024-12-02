@@ -1,6 +1,7 @@
 package com.flipperdevices.filemanager.listing.impl.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.slot.ChildSlot
@@ -12,6 +13,7 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.filemanager.create.api.CreateFileDecomposeComponent
 import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.listing.impl.composable.ComposableFileListScreen
@@ -19,11 +21,11 @@ import com.flipperdevices.filemanager.listing.impl.composable.LaunchedEventsComp
 import com.flipperdevices.filemanager.listing.impl.composable.modal.FileOptionsBottomSheet
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
+import com.flipperdevices.filemanager.rename.api.RenameDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dagger.assisted.Assisted
@@ -43,15 +45,17 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val searchCallback: SearchCallback,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
-    private val editFileViewModelFactory: Provider<EditFileViewModel>,
     private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory,
     private val downloadDecomposeComponentFactory: DownloadDecomposeComponent.Factory,
     private val createSelectionViewModel: Provider<SelectionViewModel>,
     private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
+    private val renameDecomposeComponentFactory: RenameDecomposeComponent.Factory,
+    private val createFileDecomposeComponentFactory: CreateFileDecomposeComponent.Factory,
 ) : FilesDecomposeComponent(componentContext) {
 
     private val slotNavigation = SlotNavigation<PathWithType>()
+
     val fileOptionsSlot: Value<ChildSlot<*, PathWithType>> = childSlot(
         source = slotNavigation,
         handleBackButton = true,
@@ -76,6 +80,24 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val downloadDecomposeComponent by lazy {
         downloadDecomposeComponentFactory.invoke(
             componentContext = childContext("FilesDecomposeComponent_downloadDecomposeComponent")
+        )
+    }
+
+    private val renameDecomposeComponent by lazy {
+        renameDecomposeComponentFactory.invoke(
+            componentContext = childContext("FilesDecomposeComponent_renameDecomposeComponent"),
+            renamedCallback = { oldFullPath, newFullPath ->
+                filesViewModel.fileRenamed(oldFullPath, newFullPath)
+            }
+        )
+    }
+
+    private val createDecomposeComponent by lazy {
+        createFileDecomposeComponentFactory.invoke(
+            componentContext = childContext("FilesDecomposeComponent_createDecomposeComponent"),
+            createCallback = { item ->
+                filesViewModel.onFilesChanged(listOf(item))
+            }
         )
     }
 
@@ -113,21 +135,15 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         val optionsViewModel = viewModelWithFactory(path.root.toString()) {
             optionsInfoViewModelFactory.get()
         }
-        val createFileViewModel = viewModelWithFactory(path.root.toString()) {
-            editFileViewModelFactory.get()
-        }
         val deleteFileViewModel = viewModelWithFactory(path.toString()) {
             deleteFilesViewModelFactory.get()
         }
         LaunchedEventsComposable(
-            editFileViewModel = createFileViewModel,
             deleteFilesViewModel = deleteFileViewModel,
             onFileRemove = filesViewModel::fileDeleted,
-            onFileListChange = filesViewModel::tryListFiles
         )
         ComposableFileListScreen(
             path = path,
-            editFileViewModel = createFileViewModel,
             deleteFileViewModel = deleteFileViewModel,
             filesViewModel = filesViewModel,
             optionsViewModel = optionsViewModel,
@@ -138,17 +154,30 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             onPathChange = pathChangedCallback::invoke,
             onFileMoreClick = slotNavigation::activate,
             onSearchClick = searchCallback::invoke,
-            onEditFileClick = fileSelectedCallback::invoke
+            onEditFileClick = fileSelectedCallback::invoke,
+            onRename = { pathWithType ->
+                renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
+            },
+            canCreateFiles = createDecomposeComponent.canCreateFiles
+                .collectAsState()
+                .value,
+            onCreate = { type ->
+                createDecomposeComponent.startCreate(path, type)
+            }
         )
         FileOptionsBottomSheet(
             fileOptionsSlot = fileOptionsSlot,
             slotNavigation = slotNavigation,
             selectionViewModel = selectionViewModel,
-            createFileViewModel = createFileViewModel,
             deleteFileViewModel = deleteFileViewModel,
-            onDownloadFile = downloadDecomposeComponent::download
+            onDownloadFile = downloadDecomposeComponent::download,
+            onRename = { pathWithType ->
+                renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
+            }
         )
         uploadDecomposeComponent.Render()
         downloadDecomposeComponent.Render()
+        renameDecomposeComponent.Render()
+        createDecomposeComponent.Render()
     }
 }

@@ -9,18 +9,17 @@ import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import okio.Path
 
 @Composable
 fun FileOptionsBottomSheet(
-    createFileViewModel: EditFileViewModel,
     fileOptionsSlot: Value<ChildSlot<*, PathWithType>>,
     slotNavigation: SlotNavigation<PathWithType>,
     selectionViewModel: SelectionViewModel,
     deleteFileViewModel: DeleteFilesViewModel,
     onDownloadFile: (Path, Long) -> Unit,
+    onRename: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SlotModalBottomSheet(
@@ -37,7 +36,7 @@ fun FileOptionsBottomSheet(
                     slotNavigation.dismiss()
                 },
                 onRename = {
-                    createFileViewModel.onRename(pathWithType)
+                    onRename.invoke(pathWithType)
                     slotNavigation.dismiss()
                 },
                 onExport = {

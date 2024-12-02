@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
@@ -138,10 +137,10 @@ fun BottomBarOptions(
 @Composable
 fun FullScreenBottomBarOptions(
     deleteFileViewModel: DeleteFilesViewModel,
-    editFileViewModel: EditFileViewModel,
     selectionViewModel: SelectionViewModel,
     filesListState: FilesViewModel.State,
     selectionState: SelectionViewModel.State,
+    onRename: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -159,9 +158,9 @@ fun FullScreenBottomBarOptions(
                 canRename = selectionState.canRename,
                 onMove = {}, // todo
                 onRename = {
-                    val path = selectionState.selected.firstOrNull() ?: return@BottomBarOptions
+                    val pathWithType = selectionState.selected.firstOrNull() ?: return@BottomBarOptions
                     selectionViewModel.toggleMode()
-                    editFileViewModel.onRename(path)
+                    onRename.invoke(pathWithType)
                 },
                 onDelete = {
                     deleteFileViewModel.tryDelete(selectionState.selected.map(PathWithType::fullPath))

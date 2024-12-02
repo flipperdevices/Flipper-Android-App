@@ -86,6 +86,7 @@ include(
     ":components:bridge:connection:feature:serialspeed:api",
     ":components:bridge:connection:feature:serialspeed:impl",
 
+    ":components:filemngr:util",
     ":components:filemanager:api",
     ":components:filemanager:impl",
     ":components:newfilemanager:api",
@@ -103,6 +104,10 @@ include(
     ":components:filemngr:editor:impl",
     ":components:filemngr:download:api",
     ":components:filemngr:download:impl",
+    ":components:filemngr:rename:api",
+    ":components:filemngr:rename:impl",
+    ":components:filemngr:create:api",
+    ":components:filemngr:create:impl",
 
     ":components:core:di",
     ":components:core:ktx",

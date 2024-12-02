@@ -25,7 +25,7 @@ commonDependencies {
     implementation(projects.components.filemngr.upload.api)
     implementation(projects.components.filemngr.search.api)
     implementation(projects.components.filemngr.editor.api)
-    implementation(projects.components.newfilemanager.api)
+    implementation(projects.components.filemngr.util)
 
     // Compose
     implementation(libs.compose.ui)
