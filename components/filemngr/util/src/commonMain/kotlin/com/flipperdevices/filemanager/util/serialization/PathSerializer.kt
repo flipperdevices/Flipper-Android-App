@@ -25,5 +25,3 @@ object PathSerializer : KSerializer<Path> {
         encoder.encodeString(value.toString())
     }
 }
-
-object PathListSerializer : KSerializer<List<Path>> by ListSerializer(PathSerializer)
