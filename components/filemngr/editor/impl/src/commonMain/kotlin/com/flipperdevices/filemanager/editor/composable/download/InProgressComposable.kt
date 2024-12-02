@@ -22,6 +22,9 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import okio.Path
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_speed
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 private fun InProgressTitleComposable(
@@ -76,7 +79,10 @@ internal fun InProgressComposable(
         Spacer(Modifier.height(8.dp))
         if (speed > 0) {
             Text(
-                text = "Speed: ${speed.toFormattedSize()}",
+                text = stringResource(
+                    resource = FME.string.fme_status_speed,
+                    speed.toFormattedSize()
+                ),
                 style = LocalTypography.current.subtitleM12,
                 color = LocalPalletV2.current.text.body.secondary,
                 modifier = Modifier.fillMaxWidth(),

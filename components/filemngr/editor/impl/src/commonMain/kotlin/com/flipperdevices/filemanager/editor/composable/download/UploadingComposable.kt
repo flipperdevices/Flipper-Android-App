@@ -18,6 +18,9 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import okio.Path
+import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_cancel
 
 @Composable
 fun UploadingComposable(
@@ -49,7 +52,7 @@ fun UploadingComposable(
             )
 
             Text(
-                text = "Cancel",
+                text = stringResource(FME.string.fme_cancel),
                 style = LocalTypography.current.bodyM14,
                 color = LocalPalletV2.current.action.danger.text.default,
                 modifier = Modifier

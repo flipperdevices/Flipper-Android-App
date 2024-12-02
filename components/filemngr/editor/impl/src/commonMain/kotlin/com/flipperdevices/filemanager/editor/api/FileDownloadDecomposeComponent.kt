@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okio.Path
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_downloading
+import org.jetbrains.compose.resources.stringResource
 
 class FileDownloadDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -67,7 +70,7 @@ class FileDownloadDecomposeComponent @AssistedInject constructor(
                     speed = downloadViewModel.speedState.collectAsState().value,
                     onCancel = onBack::invoke,
                     modifier = Modifier,
-                    title = "Downloading..."
+                    title = stringResource(FME.string.fme_status_downloading)
                 )
             }
 

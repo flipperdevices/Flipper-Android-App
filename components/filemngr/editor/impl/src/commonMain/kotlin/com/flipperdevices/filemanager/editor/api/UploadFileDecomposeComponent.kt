@@ -24,6 +24,9 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okio.Path
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_uploading
+import org.jetbrains.compose.resources.stringResource
 
 @Suppress("LongParameterList")
 class UploadFileDecomposeComponent @AssistedInject constructor(
@@ -86,7 +89,7 @@ class UploadFileDecomposeComponent @AssistedInject constructor(
                     speed = uploadFileViewModel.speedState.collectAsState().value,
                     onCancel = onBack::invoke,
                     modifier = Modifier,
-                    title = "Uploading..."
+                    title = stringResource(FME.string.fme_status_uploading)
                 )
             }
         }
