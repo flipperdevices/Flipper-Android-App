@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fm_in_progress_file_size">Size: %1$s of %2$s</string>
+    <string name="fm_in_progress_speed">Speed: %1$s/s</string>
+    <string name="fm_in_progress_items">%1$s/%2$s items</string>
+    <string name="fm_downloading">Downloading...</string>
+    <string name="fm_downloading_file">Downloading: %1$s [%2$s/%3$s]</string>
+    <string name="fm_cancel">Cancel Download</string>
+    <string name="fm_share_title">Share downloaded File</string>
+</resources>

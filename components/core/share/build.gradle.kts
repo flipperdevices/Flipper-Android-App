@@ -1,5 +1,7 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.anvil-multiplatform")
 }
 
 android.namespace = "com.flipperdevices.core.share"
@@ -13,7 +15,12 @@ android {
     }
 }
 
-dependencies {
+commonDependencies {
+    implementation(projects.components.core.di)
+    implementation(libs.okio)
+}
+
+androidDependencies {
     implementation(projects.components.core.ktx)
     implementation(libs.annotations)
     implementation(libs.appcompat)

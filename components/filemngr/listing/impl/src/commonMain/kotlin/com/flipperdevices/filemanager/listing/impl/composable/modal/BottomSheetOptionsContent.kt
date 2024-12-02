@@ -85,25 +85,29 @@ fun BottomSheetOptionsContent(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_copy_to),
                 painter = painterResource(FR.drawable.ic_copy_to),
-                onClick = onCopyTo
+                onClick = onCopyTo,
+                isEnabled = false
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_move_to),
                 painter = painterResource(FR.drawable.ic_move),
-                onClick = onMoveTo
+                onClick = onMoveTo,
+                isEnabled = false
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_export),
                 painter = painterResource(FR.drawable.ic_upload),
-                onClick = onExport
+                onClick = onExport,
+                isEnabled = fileType == FileType.FILE
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(FML.string.fml_rename),
                 painter = painterResource(FR.drawable.ic_edit),
-                onClick = onRename
+                onClick = onRename,
+                isEnabled = fileType == FileType.FILE
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),

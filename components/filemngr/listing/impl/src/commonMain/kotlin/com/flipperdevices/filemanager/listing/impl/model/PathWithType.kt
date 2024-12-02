@@ -9,5 +9,6 @@ import okio.Path
 data class PathWithType(
     val fileType: FileType,
     @Serializable(PathSerializer::class)
-    val fullPath: Path
+    val fullPath: Path,
+    val size: Long
 )

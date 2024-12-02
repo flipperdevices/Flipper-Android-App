@@ -101,6 +101,8 @@ include(
     ":components:filemngr:search:impl",
     ":components:filemngr:editor:api",
     ":components:filemngr:editor:impl",
+    ":components:filemngr:download:api",
+    ":components:filemngr:download:impl",
 
     ":components:core:di",
     ":components:core:ktx",

@@ -24,6 +24,7 @@ private fun FolderCardListComposablePreview() {
                     painter = painterResource(FR.drawable.ic_folder_black),
                     title = "Short title",
                     subtitle = "Short SubTitle",
+                    isSubtitleLoading = false,
                     selectionState = selectionState,
                     canDeleteFiles = true,
                     onClick = {},
@@ -39,6 +40,21 @@ private fun FolderCardListComposablePreview() {
                     subtitle = "A very very ultra mega super duper log title with some message at the end",
                     selectionState = selectionState,
                     canDeleteFiles = true,
+                    isSubtitleLoading = false,
+                    onClick = {},
+                    onCheckChange = {},
+                    onMoreClick = {},
+                    onDelete = {}
+                )
+            }
+            ItemUiSelectionState.entries.forEach { selectionState ->
+                SwipeToDismissFolderCardListComposable(
+                    painter = rememberVectorPainter(Icons.Filled.Folder),
+                    title = "A very very ultra mega super duper log title with some message at the end",
+                    subtitle = "A very very ultra mega super duper log title with some message at the end",
+                    selectionState = selectionState,
+                    canDeleteFiles = true,
+                    isSubtitleLoading = true,
                     onClick = {},
                     onCheckChange = {},
                     onMoreClick = {},
