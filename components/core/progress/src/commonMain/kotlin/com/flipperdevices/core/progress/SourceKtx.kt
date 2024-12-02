@@ -1,5 +1,7 @@
 package com.flipperdevices.core.progress
 
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.isActive
 import okio.Buffer
 import okio.Sink
 import okio.Source
@@ -20,7 +22,7 @@ suspend fun Source.copyWithProgress(
 
     var totalBytesRead = 0L
     val buffer = Buffer()
-    while (true) {
+    while (currentCoroutineContext().isActive) {
         val readCount: Long = read(buffer, chunkSize)
         if (readCount == -1L) break
         sink.write(buffer, readCount)

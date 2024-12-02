@@ -1,8 +1,12 @@
 # Changelog
 
-# 1.8.1 - In Progress
+# 1.8.2 - In Progress
+
+
+# 1.8.1
 
 - [Feature] Add count subfolders for new file manager
+- [Feature] Add file downloading for new file manager
 - [FIX] Migrate url host from metric.flipperdevices.com to metric.flipp.dev
 - [FIX] Fix empty response in faphub category
 - [FIX] New file manager uploading progress

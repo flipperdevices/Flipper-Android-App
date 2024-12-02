@@ -11,6 +11,7 @@ import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
+import okio.Path
 
 @Composable
 fun FileOptionsBottomSheet(
@@ -19,28 +20,32 @@ fun FileOptionsBottomSheet(
     slotNavigation: SlotNavigation<PathWithType>,
     selectionViewModel: SelectionViewModel,
     deleteFileViewModel: DeleteFilesViewModel,
+    onDownloadFile: (Path, Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SlotModalBottomSheet(
         childSlotValue = fileOptionsSlot,
         onDismiss = { slotNavigation.dismiss() },
-        content = {
+        content = { pathWithType ->
             BottomSheetOptionsContent(
                 modifier = modifier.navigationBarsPadding(),
-                fileType = it.fileType,
-                path = it.fullPath,
+                fileType = pathWithType.fileType,
+                path = pathWithType.fullPath,
                 onCopyTo = {}, // todo
                 onSelect = {
-                    selectionViewModel.select(it)
+                    selectionViewModel.select(pathWithType)
                     slotNavigation.dismiss()
                 },
                 onRename = {
-                    createFileViewModel.onRename(it)
+                    createFileViewModel.onRename(pathWithType)
                     slotNavigation.dismiss()
                 },
-                onExport = {}, // todo
+                onExport = {
+                    onDownloadFile.invoke(pathWithType.fullPath, pathWithType.size)
+                    slotNavigation.dismiss()
+                },
                 onDelete = {
-                    deleteFileViewModel.tryDelete(it.fullPath)
+                    deleteFileViewModel.tryDelete(pathWithType.fullPath)
                     slotNavigation.dismiss()
                 },
                 onMoveTo = {} // todo

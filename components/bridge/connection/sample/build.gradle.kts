@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.storage)
+    implementation(projects.components.core.share)
 
     implementation(projects.components.bridge.connection.transport.ble.api)
     implementation(projects.components.bridge.connection.transport.ble.impl)
@@ -86,6 +87,8 @@ dependencies {
     implementation(projects.components.filemngr.search.impl)
     implementation(projects.components.filemngr.editor.api)
     implementation(projects.components.filemngr.editor.impl)
+    implementation(projects.components.filemngr.download.api)
+    implementation(projects.components.filemngr.download.impl)
 
     implementation(projects.components.newfilemanager.api)
     implementation(projects.components.newfilemanager.impl)

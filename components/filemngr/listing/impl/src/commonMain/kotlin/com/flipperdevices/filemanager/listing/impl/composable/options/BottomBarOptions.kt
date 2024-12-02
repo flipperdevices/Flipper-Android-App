@@ -76,7 +76,8 @@ private fun MoreBottomBarOptions(
             IconDropdownItem(
                 text = stringResource(FML.string.fml_copy_to),
                 painter = painterResource(FR.drawable.ic_copy_to),
-                onClick = onCopyTo
+                onClick = onCopyTo,
+                isActive = false
             )
         }
     }
@@ -118,7 +119,7 @@ fun BottomBarOptions(
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_move),
             painter = painterResource(FR.drawable.ic_move),
-            onClick = onMove
+            onClick = onMove,
         )
 
         VerticalTextIconButton(

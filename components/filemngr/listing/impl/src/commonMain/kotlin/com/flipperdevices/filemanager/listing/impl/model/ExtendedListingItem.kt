@@ -16,6 +16,9 @@ sealed interface ExtendedListingItem {
     val itemName: String
         get() = path.name
 
+    val sizeOrNull: Long?
+        get() = (this as? File)?.size
+
     fun asListingItem() = ListingItem(
         fileName = itemName,
         fileType = itemType,

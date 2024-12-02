@@ -24,8 +24,11 @@ fun HorizontalTextIconButton(
     painter: Painter,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     iconTint: Color = LocalPalletV2.current.icon.blackAndWhite.default,
-    textColor: Color = LocalPalletV2.current.action.blackAndWhite.text.default
+    iconDisabledTint: Color = LocalPalletV2.current.action.blackAndWhite.icon.disabled,
+    textColor: Color = LocalPalletV2.current.action.blackAndWhite.text.default,
+    textDisabledColor: Color = LocalPalletV2.current.action.blackAndWhite.text.disabled
 ) {
     Row(
         modifier = modifier
@@ -37,14 +40,14 @@ fun HorizontalTextIconButton(
     ) {
         Icon(
             painter = painter,
-            tint = iconTint,
+            tint = if (isEnabled) iconTint else iconDisabledTint,
             modifier = Modifier.size(24.dp),
             contentDescription = null
         )
         Text(
             text = text,
             style = LocalTypography.current.subtitleM12,
-            color = textColor
+            color = if (isEnabled) textColor else textDisabledColor
         )
     }
 }

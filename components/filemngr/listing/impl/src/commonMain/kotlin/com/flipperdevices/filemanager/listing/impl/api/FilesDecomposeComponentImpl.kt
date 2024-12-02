@@ -12,6 +12,7 @@ import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.listing.impl.composable.ComposableFileListScreen
 import com.flipperdevices.filemanager.listing.impl.composable.LaunchedEventsComposable
@@ -45,6 +46,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     private val editFileViewModelFactory: Provider<EditFileViewModel>,
     private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
     private val filesViewModelFactory: FilesViewModel.Factory,
+    private val downloadDecomposeComponentFactory: DownloadDecomposeComponent.Factory,
     private val createSelectionViewModel: Provider<SelectionViewModel>,
     private val uploadDecomposeComponentFactory: UploadDecomposeComponent.Factory,
 ) : FilesDecomposeComponent(componentContext) {
@@ -71,6 +73,11 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             onFilesChanged = filesViewModel::onFilesChanged,
         )
     }
+    private val downloadDecomposeComponent by lazy {
+        downloadDecomposeComponentFactory.invoke(
+            componentContext = childContext("FilesDecomposeComponent_downloadDecomposeComponent")
+        )
+    }
 
     private val backCallback = BackCallback {
         val parent = path.parent
@@ -79,16 +86,16 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                 selectionViewModel.toggleMode()
             }
 
+            downloadDecomposeComponent.isInProgress.value -> {
+                downloadDecomposeComponent.onCancel()
+            }
+
             parent == null -> {
                 onBack.invoke()
             }
 
-            parent != null -> {
-                pathChangedCallback.invoke(parent)
-            }
-
             else -> {
-                onBack.invoke()
+                pathChangedCallback.invoke(parent)
             }
         }
     }
@@ -138,8 +145,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             slotNavigation = slotNavigation,
             selectionViewModel = selectionViewModel,
             createFileViewModel = createFileViewModel,
-            deleteFileViewModel = deleteFileViewModel
+            deleteFileViewModel = deleteFileViewModel,
+            onDownloadFile = downloadDecomposeComponent::download
         )
         uploadDecomposeComponent.Render()
+        downloadDecomposeComponent.Render()
     }
 }

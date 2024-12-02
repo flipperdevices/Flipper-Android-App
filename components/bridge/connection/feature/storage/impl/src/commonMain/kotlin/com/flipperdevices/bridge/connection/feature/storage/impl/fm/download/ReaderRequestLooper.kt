@@ -6,9 +6,11 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.storage.ReadRequest
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okio.Closeable
@@ -17,7 +19,7 @@ class ReaderRequestLooper(
     private val rpcFeatureApi: FRpcFeatureApi,
     private val pathOnFlipper: String,
     private val priority: FlipperRequestPriority,
-    scope: CoroutineScope
+    private val scope: CoroutineScope
 ) : Closeable {
     private val queue = Channel<Main>(Channel.UNLIMITED)
     private var isFinished = false
@@ -41,8 +43,16 @@ class ReaderRequestLooper(
         }
     }
 
+    /**
+     * Implementation like this is required because after coroutine
+     * is cancelled, the queue.receive() will lasts forever
+     */
     suspend fun getNextBytePack(): Main {
-        return queue.receive()
+        while (scope.isActive) {
+            val value = queue.tryReceive().getOrNull()
+            if (value != null) return value
+        }
+        throw CancellationException("Scope got cancelled during getting next byte pack")
     }
 
     override fun close() {
