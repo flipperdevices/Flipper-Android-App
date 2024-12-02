@@ -11,6 +11,7 @@ import com.arkivanov.decompose.router.slot.childSlot
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.create.api.CreateFileDecomposeComponent
@@ -124,6 +125,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
 
     init {
         backHandler.register(backCallback)
+    }
+
+    override fun onFileChanged(listingItem: ListingItem) {
+        filesViewModel.onFilesChanged(listOf(listingItem))
     }
 
     @Composable

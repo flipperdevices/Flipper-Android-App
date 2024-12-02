@@ -11,19 +11,16 @@ import com.flipperdevices.filemanager.editor.viewmodel.EditorViewModel
 
 @Composable
 fun LoadedContent(
-    state: EditorViewModel.State.Loaded,
+    state: EditorViewModel.State,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        if (state.isTooLarge) {
-            TooBigContent()
-        }
         TextField(
             modifier = Modifier.fillMaxSize(),
             value = state.hexString.content,
-            enabled = !state.isTooLarge,
-            readOnly = state.isTooLarge,
+            enabled = state.canEdit,
+            readOnly = !state.canEdit,
             onValueChange = onTextChange,
             colors = TextFieldDefaults.textFieldColors(
                 cursorColor = LocalPallet.current.text100
