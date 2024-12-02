@@ -20,13 +20,13 @@ import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_uploading
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okio.Path
-import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
-import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_uploading
 import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 
 @Suppress("LongParameterList")
 class UploadFileDecomposeComponent @AssistedInject constructor(

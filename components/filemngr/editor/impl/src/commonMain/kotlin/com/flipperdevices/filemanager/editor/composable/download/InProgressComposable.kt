@@ -21,10 +21,10 @@ import com.flipperdevices.core.ui.ktx.elements.FlipperProgressIndicator
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
-import okio.Path
-import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_speed
+import okio.Path
 import org.jetbrains.compose.resources.stringResource
+import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 
 @Composable
 private fun InProgressTitleComposable(

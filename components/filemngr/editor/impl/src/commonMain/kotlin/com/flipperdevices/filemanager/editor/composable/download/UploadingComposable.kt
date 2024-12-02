@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_cancel
 import okio.Path
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
-import flipperapp.components.filemngr.editor.impl.generated.resources.fme_cancel
 
 @Composable
 fun UploadingComposable(
