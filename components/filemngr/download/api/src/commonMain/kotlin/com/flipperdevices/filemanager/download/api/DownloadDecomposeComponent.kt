@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.filemanager.download.model.DownloadableFile
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import kotlinx.coroutines.flow.StateFlow
-import okio.Path
 
 abstract class DownloadDecomposeComponent(
     componentContext: ComponentContext

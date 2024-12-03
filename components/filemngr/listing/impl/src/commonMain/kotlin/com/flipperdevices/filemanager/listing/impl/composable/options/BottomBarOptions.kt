@@ -42,11 +42,11 @@ import flipperapp.components.filemngr.ui_components.generated.resources.ic_more_
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_move
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_trash_white
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
+import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 private fun MoreBottomBarOptions(

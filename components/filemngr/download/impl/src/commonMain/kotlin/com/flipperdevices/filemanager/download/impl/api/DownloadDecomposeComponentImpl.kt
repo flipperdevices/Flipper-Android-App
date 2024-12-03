@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import me.gulya.anvil.assisted.ContributesAssistedFactory
-import okio.Path
 import javax.inject.Provider
 
 @ContributesAssistedFactory(AppGraph::class, DownloadDecomposeComponent.Factory::class)

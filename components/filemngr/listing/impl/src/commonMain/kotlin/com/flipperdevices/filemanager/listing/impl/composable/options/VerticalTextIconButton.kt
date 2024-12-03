@@ -39,7 +39,6 @@ fun VerticalTextIconButton(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Icon(
             painter = painter,
             tint = animateColorAsState(if (isEnabled) iconTint else iconDisabledTint).value,

@@ -10,7 +10,6 @@ import com.arkivanov.decompose.value.Value
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
-import okio.Path
 
 @Composable
 fun FileOptionsBottomSheet(
