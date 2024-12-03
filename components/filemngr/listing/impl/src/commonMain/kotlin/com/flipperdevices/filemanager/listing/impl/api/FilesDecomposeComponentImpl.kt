@@ -146,7 +146,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         }
         LaunchedEventsComposable(
             deleteFilesViewModel = deleteFileViewModel,
-            onFileRemove = filesViewModel::fileDeleted,
+            onFileDelete = { path ->
+                selectionViewModel.deselect(path)
+                filesViewModel.fileDeleted(path)
+            },
         )
         ComposableFileListScreen(
             path = path,

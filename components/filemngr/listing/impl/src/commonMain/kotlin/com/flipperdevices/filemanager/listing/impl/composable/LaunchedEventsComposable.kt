@@ -10,13 +10,13 @@ import okio.Path
 @Composable
 fun LaunchedEventsComposable(
     deleteFilesViewModel: DeleteFilesViewModel,
-    onFileRemove: (Path) -> Unit
+    onFileDelete: (Path) -> Unit
 ) {
     LaunchedEffect(deleteFilesViewModel) {
         deleteFilesViewModel.event.onEach {
             when (it) {
                 DeleteFilesViewModel.Event.CouldNotDeleteSomeFiles -> Unit
-                is DeleteFilesViewModel.Event.FileDeleted -> onFileRemove.invoke(it.path)
+                is DeleteFilesViewModel.Event.FileDeleted -> onFileDelete.invoke(it.path)
             }
         }.launchIn(this)
     }

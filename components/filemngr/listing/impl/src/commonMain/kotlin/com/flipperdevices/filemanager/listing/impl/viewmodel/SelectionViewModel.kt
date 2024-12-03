@@ -7,7 +7,10 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import okio.Path
 import javax.inject.Inject
 
 class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
@@ -25,6 +28,15 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
     fun deselect(path: PathWithType) {
         _state.update {
             it.copy(selected = it.selected.minus(path).toImmutableSet())
+        }
+    }
+
+    fun deselect(path: Path) {
+        viewModelScope.launch {
+            state.first()
+                .selected
+                .firstOrNull { it.fullPath.name == path.name }
+                ?.run(::deselect)
         }
     }
 
