@@ -1,23 +1,11 @@
 package com.flipperdevices.filemanager.editor.composable.download
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.flipperdevices.core.ui.ktx.clickableRipple
-import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.core.ui.theme.LocalTypography
+import com.flipperdevices.core.ktx.jre.toFormattedSize
+import com.flipperdevices.filemanager.ui.components.transfer.FileTransferFullScreenComposable
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_cancel
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_speed
 import okio.Path
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
@@ -33,42 +21,21 @@ fun UploadingComposable(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(
-                text = title,
-                style = LocalTypography.current.titleB18,
-                color = LocalPalletV2.current.text.title.primary,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = stringResource(FME.string.fme_cancel),
-                style = LocalTypography.current.bodyM14,
-                color = LocalPalletV2.current.action.danger.text.default,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickableRipple(onClick = onCancel),
-                textAlign = TextAlign.Center
+    FileTransferFullScreenComposable(
+        modifier = modifier,
+        title = title,
+        actionText = stringResource(FME.string.fme_cancel),
+        onActionClick = onCancel,
+        progressText = fullPathOnFlipper.name,
+        progress = progress,
+        progressDetailText = if (max == 0L) null else "${current.toFormattedSize()}/${max.toFormattedSize()}",
+        progressTitle = fullPathOnFlipper.name,
+        speedText = when (speed) {
+            0L -> null
+            else -> stringResource(
+                resource = FME.string.fme_status_speed,
+                speed.toFormattedSize()
             )
         }
-        InProgressComposable(
-            progress = progress,
-            speed = speed,
-            fullPathOnFlipper = fullPathOnFlipper,
-            downloaded = current,
-            total = max
-        )
-    }
+    )
 }

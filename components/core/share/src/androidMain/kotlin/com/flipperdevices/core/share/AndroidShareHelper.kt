@@ -3,7 +3,6 @@ package com.flipperdevices.core.share
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
-import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import com.squareup.anvil.annotations.ContributesBinding
 import okio.Path.Companion.toOkioPath
 import javax.inject.Inject
