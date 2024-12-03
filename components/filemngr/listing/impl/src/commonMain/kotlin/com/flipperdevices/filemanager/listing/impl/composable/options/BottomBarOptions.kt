@@ -141,6 +141,7 @@ fun FullScreenBottomBarOptions(
     filesListState: FilesViewModel.State,
     selectionState: SelectionViewModel.State,
     onRename: (PathWithType) -> Unit,
+    onMove: (List<PathWithType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -156,9 +157,12 @@ fun FullScreenBottomBarOptions(
         ) {
             BottomBarOptions(
                 canRename = selectionState.canRename,
-                onMove = {}, // todo
+                onMove = {
+                    onMove.invoke(selectionState.selected.toList())
+                },
                 onRename = {
-                    val pathWithType = selectionState.selected.firstOrNull() ?: return@BottomBarOptions
+                    val pathWithType =
+                        selectionState.selected.firstOrNull() ?: return@BottomBarOptions
                     selectionViewModel.toggleMode()
                     onRename.invoke(pathWithType)
                 },

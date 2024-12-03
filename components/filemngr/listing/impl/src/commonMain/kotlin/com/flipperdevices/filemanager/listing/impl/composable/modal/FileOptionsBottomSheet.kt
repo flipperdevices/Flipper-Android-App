@@ -20,6 +20,7 @@ fun FileOptionsBottomSheet(
     deleteFileViewModel: DeleteFilesViewModel,
     onDownloadFile: (Path, Long) -> Unit,
     onRename: (PathWithType) -> Unit,
+    onMoveTo: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SlotModalBottomSheet(
@@ -47,7 +48,9 @@ fun FileOptionsBottomSheet(
                     deleteFileViewModel.tryDelete(pathWithType.fullPath)
                     slotNavigation.dismiss()
                 },
-                onMoveTo = {} // todo
+                onMoveTo = {
+                    onMoveTo.invoke(pathWithType)
+                }
             )
         }
     )

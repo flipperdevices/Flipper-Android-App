@@ -36,6 +36,7 @@ fun CreateFileDialogComposable(
         onTextChange = editFileNameViewModel::onChange,
         onDismissRequest = onDismiss,
         onOptionSelect = editFileNameViewModel::onOptionSelected,
-        options = state.options
+        options = state.options,
+        isLoading = false
     )
 }

@@ -84,7 +84,8 @@ class CreateFileDecomposeComponentImpl @AssistedInject constructor(
                     onTextChange = createFileViewModel::onNameChange,
                     onDismissRequest = createFileViewModel::dismiss,
                     onOptionSelect = createFileViewModel::onOptionSelected,
-                    options = localState.options
+                    options = localState.options,
+                    isLoading = localState.isCreating
                 )
             }
         }

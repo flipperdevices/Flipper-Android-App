@@ -43,6 +43,7 @@ fun ComposableFileListScreen(
     onFileMoreClick: (PathWithType) -> Unit,
     onCreate: (FileType) -> Unit,
     onRename: (PathWithType) -> Unit,
+    onMove: (List<PathWithType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val canDeleteFiles by deleteFileViewModel.canDeleteFiles.collectAsState()
@@ -129,7 +130,8 @@ fun ComposableFileListScreen(
             filesListState = filesListState,
             selectionViewModel = selectionViewModel,
             deleteFileViewModel = deleteFileViewModel,
-            onRename = onRename
+            onRename = onRename,
+            onMove = onMove
         )
     }
 }

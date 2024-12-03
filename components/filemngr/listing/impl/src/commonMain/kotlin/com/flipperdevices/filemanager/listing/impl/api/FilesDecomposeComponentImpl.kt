@@ -44,6 +44,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     @Assisted private val pathChangedCallback: PathChangedCallback,
     @Assisted private val fileSelectedCallback: FileSelectedCallback,
     @Assisted private val searchCallback: SearchCallback,
+    @Assisted private val moveToCallback: MoveToCallback,
     private val storageInfoViewModelFactory: Provider<StorageInfoViewModel>,
     private val optionsInfoViewModelFactory: Provider<OptionsViewModel>,
     private val deleteFilesViewModelFactory: Provider<DeleteFilesViewModel>,
@@ -168,6 +169,9 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
                 .value,
             onCreate = { type ->
                 createDecomposeComponent.startCreate(path, type)
+            },
+            onMove = { pathsWithType ->
+                moveToCallback.invoke(pathsWithType.map(PathWithType::fullPath))
             }
         )
         FileOptionsBottomSheet(
@@ -178,6 +182,9 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             onDownloadFile = downloadDecomposeComponent::download,
             onRename = { pathWithType ->
                 renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
+            },
+            onMoveTo = { pathWithType ->
+                moveToCallback.invoke(listOf(pathWithType.fullPath))
             }
         )
         uploadDecomposeComponent.Render()

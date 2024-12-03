@@ -48,7 +48,7 @@ class EditFileNameViewModel @AssistedInject constructor(
 
     data class State(
         val name: String = "",
-        val isValid: Boolean = false
+        val isValid: Boolean = false,
     ) {
         val options = FileManagerConstants.FILE_EXTENSION_HINTS.toImmutableList()
 

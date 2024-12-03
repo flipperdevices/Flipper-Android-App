@@ -7,6 +7,7 @@
 
 - [Feature] Add count subfolders for new file manager
 - [Feature] Add file downloading for new file manager
+- [Feature] Add move-to to new file manager
 - [Refactor] Move rename and file create to separated modules
 - [Refactor] Improve and refactor new FileManager Editor
 - [FIX] Migrate url host from metric.flipperdevices.com to metric.flipp.dev

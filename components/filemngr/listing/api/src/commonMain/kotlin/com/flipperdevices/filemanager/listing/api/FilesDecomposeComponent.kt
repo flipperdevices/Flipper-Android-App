@@ -19,6 +19,7 @@ abstract class FilesDecomposeComponent(
             path: Path,
             pathChangedCallback: PathChangedCallback,
             fileSelectedCallback: FileSelectedCallback,
+            moveToCallback: MoveToCallback,
             searchCallback: SearchCallback,
         ): FilesDecomposeComponent
     }
@@ -37,5 +38,8 @@ abstract class FilesDecomposeComponent(
 
     fun interface UploadCallback {
         fun invoke()
+    }
+    fun interface MoveToCallback {
+        fun invoke(fullPaths: List<Path>)
     }
 }

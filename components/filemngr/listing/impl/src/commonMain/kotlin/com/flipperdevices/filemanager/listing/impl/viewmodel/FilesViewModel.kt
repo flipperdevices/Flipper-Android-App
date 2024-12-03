@@ -17,7 +17,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.FileManagerSort
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.filemanager.listing.impl.model.ExtendedListingItem
+import com.flipperdevices.filemanager.listing.api.model.ExtendedListingItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

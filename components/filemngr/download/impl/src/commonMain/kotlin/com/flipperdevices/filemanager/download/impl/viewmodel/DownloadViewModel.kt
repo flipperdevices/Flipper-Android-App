@@ -128,7 +128,6 @@ class DownloadViewModel @Inject constructor(
                         }
                     }.catch { it.printStackTrace() }.launchIn(viewModelScope)
                 _featureJob?.join()
-                println("DownloadViewModel out of mutex")
             }
         }
     }

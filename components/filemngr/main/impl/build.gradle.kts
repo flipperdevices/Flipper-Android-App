@@ -22,6 +22,7 @@ commonDependencies {
 
     implementation(projects.components.filemngr.uiComponents)
     implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.transfer.api)
     implementation(projects.components.filemngr.listing.api)
     implementation(projects.components.filemngr.upload.api)
     implementation(projects.components.filemngr.search.api)
