@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.listing.impl.viewmodel
 
+import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import kotlinx.collections.immutable.ImmutableSet
@@ -71,5 +72,8 @@ class SelectionViewModel @Inject constructor() : DecomposeViewModel() {
         val isEnabled: Boolean = false
     ) {
         val canRename: Boolean = selected.size == 1
+        val canExport: Boolean = selected.size == 1 && selected.all { it.fileType == FileType.FILE }
+        val canMove: Boolean = selected.size >= 1
+        val canDelete: Boolean = selected.size >= 1
     }
 }

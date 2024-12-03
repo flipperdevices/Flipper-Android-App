@@ -46,6 +46,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 private fun MoreBottomBarOptions(
@@ -85,6 +86,9 @@ private fun MoreBottomBarOptions(
 @Composable
 fun BottomBarOptions(
     canRename: Boolean,
+    canDelete: Boolean,
+    canMove: Boolean,
+    canExport: Boolean,
     onRename: () -> Unit,
     onExport: () -> Unit,
     onMove: () -> Unit,
@@ -104,27 +108,32 @@ fun BottomBarOptions(
             .background(LocalPalletV2.current.surface.border.default.secondary)
             .padding(1.dp)
             .background(LocalPalletV2.current.surface.popUp.body.default),
-        horizontalArrangement = Arrangement.spacedBy(32.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_dialog_delete_btn),
             painter = painterResource(FR.drawable.ic_trash_white),
             iconTint = LocalPalletV2.current.action.danger.icon.default,
+            iconDisabledTint = LocalPalletV2.current.action.danger.icon.disabled,
             textColor = LocalPalletV2.current.action.danger.text.default,
-            onClick = onDelete
+            textDisabledColor = LocalPalletV2.current.action.danger.text.disabled,
+            onClick = onDelete,
+            isEnabled = canDelete
         )
 
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_move),
             painter = painterResource(FR.drawable.ic_move),
             onClick = onMove,
+            isEnabled = canMove
         )
 
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_export),
             painter = painterResource(FR.drawable.ic_upload),
-            onClick = onExport
+            onClick = onExport,
+            isEnabled = canExport
         )
         MoreBottomBarOptions(
             onCopyTo = onCopyTo,
@@ -142,6 +151,7 @@ fun FullScreenBottomBarOptions(
     selectionState: SelectionViewModel.State,
     onRename: (PathWithType) -> Unit,
     onMove: (List<PathWithType>) -> Unit,
+    onExport: (List<PathWithType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -157,6 +167,9 @@ fun FullScreenBottomBarOptions(
         ) {
             BottomBarOptions(
                 canRename = selectionState.canRename,
+                canMove = selectionState.canMove,
+                canDelete = selectionState.canDelete,
+                canExport = selectionState.canExport,
                 onMove = {
                     onMove.invoke(selectionState.selected.toList())
                 },
@@ -170,7 +183,9 @@ fun FullScreenBottomBarOptions(
                     deleteFileViewModel.tryDelete(selectionState.selected.map(PathWithType::fullPath))
                     selectionViewModel.toggleMode()
                 },
-                onExport = {}, // todo
+                onExport = {
+                    onExport.invoke(selectionState.selected.toImmutableList())
+                },
                 onCopyTo = {} // todo
             )
         }

@@ -16,8 +16,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.download.impl.composable.DownloadingComposable
-import com.flipperdevices.filemanager.download.impl.model.DownloadableFile
 import com.flipperdevices.filemanager.download.impl.viewmodel.DownloadViewModel
+import com.flipperdevices.filemanager.download.model.DownloadableFile
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,15 +42,9 @@ class DownloadDecomposeComponentImpl @AssistedInject constructor(
 
     override fun onCancel() = downloadViewModel.onCancel()
 
-    override fun download(
-        fullPath: Path,
-        size: Long
-    ) = downloadViewModel.tryDownload(
-        file = DownloadableFile(
-            fullPath = fullPath,
-            size = size
-        )
-    )
+    override fun download(file: DownloadableFile) {
+        downloadViewModel.tryDownload(file = file)
+    }
 
     @Composable
     override fun Render() {

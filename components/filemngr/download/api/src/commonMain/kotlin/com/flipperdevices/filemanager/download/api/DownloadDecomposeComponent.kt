@@ -1,6 +1,7 @@
 package com.flipperdevices.filemanager.download.api
 
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.filemanager.download.model.DownloadableFile
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import kotlinx.coroutines.flow.StateFlow
 import okio.Path
@@ -12,10 +13,7 @@ abstract class DownloadDecomposeComponent(
 
     abstract fun onCancel()
 
-    abstract fun download(
-        fullPath: Path,
-        size: Long
-    )
+    abstract fun download(file: DownloadableFile)
 
     fun interface Factory {
         operator fun invoke(

@@ -14,7 +14,10 @@ private fun BottomBarOptionsPreview() {
             onRename = {},
             onCopyTo = {},
             onMove = {},
-            canRename = true
+            canRename = true,
+            canMove = true,
+            canDelete = true,
+            canExport = true
         )
     }
 }

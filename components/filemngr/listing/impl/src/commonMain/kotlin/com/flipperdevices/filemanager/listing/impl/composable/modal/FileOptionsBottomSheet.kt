@@ -18,7 +18,7 @@ fun FileOptionsBottomSheet(
     slotNavigation: SlotNavigation<PathWithType>,
     selectionViewModel: SelectionViewModel,
     deleteFileViewModel: DeleteFilesViewModel,
-    onDownloadFile: (Path, Long) -> Unit,
+    onDownloadFile: (PathWithType) -> Unit,
     onRename: (PathWithType) -> Unit,
     onMoveTo: (PathWithType) -> Unit,
     modifier: Modifier = Modifier
@@ -41,7 +41,7 @@ fun FileOptionsBottomSheet(
                     slotNavigation.dismiss()
                 },
                 onExport = {
-                    onDownloadFile.invoke(pathWithType.fullPath, pathWithType.size)
+                    onDownloadFile.invoke(pathWithType)
                     slotNavigation.dismiss()
                 },
                 onDelete = {
@@ -50,6 +50,7 @@ fun FileOptionsBottomSheet(
                 },
                 onMoveTo = {
                     onMoveTo.invoke(pathWithType)
+                    slotNavigation.dismiss()
                 }
             )
         }
