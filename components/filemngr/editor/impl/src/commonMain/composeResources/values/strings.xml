@@ -13,4 +13,6 @@
     <string name="fme_save_as_dialog_title">Enter name:</string>
     <string name="fme_save_as_dialog_button">Save as New File</string>
     <string name="fme_save_as_dialog_chars">Allowed Characters: %1$s</string>
+    <string name="fme_error_too_large_title">The file is too large!</string>
+    <string name="fme_error_too_large_desc">Unfortunately, flipper Android doesn't allow to edit files larger: %1$s</string>
 </resources>

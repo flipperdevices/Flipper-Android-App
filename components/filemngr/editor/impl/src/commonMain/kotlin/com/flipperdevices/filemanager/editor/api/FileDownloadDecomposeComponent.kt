@@ -1,23 +1,26 @@
 package com.flipperdevices.filemanager.editor.api
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.filemanager.editor.composable.download.UploadingComposable
 import com.flipperdevices.filemanager.editor.viewmodel.DownloadViewModel
+import com.flipperdevices.filemanager.ui.components.error.ErrorContentComposable
+import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
+import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_error_too_large_desc
+import flipperapp.components.filemngr.editor.impl.generated.resources.fme_error_too_large_title
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_downloading
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -46,20 +49,18 @@ class FileDownloadDecomposeComponent @AssistedInject constructor(
         LaunchedEffect(downloadViewModel) {
             downloadViewModel.state
                 .filterIsInstance<DownloadViewModel.State.Downloaded>()
-                .onEach {
-                    onDownloaded.invoke()
-                }.launchIn(this)
+                .onEach { onDownloaded.invoke() }
+                .launchIn(this)
         }
         val state by downloadViewModel.state.collectAsState()
 
         when (val localState = state) {
             DownloadViewModel.State.CouldNotDownload -> {
-                Box(Modifier.fillMaxSize().background(Color.Red))
+                UnknownErrorComposable()
             }
 
-            DownloadViewModel.State.Downloaded -> {
-                Box(Modifier.fillMaxSize().background(Color.Green))
-            }
+            // Screen closed
+            DownloadViewModel.State.Downloaded -> Unit
 
             is DownloadViewModel.State.Downloading -> {
                 UploadingComposable(
@@ -75,11 +76,17 @@ class FileDownloadDecomposeComponent @AssistedInject constructor(
             }
 
             DownloadViewModel.State.TooLarge -> {
-                Box(Modifier.fillMaxSize().background(Color.Cyan))
+                ErrorContentComposable(
+                    text = stringResource(FME.string.fme_error_too_large_title),
+                    desc = stringResource(
+                        FME.string.fme_error_too_large_desc,
+                        FileManagerConstants.LIMITED_SIZE_BYTES.toFormattedSize()
+                    )
+                )
             }
 
             DownloadViewModel.State.Unsupported -> {
-                Box(Modifier.fillMaxSize().background(Color.Yellow))
+                UnsupportedErrorComposable()
             }
         }
     }

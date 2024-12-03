@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,6 +24,8 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
+import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import okio.Path
 
 @Suppress("LongMethod")
@@ -113,10 +116,16 @@ fun ComposableFileListScreen(
                 }
 
                 FilesViewModel.State.Unsupported -> {
-                    item { NoListingFeatureComposable() }
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        UnsupportedErrorComposable()
+                    }
                 }
 
-                FilesViewModel.State.CouldNotListPath -> Unit
+                FilesViewModel.State.CouldNotListPath -> {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        UnknownErrorComposable()
+                    }
+                }
             }
         }
         FilesFailComposable(

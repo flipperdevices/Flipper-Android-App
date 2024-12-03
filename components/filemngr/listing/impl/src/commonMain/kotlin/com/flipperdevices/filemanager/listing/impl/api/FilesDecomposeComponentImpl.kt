@@ -133,6 +133,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         filesViewModel.onFilesChanged(listOf(listingItem))
     }
 
+    @Suppress("LongMethod")
     @Composable
     override fun Render() {
         val multipleFilesPicker = uploadDecomposeComponent.rememberMultipleFilesPicker(path)
