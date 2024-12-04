@@ -1,20 +1,18 @@
 package com.flipperdevices.filemanager.editor.api
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
 import com.flipperdevices.filemanager.editor.composable.download.UploadingComposable
 import com.flipperdevices.filemanager.editor.viewmodel.UploadFileViewModel
+import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
@@ -69,15 +67,14 @@ class UploadFileDecomposeComponent @AssistedInject constructor(
 
         when (val localState = state) {
             UploadFileViewModel.State.Error -> {
-                Box(Modifier.fillMaxSize().background(Color.Red))
+                UnsupportedErrorComposable()
             }
 
-            is UploadFileViewModel.State.Saved -> {
-                Box(Modifier.fillMaxSize().background(Color.Green))
-            }
+            // The screen is closed
+            is UploadFileViewModel.State.Saved -> Unit
 
             UploadFileViewModel.State.Unsupported -> {
-                Box(Modifier.fillMaxSize().background(Color.Yellow))
+                UnknownErrorComposable()
             }
 
             is UploadFileViewModel.State.Uploading -> {

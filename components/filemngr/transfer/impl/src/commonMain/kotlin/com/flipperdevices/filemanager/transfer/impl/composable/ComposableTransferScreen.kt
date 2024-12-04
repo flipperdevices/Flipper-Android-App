@@ -1,6 +1,5 @@
 package com.flipperdevices.filemanager.transfer.impl.composable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,12 +13,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.filemanager.transfer.api.TransferDecomposeComponent.Param
 import com.flipperdevices.filemanager.transfer.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.transfer.impl.viewmodel.OptionsViewModel
+import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import com.flipperdevices.filemanager.ui.components.itemcard.FolderCardPlaceholderComposable
 import okio.Path
 
@@ -73,7 +73,7 @@ fun ComposableTransferScreen(
                 FilesViewModel.State.CouldNotListPath -> {
                     item(
                         span = { GridItemSpan(maxLineSpan) },
-                        content = { Box(Modifier.fillMaxSize().background(Color.Red)) }
+                        content = { UnknownErrorComposable() }
                     )
                 }
 
@@ -107,7 +107,7 @@ fun ComposableTransferScreen(
                 FilesViewModel.State.Unsupported -> {
                     item(
                         span = { GridItemSpan(maxLineSpan) },
-                        content = { UnsupportedComposable() }
+                        content = { UnsupportedErrorComposable() }
                     )
                 }
             }

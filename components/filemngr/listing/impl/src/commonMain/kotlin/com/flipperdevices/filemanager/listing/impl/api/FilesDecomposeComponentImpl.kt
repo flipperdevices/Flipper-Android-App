@@ -16,6 +16,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.filemanager.create.api.CreateFileDecomposeComponent
 import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
+import com.flipperdevices.filemanager.download.model.DownloadableFile
 import com.flipperdevices.filemanager.listing.api.FilesDecomposeComponent
 import com.flipperdevices.filemanager.listing.impl.composable.ComposableFileListScreen
 import com.flipperdevices.filemanager.listing.impl.composable.LaunchedEventsComposable
@@ -132,6 +133,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         filesViewModel.onFilesChanged(listOf(listingItem))
     }
 
+    @Suppress("LongMethod")
     @Composable
     override fun Render() {
         val multipleFilesPicker = uploadDecomposeComponent.rememberMultipleFilesPicker(path)
@@ -146,7 +148,10 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
         }
         LaunchedEventsComposable(
             deleteFilesViewModel = deleteFileViewModel,
-            onFileRemove = filesViewModel::fileDeleted,
+            onFileDelete = { path ->
+                selectionViewModel.deselect(path)
+                filesViewModel.fileDeleted(path)
+            },
         )
         ComposableFileListScreen(
             path = path,
@@ -172,6 +177,14 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             },
             onMove = { pathsWithType ->
                 moveToCallback.invoke(pathsWithType.map(PathWithType::fullPath))
+            },
+            onExport = { pathsWithTypes ->
+                pathsWithTypes.firstOrNull()?.let { pathWithType ->
+                    DownloadableFile(
+                        fullPath = pathWithType.fullPath,
+                        size = pathWithType.size
+                    )
+                }?.run(downloadDecomposeComponent::download)
             }
         )
         FileOptionsBottomSheet(
@@ -179,7 +192,14 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             slotNavigation = slotNavigation,
             selectionViewModel = selectionViewModel,
             deleteFileViewModel = deleteFileViewModel,
-            onDownloadFile = downloadDecomposeComponent::download,
+            onDownloadFile = { pathWithType ->
+                downloadDecomposeComponent.download(
+                    file = DownloadableFile(
+                        fullPath = pathWithType.fullPath,
+                        size = pathWithType.size
+                    )
+                )
+            },
             onRename = { pathWithType ->
                 renameDecomposeComponent.startRename(pathWithType.fullPath, pathWithType.fileType)
             },

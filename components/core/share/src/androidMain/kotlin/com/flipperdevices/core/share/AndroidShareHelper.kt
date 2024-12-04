@@ -2,6 +2,7 @@ package com.flipperdevices.core.share
 
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.squareup.anvil.annotations.ContributesBinding
 import okio.Path.Companion.toOkioPath
 import javax.inject.Inject
@@ -12,8 +13,9 @@ class AndroidShareHelper @Inject constructor(
 ) : PlatformShareHelper {
 
     override fun provideSharableFile(fileName: String): PlatformSharableFile {
-        val path = SharableFile(context, fileName).toOkioPath()
-        return PlatformSharableFile(path)
+        val sharableFile = SharableFile(context, fileName)
+        sharableFile.createClearNewFileWithMkDirs()
+        return PlatformSharableFile(sharableFile.toOkioPath())
     }
 
     override fun shareFile(file: PlatformSharableFile, title: String) {
