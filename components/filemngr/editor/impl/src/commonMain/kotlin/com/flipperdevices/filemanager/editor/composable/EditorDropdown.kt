@@ -50,11 +50,17 @@ internal fun EditorDropdown(
         ) {
             TextDropdownItem(
                 text = stringResource(FME.string.fme_save),
-                onClick = onSaveClick
+                onClick = {
+                    onSaveClick.invoke()
+                    isDropdownVisible = !isDropdownVisible
+                }
             )
             TextDropdownItem(
                 text = stringResource(FME.string.fme_save_as_file),
-                onClick = onSaveAsClick
+                onClick = {
+                    onSaveAsClick.invoke()
+                    isDropdownVisible = !isDropdownVisible
+                }
             )
         }
     }

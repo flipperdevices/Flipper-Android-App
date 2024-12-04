@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.filemanager.search.impl.viewmodel.SearchViewModel
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import okio.Path
@@ -58,7 +59,7 @@ fun ComposableFilesSearchScreen(
                 }
 
                 SearchViewModel.State.Unsupported -> {
-                    NoListingFeatureComposable()
+                    UnsupportedErrorComposable()
                 }
             }
         }

@@ -37,6 +37,7 @@ fun NameDialog(
     needShowOptions: Boolean,
     isError: Boolean,
     isEnabled: Boolean,
+    isLoading: Boolean,
     onTextChange: (String) -> Unit,
     options: ImmutableList<String>,
     onOptionSelect: (index: Int) -> Unit,
@@ -74,7 +75,8 @@ fun NameDialog(
                     needShowOptions = needShowOptions,
                     title = title,
                     subtitle = subtitle,
-                    isError = isError
+                    isError = isError,
+                    isEnabled = isEnabled
                 )
 
                 Spacer(Modifier.height(24.dp))
@@ -83,7 +85,8 @@ fun NameDialog(
                     modifier = Modifier.fillMaxWidth(),
                     textPadding = PaddingValues(vertical = 12.dp),
                     onClick = onFinish,
-                    enabled = isEnabled
+                    enabled = isEnabled,
+                    isLoading = isLoading
                 )
             }
         }

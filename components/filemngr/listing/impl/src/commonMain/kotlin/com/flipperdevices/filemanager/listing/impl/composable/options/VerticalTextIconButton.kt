@@ -1,5 +1,6 @@
 package com.flipperdevices.filemanager.listing.impl.composable.options
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -33,21 +34,21 @@ fun VerticalTextIconButton(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .clickableRipple(onClick = onClick)
-            .padding(vertical = 12.dp),
+            .clickableRipple(onClick = { if (isEnabled) onClick.invoke() })
+            .padding(vertical = 12.dp, horizontal = 12.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             painter = painter,
-            tint = if (isEnabled) iconTint else iconDisabledTint,
+            tint = animateColorAsState(if (isEnabled) iconTint else iconDisabledTint).value,
             modifier = Modifier.size(24.dp),
             contentDescription = null
         )
         Text(
             text = text,
             style = LocalTypography.current.subtitleM12,
-            color = if (isEnabled) textColor else textDisabledColor
+            color = animateColorAsState(if (isEnabled) textColor else textDisabledColor).value
         )
     }
 }

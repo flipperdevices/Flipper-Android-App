@@ -34,8 +34,8 @@ commonDependencies {
 
     implementation(projects.components.filemngr.uiComponents)
     implementation(projects.components.filemngr.editor.api)
-    implementation(projects.components.filemngr.upload.api)
     implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.util)
 
     // Compose
     implementation(libs.compose.ui)

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.ktx.jre.toFormattedSize
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
-import com.flipperdevices.filemanager.listing.impl.model.ExtendedListingItem
+import com.flipperdevices.filemanager.listing.api.model.ExtendedListingItem
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel

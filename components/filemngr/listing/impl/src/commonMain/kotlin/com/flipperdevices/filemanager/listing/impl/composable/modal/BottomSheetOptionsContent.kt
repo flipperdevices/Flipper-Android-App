@@ -93,7 +93,7 @@ fun BottomSheetOptionsContent(
                 text = stringResource(FML.string.fml_move_to),
                 painter = painterResource(FR.drawable.ic_move),
                 onClick = onMoveTo,
-                isEnabled = false
+                isEnabled = true
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -107,7 +107,7 @@ fun BottomSheetOptionsContent(
                 text = stringResource(FML.string.fml_rename),
                 painter = painterResource(FR.drawable.ic_edit),
                 onClick = onRename,
-                isEnabled = fileType == FileType.FILE
+                isEnabled = true
             )
             HorizontalTextIconButton(
                 modifier = Modifier.fillMaxWidth(),

@@ -9,7 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.PlatformShareHelper
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.filemanager.download.impl.model.DownloadableFile
+import com.flipperdevices.filemanager.download.model.DownloadableFile
 import flipperapp.components.filemngr.download.impl.generated.resources.Res
 import flipperapp.components.filemngr.download.impl.generated.resources.fm_share_title
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -53,7 +52,6 @@ class DownloadViewModel @Inject constructor(
             pathOnFlipper = flipperFileFullPath.toString(),
             fileOnAndroid = pathOnAndroid.path,
             progressListener = { current, max ->
-                println("DownloadViewModel progressListener")
                 _state.update { state ->
                     (state as? State.Downloading)
                         ?.copy(downloadedSize = current, totalSize = max)
@@ -128,7 +126,6 @@ class DownloadViewModel @Inject constructor(
                         }
                     }.catch { it.printStackTrace() }.launchIn(viewModelScope)
                 _featureJob?.join()
-                println("DownloadViewModel out of mutex")
             }
         }
     }

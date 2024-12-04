@@ -3,10 +3,16 @@
     <string name="fme_too_large_file">The file is larger than 1MB and therefore only part of the file is shown.</string>
     <string name="fme_save_as_file">Save File as...</string>
     <string name="fme_save">Save</string>
+    <string name="fme_status_downloading">Downloading...</string>
+    <string name="fme_status_uploading">Uploading...</string>
+    <string name="fme_status_speed">Speed: %1$s/s</string>
+    <string name="fme_cancel">Cancel</string>
     <string name="fme_allowed_characters">Allowed characters: %1$s</string>
     <string name="fme_txt">TXT</string>
     <string name="fme_hex">HEX</string>
     <string name="fme_save_as_dialog_title">Enter name:</string>
     <string name="fme_save_as_dialog_button">Save as New File</string>
     <string name="fme_save_as_dialog_chars">Allowed Characters: %1$s</string>
+    <string name="fme_error_too_large_title">The file is too large!</string>
+    <string name="fme_error_too_large_desc">Unfortunately, flipper Android doesn't allow to edit files larger: %1$s</string>
 </resources>

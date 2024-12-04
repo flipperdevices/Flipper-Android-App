@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.ui.components.dropdown.IconDropdownItem
@@ -43,6 +42,7 @@ import flipperapp.components.filemngr.ui_components.generated.resources.ic_more_
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_move
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_trash_white
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_upload
+import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
@@ -86,6 +86,9 @@ private fun MoreBottomBarOptions(
 @Composable
 fun BottomBarOptions(
     canRename: Boolean,
+    canDelete: Boolean,
+    canMove: Boolean,
+    canExport: Boolean,
     onRename: () -> Unit,
     onExport: () -> Unit,
     onMove: () -> Unit,
@@ -105,27 +108,32 @@ fun BottomBarOptions(
             .background(LocalPalletV2.current.surface.border.default.secondary)
             .padding(1.dp)
             .background(LocalPalletV2.current.surface.popUp.body.default),
-        horizontalArrangement = Arrangement.spacedBy(32.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_dialog_delete_btn),
             painter = painterResource(FR.drawable.ic_trash_white),
             iconTint = LocalPalletV2.current.action.danger.icon.default,
+            iconDisabledTint = LocalPalletV2.current.action.danger.icon.disabled,
             textColor = LocalPalletV2.current.action.danger.text.default,
-            onClick = onDelete
+            textDisabledColor = LocalPalletV2.current.action.danger.text.disabled,
+            onClick = onDelete,
+            isEnabled = canDelete
         )
 
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_move),
             painter = painterResource(FR.drawable.ic_move),
             onClick = onMove,
+            isEnabled = canMove
         )
 
         VerticalTextIconButton(
             text = stringResource(FML.string.fml_export),
             painter = painterResource(FR.drawable.ic_upload),
-            onClick = onExport
+            onClick = onExport,
+            isEnabled = canExport
         )
         MoreBottomBarOptions(
             onCopyTo = onCopyTo,
@@ -138,10 +146,12 @@ fun BottomBarOptions(
 @Composable
 fun FullScreenBottomBarOptions(
     deleteFileViewModel: DeleteFilesViewModel,
-    editFileViewModel: EditFileViewModel,
     selectionViewModel: SelectionViewModel,
     filesListState: FilesViewModel.State,
     selectionState: SelectionViewModel.State,
+    onRename: (PathWithType) -> Unit,
+    onMove: (List<PathWithType>) -> Unit,
+    onExport: (List<PathWithType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -157,17 +167,25 @@ fun FullScreenBottomBarOptions(
         ) {
             BottomBarOptions(
                 canRename = selectionState.canRename,
-                onMove = {}, // todo
+                canMove = selectionState.canMove,
+                canDelete = selectionState.canDelete,
+                canExport = selectionState.canExport,
+                onMove = {
+                    onMove.invoke(selectionState.selected.toList())
+                },
                 onRename = {
-                    val path = selectionState.selected.firstOrNull() ?: return@BottomBarOptions
+                    val pathWithType =
+                        selectionState.selected.firstOrNull() ?: return@BottomBarOptions
                     selectionViewModel.toggleMode()
-                    editFileViewModel.onRename(path)
+                    onRename.invoke(pathWithType)
                 },
                 onDelete = {
                     deleteFileViewModel.tryDelete(selectionState.selected.map(PathWithType::fullPath))
                     selectionViewModel.toggleMode()
                 },
-                onExport = {}, // todo
+                onExport = {
+                    onExport.invoke(selectionState.selected.toImmutableList())
+                },
                 onCopyTo = {} // todo
             )
         }
