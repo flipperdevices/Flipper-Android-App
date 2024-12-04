@@ -128,9 +128,9 @@ class InfraredViewModel @Inject constructor(
 
         try {
             appStarted = emulateHelper.startEmulate(
-                scope,
-                serviceApi,
-                config
+                scope = scope,
+                serviceApi = serviceApi,
+                config = config,
             )
             if (appStarted && timeout != null) {
                 if (oneTimePress) {
@@ -150,22 +150,30 @@ class InfraredViewModel @Inject constructor(
                 }
             }
         } catch (ignored: AlreadyOpenedAppException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            if (!oneTimePress) {
+                emulateHelper.stopEmulateForce(requestApi)
+            }
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return false
         } catch (ignored: ForbiddenFrequencyException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            if (!oneTimePress) {
+                emulateHelper.stopEmulateForce(requestApi)
+            }
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return false
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate infrared" }
-            emulateHelper.stopEmulateForce(requestApi)
+            if (!oneTimePress) {
+                emulateHelper.stopEmulateForce(requestApi)
+            }
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
         }
         if (!appStarted) {
             info { "Failed start emulation" }
-            emulateHelper.stopEmulateForce(requestApi)
+            if (!oneTimePress) {
+                emulateHelper.stopEmulateForce(requestApi)
+            }
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
 
