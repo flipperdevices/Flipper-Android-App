@@ -17,12 +17,12 @@ dependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.progress)
     implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.storage)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.rpc.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
 
     implementation(projects.components.wearable.sync.handheld.api)
     implementation(projects.components.nfc.mfkey32.api)

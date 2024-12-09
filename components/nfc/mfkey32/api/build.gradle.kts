@@ -10,5 +10,7 @@ dependencies {
 
     implementation(projects.components.bridge.api)
 
+    implementation(projects.components.bridge.connection.feature.storage.api)
+
     implementation(libs.kotlin.coroutines)
 }

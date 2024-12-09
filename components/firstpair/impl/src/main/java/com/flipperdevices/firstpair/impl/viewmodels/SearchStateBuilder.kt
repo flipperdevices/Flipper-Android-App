@@ -94,7 +94,8 @@ class SearchStateBuilder(
                 SearchingState(
                     content = SearchingContent.Finished(
                         pairState.address,
-                        pairState.deviceName
+                        pairState.deviceName,
+                        pairState.address
                     )
                 )
             )

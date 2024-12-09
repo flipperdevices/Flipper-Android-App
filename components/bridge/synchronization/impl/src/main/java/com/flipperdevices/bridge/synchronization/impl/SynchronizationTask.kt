@@ -1,12 +1,11 @@
 package com.flipperdevices.bridge.synchronization.impl
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileStorageMD5Api
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.bridge.synchronization.impl.di.TaskSynchronizationComponent
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutor
@@ -22,7 +21,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
+import com.flipperdevices.core.ui.lifecycle.FOneTimeExecutionBleTask
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
@@ -31,8 +30,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -55,7 +52,7 @@ interface SynchronizationTask {
 
 @ContributesBinding(AppGraph::class, SynchronizationTask.Builder::class)
 class SynchronizationTaskBuilder @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
+    private val featureProvider: FFeatureProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
     private val syncWearableApi: SyncWearableApi,
@@ -63,7 +60,7 @@ class SynchronizationTaskBuilder @Inject constructor(
 ) : SynchronizationTask.Builder {
     override fun build(): SynchronizationTask {
         return SynchronizationTaskImpl(
-            serviceProvider,
+            featureProvider,
             simpleKeyApi,
             metricApi,
             syncWearableApi,
@@ -75,12 +72,12 @@ class SynchronizationTaskBuilder @Inject constructor(
 private const val START_SYNCHRONIZATION_PERCENT = 0.01f
 
 class SynchronizationTaskImpl(
-    serviceProvider: FlipperServiceProvider,
+    private val featureProvider: FFeatureProvider,
     private val simpleKeyApi: SimpleKeyApi,
     private val metricApi: MetricApi,
     private val syncWearableApi: SyncWearableApi,
     private val mfKey32Api: MfKey32Api
-) : OneTimeExecutionBleTask<Unit, SynchronizationState>(serviceProvider),
+) : FOneTimeExecutionBleTask<Unit, SynchronizationState>(),
     SynchronizationTask,
     LogTagProvider {
     override val TAG = "SynchronizationTask"
@@ -124,20 +121,16 @@ class SynchronizationTaskImpl(
 
     override suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         input: Unit,
         stateListener: suspend (SynchronizationState) -> Unit
     ) {
-        // Waiting to be connected to the flipper
-        serviceApi.connectionInformationApi.getConnectionStateFlow()
-            .filter {
-                it is ConnectionState.Ready &&
-                    it.supportedState == FlipperSupportedState.READY
-            }.first()
+        val storageFeatureApi = featureProvider
+            .getSync<FStorageFeatureApi>()
+            ?: error("Can't find storage feature api")
         startInternal(
-            scope,
-            serviceApi,
-            DetailedProgressWrapperTracker(
+            scope = scope,
+            storageFeatureApi = storageFeatureApi,
+            progressTracker = DetailedProgressWrapperTracker(
                 min = 0f,
                 max = 1f,
                 progressListener = { progress, detail ->
@@ -155,19 +148,19 @@ class SynchronizationTaskImpl(
 
     private suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
+        storageFeatureApi: FStorageFeatureApi,
         progressTracker: DetailedProgressWrapperTracker
     ) {
         info { "#startInternal" }
-        val mfKey32check = scope.async { checkMfKey32Safe(serviceApi.requestApi) }
+        val mfKey32check = scope.async { checkMfKey32Safe(storageFeatureApi.md5Api()) }
         try {
             progressTracker.onProgress(
                 current = START_SYNCHRONIZATION_PERCENT,
                 detail = SynchronizationTask.SynchronizationStartedProgressDetail
             )
             launch(
-                serviceApi,
-                DetailedProgressWrapperTracker(
+                storageFeatureApi = storageFeatureApi,
+                progressTracker = DetailedProgressWrapperTracker(
                     min = START_SYNCHRONIZATION_PERCENT,
                     max = 1.0f,
                     progressListener = progressTracker
@@ -183,26 +176,25 @@ class SynchronizationTaskImpl(
             restartException: RestartSynchronizationException
         ) {
             info { "Synchronization request restart" }
-            startInternal(scope, serviceApi, progressTracker)
+            startInternal(scope, storageFeatureApi, progressTracker)
         }
     }
 
-    private suspend fun checkMfKey32Safe(requestApi: FlipperRequestApi) = try {
-        mfKey32Api.checkBruteforceFileExist(requestApi)
+    private suspend fun checkMfKey32Safe(mD5Api: FFileStorageMD5Api) = try {
+        mfKey32Api.checkBruteforceFileExist(mD5Api)
     } catch (throwable: Throwable) {
         error(throwable) { "Failed check mfkey32" }
     }
 
     private suspend fun launch(
-        serviceApi: FlipperServiceApi,
+        storageFeatureApi: FStorageFeatureApi,
         progressTracker: DetailedProgressWrapperTracker
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
         val startSynchronizationTime = System.currentTimeMillis()
         val taskComponent = TaskSynchronizationComponent.ManualFactory
             .create(
-                ComponentHolder.component(),
-                serviceApi.requestApi,
-                serviceApi.flipperVersionApi
+                deps = ComponentHolder.component(),
+                storageFeatureApi = storageFeatureApi
             )
 
         val keysChanged = taskComponent.keysSynchronization.syncKeys(
