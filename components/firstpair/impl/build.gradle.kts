@@ -29,6 +29,13 @@ dependencies {
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 
+    // BLE-new
+//    implementation(projects.components.bridge.connection.transport.ble.api)
+//    implementation(projects.components.bridge.connection.transport.common.api)
+//    implementation(projects.components.bridge.connection.orchestrator.api)
+//    implementation(projects.components.bridge.connection.device.common.api)
+    implementation(projects.components.bridge.connection.config.api)
+
     implementation(libs.appcompat)
 
     implementation(libs.kotlin.immutable.collections)

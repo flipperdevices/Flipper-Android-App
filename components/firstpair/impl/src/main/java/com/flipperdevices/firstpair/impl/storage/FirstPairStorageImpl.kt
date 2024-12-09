@@ -2,17 +2,21 @@ package com.flipperdevices.firstpair.impl.storage
 
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
+import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.first
+import java.util.UUID
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FirstPairStorage::class)
 class FirstPairStorageImpl @Inject constructor(
-    private val pairSettingsStore: DataStore<PairSettings>
+    private val pairSettingsStore: DataStore<PairSettings>,
+    private val persistedStorage: FDevicePersistedStorage
 ) : FirstPairStorage, LogTagProvider {
     override val TAG = "FirstPairStorage"
 
@@ -34,7 +38,8 @@ class FirstPairStorageImpl @Inject constructor(
 
     override fun markDeviceSelected(
         deviceId: String?,
-        deviceName: String?
+        deviceName: String?,
+        address: String?
     ): Unit = runBlockingWithLog("mark_device_selected") {
         pairSettingsStore.updateData {
             var pairSetting = it.copy(pair_device_pass = true)
@@ -50,6 +55,13 @@ class FirstPairStorageImpl @Inject constructor(
                         .trim()
                 }
                 pairSetting = pairSetting.copy(device_name = deviceNameFormatted)
+                val device = FDeviceFlipperZeroBleModel(
+                    name = deviceNameFormatted,
+                    address = address.orEmpty(),
+                    uniqueId = deviceId ?: UUID.randomUUID().toString()
+                )
+                persistedStorage.addDevice(device)
+                persistedStorage.setCurrentDevice(deviceId)
             }
             pairSetting
         }
