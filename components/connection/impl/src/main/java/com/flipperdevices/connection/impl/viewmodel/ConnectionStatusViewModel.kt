@@ -76,43 +76,6 @@ class ConnectionStatusViewModel @Inject constructor(
     @Composable
     fun getStatusState(): StateFlow<ConnectionStatusState> = statusState
 
-    // TODO
-//    override fun onServiceBleError(error: _FlipperBleServiceError) {
-//        super.onServiceBleError(error)
-//        if (!BuildConfig.INTERNAL) {
-//            return
-//        }
-//
-//        val errorTextResId = when (error) {
-//            _FlipperBleServiceError.CONNECT_BLUETOOTH_DISABLED ->
-//                R.string.error_connect_bluetooth_disabled
-//
-//            _FlipperBleServiceError.CONNECT_BLUETOOTH_PERMISSION ->
-//                R.string.error_connect_bluetooth_permission
-//
-//            _FlipperBleServiceError.SERVICE_INFORMATION_NOT_FOUND ->
-//                R.string.error_connect_information_not_found
-//
-//            _FlipperBleServiceError.SERVICE_SERIAL_NOT_FOUND ->
-//                R.string.error_connect_serial_not_found
-//
-//            _FlipperBleServiceError.SERVICE_INFORMATION_FAILED_INIT ->
-//                R.string.error_connect_information_init_failed
-//
-//            _FlipperBleServiceError.SERVICE_SERIAL_FAILED_INIT ->
-//                R.string.error_connect_serial_init_failed
-//
-//            _FlipperBleServiceError.SERVICE_VERSION_NOT_FOUND ->
-//                R.string.error_connect_version_not_found
-//
-//            _FlipperBleServiceError.SERVICE_VERSION_FAILED_INIT ->
-//                R.string.error_connect_version_init_failed
-//        }
-//        viewModelScope.launch(Dispatchers.Main) {
-//            Toast.makeText(application, errorTextResId, Toast.LENGTH_LONG).show()
-//        }
-//    }
-
     private suspend fun FDeviceConnectStatus.toConnectionStatus(supportedState: FlipperSupportedState) =
         when (this) {
             is FDeviceConnectStatus.Connecting -> {
