@@ -82,7 +82,7 @@ internal fun ComposableSearchingView(
 
     val state by searchStateBuilder.getState().collectAsState()
     (state.content as? SearchingContent.Finished)?.let {
-        pairViewModel.finishConnection(it.deviceId, it.deviceName, onFinishConnection)
+        pairViewModel.finishConnection(it.deviceId, it.deviceName, it.address, onFinishConnection)
     }
 
     ComposableSearchingScreen(

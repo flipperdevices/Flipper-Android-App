@@ -4,5 +4,5 @@ interface FirstPairStorage {
     fun isTosPassed(): Boolean
     fun isDeviceSelected(): Boolean
     fun markTosPassed()
-    fun markDeviceSelected(deviceId: String?, deviceName: String?)
+    fun markDeviceSelected(deviceId: String?, deviceName: String?, address: String?)
 }

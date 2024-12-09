@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_connect_bluetooth_disabled">Bluetooth disabled, please enable it</string>
-    <string name="error_connect_bluetooth_permission">Can\'t access to Bluetooth</string>
-    <string name="error_connect_information_not_found">Can\'t find information gatt service</string>
-    <string name="error_connect_serial_not_found">Can\'t find serial gatt service</string>
-    <string name="error_connect_version_not_found">Can\'t find version gatt service</string>
-    <string name="error_connect_information_init_failed">Failed initialize information service</string>
-    <string name="error_connect_serial_init_failed">Failed initialize serial service</string>
-    <string name="error_connect_version_init_failed">Failed initialize version service</string>
-
     <string name="dialog_unsupported_title">Outdated firmware version</string>
     <string name="dialog_unsupported_description">Firmware version on your Flipper is not supported. Please update it via PC.</string>
     <string name="dialog_unsupported_btn">Ok</string>

@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.di
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.synchronization.impl.executor.AndroidKeyStorage
 import com.flipperdevices.bridge.synchronization.impl.executor.DiffKeyExecutorImpl
 import com.flipperdevices.bridge.synchronization.impl.executor.FlipperKeyStorage
@@ -23,8 +22,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 
 class TaskSynchronizationComponentImpl(
     deps: TaskSynchronizationComponentDependencies,
-    requestApi: FlipperRequestApi,
-    flipperVersionApi: FlipperVersionApi
+    storageFeatureApi: FStorageFeatureApi
 ) : TaskSynchronizationComponent,
     TaskSynchronizationComponentDependencies by deps {
     private val manifestStorage = ManifestStorageImpl(context)
@@ -36,7 +34,7 @@ class TaskSynchronizationComponentImpl(
     private val androidHashRepositoryImpl = AndroidHashRepositoryImpl()
 
     private val flipperHashRepository = FlipperHashRepositoryImpl(
-        flipperStorageApi = flipperStorageApi
+        flipperStorageApi = storageFeatureApi.listingApi()
     )
 
     private val synchronizationRepository = SynchronizationStateRepositoryImpl(
@@ -56,7 +54,9 @@ class TaskSynchronizationComponentImpl(
     )
 
     private val flipperStorage = FlipperKeyStorage(
-        requestApi = requestApi
+        fileDownloadApi = storageFeatureApi.downloadApi(),
+        fileUploadApi = storageFeatureApi.uploadApi(),
+        fileDeleteApi = storageFeatureApi.deleteApi()
     )
 
     private val diffKeyExecutor = DiffKeyExecutorImpl()
@@ -78,8 +78,7 @@ class TaskSynchronizationComponentImpl(
     )
 
     private val timestampSynchronizationChecker = TimestampSynchronizationCheckerImpl(
-        requestApi = requestApi,
-        flipperVersionApi = flipperVersionApi
+        timestampApi = storageFeatureApi.timestampApi()
     )
 
     private val manifestTimestampRepository = ManifestTimestampRepositoryImpl(

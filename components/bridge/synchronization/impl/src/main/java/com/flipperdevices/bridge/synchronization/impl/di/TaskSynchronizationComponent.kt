@@ -2,18 +2,17 @@ package com.flipperdevices.bridge.synchronization.impl.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.FlipperFileApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UtilsKeyApi
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.bridge.synchronization.impl.repository.FavoriteSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.KeysSynchronization
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestRepository
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesTo
@@ -28,7 +27,7 @@ interface TaskSynchronizationComponentDependencies {
     val updateKeyApi: UpdateKeyApi
     val context: Context
     val settings: DataStore<Settings>
-    val flipperStorageApi: FlipperStorageApi
+    val flipperStorageApi: FlipperStorageProvider
 }
 
 interface TaskSynchronizationComponent {
@@ -44,12 +43,10 @@ interface TaskSynchronizationComponent {
     object ManualFactory {
         fun create(
             deps: TaskSynchronizationComponentDependencies,
-            requestApi: FlipperRequestApi,
-            flipperVersionApi: FlipperVersionApi
+            storageFeatureApi: FStorageFeatureApi
         ): TaskSynchronizationComponent = TaskSynchronizationComponentImpl(
             deps = deps,
-            requestApi = requestApi,
-            flipperVersionApi = flipperVersionApi
+            storageFeatureApi = storageFeatureApi
         )
     }
 }

@@ -14,6 +14,7 @@ commonDependencies {
     implementation(libs.compose.foundation)
 
     implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.orchestrator.api)
 
     api(libs.decompose)
     implementation(libs.kotlin.coroutines)

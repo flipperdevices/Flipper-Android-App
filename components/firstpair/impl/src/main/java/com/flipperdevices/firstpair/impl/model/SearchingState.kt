@@ -27,7 +27,8 @@ sealed class SearchingContent {
 
     class Finished(
         val deviceId: String?,
-        val deviceName: String?
+        val deviceName: String?,
+        val address: String?
     ) : SearchingContent() // All work finished, exit from screen
 
     abstract class PermissionRequest(

@@ -187,10 +187,11 @@ class PairDeviceViewModel(
     fun finishConnection(
         deviceId: String? = null,
         deviceName: String? = null,
+        address: String? = null,
         onEndAction: () -> Unit,
     ) {
         close()
-        firstPairStorage.markDeviceSelected(deviceId, deviceName)
+        firstPairStorage.markDeviceSelected(deviceId, deviceName, address)
         onEndAction()
     }
 
