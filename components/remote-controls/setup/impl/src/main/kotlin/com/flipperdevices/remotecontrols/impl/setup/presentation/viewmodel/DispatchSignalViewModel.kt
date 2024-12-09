@@ -32,7 +32,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -114,12 +113,12 @@ class DispatchSignalViewModel @Inject constructor(
             keyPath = ffPath,
             keyType = FlipperKeyType.INFRARED,
             args = remote.name,
-            index = i
+            index = i,
+            isPressRelease = isOneTime
         )
         dispatch(
             config = config,
             identifier = identifier,
-            isOneTime = isOneTime,
             onDispatched = onDispatched
         )
     }
@@ -131,7 +130,6 @@ class DispatchSignalViewModel @Inject constructor(
     override fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
-        isOneTime: Boolean,
         onDispatched: () -> Unit
     ) {
         if (latestDispatchJob?.isActive == true) return
@@ -151,11 +149,9 @@ class DispatchSignalViewModel @Inject constructor(
                             emulateHelper.startEmulate(
                                 scope = this,
                                 serviceApi = serviceApi,
-                                config = config
+                                config = config,
                             )
-                            if (isOneTime) {
-                                delay(DEFAULT_SIGNAL_DELAY)
-                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                            if (config.isPressRelease) {
                                 _state.emit(DispatchSignalApi.State.Pending)
                                 onDispatched.invoke()
                             }
@@ -200,7 +196,6 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     companion object {
-        private const val DEFAULT_SIGNAL_DELAY = 500L
         private const val VIBRATOR_TIME = 100L
     }
 }

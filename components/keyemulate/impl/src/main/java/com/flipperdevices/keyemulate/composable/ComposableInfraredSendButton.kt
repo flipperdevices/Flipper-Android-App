@@ -79,7 +79,7 @@ private fun ComposableActiveStateEmulateInternal(
 
     val buttonActiveModifier = Modifier.onScrollHoldPress(
         onTap = {
-            emulateViewModel.onSinglePress(emulateConfig)
+            emulateViewModel.onSinglePress(emulateConfig.copy(isPressRelease = true))
         },
         onLongPressStart = {
             emulateViewModel.onStartEmulate(emulateConfig)
