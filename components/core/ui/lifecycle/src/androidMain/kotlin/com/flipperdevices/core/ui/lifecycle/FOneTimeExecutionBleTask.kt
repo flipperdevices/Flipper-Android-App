@@ -1,8 +1,6 @@
 package com.flipperdevices.core.ui.lifecycle
 
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
@@ -24,10 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * This class allows you to run one and only one task
  * at a time with coroutine scope and flipper ble
  */
-@Deprecated("Use new api FOneTimeExecutionBleTask")
-abstract class OneTimeExecutionBleTask<INPUT, STATE>(
-    private val serviceProvider: FlipperServiceProvider
-) : TaskWithLifecycle(), LogTagProvider {
+abstract class FOneTimeExecutionBleTask<INPUT, STATE> : TaskWithLifecycle(), LogTagProvider {
     private val taskScope = coroutineScope(FlipperDispatchers.workStealingDispatcher)
     private val mutex = Mutex()
     private var job: Job? = null
@@ -42,21 +37,19 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
             warn { "OneTimeExecutionBleTask call again" }
             return@launch
         }
-        serviceProvider.provideServiceApi(this@OneTimeExecutionBleTask) { serviceApi ->
-            info { "Flipper service provided" }
-            launchWithLock(mutex, taskScope) {
-                job?.cancelAndJoin()
-                job = null
-                job = taskScope.launch(FlipperDispatchers.workStealingDispatcher) {
-                    val localScope = this
-                    // Waiting to be connected to the flipper
-                    try {
-                        startInternal(localScope, serviceApi, input, stateListener)
-                    } catch (throwable: Throwable) {
-                        error(throwable) { "Error during execution" }
-                        withContext(Dispatchers.Main) {
-                            onStop()
-                        }
+        info { "Flipper service provided" }
+        launchWithLock(mutex, taskScope) {
+            job?.cancelAndJoin()
+            job = null
+            job = taskScope.launch(FlipperDispatchers.workStealingDispatcher) {
+                val localScope = this
+                // Waiting to be connected to the flipper
+                try {
+                    startInternal(localScope, input, stateListener)
+                } catch (throwable: Throwable) {
+                    error(throwable) { "Error during execution" }
+                    withContext(Dispatchers.Main) {
+                        onStop()
                     }
                 }
             }
@@ -76,7 +69,6 @@ abstract class OneTimeExecutionBleTask<INPUT, STATE>(
 
     abstract suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         input: INPUT,
         stateListener: suspend (STATE) -> Unit
     )
