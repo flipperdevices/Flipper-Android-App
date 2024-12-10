@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.core.ui.theme.LocalPallet
