@@ -184,6 +184,10 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.storage.impl)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.impl)
+    implementation(projects.components.bridge.connection.feature.alarm.api)
+    implementation(projects.components.bridge.connection.feature.alarm.impl)
+    implementation(projects.components.bridge.connection.feature.deviceColor.api)
+    implementation(projects.components.bridge.connection.feature.deviceColor.impl)
 
     implementation(projects.components.analytics.shake2report.api)
     if (IS_SENTRY_ENABLED) {

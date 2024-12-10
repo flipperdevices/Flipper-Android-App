@@ -7,17 +7,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -68,6 +64,16 @@ class FConnectionServiceImpl @Inject constructor(
         scope.launch {
             isForceDisconnected.emit(force)
             orchestrator.disconnectCurrent()
+        }
+    }
+
+    override fun forgetCurrentDevice() {
+        scope.launch {
+            fDevicePersistedStorage.getCurrentDevice()
+                .first()
+                ?.let { currentDevice ->
+                    fDevicePersistedStorage.removeDevice(currentDevice.uniqueId)
+                }
         }
     }
 }

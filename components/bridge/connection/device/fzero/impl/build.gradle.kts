@@ -26,6 +26,8 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.alarm.api)
+    implementation(projects.components.bridge.connection.feature.deviceColor.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

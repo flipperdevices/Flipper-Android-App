@@ -49,6 +49,7 @@ fun ComposableDeviceInfoScreen(
     deviceInfo: FlipperBasicInfo,
     onOpenFullDeviceInfo: () -> Unit,
     onOpenOptions: () -> Unit,
+    hasAlarm: Boolean,
     alarmOnFlipper: () -> Unit,
     onOpenRemoteControl: () -> Unit,
     onStartUpdateRequest: (UpdateRequest) -> Unit,
@@ -107,7 +108,8 @@ fun ComposableDeviceInfoScreen(
                 deviceStatus = deviceStatus,
                 supportedState = supportedState,
                 requestSynchronize = connectViewModel::requestSynchronize,
-                alarmOnFlipper = alarmOnFlipper
+                alarmOnFlipper = alarmOnFlipper,
+                hasAlarm = hasAlarm
             )
             ComposablePairDeviceActionCard(
                 modifier = Modifier.padding(top = 14.dp, bottom = 14.dp),

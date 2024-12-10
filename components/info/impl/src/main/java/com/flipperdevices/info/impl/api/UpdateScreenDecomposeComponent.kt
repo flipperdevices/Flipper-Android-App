@@ -102,6 +102,7 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
             hardwareColor = flipperColor,
             supportedState = supportState,
             updateState = updateState,
+            hasAlarm = alarmViewModel.hasAlarm.collectAsState().value,
             alarmOnFlipper = alarmViewModel::alarmOnFlipper,
             deviceInfo = basicInfo,
             scrollState = scrollState,
