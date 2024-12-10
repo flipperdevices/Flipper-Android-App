@@ -50,6 +50,8 @@ include(
     ":components:bridge:connection:transport:common:impl",
     ":components:bridge:connection:orchestrator:api",
     ":components:bridge:connection:orchestrator:impl",
+    ":components:bridge:connection:service:api",
+    ":components:bridge:connection:service:impl",
     ":components:bridge:connection:connectionbuilder:api",
     ":components:bridge:connection:connectionbuilder:impl",
     ":components:bridge:connection:sample",
