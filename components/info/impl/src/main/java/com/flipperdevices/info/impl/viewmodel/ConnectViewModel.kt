@@ -1,21 +1,24 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.service.api.FConnectionService
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class ConnectViewModel @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
     private val synchronizationApi: SynchronizationApi,
-    private val dataStoreFirstPair: DataStore<PairSettings>
+    private val dataStoreFirstPair: DataStore<PairSettings>,
+    private val fConnectionService: FConnectionService
 ) : DecomposeViewModel() {
     private val connectRequestState = MutableStateFlow(
         ConnectRequestState.NOT_REQUESTED
@@ -27,21 +30,17 @@ class ConnectViewModel @Inject constructor(
             return
         }
         connectRequestState.update { ConnectRequestState.CONNECTING_AND_SYNCHRONIZING }
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch {
-                it.reconnect()
-                synchronizationApi.startSynchronization(force = true)
-                connectRequestState.update { ConnectRequestState.NOT_REQUESTED }
-                alreadyRequestConnect.compareAndSet(true, false)
-            }
+        viewModelScope.launch {
+            fConnectionService.forceReconnect()
+            synchronizationApi.startSynchronization(force = true)
+            connectRequestState.update { ConnectRequestState.NOT_REQUESTED }
+            alreadyRequestConnect.compareAndSet(true, false)
         }
     }
 
     fun onDisconnect() {
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch {
-                it.disconnect()
-            }
+        viewModelScope.launch {
+            fConnectionService.disconnect(true)
         }
     }
 
@@ -51,6 +50,7 @@ class ConnectViewModel @Inject constructor(
 
     fun forgetFlipper() {
         viewModelScope.launch {
+            fConnectionService.forgetCurrentDevice()
             dataStoreFirstPair.updateData {
                 it.copy(
                     device_name = "",

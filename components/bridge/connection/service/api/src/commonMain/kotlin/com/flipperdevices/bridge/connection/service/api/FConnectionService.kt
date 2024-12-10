@@ -19,4 +19,9 @@ interface FConnectionService {
      * @param force if true, will not reconnect until [forceReconnect]
      */
     fun disconnect(force: Boolean = false)
+
+    /**
+     * Forget current device and disconnect from it as side effect
+     */
+    fun forgetCurrentDevice()
 }

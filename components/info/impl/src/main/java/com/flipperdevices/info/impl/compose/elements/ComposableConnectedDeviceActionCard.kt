@@ -18,6 +18,7 @@ fun ComposableConnectedDeviceActionCard(
     supportedState: FlipperSupportedState,
     requestSynchronize: () -> Unit,
     alarmOnFlipper: () -> Unit,
+    hasAlarm: Boolean,
     modifier: Modifier = Modifier,
 ) {
     if (deviceStatus is DeviceStatus.NoDevice) {
@@ -34,7 +35,7 @@ fun ComposableConnectedDeviceActionCard(
         )
         ComposableInfoDivider()
         ComposableAlarmElement(
-            enabled = enabled,
+            enabled = hasAlarm && enabled,
             alarmOnFlipper = alarmOnFlipper
         )
     }
