@@ -3,7 +3,7 @@ package com.flipperdevices.info.impl.compose.elements
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.info.impl.R
 import com.flipperdevices.info.impl.model.DeviceStatus
