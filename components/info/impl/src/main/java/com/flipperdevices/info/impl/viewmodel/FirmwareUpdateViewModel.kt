@@ -34,5 +34,4 @@ class FirmwareUpdateViewModel @Inject constructor(
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, FlipperSupportedState.READY)
     }
-
 }

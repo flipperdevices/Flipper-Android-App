@@ -20,11 +20,9 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -67,7 +65,9 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
             TransportMetaInfoKey.DEVICE_NAME,
             TransportMetaInfoKey.MANUFACTURER,
             TransportMetaInfoKey.BATTERY_LEVEL,
-            TransportMetaInfoKey.BATTERY_POWER_STATE
+            TransportMetaInfoKey.BATTERY_POWER_STATE,
+            TransportMetaInfoKey.SOFTWARE_VERSION,
+            TransportMetaInfoKey.HARDWARE_VERSION
         ).forEach { key ->
             val flow = metaInfoApi.get(key)
                 .onFailure { error(it) { "#collectGattInfo could not find flow for key $key" } }
@@ -104,9 +104,20 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
                                 )
                             }
 
+                            TransportMetaInfoKey.SOFTWARE_VERSION -> {
+                                state.copy(
+                                    softwareVersion = String(byteArray)
+                                )
+                            }
+
+                            TransportMetaInfoKey.HARDWARE_VERSION -> {
+                                state.copy(
+                                    hardwareRevision = String(byteArray)
+                                )
+                            }
+
                             else -> state
                         }
-
                     }
                 }.launchIn(scope)
         }
