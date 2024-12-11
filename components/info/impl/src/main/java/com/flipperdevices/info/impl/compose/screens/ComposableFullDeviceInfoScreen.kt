@@ -10,9 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
-import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
-import com.flipperdevices.bridge.rpcinfo.model.dataOrNull
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.dataOrNull
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
@@ -42,10 +42,10 @@ fun ComposableFullDeviceInfoScreen(
     val inProgress = when (localDeviceStatus) {
         is DeviceStatus.NoDeviceInformation -> localDeviceStatus.connectInProgress
         is DeviceStatus.Connected ->
-            flipperRpcInformation !is FlipperInformationStatus.Ready ||
-                basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready ||
-                basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready ||
-                basicInfo.firmwareVersion !is FlipperInformationStatus.Ready
+            flipperRpcInformation !is FlipperInformationStatus.Ready<*> ||
+                basicInfo.storageInfo.externalStorageStatus !is FlipperInformationStatus.Ready<*> ||
+                basicInfo.storageInfo.internalStorageStatus !is FlipperInformationStatus.Ready<*> ||
+                basicInfo.firmwareVersion !is FlipperInformationStatus.Ready<*>
 
         else -> false
     }

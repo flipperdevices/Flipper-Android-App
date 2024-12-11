@@ -1,6 +1,5 @@
 package com.flipperdevices.bridge.connection.feature.alarm.impl.api
 
-import com.flipperdevices.bridge.connection.feature.alarm.api.FAlarmFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier

@@ -1,46 +1,38 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.DeviceStatus
-import com.flipperdevices.updater.api.UpdateStateApi
+import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
+import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.FlipperUpdateState
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.flipperdevices.updater.model.UpdatingState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class DeviceStatusViewModel @Inject constructor(
-    serviceProvider: FlipperServiceProvider,
-    private val dataStorePair: DataStore<PairSettings>,
-    private val updateStateApi: UpdateStateApi,
-    private val fFeatureProvider: FFeatureProvider,
-    private val fDeviceOrchestrator: FDeviceOrchestrator
-) : DecomposeViewModel(), FlipperBleServiceConsumer {
-    private val updateStatus = MutableStateFlow<FlipperUpdateState>(FlipperUpdateState.NotConnected)
+    dataStorePair: DataStore<PairSettings>,
+    fFeatureProvider: FFeatureProvider,
+    fDeviceOrchestrator: FDeviceOrchestrator,
+    private val updaterApi: UpdaterApi,
+    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi
+) : DecomposeViewModel() {
 
-    init {
-        serviceProvider.provideServiceApi(consumer = this, lifecycleOwner = this)
-    }
-    fun getState(): StateFlow<DeviceStatus> = combine(
+    private val deviceState = combine(
         flow = fDeviceOrchestrator.getState(),
         flow2 = fFeatureProvider.get<FGetInfoFeatureApi>()
             .map { status -> status as? FFeatureStatus.Supported<FGetInfoFeatureApi> }
@@ -83,12 +75,51 @@ class DeviceStatusViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, DeviceStatus.NoDevice)
 
-    fun getUpdateState(): StateFlow<FlipperUpdateState> = updateStatus
+    fun getState(): StateFlow<DeviceStatus> = deviceState
 
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        // todo
-        updateStateApi.getFlipperUpdateState(serviceApi, viewModelScope).onEach {
-            updateStatus.emit(it)
-        }.launchIn(viewModelScope)
-    }
+    private val updateStatus = combine(
+        flow = updaterApi.getState(),
+        flow2 = fFeatureProvider.get<FGetInfoFeatureApi>()
+            .map { it as? FFeatureStatus.Supported<FGetInfoFeatureApi> }
+            .flatMapLatest { it?.featureApi?.getGattInfoFlow() ?: flowOf(null) }
+            .map { gattInfo -> gattInfo?.softwareVersion }
+            .map { firmwareVersion ->
+                firmwareVersion?.let(firmwareVersionBuilderApi::buildFirmwareVersionFromString)
+            },
+        flow3 = fDeviceOrchestrator.getState(),
+        transform = { updaterState, firmwareVersion, orchestratorState ->
+            when (orchestratorState) {
+                is FDeviceConnectStatus.Connected -> {
+                    if (firmwareVersion != null) {
+                        when (updaterState.state) {
+                            is UpdatingState.Rebooting -> {
+                                updaterApi.onDeviceConnected(firmwareVersion)
+                                FlipperUpdateState.Ready
+                            }
+
+                            is UpdatingState.Complete -> {
+                                FlipperUpdateState.Complete(updaterState.request?.updateTo)
+                            }
+
+                            is UpdatingState.Failed -> {
+                                FlipperUpdateState.Failed(updaterState.request?.updateTo)
+                            }
+
+                            else -> FlipperUpdateState.Ready
+                        }
+                    } else if (updaterState.state is UpdatingState.Rebooting) {
+                        FlipperUpdateState.Updating
+                    } else {
+                        FlipperUpdateState.ConnectingInProgress
+                    }
+                }
+
+                is FDeviceConnectStatus.Connecting -> FlipperUpdateState.ConnectingInProgress
+                is FDeviceConnectStatus.Disconnecting -> FlipperUpdateState.ConnectingInProgress
+                is FDeviceConnectStatus.Disconnected -> FlipperUpdateState.NotConnected
+            }
+        }
+    ).stateIn(viewModelScope, SharingStarted.Eagerly, FlipperUpdateState.NotConnected)
+
+    fun getUpdateState(): StateFlow<FlipperUpdateState> = updateStatus
 }

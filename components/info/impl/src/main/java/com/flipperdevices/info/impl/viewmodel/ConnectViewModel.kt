@@ -1,15 +1,12 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
-import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.connection.service.api.FConnectionService
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.info.impl.model.ConnectRequestState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean

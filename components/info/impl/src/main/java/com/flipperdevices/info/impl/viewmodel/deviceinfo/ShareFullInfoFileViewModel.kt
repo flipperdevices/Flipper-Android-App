@@ -1,10 +1,10 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
 import android.app.Application
-import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
-import com.flipperdevices.bridge.rpcinfo.model.StorageStats
-import com.flipperdevices.bridge.rpcinfo.model.flashIntStats
-import com.flipperdevices.bridge.rpcinfo.model.flashSdStats
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.flashIntStats
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.flashSdStats
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.share.SharableFile
