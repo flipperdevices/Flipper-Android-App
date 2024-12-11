@@ -1,82 +1,45 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
-import com.flipperdevices.bridge.rpcinfo.api.FlipperRpcInformationApi
-import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
-import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ktx.jre.cancelAndClear
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 class FullInfoViewModel @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    private val flipperRpcInformationApi: FlipperRpcInformationApi,
-    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi
+    private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,
+    private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel(),
-    FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "FullInfoViewModel"
-    private val jobs = mutableListOf<Job>()
-    private val flipperRpcInformationState =
-        MutableStateFlow<FlipperInformationStatus<FlipperRpcInformation>>(
-            FlipperInformationStatus.NotStarted()
-        )
 
-    init {
-        serviceProvider.provideServiceApi(this, this)
-    }
+    private val flipperRpcInformation = fFeatureProvider.get<FRpcInfoFeatureApi>()
+        .map { status -> status as? FFeatureStatus.Supported<FRpcInfoFeatureApi> }
+        .flatMapLatest { status -> status?.featureApi?.getRpcInformationFlow() ?: flowOf(null) }
+        .map { informationStatus -> informationStatus ?: FlipperInformationStatus.NotStarted() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, FlipperInformationStatus.NotStarted())
 
-    fun getFlipperRpcInformation() = flipperRpcInformationState.asStateFlow()
+    fun getFlipperRpcInformation() = flipperRpcInformation
 
-    fun refresh() {
-        viewModelScope.launch {
-            flipperRpcInformationApi.invalidate(
-                viewModelScope,
-                serviceProvider.getServiceApi(),
-                force = true
-            )
-        }
-    }
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        jobs.cancelAndClear()
-        jobs += serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            when (it) {
-                is ConnectionState.Ready -> if (it.supportedState == FlipperSupportedState.READY) {
-                    flipperRpcInformationApi.invalidate(
-                        viewModelScope,
-                        serviceApi,
-                        force = true
-                    )
-                }
-                else -> flipperRpcInformationApi.reset()
-            }
-        }.launchIn(viewModelScope)
-
-        jobs += flipperRpcInformationApi.getRpcInformationFlow().onEach { rpcInformation ->
-            flipperRpcInformationState.emit(rpcInformation)
-        }.launchIn(viewModelScope)
-
-        jobs += viewModelScope.launch {
-            flipperRpcInformationApi.invalidate(
-                viewModelScope,
-                serviceApi
-            )
-        }
+    private fun invalidateRpcInfo() {
+        fFeatureProvider.get<FRpcInfoFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FRpcInfoFeatureApi> }
+            .onEach { status -> status?.featureApi?.invalidate(viewModelScope, force = true) }
+            .launchIn(viewModelScope)
     }
 
     fun getFirmwareChannel(commit: String?): FirmwareChannel? {
@@ -85,5 +48,16 @@ class FullInfoViewModel @Inject constructor(
         if (preparedCommit.isEmpty()) return null
         val branch = preparedCommit.first()
         return firmwareVersionBuilderApi.getFirmwareChannel(branch)
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            fFeatureProvider.getSync<FRpcInfoFeatureApi>()
+                ?.invalidate(viewModelScope, force = true)
+        }
+    }
+
+    init {
+        invalidateRpcInfo()
     }
 }

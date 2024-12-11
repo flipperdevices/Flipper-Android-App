@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeat
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -43,9 +44,12 @@ class FGetInfoFeatureFactoryImpl @Inject constructor(
         info { "Version $API_SUPPORTED_GET_REQUEST supported, so continue building FGetInfoFeatureApi" }
 
         val rpcApi = unsafeFeatureDeviceApi.getUnsafe(FRpcFeatureApi::class) ?: return null
+        val metaInfoApi = connectedDevice as? FTransportMetaInfoApi ?: return null
 
         return factory(
-            rpcApi
+            rpcFeatureApi = rpcApi,
+            metaInfoApi = metaInfoApi,
+            scope = scope
         )
     }
 }

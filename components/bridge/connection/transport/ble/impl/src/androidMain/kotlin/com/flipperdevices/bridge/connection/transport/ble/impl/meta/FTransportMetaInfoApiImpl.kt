@@ -11,8 +11,10 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattProperty
@@ -57,6 +59,10 @@ class FTransportMetaInfoApiImpl(
             return flowOf(characteristic.read().value)
         }
         info { "Subscribe on $address characteristic" }
-        return characteristic.getNotifications().map { it.value }
+        // Don't block one flow by another
+        return listOf(
+            flow { emit(characteristic.read().value) },
+            characteristic.getNotifications().map { it.value }
+        ).merge()
     }
 }

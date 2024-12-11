@@ -1,7 +1,9 @@
 package com.flipperdevices.bridge.connection.device.fzero.impl.utils
 
+import com.flipperdevices.bridge.connection.feature.alarm.api.FAlarmFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
+import com.flipperdevices.bridge.connection.feature.devicecolor.api.FDeviceColorFeatureApi
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
@@ -30,6 +32,8 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.STORAGE_INFO -> FStorageInfoFeatureApi::class
             FDeviceFeature.GET_INFO -> FGetInfoFeatureApi::class
             FDeviceFeature.STORAGE -> FStorageFeatureApi::class
+            FDeviceFeature.ALARM -> FAlarmFeatureApi::class
+            FDeviceFeature.DEVICE_COLOR -> FDeviceColorFeatureApi::class
         }
     }
 
