@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -32,6 +33,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -140,6 +142,8 @@ class DispatchSignalViewModel @Inject constructor(
                 onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launch {
+                        val isPressReleaseSupported =
+                            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
                         vibrator?.vibrateCompat(
                             VIBRATOR_TIME,
                             settings.data.first().disabled_vibration
@@ -151,7 +155,12 @@ class DispatchSignalViewModel @Inject constructor(
                                 serviceApi = serviceApi,
                                 config = config,
                             )
-                            if (config.isPressRelease) {
+                            if (config.isPressRelease && isPressReleaseSupported) {
+                                _state.emit(DispatchSignalApi.State.Pending)
+                                onDispatched.invoke()
+                            } else if (config.isPressRelease) {
+                                delay(DEFAULT_SIGNAL_DELAY)
+                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
                                 _state.emit(DispatchSignalApi.State.Pending)
                                 onDispatched.invoke()
                             }
@@ -196,6 +205,7 @@ class DispatchSignalViewModel @Inject constructor(
     }
 
     companion object {
+        private const val DEFAULT_SIGNAL_DELAY = 500L
         private const val VIBRATOR_TIME = 100L
     }
 }

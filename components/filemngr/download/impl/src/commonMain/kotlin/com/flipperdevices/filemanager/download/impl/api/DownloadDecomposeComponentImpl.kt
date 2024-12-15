@@ -32,7 +32,6 @@ import javax.inject.Provider
 class DownloadDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     private val downloadViewModelFactory: Provider<DownloadViewModel>,
-    private val platformShareHelper: PlatformShareHelper
 ) : DownloadDecomposeComponent(componentContext) {
     private val downloadViewModel = instanceKeeper.getOrCreate {
         downloadViewModelFactory.get()

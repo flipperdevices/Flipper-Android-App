@@ -99,6 +99,9 @@ class StartEmulateHelperImpl @Inject constructor(
         val indexEmulateSupported =
             serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_EMULATE)
 
+        val isPressReleaseSupported =
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
+
         info { "Support emulate by index: $indexEmulateSupported" }
 
         return processButtonPress(
@@ -106,6 +109,7 @@ class StartEmulateHelperImpl @Inject constructor(
             onResultTime = onResultTime,
             serviceApi = serviceApi,
             isIndexEmulateSupport = indexEmulateSupported,
+            isPressReleaseSupported = isPressReleaseSupported
         )
     }
 
@@ -117,6 +121,7 @@ class StartEmulateHelperImpl @Inject constructor(
     private suspend fun processButtonPress(
         config: EmulateConfig,
         isIndexEmulateSupport: Boolean,
+        isPressReleaseSupported: Boolean,
         onResultTime: (Long) -> Unit,
         serviceApi: FlipperServiceApi
     ): Boolean {
@@ -127,7 +132,7 @@ class StartEmulateHelperImpl @Inject constructor(
         val appButtonPressResponse = serviceApi.requestApi.request(
             flowOf(
                 main {
-                    if (config.isPressRelease) {
+                    if (config.isPressRelease && isPressReleaseSupported) {
                         appButtonPressReleaseRequest = getAppButtonPressReleaseRequest(
                             config,
                             isIndexEmulateSupport
