@@ -14,7 +14,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class FDeviceColorFeatureApiImpl @AssistedInject constructor(
@@ -25,6 +27,9 @@ class FDeviceColorFeatureApiImpl @AssistedInject constructor(
     override val TAG = "FDeviceColorFeatureApi"
 
     override fun updateAndGetColorFlow(default: HardwareColor): Flow<HardwareColor> = flow {
+        settings.data.map { it.hardware_color }
+            .firstOrNull()
+            ?.let { initialColor -> emit(initialColor) }
         rpcFeatureApi.request(
             Main(
                 property_get_request = GetRequest(
