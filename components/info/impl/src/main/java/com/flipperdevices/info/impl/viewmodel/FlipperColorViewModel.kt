@@ -31,7 +31,7 @@ class FlipperColorViewModel @Inject constructor(
 
         fFeatureProvider.get<FDeviceColorFeatureApi>()
             .filterIsInstance<FFeatureStatus.Supported<FDeviceColorFeatureApi>>()
-            .flatMapLatest { status -> status.featureApi.getColor() }
+            .flatMapLatest { status -> status.featureApi.updateAndGetColorFlow() }
             .onEach { hardwareColor ->
                 settings.updateData { data ->
                     data.copy(hardware_color = hardwareColor)

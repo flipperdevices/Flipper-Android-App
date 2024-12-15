@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FDeviceColorFeatureApi : FDeviceFeatureApi {
     /**
-     * Returns flipper case color
+     * Receive color from flipper and save it into settings
      * @param default default value on response failure
      */
-    fun getColor(default: HardwareColor = HardwareColor.WHITE): Flow<HardwareColor>
+    fun updateAndGetColorFlow(default: HardwareColor = HardwareColor.WHITE): Flow<HardwareColor>
 }
