@@ -13,7 +13,8 @@ enum class FDeviceFeature {
     STORAGE_INFO,
     GET_INFO,
     ALARM,
-    DEVICE_COLOR
+    DEVICE_COLOR,
+    GATT_INFO,
 }
 
 @Retention(AnnotationRetention.RUNTIME)

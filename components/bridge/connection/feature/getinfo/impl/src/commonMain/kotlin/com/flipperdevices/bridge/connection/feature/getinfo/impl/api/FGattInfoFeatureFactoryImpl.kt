@@ -5,8 +5,8 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureQualifier
 import com.flipperdevices.bridge.connection.feature.common.api.FUnsafeDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
-import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
+import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -22,12 +22,12 @@ private val API_SUPPORTED_GET_REQUEST = SemVer(
     minorVersion = 14
 )
 
-@FDeviceFeatureQualifier(FDeviceFeature.GET_INFO)
+@FDeviceFeatureQualifier(FDeviceFeature.GATT_INFO)
 @ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
-class FGetInfoFeatureFactoryImpl @Inject constructor(
-    private val factory: FGetInfoFeatureApiImpl.InternalFactory
+class FGattInfoFeatureFactoryImpl @Inject constructor(
+    private val factory: FGattInfoFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory, LogTagProvider {
-    override val TAG = "FGetInfoFeatureFactory"
+    override val TAG = "FGattInfoFeatureFactory"
 
     override suspend fun invoke(
         unsafeFeatureDeviceApi: FUnsafeDeviceFeatureApi,
@@ -38,15 +38,15 @@ class FGetInfoFeatureFactoryImpl @Inject constructor(
         info { "Start request supported state for api level $API_SUPPORTED_GET_REQUEST" }
         val isSupported = versionApi.isSupported(API_SUPPORTED_GET_REQUEST)
         if (!isSupported) {
-            error { "Failed init FGetInfoFeatureApi, because isSupported=false" }
+            error { "Failed init FGattInfoFeatureApi, because isSupported=false" }
             return null
         }
-        info { "Version $API_SUPPORTED_GET_REQUEST supported, so continue building FGetInfoFeatureApi" }
 
-        val rpcApi = unsafeFeatureDeviceApi.getUnsafe(FRpcFeatureApi::class) ?: return null
+        val metaInfoApi = connectedDevice as? FTransportMetaInfoApi ?: return null
 
         return factory(
-            rpcFeatureApi = rpcApi,
+            metaInfoApi = metaInfoApi,
+            scope = scope
         )
     }
 }

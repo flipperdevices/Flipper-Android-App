@@ -1,7 +1,7 @@
 package com.flipperdevices.info.impl.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
@@ -34,8 +34,8 @@ class DeviceStatusViewModel @Inject constructor(
 
     private val deviceState = combine(
         flow = fDeviceOrchestrator.getState(),
-        flow2 = fFeatureProvider.get<FGetInfoFeatureApi>()
-            .map { status -> status as? FFeatureStatus.Supported<FGetInfoFeatureApi> }
+        flow2 = fFeatureProvider.get<FGattInfoFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FGattInfoFeatureApi> }
             .flatMapLatest { status -> status?.featureApi?.getGattInfoFlow() ?: emptyFlow() },
         flow3 = dataStorePair.data
     ) { connectionState, flipperInformation, pairSettings ->
@@ -79,8 +79,8 @@ class DeviceStatusViewModel @Inject constructor(
 
     private val updateStatus = combine(
         flow = updaterApi.getState(),
-        flow2 = fFeatureProvider.get<FGetInfoFeatureApi>()
-            .map { it as? FFeatureStatus.Supported<FGetInfoFeatureApi> }
+        flow2 = fFeatureProvider.get<FGattInfoFeatureApi>()
+            .map { it as? FFeatureStatus.Supported<FGattInfoFeatureApi> }
             .flatMapLatest { it?.featureApi?.getGattInfoFlow() ?: flowOf(null) }
             .map { gattInfo -> gattInfo?.softwareVersion }
             .map { firmwareVersion ->

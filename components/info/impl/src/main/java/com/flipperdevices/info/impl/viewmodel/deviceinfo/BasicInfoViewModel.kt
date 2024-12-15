@@ -1,6 +1,6 @@
 package com.flipperdevices.info.impl.viewmodel.deviceinfo
 
-import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
@@ -50,8 +50,8 @@ class BasicInfoViewModel @Inject constructor(
     }
 
     private fun collectFirmwareInformation() {
-        fFeatureProvider.get<FGetInfoFeatureApi>()
-            .map { it as? FFeatureStatus.Supported<FGetInfoFeatureApi> }
+        fFeatureProvider.get<FGattInfoFeatureApi>()
+            .map { it as? FFeatureStatus.Supported<FGattInfoFeatureApi> }
             .flatMapLatest { it?.featureApi?.getGattInfoFlow() ?: flowOf(null) }
             .map { it?.softwareVersion }
             .onEach { softwareVersion ->
