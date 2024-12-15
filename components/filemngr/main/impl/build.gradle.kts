@@ -17,15 +17,17 @@ commonDependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.res)
 
+    implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.filemngr.uiComponents)
     implementation(projects.components.filemngr.main.api)
+    implementation(projects.components.filemngr.transfer.api)
     implementation(projects.components.filemngr.listing.api)
     implementation(projects.components.filemngr.upload.api)
     implementation(projects.components.filemngr.search.api)
     implementation(projects.components.filemngr.editor.api)
-    implementation(projects.components.newfilemanager.api)
+    implementation(projects.components.filemngr.util)
 
     // Compose
     implementation(libs.compose.ui)

@@ -30,6 +30,7 @@ commonDependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.filemngr.download.api)
+    implementation(projects.components.filemngr.uiComponents)
 
     // Compose
     implementation(libs.compose.ui)

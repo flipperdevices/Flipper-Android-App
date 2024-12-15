@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,25 +13,26 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.storage.api.model.FileType
 import com.flipperdevices.core.preference.pb.FileManagerOrientation
 import com.flipperdevices.filemanager.listing.impl.composable.appbar.FileListAppBar
-import com.flipperdevices.filemanager.listing.impl.composable.dialog.CreateFileDialogComposable
 import com.flipperdevices.filemanager.listing.impl.composable.dialog.DeleteFileDialog
 import com.flipperdevices.filemanager.listing.impl.composable.options.FullScreenBottomBarOptions
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
 import com.flipperdevices.filemanager.listing.impl.viewmodel.DeleteFilesViewModel
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewModel
+import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
+import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import okio.Path
 
 @Suppress("LongMethod")
 @Composable
 fun ComposableFileListScreen(
     path: Path,
-    editFileViewModel: EditFileViewModel,
+    canCreateFiles: Boolean,
     deleteFileViewModel: DeleteFilesViewModel,
     filesViewModel: FilesViewModel,
     optionsViewModel: OptionsViewModel,
@@ -42,9 +44,12 @@ fun ComposableFileListScreen(
     onPathChange: (Path) -> Unit,
     onEditFileClick: (Path) -> Unit,
     onFileMoreClick: (PathWithType) -> Unit,
+    onCreate: (FileType) -> Unit,
+    onRename: (PathWithType) -> Unit,
+    onMove: (List<PathWithType>) -> Unit,
+    onExport: (List<PathWithType>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val canCreateFiles by editFileViewModel.canCreateFiles.collectAsState()
     val canDeleteFiles by deleteFileViewModel.canDeleteFiles.collectAsState()
     val filesListState by filesViewModel.state.collectAsState()
     val optionsState by optionsViewModel.state.collectAsState()
@@ -60,17 +65,14 @@ fun ComposableFileListScreen(
                 filesListState = filesListState,
                 optionsState = optionsState,
                 optionsViewModel = optionsViewModel,
-                canCreateFiles = canCreateFiles,
                 onUploadClick = onUploadClick,
-                editFileViewModel = editFileViewModel,
                 onBack = onBack,
-                onSearchClick = onSearchClick
+                onSearchClick = onSearchClick,
+                onCreate = onCreate,
+                canCreateFiles = canCreateFiles
             )
         }
     ) { contentPadding ->
-        CreateFileDialogComposable(
-            editFileViewModel = editFileViewModel,
-        )
         DeleteFileDialog(
             deleteFileState = deleteFileState,
             deleteFileViewModel = deleteFileViewModel
@@ -114,10 +116,16 @@ fun ComposableFileListScreen(
                 }
 
                 FilesViewModel.State.Unsupported -> {
-                    item { NoListingFeatureComposable() }
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        UnsupportedErrorComposable()
+                    }
                 }
 
-                FilesViewModel.State.CouldNotListPath -> Unit
+                FilesViewModel.State.CouldNotListPath -> {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        UnknownErrorComposable()
+                    }
+                }
             }
         }
         FilesFailComposable(
@@ -131,8 +139,10 @@ fun ComposableFileListScreen(
             selectionState = selectionState,
             filesListState = filesListState,
             selectionViewModel = selectionViewModel,
-            editFileViewModel = editFileViewModel,
             deleteFileViewModel = deleteFileViewModel,
+            onRename = onRename,
+            onMove = onMove,
+            onExport = onExport
         )
     }
 }

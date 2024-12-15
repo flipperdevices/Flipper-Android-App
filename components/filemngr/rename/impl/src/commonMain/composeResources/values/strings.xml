@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmr_create_file_title">Enter Name:</string>
+    <string name="fmr_create_file_folder_btn">Save</string>
+    <string name="fmr_create_file_allowed_chars">Allowed characters: %1$s</string>
+</resources>

@@ -35,6 +35,7 @@ internal fun AutoCompleteTextField(
     onOptionSelect: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     needShowOptions: Boolean = true,
+    isEnabled: Boolean = true,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -50,14 +51,15 @@ internal fun AutoCompleteTextField(
             onTextChange = onTextChange,
             interactionSource = interactionSource,
             modifier = Modifier.onFocusEvent { isExpanded = it.isFocused },
-            isError = isError
+            isError = isError,
+            enabled = isEnabled
         )
 
         DropdownMenu(
             modifier = Modifier
                 .heightIn(max = 152.dp)
                 .wrapContentWidth(),
-            expanded = isExpanded && needShowOptions && options.isNotEmpty(),
+            expanded = isExpanded && needShowOptions && options.isNotEmpty() && isEnabled,
             onDismissRequest = { },
             properties = PopupProperties(focusable = false)
         ) {

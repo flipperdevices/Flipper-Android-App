@@ -89,6 +89,12 @@ dependencies {
     implementation(projects.components.filemngr.editor.impl)
     implementation(projects.components.filemngr.download.api)
     implementation(projects.components.filemngr.download.impl)
+    implementation(projects.components.filemngr.rename.api)
+    implementation(projects.components.filemngr.rename.impl)
+    implementation(projects.components.filemngr.create.api)
+    implementation(projects.components.filemngr.create.impl)
+    implementation(projects.components.filemngr.transfer.api)
+    implementation(projects.components.filemngr.transfer.impl)
 
     implementation(projects.components.newfilemanager.api)
     implementation(projects.components.newfilemanager.impl)

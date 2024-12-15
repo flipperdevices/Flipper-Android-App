@@ -1,66 +1,102 @@
 package com.flipperdevices.filemanager.editor.api
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pushNew
+import com.arkivanov.decompose.router.stack.replaceCurrent
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItem
+import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
-import com.flipperdevices.filemanager.editor.composable.FileManagerEditorComposable
-import com.flipperdevices.filemanager.editor.composable.content.RenderLoadingScreen
-import com.flipperdevices.filemanager.editor.composable.dialog.CreateFileDialogComposable
-import com.flipperdevices.filemanager.editor.viewmodel.EditorViewModel
-import com.flipperdevices.filemanager.editor.viewmodel.FileNameViewModel
-import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
+import com.flipperdevices.filemanager.editor.model.FileManagerEditorConfiguration
+import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import com.flipperdevices.ui.decompose.popOr
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import okio.Path
-import javax.inject.Provider
 
+@Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, FileManagerEditorDecomposeComponent.Factory::class)
 class FileManagerEditorDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val path: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    private val editorViewModelFactory: EditorViewModel.Factory,
-    uploaderDecomposeComponentFactory: UploaderDecomposeComponent.Factory,
-    private val fileNameViewModelProvider: Provider<FileNameViewModel>,
-) : FileManagerEditorDecomposeComponent(componentContext) {
-    private val uploaderDecomposeComponent = uploaderDecomposeComponentFactory.invoke(
-        componentContext = childContext("file_editor_$path")
-    )
-
-    @Composable
-    override fun Render() {
-        val fileNameViewModel = viewModelWithFactory(null) {
-            fileNameViewModelProvider.get()
-        }
-        val editorViewModel = viewModelWithFactory(path.toString()) {
-            editorViewModelFactory.invoke(path)
-        }
-
-        CreateFileDialogComposable(
-            fileNameViewModel = fileNameViewModel,
-            onFinish = onSaveClick@{ fileName ->
-                val rawContent = editorViewModel.getRawContent() ?: return@onSaveClick
-                uploaderDecomposeComponent.uploadRaw(
-                    folderPath = path.parent ?: return@onSaveClick,
-                    fileName = fileName,
-                    content = rawContent
-                )
+    @Assisted private val onFileChanged: (ListingItem) -> Unit,
+    fileDownloadDecomposeComponentFactory: FileDownloadDecomposeComponent.Factory,
+    private val editorDecomposeComponentFactory: EditorDecomposeComponent.Factory,
+    private val storageProvider: FlipperStorageProvider,
+    private val uploadFileDecomposeComponentFactory: UploadFileDecomposeComponent.Factory
+) : FileManagerEditorDecomposeComponent<FileManagerEditorConfiguration>(),
+    ComponentContext by componentContext {
+    private val editorFileKeeper = instanceKeeper.getOrCreate {
+        object : InstanceKeeper.Instance {
+            val editorFile = storageProvider.getTemporaryFile()
+            override fun onDestroy() {
+                storageProvider.fileSystem.delete(editorFile)
             }
-        )
-
-        FileManagerEditorComposable(
-            path = path,
-            editorViewModel = editorViewModel,
-            uploaderDecomposeComponent = uploaderDecomposeComponent,
-            fileNameViewModel = fileNameViewModel,
-            onBack = onBack::invoke
-        )
-
-        uploaderDecomposeComponent.RenderLoadingScreen()
+        }
     }
+
+    override val stack: Value<ChildStack<FileManagerEditorConfiguration, DecomposeComponent>> =
+        childStack(
+            source = navigation,
+            serializer = FileManagerEditorConfiguration.serializer(),
+            initialStack = { listOf(FileManagerEditorConfiguration.Download(path)) },
+            handleBackButton = true,
+            childFactory = { config, childContext ->
+                when (config) {
+                    is FileManagerEditorConfiguration.Download -> {
+                        fileDownloadDecomposeComponentFactory.invoke(
+                            componentContext = childContext,
+                            fullPathOnFlipper = path,
+                            fullPathOnDevice = editorFileKeeper.editorFile,
+                            onBack = { navigation.popOr(onBack::invoke) },
+                            onDownloaded = {
+                                navigation.replaceCurrent(
+                                    FileManagerEditorConfiguration.Editor(
+                                        fullPathOnFlipper = config.fullPathOnFlipper,
+                                        tempPathOnDevice = editorFileKeeper.editorFile
+                                    )
+                                )
+                            }
+                        )
+                    }
+
+                    is FileManagerEditorConfiguration.Editor -> {
+                        editorDecomposeComponentFactory.invoke(
+                            componentContext = componentContext,
+                            fullPathOnFlipper = config.fullPathOnFlipper,
+                            fullPathOnDevice = config.tempPathOnDevice,
+                            onBack = { navigation.popOr(onBack::invoke) },
+                            editFinishedCallback = { fullPathOnFlipper ->
+                                navigation.pushNew(
+                                    FileManagerEditorConfiguration.Upload(
+                                        fullPathOnFlipper = fullPathOnFlipper,
+                                        tempPathOnDevice = editorFileKeeper.editorFile
+                                    )
+                                )
+                            }
+                        )
+                    }
+
+                    is FileManagerEditorConfiguration.Upload -> {
+                        uploadFileDecomposeComponentFactory.invoke(
+                            componentContext = childContext,
+                            onBack = { navigation.popOr(onBack::invoke) },
+                            fullPathOnFlipper = config.fullPathOnFlipper,
+                            fullPathOnDevice = config.tempPathOnDevice,
+                            onFinished = {
+                                navigation.popOr(onBack::invoke)
+                            },
+                            onProgress = onFileChanged
+                        )
+                    }
+                }
+            },
+        )
 }

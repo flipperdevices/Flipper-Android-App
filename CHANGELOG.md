@@ -7,11 +7,16 @@
 
 - [Feature] Add count subfolders for new file manager
 - [Feature] Add file downloading for new file manager
+- [Feature] Add move-to to new file manager
+- [Feature] Single tap for infrared remotes
+- [Refactor] Move rename and file create to separated modules
+- [Refactor] Improve and refactor new FileManager Editor
 - [FIX] Migrate url host from metric.flipperdevices.com to metric.flipp.dev
 - [FIX] Fix empty response in faphub category
 - [FIX] New file manager uploading progress
 - [FIX] Fix build when no metrics enabled
-- [Feature] Single tap for infrared remotes
+- [FIX] Fix small issues with new file manager
+
 # 1.8.0
 Attention: don't forget to add the flag for F-Droid before release
 

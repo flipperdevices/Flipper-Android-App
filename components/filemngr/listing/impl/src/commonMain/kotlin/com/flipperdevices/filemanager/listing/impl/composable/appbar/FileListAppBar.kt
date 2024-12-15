@@ -22,7 +22,6 @@ import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.listing.impl.composable.MoreIconComposable
 import com.flipperdevices.filemanager.listing.impl.model.PathWithType
-import com.flipperdevices.filemanager.listing.impl.viewmodel.EditFileViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.listing.impl.viewmodel.SelectionViewModel
@@ -46,7 +45,7 @@ fun FileListAppBar(
     canCreateFiles: Boolean,
     onUploadClick: () -> Unit,
     onSearchClick: () -> Unit,
-    editFileViewModel: EditFileViewModel,
+    onCreate: (FileType) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -101,10 +100,10 @@ fun FileListAppBar(
                             onUploadClick = onUploadClick,
                             onSelectClick = selectionViewModel::toggleMode,
                             onCreateFolderClick = {
-                                editFileViewModel.onCreate(path, FileType.DIR)
+                                onCreate.invoke(FileType.DIR)
                             },
                             onCreateFileClick = {
-                                editFileViewModel.onCreate(path, FileType.FILE)
+                                onCreate.invoke(FileType.FILE)
                             }
                         )
                     }

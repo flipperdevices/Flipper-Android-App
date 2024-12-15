@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_otp_create_folder">Create Folder</string>
+    <string name="fmt_otp_display_list">List</string>
+    <string name="fmt_otp_display_grid">Grid</string>
+    <string name="fmt_otp_sort_default">Sort by Default</string>
+    <string name="fmt_otp_sort_size">Sort by Size</string>
+    <string name="fmt_otp_show_hidden">Show Hidden Files</string>
+
+    <string name="fmt_items_in_folder">%1$s items</string>
+
+    <string name="fmt_appbar_title_moving">Moving</string>
+    <string name="fmt_move_button">Move Here</string>
+</resources>

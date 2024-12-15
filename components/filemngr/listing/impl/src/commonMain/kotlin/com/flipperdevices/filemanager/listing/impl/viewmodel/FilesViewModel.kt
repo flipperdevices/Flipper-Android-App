@@ -17,7 +17,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.FileManagerSort
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.filemanager.listing.impl.model.ExtendedListingItem
+import com.flipperdevices.filemanager.listing.api.model.ExtendedListingItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -165,6 +165,21 @@ class FilesViewModel @AssistedInject constructor(
                 .filter { it.path.name != path.name }
                 .toImmutableList()
             loadedState.copy(files = newFileList)
+        }
+    }
+
+    fun fileRenamed(oldPath: Path, newPath: Path) {
+        _state.update { state ->
+            (state as? State.Loaded)?.let { loadedState ->
+                val mutableFiles = loadedState.files.toMutableList()
+                val i = mutableFiles.indexOfFirst { item -> item.path.name == oldPath.name }
+                if (i == -1) return@let loadedState
+                mutableFiles[i] = when (val item = mutableFiles[i]) {
+                    is ExtendedListingItem.File -> item.copy(path = newPath.name.toPath())
+                    is ExtendedListingItem.Folder -> item.copy(path = newPath.name.toPath())
+                }
+                loadedState.copy(files = mutableFiles.toImmutableList())
+            } ?: state
         }
     }
 
