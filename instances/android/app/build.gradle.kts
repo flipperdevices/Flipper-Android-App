@@ -149,6 +149,8 @@ dependencies {
     implementation(projects.components.bridge.connection.transport.common.impl)
     implementation(projects.components.bridge.connection.orchestrator.api)
     implementation(projects.components.bridge.connection.orchestrator.impl)
+    implementation(projects.components.bridge.connection.service.api)
+    implementation(projects.components.bridge.connection.service.impl)
     implementation(projects.components.bridge.connection.connectionbuilder.api)
     implementation(projects.components.bridge.connection.connectionbuilder.impl)
     implementation(projects.components.bridge.connection.config.api)

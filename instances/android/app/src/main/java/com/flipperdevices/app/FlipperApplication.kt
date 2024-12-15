@@ -64,6 +64,7 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
             error(e) { "Failed init notification api" }
         }
         component.permissionRequestHandlerImpl.get().register(this)
+        component.fConnectionService.get().onApplicationInit()
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader {
