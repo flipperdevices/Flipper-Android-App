@@ -117,7 +117,7 @@ class InfraredViewModel @Inject constructor(
         emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
     }
 
-    @Suppress("CyclomaticComplexMethod")
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
