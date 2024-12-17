@@ -10,7 +10,6 @@ import com.flipperdevices.core.log.error
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import okio.Path
 import okio.Path.Companion.toPath
 import java.io.File
 import javax.inject.Inject
@@ -37,7 +36,6 @@ class FapManifestAtomicMover @Inject constructor(
             .forEach { fullPath -> fStorageFeatureApi.uploadApi().mkdir(fullPath) }
 
         val deleteTargets = fromToPair.map { pair -> pair.second }
-
 
         withContext(NonCancellable) {
             if (fSemVer == null || fSemVer < UNIX_MV_SUPPORTED_VERSION_API) {

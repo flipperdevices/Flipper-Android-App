@@ -23,9 +23,16 @@ dependencies {
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.deeplink.api)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
+//    implementation(projects.components.bridge.api)
+//    implementation(projects.components.bridge.service.api)
+//    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.rpcinfo.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.appstart.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
 
     implementation(projects.components.faphub.installation.stateprovider.api)
     implementation(projects.components.faphub.installation.manifest.api)
@@ -43,4 +50,5 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.okio)
 }
