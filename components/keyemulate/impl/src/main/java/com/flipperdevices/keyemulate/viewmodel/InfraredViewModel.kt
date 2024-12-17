@@ -153,30 +153,34 @@ class InfraredViewModel @Inject constructor(
                 }
             }
         } catch (ignored: AlreadyOpenedAppException) {
-            if (!isPressReleaseSupported || !oneTimePress) {
-                emulateHelper.stopEmulateForce(requestApi)
-            }
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return false
         } catch (ignored: ForbiddenFrequencyException) {
-            if (!isPressReleaseSupported || !oneTimePress) {
-                emulateHelper.stopEmulateForce(requestApi)
-            }
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return false
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate infrared" }
-            if (!isPressReleaseSupported || !oneTimePress) {
-                emulateHelper.stopEmulateForce(requestApi)
-            }
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
         }
         if (!appStarted) {
             info { "Failed start emulation" }
-            if (!isPressReleaseSupported || !oneTimePress) {
-                emulateHelper.stopEmulateForce(requestApi)
-            }
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
 

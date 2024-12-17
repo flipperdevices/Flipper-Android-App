@@ -80,7 +80,8 @@ class EmulateHelperImpl @Inject constructor(
 
     override suspend fun stopEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean
     ) = withLock(mutex, "schedule_stop") {
         if (stopJob != null) {
             info { "Return from #stopEmulate because stop already in progress" }
@@ -111,17 +112,21 @@ class EmulateHelperImpl @Inject constructor(
     }
 
     override suspend fun stopEmulateForce(
-        requestApi: FlipperRequestApi
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean
     ) = withLock(mutex, "force_stop") {
         if (stopJob != null) {
             stopJob?.cancelAndJoin()
             stopJob = null
         }
-        stopEmulateInternal(requestApi)
+        stopEmulateInternal(requestApi, isPressRelease)
     }
 
-    private suspend fun stopEmulateInternal(requestApi: FlipperRequestApi) {
-        stopEmulateHelper.onStop(requestApi)
+    private suspend fun stopEmulateInternal(
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean = false
+    ) {
+        stopEmulateHelper.onStop(requestApi, isPressRelease)
         currentKeyEmulating.emit(null)
     }
 }

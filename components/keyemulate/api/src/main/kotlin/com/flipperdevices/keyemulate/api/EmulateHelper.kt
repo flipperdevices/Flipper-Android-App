@@ -19,10 +19,12 @@ interface EmulateHelper {
 
     suspend fun stopEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean = false
     )
 
     suspend fun stopEmulateForce(
-        requestApi: FlipperRequestApi
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean = false
     )
 }

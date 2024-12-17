@@ -157,13 +157,16 @@ class DispatchSignalViewModel @Inject constructor(
                             )
                             if (config.isPressRelease && isPressReleaseSupported) {
                                 _state.emit(DispatchSignalApi.State.Pending)
-                                onDispatched.invoke()
                             } else if (config.isPressRelease) {
                                 delay(DEFAULT_SIGNAL_DELAY)
-                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
                                 _state.emit(DispatchSignalApi.State.Pending)
-                                onDispatched.invoke()
                             }
+                            emulateHelper.stopEmulate(
+                                scope = this,
+                                requestApi = serviceApi.requestApi,
+                                isPressRelease = config.isPressRelease && isPressReleaseSupported
+                            )
+                            onDispatched.invoke()
                         } catch (ignored: AlreadyOpenedAppException) {
                             _state.emit(DispatchSignalApi.State.FlipperIsBusy)
                         } catch (e: Exception) {
