@@ -1,7 +1,9 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import android.content.Context
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.ktx.jre.withLock
@@ -11,6 +13,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import okio.Path
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +26,7 @@ data class FapManifestCacheLoadResult(
 @Singleton
 class FapManifestCacheLoader @Inject constructor(
     context: Context,
-    private val flipperStorageApi: FlipperStorageApi,
+    private val fFeatureProvider: FFeatureProvider,
     private val parser: FapManifestParser
 ) : LogTagProvider {
     private val cacheDir = File(context.cacheDir, "fap_manifests")
@@ -31,10 +34,14 @@ class FapManifestCacheLoader @Inject constructor(
     override val TAG = "FapManifestCacheLoader"
 
     suspend fun loadCache(): FapManifestCacheLoadResult = withLockResult(mutex, "load") {
-        val namesWithHash = flipperStorageApi
-            .listingDirectoryWithMd5(FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER)
-            .filter { File(it.name).extension == FapManifestConstants.FAP_MANIFEST_EXTENSION }
-            .filterNot { it.name.startsWith(".") }
+        val namesWithHash = fFeatureProvider.getSync<FStorageFeatureApi>()
+            ?.listingApi()
+            ?.lsWithMd5(FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER)
+            ?.getOrNull()
+            .orEmpty()
+            .filter { item -> File(item.fileName).extension == FapManifestConstants.FAP_MANIFEST_EXTENSION }
+            .filterNot { item -> item.fileName.startsWith(".") }
+            .map { item -> item.fileName to item.md5 }
         val filesWithHash = getLocalFilesWithHash().associate { (file, md5) -> md5 to file }
         info { "Find ${filesWithHash.size} files in cache" }
         val cached = mutableListOf<Pair<File, String>>()
@@ -67,7 +74,8 @@ class FapManifestCacheLoader @Inject constructor(
                 .toMutableMap()
             val toDeleteFiles = HashSet<File>(existedFiles.map { it.value })
             for (manifest in manifestItems) {
-                val manifestHash = manifest.sourceFileHash ?: parser.encode(manifest).openStream().md5()
+                val manifestHash =
+                    manifest.sourceFileHash ?: parser.encode(manifest).openStream().md5()
                 val existedFile = existedFiles[manifestHash]
                 if (existedFile != null) {
                     toDeleteFiles.remove(existedFile)
