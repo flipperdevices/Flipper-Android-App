@@ -35,7 +35,7 @@ object Constants {
     )
     val API_SUPPORTED_INFRARED_PRESS_RELEASE = SemVer(
         majorVersion = 0,
-        minorVersion = 9999999 // TODO
+        minorVersion = 25
     )
     val API_SUPPORTED_GET_REQUEST = API_SUPPORTED_FLIPPER_ERROR
     const val LAGS_FLIPPER_DETECT_TIMEOUT_MS = 10 * 1000L // 10 seconds
