@@ -1,78 +1,61 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.data.SemVer
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.deleteRequest
-import com.flipperdevices.protobuf.storage.renameRequest
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import okio.Path
+import okio.Path.Companion.toPath
 import java.io.File
 import javax.inject.Inject
 
 private val UNIX_MV_SUPPORTED_VERSION_API = SemVer(majorVersion = 0, minorVersion = 17)
 
 class FapManifestAtomicMover @Inject constructor(
-    private val flipperServiceProvider: FlipperServiceProvider,
-    private val flipperStorageApi: FlipperStorageApi
-) {
+    private val fFeatureProvider: FFeatureProvider
+) : LogTagProvider {
+    override val TAG: String = "FapManifestAtomicMover"
     suspend fun atomicMove(
         vararg fromToPair: Pair<String, String>
     ) {
-        val serviceApi = flipperServiceProvider.getServiceApi()
-        fromToPair.mapNotNull { (_, to) -> File(to).parent }.forEach {
-            flipperStorageApi.mkdirs(it)
+        val fSemVer = fFeatureProvider.getSync<FVersionFeatureApi>()
+            ?.getVersionInformationFlow()
+            ?.first()
+
+        val fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>()
+        if (fStorageFeatureApi == null) {
+            error { "#atomicMove could not find FStorageFeatureApi" }
+            return
         }
-        val preparedRequest = getPrepareRequests(
-            serviceApi.flipperVersionApi,
-            fromToPair.map { it.second }
-        )
-        val moveRequests = getRequests(fromToPair)
+        fromToPair.mapNotNull { (_, to) -> File(to).parent }
+            .forEach { fullPath -> fStorageFeatureApi.uploadApi().mkdir(fullPath) }
+
+        val deleteTargets = fromToPair.map { pair -> pair.second }
+
 
         withContext(NonCancellable) {
-            @Suppress("SpreadOperator")
-            serviceApi.requestApi.requestWithoutAnswer(*preparedRequest.toTypedArray())
-            moveRequests.map {
-                serviceApi.requestApi.request(it)
-            }.map { it.first() }.forEach { response ->
-                if (response.commandStatus != Flipper.CommandStatus.OK) {
-                    error("Failed move path, failed response: $response")
+            if (fSemVer == null || fSemVer < UNIX_MV_SUPPORTED_VERSION_API) {
+                deleteTargets.map { target ->
+                    fStorageFeatureApi.deleteApi().delete(target)
                 }
             }
-        }
-    }
 
-    private suspend fun getPrepareRequests(
-        versionApi: FlipperVersionApi,
-        targets: List<String>
-    ): List<FlipperRequest> {
-        val version = versionApi.getVersionInformationFlow().first()
-        if (version != null && version >= UNIX_MV_SUPPORTED_VERSION_API) {
-            return emptyList()
-        }
-        return targets.map { target ->
-            main {
-                storageDeleteRequest = deleteRequest {
-                    path = target
-                }
-            }.wrapToRequest()
-        }
-    }
-
-    private fun getRequests(
-        fromToPair: Array<out Pair<String, String>>
-    ) = fromToPair.map { (from, to) ->
-        main {
-            storageRenameRequest = renameRequest {
-                oldPath = from
-                newPath = to
+            fromToPair.map { (from, to) ->
+                fStorageFeatureApi.uploadApi().move(
+                    oldPath = from.toPath(),
+                    newPath = to.toPath()
+                )
+            }.onEach { result ->
+                result
+                    .onFailure { error(it) { "Failed move path" } }
+                    .getOrThrow()
             }
-        }.wrapToRequest()
+        }
     }
 }
