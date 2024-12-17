@@ -1,14 +1,16 @@
 package com.flipperdevices.faphub.target.impl.api
 
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FSdkVersionFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import com.flipperdevices.faphub.target.impl.model.FlipperSdkVersion
-import com.flipperdevices.faphub.target.impl.utils.FlipperSdkFetcher
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
@@ -24,8 +26,8 @@ import javax.inject.Singleton
 @Singleton
 @ContributesBinding(AppGraph::class, FlipperTargetProviderApi::class)
 class FlipperTargetProviderApiImpl @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    private val fetcher: FlipperSdkFetcher
+    private val fFeatureProviderApi: FFeatureProvider,
+    private val fDeviceOrchestrator: FDeviceOrchestrator
 ) : FlipperTargetProviderApi, LogTagProvider {
     override val TAG = "FlipperTargetProviderApi"
 
@@ -42,34 +44,47 @@ class FlipperTargetProviderApiImpl @Inject constructor(
 
     private suspend fun subscribe() {
         info { "Start subscribe" }
-        val serviceApi = serviceProvider.getServiceApi()
-        combine(
-            serviceApi.connectionInformationApi.getConnectionStateFlow(),
-            serviceApi.flipperVersionApi.getVersionInformationFlow()
-        ) { connectionState, version ->
-            if (!connectionState.isConnected) {
-                when (connectionState) {
-                    is ConnectionState.Disconnected -> targetFlow.emit(FlipperTarget.NotConnected)
-                    else -> targetFlow.emit(null)
-                }
-                return@combine
-            }
-            targetFlow.emit(null)
-            info { "Receive version $version" }
-            val sdkVersion = fetcher.getSdkApi(serviceApi.requestApi, version)
-            info { "Sdk version is $sdkVersion" }
-            val newTargetState = when (sdkVersion) {
-                FlipperSdkVersion.Unsupported,
-                FlipperSdkVersion.Error -> FlipperTarget.Unsupported
 
-                FlipperSdkVersion.InProgress -> null
-                is FlipperSdkVersion.Received -> FlipperTarget.Received(
+        combine(
+            fDeviceOrchestrator.getState(),
+            fFeatureProviderApi.get<FSdkVersionFeatureApi>()
+        ) { connectionState, status ->
+            when (connectionState) {
+                is FDeviceConnectStatus.Disconnecting,
+                is FDeviceConnectStatus.Disconnected,
+                is FDeviceConnectStatus.Connecting -> {
+                    targetFlow.emit(FlipperTarget.NotConnected)
+                    return@combine
+                }
+
+                is FDeviceConnectStatus.Connected -> Unit
+            }
+
+            targetFlow.emit(null)
+            val semVer = when (status) {
+                is FFeatureStatus.Supported -> status.featureApi.getSdkVersion().getOrNull()
+
+                FFeatureStatus.Retrieving -> {
+                    targetFlow.emit(FlipperTarget.NotConnected)
+                    return@combine
+                }
+
+                FFeatureStatus.NotFound,
+                FFeatureStatus.Unsupported -> {
+                    targetFlow.emit(FlipperTarget.NotConnected)
+                    return@combine
+                }
+            }
+            info { "Sdk version is $semVer" }
+
+            val targetState = when (semVer) {
+                null -> null
+                else -> FlipperTarget.Received(
                     target = "f7",
-                    sdk = sdkVersion.sdk
+                    sdk = semVer
                 )
             }
-            info { "New target state is $newTargetState" }
-            targetFlow.emit(newTargetState)
+            targetFlow.emit(targetState)
         }.collect()
     }
 }
