@@ -10,8 +10,6 @@ import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import okio.source
 import java.io.File
 import javax.inject.Inject

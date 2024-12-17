@@ -28,6 +28,7 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.getinfo.api)
     implementation(projects.components.bridge.connection.feature.alarm.api)
     implementation(projects.components.bridge.connection.feature.deviceColor.api)
+    implementation(projects.components.bridge.connection.feature.appstart.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

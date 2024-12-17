@@ -11,7 +11,6 @@ import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperSto
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
-import com.flipperdevices.core.ktx.jre.flatten
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -37,7 +36,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.buffer
@@ -117,7 +115,7 @@ class FapManifestsLoader @AssistedInject constructor(
             throw FlipperNotConnected()
         }
         val externalStorageStatus = storageInformation.externalStorageStatus
-                as? FlipperInformationStatus.Ready<StorageStats?>
+            as? FlipperInformationStatus.Ready<StorageStats?>
         if (externalStorageStatus == null || externalStorageStatus.data !is StorageStats.Loaded) {
             throw NoSdCardException()
         }

@@ -28,7 +28,7 @@ class FapExistChecker @Inject constructor(
                 ?.ls(folder)
                 ?.getOrNull()
                 .orEmpty()
-                .map { item-> Path(folder).resolve(item.fileName).toString() }
+                .map { item -> Path(folder).resolve(item.fileName).toString() }
                 .also { paths -> cacheFolderToPaths[folder] = paths }
 
         return@withLockResult fileList.contains(path)

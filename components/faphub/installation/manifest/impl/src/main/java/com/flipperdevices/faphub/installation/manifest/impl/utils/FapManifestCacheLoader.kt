@@ -13,7 +13,6 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-import okio.Path
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
