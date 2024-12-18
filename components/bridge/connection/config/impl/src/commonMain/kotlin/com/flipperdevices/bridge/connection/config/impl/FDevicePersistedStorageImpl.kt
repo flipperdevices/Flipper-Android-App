@@ -86,7 +86,7 @@ class FDevicePersistedStorageImpl @Inject constructor(
                 name = device.name,
                 uniqueId = device.id,
                 address = flipperZeroBle.address,
-                intHardwareColor = device.hardware_color.value
+                hardwareColor = device.hardware_color
             )
         }
         return null

@@ -8,6 +8,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.preference.pb.PairSettings
+import com.flipperdevices.core.preference.pb.SavedDevice
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.first
 import java.util.UUID
@@ -59,7 +60,7 @@ class FirstPairStorageImpl @Inject constructor(
                     name = deviceNameFormatted,
                     address = address.orEmpty(),
                     uniqueId = deviceId ?: UUID.randomUUID().toString(),
-                    intHardwareColor = pairSetting.hardware_color.value
+                    hardwareColor = SavedDevice.HardwareColor.fromValue(pairSetting.hardware_color.value)
                 )
                 persistedStorage.addDevice(device)
                 persistedStorage.setCurrentDevice(deviceId)
