@@ -7,7 +7,6 @@ import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcAppSystemLockedException
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -16,8 +15,6 @@ import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

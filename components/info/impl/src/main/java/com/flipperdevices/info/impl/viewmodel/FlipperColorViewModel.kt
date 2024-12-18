@@ -2,9 +2,7 @@ package com.flipperdevices.info.impl.viewmodel
 
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
-import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import com.flipperdevices.core.preference.pb.FlipperZeroBle.HardwareColor
-import com.flipperdevices.core.preference.pb.SavedDevice
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

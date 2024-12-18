@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureA
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 import kotlin.io.path.Path
@@ -21,16 +22,19 @@ class FapExistChecker @Inject constructor(
 
     suspend fun checkExist(path: String): Boolean = withLockResult(mutex, "check") {
         val folder = Path(path).parent?.pathString ?: "/"
+        val fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>()
+        if (fStorageFeatureApi == null) {
+            error { "#checkExists($path) could not get FStorageFeatureApi" }
+        }
 
-        val fileList = cacheFolderToPaths[folder]
-            ?: fFeatureProvider.getSync<FStorageFeatureApi>()
+        val fileList = cacheFolderToPaths.getOrPut(folder) {
+            fStorageFeatureApi
                 ?.listingApi()
                 ?.ls(folder)
                 ?.getOrNull()
                 .orEmpty()
                 .map { item -> Path(folder).resolve(item.fileName).toString() }
-                .also { paths -> cacheFolderToPaths[folder] = paths }
-
+        }
         return@withLockResult fileList.contains(path)
     }
 
