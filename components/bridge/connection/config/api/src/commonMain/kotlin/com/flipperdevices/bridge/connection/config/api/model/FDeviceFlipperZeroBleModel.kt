@@ -13,7 +13,7 @@ data class FDeviceFlipperZeroBleModel(
     override val uniqueId: String = UUID.randomUUID().toString(),
     override val humanReadableName: String = "Flipper $name",
     @Serializable(HardwareColorSerializer::class)
-    private val hardwareColor: SavedDevice.HardwareColor
+    val hardwareColor: SavedDevice.HardwareColor
 ) : FDeviceBaseModel {
     override val type = FDeviceType.FLIPPER_ZERO_BLE
 }
