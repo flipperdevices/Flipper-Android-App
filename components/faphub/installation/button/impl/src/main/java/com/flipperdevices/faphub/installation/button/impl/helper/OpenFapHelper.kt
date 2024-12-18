@@ -9,6 +9,7 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcAppSys
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
@@ -85,6 +86,7 @@ class OpenFapHelperImpl @Inject constructor(
         currentOpenAppFlow.emit(null)
         fAppStartFeatureApi.startApp(path)
             .onFailure {
+                error(it) { "#loadFap could not open app" }
                 val result = when (it) {
                     is FRpcAppSystemLockedException -> OpenFapResult.FlipperIsBusy
                     else -> OpenFapResult.Error

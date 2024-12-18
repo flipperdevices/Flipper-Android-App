@@ -28,10 +28,6 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.storage.api)
 
-//    implementation(projects.components.bridge.api)
-//    implementation(projects.components.bridge.pbutils)
-//    implementation(projects.components.bridge.service.api)
-
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.ktor.client)

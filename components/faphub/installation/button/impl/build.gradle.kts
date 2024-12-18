@@ -23,9 +23,6 @@ dependencies {
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.deeplink.api)
 
-//    implementation(projects.components.bridge.api)
-//    implementation(projects.components.bridge.service.api)
-//    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.rpcinfo.api)
     implementation(projects.components.bridge.connection.feature.provider.api)

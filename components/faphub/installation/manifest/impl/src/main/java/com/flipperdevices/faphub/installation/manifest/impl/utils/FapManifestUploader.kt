@@ -10,7 +10,7 @@ import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFEST_EXTENSION
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
-import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
+import com.flipperdevices.faphub.utils.FapHubConstants
 import okio.buffer
 import okio.source
 import java.io.File
@@ -20,7 +20,6 @@ class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,
     private val fFeatureProvider: FFeatureProvider,
     private val atomicMover: FapManifestAtomicMover,
-    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapManifestUploader"
 
@@ -41,8 +40,14 @@ class FapManifestUploader @Inject constructor(
 
     private suspend fun saveToTmp(fapManifestItem: FapManifestItem): String {
         info { "Start save tmp manifest for ${fapManifestItem.applicationAlias}" }
+        val uploadApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.uploadApi()
+        if (uploadApi == null) {
+            error { "#uploadTmpManifest could not find uploadApi" }
+            return FapHubConstants.FLIPPER_TMP_FOLDER_PATH
+        }
+        uploadApi.mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
         val tmpFapPath = File(
-            tmpFolderProvider.provideTmpFolder(),
+            FapHubConstants.FLIPPER_TMP_FOLDER_PATH,
             "tmp.fim"
         ).path
         uploadTmpManifest(fapManifestItem, tmpFapPath)
