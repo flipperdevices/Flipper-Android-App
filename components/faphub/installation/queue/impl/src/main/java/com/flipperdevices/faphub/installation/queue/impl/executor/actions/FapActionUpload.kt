@@ -11,6 +11,7 @@ import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.faphub.utils.FapHubConstants
 import kotlinx.coroutines.runBlocking
+import okio.buffer
 import okio.source
 import java.io.File
 import javax.inject.Inject
@@ -31,21 +32,25 @@ class FapActionUpload @Inject constructor(
                 error { "#upload could not get FStorageFeatureApi" }
                 error("Could not get FStorageFeatureApi")
             }
-        fStorageFeatureApi.uploadApi().mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
+        fStorageFeatureApi.uploadApi()
+            .mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
+            .onFailure { error(it) { "#upload could not create dir ${FapHubConstants.FLIPPER_TMP_FOLDER_PATH}" } }
         val fapPath = File(
             FapHubConstants.FLIPPER_TMP_FOLDER_PATH,
             "tmp.fap"
         ).absolutePath
         val progressWrapper = ProgressWrapperTracker(progressListener)
         runCatching {
-            fapFile.inputStream().use { inputStream ->
-                inputStream.source().copyWithProgress(
-                    sink = fStorageFeatureApi.uploadApi().sink(fapPath),
-                    sourceLength = { fapFile.length() },
-                    progressListener = { current, max ->
-                        runBlocking { progressWrapper.onProgress(current, max) }
-                    }
-                )
+            fapFile.source().buffer().use { source ->
+                fStorageFeatureApi.uploadApi().sink(fapPath).use { sink ->
+                    source.copyWithProgress(
+                        sink = sink,
+                        sourceLength = { fapFile.length() },
+                        progressListener = { current, max ->
+                            runBlocking { progressWrapper.onProgress(current, max) }
+                        }
+                    )
+                }
             }
         }.onFailure { error(it) { "Failed upload tmp manifest" } }.getOrThrow()
 

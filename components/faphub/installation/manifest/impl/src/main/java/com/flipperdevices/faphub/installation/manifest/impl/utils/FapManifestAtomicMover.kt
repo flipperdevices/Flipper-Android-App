@@ -8,6 +8,8 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import okio.Path.Companion.toPath
@@ -23,25 +25,31 @@ class FapManifestAtomicMover @Inject constructor(
     suspend fun atomicMove(
         vararg fromToPair: Pair<String, String>
     ) {
-        val fSemVer = fFeatureProvider.getSync<FVersionFeatureApi>()
-            ?.getVersionInformationFlow()
-            ?.first()
-
         val fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>()
         if (fStorageFeatureApi == null) {
             error { "#atomicMove could not find FStorageFeatureApi" }
             return
         }
         fromToPair.mapNotNull { (_, to) -> File(to).parent }
-            .forEach { fullPath -> fStorageFeatureApi.uploadApi().mkdir(fullPath) }
-
-        val deleteTargets = fromToPair.map { pair -> pair.second }
+            .forEach { fullPath ->
+                fStorageFeatureApi.uploadApi().mkdir(fullPath)
+                    .onFailure { error(it) { "#atomicMove could not mkdir($fullPath)" } }
+            }
 
         withContext(NonCancellable) {
+            val fSemVer = fFeatureProvider.getSync<FVersionFeatureApi>()
+                ?.getVersionInformationFlow()
+                ?.first()
             if (fSemVer == null || fSemVer < UNIX_MV_SUPPORTED_VERSION_API) {
-                deleteTargets.map { target ->
-                    fStorageFeatureApi.deleteApi().delete(target)
-                }
+                fromToPair
+                    .map { pair -> pair.second }
+                    .map { target ->
+                        async {
+                            fStorageFeatureApi.deleteApi().delete(target)
+                                .onFailure { error(it) { "#atomicMove could not delete $target" } }
+                        }
+                    }
+                    .awaitAll()
             }
 
             fromToPair.map { (from, to) ->
@@ -49,9 +57,7 @@ class FapManifestAtomicMover @Inject constructor(
                     oldPath = from.toPath(),
                     newPath = to.toPath()
                 )
-            }.onEach { result ->
-                result
-                    .onFailure { error(it) { "Failed move path" } }
+                    .onFailure { error(it) { "#atomicMove could not move $from -> $to" } }
                     .getOrThrow()
             }
         }

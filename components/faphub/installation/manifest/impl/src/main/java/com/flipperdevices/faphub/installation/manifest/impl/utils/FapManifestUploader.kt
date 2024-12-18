@@ -46,6 +46,7 @@ class FapManifestUploader @Inject constructor(
             return FapHubConstants.FLIPPER_TMP_FOLDER_PATH
         }
         uploadApi.mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
+            .onFailure { error(it) { "#saveToTmp could not mkdir ${FapHubConstants.FLIPPER_TMP_FOLDER_PATH}" } }
         val tmpFapPath = File(
             FapHubConstants.FLIPPER_TMP_FOLDER_PATH,
             "tmp.fim"

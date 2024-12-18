@@ -71,7 +71,7 @@ class FlipperTargetProviderApiImpl @Inject constructor(
 
                 FFeatureStatus.NotFound,
                 FFeatureStatus.Unsupported -> {
-                    targetFlow.emit(FlipperTarget.NotConnected)
+                    targetFlow.emit(FlipperTarget.Unsupported)
                     return@combine
                 }
             }
