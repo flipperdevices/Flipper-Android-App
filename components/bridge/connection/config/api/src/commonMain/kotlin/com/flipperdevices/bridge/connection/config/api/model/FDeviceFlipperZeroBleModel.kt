@@ -2,7 +2,7 @@ package com.flipperdevices.bridge.connection.config.api.model
 
 import com.flipperdevices.bridge.connection.config.api.FDeviceType
 import com.flipperdevices.bridge.connection.config.api.serialization.HardwareColorSerializer
-import com.flipperdevices.core.preference.pb.SavedDevice
+import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import kotlinx.serialization.Serializable
 import java.util.UUID
 
@@ -13,7 +13,7 @@ data class FDeviceFlipperZeroBleModel(
     override val uniqueId: String = UUID.randomUUID().toString(),
     override val humanReadableName: String = "Flipper $name",
     @Serializable(HardwareColorSerializer::class)
-    val hardwareColor: SavedDevice.HardwareColor
+    val hardwareColor: FlipperZeroBle.HardwareColor
 ) : FDeviceBaseModel {
     override val type = FDeviceType.FLIPPER_ZERO_BLE
 }

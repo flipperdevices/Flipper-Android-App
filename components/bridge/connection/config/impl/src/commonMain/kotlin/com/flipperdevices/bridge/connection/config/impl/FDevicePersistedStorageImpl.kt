@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
+import com.flipperdevices.core.preference.pb.FlipperZeroBle.HardwareColor
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.SavedDevice
 import com.squareup.anvil.annotations.ContributesBinding
@@ -86,7 +87,7 @@ class FDevicePersistedStorageImpl @Inject constructor(
                 name = device.name,
                 uniqueId = device.id,
                 address = flipperZeroBle.address,
-                hardwareColor = device.hardware_color
+                hardwareColor = flipperZeroBle.hardware_color
             )
         }
         return null
@@ -106,13 +107,17 @@ class FDevicePersistedStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun setCurrentDeviceColor(hardwareColor: SavedDevice.HardwareColor) {
+    override suspend fun setCurrentDeviceColor(hardwareColor: HardwareColor) {
         newPairSettings.updateData { newPairSettings ->
             newPairSettings.copy(
                 devices = newPairSettings.devices.toMutableList().apply {
                     replaceAll { device ->
                         if (device.id == newPairSettings.current_selected_device_id) {
-                            device.copy(hardware_color = hardwareColor)
+                            device.copy(
+                                flipper_zero_ble = device
+                                    .flipper_zero_ble
+                                    ?.copy(hardware_color = hardwareColor)
+                            )
                         } else {
                             device
                         }

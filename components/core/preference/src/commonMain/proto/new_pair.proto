@@ -19,6 +19,10 @@ message SavedDevice {
   oneof data {
     FlipperZeroBle flipper_zero_ble = 10;
   }
+}
+
+message FlipperZeroBle {
+  string address = 1;
 
   enum HardwareColor {
     WHITE = 0;
@@ -26,9 +30,5 @@ message SavedDevice {
     TRANSPARENT = 2;
   }
 
-  HardwareColor hardware_color = 11;
-}
-
-message FlipperZeroBle {
-  string address = 1;
+  HardwareColor hardware_color = 2;
 }

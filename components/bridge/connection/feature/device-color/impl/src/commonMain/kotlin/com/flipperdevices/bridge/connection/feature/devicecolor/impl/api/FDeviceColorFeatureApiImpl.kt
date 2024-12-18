@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureA
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.preference.pb.SavedDevice.HardwareColor
+import com.flipperdevices.core.preference.pb.FlipperZeroBle.HardwareColor
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
