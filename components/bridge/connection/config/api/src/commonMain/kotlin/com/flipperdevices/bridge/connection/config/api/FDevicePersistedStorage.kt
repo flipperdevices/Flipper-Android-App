@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.config.api
 
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
+import com.flipperdevices.core.preference.pb.SavedDevice
 import kotlinx.coroutines.flow.Flow
 
 interface FDevicePersistedStorage {
@@ -9,4 +10,5 @@ interface FDevicePersistedStorage {
     suspend fun addDevice(device: FDeviceBaseModel)
     suspend fun removeDevice(id: String)
     fun getAllDevices(): Flow<List<FDeviceBaseModel>>
+    suspend fun setCurrentDeviceColor(hardwareColor: SavedDevice.HardwareColor)
 }

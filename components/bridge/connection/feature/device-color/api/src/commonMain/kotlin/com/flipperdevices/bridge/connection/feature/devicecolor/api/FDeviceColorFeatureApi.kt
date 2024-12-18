@@ -1,7 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.devicecolor.api
 
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
-import com.flipperdevices.core.preference.pb.HardwareColor
+import com.flipperdevices.core.preference.pb.SavedDevice.HardwareColor
 import kotlinx.coroutines.flow.Flow
 
 interface FDeviceColorFeatureApi : FDeviceFeatureApi {

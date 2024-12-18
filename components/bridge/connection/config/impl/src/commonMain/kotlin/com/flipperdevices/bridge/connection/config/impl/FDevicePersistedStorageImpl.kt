@@ -85,7 +85,8 @@ class FDevicePersistedStorageImpl @Inject constructor(
             return FDeviceFlipperZeroBleModel(
                 name = device.name,
                 uniqueId = device.id,
-                address = flipperZeroBle.address
+                address = flipperZeroBle.address,
+                intHardwareColor = device.hardware_color.value
             )
         }
         return null
@@ -102,6 +103,22 @@ class FDevicePersistedStorageImpl @Inject constructor(
             )
 
             else -> error("Can't find parser for $device")
+        }
+    }
+
+    override suspend fun setCurrentDeviceColor(hardwareColor: SavedDevice.HardwareColor) {
+        newPairSettings.updateData { newPairSettings ->
+            newPairSettings.copy(
+                devices = newPairSettings.devices.toMutableList().apply {
+                    replaceAll { device ->
+                        if (device.id == newPairSettings.current_selected_device_id) {
+                            device.copy(hardware_color = hardwareColor)
+                        } else {
+                            device
+                        }
+                    }
+                }.toList()
+            )
         }
     }
 }

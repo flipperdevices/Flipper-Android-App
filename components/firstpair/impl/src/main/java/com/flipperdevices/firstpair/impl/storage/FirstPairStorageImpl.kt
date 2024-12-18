@@ -58,7 +58,8 @@ class FirstPairStorageImpl @Inject constructor(
                 val device = FDeviceFlipperZeroBleModel(
                     name = deviceNameFormatted,
                     address = address.orEmpty(),
-                    uniqueId = deviceId ?: UUID.randomUUID().toString()
+                    uniqueId = deviceId ?: UUID.randomUUID().toString(),
+                    intHardwareColor = pairSetting.hardware_color.value
                 )
                 persistedStorage.addDevice(device)
                 persistedStorage.setCurrentDevice(deviceId)

@@ -12,7 +12,6 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-
 @FDeviceFeatureQualifier(FDeviceFeature.DEVICE_COLOR)
 @ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
 class FDeviceColorFeatureFactoryImpl @Inject constructor(

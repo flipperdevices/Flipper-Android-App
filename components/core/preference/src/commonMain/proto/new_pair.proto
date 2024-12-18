@@ -19,6 +19,14 @@ message SavedDevice {
   oneof data {
     FlipperZeroBle flipper_zero_ble = 10;
   }
+
+  enum HardwareColor {
+    WHITE = 0;
+    BLACK = 1;
+    TRANSPARENT = 2;
+  }
+
+  HardwareColor hardware_color = 11;
 }
 
 message FlipperZeroBle {
