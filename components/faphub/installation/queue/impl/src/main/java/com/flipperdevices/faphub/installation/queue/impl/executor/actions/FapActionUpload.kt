@@ -10,6 +10,7 @@ import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.faphub.utils.FapHubConstants
+import kotlinx.coroutines.runBlocking
 import okio.source
 import java.io.File
 import javax.inject.Inject
@@ -30,29 +31,22 @@ class FapActionUpload @Inject constructor(
                 error { "#upload could not get FStorageFeatureApi" }
                 error("Could not get FStorageFeatureApi")
             }
-        info { "#upload got upload feature!" }
         fStorageFeatureApi.uploadApi().mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
         val fapPath = File(
             FapHubConstants.FLIPPER_TMP_FOLDER_PATH,
             "tmp.fap"
         ).absolutePath
-        info { "#upload File is: $fapPath" }
         val progressWrapper = ProgressWrapperTracker(progressListener)
         runCatching {
-            info { "#upload fapFile.inputStream()" }
             fapFile.inputStream().use { inputStream ->
-                info { "#upload inputStream.source()" }
                 inputStream.source().copyWithProgress(
                     sink = fStorageFeatureApi.uploadApi().sink(fapPath),
+                    sourceLength = { fapFile.length() },
                     progressListener = { current, max ->
-                        info { "#upload onProgress: $current $max" }
-                        progressWrapper.onProgress(current, max)
-                        info { "#upload onProgress invoked" }
+                        runBlocking { progressWrapper.onProgress(current, max) }
                     }
                 )
-                info { "#upload inputStream.source() finished!" }
             }
-            info { "#upload fapFile.inputStream() finished!" }
         }.onFailure { error(it) { "Failed upload tmp manifest" } }.getOrThrow()
 
         return fapPath
