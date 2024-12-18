@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiGro
 import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
-import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.property.GetRequest
 import dagger.assisted.Assisted
@@ -18,8 +17,7 @@ import kotlinx.coroutines.flow.mapNotNull
 
 class FGetInfoFeatureApiImpl @AssistedInject constructor(
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,
-) : FGetInfoFeatureApi, LogTagProvider {
-    override val TAG: String = "FGetInfoFeatureApi"
+) : FGetInfoFeatureApi {
     private val mapper = FGetInfoApiKeyMapper()
 
     override suspend fun get(
@@ -43,7 +41,7 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
     @AssistedFactory
     fun interface InternalFactory {
         operator fun invoke(
-            rpcFeatureApi: FRpcFeatureApi,
+            rpcFeatureApi: FRpcFeatureApi
         ): FGetInfoFeatureApiImpl
     }
 }
