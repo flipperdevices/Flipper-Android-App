@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.connection.feature.appstart.api.FAppStartFeatur
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.info
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.app.StartRequest
 import dagger.assisted.Assisted
@@ -18,6 +19,7 @@ class FAppStartFeatureApiImpl @AssistedInject constructor(
     override val TAG = "FAlarmFeatureApi"
 
     override suspend fun startApp(path: Path): Result<Unit> {
+        info { "#startApp path: $path" }
         return rpcFeatureApi.requestOnce(
             Main(
                 app_start_request = StartRequest(path.toString())
