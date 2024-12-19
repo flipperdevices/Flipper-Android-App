@@ -8,6 +8,11 @@ android.namespace = "com.flipperdevices.bridge.connection.feature.protocolversio
 
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
+    implementation(projects.components.bridge.connection.feature.rpc.model)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
+
+    implementation(projects.components.bridge.connection.pbutils)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.data)

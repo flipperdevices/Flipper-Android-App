@@ -1,11 +1,13 @@
 package com.flipperdevices.bridge.connection.device.fzero.impl.utils
 
 import com.flipperdevices.bridge.connection.feature.alarm.api.FAlarmFeatureApi
+import com.flipperdevices.bridge.connection.feature.appstart.api.FAppStartFeatureApi
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.devicecolor.api.FDeviceColorFeatureApi
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.protocolversion.api.FSdkVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
@@ -22,6 +24,7 @@ object FZeroFeatureClassToEnumMapper {
     private val classToEnumMap: ImmutableMap<KClass<out FDeviceFeatureApi>, FDeviceFeature> =
         FDeviceFeature.entries.associateBy { featureEnumToClass(it) }.toPersistentMap()
 
+    @Suppress("CyclomaticComplexMethod")
     private fun featureEnumToClass(feature: FDeviceFeature): KClass<out FDeviceFeatureApi> {
         return when (feature) {
             FDeviceFeature.RPC -> FRpcFeatureApi::class
@@ -36,6 +39,8 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.ALARM -> FAlarmFeatureApi::class
             FDeviceFeature.DEVICE_COLOR -> FDeviceColorFeatureApi::class
             FDeviceFeature.GATT_INFO -> FGattInfoFeatureApi::class
+            FDeviceFeature.SDK_VERSION -> FSdkVersionFeatureApi::class
+            FDeviceFeature.APP_START -> FAppStartFeatureApi::class
         }
     }
 

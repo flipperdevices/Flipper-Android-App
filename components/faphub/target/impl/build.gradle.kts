@@ -13,10 +13,10 @@ dependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.data)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.rpcinfo.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.orchestrator.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
 
     implementation(projects.components.faphub.utils)
 
