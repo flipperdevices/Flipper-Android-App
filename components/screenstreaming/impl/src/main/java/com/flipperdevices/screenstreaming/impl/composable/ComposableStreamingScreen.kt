@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.dialog.composable.FlipperDialog
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.theme.LocalPallet
-import com.flipperdevices.protobuf.screen.Gui
+import com.flipperdevices.protobuf.screen.InputType
 import com.flipperdevices.screenstreaming.impl.R
 import com.flipperdevices.screenstreaming.impl.composable.controls.ComposableFlipperControls
 import com.flipperdevices.screenstreaming.impl.composable.screen.ComposableFlipperScreenWithOptions
@@ -78,10 +78,10 @@ fun ComposableStreamingScreen(
         )
         ComposableFlipperControls(
             onPressButton = {
-                screenStreamingViewModel.onPressButton(it, Gui.InputType.SHORT)
+                screenStreamingViewModel.onPressButton(it, InputType.SHORT)
             },
             onLongPressButton = {
-                screenStreamingViewModel.onPressButton(it, Gui.InputType.LONG)
+                screenStreamingViewModel.onPressButton(it, InputType.LONG)
             }
         )
     }

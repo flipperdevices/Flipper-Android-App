@@ -5,11 +5,11 @@ import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.protobuf.screen.Gui
+import com.flipperdevices.protobuf.screen.InputType
 import com.flipperdevices.screenstreaming.impl.composable.ButtonEnum
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ButtonStackRepository
@@ -27,24 +27,25 @@ private const val VIBRATOR_TIME_MS = 10L
 
 class ScreenStreamingViewModel @AssistedInject constructor(
     @Assisted private val lifecycleOwner: LifecycleOwner,
-    serviceProvider: FlipperServiceProvider,
     application: Application,
     private val flipperButtonRepository: FlipperButtonRepository,
     private val buttonStackRepository: ButtonStackRepository,
-    private val settings: DataStore<Settings>
+    private val settings: DataStore<Settings>,
+    private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel() {
     private val vibrator = ContextCompat.getSystemService(application, Vibrator::class.java)
 
     private val lockRepository = LockRepository(
         scope = viewModelScope,
         stackRepository = buttonStackRepository,
-        serviceProvider = serviceProvider
+        fFeatureProvider = fFeatureProvider
     )
-    private val streamingRepository = StreamingRepository(viewModelScope)
+    private val streamingRepository = StreamingRepository(
+        scope = viewModelScope,
+        fFeatureProvider = fFeatureProvider
+    )
 
     init {
-        serviceProvider.provideServiceApi(lockRepository, this)
-        serviceProvider.provideServiceApi(streamingRepository, this)
         lifecycleOwner.lifecycle.subscribe(streamingRepository)
     }
 
@@ -54,7 +55,7 @@ class ScreenStreamingViewModel @AssistedInject constructor(
     fun onChangeLock(isWillBeLocked: Boolean) = lockRepository.onChangeLock(isWillBeLocked)
     fun onPressButton(
         buttonEnum: ButtonEnum,
-        inputType: Gui.InputType
+        inputType: InputType
     ) {
         vibrator?.vibrateCompat(
             VIBRATOR_TIME_MS,

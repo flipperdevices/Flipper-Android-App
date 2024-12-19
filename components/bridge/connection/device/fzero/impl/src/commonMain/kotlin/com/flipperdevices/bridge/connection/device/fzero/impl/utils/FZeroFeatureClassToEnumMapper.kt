@@ -12,6 +12,8 @@ import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersion
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.screenstreaming.api.FScreenStreamingFeatureApi
+import com.flipperdevices.bridge.connection.feature.screenstreaming.api.FScreenUnlockFeatureApi
 import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLagsDetectorFeature
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
@@ -41,6 +43,8 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.GATT_INFO -> FGattInfoFeatureApi::class
             FDeviceFeature.SDK_VERSION -> FSdkVersionFeatureApi::class
             FDeviceFeature.APP_START -> FAppStartFeatureApi::class
+            FDeviceFeature.SCREEN_STREAMING -> FScreenStreamingFeatureApi::class
+            FDeviceFeature.SCREEN_UNLOCK -> FScreenUnlockFeatureApi::class
         }
     }
 
