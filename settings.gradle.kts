@@ -93,6 +93,8 @@ include(
     ":components:bridge:connection:feature:device-color:impl",
     ":components:bridge:connection:feature:appstart:api",
     ":components:bridge:connection:feature:appstart:impl",
+    ":components:bridge:connection:feature:screenstreaming:api",
+    ":components:bridge:connection:feature:screenstreaming:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",
