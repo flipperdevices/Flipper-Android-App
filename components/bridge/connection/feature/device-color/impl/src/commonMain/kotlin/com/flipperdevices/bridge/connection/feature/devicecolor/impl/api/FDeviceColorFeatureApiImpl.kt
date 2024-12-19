@@ -43,7 +43,14 @@ class FDeviceColorFeatureApiImpl @AssistedInject constructor(
             HardwareColor.TRANSPARENT.value -> HardwareColor.TRANSPARENT
             else -> default
         }
-        fDevicePersistedStorage.setCurrentDeviceColor(hardwareColor)
+
+        currentColoredDevice?.uniqueId?.let { id ->
+            fDevicePersistedStorage.updateDevice(id) { savedDevice ->
+                savedDevice.copy(
+                    flipper_zero_ble = savedDevice.flipper_zero_ble?.copy(hardware_color = hardwareColor)
+                )
+            }
+        }
         emit(hardwareColor)
     }
 

@@ -107,17 +107,13 @@ class FDevicePersistedStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun setCurrentDeviceColor(hardwareColor: HardwareColor) {
+    override suspend fun updateDevice(id: String, block: (SavedDevice) -> SavedDevice) {
         newPairSettings.updateData { newPairSettings ->
             newPairSettings.copy(
                 devices = newPairSettings.devices.toMutableList().apply {
                     replaceAll { device ->
-                        if (device.id == newPairSettings.current_selected_device_id) {
-                            device.copy(
-                                flipper_zero_ble = device
-                                    .flipper_zero_ble
-                                    ?.copy(hardware_color = hardwareColor)
-                            )
+                        if (device.id == id) {
+                            block.invoke(device)
                         } else {
                             device
                         }
