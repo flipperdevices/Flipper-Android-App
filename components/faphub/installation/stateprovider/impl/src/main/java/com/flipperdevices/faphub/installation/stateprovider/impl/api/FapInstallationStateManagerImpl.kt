@@ -1,11 +1,11 @@
 package com.flipperdevices.faphub.installation.stateprovider.impl.api
 
-import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.dao.api.model.FapItemVersion
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
+import com.flipperdevices.faphub.installation.manifest.error.NoSdCardException
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest

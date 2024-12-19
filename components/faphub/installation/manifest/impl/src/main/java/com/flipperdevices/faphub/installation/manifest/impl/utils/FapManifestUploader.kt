@@ -1,27 +1,25 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFEST_EXTENSION
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
-import com.flipperdevices.faphub.utils.FapHubTmpFolderProvider
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.writeRequest
-import kotlinx.coroutines.flow.map
+import com.flipperdevices.faphub.utils.FapHubConstants
+import okio.buffer
+import okio.source
 import java.io.File
 import javax.inject.Inject
 
 class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,
-    private val flipperServiceProvider: FlipperServiceProvider,
+    private val fFeatureProvider: FFeatureProvider,
     private val atomicMover: FapManifestAtomicMover,
-    private val tmpFolderProvider: FapHubTmpFolderProvider
 ) : LogTagProvider {
     override val TAG = "FapManifestUploader"
 
@@ -42,35 +40,37 @@ class FapManifestUploader @Inject constructor(
 
     private suspend fun saveToTmp(fapManifestItem: FapManifestItem): String {
         info { "Start save tmp manifest for ${fapManifestItem.applicationAlias}" }
-        val serviceApi = flipperServiceProvider.getServiceApi()
+        val uploadApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.uploadApi()
+        if (uploadApi == null) {
+            error { "#uploadTmpManifest could not find uploadApi" }
+            return FapHubConstants.FLIPPER_TMP_FOLDER_PATH
+        }
+        uploadApi.mkdir(FapHubConstants.FLIPPER_TMP_FOLDER_PATH)
+            .onFailure { error(it) { "#saveToTmp could not mkdir ${FapHubConstants.FLIPPER_TMP_FOLDER_PATH}" } }
         val tmpFapPath = File(
-            tmpFolderProvider.provideTmpFolder(),
+            FapHubConstants.FLIPPER_TMP_FOLDER_PATH,
             "tmp.fim"
         ).path
-        uploadTmpManifest(serviceApi.requestApi, fapManifestItem, tmpFapPath)
+        uploadTmpManifest(fapManifestItem, tmpFapPath)
         info { "Finish tmp manifest upload, path is $tmpFapPath" }
         return tmpFapPath
     }
 
     private suspend fun uploadTmpManifest(
-        requestApi: FlipperRequestApi,
         fapManifestItem: FapManifestItem,
         fapPath: String
     ) {
         val fff = parser.encode(fapManifestItem)
-        val response = fff.openStream().use { inputStream ->
-            val requestFlow = streamToCommandFlow(inputStream, fff.length()) { chunkData ->
-                storageWriteRequest = writeRequest {
-                    path = fapPath
-                    file = file { data = chunkData }
-                }
-            }.map { it.wrapToRequest() }
 
-            requestApi.request(requestFlow)
+        val uploadApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.uploadApi()
+        if (uploadApi == null) {
+            error { "#uploadTmpManifest could not find uploadApi" }
+            return
         }
-
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            error("Failed upload tmp manifest")
+        fff.openStream().use { inputStream ->
+            uploadApi.sink(pathOnFlipper = fapPath)
+                .buffer()
+                .use { sink -> inputStream.source().copyWithProgress(sink) }
         }
     }
 }

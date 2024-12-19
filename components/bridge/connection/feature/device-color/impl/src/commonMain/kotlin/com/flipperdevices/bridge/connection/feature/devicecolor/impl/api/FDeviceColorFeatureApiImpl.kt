@@ -31,9 +31,11 @@ class FDeviceColorFeatureApiImpl @AssistedInject constructor(
         }
 
         val intHardwareColor = fGetInfoFeatureApi.get(FGetInfoApiProperty.DeviceInfo.HARDWARE_COLOR)
-            .onFailure { error(
-                it
-            ) { "#updateAndGetColorFlow could not fetch ${FGetInfoApiProperty.DeviceInfo.HARDWARE_COLOR}" } }
+            .onFailure {
+                error(
+                    it
+                ) { "#updateAndGetColorFlow could not fetch ${FGetInfoApiProperty.DeviceInfo.HARDWARE_COLOR}" }
+            }
             .map { it.toIntOrNull() }
             .getOrNull()
 

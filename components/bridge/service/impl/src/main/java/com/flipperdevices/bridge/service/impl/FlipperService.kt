@@ -46,6 +46,7 @@ class FlipperService : LifecycleService(), LogTagProvider {
     override fun onCreate() {
         super.onCreate()
         info { "Start flipper service" }
+        return
 
         val component = ComponentHolder
             .component<FlipperServiceComponent>()

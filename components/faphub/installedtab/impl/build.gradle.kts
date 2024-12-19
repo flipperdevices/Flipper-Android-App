@@ -29,8 +29,6 @@ dependencies {
 
     implementation(projects.components.inappnotification.api)
 
-    implementation(projects.components.bridge.rpc.api)
-
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)

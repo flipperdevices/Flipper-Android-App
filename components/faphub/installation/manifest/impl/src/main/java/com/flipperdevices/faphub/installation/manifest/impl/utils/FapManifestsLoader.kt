@@ -1,27 +1,26 @@
 package com.flipperdevices.faphub.installation.manifest.impl.utils
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
-import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
-import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
-import com.flipperdevices.bridge.rpcinfo.model.FlipperStorageInformation
-import com.flipperdevices.bridge.rpcinfo.model.StorageStats
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ktx.jre.flatten
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
+import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.FlipperStorageInformation
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.StorageStats
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
+import com.flipperdevices.faphub.installation.manifest.error.NoSdCardException
 import com.flipperdevices.faphub.installation.manifest.impl.model.FapManifestLoaderState
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestConstants.FAP_MANIFESTS_FOLDER_ON_FLIPPER
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.readRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -31,25 +30,26 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import okio.buffer
 import java.io.File
 
 @Suppress("LongParameterList")
 class FapManifestsLoader @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
-    private val flipperServiceProvider: FlipperServiceProvider,
     private val parser: FapManifestParser,
     private val dataStoreSettings: DataStore<Settings>,
     private val cacheLoader: FapManifestCacheLoader,
-    private val flipperStorageInformationApi: FlipperStorageInformationApi,
-    private val fapExistChecker: FapExistChecker
+    private val fapExistChecker: FapExistChecker,
+    private val fFeatureProvider: FFeatureProvider,
+    private val fDeviceOrchestrator: FDeviceOrchestrator
 ) : LogTagProvider {
     override val TAG = "FapManifestsLoader"
     private val manifestLoaderState = MutableStateFlow<FapManifestLoaderState>(
@@ -73,16 +73,16 @@ class FapManifestsLoader @AssistedInject constructor(
                     isLoading = true
                 )
             )
-            val serviceApi = flipperServiceProvider.getServiceApi()
-            flipperStorageInformationApi.invalidate(
-                scope = scope,
-                serviceApi = serviceApi
-            )
+            val fStorageInfoApi = fFeatureProvider.getSync<FStorageInfoFeatureApi>()
+            if (fStorageInfoApi == null) {
+                error { "#invalidate could not find FStorageInfoFeatureApi" }
+                return@launch
+            }
+            fStorageInfoApi.invalidate(scope = scope)
+
             combine(
-                serviceApi.connectionInformationApi
-                    .getConnectionStateFlow(),
-                flipperStorageInformationApi
-                    .getStorageInformationFlow()
+                fDeviceOrchestrator.getState(),
+                fStorageInfoApi.getStorageInformationFlow()
             ) { connectionState, flipperStorageInformation ->
                 connectionState to flipperStorageInformation
             }.collectLatest { (connectionState, flipperStorageInformation) ->
@@ -106,12 +106,12 @@ class FapManifestsLoader @AssistedInject constructor(
 
     @Suppress("LongMethod")
     private suspend fun loadInternal(
-        connectionState: ConnectionState,
+        connectionState: FDeviceConnectStatus,
         storageInformation: FlipperStorageInformation
     ) {
         val isUseDevCatalog = dataStoreSettings.data.first().use_dev_catalog
-        val serviceApi = flipperServiceProvider.getServiceApi()
-        if (!connectionState.isReady) {
+
+        if (connectionState !is FDeviceConnectStatus.Connected) {
             throw FlipperNotConnected()
         }
         val externalStorageStatus = storageInformation.externalStorageStatus
@@ -144,10 +144,8 @@ class FapManifestsLoader @AssistedInject constructor(
             }
         info { "Parsed ${fapItemsList.size} manifests from cache" }
         cacheResult.toLoadNames.mapNotNull { name ->
-            loadManifestFile(
-                requestApi = serviceApi.requestApi,
-                filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath
-            )?.let { parser.parse(it, name) }
+            loadManifestFile(filePath = File(FAP_MANIFESTS_FOLDER_ON_FLIPPER, name).absolutePath)
+                ?.let { byteArray -> parser.parse(byteArray, name) }
         }.filter { fapExistChecker.checkExist(it.path) }
             .filter { it.isDevCatalog == isUseDevCatalog }
             .forEach { content ->
@@ -172,24 +170,18 @@ class FapManifestsLoader @AssistedInject constructor(
     }
 
     private suspend fun loadManifestFile(
-        requestApi: FlipperRequestApi,
         filePath: String
-    ): ByteArray? {
-        val responseBytes = requestApi.request(
-            main {
-                storageReadRequest = readRequest {
-                    path = filePath
-                }
-            }.wrapToRequest(FlipperRequestPriority.BACKGROUND)
-        ).toList().map { response ->
-            if (response.hasStorageReadResponse()) {
-                response.storageReadResponse.file.data.toByteArray()
-            } else {
-                return null
-            }
-        }.flatten()
-
-        return responseBytes
+    ): ByteArray? = coroutineScope {
+        fFeatureProvider
+            .getSync<FStorageFeatureApi>()
+            ?.downloadApi()
+            ?.source(
+                pathOnFlipper = filePath,
+                priority = StorageRequestPriority.BACKGROUND,
+                scope = this
+            )
+            ?.buffer()
+            ?.readByteArray()
     }
 
     @AssistedFactory

@@ -15,6 +15,8 @@ enum class FDeviceFeature {
     ALARM,
     DEVICE_COLOR,
     GATT_INFO,
+    SDK_VERSION,
+    APP_START
 }
 
 @Retention(AnnotationRetention.RUNTIME)

@@ -91,6 +91,8 @@ include(
     ":components:bridge:connection:feature:alarm:impl",
     ":components:bridge:connection:feature:device-color:api",
     ":components:bridge:connection:feature:device-color:impl",
+    ":components:bridge:connection:feature:appstart:api",
+    ":components:bridge:connection:feature:appstart:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",
