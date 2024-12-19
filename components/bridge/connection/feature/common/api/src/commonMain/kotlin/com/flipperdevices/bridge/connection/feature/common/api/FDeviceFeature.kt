@@ -16,7 +16,9 @@ enum class FDeviceFeature {
     DEVICE_COLOR,
     GATT_INFO,
     SDK_VERSION,
-    APP_START
+    APP_START,
+    SCREEN_STREAMING,
+    SCREEN_UNLOCK
 }
 
 @Retention(AnnotationRetention.RUNTIME)

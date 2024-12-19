@@ -5,7 +5,8 @@ import android.graphics.Color
 import androidx.core.graphics.set
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.flipperdevices.protobuf.screen.Gui
+import com.flipperdevices.protobuf.screen.ScreenFrame
+import com.flipperdevices.protobuf.screen.ScreenOrientation
 import com.flipperdevices.screenstreaming.impl.model.FlipperScreenState
 import com.flipperdevices.screenstreaming.impl.model.ScreenOrientationEnum
 import kotlin.experimental.and
@@ -26,17 +27,17 @@ object ScreenStreamFrameDecoder : LogTagProvider {
         return bitmap
     }
 
-    fun decode(streamFrame: Gui.ScreenFrame): FlipperScreenState.Ready? {
-        val bytes = streamFrame.data.toByteArray()
+    fun decode(streamFrame: ScreenFrame): FlipperScreenState.Ready? {
+        val bytes = streamFrame.data_.toByteArray()
         info { "Receive package with ${bytes.size} bytes" }
         if (bytes.isEmpty()) {
             return null
         }
         val orientation = when (streamFrame.orientation) {
-            Gui.ScreenOrientation.HORIZONTAL -> ScreenOrientationEnum.HORIZONTAL
-            Gui.ScreenOrientation.HORIZONTAL_FLIP -> ScreenOrientationEnum.HORIZONTAL_FLIP
-            Gui.ScreenOrientation.VERTICAL -> ScreenOrientationEnum.VERTICAL
-            Gui.ScreenOrientation.VERTICAL_FLIP -> ScreenOrientationEnum.VERTICAL_FLIP
+            ScreenOrientation.HORIZONTAL -> ScreenOrientationEnum.HORIZONTAL
+            ScreenOrientation.HORIZONTAL_FLIP -> ScreenOrientationEnum.HORIZONTAL_FLIP
+            ScreenOrientation.VERTICAL -> ScreenOrientationEnum.VERTICAL
+            ScreenOrientation.VERTICAL_FLIP -> ScreenOrientationEnum.VERTICAL_FLIP
             else -> ScreenOrientationEnum.HORIZONTAL
         }
         val screen = Bitmap.createBitmap(SCREEN_WIDTH, SCREEN_HEIGHT, Bitmap.Config.ARGB_8888)

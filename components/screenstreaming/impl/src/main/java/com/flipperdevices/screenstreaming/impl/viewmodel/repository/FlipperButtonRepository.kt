@@ -1,21 +1,21 @@
 package com.flipperdevices.screenstreaming.impl.viewmodel.repository
 
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.screenstreaming.api.FScreenStreamingFeatureApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.screen.Gui
-import com.flipperdevices.protobuf.screen.sendInputEventRequest
+import com.flipperdevices.core.log.error
+import com.flipperdevices.protobuf.screen.InputKey
+import com.flipperdevices.protobuf.screen.InputType
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
 import javax.inject.Inject
 
 class FlipperButtonRepository @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider
+    private val fFeatureProvider: FFeatureProvider
 ) : LogTagProvider {
     override val TAG: String = "FlipperButtonRequest"
 
@@ -23,31 +23,24 @@ class FlipperButtonRepository @Inject constructor(
 
     fun pressOnButton(
         viewModelScope: CoroutineScope,
-        key: Gui.InputKey,
-        type: Gui.InputType,
+        key: InputKey,
+        type: InputType,
         onComplete: () -> Unit = {}
     ) = launchWithLock(mutex = mutex, scope = viewModelScope) {
-        val requestApi = serviceProvider.getServiceApi().requestApi
+        val fScreenStreamingFeatureApi = fFeatureProvider.getSync<FScreenStreamingFeatureApi>()
+        if (fScreenStreamingFeatureApi == null) {
+            error { "#pressOnButton FScreenStreamingFeatureApi not found!" }
+            return@launchWithLock
+        }
 
-        requestApi.requestWithoutAnswer(
-            getRequestFor(key, Gui.InputType.PRESS),
-            getRequestFor(key, type)
-        )
+        fScreenStreamingFeatureApi.sendInputAndForget(key, InputType.PRESS)
+        fScreenStreamingFeatureApi.sendInputAndForget(key, type)
 
-        requestApi.request(getRequestFor(key, Gui.InputType.RELEASE))
-            .onEach { onComplete() }
-            .launchIn(viewModelScope)
-    }
-
-    private fun getRequestFor(
-        inputKey: Gui.InputKey,
-        buttonType: Gui.InputType
-    ): FlipperRequest {
-        return main {
-            guiSendInputEventRequest = sendInputEventRequest {
-                key = inputKey
-                type = buttonType
+        fScreenStreamingFeatureApi.awaitInput(key, InputType.RELEASE)
+            .onEach { result ->
+                result.onFailure { error(it) { "#pressOnButton InputType.RELEASE failed" } }
             }
-        }.wrapToRequest()
+            .onEach { onComplete.invoke() }
+            .collect()
     }
 }
