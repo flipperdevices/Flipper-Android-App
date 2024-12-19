@@ -6,10 +6,15 @@ plugins {
 android.namespace = "com.flipperdevices.screenstreaming.impl"
 
 dependencies {
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.screenstreaming.api)
-    implementation(projects.components.bridge.pbutils)
+
+    implementation(projects.components.bridge.connection.pbutils)
+    implementation(projects.components.bridge.connection.orchestrator.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.screenstreaming.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
