@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -114,12 +115,12 @@ class DispatchSignalViewModel @Inject constructor(
             keyPath = ffPath,
             keyType = FlipperKeyType.INFRARED,
             args = remote.name,
-            index = i
+            index = i,
+            isPressRelease = isOneTime
         )
         dispatch(
             config = config,
             identifier = identifier,
-            isOneTime = isOneTime,
             onDispatched = onDispatched
         )
     }
@@ -131,7 +132,6 @@ class DispatchSignalViewModel @Inject constructor(
     override fun dispatch(
         config: EmulateConfig,
         identifier: IfrKeyIdentifier,
-        isOneTime: Boolean,
         onDispatched: () -> Unit
     ) {
         if (latestDispatchJob?.isActive == true) return
@@ -142,6 +142,8 @@ class DispatchSignalViewModel @Inject constructor(
                 onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launch {
+                        val isPressReleaseSupported =
+                            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
                         vibrator?.vibrateCompat(
                             VIBRATOR_TIME,
                             settings.data.first().disabled_vibration
@@ -151,14 +153,20 @@ class DispatchSignalViewModel @Inject constructor(
                             emulateHelper.startEmulate(
                                 scope = this,
                                 serviceApi = serviceApi,
-                                config = config
+                                config = config,
                             )
-                            if (isOneTime) {
-                                delay(DEFAULT_SIGNAL_DELAY)
-                                emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                            if (config.isPressRelease && isPressReleaseSupported) {
                                 _state.emit(DispatchSignalApi.State.Pending)
-                                onDispatched.invoke()
+                            } else if (config.isPressRelease) {
+                                delay(DEFAULT_SIGNAL_DELAY)
+                                _state.emit(DispatchSignalApi.State.Pending)
                             }
+                            emulateHelper.stopEmulate(
+                                scope = this,
+                                requestApi = serviceApi.requestApi,
+                                isPressRelease = config.isPressRelease && isPressReleaseSupported
+                            )
+                            onDispatched.invoke()
                         } catch (ignored: AlreadyOpenedAppException) {
                             _state.emit(DispatchSignalApi.State.FlipperIsBusy)
                         } catch (e: Exception) {

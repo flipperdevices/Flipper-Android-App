@@ -2,6 +2,7 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
@@ -116,6 +117,7 @@ class InfraredViewModel @Inject constructor(
         emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
     }
 
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
         serviceApi: FlipperServiceApi,
@@ -125,12 +127,13 @@ class InfraredViewModel @Inject constructor(
         val requestApi = serviceApi.requestApi
         val timeout = config.minEmulateTime
         val appStarted: Boolean?
-
+        val isPressReleaseSupported =
+            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
         try {
             appStarted = emulateHelper.startEmulate(
-                scope,
-                serviceApi,
-                config
+                scope = scope,
+                serviceApi = serviceApi,
+                config = config,
             )
             if (appStarted && timeout != null) {
                 if (oneTimePress) {
@@ -150,22 +153,34 @@ class InfraredViewModel @Inject constructor(
                 }
             }
         } catch (ignored: AlreadyOpenedAppException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return false
         } catch (ignored: ForbiddenFrequencyException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return false
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate infrared" }
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
         }
         if (!appStarted) {
             info { "Failed start emulation" }
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce(
+                requestApi = requestApi,
+                isPressRelease = isPressReleaseSupported && oneTimePress
+            )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
 

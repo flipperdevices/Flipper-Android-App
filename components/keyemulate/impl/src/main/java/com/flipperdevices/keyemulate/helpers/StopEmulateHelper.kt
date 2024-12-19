@@ -14,24 +14,29 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 interface StopEmulateHelper {
-    suspend fun onStop(requestApi: FlipperRequestApi)
+    suspend fun onStop(
+        requestApi: FlipperRequestApi,
+        isPressRelease: Boolean = false
+    )
 }
 
 @ContributesBinding(AppGraph::class, StopEmulateHelper::class)
 class StopEmulateHelperImpl @Inject constructor() : StopEmulateHelper, LogTagProvider {
     override val TAG = "StopEmulateHelper"
 
-    override suspend fun onStop(requestApi: FlipperRequestApi) {
+    override suspend fun onStop(requestApi: FlipperRequestApi, isPressRelease: Boolean) {
         info { "stopEmulateInternal" }
 
-        val appButtonResponse = requestApi.request(
-            flowOf(
-                main {
-                    appButtonReleaseRequest = appButtonReleaseRequest { }
-                }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+        if (!isPressRelease) {
+            val appButtonResponse = requestApi.request(
+                flowOf(
+                    main {
+                        appButtonReleaseRequest = appButtonReleaseRequest { }
+                    }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+                )
             )
-        )
-        info { "App button stop response: $appButtonResponse" }
+            info { "App button stop response: $appButtonResponse" }
+        }
 
         val appExitResponse = requestApi.request(
             flowOf(

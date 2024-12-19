@@ -205,7 +205,8 @@ class SetupComponentImpl @AssistedInject constructor(
             ),
             keyType = FlipperKeyType.INFRARED,
             args = signalModel.remote.name,
-            index = 0
+            index = 0,
+            isPressRelease = true
         )
         val keyIdentifier = (loadedState.response.signalResponse?.data as? SingleKeyButtonData)
             ?.keyIdentifier
