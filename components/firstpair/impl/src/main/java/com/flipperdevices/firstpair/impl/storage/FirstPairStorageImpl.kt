@@ -7,6 +7,7 @@ import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroB
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.first
@@ -58,7 +59,8 @@ class FirstPairStorageImpl @Inject constructor(
                 val device = FDeviceFlipperZeroBleModel(
                     name = deviceNameFormatted,
                     address = address.orEmpty(),
-                    uniqueId = deviceId ?: UUID.randomUUID().toString()
+                    uniqueId = deviceId ?: UUID.randomUUID().toString(),
+                    hardwareColor = FlipperZeroBle.HardwareColor.fromValue(pairSetting.hardware_color.value)
                 )
                 persistedStorage.addDevice(device)
                 persistedStorage.setCurrentDevice(deviceId)

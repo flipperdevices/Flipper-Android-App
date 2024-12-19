@@ -9,6 +9,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
+import com.flipperdevices.core.preference.pb.FlipperZeroBle.HardwareColor
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.SavedDevice
 import com.squareup.anvil.annotations.ContributesBinding
@@ -85,7 +86,8 @@ class FDevicePersistedStorageImpl @Inject constructor(
             return FDeviceFlipperZeroBleModel(
                 name = device.name,
                 uniqueId = device.id,
-                address = flipperZeroBle.address
+                address = flipperZeroBle.address,
+                hardwareColor = flipperZeroBle.hardware_color
             )
         }
         return null
@@ -102,6 +104,25 @@ class FDevicePersistedStorageImpl @Inject constructor(
             )
 
             else -> error("Can't find parser for $device")
+        }
+    }
+
+    override suspend fun updateCurrentDevice(block: (FDeviceBaseModel) -> FDeviceBaseModel) {
+        newPairSettings.updateData { newPairSettings ->
+            newPairSettings.copy(
+                devices = newPairSettings.devices.toMutableList().apply {
+                    replaceAll { device ->
+                        if (device.id == newPairSettings.current_selected_device_id) {
+                            mapSavedDevice(device)
+                                ?.let(block::invoke)
+                                ?.let(::mapDeviceBaseModelToSavedDevice)
+                                ?: device
+                        } else {
+                            device
+                        }
+                    }
+                }.toList()
+            )
         }
     }
 }

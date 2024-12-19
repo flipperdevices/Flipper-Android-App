@@ -23,4 +23,12 @@ message SavedDevice {
 
 message FlipperZeroBle {
   string address = 1;
+
+  enum HardwareColor {
+    WHITE = 0;
+    BLACK = 1;
+    TRANSPARENT = 2;
+  }
+
+  HardwareColor hardware_color = 2;
 }

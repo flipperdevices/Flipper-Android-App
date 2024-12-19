@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.api.manager.ktx.state.FlipperSupportedState
+import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
 import com.flipperdevices.core.markdown.ClickableUrlText
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography

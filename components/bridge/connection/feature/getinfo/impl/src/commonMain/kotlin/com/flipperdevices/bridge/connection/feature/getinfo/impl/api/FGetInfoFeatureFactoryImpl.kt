@@ -16,6 +16,7 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
+// todo move to shared const
 private val API_SUPPORTED_GET_REQUEST = SemVer(
     majorVersion = 0,
     minorVersion = 14
@@ -45,7 +46,7 @@ class FGetInfoFeatureFactoryImpl @Inject constructor(
         val rpcApi = unsafeFeatureDeviceApi.getUnsafe(FRpcFeatureApi::class) ?: return null
 
         return factory(
-            rpcApi
+            rpcFeatureApi = rpcApi,
         )
     }
 }

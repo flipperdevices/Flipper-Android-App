@@ -8,7 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.flipperdevices.bridge.rpcinfo.model.FlipperRpcInformation
+import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperRpcInformation
 import com.flipperdevices.core.ktx.jre.titlecaseFirstCharIfItIsLowercase
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
 import com.flipperdevices.info.impl.R

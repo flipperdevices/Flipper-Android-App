@@ -87,6 +87,10 @@ include(
     ":components:bridge:connection:feature:actionnotifier:api",
     ":components:bridge:connection:feature:serialspeed:api",
     ":components:bridge:connection:feature:serialspeed:impl",
+    ":components:bridge:connection:feature:alarm:api",
+    ":components:bridge:connection:feature:alarm:impl",
+    ":components:bridge:connection:feature:device-color:api",
+    ":components:bridge:connection:feature:device-color:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 
 class FGetInfoFeatureApiImpl @AssistedInject constructor(
-    @Assisted private val rpcFeatureApi: FRpcFeatureApi
+    @Assisted private val rpcFeatureApi: FRpcFeatureApi,
 ) : FGetInfoFeatureApi {
     private val mapper = FGetInfoApiKeyMapper()
 

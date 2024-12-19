@@ -9,6 +9,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigator
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.flipperdevices.bottombar.handlers.ResetTabDecomposeHandler
+import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.info.impl.compose.screens.ComposableDeviceInfoScreen
@@ -99,9 +100,10 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
             deeplink = deeplink,
             deviceStatus = deviceStatus,
             connectViewModel = connectViewModel,
-            hardwareColor = flipperColor,
+            hardwareColor = HardwareColor.fromValue(flipperColor.value), // TODO change after full migration
             supportedState = supportState,
             updateState = updateState,
+            hasAlarm = alarmViewModel.hasAlarm.collectAsState().value,
             alarmOnFlipper = alarmViewModel::alarmOnFlipper,
             deviceInfo = basicInfo,
             scrollState = scrollState,
