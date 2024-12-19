@@ -15,8 +15,7 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-// TODO move to consts
-val API_SUPPORTED_LOAD_FAP = SemVer(
+private val API_SUPPORTED_LOAD_FAP = SemVer(
     majorVersion = 0,
     minorVersion = 18
 )
