@@ -10,6 +10,7 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
     implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.feature.rpc.model)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
 
     implementation(projects.components.bridge.connection.pbutils)
 

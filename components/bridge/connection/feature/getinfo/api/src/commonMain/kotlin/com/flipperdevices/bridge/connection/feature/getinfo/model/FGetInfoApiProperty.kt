@@ -26,7 +26,9 @@ sealed interface FGetInfoApiProperty {
         RADIO_STACK_SUB("radio.stack.sub"),
         FIRMWARE_FORK("firmware.origin.fork"),
         FIRMWARE_ORIGIN("firmware.origin.git"),
-        HARDWARE_COLOR("hardware.color");
+        HARDWARE_COLOR("hardware.color"),
+        RPC_SDK_MAJOR_KEY("firmware.api.major"),
+        RPC_SDK_MINOR_KEY("firmware.api.minor");
 
         override val group = FGetInfoApiGroup.DEVICE_INFO
     }
