@@ -10,5 +10,5 @@ interface FDevicePersistedStorage {
     suspend fun addDevice(device: FDeviceBaseModel)
     suspend fun removeDevice(id: String)
     fun getAllDevices(): Flow<List<FDeviceBaseModel>>
-    suspend fun updateDevice(id: String, block: (SavedDevice) -> SavedDevice)
+    suspend fun updateCurrentDevice(block: (FDeviceBaseModel) -> FDeviceBaseModel)
 }

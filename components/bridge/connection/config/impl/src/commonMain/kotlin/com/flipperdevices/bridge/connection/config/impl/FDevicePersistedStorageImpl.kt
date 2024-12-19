@@ -107,13 +107,16 @@ class FDevicePersistedStorageImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateDevice(id: String, block: (SavedDevice) -> SavedDevice) {
+    override suspend fun updateCurrentDevice(block: (FDeviceBaseModel) -> FDeviceBaseModel) {
         newPairSettings.updateData { newPairSettings ->
             newPairSettings.copy(
                 devices = newPairSettings.devices.toMutableList().apply {
                     replaceAll { device ->
-                        if (device.id == id) {
-                            block.invoke(device)
+                        if (device.id == newPairSettings.current_selected_device_id) {
+                            mapSavedDevice(device)
+                                ?.let(block::invoke)
+                                ?.let(::mapDeviceBaseModelToSavedDevice)
+                                ?: device
                         } else {
                             device
                         }

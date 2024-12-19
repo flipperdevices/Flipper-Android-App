@@ -44,12 +44,10 @@ class FDeviceColorFeatureApiImpl @AssistedInject constructor(
             else -> default
         }
 
-        currentColoredDevice?.uniqueId?.let { id ->
-            fDevicePersistedStorage.updateDevice(id) { savedDevice ->
-                savedDevice.copy(
-                    flipper_zero_ble = savedDevice.flipper_zero_ble?.copy(hardware_color = hardwareColor)
-                )
-            }
+        fDevicePersistedStorage.updateCurrentDevice { fDeviceBaseModel ->
+            (fDeviceBaseModel as? FDeviceFlipperZeroBleModel)
+                ?.copy(hardwareColor = hardwareColor)
+                ?: fDeviceBaseModel
         }
         emit(hardwareColor)
     }
