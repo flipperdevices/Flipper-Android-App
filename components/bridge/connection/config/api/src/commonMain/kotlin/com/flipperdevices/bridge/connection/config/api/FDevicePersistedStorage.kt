@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.config.api
 
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
-import com.flipperdevices.core.preference.pb.SavedDevice
 import kotlinx.coroutines.flow.Flow
 
 interface FDevicePersistedStorage {
