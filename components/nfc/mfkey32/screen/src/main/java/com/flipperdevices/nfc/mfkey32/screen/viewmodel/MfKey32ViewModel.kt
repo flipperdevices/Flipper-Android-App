@@ -1,12 +1,12 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDeleteApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileStorageMD5Api
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
@@ -23,20 +23,14 @@ import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
 import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.deleteRequest
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import okio.Path.Companion.toOkioPath
 import java.math.BigInteger
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -48,10 +42,9 @@ class MfKey32ViewModel @Inject constructor(
     private val nfcToolsApi: NfcToolsApi,
     private val mfKey32Api: MfKey32Api,
     private val metricApi: MetricApi,
-    flipperServiceProvider: FlipperServiceProvider,
-    private val flipperStorageApi: FlipperStorageApi,
+    private val fFeatureProvider: FFeatureProvider,
     storageProvider: FlipperStorageProvider
-) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "MfKey32ViewModel"
     private val bruteforceDispatcher = Executors.newFixedThreadPool(
         Runtime.getRuntime().availableProcessors()
@@ -60,62 +53,43 @@ class MfKey32ViewModel @Inject constructor(
         MfKey32State.Error(ErrorType.FLIPPER_CONNECTION)
     )
 
-    private val existedKeysStorage = ExistedKeysStorage(flipperStorageApi, storageProvider)
+    private val existedKeysStorage = ExistedKeysStorage(storageProvider)
     private val fileWithNonce by lazy {
         storageProvider.getTemporaryFile().toFile()
-    }
-    private var stateJob: Job? = null
-    private val mutex = Mutex()
-
-    init {
-        flipperServiceProvider.provideServiceApi(this, this)
     }
 
     fun getMfKey32State(): StateFlow<MfKey32State> = mfKey32StateFlow
     fun getFoundedInformation(): StateFlow<FoundedInformation> =
         existedKeysStorage.getFoundedInformation()
 
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        viewModelScope.launch {
-            mutex.withLock {
-                val localJob = stateJob
-                stateJob = viewModelScope.launch {
-                    localJob?.cancelAndJoin()
-                    serviceApi
-                        .connectionInformationApi
-                        .getConnectionStateFlow()
-                        .collectLatest { connectionState ->
-                            startCalculation(serviceApi, connectionState)
-                        }
-                }
-            }
-        }
+    init {
+        fFeatureProvider
+            .get<FStorageFeatureApi>()
+            .onEach { status -> startCalculation(status) }
+            .launchIn(viewModelScope)
     }
 
-    private suspend fun startCalculation(
-        serviceApi: FlipperServiceApi,
-        connectionState: ConnectionState
-    ) {
-        info { "Start calculation on $connectionState" }
+    private suspend fun startCalculation(status: FFeatureStatus<FStorageFeatureApi>) {
+        info { "Start calculation on $status" }
 
-        when (connectionState) {
-            ConnectionState.Connecting,
-            ConnectionState.Disconnecting,
-            ConnectionState.RetrievingInformation,
-            ConnectionState.Initializing -> {
-                mfKey32StateFlow.emit(MfKey32State.WaitingForFlipper)
-                return
-            }
-
-            is ConnectionState.Disconnected -> {
+        val featureApi = when (status) {
+            FFeatureStatus.Unsupported,
+            FFeatureStatus.NotFound -> {
                 mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.FLIPPER_CONNECTION))
                 return
             }
 
-            is ConnectionState.Ready -> {}
+            FFeatureStatus.Retrieving -> {
+                mfKey32StateFlow.emit(MfKey32State.WaitingForFlipper)
+                return
+            }
+
+            is FFeatureStatus.Supported -> {
+                status.featureApi
+            }
         }
 
-        if (!prepare(serviceApi)) {
+        if (!prepare(featureApi.downloadApi(), featureApi.md5Api())) {
             info { "Failed prepare" }
             return
         }
@@ -129,17 +103,23 @@ class MfKey32ViewModel @Inject constructor(
         }
         mfKey32StateFlow.emit(MfKey32State.Uploading)
         val addedKeys = try {
-            existedKeysStorage.upload(serviceApi.requestApi)
+            existedKeysStorage.upload(featureApi.uploadApi())
         } catch (exception: Throwable) {
             error(exception) { "When save keys" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
             return
         }
-        deleteBruteforceApp(serviceApi.requestApi)
+        deleteBruteforceApp(
+            deleteApi = featureApi.deleteApi(),
+            md5Api = featureApi.md5Api()
+        )
         mfKey32StateFlow.emit(MfKey32State.Saved(addedKeys.toImmutableList()))
     }
 
-    private suspend fun prepare(serviceApi: FlipperServiceApi): Boolean {
+    private suspend fun prepare(
+        fFileDownloadApi: FFileDownloadApi,
+        md5Api: FFileStorageMD5Api
+    ): Boolean {
         info { "Flipper connected" }
 
         if (!mfKey32Api.isBruteforceFileExist) {
@@ -147,7 +127,7 @@ class MfKey32ViewModel @Inject constructor(
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.NOT_FOUND_FILE))
         }
 
-        mfKey32Api.checkBruteforceFileExist(serviceApi.requestApi)
+        mfKey32Api.checkBruteforceFileExist(md5Api)
 
         if (!mfKey32Api.isBruteforceFileExist) {
             return false
@@ -156,9 +136,9 @@ class MfKey32ViewModel @Inject constructor(
         mfKey32StateFlow.emit(MfKey32State.DownloadingRawFile(0f))
 
         try {
-            flipperStorageApi.download(
+            fFileDownloadApi.download(
                 pathOnFlipper = PATH_NONCE_LOG,
-                fileOnAndroid = fileWithNonce,
+                fileOnAndroid = fileWithNonce.toOkioPath(),
                 progressListener = ProgressWrapperTracker(
                     progressListener = { progress ->
                         info { "Download file progress $progress" }
@@ -174,7 +154,7 @@ class MfKey32ViewModel @Inject constructor(
         }
         metricApi.reportSimpleEvent(SimpleEvent.MFKEY32)
         try {
-            existedKeysStorage.load()
+            existedKeysStorage.load(fFileDownloadApi)
         } catch (exception: Throwable) {
             error(exception) { "When load keys" }
             mfKey32StateFlow.emit(MfKey32State.Error(ErrorType.READ_WRITE))
@@ -185,15 +165,13 @@ class MfKey32ViewModel @Inject constructor(
         return true
     }
 
-    private suspend fun deleteBruteforceApp(requestApi: FlipperRequestApi) {
-        requestApi.request(
-            main {
-                storageDeleteRequest = deleteRequest {
-                    path = PATH_NONCE_LOG
-                }
-            }.wrapToRequest()
-        ).collect()
-        mfKey32Api.checkBruteforceFileExist(requestApi)
+    private suspend fun deleteBruteforceApp(
+        deleteApi: FFileDeleteApi,
+        md5Api: FFileStorageMD5Api
+    ) {
+        deleteApi.delete(path = PATH_NONCE_LOG)
+            .onFailure { error(it) { "#deleteBruteforceApp could not delete " } }
+        mfKey32Api.checkBruteforceFileExist(md5Api)
     }
 
     private suspend fun onFoundKey(nonce: MfKey32Nonce, key: BigInteger?, totalCount: Int) {

@@ -1,33 +1,29 @@
 package com.flipperdevices.nfc.mfkey32.screen.viewmodel
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.bridge.connection.feature.storage.api.exception.FStorageFileNotFoundException
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.nfc.mfkey32.screen.model.DuplicatedSource
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedInformation
 import com.flipperdevices.nfc.mfkey32.screen.model.FoundedKey
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.writeRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
+import okio.buffer
+import okio.source
 import java.io.ByteArrayInputStream
-import java.io.FileNotFoundException
 
 private const val FLIPPER_DICT_USER_PATH = "/ext/nfc/assets/mf_classic_dict_user.nfc"
 private const val FLIPPER_DICT_PATH = "/ext/nfc/assets/mf_classic_dict.nfc"
 
 class ExistedKeysStorage(
-    private val flipperStorageApi: FlipperStorageApi,
     private val storageProvider: FlipperStorageProvider
 ) : LogTagProvider {
     override val TAG = "ExistedKeysStorage"
@@ -40,27 +36,29 @@ class ExistedKeysStorage(
 
     fun getFoundedInformation(): StateFlow<FoundedInformation> = foundedInformationStateFlow
 
-    suspend fun load() {
-        val foundedUserDict = loadDict(FLIPPER_DICT_USER_PATH)
+    suspend fun load(fFileDownloadApi: FFileDownloadApi) {
+        val foundedUserDict = loadDict(fFileDownloadApi, FLIPPER_DICT_USER_PATH)
         userDict.addAll(foundedUserDict)
         userKeys.addAll(foundedUserDict)
-        val foundedDict = loadDict(FLIPPER_DICT_PATH)
+        val foundedDict = loadDict(fFileDownloadApi, FLIPPER_DICT_PATH)
         flipperKeys.addAll(foundedDict)
     }
 
-    suspend fun upload(requestApi: FlipperRequestApi): List<String> {
+    suspend fun upload(fFileUploadApi: FFileUploadApi): List<String> {
         val bytesToWrite = userKeys.joinToString(separator = "\n", postfix = "\n").toByteArray()
-        val response = ByteArrayInputStream(bytesToWrite).use { stream ->
-            val commandFlow = streamToCommandFlow(stream, bytesToWrite.size.toLong()) { chunkData ->
-                storageWriteRequest = writeRequest {
-                    path = FLIPPER_DICT_USER_PATH
-                    file = file { data = chunkData }
+        try {
+            ByteArrayInputStream(bytesToWrite).source().buffer().use { source ->
+                fFileUploadApi.sink(FLIPPER_DICT_USER_PATH).use { sink ->
+                    source.copyWithProgress(
+                        sink = sink,
+                        sourceLength = { bytesToWrite.size.toLong() }
+                    )
                 }
             }
-            requestApi.request(commandFlow.map { it.wrapToRequest() })
-        }
-        if (response.commandStatus != Flipper.CommandStatus.OK) {
-            throw FileNotFoundException()
+        } catch (e: FStorageFileNotFoundException) {
+            throw e
+        } catch (e: Exception) {
+            error(e) { "#upload Unhandled exception" }
         }
         return userKeys.minus(userDict).distinct()
     }
@@ -95,14 +93,14 @@ class ExistedKeysStorage(
         }
     }
 
-    private suspend fun loadDict(path: String): List<String> {
+    private suspend fun loadDict(fFileDownloadApi: FFileDownloadApi, path: String): List<String> {
         return try {
             storageProvider.useTemporaryFile { tmpFile ->
-                flipperStorageApi.download(
+                fFileDownloadApi.download(
                     pathOnFlipper = path,
-                    fileOnAndroid = tmpFile.toFile(),
-                    progressListener = { progress ->
-                        info { "Download dict with progress $progress" }
+                    fileOnAndroid = tmpFile,
+                    progressListener = { current, max ->
+                        info { "Download dict with progress $current/$max" }
                     }
                 )
                 tmpFile.toFile().readLines()
