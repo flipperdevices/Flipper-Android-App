@@ -32,7 +32,7 @@ import com.flipperdevices.archive.impl.composable.page.ComposableFavoriteKeysTit
 import com.flipperdevices.archive.impl.composable.page.ComposableKeysGrid
 import com.flipperdevices.archive.impl.model.CategoryItem
 import com.flipperdevices.archive.model.CategoryType
-import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
+import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
