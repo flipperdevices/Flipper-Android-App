@@ -26,8 +26,6 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.decompose)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.deeplink.api)
@@ -36,6 +34,8 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
+
+    implementation(projects.components.bridge.connection.orchestrator.api)
 
     // Compose
     implementation(libs.compose.ui)

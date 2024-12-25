@@ -95,6 +95,8 @@ include(
     ":components:bridge:connection:feature:appstart:impl",
     ":components:bridge:connection:feature:screenstreaming:api",
     ":components:bridge:connection:feature:screenstreaming:impl",
+    ":components:bridge:connection:feature:update:api",
+    ":components:bridge:connection:feature:update:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",

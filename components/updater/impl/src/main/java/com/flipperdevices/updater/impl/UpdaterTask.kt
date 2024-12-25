@@ -1,14 +1,20 @@
 package com.flipperdevices.updater.impl
 
 import android.content.Context
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.ui.lifecycle.FOneTimeExecutionBleTask
 import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.faphub.installedtab.api.FapNeedUpdatePopUpHelper
 import com.flipperdevices.updater.impl.model.IntFlashFullException
@@ -27,29 +33,30 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import java.net.UnknownHostException
+import javax.inject.Inject
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
 @Suppress("LongParameterList")
-class UpdaterTask(
-    serviceProvider: FlipperServiceProvider,
-    private val context: Context,
+class UpdaterTask @Inject constructor(
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
-    private val flipperStorageApi: FlipperStorageApi,
     private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper,
-    private val storageProvider: FlipperStorageProvider
-) : OneTimeExecutionBleTask<UpdateRequest, UpdatingState>(serviceProvider),
+    private val storageProvider: FlipperStorageProvider,
+    private val flipperUpdateImageHelper: FlipperUpdateImageHelper,
+    private val orchestrator: FDeviceOrchestrator,
+    private val fFeatureProvider: FFeatureProvider
+) : FOneTimeExecutionBleTask<UpdateRequest, UpdatingState>(),
     LogTagProvider {
     override val TAG = "UpdaterTask"
 
-    private val flipperUpdateImageHelper = FlipperUpdateImageHelper(context)
 
     private var isStoppedManually = false
 
@@ -61,27 +68,54 @@ class UpdaterTask(
 
     override suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
-    ) = try {
-        startInternalUnwrapped(serviceApi, input) {
-            if (it.isFinalState) {
-                isStoppedManually = true
-            }
-
-            stateListener(it)
+    ) {
+        val fUpdateFeatureApi: FUpdateFeatureApi = fFeatureProvider.getSync() ?: run {
+            error { "#startInternal could not get FUpdateFeatureApi" }
+            return
         }
-    } finally {
-        withContext(NonCancellable) {
-            flipperUpdateImageHelper.stopImageOnFlipperSafe(serviceApi.requestApi)
+        val fGetInfoFeatureApi: FGetInfoFeatureApi = fFeatureProvider.getSync() ?: run {
+            error { "#startInternal could not get FGetInfoFeatureApi" }
+            return
+        }
+        val fFileUploadApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.uploadApi() ?: run {
+            error { "#startInternal could not get FFileUploadApi" }
+            return
+        }
+        val fListingStorageApi: FListingStorageApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.listingApi() ?: run {
+            error { "#startInternal could not get FListingStorageApi" }
+            return
+        }
+        try {
+            startInternalUnwrapped(
+                input = input,
+                fFileUploadApi = fFileUploadApi,
+                fGetInfoFeatureApi = fGetInfoFeatureApi,
+                fListingStorageApi = fListingStorageApi,
+                fUpdateFeatureApi = fUpdateFeatureApi,
+                stateListener = {
+                    if (it.isFinalState) {
+                        isStoppedManually = true
+                    }
+
+                    stateListener(it)
+                }
+            )
+        } finally {
+            withContext(NonCancellable) {
+                flipperUpdateImageHelper.stopImageOnFlipperSafe(fUpdateFeatureApi)
+            }
         }
     }
 
     @Suppress("LongMethod", "ComplexMethod")
     private suspend fun startInternalUnwrapped(
-        serviceApi: FlipperServiceApi,
         input: UpdateRequest,
+        fGetInfoFeatureApi: FGetInfoFeatureApi,
+        fFileUploadApi: FFileUploadApi,
+        fUpdateFeatureApi: FUpdateFeatureApi,
+        fListingStorageApi: FListingStorageApi,
         stateListener: suspend (UpdatingState) -> Unit
     ) = storageProvider.useTemporaryFolder { tempFolder ->
         info { "Start update with folder: $tempFolder" }
@@ -105,7 +139,10 @@ class UpdaterTask(
         }
         try {
             stateListener(UpdatingState.SubGhzProvisioning)
-            subGhzProvisioningHelper.provideAndUploadSubGhz(serviceApi)
+            subGhzProvisioningHelper.provideAndUploadSubGhz(
+                fGetInfoFeatureApi = fGetInfoFeatureApi,
+                fFileUploadApi = fFileUploadApi
+            )
         } catch (e: SubGhzProvisioningException) {
             error(e) { "Failed receive subghz region" }
             stateListener(UpdatingState.FailedOutdatedApp)
@@ -131,7 +168,7 @@ class UpdaterTask(
             UpdatingState.UploadOnFlipper(0f)
         )
         val flipperPath = try {
-            prepareToUpload(updaterFolder, serviceApi.requestApi)
+            prepareToUpload(updaterFolder, fFileUploadApi, fUpdateFeatureApi)
         } catch (e: CancellationException) {
             error(e) { "Cancel prepare to upload" }
             return@useTemporaryFolder
@@ -143,10 +180,12 @@ class UpdaterTask(
 
         try {
             uploadToFlipperHelper.uploadToFlipper(
-                flipperPath,
-                updaterFolder,
-                serviceApi.requestApi,
-                stateListener
+                flipperPath = flipperPath,
+                updaterFolder = updaterFolder,
+                fUpdateFeatureApi = fUpdateFeatureApi,
+                fListingStorageApi = fListingStorageApi,
+                fFileUploadApi = fFileUploadApi,
+                stateListener = stateListener
             )
         } catch (e: Throwable) {
             error(e) { "Failed when upload to flipper" }
@@ -159,8 +198,9 @@ class UpdaterTask(
         }
 
         withTimeoutOrNull(DISCONNECT_WAIT_TIMEOUT_MS) {
-            serviceApi.connectionInformationApi.getConnectionStateFlow()
-                .filter { !it.isConnected }.first()
+            orchestrator.getState()
+                .filterIsInstance<FDeviceConnectStatus.Disconnected>()
+                .first()
         }
 
         fapNeedUpdatePopUpHelper.notifyIfUpdateAvailable()
@@ -181,9 +221,10 @@ class UpdaterTask(
 
     private suspend fun prepareToUpload(
         updaterFolder: File,
-        requestApi: FlipperRequestApi
+        fFileUploadApi: FFileUploadApi,
+        fUpdateFeatureApi: FUpdateFeatureApi
     ): String {
-        flipperUpdateImageHelper.loadImageOnFlipper(requestApi)
+        flipperUpdateImageHelper.loadImageOnFlipper(fUpdateFeatureApi)
 
         val updateName: String = updaterFolder
             .listFiles()
@@ -192,8 +233,8 @@ class UpdaterTask(
             ?: updaterFolder.name
 
         val flipperPath = "/ext/update/$updateName"
-
-        flipperStorageApi.mkdirs(flipperPath)
+        fFileUploadApi.mkdir(flipperPath)
+            .onFailure { error(it) { "#prepareToUpload could not mkdir" } }
         return flipperPath
     }
 }

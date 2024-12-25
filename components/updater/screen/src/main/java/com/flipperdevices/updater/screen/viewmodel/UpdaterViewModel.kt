@@ -1,9 +1,7 @@
 package com.flipperdevices.updater.screen.viewmodel
 
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.ktx.jre.combine
@@ -34,19 +32,18 @@ private const val CHECK_CANCEL_DELAY = 100L
 class UpdaterViewModel @Inject constructor(
     private val updaterApi: UpdaterApi,
     private val synchronizationApi: SynchronizationApi,
-    serviceProvider: FlipperServiceProvider,
-) : DecomposeViewModel(), LogTagProvider, FlipperBleServiceConsumer {
+    private val orchestrator: FDeviceOrchestrator
+) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "UpdaterViewModel"
 
     private val updaterScreenStateFlow = MutableStateFlow<UpdaterScreenState>(
         UpdaterScreenState.NotStarted
     )
-    private val connectionState = MutableStateFlow<ConnectionState>(ConnectionState.Connecting)
+    private val connectionState = orchestrator.getState()
     private val mutex = Mutex()
     private var updaterJob: Job? = null
 
     init {
-        serviceProvider.provideServiceApi(this, this)
         updaterJob = subscribeOnUpdaterFlow()
     }
 
@@ -73,7 +70,7 @@ class UpdaterViewModel @Inject constructor(
 
         info {
             "Wait until synchronization end. " +
-                "Current state is ${synchronizationApi.getSynchronizationState().value}"
+                    "Current state is ${synchronizationApi.getSynchronizationState().value}"
         }
 
         // Wait until synchronization is really canceled
@@ -146,7 +143,7 @@ class UpdaterViewModel @Inject constructor(
                 UpdatingState.Failed -> UpdaterScreenState.Finish
 
                 UpdatingState.Rebooting ->
-                    if (connectionState !is ConnectionState.Ready) {
+                    if (connectionState !is FDeviceConnectStatus.Connected) {
                         UpdaterScreenState.Finish
                     } else {
                         UpdaterScreenState.Rebooting
@@ -174,15 +171,9 @@ class UpdaterViewModel @Inject constructor(
             }
             verbose {
                 "From updating state ${updatingState.state} " +
-                    "and connection state $connectionState " +
-                    "produce $updaterScreenState"
+                        "and connection state $connectionState " +
+                        "produce $updaterScreenState"
             }
             updaterScreenStateFlow.emit(updaterScreenState)
         }.launchIn(viewModelScope)
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) {
-        serviceApi.connectionInformationApi.getConnectionStateFlow().onEach {
-            connectionState.emit(it)
-        }.launchIn(viewModelScope)
-    }
 }

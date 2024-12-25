@@ -1,7 +1,8 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -14,7 +15,7 @@ class UpdateOfferDebugFlagAlways @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>
 ) : UpdateOfferDelegate {
 
-    override fun isRequire(serviceApi: FlipperServiceApi): Flow<Boolean> {
+    override fun isRequire(fStorageFeatureApi: FStorageFeatureApi): Flow<Boolean> {
         return dataStoreSettings.data.map { it.always_update }
     }
 }

@@ -18,6 +18,7 @@ import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLags
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentMap
 import kotlin.reflect.KClass
@@ -45,6 +46,7 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.APP_START -> FAppStartFeatureApi::class
             FDeviceFeature.SCREEN_STREAMING -> FScreenStreamingFeatureApi::class
             FDeviceFeature.SCREEN_UNLOCK -> FScreenUnlockFeatureApi::class
+            FDeviceFeature.UPDATE -> FUpdateFeatureApi::class
         }
     }
 

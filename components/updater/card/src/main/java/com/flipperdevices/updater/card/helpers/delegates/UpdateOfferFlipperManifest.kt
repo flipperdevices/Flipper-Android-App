@@ -1,7 +1,8 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
-import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.helpers.FileExistHelper
 import com.squareup.anvil.annotations.ContributesMultibinding
@@ -14,9 +15,13 @@ class UpdateOfferFlipperManifest @Inject constructor(
     private val fileExistHelper: FileExistHelper
 ) : UpdateOfferDelegate {
 
-    override fun isRequire(serviceApi: FlipperServiceApi): Flow<Boolean> {
+    override fun isRequire(fStorageFeatureApi: FStorageFeatureApi): Flow<Boolean> {
         return fileExistHelper
-            .isFileExist(Constants.PATH.MANIFEST_FILE, serviceApi.requestApi)
+            .isFileExist(MANIFEST_FILE, fStorageFeatureApi.listingApi())
             .map { it.not() }
+    }
+
+    companion object {
+        const val MANIFEST_FILE = "/ext/Manifest"
     }
 }
