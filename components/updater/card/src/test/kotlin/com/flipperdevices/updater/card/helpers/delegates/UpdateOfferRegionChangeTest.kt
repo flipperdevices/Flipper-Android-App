@@ -10,16 +10,13 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import okio.BufferedSource
 import okio.ByteString.Companion.encode
 import okio.source
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import java.nio.charset.Charset
 
 class UpdateOfferRegionChangeTest {
@@ -46,21 +43,27 @@ class UpdateOfferRegionChangeTest {
 
     @Test
     fun `Same region in storage and now`() = runTest {
-        coEvery { fFileDownloadApi.source(REGION_FILE, any()) } returns ByteArrayInputStream(region("UA").toByteArray()).source()
+        coEvery {
+            fFileDownloadApi.source(REGION_FILE, any())
+        } returns ByteArrayInputStream(region("UA").toByteArray()).source()
         coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
         delegate.isRequire(fStorageFeatureApi).collect { Assert.assertFalse(it) }
     }
 
     @Test
     fun `Different region in storage and now`() = runTest {
-        coEvery { fFileDownloadApi.source(REGION_FILE, any()) } returns ByteArrayInputStream(region("USA").toByteArray()).source()
+        coEvery {
+            fFileDownloadApi.source(REGION_FILE, any())
+        } returns ByteArrayInputStream(region("USA").toByteArray()).source()
         coEvery { subGhzProvisioningHelper.getRegion() } returns "UA"
         delegate.isRequire(fStorageFeatureApi).collect { Assert.assertTrue(it) }
     }
 
     @Test
     fun `Exception when we get current region`() = runTest {
-        coEvery { fFileDownloadApi.source(REGION_FILE, any()) } returns ByteArrayInputStream(region("USA").toByteArray()).source()
+        coEvery {
+            fFileDownloadApi.source(REGION_FILE, any())
+        } returns ByteArrayInputStream(region("USA").toByteArray()).source()
         coEvery { subGhzProvisioningHelper.getRegion() }.throws(Exception("Some error"))
         delegate.isRequire(fStorageFeatureApi).collect { Assert.assertTrue(it) }
     }

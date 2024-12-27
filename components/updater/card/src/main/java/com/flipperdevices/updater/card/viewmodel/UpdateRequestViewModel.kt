@@ -68,7 +68,6 @@ class UpdateRequestViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-
     }
 
     fun onUpdateRequest(updatePending: UpdatePending) {

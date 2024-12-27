@@ -70,7 +70,7 @@ class UpdaterViewModel @Inject constructor(
 
         info {
             "Wait until synchronization end. " +
-                    "Current state is ${synchronizationApi.getSynchronizationState().value}"
+                "Current state is ${synchronizationApi.getSynchronizationState().value}"
         }
 
         // Wait until synchronization is really canceled
@@ -171,8 +171,8 @@ class UpdaterViewModel @Inject constructor(
             }
             verbose {
                 "From updating state ${updatingState.state} " +
-                        "and connection state $connectionState " +
-                        "produce $updaterScreenState"
+                    "and connection state $connectionState " +
+                    "produce $updaterScreenState"
             }
             updaterScreenStateFlow.emit(updaterScreenState)
         }.launchIn(viewModelScope)

@@ -17,7 +17,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
@@ -40,8 +39,8 @@ class UpdateStateApiImpl @Inject constructor(
             versionParser.getCurrentFlipperVersion(),
             updaterApi.getState()
         ) { deviceConnection, connectionState, flipperVersion, updaterState ->
-            val isReady = connectionState?.value == FlipperSupportedState.READY
-                    && deviceConnection is FDeviceConnectStatus.Connected
+            val isReady = connectionState?.value == FlipperSupportedState.READY &&
+                deviceConnection is FDeviceConnectStatus.Connected
 
             return@combine if (isReady && flipperVersion != null) {
                 when (updaterState.state) {

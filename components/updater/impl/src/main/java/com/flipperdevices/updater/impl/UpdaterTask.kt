@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.impl
 
-import android.content.Context
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
@@ -15,7 +14,6 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.FOneTimeExecutionBleTask
-import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
 import com.flipperdevices.faphub.installedtab.api.FapNeedUpdatePopUpHelper
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.impl.model.UpdateContentException
@@ -32,7 +30,6 @@ import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -56,7 +53,6 @@ class UpdaterTask @Inject constructor(
 ) : FOneTimeExecutionBleTask<UpdateRequest, UpdatingState>(),
     LogTagProvider {
     override val TAG = "UpdaterTask"
-
 
     private var isStoppedManually = false
 

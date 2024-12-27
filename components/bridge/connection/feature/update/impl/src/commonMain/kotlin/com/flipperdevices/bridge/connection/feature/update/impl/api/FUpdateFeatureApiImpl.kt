@@ -10,14 +10,12 @@ import com.flipperdevices.protobuf.Region
 import com.flipperdevices.protobuf.screen.ScreenFrame
 import com.flipperdevices.protobuf.screen.StartVirtualDisplayRequest
 import com.flipperdevices.protobuf.screen.StopVirtualDisplayRequest
-import com.flipperdevices.protobuf.system.PlayAudiovisualAlertRequest
 import com.flipperdevices.protobuf.system.RebootRequest
 import com.flipperdevices.protobuf.system.UpdateRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.map
-import okio.ByteString
 import okio.ByteString.Companion.encode
 import okio.ByteString.Companion.toByteString
 import java.nio.charset.Charset

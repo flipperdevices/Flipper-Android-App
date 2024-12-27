@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.helpers
 
-import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.flow.Flow

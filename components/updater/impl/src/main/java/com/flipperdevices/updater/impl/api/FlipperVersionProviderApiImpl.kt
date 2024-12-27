@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, FlipperVersionProviderApi::class)
@@ -24,7 +23,7 @@ class FlipperVersionProviderApiImpl @Inject constructor(
 ) : FlipperVersionProviderApi, LogTagProvider {
     override val TAG: String = "FlipperVersionProviderApiImpl"
 
-    override fun getCurrentFlipperVersion(): Flow<FirmwareVersion?>  {
+    override fun getCurrentFlipperVersion(): Flow<FirmwareVersion?> {
         return fFeatureProvider.get<FGattInfoFeatureApi>()
             .map { status -> status as? FFeatureStatus.Supported<FGattInfoFeatureApi> }
             .flatMapLatest { status -> status?.featureApi?.getGattInfoFlow() ?: flowOf(null) }
@@ -37,5 +36,4 @@ class FlipperVersionProviderApiImpl @Inject constructor(
                 }
             }
     }
-
 }

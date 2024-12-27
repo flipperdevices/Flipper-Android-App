@@ -1,9 +1,6 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
-import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
-import com.flipperdevices.bridge.connection.feature.storage.api.model.StorageRequestPriority
-import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -13,8 +10,6 @@ import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import okio.Sink
 import okio.buffer
 import java.nio.charset.Charset
 import javax.inject.Inject

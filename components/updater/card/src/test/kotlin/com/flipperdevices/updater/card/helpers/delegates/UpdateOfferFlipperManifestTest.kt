@@ -35,6 +35,7 @@ class UpdateOfferFlipperManifestTest {
             Assert.assertTrue(it)
         }
     }
+
     @Test
     fun `Manifest exist`() = runTest {
         every {

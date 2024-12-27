@@ -4,10 +4,8 @@ import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureA
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferDelegate
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 interface UpdateOfferProviderApi {

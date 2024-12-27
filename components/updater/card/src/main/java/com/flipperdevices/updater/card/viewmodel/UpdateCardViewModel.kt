@@ -1,7 +1,6 @@
 package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
@@ -108,7 +107,7 @@ class UpdateCardViewModel @AssistedInject constructor(
     init {
         fFeatureProvider.get<FStorageFeatureApi>()
             .map { status -> status as? FFeatureStatus.Supported<FStorageFeatureApi> }
-            .onEach {fStorageFeatureStatus->
+            .onEach { fStorageFeatureStatus ->
                 if (fStorageFeatureStatus == null) {
                     cardStateJob?.cancelAndJoin()
                     cardStateJob = null

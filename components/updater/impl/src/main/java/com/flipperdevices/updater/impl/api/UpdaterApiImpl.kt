@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.impl.api
 
-import android.content.Context
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.FlipperStorageProvider

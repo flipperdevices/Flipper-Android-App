@@ -87,7 +87,6 @@ class SubGhzProvisioningHelperTest(
 
     @Test
     fun `check region protobuf`() = runTest {
-
         val fGetInfoFeatureApi = mockk<FGetInfoFeatureApi>()
         val ostream = ByteArrayOutputStream()
         val fFileUploadApi = mockk<FFileUploadApi> {

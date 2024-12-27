@@ -8,7 +8,6 @@ import com.flipperdevices.updater.api.UpdateStateApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdatingState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -23,7 +22,6 @@ class UpdateStateViewModel @Inject constructor(
 ) : DecomposeViewModel() {
     private val flipperStateFlow = updateStateApi.getFlipperUpdateState(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Eagerly, FlipperUpdateState.NotConnected)
-
 
     init {
         updaterApi.getState().onEach {

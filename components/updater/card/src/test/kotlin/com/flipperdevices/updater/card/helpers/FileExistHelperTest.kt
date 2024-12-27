@@ -1,6 +1,5 @@
 package com.flipperdevices.updater.card.helpers
 
-import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
 import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItemWithHash
 import io.mockk.every
