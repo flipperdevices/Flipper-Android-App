@@ -1,16 +1,13 @@
 package com.flipperdevices.updater.subghz.tasks
 
 import android.os.Build
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequest
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.core.ktx.jre.flatten
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.metric.api.MetricApi
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
+import com.flipperdevices.updater.subghz.helpers.REGION_FILE
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
@@ -25,18 +22,16 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import okio.sink
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.io.ByteArrayOutputStream
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
@@ -92,32 +87,25 @@ class SubGhzProvisioningHelperTest(
 
     @Test
     fun `check region protobuf`() = runTest {
-        var flipperRequests: List<FlipperRequest>? = null
-        val requestApi: FlipperRequestApi = mockk()
-        val serviceApi: FlipperServiceApi = mockk()
-        every { serviceApi.requestApi } returns requestApi
-        coEvery { requestApi.request(any(), any()) } coAnswers {
-            flipperRequests = runBlocking {
-                arg<Flow<FlipperRequest>>(0)
-                    .toList()
-            }
-            return@coAnswers main {
-                commandStatus = Flipper.CommandStatus.OK
+
+        val fGetInfoFeatureApi = mockk<FGetInfoFeatureApi>()
+        val ostream = ByteArrayOutputStream()
+        val fFileUploadApi = mockk<FFileUploadApi> {
+            coEvery {
+                sink(REGION_FILE)
+            } coAnswers {
+                ostream.sink()
             }
         }
 
-        underTest.provideAndUploadSubGhz(serviceApi)
+        underTest.provideAndUploadSubGhz(
+            fGetInfoFeatureApi,
+            fFileUploadApi
+        )
 
-        Assert.assertNotNull(flipperRequests)
-        Assert.assertTrue(flipperRequests!!.isNotEmpty())
-        val notNullableFlipperRequest = flipperRequests!!
-        notNullableFlipperRequest.forEach {
-            Assert.assertEquals("/int/.region_data", it.data.storageWriteRequest.path)
-        }
         val expectedBytes = readTestAsset("regions/region_data_${countryName ?: "WW"}")
-        val sendBytes = notNullableFlipperRequest.map {
-            it.data.storageWriteRequest.file.data.toByteArray()
-        }.flatten()
+
+        val sendBytes = ostream.toByteArray()
         Assert.assertTrue(expectedBytes.contentEquals(sendBytes))
     }
 
