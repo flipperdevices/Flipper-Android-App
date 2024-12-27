@@ -38,7 +38,6 @@ class UpdateOfferRegionChange @Inject constructor(
                 val provisionedRegion = runCatching {
                     subGhzProvisioningHelper.getRegion()
                 }.onFailure { it.printStackTrace() }.getOrNull()
-                println("provisionedRegion: $provisionedRegion; code: $code")
                 emit(provisionedRegion != code)
             }
         }
