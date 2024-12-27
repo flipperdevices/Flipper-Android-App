@@ -34,12 +34,17 @@ class UpdateOfferRegionChange @Inject constructor(
                         .readByteArray()
                 }
             }.onFailure {
+                it.printStackTrace()
                 error(it) { "#isRequire could not read region file!" }
                 emit(true)
             }.onSuccess {
                 val region = Region.ADAPTER.decode(it)
                 val code = region.country_code.string(Charset.forName("ASCII"))
-                emit(subGhzProvisioningHelper.getRegion() != code)
+                val provisionedRegion = runCatching {
+                    subGhzProvisioningHelper.getRegion()
+                }.onFailure { it.printStackTrace() }.getOrNull()
+                println("provisionedRegion: $provisionedRegion; code: $code")
+                emit(provisionedRegion != code)
             }
         }
     }

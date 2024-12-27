@@ -4,9 +4,10 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.flipperdevices.bridge.api.model.FlipperGATTInformation
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGattInformation
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.buildkonfig.BuildKonfig
@@ -22,13 +23,17 @@ import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.OfficialFirmware
 import com.flipperdevices.updater.model.UpdateRequest
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -49,20 +54,26 @@ private val requestServer = UpdatePending.Request(
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [BuildKonfig.ROBOELECTRIC_SDK_VERSION])
 class UpdateRequestViewModelTest {
-    private lateinit var serviceProvider: FlipperServiceProvider
-    private lateinit var serviceApi: FlipperServiceApi
     private lateinit var synchronizationState: MutableStateFlow<SynchronizationState>
     private lateinit var synchronizationApi: SynchronizationApi
     private lateinit var viewModel: UpdateRequestViewModel
+    private lateinit var fFeatureProvider: FFeatureProvider
+    private lateinit var fGattInfoFeatureApi: FGattInfoFeatureApi
 
     @Before
     fun setup() {
+        fFeatureProvider = mockk(relaxUnitFun = true)
+        fGattInfoFeatureApi = mockk(relaxUnitFun = true)
         mockkObject(FlipperDispatchers)
         every { FlipperDispatchers.workStealingDispatcher } returns Dispatchers.Main.immediate
         mockkStatic("com.flipperdevices.core.ktx.android.UriKtxKt")
 
-        serviceProvider = mockk(relaxUnitFun = true)
-        serviceApi = mockk(relaxUnitFun = true)
+        every { fFeatureProvider.get(FGattInfoFeatureApi::class) } returns flowOf(
+            FFeatureStatus.Supported(
+                fGattInfoFeatureApi
+            )
+        )
+
         synchronizationState = MutableStateFlow(
             SynchronizationState.NotStarted
         )
@@ -71,45 +82,47 @@ class UpdateRequestViewModelTest {
         }
 
         synchronizationState.update { SynchronizationState.NotStarted }
-        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
-            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.3f))
+        every { fGattInfoFeatureApi.getGattInfoFlow() } answers {
+            MutableStateFlow(FGattInformation(batteryLevel = 0.3f))
         }
         viewModel = UpdateRequestViewModel(
-            serviceProvider = serviceProvider,
+            fFeatureProvider = fFeatureProvider,
             synchronizationApi = synchronizationApi
         )
-        viewModel.onServiceApiReady(serviceApi)
     }
 
     @Test
     fun `Battery state unknown`() = runTest {
-        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
-            MutableStateFlow(FlipperGATTInformation())
+        coEvery { fGattInfoFeatureApi.getGattInfoFlow() } answers {
+            MutableStateFlow(FGattInformation())
         }
-        viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
         Assert.assertTrue(state is BatteryState.Unknown)
     }
 
     @Test
     fun `Battery state more 10 percentage`() = runTest {
-        viewModel.onServiceApiReady(serviceApi)
         val state = viewModel.getBatteryState().first()
         Assert.assertTrue(state is BatteryState.Ready)
     }
 
     @Test
     fun `Battery state more 10 percentage but charge`() = runTest {
-        every { serviceApi.flipperInformationApi.getInformationFlow() } answers {
-            MutableStateFlow(FlipperGATTInformation(batteryLevel = 0.09f, isCharging = true))
-        }
-        viewModel.onServiceApiReady(serviceApi)
+        every { fGattInfoFeatureApi.getGattInfoFlow() } returns MutableStateFlow(
+            FGattInformation(
+                batteryLevel = 0.4f,
+                isCharging = true
+            )
+        )
         val state = viewModel.getBatteryState().first()
         Assert.assertTrue(state is BatteryState.Ready)
     }
 
     @Test
     fun `Open update request with sync complete`() = runTest {
+        viewModel.getBatteryState()
+            .filter { it !is BatteryState.Unknown }
+            .first()
         viewModel.onUpdateRequest(requestServer)
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
@@ -124,6 +137,9 @@ class UpdateRequestViewModelTest {
     @Test
     fun `Open update request with sync`() = runTest {
         synchronizationState.emit(SynchronizationState.InProgress.Default(0f))
+        viewModel.getBatteryState()
+            .filter { it !is BatteryState.Unknown }
+            .first()
         viewModel.onUpdateRequest(requestServer)
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
@@ -168,12 +184,14 @@ class UpdateRequestViewModelTest {
         every { context.contentResolver } returns contentResolver
         every { uri.length(context.contentResolver) } answers { 0L }
         every { uri.filename(context.contentResolver) } answers { "file.zip" }
-
+        viewModel.getBatteryState()
+            .filter { it !is BatteryState.Unknown }
+            .first()
         viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
-            state,
-            UpdatePendingState.FileExtension
+            UpdatePendingState.FileExtension,
+            state
         )
     }
 
@@ -187,7 +205,9 @@ class UpdateRequestViewModelTest {
         every { context.contentResolver } returns contentResolver
         every { uri.length(contentResolver) } answers { 1024 * 1024 * 1024L * 10 + 1 }
         every { uri.filename(contentResolver) } answers { "file.tgz" }
-
+        viewModel.getBatteryState()
+            .filter { it !is BatteryState.Unknown }
+            .first()
         viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertEquals(
@@ -206,7 +226,9 @@ class UpdateRequestViewModelTest {
         every { context.contentResolver } returns contentResolver
         every { uri.length(context.contentResolver) } answers { 1L }
         every { uri.filename(context.contentResolver) } answers { "file.tgz" }
-
+        viewModel.getBatteryState()
+            .filter { it !is BatteryState.Unknown }
+            .first()
         viewModel.onUpdateRequest(UpdatePending.URI(uri, context, currentVersion))
         val state = viewModel.getUpdatePendingState().first()
         Assert.assertTrue(state is UpdatePendingState.Ready)

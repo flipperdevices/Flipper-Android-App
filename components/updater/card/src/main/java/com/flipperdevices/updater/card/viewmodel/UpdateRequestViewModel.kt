@@ -46,11 +46,13 @@ class UpdateRequestViewModel @Inject constructor(
         .map { gattInfo ->
             if (gattInfo == null) {
                 BatteryState.Unknown
-
             } else {
-                BatteryState.Ready(gattInfo.isCharging, gattInfo.batteryLevel ?: 0f)
+                gattInfo.batteryLevel?.let { batteryLevel ->
+                    BatteryState.Ready(gattInfo.isCharging, batteryLevel)
+                } ?: BatteryState.Unknown
             }
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, BatteryState.Unknown)
+        }.stateIn(viewModelScope, SharingStarted.Lazily, BatteryState.Unknown)
+
     fun getBatteryState(): StateFlow<BatteryState> = batteryFlow
 
     private val pendingFlow = MutableStateFlow<UpdatePendingState?>(null)
