@@ -34,11 +34,6 @@ class UpdateOfferProviderTest {
         every { delegateFlagAlways.isRequire(fStorageFeatureApi) } returns flowOf(false)
         every { delegateManifest.isRequire(fStorageFeatureApi) } returns flowOf(false)
         every { delegateRegionFile.isRequire(fStorageFeatureApi) } returns flowOf(false)
-//        val connectionInformationApi: FlipperConnectionInformationApi = mockk {
-//            every { getConnectionStateFlow() } returns
-//                flowOf(ConnectionState.Ready(supportedState = FlipperSupportedState.READY))
-//        }
-//        every { fStorageFeatureApi.connectionInformationApi } returns connectionInformationApi
     }
 
     @Test
