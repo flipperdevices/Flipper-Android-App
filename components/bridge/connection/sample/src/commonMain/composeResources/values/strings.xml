@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flipper Connection Sample</string>
+    <string name="connection_search_title">Found devices:</string>
+    <string name="connection_test_require_permission">Please allow all permissions requested by the application</string>
+    <string name="connection_dropdown_unknown">Current device is missing</string>
+</resources>

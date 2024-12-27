@@ -99,8 +99,6 @@ include(
     ":components:filemngr:util",
     ":components:filemanager:api",
     ":components:filemanager:impl",
-    ":components:newfilemanager:api",
-    ":components:newfilemanager:impl",
     ":components:filemngr:ui-components",
     ":components:filemngr:main:api",
     ":components:filemngr:main:impl",

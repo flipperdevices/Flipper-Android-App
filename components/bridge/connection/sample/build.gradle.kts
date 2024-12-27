@@ -3,6 +3,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("flipper.anvil.entrypoint")
     id("kotlinx-serialization")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection"
@@ -17,20 +18,21 @@ android {
     }
 }
 
-dependencies {
-    implementation(projects.components.core.ui.res)
-    implementation(projects.components.core.ui.theme)
-    implementation(projects.components.core.ui.lifecycle)
-    implementation(projects.components.core.ui.decompose)
-    implementation(projects.components.core.ui.ktx)
+commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.preference)
     implementation(projects.components.core.storage)
     implementation(projects.components.core.share)
+    implementation(projects.components.core.ui.lifecycle)
+    implementation(projects.components.core.ui.decompose)
+    implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.ui.theme)
 
-    implementation(projects.components.bridge.connection.transport.ble.api)
-    implementation(projects.components.bridge.connection.transport.ble.impl)
+    implementation(libs.dagger)
+    implementation(libs.anvil.utils.annotations)
+
+    implementation(projects.components.bridge.connection.pbutils)
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.transport.common.impl)
     implementation(projects.components.bridge.connection.orchestrator.api)
@@ -69,15 +71,6 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.impl)
 
-    implementation(projects.components.analytics.shake2report.api)
-    implementation(projects.components.analytics.shake2report.noop)
-
-    implementation(projects.components.analytics.metric.api)
-    implementation(projects.components.analytics.metric.noop)
-
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.connection.pbutils)
-
     implementation(projects.components.filemngr.main.api)
     implementation(projects.components.filemngr.main.impl)
     implementation(projects.components.filemngr.listing.api)
@@ -97,8 +90,21 @@ dependencies {
     implementation(projects.components.filemngr.transfer.api)
     implementation(projects.components.filemngr.transfer.impl)
 
-    implementation(projects.components.newfilemanager.api)
-    implementation(projects.components.newfilemanager.impl)
+    implementation(libs.kotlin.immutable.collections)
+}
+
+dependencies {
+    implementation(projects.components.core.ui.res)
+    implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.analytics.shake2report.noop)
+
+    implementation(projects.components.bridge.connection.transport.ble.api)
+    implementation(projects.components.bridge.connection.transport.ble.impl)
+
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.noop)
+
+    implementation(projects.components.bridge.api)
 
     implementation(projects.components.keyparser.api)
     implementation(projects.components.keyparser.impl)
@@ -117,13 +123,5 @@ dependencies {
     implementation(libs.ble.kotlin.scanner)
     implementation(libs.ble.kotlin.client)
 
-    implementation(libs.kotlin.immutable.collections)
-
-    // Compose
     implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.bundles.decompose)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 }

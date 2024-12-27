@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
-import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
