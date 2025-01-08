@@ -67,23 +67,21 @@ class UpdaterTask @Inject constructor(
         input: UpdateRequest,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
-        val fUpdateFeatureApi: FUpdateFeatureApi = fFeatureProvider.getSync() ?: run {
+        val fUpdateFeatureApi = fFeatureProvider.getSync<FUpdateFeatureApi>() ?: run {
             error { "#startInternal could not get FUpdateFeatureApi" }
             return
         }
-        val fGetInfoFeatureApi: FGetInfoFeatureApi = fFeatureProvider.getSync() ?: run {
+        val fGetInfoFeatureApi = fFeatureProvider.getSync<FGetInfoFeatureApi>() ?: run {
             error { "#startInternal could not get FGetInfoFeatureApi" }
             return
         }
-        val fFileUploadApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.uploadApi() ?: run {
-            error { "#startInternal could not get FFileUploadApi" }
+        val fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>() ?: run {
+            error { "#startInternal could not get FStorageFeatureApi" }
             return
         }
-        val fListingStorageApi: FListingStorageApi =
-            fFeatureProvider.getSync<FStorageFeatureApi>()?.listingApi() ?: run {
-                error { "#startInternal could not get FListingStorageApi" }
-                return
-            }
+        val fFileUploadApi = fStorageFeatureApi.uploadApi()
+        val fListingStorageApi: FListingStorageApi = fStorageFeatureApi.listingApi()
+
         try {
             startInternalUnwrapped(
                 input = input,
