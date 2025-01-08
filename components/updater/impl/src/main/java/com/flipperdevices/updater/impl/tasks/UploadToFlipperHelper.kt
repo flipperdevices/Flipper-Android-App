@@ -4,7 +4,7 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcExcept
 import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcInvalidParametersException
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
-import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
+import com.flipperdevices.bridge.connection.feature.update.api.BootApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.md5
@@ -29,7 +29,7 @@ interface UploadToFlipperHelper {
     suspend fun uploadToFlipper(
         flipperPath: String,
         updaterFolder: File,
-        fUpdateFeatureApi: FUpdateFeatureApi,
+        bootApi: BootApi,
         fListingStorageApi: FListingStorageApi,
         fFileUploadApi: FFileUploadApi,
         stateListener: suspend (UpdatingState) -> Unit
@@ -43,7 +43,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
     override suspend fun uploadToFlipper(
         flipperPath: String,
         updaterFolder: File,
-        fUpdateFeatureApi: FUpdateFeatureApi,
+        bootApi: BootApi,
         fListingStorageApi: FListingStorageApi,
         fFileUploadApi: FFileUploadApi,
         stateListener: suspend (UpdatingState) -> Unit
@@ -64,7 +64,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
             },
         )
         try {
-            fUpdateFeatureApi.systemUpdate("$flipperPath/update.fuf")
+            bootApi.systemUpdate("$flipperPath/update.fuf")
         } catch (e: FRpcInvalidParametersException) {
             val code = e.response.system_update_response?.code
             if (code == UpdateResponse.UpdateResultCode.IntFull) {
@@ -76,7 +76,7 @@ class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, L
             error("Failed send update request with status unknown exception: ${e.message}")
         }
 
-        fUpdateFeatureApi.reboot(RebootRequest.RebootMode.UPDATE)
+        bootApi.reboot(RebootRequest.RebootMode.UPDATE)
             .onFailure { error(it) { "#uploadToFlipper could not reboot device" } }
     }
 

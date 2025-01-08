@@ -36,6 +36,7 @@ dependencies {
 
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.update.api)
     implementation(projects.components.bridge.connection.orchestrator.api)
     implementation(projects.components.bridge.connection.feature.protocolversion.api)
     implementation(projects.components.bridge.connection.feature.storage.api)

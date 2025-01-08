@@ -23,7 +23,12 @@ class FUpdateFeatureFactoryImpl @Inject constructor(
     ): FDeviceFeatureApi? {
         val rpcApi = unsafeFeatureDeviceApi.getUnsafe(FRpcFeatureApi::class) ?: return null
         return factory(
-            rpcFeatureApi = rpcApi,
+            displayApi = DisplayApiImpl(
+                rpcFeatureApi = rpcApi
+            ),
+            bootApi = BootApiImpl(
+                rpcFeatureApi = rpcApi
+            )
         )
     }
 }

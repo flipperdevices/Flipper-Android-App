@@ -1,7 +1,7 @@
 package com.flipperdevices.updater.impl.tasks
 
 import android.content.Context
-import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
+import com.flipperdevices.bridge.connection.feature.update.api.DisplayApi
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -18,17 +18,17 @@ class FlipperUpdateImageHelper @Inject constructor(
 ) : LogTagProvider {
     override val TAG = "FlipperUpdateImageHelper"
 
-    suspend fun loadImageOnFlipper(fUpdateFeatureApi: FUpdateFeatureApi) {
+    suspend fun loadImageOnFlipper(displayApi: DisplayApi) {
         info { "Start streaming" }
         val bytes = loadImageFromResource()
-        fUpdateFeatureApi.startVirtualDisplay(bytes)
+        displayApi.startVirtualDisplay(bytes)
             .onFailure { error(it) { "#loadImageOnFlipper could not start virtual display" } }
     }
 
-    suspend fun stopImageOnFlipperSafe(fUpdateFeatureApi: FUpdateFeatureApi) = try {
+    suspend fun stopImageOnFlipperSafe(displayApi: DisplayApi) = try {
         info { "Request stop streaming" }
         withTimeout(STOP_IMAGE_TIMEOUT_MS) {
-            fUpdateFeatureApi.stopVirtualDisplay()
+            displayApi.stopVirtualDisplay()
                 .onFailure { error(it) { "#loadImageOnFlipper could not stop virtual display" } }
         }
     } catch (e: Exception) {

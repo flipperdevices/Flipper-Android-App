@@ -79,10 +79,11 @@ class UpdaterTask @Inject constructor(
             error { "#startInternal could not get FFileUploadApi" }
             return
         }
-        val fListingStorageApi: FListingStorageApi = fFeatureProvider.getSync<FStorageFeatureApi>()?.listingApi() ?: run {
-            error { "#startInternal could not get FListingStorageApi" }
-            return
-        }
+        val fListingStorageApi: FListingStorageApi =
+            fFeatureProvider.getSync<FStorageFeatureApi>()?.listingApi() ?: run {
+                error { "#startInternal could not get FListingStorageApi" }
+                return
+            }
         try {
             startInternalUnwrapped(
                 input = input,
@@ -100,7 +101,7 @@ class UpdaterTask @Inject constructor(
             )
         } finally {
             withContext(NonCancellable) {
-                flipperUpdateImageHelper.stopImageOnFlipperSafe(fUpdateFeatureApi)
+                flipperUpdateImageHelper.stopImageOnFlipperSafe(fUpdateFeatureApi.displayApi())
             }
         }
     }
@@ -178,7 +179,7 @@ class UpdaterTask @Inject constructor(
             uploadToFlipperHelper.uploadToFlipper(
                 flipperPath = flipperPath,
                 updaterFolder = updaterFolder,
-                fUpdateFeatureApi = fUpdateFeatureApi,
+                bootApi = fUpdateFeatureApi.bootApi(),
                 fListingStorageApi = fListingStorageApi,
                 fFileUploadApi = fFileUploadApi,
                 stateListener = stateListener
@@ -220,7 +221,7 @@ class UpdaterTask @Inject constructor(
         fFileUploadApi: FFileUploadApi,
         fUpdateFeatureApi: FUpdateFeatureApi
     ): String {
-        flipperUpdateImageHelper.loadImageOnFlipper(fUpdateFeatureApi)
+        flipperUpdateImageHelper.loadImageOnFlipper(fUpdateFeatureApi.displayApi())
 
         val updateName: String = updaterFolder
             .listFiles()

@@ -2,6 +2,7 @@ package com.flipperdevices.updater.subghz.helpers
 
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.update.api.RegionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
@@ -23,9 +24,6 @@ import okio.buffer
 import okio.source
 import java.nio.charset.Charset
 import javax.inject.Inject
-
-private const val UNKNOWN_REGION = "WW"
-const val REGION_FILE = "/int/.region_data"
 
 interface SubGhzProvisioningHelper {
     suspend fun provideAndUploadSubGhz(
@@ -73,7 +71,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
             response.defaults
         }
 
-        val finalCodeRegion = providedRegion?.uppercase() ?: UNKNOWN_REGION
+        val finalCodeRegion = providedRegion?.uppercase() ?: RegionApi.UNKNOWN_REGION
 
         val regionData = Region(
             country_code = finalCodeRegion.encode(Charset.forName("ASCII")),
@@ -88,7 +86,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
         ).encode()
         try {
             regionData.inputStream().source().buffer().use { bufferedSource ->
-                fFileUploadApi.sink(REGION_FILE).use { sink ->
+                fFileUploadApi.sink(RegionApi.REGION_FILE).use { sink ->
                     bufferedSource.copyWithProgress(
                         sink = sink,
                         progressListener = { _, _ -> },

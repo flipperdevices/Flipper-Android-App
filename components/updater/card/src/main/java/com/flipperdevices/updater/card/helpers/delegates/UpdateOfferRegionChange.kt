@@ -1,6 +1,7 @@
 package com.flipperdevices.updater.card.helpers.delegates
 
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
+import com.flipperdevices.bridge.connection.feature.update.api.RegionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -24,12 +25,11 @@ class UpdateOfferRegionChange @Inject constructor(
         return flow {
             runCatching {
                 coroutineScope {
-                    fStorageFeatureApi.downloadApi().source(REGION_FILE, this)
+                    fStorageFeatureApi.downloadApi().source(RegionApi.REGION_FILE, this)
                         .buffer()
                         .readByteArray()
                 }
             }.onFailure {
-                it.printStackTrace()
                 error(it) { "#isRequire could not read region file!" }
                 emit(true)
             }.onSuccess {
@@ -37,13 +37,9 @@ class UpdateOfferRegionChange @Inject constructor(
                 val code = region.country_code.string(Charset.forName("ASCII"))
                 val provisionedRegion = runCatching {
                     subGhzProvisioningHelper.getRegion()
-                }.onFailure { it.printStackTrace() }.getOrNull()
+                }.getOrNull()
                 emit(provisionedRegion != code)
             }
         }
-    }
-
-    companion object {
-        const val REGION_FILE = "/int/.region_data"
     }
 }
