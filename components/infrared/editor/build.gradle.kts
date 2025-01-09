@@ -41,7 +41,7 @@ dependencies {
 
     // ViewModel
     implementation(libs.lifecycle.compose)
-    implementation(libs.lifecycle.viewmodel.ktx)
+    
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.kotlin.immutable.collections)

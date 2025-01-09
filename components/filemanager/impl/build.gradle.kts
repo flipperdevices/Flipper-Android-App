@@ -45,5 +45,5 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
+    
 }

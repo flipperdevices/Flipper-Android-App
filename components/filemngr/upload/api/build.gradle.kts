@@ -12,7 +12,7 @@ commonDependencies {
 
     implementation(projects.components.bridge.connection.feature.storage.api)
 
-    implementation(libs.compose.ui)
+
     implementation(libs.decompose)
 
     implementation(libs.okio)

@@ -1,3 +1,6 @@
+import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 plugins {
     id("flipper.android-app-multiplatform")
     id("com.google.devtools.ksp")
@@ -10,11 +13,20 @@ android.namespace = "com.flipperdevices.bridge.connection"
 
 android {
     buildFeatures.compose = true
-}
-
-android {
     defaultConfig {
         applicationId = "com.flipperdevices.bridge.connection"
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "com.flipperdevices.bridge.connection.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "Flipper App"
+            packageVersion = project.VERSION_NAME
+        }
     }
 }
 
@@ -24,6 +36,7 @@ commonDependencies {
     implementation(projects.components.core.preference)
     implementation(projects.components.core.storage)
     implementation(projects.components.core.share)
+    implementation(projects.components.core.ktx)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
@@ -90,19 +103,30 @@ commonDependencies {
     implementation(projects.components.filemngr.transfer.api)
     implementation(projects.components.filemngr.transfer.impl)
 
+    implementation(projects.components.analytics.shake2report.api)
+    implementation(projects.components.analytics.shake2report.noop)
+    implementation(projects.components.analytics.metric.api)
+    implementation(projects.components.analytics.metric.noop)
+
     implementation(libs.kotlin.immutable.collections)
 }
 
+desktopDependencies {
+    implementation(projects.components.bridge.connection.transport.usb.api)
+    implementation(projects.components.bridge.connection.transport.usb.impl)
+
+    implementation(libs.decompose.jetpack)
+}
+
 dependencies {
+    commonKsp(libs.dagger.compiler)
+}
+
+androidDependencies {
     implementation(projects.components.core.ui.res)
-    implementation(projects.components.analytics.shake2report.api)
-    implementation(projects.components.analytics.shake2report.noop)
 
     implementation(projects.components.bridge.connection.transport.ble.api)
     implementation(projects.components.bridge.connection.transport.ble.impl)
-
-    implementation(projects.components.analytics.metric.api)
-    implementation(projects.components.analytics.metric.noop)
 
     implementation(projects.components.bridge.api)
 
@@ -113,10 +137,6 @@ dependencies {
     implementation(projects.components.deeplink.impl)
 
     implementation(libs.appcompat)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
 

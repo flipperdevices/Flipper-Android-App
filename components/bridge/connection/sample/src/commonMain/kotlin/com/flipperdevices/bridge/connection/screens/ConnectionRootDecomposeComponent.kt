@@ -3,14 +3,12 @@ package com.flipperdevices.bridge.connection.screens
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.bridge.connection.screens.device.ConnectionDeviceScreenDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
 import com.flipperdevices.bridge.connection.screens.nopermission.ConnectionNoPermissionDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.search.ConnectionSearchDecomposeComponent
 import com.flipperdevices.bridge.connection.screens.utils.PermissionChecker
-import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import dagger.assisted.Assisted
@@ -22,7 +20,6 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
     private val permissionChecker: PermissionChecker,
     private val searchDecomposeFactory: ConnectionSearchDecomposeComponent.Factory,
     private val connectionDeviceScreenDecomposeComponentFactory: ConnectionDeviceScreenDecomposeComponent.Factory,
-    private val fileManagerComponentFactory: FileManagerDecomposeComponent.Factory
 ) : CompositeDecomposeComponent<ConnectionRootConfig>(), ComponentContext by componentContext {
     override val stack: Value<ChildStack<ConnectionRootConfig, DecomposeComponent>> = childStack(
         source = navigation,
@@ -53,10 +50,7 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
                 navigation = navigation
             )
 
-        ConnectionRootConfig.FileManager -> fileManagerComponentFactory(
-            componentContext = componentContext,
-            onBack = { navigation.pop() }
-        )
+        ConnectionRootConfig.FileManager -> ConnectionNoPermissionDecomposeComponent(componentContext)
     }
 
     @AssistedFactory

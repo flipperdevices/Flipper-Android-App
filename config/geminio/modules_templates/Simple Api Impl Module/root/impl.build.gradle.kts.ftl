@@ -28,7 +28,7 @@ dependencies {
 <#if needViewModel>
     // ViewModel
     implementation(libs.lifecycle.compose)
-    implementation(libs.lifecycle.viewmodel.ktx)
+
 </#if>
 
 <#if needTest>

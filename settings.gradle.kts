@@ -46,6 +46,8 @@ include(
     ":components:bridge:connection:pbutils",
     ":components:bridge:connection:transport:ble:api",
     ":components:bridge:connection:transport:ble:impl",
+    ":components:bridge:connection:transport:usb:api",
+    ":components:bridge:connection:transport:usb:impl",
     ":components:bridge:connection:transport:common:api",
     ":components:bridge:connection:transport:common:impl",
     ":components:bridge:connection:orchestrator:api",

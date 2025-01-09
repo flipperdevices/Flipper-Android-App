@@ -11,7 +11,6 @@ commonDependencies {
     implementation(projects.components.core.ui.res)
 
     // Compose
-    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.compose)
     implementation(libs.compose.placeholder)
 
@@ -23,5 +22,6 @@ commonDependencies {
 }
 
 androidDependencies {
+    
     implementation(libs.image.lottie)
 }

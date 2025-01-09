@@ -30,5 +30,5 @@ dependencies {
 
     // ViewModel
     implementation(libs.lifecycle.compose)
-    implementation(libs.lifecycle.viewmodel.ktx)
+    
 }

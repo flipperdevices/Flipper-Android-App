@@ -23,10 +23,7 @@ commonDependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.material)
+    
     implementation(libs.compose.material.icons.core)
     implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.placeholder)

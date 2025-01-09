@@ -42,6 +42,6 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 
-    implementation(libs.lifecycle.viewmodel.ktx)
+    
     implementation(libs.lifecycle.compose)
 }

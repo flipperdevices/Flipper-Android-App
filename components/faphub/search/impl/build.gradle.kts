@@ -36,5 +36,5 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.paging)
     implementation(libs.bundles.decompose)
-    implementation(libs.lifecycle.viewmodel.ktx)
+    
 }
