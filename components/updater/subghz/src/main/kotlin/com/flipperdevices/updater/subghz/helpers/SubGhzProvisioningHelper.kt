@@ -1,37 +1,36 @@
 package com.flipperdevices.updater.subghz.helpers
 
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.api.utils.Constants
-import com.flipperdevices.bridge.protobuf.streamToCommandFlow
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.update.api.RegionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.RegionSource
 import com.flipperdevices.metric.api.events.complex.SubGhzProvisioningEvent
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.RegionKt.band
-import com.flipperdevices.protobuf.region
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.writeRequest
+import com.flipperdevices.protobuf.Region
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
 import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
-import com.google.protobuf.ByteString
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayInputStream
+import okio.ByteString.Companion.encode
+import okio.buffer
+import okio.source
 import java.nio.charset.Charset
 import javax.inject.Inject
 
-private const val UNKNOWN_REGION = "WW"
-
 interface SubGhzProvisioningHelper {
-    suspend fun provideAndUploadSubGhz(serviceApi: FlipperServiceApi)
+    suspend fun provideAndUploadSubGhz(
+        fGetInfoFeatureApi: FGetInfoFeatureApi,
+        fFileUploadApi: FFileUploadApi
+    )
+
     suspend fun getRegion(): String?
 }
 
@@ -53,9 +52,10 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
     }
 
     override suspend fun provideAndUploadSubGhz(
-        serviceApi: FlipperServiceApi
+        fGetInfoFeatureApi: FGetInfoFeatureApi,
+        fFileUploadApi: FFileUploadApi
     ) = withContext(FlipperDispatchers.workStealingDispatcher) {
-        if (skipProvisioningHelper.shouldSkipProvisioning(serviceApi)) {
+        if (skipProvisioningHelper.shouldSkipProvisioning(fGetInfoFeatureApi)) {
             info { "Skip provisioning" }
             return@withContext
         }
@@ -71,39 +71,33 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
             response.defaults
         }
 
-        val finalCodeRegion = providedRegion?.uppercase() ?: UNKNOWN_REGION
+        val finalCodeRegion = providedRegion?.uppercase() ?: RegionApi.UNKNOWN_REGION
 
-        val regionData = region {
-            countryCode = ByteString.copyFrom(
-                finalCodeRegion,
-                Charset.forName("ASCII")
-            )
-            bands.addAll(
-                providedBands.map {
-                    band {
-                        start = it.start.toInt()
-                        end = it.end.toInt()
-                        powerLimit = it.maxPower
-                        dutyCycle = it.dutyCycle.toInt()
-                    }
+        val regionData = Region(
+            country_code = finalCodeRegion.encode(Charset.forName("ASCII")),
+            bands = providedBands.map {
+                Region.Band(
+                    start = it.start.toInt(),
+                    end = it.end.toInt(),
+                    power_limit = it.maxPower,
+                    duty_cycle = it.dutyCycle.toInt()
+                )
+            }
+        ).encode()
+        try {
+            regionData.inputStream().source().buffer().use { bufferedSource ->
+                fFileUploadApi.sink(RegionApi.REGION_FILE).use { sink ->
+                    bufferedSource.copyWithProgress(
+                        sink = sink,
+                        progressListener = { _, _ -> },
+                        sourceLength = { regionData.size.toLong() }
+                    )
                 }
-            )
-        }.toByteArray()
-        val writeFileResponse = ByteArrayInputStream(regionData).use { inputStream ->
-            val flow = streamToCommandFlow(
-                inputStream,
-                fileSize = regionData.size.toLong()
-            ) { chunkData ->
-                storageWriteRequest = writeRequest {
-                    path = Constants.PATH.REGION_FILE
-                    file = file { data = chunkData }
-                }
-            }.map { it.wrapToRequest() }
-            serviceApi.requestApi.request(flow)
-        }
-        if (writeFileResponse.commandStatus != Flipper.CommandStatus.OK) {
+            }
+        } catch (e: Exception) {
             throw FailedUploadSubGhzException()
         }
+
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
     }
 

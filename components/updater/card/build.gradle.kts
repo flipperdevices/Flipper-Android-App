@@ -25,11 +25,6 @@ dependencies {
     implementation(projects.components.info.shared)
     implementation(projects.components.rootscreen.api)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.rpcinfo.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
-
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -38,6 +33,17 @@ dependencies {
 
     implementation(libs.annotations)
     implementation(libs.appcompat)
+
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.update.api)
+    implementation(projects.components.bridge.connection.orchestrator.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.storageinfo.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.rpcinfo.api)
+    implementation(projects.components.bridge.connection.pbutils)
 
     // Compose
     implementation(libs.compose.ui)

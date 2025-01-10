@@ -1,28 +1,27 @@
 package com.flipperdevices.updater.impl.tasks
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.model.FlipperRequestPriority
-import com.flipperdevices.bridge.api.model.wrapToRequest
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
+import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcException
+import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcInvalidParametersException
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.update.api.BootApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.core.progress.ProgressWrapperTracker
-import com.flipperdevices.protobuf.Flipper
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.file
-import com.flipperdevices.protobuf.storage.md5sumRequest
-import com.flipperdevices.protobuf.system.System
-import com.flipperdevices.protobuf.system.rebootRequest
-import com.flipperdevices.protobuf.system.updateRequest
+import com.flipperdevices.protobuf.system.RebootRequest
+import com.flipperdevices.protobuf.system.UpdateResponse
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import okio.Path
+import okio.Path.Companion.toOkioPath
+import okio.Path.Companion.toPath
 import java.io.File
 import javax.inject.Inject
 
@@ -30,74 +29,72 @@ interface UploadToFlipperHelper {
     suspend fun uploadToFlipper(
         flipperPath: String,
         updaterFolder: File,
-        requestApi: FlipperRequestApi,
+        bootApi: BootApi,
+        fListingStorageApi: FListingStorageApi,
+        fFileUploadApi: FFileUploadApi,
         stateListener: suspend (UpdatingState) -> Unit
     )
 }
 
 @ContributesBinding(AppGraph::class, UploadToFlipperHelper::class)
-class UploadToFlipperHelperImpl @Inject constructor(
-    private val flipperStorageApi: FlipperStorageApi
-) : UploadToFlipperHelper, LogTagProvider {
+class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, LogTagProvider {
     override val TAG = "UploadToFlipperHelper"
 
     override suspend fun uploadToFlipper(
         flipperPath: String,
         updaterFolder: File,
-        requestApi: FlipperRequestApi,
+        bootApi: BootApi,
+        fListingStorageApi: FListingStorageApi,
+        fFileUploadApi: FFileUploadApi,
         stateListener: suspend (UpdatingState) -> Unit
     ) {
         upload(
-            requestApi,
-            updaterFolder,
-            flipperPath
-        ) { percent ->
-            withContext(FlipperDispatchers.workStealingDispatcher) {
-                stateListener(
-                    UpdatingState.UploadOnFlipper(
-                        percent = percent
+            folder = updaterFolder,
+            pathOnFlipper = flipperPath,
+            fListingStorageApi = fListingStorageApi,
+            fFileUploadApi = fFileUploadApi,
+            progressListener = { percent ->
+                withContext(FlipperDispatchers.workStealingDispatcher) {
+                    stateListener(
+                        UpdatingState.UploadOnFlipper(
+                            percent = percent
+                        )
                     )
-                )
-            }
-        }
-
-        val response = requestApi.request(
-            main {
-                systemUpdateRequest = updateRequest {
-                    updateManifest = "$flipperPath/update.fuf"
                 }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).first()
-        when (response.commandStatus) {
-            Flipper.CommandStatus.ERROR_INVALID_PARAMETERS -> {
-                val code = response.systemUpdateResponse.code
-                if (code == System.UpdateResponse.UpdateResultCode.IntFull) {
-                    throw IntFlashFullException()
-                }
-            }
-
-            Flipper.CommandStatus.OK -> {}
-            else -> error("Failed send update request with status ${response.commandStatus}")
-        }
-
-        requestApi.requestWithoutAnswer(
-            main {
-                systemRebootRequest = rebootRequest {
-                    mode = System.RebootRequest.RebootMode.UPDATE
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
+            },
         )
+        try {
+            bootApi.systemUpdate("$flipperPath/update.fuf")
+        } catch (e: FRpcInvalidParametersException) {
+            val code = e.response.system_update_response?.code
+            if (code == UpdateResponse.UpdateResultCode.IntFull) {
+                throw IntFlashFullException()
+            }
+        } catch (e: FRpcException) {
+            error("Failed send update request with status ${e.response.command_status}")
+        } catch (e: Exception) {
+            error("Failed send update request with status unknown exception: ${e.message}")
+        }
+
+        bootApi.reboot(RebootRequest.RebootMode.UPDATE)
+            .onFailure { error(it) { "#uploadToFlipper could not reboot device" } }
     }
 
     private suspend fun upload(
-        requestApi: FlipperRequestApi,
         folder: File,
         pathOnFlipper: String,
-        progressListener: ProgressListener
+        progressListener: ProgressListener,
+        fListingStorageApi: FListingStorageApi,
+        fFileUploadApi: FFileUploadApi,
     ) {
-        val fileList = folder.walk().filterNot { it.isDirectory }.toList().filterNot {
-            if (fileAlreadyUploaded(requestApi, it, File(pathOnFlipper, it.name).path)) {
-                info { "Skip $it because file already uploaded" }
+        val fileList = folder.walk().filterNot { it.isDirectory }.toList().filterNot { file ->
+            val isAlreadyUploaded = fileAlreadyUploaded(
+                file = file,
+                pathOnFlipper = pathOnFlipper.toPath().resolve(file.name),
+                fListingStorageApi = fListingStorageApi
+            )
+            if (isAlreadyUploaded) {
+                info { "Skip $file because file already uploaded" }
                 return@filterNot true
             } else {
                 return@filterNot false
@@ -113,9 +110,9 @@ class UploadToFlipperHelperImpl @Inject constructor(
 
         fileList.forEach { singleFile ->
             val flipperFilePath = File(pathOnFlipper, singleFile.name).path
-            flipperStorageApi.upload(
+            fFileUploadApi.upload(
                 pathOnFlipper = flipperFilePath,
-                fileOnAndroid = singleFile,
+                fileOnAndroid = singleFile.toOkioPath(),
                 progressListener = ProgressWrapperTracker(
                     progressListener = progressListener,
                     min = sizeUploaded.toFloat() / totalSize.toFloat(),
@@ -127,24 +124,16 @@ class UploadToFlipperHelperImpl @Inject constructor(
     }
 
     private suspend fun fileAlreadyUploaded(
-        requestApi: FlipperRequestApi,
         file: File,
-        pathOnFlipper: String
+        pathOnFlipper: Path,
+        fListingStorageApi: FListingStorageApi
     ): Boolean {
-        val fileMd5 = file.inputStream().use {
-            it.md5()
-        }
-
-        val response = requestApi.request(
-            main {
-                storageMd5SumRequest = md5sumRequest {
-                    path = pathOnFlipper
-                }
-            }.wrapToRequest(FlipperRequestPriority.FOREGROUND)
-        ).first()
-        if (response.hasStorageMd5SumResponse()) {
-            return response.storageMd5SumResponse.md5Sum == fileMd5
-        }
-        return false
+        val fileMd5 = file.inputStream()
+            .use { fis -> fis.md5() }
+        val md5Response = fListingStorageApi.lsWithMd5(pathOnFlipper.toString())
+            .onFailure { error(it) { "#fileAlreadyUploaded Could not get lsWithMd5" } }
+            .getOrNull()
+            ?.firstOrNull()
+        return md5Response?.md5 == fileMd5
     }
 }

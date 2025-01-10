@@ -4,7 +4,7 @@ private const val ALLOWED_BATTERY_CHARGE = 0.09f
 
 sealed class BatteryState {
     data object Unknown : BatteryState()
-    class Ready(
+    data class Ready(
         val isCharging: Boolean,
         val batteryLevel: Float
     ) : BatteryState()

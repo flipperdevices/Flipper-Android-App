@@ -1,11 +1,14 @@
 package com.flipperdevices.updater.card.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.SelectedChannel
 import com.flipperdevices.core.preference.pb.Settings
@@ -28,6 +31,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 
@@ -35,13 +41,12 @@ import kotlinx.coroutines.sync.Mutex
 class UpdateCardViewModel @AssistedInject constructor(
     private val downloaderApi: DownloaderApi,
     private val flipperVersionProviderApi: FlipperVersionProviderApi,
-    private val serviceProvider: FlipperServiceProvider,
     private val dataStoreSettings: DataStore<Settings>,
     private val updateOfferHelper: UpdateOfferProviderApi,
     private val storageExistHelper: StorageExistHelper,
-    @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?
+    @Assisted private val deeplink: Deeplink.BottomBar.DeviceTab.WebUpdate?,
+    private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel(),
-    FlipperBleServiceConsumer,
     LogTagProvider {
     override val TAG = "UpdateCardViewModel"
 
@@ -61,7 +66,6 @@ class UpdateCardViewModel @AssistedInject constructor(
                 updateChanelFlow.emit(it.selected_channel.toFirmwareChannel())
             }
         }
-        serviceProvider.provideServiceApi(this, this)
     }
 
     fun getUpdateCardState(): StateFlow<UpdateCardState> = updateCardState
@@ -85,40 +89,54 @@ class UpdateCardViewModel @AssistedInject constructor(
     }
 
     fun refresh() {
-        serviceProvider.provideServiceApi(this) {
-            launchWithLock(mutex, viewModelScope, "retry") {
-                // in this case we get heavy information from fw server and flipper
-                // that's why we set state in progress
-                updateCardState.emit(UpdateCardState.InProgress)
-                cardStateJob?.cancelAndJoin()
-                storageExistHelper.invalidate(viewModelScope, it, force = true)
-                invalidateUnsafe(it)
-            }
+        launchWithLock(mutex, viewModelScope, "retry") {
+            // in this case we get heavy information from fw server and flipper
+            // that's why we set state in progress
+            updateCardState.emit(UpdateCardState.InProgress)
+            cardStateJob?.cancelAndJoin()
+            storageExistHelper.invalidate(viewModelScope, force = true)
+            invalidateUnsafe(
+                fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>() ?: run {
+                    error { "#refresh could not get FStorageFeatureApi" }
+                    return@launchWithLock
+                }
+            )
         }
     }
 
-    override fun onServiceApiReady(
-        serviceApi: FlipperServiceApi
+    init {
+        fFeatureProvider.get<FStorageFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FStorageFeatureApi> }
+            .onEach { fStorageFeatureStatus ->
+                if (fStorageFeatureStatus == null) {
+                    cardStateJob?.cancelAndJoin()
+                    cardStateJob = null
+                } else {
+                    launchWithLock(mutex, viewModelScope, "onServiceApiReady") {
+                        invalidateUnsafe(
+                            fStorageFeatureApi = fStorageFeatureStatus.featureApi
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private suspend fun invalidateUnsafe(
+        fStorageFeatureApi: FStorageFeatureApi
     ) {
-        launchWithLock(mutex, viewModelScope, "onServiceApiReady") {
-            invalidateUnsafe(serviceApi)
-        }
-    }
-
-    private suspend fun invalidateUnsafe(serviceApi: FlipperServiceApi) {
         cardStateJob?.cancelAndJoin()
         cardStateJob = null
         cardStateJob = viewModelScope.launch {
-            storageExistHelper.invalidate(this, serviceApi, force = false)
+            storageExistHelper.invalidate(this, force = false)
             val latestVersionAsync = async {
                 val result = runCatching { downloaderApi.getLatestVersion() }
                 verbose { "latestVersionAsyncResult: $result" }
                 return@async result
             }
             combine(
-                flipperVersionProviderApi.getCurrentFlipperVersion(viewModelScope, serviceApi),
+                flipperVersionProviderApi.getCurrentFlipperVersion(),
                 storageExistHelper.isExternalStorageExist(),
-                updateOfferHelper.isUpdateRequire(serviceApi),
+                updateOfferHelper.isUpdateRequire(fStorageFeatureApi),
                 updateChanelFlow,
                 deeplinkFlow
             ) { flipperFirmwareVersion, isFlashExist, isAlwaysUpdate, updateChannel, deeplink ->

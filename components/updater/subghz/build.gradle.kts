@@ -8,15 +8,12 @@ android.namespace = "com.flipperdevices.updater.subghz"
 dependencies {
     implementation(projects.components.updater.api)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
-
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
+    implementation(projects.components.core.progress)
     implementation(projects.components.core.storage)
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.res)
@@ -24,6 +21,14 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(libs.lifecycle.runtime.ktx)
+
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.update.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
+    implementation(projects.components.bridge.connection.pbutils)
 
     // Compose
     implementation(libs.compose.ui)

@@ -1,8 +1,7 @@
 package com.flipperdevices.updater.impl.api
 
-import android.content.Context
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
@@ -14,6 +13,7 @@ import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.impl.UpdaterTask
+import com.flipperdevices.updater.impl.tasks.FlipperUpdateImageHelper
 import com.flipperdevices.updater.impl.tasks.UploadToFlipperHelper
 import com.flipperdevices.updater.impl.tasks.downloader.UpdateContentDownloader
 import com.flipperdevices.updater.model.FirmwareChannel
@@ -36,15 +36,15 @@ import javax.inject.Singleton
 @Suppress("LongParameterList")
 @ContributesBinding(AppGraph::class, UpdaterApi::class)
 class UpdaterApiImpl @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
     private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
-    private val context: Context,
     private val metricApi: MetricApi,
-    private val flipperStorageApi: FlipperStorageApi,
     private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper,
-    private val storageProvider: FlipperStorageProvider
+    private val storageProvider: FlipperStorageProvider,
+    private val fFeatureProvider: FFeatureProvider,
+    private val flipperUpdateImageHelper: FlipperUpdateImageHelper,
+    private val orchestrator: FDeviceOrchestrator,
 ) : UpdaterApi, LogTagProvider {
     override val TAG = "UpdaterApi"
 
@@ -68,14 +68,14 @@ class UpdaterApiImpl @Inject constructor(
          * The main idea is to simplify the code in complex places
          */
         val localActiveTask = UpdaterTask(
-            serviceProvider,
-            context,
-            uploadToFlipperHelper,
-            subGhzProvisioningHelper,
-            updateContentDownloader,
-            flipperStorageApi,
-            fapNeedUpdatePopUpHelper,
-            storageProvider
+            uploadToFlipperHelper = uploadToFlipperHelper,
+            subGhzProvisioningHelper = subGhzProvisioningHelper,
+            updateContentDownloader = updateContentDownloader,
+            fapNeedUpdatePopUpHelper = fapNeedUpdatePopUpHelper,
+            storageProvider = storageProvider,
+            flipperUpdateImageHelper = flipperUpdateImageHelper,
+            orchestrator = orchestrator,
+            fFeatureProvider = fFeatureProvider
         )
         currentActiveTask = localActiveTask
 

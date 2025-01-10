@@ -1,13 +1,10 @@
 package com.flipperdevices.updater.subghz.tasks
 
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
-import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.property.getResponse
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelperImpl
 import io.mockk.coEvery
@@ -47,74 +44,21 @@ class SkipProvisioningHelperTest {
     }
 
     @Test
-    fun `not skip provisioning if version null`() = runTest {
-        every { settings.data } returns flowOf(
-            Settings(
-                ignore_subghz_provisioning_on_zero_region = true
-            )
-        )
-
-        val versionApi = mockk<FlipperVersionApi> {
-            coEvery {
-                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
-            } returns false
-        }
-
-        val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk {
-                every { flipperVersionApi } returns versionApi
-            }
-        )
-
-        Assert.assertFalse(shouldProvide)
-    }
-
-    @Test
-    fun `not skip provisioning if version deprecated`() = runTest {
-        every { settings.data } returns flowOf(
-            Settings(
-                ignore_subghz_provisioning_on_zero_region = true
-            )
-        )
-
-        val versionApi = mockk<FlipperVersionApi> {
-            coEvery {
-                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
-            } returns false
-        }
-
-        val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk {
-                every { flipperVersionApi } returns versionApi
-            }
-        )
-
-        Assert.assertFalse(shouldProvide)
-    }
-
-    @Test
     fun `not skip provisioning if hardware region null`() = runTest {
         every { settings.data } returns flowOf(
-
             Settings(
                 ignore_subghz_provisioning_on_zero_region = true
             )
         )
 
-        val versionApi = mockk<FlipperVersionApi> {
+        val featureApi = mockk<FGetInfoFeatureApi> {
             coEvery {
-                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
-            } returns true
-        }
-        val mockRequestApi = mockk<FlipperRequestApi> {
-            coEvery { request(any(), any()) } returns main {}
+                get(FGetInfoApiProperty.DeviceInfo.HARDWARE_REGION)
+            } returns Result.failure(Throwable("Test error no region"))
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk {
-                every { flipperVersionApi } returns versionApi
-                every { requestApi } returns mockRequestApi
-            }
+            featureApi
         )
 
         Assert.assertFalse(shouldProvide)
@@ -128,24 +72,14 @@ class SkipProvisioningHelperTest {
             )
         )
 
-        val versionApi = mockk<FlipperVersionApi> {
+        val featureApi = mockk<FGetInfoFeatureApi> {
             coEvery {
-                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
-            } returns true
-        }
-        val mockRequestApi = mockk<FlipperRequestApi> {
-            coEvery { request(any(), any()) } returns main {
-                propertyGetResponse = getResponse {
-                    value = "1"
-                }
-            }
+                get(FGetInfoApiProperty.DeviceInfo.HARDWARE_REGION)
+            } returns Result.success("1")
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk {
-                every { flipperVersionApi } returns versionApi
-                every { requestApi } returns mockRequestApi
-            }
+            featureApi
         )
 
         Assert.assertFalse(shouldProvide)
@@ -159,24 +93,14 @@ class SkipProvisioningHelperTest {
             )
         )
 
-        val versionApi = mockk<FlipperVersionApi> {
+        val featureApi = mockk<FGetInfoFeatureApi> {
             coEvery {
-                isSupported(eq(Constants.API_SUPPORTED_GET_REQUEST), any())
-            } returns true
-        }
-        val mockRequestApi = mockk<FlipperRequestApi> {
-            coEvery { request(any(), any()) } returns main {
-                propertyGetResponse = getResponse {
-                    value = "0"
-                }
-            }
+                get(FGetInfoApiProperty.DeviceInfo.HARDWARE_REGION)
+            } returns Result.success("0")
         }
 
         val shouldProvide = underTest.shouldSkipProvisioning(
-            mockk {
-                every { flipperVersionApi } returns versionApi
-                every { requestApi } returns mockRequestApi
-            }
+            featureApi
         )
 
         Assert.assertTrue(shouldProvide)

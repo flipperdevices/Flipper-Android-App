@@ -1,12 +1,12 @@
 package com.flipperdevices.updater.card.helpers
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.protobuf.main
-import com.flipperdevices.protobuf.storage.md5sumResponse
+import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingItemWithHash
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -14,25 +14,31 @@ import org.junit.Test
 
 class FileExistHelperTest {
 
-    private lateinit var requestApi: FlipperRequestApi
+    private val fListingStorageApi: FListingStorageApi = mockk()
     private lateinit var fileExistHelper: FileExistHelper
 
     @Before
     fun setup() {
         fileExistHelper = FileExistHelper()
-        requestApi = mockk()
     }
 
     @Test
     fun `exist file`() = runTest {
-        every { requestApi.request(command = any()) } returns flow {
-            main {
-                storageMd5SumResponse = md5sumResponse {
-                    md5Sum = "md5Sum"
-                }
+        every {
+            runBlocking {
+                fListingStorageApi.lsWithMd5Flow("")
             }
+        } returns flow {
+            Result.success(
+                ListingItemWithHash(
+                    fileName = "filename",
+                    fileType = null,
+                    size = 0L,
+                    md5 = "md5"
+                )
+            )
         }
-        val existFileFlow = fileExistHelper.isFileExist("", requestApi)
+        val existFileFlow = fileExistHelper.isFileExist("", fListingStorageApi)
         existFileFlow.collectLatest {
             Assert.assertEquals(it, true)
         }
@@ -40,11 +46,14 @@ class FileExistHelperTest {
 
     @Test
     fun `Not exist file`() = runTest {
-        every { requestApi.request(command = any()) } returns flow {
-            main {
+        every {
+            runBlocking {
+                fListingStorageApi.lsWithMd5Flow("")
             }
+        } returns flow {
+            Result.failure<ListingItemWithHash>(Throwable("Test throwable path not exists"))
         }
-        val existFileFlow = fileExistHelper.isFileExist("", requestApi)
+        val existFileFlow = fileExistHelper.isFileExist("", fListingStorageApi)
         existFileFlow.collectLatest {
             Assert.assertEquals(it, false)
         }

@@ -9,10 +9,6 @@ dependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.rpc.api)
     implementation(projects.components.deeplink.api)
 
     implementation(projects.components.core.di)
@@ -26,6 +22,15 @@ dependencies {
 
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.faphub.installedtab.api)
+
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.getinfo.api)
+    implementation(projects.components.bridge.connection.feature.update.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
+    implementation(projects.components.bridge.connection.pbutils)
+    implementation(projects.components.bridge.connection.orchestrator.api)
 
     implementation(libs.lifecycle.runtime.ktx)
 
