@@ -30,5 +30,4 @@ dependencies {
 
     // ViewModel
     implementation(libs.lifecycle.compose)
-    
 }

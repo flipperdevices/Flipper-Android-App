@@ -19,5 +19,4 @@ androidDependencies {
     implementation(libs.compose.activity)
 
     implementation(libs.lifecycle.runtime.ktx)
-    
 }

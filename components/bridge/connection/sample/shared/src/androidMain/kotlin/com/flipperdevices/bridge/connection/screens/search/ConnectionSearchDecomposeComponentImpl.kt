@@ -28,7 +28,6 @@ import me.gulya.anvil.assisted.ContributesAssistedFactory
 import org.jetbrains.compose.resources.stringResource
 import javax.inject.Provider
 
-
 @ContributesAssistedFactory(AppGraph::class, ConnectionSearchDecomposeComponent.Factory::class)
 class ConnectionSearchDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

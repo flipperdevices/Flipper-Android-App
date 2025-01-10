@@ -7,11 +7,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.filemanager.ui.components.itemcard.model.ItemUiSelectionState
+import flipperapp.components.core.ui.res.generated.resources.Res
+import flipperapp.components.core.ui.res.generated.resources.material_ic_folder
 import flipperapp.components.filemngr.ui_components.generated.resources.ic_folder_black
 import org.jetbrains.compose.resources.painterResource
 import flipperapp.components.filemngr.ui_components.generated.resources.Res as FR
-import flipperapp.components.core.ui.res.generated.resources.Res
-import flipperapp.components.core.ui.res.generated.resources.material_ic_folder
 
 @Preview
 @Composable

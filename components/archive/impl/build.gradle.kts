@@ -54,6 +54,6 @@ dependencies {
 
     // Lifecycle
     implementation(libs.lifecycle.runtime.ktx)
-    
+
     implementation(libs.lifecycle.compose)
 }

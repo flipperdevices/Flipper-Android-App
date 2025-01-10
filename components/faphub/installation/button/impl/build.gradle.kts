@@ -46,6 +46,6 @@ dependencies {
     implementation(projects.components.faphub.dao.api)
 
     implementation(libs.kotlin.coroutines)
-    
+
     implementation(libs.okio)
 }

@@ -26,7 +26,7 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
-    
+
     implementation(libs.lifecycle.compose)
 
     implementation(libs.kotlin.serialization.json)

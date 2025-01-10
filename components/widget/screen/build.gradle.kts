@@ -38,8 +38,6 @@ dependencies {
     implementation(libs.compose.swipetorefresh)
     implementation(libs.bundles.decompose)
 
-    
-
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
 }

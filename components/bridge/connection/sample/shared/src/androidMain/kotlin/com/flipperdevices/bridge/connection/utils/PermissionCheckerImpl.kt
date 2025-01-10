@@ -22,5 +22,4 @@ class PermissionCheckerImpl @Inject constructor(
             Manifest.permission.BLUETOOTH_CONNECT
         ) == PackageManager.PERMISSION_GRANTED
     }
-
 }

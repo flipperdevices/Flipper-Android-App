@@ -30,7 +30,6 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
 
-    
     implementation(libs.lifecycle.compose)
 
     implementation(libs.bundles.decompose)

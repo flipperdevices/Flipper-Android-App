@@ -51,7 +51,6 @@ configure<BaseExtension> {
     }
 }
 
-
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     androidTarget {

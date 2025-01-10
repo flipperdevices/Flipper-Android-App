@@ -39,7 +39,5 @@ dependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.compose.paging)
 
-    
-
     implementation(libs.kotlin.serialization.json)
 }

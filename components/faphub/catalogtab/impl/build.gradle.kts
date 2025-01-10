@@ -35,7 +35,5 @@ dependencies {
     implementation(libs.compose.paging)
     implementation(libs.decompose)
 
-    
-
     implementation(libs.kotlin.immutable.collections)
 }

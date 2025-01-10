@@ -25,7 +25,7 @@ class FUSBSerialDeviceApi(
 
     init {
         scope.launch {
-            val buffer = ByteArray(1024)
+            val buffer = ByteArray(size = 1024)
             var result = 1
             while (result > 0) {
                 result = serialPort.readBytes(buffer, buffer.size)
@@ -64,5 +64,4 @@ class FUSBSerialDeviceApi(
     override suspend fun disconnect() {
         serialPort.closePort()
     }
-
 }

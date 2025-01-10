@@ -22,6 +22,6 @@ commonDependencies {
 }
 
 androidDependencies {
-    
+
     implementation(libs.image.lottie)
 }

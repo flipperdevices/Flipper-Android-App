@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.lifecycle.compose)
-    
+
     implementation(libs.lifecycle.runtime.ktx)
 
     // Testing

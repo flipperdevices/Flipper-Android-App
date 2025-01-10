@@ -14,5 +14,6 @@ class ConnectionSearchDecomposeComponentNoop @AssistedInject constructor(
 
     @Composable
     override fun Render() {
+        // Empty
     }
 }

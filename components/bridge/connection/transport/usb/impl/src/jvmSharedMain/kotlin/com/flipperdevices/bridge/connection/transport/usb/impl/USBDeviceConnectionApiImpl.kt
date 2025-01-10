@@ -15,10 +15,11 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 private val FLOOD_END_STRING = "\r\n\r\n>: ".toByteArray()
 private val COMMAND = "start_rpc_session\r".toByteArray()
-private val BAUD_RATE = 230400
+private const val BAUD_RATE = 230400
+private const val DATA_BITS = 8
+private const val OPEN_PORT_TIME_MS = 1000
 
 class USBDeviceConnectionApiImpl(
     private val actionNotifierFactory: FlipperActionNotifier.Factory
@@ -32,10 +33,13 @@ class USBDeviceConnectionApiImpl(
     ): Result<FUSBApi> = runCatching {
         val serialPort = SerialPort.getCommPort(config.path)
         serialPort.setComPortParameters(
-            BAUD_RATE, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY
+            BAUD_RATE,
+            DATA_BITS,
+            SerialPort.ONE_STOP_BIT,
+            SerialPort.NO_PARITY
         )
-        serialPort.openPort(1000)
-        serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
+        serialPort.openPort(OPEN_PORT_TIME_MS)
+        serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0)
         val portOpened = serialPort.openPort()
 
         info { "Read port is: $portOpened" }
@@ -70,7 +74,7 @@ class USBDeviceConnectionApiImpl(
     private fun skipFlood(serialPort: SerialPort, floodBytes: ByteArray) {
         info { "Start wait flood" }
         var floodCurrentIndex = 0
-        val buffer = ByteArray(1)
+        val buffer = ByteArray(size = 1)
         while (!Thread.interrupted()) {
             if (serialPort.readBytes(buffer, buffer.size) == 0) {
                 info { "Exit from skipFlood because buffer is empty" }
@@ -94,5 +98,4 @@ class USBDeviceConnectionApiImpl(
             }
         }
     }
-
 }

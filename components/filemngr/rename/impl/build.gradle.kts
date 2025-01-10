@@ -33,7 +33,6 @@ commonDependencies {
     implementation(projects.components.filemngr.rename.api)
 
     // Compose
-    
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)

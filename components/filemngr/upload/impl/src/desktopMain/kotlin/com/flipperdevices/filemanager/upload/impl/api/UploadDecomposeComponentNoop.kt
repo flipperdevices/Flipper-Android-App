@@ -13,8 +13,8 @@ import okio.Path
 
 @ContributesAssistedFactory(AppGraph::class, UploadDecomposeComponent.Factory::class)
 class UploadDecomposeComponentNoop @AssistedInject constructor(
-    @Assisted componentContext: ComponentContext,
-    @Assisted private val onFilesChanged: (List<ListingItem>) -> Unit,
+    @Suppress("UnusedPrivateProperty") @Assisted componentContext: ComponentContext,
+    @Suppress("UnusedPrivateProperty") @Assisted private val onFilesChanged: (List<ListingItem>) -> Unit,
 ) : UploadDecomposeComponent {
     @Composable
     override fun rememberMultipleFilesPicker(

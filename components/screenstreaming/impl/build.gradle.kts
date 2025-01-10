@@ -44,6 +44,6 @@ dependencies {
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.lifecycle.runtime.ktx)
-    
+
     implementation(libs.lifecycle.compose)
 }

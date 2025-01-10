@@ -12,7 +12,6 @@ commonDependencies {
 
     implementation(projects.components.filemngr.listing.api)
 
-
     implementation(libs.decompose)
 
     implementation(libs.okio)

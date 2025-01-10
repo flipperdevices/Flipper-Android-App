@@ -45,7 +45,6 @@ dependencies {
     implementation(libs.bundles.decompose)
     implementation(libs.lifecycle.compose)
 
-    
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(libs.okio)
