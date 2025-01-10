@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import flipperapp.components.bridge.connection.sample.generated.resources.Res
-import flipperapp.components.bridge.connection.sample.generated.resources.connection_test_require_permission
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_test_require_permission
 import org.jetbrains.compose.resources.stringResource
 
 class ConnectionNoPermissionDecomposeComponent(

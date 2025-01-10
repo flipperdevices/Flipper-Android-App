@@ -22,8 +22,8 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.LocalTypography
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import flipperapp.components.bridge.connection.sample.generated.resources.Res
-import flipperapp.components.bridge.connection.sample.generated.resources.connection_search_title
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_search_title
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import org.jetbrains.compose.resources.stringResource
 import javax.inject.Provider

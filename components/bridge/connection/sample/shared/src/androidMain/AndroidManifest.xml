@@ -2,12 +2,12 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <application
-            android:name=".ConnectionTestApplication"
+            android:name="com.flipperdevices.bridge.connection.ConnectionTestApplication"
             android:theme="@style/FlipperTheme">
         <activity
                 android:exported="true"
                 android:label="@string/app_name"
-                android:name=".ConnectionTestActivity"
+                android:name="com.flipperdevices.bridge.connection.ConnectionTestActivity"
                 android:windowSoftInputMode="adjustResize"
                 tools:node="merge">
             <intent-filter>

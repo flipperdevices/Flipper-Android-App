@@ -2,33 +2,14 @@ import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id("flipper.android-app-multiplatform")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("com.google.devtools.ksp")
     id("flipper.anvil.entrypoint")
     id("kotlinx-serialization")
-    id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection"
-
-android {
-    buildFeatures.compose = true
-    defaultConfig {
-        applicationId = "com.flipperdevices.bridge.connection"
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "com.flipperdevices.bridge.connection.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Flipper App"
-            packageVersion = project.VERSION_NAME
-        }
-    }
-}
+android.namespace = "com.flipperdevices.bridge.connection.sample.shared"
 
 commonDependencies {
     implementation(projects.components.core.di)
@@ -118,10 +99,6 @@ desktopDependencies {
     implementation(libs.decompose.jetpack)
 }
 
-dependencies {
-    commonKsp(libs.dagger.compiler)
-}
-
 androidDependencies {
     implementation(projects.components.core.ui.res)
 
@@ -144,4 +121,8 @@ androidDependencies {
     implementation(libs.ble.kotlin.client)
 
     implementation(libs.compose.activity)
+}
+
+dependencies {
+    commonKsp(libs.dagger.compiler)
 }

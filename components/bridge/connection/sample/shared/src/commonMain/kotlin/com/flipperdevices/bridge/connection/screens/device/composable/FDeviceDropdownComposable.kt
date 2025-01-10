@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.screens.device.viewmodel.DevicesDropdownState
 import com.flipperdevices.core.ui.ktx.clickableRipple
-import flipperapp.components.bridge.connection.sample.generated.resources.Res
-import flipperapp.components.bridge.connection.sample.generated.resources.connection_dropdown_unknown
-import flipperapp.components.bridge.connection.sample.generated.resources.ic_more
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_dropdown_unknown
+import flipperapp.components.bridge.connection.sample.shared.generated.resources.ic_more
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
