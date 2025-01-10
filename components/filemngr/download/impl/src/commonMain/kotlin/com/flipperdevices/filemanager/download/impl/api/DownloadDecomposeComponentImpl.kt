@@ -13,6 +13,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.download.impl.composable.DownloadingComposable
@@ -23,6 +24,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.plus
 import me.gulya.anvil.assisted.ContributesAssistedFactory
 import javax.inject.Provider
 
@@ -37,7 +39,11 @@ class DownloadDecomposeComponentImpl @AssistedInject constructor(
 
     override val isInProgress = downloadViewModel.state
         .map { state -> state is DownloadViewModel.State.Downloading }
-        .stateIn(coroutineScope(), SharingStarted.Eagerly, false)
+        .stateIn(
+            coroutineScope(FlipperDispatchers.workStealingDispatcher),
+            SharingStarted.Eagerly,
+            false
+        )
 
     override fun onCancel() = downloadViewModel.onCancel()
 

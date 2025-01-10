@@ -9,8 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +24,9 @@ import flipperapp.components.filemngr.listing.impl.generated.resources.fml_selec
 import flipperapp.components.filemngr.listing.impl.generated.resources.fml_selection_select_all
 import org.jetbrains.compose.resources.stringResource
 import flipperapp.components.filemngr.listing.impl.generated.resources.Res as FML
+import flipperapp.components.core.ui.res.generated.resources.Res
+import flipperapp.components.core.ui.res.generated.resources.material_ic_close
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CloseSelectionAppBar(
@@ -42,7 +43,7 @@ fun CloseSelectionAppBar(
                     .size(24.dp)
                     .clip(CircleShape)
                     .clickableRipple(onClick = onClose),
-                painter = rememberVectorPainter(Icons.Filled.Close),
+                painter = painterResource(Res.drawable.material_ic_close),
                 contentDescription = null,
                 tint = LocalPallet.current.onAppBar
             )

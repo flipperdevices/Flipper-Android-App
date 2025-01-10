@@ -40,6 +40,8 @@ compose.desktop {
 
 commonDependencies {
     implementation(projects.components.bridge.connection.sample.shared)
+
+    implementation(libs.kotlin.coroutines.swing)
 }
 
 anvil {
@@ -54,7 +56,6 @@ dependencies {
     "implementation"(libs.anvil.utils.annotations)
     "commonKsp"(libs.anvil.utils.compiler)
 }
-
 
 dependencies {
     ksp(libs.dagger.compiler)

@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.multiplatform-compose")
     id("flipper.multiplatform-dependencies")
     id("kotlinx-serialization")
 }
@@ -12,7 +12,6 @@ commonDependencies {
     implementation(projects.components.core.kmpparcelize)
 
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.compose.ui)
 
     implementation(libs.annotations)
     implementation(libs.appcompat)

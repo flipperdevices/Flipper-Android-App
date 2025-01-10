@@ -1,5 +1,5 @@
 plugins {
-    id("flipper.multiplatform")
+    id("flipper.multiplatform-compose")
     id("flipper.multiplatform-dependencies")
 }
 
@@ -7,7 +7,6 @@ android.namespace = "com.flipperdevices.core.data"
 
 commonDependencies {
     implementation(libs.kotlin.immutable.collections)
-    implementation(libs.compose.ui)
 }
 
 commonTestDependencies {

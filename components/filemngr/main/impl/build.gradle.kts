@@ -29,11 +29,6 @@ commonDependencies {
     implementation(projects.components.filemngr.editor.api)
     implementation(projects.components.filemngr.util)
 
-    // Compose
-    
-    implementation(libs.compose.material.icons.core)
-    implementation(libs.compose.material.icons.extended)
-
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)
 

@@ -3,7 +3,7 @@
 kotlin-general = "2.1.0" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.3.8" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
-kotlinx = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
+kotlinx = "1.10.1" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "2.1.0-1.0.29" # https://github.com/google/ksp/releases
 anvil = "0.4.0" # https://github.com/ZacSweers/anvil/releases
 anvil-utils = "0.3.0-beta02" # https://github.com/IlyaGulya/anvil-utils/releases
@@ -120,6 +120,7 @@ grgit-gradle = { module = "com.github.LionZXY:grgit", version.ref = "grgit-gradl
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx" }
 kotlin-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx" }
+kotlin-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx" }
 
 kotlin-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-general" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }

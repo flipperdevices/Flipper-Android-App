@@ -42,11 +42,6 @@ commonDependencies {
 
     implementation(projects.components.deeplink.api)
 
-    // Compose
-    
-    implementation(libs.compose.material.icons.core)
-    implementation(libs.compose.material.icons.extended)
-
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)
 
