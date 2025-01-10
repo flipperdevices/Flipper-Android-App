@@ -11,25 +11,14 @@ import androidx.compose.ui.window.rememberWindowState
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.extensions.compose.lifecycle.LifecycleController
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import com.flipperdevices.bridge.connection.di.DaggerMergedAppComponent
+import com.flipperdevices.bridge.connection.di.AppComponent
 import com.flipperdevices.bridge.connection.utils.runOnUiThread
-import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.core.ui.theme.LocalPallet
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 
-fun main() {
+fun launch(appComponent: AppComponent) {
     val lifecycle = LifecycleRegistry()
-    val applicationScope = CoroutineScope(
-        SupervisorJob() + FlipperDispatchers.workStealingDispatcher
-    )
-    // Always create the root component outside Compose on the UI thread
-    val appComponent = DaggerMergedAppComponent.factory()
-        .create(
-            scope = applicationScope
-        )
     val root = runOnUiThread {
         appComponent.rootComponentFactory(
             DefaultComponentContext(lifecycle = lifecycle)
