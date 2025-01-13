@@ -18,6 +18,10 @@ commonDependencies {
     implementation(projects.components.bridge.connection.sample.shared)
 }
 
+androidDependencies {
+    implementation(projects.components.core.di)
+}
+
 dependencies {
     commonKsp(libs.dagger.compiler)
 }

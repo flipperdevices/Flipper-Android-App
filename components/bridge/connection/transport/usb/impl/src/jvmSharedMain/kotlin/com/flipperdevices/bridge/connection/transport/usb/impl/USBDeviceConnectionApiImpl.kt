@@ -2,6 +2,7 @@ package com.flipperdevices.bridge.connection.transport.usb.impl
 
 import com.fazecast.jSerialComm.SerialPort
 import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
+import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBApi
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
@@ -31,6 +32,7 @@ class USBDeviceConnectionApiImpl(
         config: FUSBDeviceConnectionConfig,
         listener: FTransportConnectionStatusListener
     ): Result<FUSBApi> = runCatching {
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
         val serialPort = SerialPort.getCommPort(config.path)
         serialPort.setComPortParameters(
             BAUD_RATE,
@@ -48,25 +50,32 @@ class USBDeviceConnectionApiImpl(
             error("Fail to open port")
         }
 
+        info { "Port opened, start reading flood" }
         skipFlood(serialPort, FLOOD_END_STRING)
+        info { "Flood skipped, send start_rpc_session command" }
         serialPort.writeBytes(COMMAND, COMMAND.size)
         skipFlood(serialPort, "\n".toByteArray())
+        info { "Flood skipped. Now we are in RPC mode" }
 
         val deviceApi = FUSBSerialDeviceApi(
             scope = scope,
             serialPort = serialPort,
             actionNotifier = actionNotifierFactory(scope)
         )
+        info { "Finish create device API" }
 
         scope.launch {
             try {
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
+                    info { "Closing port..." }
                     serialPort.closePort()
                 }
             }
         }
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connected(scope, deviceApi))
+
         return@runCatching deviceApi
     }
 
