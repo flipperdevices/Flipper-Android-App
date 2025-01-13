@@ -38,8 +38,6 @@ dependencies {
     implementation(libs.decompose)
     implementation(libs.coil.compose)
 
-    implementation(libs.lifecycle.viewmodel.ktx)
-
     implementation(libs.kotlin.immutable.collections)
 
     testImplementation(libs.kotlin.coroutines.test)

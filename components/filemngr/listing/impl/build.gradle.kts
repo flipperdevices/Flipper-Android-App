@@ -6,6 +6,14 @@ plugins {
 }
 android.namespace = "com.flipperdevices.filemanager.listing.impl"
 
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.material3)
+        }
+    }
+}
+
 commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
@@ -36,15 +44,6 @@ commonDependencies {
     implementation(projects.components.filemngr.rename.api)
     implementation(projects.components.filemngr.create.api)
     implementation(projects.components.filemngr.util)
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons.core)
-    implementation(libs.compose.material.icons.extended)
 
     implementation(libs.kotlin.serialization.json)
     implementation(libs.ktor.client)

@@ -12,7 +12,7 @@ object ApkConfig {
     const val COMPILE_SDK_VERSION = 35
     const val ROBOELECTRIC_SDK_VERSION = 34
 
-    private const val DEBUG_VERSION = "DEBUG_VERSION"
+    private const val DEBUG_VERSION = "1.0.0"
 
     val Project.VERSION_CODE
         get() = prop("version_code", Integer.MAX_VALUE).toInt()

@@ -25,7 +25,7 @@ dependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.lifecycle.viewmodel.ktx)
+
     implementation(libs.bundles.decompose)
 
     implementation(libs.zoomable)

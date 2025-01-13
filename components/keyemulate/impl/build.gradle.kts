@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.appcompat)
 
     implementation(libs.lifecycle.compose)
-    implementation(libs.lifecycle.viewmodel.ktx)
+
     implementation(libs.lifecycle.runtime.ktx)
 
     // Testing

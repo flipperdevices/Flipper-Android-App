@@ -15,18 +15,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.flipperdevices.core.ui.ktx.elements.ComposableFlipperButton
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalPalletV2
+import flipperapp.components.core.ui.res.generated.resources.Res
+import flipperapp.components.core.ui.res.generated.resources.material_ic_close
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun NameDialog(
@@ -57,7 +57,7 @@ fun NameDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Icon(
-                        painter = rememberVectorPainter(Icons.Filled.Close),
+                        painter = painterResource(Res.drawable.material_ic_close),
                         tint = LocalPalletV2.current.icon.blackAndWhite.default,
                         contentDescription = null,
                         modifier = Modifier

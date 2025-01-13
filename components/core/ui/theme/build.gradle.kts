@@ -11,7 +11,4 @@ commonDependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.preference)
-
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.compose)
 }

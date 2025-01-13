@@ -33,10 +33,6 @@ commonDependencies {
     implementation(projects.components.filemngr.uiComponents)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     implementation(libs.decompose)
     implementation(libs.kotlin.coroutines)

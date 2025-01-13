@@ -52,7 +52,7 @@ class FlipperSharedPreferenceModule {
             scope = scope + Dispatchers.IO,
             produceFile = {
                 storageProvider.rootPath
-                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_SETTINGS)
+                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_PAIR_SETTINGS)
                     .toFile()
             }
         )
@@ -71,7 +71,7 @@ class FlipperSharedPreferenceModule {
             scope = scope + Dispatchers.IO,
             produceFile = {
                 storageProvider.rootPath
-                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_SETTINGS)
+                    .resolve(SettingsFilePaths.DATASTORE_FILENAME_PAIR_SETTINGS_V2)
                     .toFile()
             }
         )

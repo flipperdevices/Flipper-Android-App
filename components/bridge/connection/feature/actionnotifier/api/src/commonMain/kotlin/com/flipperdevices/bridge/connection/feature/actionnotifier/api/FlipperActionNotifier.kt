@@ -9,6 +9,6 @@ interface FlipperActionNotifier {
     fun notifyAboutAction()
 
     fun interface Factory {
-        fun invoke(scope: CoroutineScope): FlipperActionNotifier
+        operator fun invoke(scope: CoroutineScope): FlipperActionNotifier
     }
 }
