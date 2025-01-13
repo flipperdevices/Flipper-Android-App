@@ -4,11 +4,13 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceBaseModel
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
+import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroUsbModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
+import com.flipperdevices.core.preference.pb.FlipperZeroUsb
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.SavedDevice
 import com.squareup.anvil.annotations.ContributesBinding
@@ -89,6 +91,14 @@ class FDevicePersistedStorageImpl @Inject constructor(
                 hardwareColor = flipperZeroBle.hardware_color
             )
         }
+        val flipperZeroUsb = device.flipper_zero_usb
+        if (flipperZeroUsb != null) {
+            return FDeviceFlipperZeroUsbModel(
+                name = device.name,
+                uniqueId = device.id,
+                portPath = flipperZeroUsb.path,
+            )
+        }
         return null
     }
 
@@ -102,7 +112,13 @@ class FDevicePersistedStorageImpl @Inject constructor(
                 )
             )
 
-            else -> error("Can't find parser for $device")
+            is FDeviceFlipperZeroUsbModel -> SavedDevice(
+                id = device.uniqueId,
+                name = device.name,
+                flipper_zero_usb = FlipperZeroUsb(
+                    path = device.portPath
+                )
+            )
         }
     }
 

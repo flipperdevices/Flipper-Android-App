@@ -87,6 +87,8 @@ commonDependencies {
     api(projects.components.analytics.metric.noop)
 
     api(libs.kotlin.immutable.collections)
+
+    implementation(projects.components.core.ui.res)
 }
 
 desktopDependencies {
@@ -94,6 +96,8 @@ desktopDependencies {
     api(projects.components.bridge.connection.transport.usb.impl)
 
     api(libs.decompose.jetpack)
+
+    implementation(libs.jserial)
 }
 
 androidDependencies {

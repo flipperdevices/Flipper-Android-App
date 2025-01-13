@@ -11,6 +11,7 @@ class FDeviceConnectStatusToDeviceApi @Inject constructor(
 ) {
     fun get(status: FDeviceConnectStatus.Connected): FDeviceApi {
         return when (status.device.type) {
+            FDeviceType.FLIPPER_ZERO_USB,
             FDeviceType.FLIPPER_ZERO_BLE -> fZeroDeviceApiFactory(
                 scope = status.scope,
                 connectedDevice = status.deviceApi

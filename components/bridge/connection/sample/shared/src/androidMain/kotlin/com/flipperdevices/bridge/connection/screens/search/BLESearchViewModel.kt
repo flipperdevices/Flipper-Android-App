@@ -5,8 +5,9 @@ import android.content.Context
 import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
+import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
-import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -25,10 +26,11 @@ import no.nordicsemi.android.kotlin.ble.scanner.aggregator.BleScanResultAggregat
 import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
-class ConnectionSearchViewModel @Inject constructor(
+@ContributesBinding(AppGraph::class, ConnectionSearchViewModel::class)
+class BLESearchViewModel @Inject constructor(
     context: Context,
-    private val persistedStorage: FDevicePersistedStorage
-) : DecomposeViewModel() {
+    persistedStorage: FDevicePersistedStorage
+) : ConnectionSearchViewModel(persistedStorage) {
     private val aggregator = BleScanResultAggregator()
     private val devicesFlow = MutableStateFlow<PersistentList<ConnectionSearchItem>>(
         persistentListOf()
@@ -48,27 +50,19 @@ class ConnectionSearchViewModel @Inject constructor(
             val existedMacAddresses = savedDevices
                 .filterIsInstance<FDeviceFlipperZeroBleModel>()
                 .associateBy { it.address }
-            searchDevices.map {
+            searchDevices.map { bleDevice ->
                 ConnectionSearchItem(
-                    device = it,
-                    savedDeviceModel = existedMacAddresses[it.address]
+                    address = bleDevice.address,
+                    deviceModel = existedMacAddresses[bleDevice.address]
+                        ?: bleDevice.toFDeviceFlipperZeroBleModel(),
+                    isAdded = existedMacAddresses.containsKey(bleDevice.address)
                 )
             }
         }.onEach { devicesFlow.emit(it.toPersistentList()) }
             .launchIn(viewModelScope)
     }
 
-    fun getDevicesFlow() = devicesFlow.asStateFlow()
-
-    fun onDeviceClick(searchItem: ConnectionSearchItem) {
-        viewModelScope.launch {
-            if (searchItem.savedDeviceModel == null) {
-                persistedStorage.addDevice(searchItem.device.toFDeviceFlipperZeroBleModel())
-            } else {
-                persistedStorage.removeDevice(searchItem.savedDeviceModel.uniqueId)
-            }
-        }
-    }
+    override fun getDevicesFlow() = devicesFlow.asStateFlow()
 }
 
 private fun ServerDevice.toFDeviceFlipperZeroBleModel() = FDeviceFlipperZeroBleModel(
