@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.exception.Forbid
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.AppEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper.Companion.API_SUPPORTED_INFRARED_EMULATE
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.FlipperAppError
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
@@ -31,10 +32,6 @@ private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
 const val SUBGHZ_DEFAULT_TIMEOUT_MS = 500L
 const val INFRARED_DEFAULT_TIMEOUT_MS = 500L
 
-val API_SUPPORTED_INFRARED_EMULATE = SemVer(
-    majorVersion = 0,
-    minorVersion = 21
-)
 val API_SUPPORTED_INFRARED_PRESS_RELEASE = SemVer(
     majorVersion = 0,
     minorVersion = 25

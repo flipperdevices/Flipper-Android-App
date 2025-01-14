@@ -9,13 +9,9 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class ConnectionViewModel @Inject constructor(
-    private val infraredConnectionApi: InfraredConnectionApi,
-    serviceProvider: FlipperServiceProvider,
+    infraredConnectionApi: InfraredConnectionApi,
 ) : DecomposeViewModel() {
-    val state = flow {
-        val serviceApi = serviceProvider.getServiceApi()
-        infraredConnectionApi.getState(serviceApi).collect { emit(it) }
-    }.stateIn(
+    val state = infraredConnectionApi.getState().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         InfraredConnectionApi.InfraredEmulateState.ALL_GOOD
