@@ -1,26 +1,22 @@
 package com.flipperdevices.keyemulate.tasks
 
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
-import com.flipperdevices.core.ui.lifecycle.OneTimeExecutionBleTask
-import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateHelper
+import com.flipperdevices.core.ui.lifecycle.FOneTimeExecutionBleTask
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 
 class CloseEmulateAppTask(
-    serviceProvider: FlipperServiceProvider,
     private val emulateHelper: EmulateHelper
-) : OneTimeExecutionBleTask<Unit, Unit>(serviceProvider) {
+) : FOneTimeExecutionBleTask<Unit, Unit>() {
     override val TAG = "CloseEmulateAppTask"
 
     override suspend fun startInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         input: Unit,
         stateListener: suspend (Unit) -> Unit
     ) {
-        emulateHelper.stopEmulateForce(serviceApi.requestApi)
+        emulateHelper.stopEmulateForce()
         // Waiting until the emulation stops
         emulateHelper.getCurrentEmulatingKey().filter { it == null }.first()
         stateListener(Unit)

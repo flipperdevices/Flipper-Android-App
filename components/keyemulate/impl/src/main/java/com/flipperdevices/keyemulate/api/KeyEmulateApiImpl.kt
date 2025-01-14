@@ -3,13 +3,13 @@ package com.flipperdevices.keyemulate.api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.keyemulate.composable.ComposableInfraredSendButton
 import com.flipperdevices.keyemulate.composable.ComposableSimpleEmulateButton
 import com.flipperdevices.keyemulate.composable.ComposableSubGhzSendButton
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.InfraredViewModel
 import com.flipperdevices.keyemulate.viewmodel.SimpleEmulateViewModel
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel

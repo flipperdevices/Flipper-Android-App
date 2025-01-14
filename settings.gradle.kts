@@ -101,6 +101,8 @@ include(
     ":components:bridge:connection:feature:screenstreaming:impl",
     ":components:bridge:connection:feature:update:api",
     ":components:bridge:connection:feature:update:impl",
+    ":components:bridge:connection:feature:emulate:api",
+    ":components:bridge:connection:feature:emulate:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",

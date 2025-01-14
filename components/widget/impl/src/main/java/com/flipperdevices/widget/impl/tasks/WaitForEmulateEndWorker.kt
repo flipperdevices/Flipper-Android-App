@@ -4,16 +4,22 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.api.manager.FlipperRequestApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.protobuf.app.Application
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class WaitForEmulateEndWorker(
@@ -23,7 +29,7 @@ class WaitForEmulateEndWorker(
     override val TAG = "WaitForEmulateEndWorker"
 
     @Inject
-    lateinit var emulateHelper: EmulateHelper
+    lateinit var fFeatureProvider: FFeatureProvider
 
     @Inject
     lateinit var serviceProvider: FlipperServiceProvider
@@ -41,7 +47,12 @@ class WaitForEmulateEndWorker(
 
     private suspend fun waitEmulateEnd(
         requestApi: FlipperRequestApi
-    ) = emulateHelper.getCurrentEmulatingKey()
+    ) = fFeatureProvider.get<FEmulateFeatureApi>()
+        .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+        .map { status -> status?.featureApi }
+        .flatMapLatest { feature ->
+            feature?.getEmulateHelper()?.getCurrentEmulatingKey() ?: flowOf(null)
+        }
         .combine(requestApi.notificationFlow())
         .filter { (currentEmulatingKey, unknownMessage) ->
             if (currentEmulatingKey == null) {

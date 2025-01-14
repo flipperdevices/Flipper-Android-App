@@ -3,7 +3,7 @@ package com.flipperdevices.keyemulate.api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import com.flipperdevices.keyemulate.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 
 interface KeyEmulateApi {
     @Composable

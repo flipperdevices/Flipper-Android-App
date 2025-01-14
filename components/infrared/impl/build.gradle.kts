@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
 
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+
     implementation(projects.components.remoteControls.grid.saved.api)
 
     implementation(projects.components.core.di)

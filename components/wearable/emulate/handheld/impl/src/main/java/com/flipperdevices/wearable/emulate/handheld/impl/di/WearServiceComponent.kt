@@ -1,10 +1,10 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.di
 
 import android.content.Context
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 interface WearServiceComponentDependencies {
     val context: Context
     val flipperServiceProvider: FlipperServiceProvider
-    val emulateHelper: EmulateHelper
+    val fFeatureProvider: FFeatureProvider
     val simpleKeyApi: SimpleKeyApi
     val keyParser: KeyParser
 }

@@ -33,6 +33,10 @@ dependencies {
     implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
 
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+
     implementation(projects.components.keyedit.api)
     implementation(projects.components.nfceditor.api)
     implementation(projects.components.deeplink.api)

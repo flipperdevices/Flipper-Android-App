@@ -31,6 +31,7 @@ commonDependencies {
     implementation(projects.components.bridge.connection.feature.appstart.api)
     implementation(projects.components.bridge.connection.feature.screenstreaming.api)
     implementation(projects.components.bridge.connection.feature.update.api)
+    implementation(projects.components.bridge.connection.feature.emulate.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

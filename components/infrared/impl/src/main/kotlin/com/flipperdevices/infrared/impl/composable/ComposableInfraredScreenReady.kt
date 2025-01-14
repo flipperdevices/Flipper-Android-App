@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.infrared.api.InfraredConnectionApi.InfraredEmulateState
 import com.flipperdevices.infrared.impl.composable.components.ComposableFadedInfraredRemotes
 import com.flipperdevices.infrared.impl.composable.components.ComposableInfraredRemotes
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyscreen.model.KeyScreenState
 
 @Composable

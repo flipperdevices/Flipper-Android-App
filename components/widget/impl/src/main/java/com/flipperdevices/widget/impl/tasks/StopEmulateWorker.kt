@@ -3,11 +3,13 @@ package com.flipperdevices.widget.impl.tasks
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.withCoroutineScope
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.keyemulate.api.EmulateHelper
+import com.flipperdevices.core.log.error
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
@@ -25,10 +27,7 @@ class StopEmulateWorker(
     override val TAG = "StopEmulateWorker"
 
     @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var emulateHelper: EmulateHelper
+    lateinit var fFeatureProvider: FFeatureProvider
 
     @Inject
     lateinit var widgetStateStorage: WidgetStateStorage
@@ -44,9 +43,13 @@ class StopEmulateWorker(
         if (widgetId < 0) {
             error("Widget id less then zero")
         }
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return@withCoroutineScope Result.failure()
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
 
-        val serviceApi = serviceProvider.getServiceApi()
-        emulateHelper.stopEmulate(scope, serviceApi.requestApi)
+        emulateHelper.stopEmulate(scope)
         emulateHelper.getCurrentEmulatingKey().filter { it == null }.first()
         widgetStateStorage.updateState(widgetId, WidgetState.PENDING)
         return@withCoroutineScope Result.success()

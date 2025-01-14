@@ -1,17 +1,17 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
 import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
@@ -31,8 +31,7 @@ class WearableStartEmulateProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val scope: CoroutineScope,
-    private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper
+    private val fFeatureProvider: FFeatureProvider
 ) : WearableCommandProcessor, LogTagProvider {
     override val TAG = "WearableStartEmulateProcessor-${hashCode()}"
 
@@ -41,12 +40,17 @@ class WearableStartEmulateProcessor @Inject constructor(
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasStartEmulate()) {
                 info { "StartEmulate: $it" }
-                startEmulate(serviceProvider.getServiceApi(), it.startEmulate.path)
+                startEmulate(it.startEmulate.path)
             }
         }.launchIn(scope)
     }
 
-    private suspend fun startEmulate(serviceApi: FlipperServiceApi, path: String) {
+    private suspend fun startEmulate(path: String) {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         info { "#startEmulate $path" }
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
         info { "Key type is $keyType" }
@@ -62,7 +66,7 @@ class WearableStartEmulateProcessor @Inject constructor(
                     emulateStatus = Emulate.EmulateStatus.EMULATING
                 }
             )
-            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
+            emulateHelper.startEmulate(scope, emulateConfig)
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start emulate $path" }
 

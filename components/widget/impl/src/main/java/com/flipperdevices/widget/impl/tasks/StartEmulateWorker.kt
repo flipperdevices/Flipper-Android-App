@@ -4,20 +4,20 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.jre.withCoroutineScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
@@ -38,10 +38,7 @@ class StartEmulateWorker(
     override val TAG = "StartEmulateWorker"
 
     @Inject
-    lateinit var serviceApiProvider: FlipperServiceProvider
-
-    @Inject
-    lateinit var emulateHelper: EmulateHelper
+    lateinit var fFeatureProvider: FFeatureProvider
 
     @Inject
     lateinit var widgetStateStorage: WidgetStateStorage
@@ -64,7 +61,6 @@ class StartEmulateWorker(
             error("Widget id less then zero")
         }
         // Start emulate
-        val serviceApi = serviceApiProvider.getServiceApi()
         try {
             val filePath = getFilePath()
 
@@ -75,7 +71,7 @@ class StartEmulateWorker(
                 return@withCoroutineScope Result.failure()
             }
 
-            if (!startEmulate(scope, serviceApi, filePath)) {
+            if (!startEmulate(scope, filePath)) {
                 widgetStateStorage.updateState(widgetId, WidgetState.ERROR_UNKNOWN)
                 invalidateWidgetsHelper.invoke()
                 return@withCoroutineScope Result.failure()
@@ -99,13 +95,17 @@ class StartEmulateWorker(
 
     private suspend fun startEmulate(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         filePath: FlipperFilePath
     ): Boolean {
         info { "Start emulate" }
         val keyType = filePath.keyType ?: error("Not found key type")
         val emulateConfig = EmulateConfig(keyType, filePath)
-        return emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return false
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
+        return emulateHelper.startEmulate(scope, emulateConfig)
     }
 
     private fun getFilePath(): FlipperFilePath {

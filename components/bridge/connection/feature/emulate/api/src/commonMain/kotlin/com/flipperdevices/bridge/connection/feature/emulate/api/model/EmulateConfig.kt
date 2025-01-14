@@ -1,6 +1,5 @@
-package com.flipperdevices.keyemulate.model
+package com.flipperdevices.bridge.connection.feature.emulate.api.model
 
-import androidx.compose.runtime.Immutable
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 
@@ -10,7 +9,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 /**
  * @param isPressRelease one-time emulate for infrared-only
  */
-@Immutable
 data class EmulateConfig(
     val keyType: FlipperKeyType,
     val keyPath: FlipperFilePath,

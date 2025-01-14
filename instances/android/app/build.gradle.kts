@@ -194,6 +194,8 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.screenstreaming.impl)
     implementation(projects.components.bridge.connection.feature.update.api)
     implementation(projects.components.bridge.connection.feature.update.impl)
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+    implementation(projects.components.bridge.connection.feature.emulate.impl)
 
     implementation(projects.components.analytics.shake2report.api)
     if (IS_SENTRY_ENABLED) {
