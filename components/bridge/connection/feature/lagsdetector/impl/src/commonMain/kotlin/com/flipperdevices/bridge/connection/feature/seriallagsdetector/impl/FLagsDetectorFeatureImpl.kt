@@ -42,7 +42,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
                     }
                     pendingResponseCounter.logPendingCommands()
                     if (restartRpcFeatureApi == null) {
-                        error { "Fail to restart RPC because restartRpcFeatureApi is null"}
+                        error { "Fail to restart RPC because restartRpcFeatureApi is null" }
                     } else {
                         info { "Start restart RPC" }
 

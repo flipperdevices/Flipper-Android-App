@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,23 +16,22 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
+import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_search_title
-import flipperapp.components.core.ui.res.generated.resources.Res as SharedRes
-import androidx.compose.foundation.lazy.items
-import com.flipperdevices.core.ui.theme.LocalPallet
-import dagger.assisted.AssistedFactory
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_add_box
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_delete
 import flipperapp.components.core.ui.res.generated.resources.material_ic_close
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import javax.inject.Provider
+import flipperapp.components.core.ui.res.generated.resources.Res as SharedRes
 
 class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

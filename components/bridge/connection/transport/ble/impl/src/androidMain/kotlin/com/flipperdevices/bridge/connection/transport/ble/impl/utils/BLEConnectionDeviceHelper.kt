@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.utils
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BleConstants.FAST_CONNECT_TIME_MS
 import com.flipperdevices.core.log.LogTagProvider

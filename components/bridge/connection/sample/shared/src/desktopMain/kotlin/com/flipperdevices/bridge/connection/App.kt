@@ -31,7 +31,7 @@ fun launch(appComponent: AppComponent) {
         Window(
             onCloseRequest = ::exitApplication,
             state = windowState,
-            title = "BusyStatusBar",
+            title = "Flipper App",
         ) {
             FlipperTheme(
                 content = {

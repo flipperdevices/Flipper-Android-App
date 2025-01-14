@@ -1,9 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.ble.impl.di
 
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
 import android.content.Context
-import androidx.core.content.ContextCompat
 import com.flipperdevices.bridge.connection.transport.ble.api.FBleDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.ble.impl.BleDeviceConnectionApiImpl
 import com.flipperdevices.bridge.connection.transport.ble.impl.api.FBleApiWithSerialFactory
@@ -11,7 +8,6 @@ import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BLEConnecti
 import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnectionApiHolder
 import com.flipperdevices.bridge.connection.transport.common.api.di.toHolder
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.ktx.android.getBluetoothAdapter
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides

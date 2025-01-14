@@ -17,8 +17,6 @@ import com.flipperdevices.bridge.connection.transport.common.api.FTransportConne
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withTimeout
-import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
-import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
 
 class BleDeviceConnectionApiImpl(
     private val context: Context,

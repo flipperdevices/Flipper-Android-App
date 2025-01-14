@@ -13,8 +13,8 @@ import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInforma
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.dataOrNull
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.error
+import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.system.PingRequest

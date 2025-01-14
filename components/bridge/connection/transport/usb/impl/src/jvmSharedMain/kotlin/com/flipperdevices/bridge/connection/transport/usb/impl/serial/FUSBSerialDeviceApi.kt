@@ -21,7 +21,8 @@ class FUSBSerialDeviceApi(
     private val scope: CoroutineScope,
     private val serialPort: SerialPort,
     private val actionNotifier: FlipperActionNotifier
-) : FUSBApi, FSerialDeviceApi,
+) : FUSBApi,
+    FSerialDeviceApi,
     FSerialRestartApi by NoopRestartApi(),
     FTransportMetaInfoApi by FakeTransportMetaInfoApi(),
     LogTagProvider {

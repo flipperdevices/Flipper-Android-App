@@ -77,7 +77,7 @@ class FZeroDeviceApiImpl @AssistedInject constructor(
             connectedDevice = connectedDevice
         )
         if (featureApi == null) {
-            error { "Fail to create $feature!"}
+            error { "Fail to create $feature!" }
         } else {
             info { "$feature feature creation successful!" }
         }

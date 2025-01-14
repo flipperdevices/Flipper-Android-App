@@ -1,3 +1,3 @@
 package com.flipperdevices.updater.subghz.model
 
-class FailedUploadSubGhzException : RuntimeException()
+class FailedUploadSubGhzException(exception: Exception? = null) : RuntimeException(exception)

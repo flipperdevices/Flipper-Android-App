@@ -95,7 +95,7 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            throw FailedUploadSubGhzException()
+            throw FailedUploadSubGhzException(e)
         }
 
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
