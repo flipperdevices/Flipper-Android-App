@@ -76,4 +76,9 @@ class FConnectionServiceImpl @Inject constructor(
                 }
         }
     }
+
+    override fun connectIfNotForceDisconnect() {
+        // todo
+        onApplicationInit()
+    }
 }

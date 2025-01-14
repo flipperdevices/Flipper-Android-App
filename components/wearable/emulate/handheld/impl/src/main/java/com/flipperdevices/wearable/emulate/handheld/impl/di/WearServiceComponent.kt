@@ -2,8 +2,8 @@ package com.flipperdevices.wearable.emulate.handheld.impl.di
 
 import android.content.Context
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -16,8 +16,8 @@ import kotlinx.coroutines.CoroutineScope
 @ContributesTo(AppGraph::class)
 interface WearServiceComponentDependencies {
     val context: Context
-    val flipperServiceProvider: FlipperServiceProvider
     val fFeatureProvider: FFeatureProvider
+    val fDeviceOrchestrator: FDeviceOrchestrator
     val simpleKeyApi: SimpleKeyApi
     val keyParser: KeyParser
 }

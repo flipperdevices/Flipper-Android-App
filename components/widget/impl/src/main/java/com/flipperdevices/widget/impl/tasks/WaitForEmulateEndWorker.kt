@@ -3,18 +3,16 @@ package com.flipperdevices.widget.impl.tasks
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
 import com.flipperdevices.bridge.connection.feature.provider.api.get
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.ComponentHolder
-import com.flipperdevices.core.ktx.jre.combine
 import com.flipperdevices.core.log.LogTagProvider
-import com.flipperdevices.protobuf.app.Application
+import com.flipperdevices.protobuf.app.AppState
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -31,9 +29,6 @@ class WaitForEmulateEndWorker(
     @Inject
     lateinit var fFeatureProvider: FFeatureProvider
 
-    @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
     init {
         ComponentHolder.component<WidgetComponent>().inject(this)
     }
@@ -41,30 +36,34 @@ class WaitForEmulateEndWorker(
     private val widgetNotificationHelper = WidgetNotificationHelper(context)
 
     override suspend fun doWork(): Result {
-        waitEmulateEnd(serviceProvider.getServiceApi().requestApi)
+        waitEmulateEnd()
         return Result.success()
     }
 
-    private suspend fun waitEmulateEnd(
-        requestApi: FlipperRequestApi
-    ) = fFeatureProvider.get<FEmulateFeatureApi>()
-        .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
-        .map { status -> status?.featureApi }
-        .flatMapLatest { feature ->
-            feature?.getEmulateHelper()?.getCurrentEmulatingKey() ?: flowOf(null)
+    private suspend fun waitEmulateEnd() = combine(
+        flow = fFeatureProvider.get<FEmulateFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+            .map { status -> status?.featureApi }
+            .flatMapLatest { feature ->
+                feature?.getEmulateHelper()?.getCurrentEmulatingKey() ?: flowOf(null)
+            },
+        flow2 = fFeatureProvider.get<FEmulateFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+            .map { status -> status?.featureApi }
+            .flatMapLatest { feature ->
+                feature?.getAppEmulateHelper()?.appStateFlow() ?: flowOf(null)
+            },
+        transform = { currentEmulatingKey, appStateResponse ->
+            currentEmulatingKey to appStateResponse
         }
-        .combine(requestApi.notificationFlow())
-        .filter { (currentEmulatingKey, unknownMessage) ->
-            if (currentEmulatingKey == null) {
-                return@filter true
-            }
-            if (unknownMessage.hasAppStateResponse()) {
-                if (unknownMessage.appStateResponse.state == Application.AppState.APP_CLOSED) {
-                    return@filter true
-                }
-            }
-            return@filter false
-        }.first()
+
+    ).filter { (currentEmulatingKey, appStateResponse) ->
+        return@filter when {
+            currentEmulatingKey == null -> true
+            appStateResponse?.state == AppState.APP_CLOSED -> true
+            else -> false
+        }
+    }.first()
 
     override suspend fun getForegroundInfo() = widgetNotificationHelper.emulatingForegroundInfo(id)
 }
