@@ -9,9 +9,7 @@ dependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.decompose)
-    implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.keyparser.api)
 
     implementation(projects.components.bridge.connection.feature.emulate.api)

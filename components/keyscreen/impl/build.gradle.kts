@@ -27,10 +27,10 @@ dependencies {
 
     implementation(projects.components.analytics.metric.api)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
+//    implementation(projects.components.bridge.api)
+//    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.pbutils)
+//    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)
