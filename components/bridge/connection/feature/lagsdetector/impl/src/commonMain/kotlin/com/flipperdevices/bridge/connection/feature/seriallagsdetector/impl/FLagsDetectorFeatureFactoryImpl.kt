@@ -23,7 +23,7 @@ class FLagsDetectorFeatureFactoryImpl @Inject constructor(
         connectedDevice: FConnectedDeviceApi
     ): FDeviceFeatureApi? {
         val restartRpcFeature =
-            unsafeFeatureDeviceApi.getUnsafe(FRestartRpcFeatureApi::class) ?: return null
+            unsafeFeatureDeviceApi.getUnsafe(FRestartRpcFeatureApi::class)
         val flipperActionNotifier = (connectedDevice as? FSerialDeviceApi)
             ?.getActionNotifier()
             ?: return null

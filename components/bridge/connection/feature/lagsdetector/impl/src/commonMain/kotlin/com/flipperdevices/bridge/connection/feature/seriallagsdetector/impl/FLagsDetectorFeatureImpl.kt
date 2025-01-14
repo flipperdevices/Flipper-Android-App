@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class FLagsDetectorFeatureImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
-    @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi,
+    @Assisted restartRpcFeatureApi: FRestartRpcFeatureApi?,
     @Assisted private val flipperActionNotifier: FlipperActionNotifier
 ) : FLagsDetectorFeature, LogTagProvider {
     override val TAG = "FlipperLagsDetector-${hashCode()}"
@@ -41,9 +41,13 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
                             "${PendingResponseCounter.LAGS_FLIPPER_DETECT_TIMEOUT_MS}ms"
                     }
                     pendingResponseCounter.logPendingCommands()
-                    info { "Start restart RPC" }
+                    if (restartRpcFeatureApi == null) {
+                        error { "Fail to restart RPC because restartRpcFeatureApi is null"}
+                    } else {
+                        info { "Start restart RPC" }
 
-                    restartRpcFeatureApi.restartRpc()
+                        restartRpcFeatureApi.restartRpc()
+                    }
                 }
             }
         }
@@ -80,7 +84,7 @@ class FLagsDetectorFeatureImpl @AssistedInject constructor(
     fun interface InternalFactory {
         operator fun invoke(
             scope: CoroutineScope,
-            restartRpcFeatureApi: FRestartRpcFeatureApi,
+            restartRpcFeatureApi: FRestartRpcFeatureApi?,
             flipperActionNotifier: FlipperActionNotifier
         ): FLagsDetectorFeatureImpl
     }

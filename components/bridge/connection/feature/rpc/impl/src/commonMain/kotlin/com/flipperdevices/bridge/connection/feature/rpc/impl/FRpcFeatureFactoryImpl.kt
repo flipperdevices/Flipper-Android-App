@@ -28,7 +28,7 @@ class FRpcFeatureFactoryImpl @Inject constructor(
         val lagsDetector =
             unsafeFeatureDeviceApi.getUnsafe(FLagsDetectorFeature::class) ?: return null
         val restartFeatureApi =
-            unsafeFeatureDeviceApi.getUnsafe(FRestartRpcFeatureApi::class) ?: return null
+            unsafeFeatureDeviceApi.getUnsafe(FRestartRpcFeatureApi::class)
         return rpcFeatureFactory(
             scope = scope,
             serialApi = serialDeviceApi,
