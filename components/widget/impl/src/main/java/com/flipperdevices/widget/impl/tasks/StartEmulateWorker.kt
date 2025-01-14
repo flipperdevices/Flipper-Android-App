@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
@@ -17,7 +18,6 @@ import com.flipperdevices.core.ktx.jre.withCoroutineScope
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
 import com.flipperdevices.widget.impl.di.WidgetComponent
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage

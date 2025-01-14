@@ -5,6 +5,8 @@ import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi.Companion.API_SUPPORTED_REMOTE_EMULATE
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
@@ -22,8 +24,6 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
-import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
 import com.flipperdevices.keyemulate.model.EmulateProgress

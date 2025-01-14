@@ -1,5 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers
 
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.AppEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.INFRARED_DEFAULT_TIMEOUT_MS
@@ -14,22 +16,17 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPrio
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.data.SemVer
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
-import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.app.AppButtonPressReleaseRequest
 import com.flipperdevices.protobuf.app.AppButtonPressRequest
 import com.flipperdevices.protobuf.app.AppLoadFileRequest
-import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import javax.inject.Inject
 
 private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
@@ -109,7 +106,7 @@ class StartEmulateHelperImpl(
 
     private fun isNeedButtonPress(config: EmulateConfig): Boolean {
         return config.keyType == FlipperKeyType.SUB_GHZ ||
-                config.keyType == FlipperKeyType.INFRARED
+            config.keyType == FlipperKeyType.INFRARED
     }
 
     private suspend fun processButtonPress(

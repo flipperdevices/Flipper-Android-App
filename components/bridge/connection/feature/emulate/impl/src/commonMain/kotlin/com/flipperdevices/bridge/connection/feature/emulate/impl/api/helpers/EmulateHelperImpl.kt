@@ -4,7 +4,6 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateH
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StopEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
-import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -13,7 +12,6 @@ import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -22,8 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.max
 
 /**
@@ -84,7 +80,7 @@ class EmulateHelperImpl(
         if (TimeHelper.getNow() > stopEmulateTimeAllowedMs) {
             info {
                 "Already passed delay, stop immediately " +
-                        "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
+                    "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
             }
             stopEmulateInternal()
             return@withLock
