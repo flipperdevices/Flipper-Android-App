@@ -61,6 +61,8 @@ commonDependencies {
     api(projects.components.bridge.connection.feature.storage.impl)
     api(projects.components.bridge.connection.feature.storageinfo.api)
     api(projects.components.bridge.connection.feature.storageinfo.impl)
+    api(projects.components.bridge.connection.feature.alarm.api)
+    api(projects.components.bridge.connection.feature.alarm.impl)
 
     api(projects.components.filemngr.main.api)
     api(projects.components.filemngr.main.impl)
