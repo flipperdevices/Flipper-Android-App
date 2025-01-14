@@ -19,8 +19,8 @@ import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.app.AppButtonPressReleaseRequest
@@ -43,8 +43,7 @@ val API_SUPPORTED_INFRARED_PRESS_RELEASE = SemVer(
     minorVersion = 25
 )
 
-@ContributesBinding(AppGraph::class, StartEmulateHelper::class)
-class StartEmulateHelperImpl @Inject constructor(
+class StartEmulateHelperImpl(
     private val appEmulateHelper: AppEmulateHelper,
     private val flipperAppErrorHelper: FlipperAppErrorHelper,
     private val fRpcFeatureApi: FRpcFeatureApi,
@@ -110,7 +109,7 @@ class StartEmulateHelperImpl @Inject constructor(
 
     private fun isNeedButtonPress(config: EmulateConfig): Boolean {
         return config.keyType == FlipperKeyType.SUB_GHZ ||
-            config.keyType == FlipperKeyType.INFRARED
+                config.keyType == FlipperKeyType.INFRARED
     }
 
     private suspend fun processButtonPress(

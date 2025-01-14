@@ -15,7 +15,7 @@ private val API_SUPPORTED_FLIPPER_ERROR = SemVer(
     minorVersion = 14
 )
 
-class FlipperAppErrorHandlerImpl constructor(
+class FlipperAppErrorHandlerImpl(
     private val fRpcFeatureApi: FRpcFeatureApi,
     private val fVersionFeatureApi: FVersionFeatureApi
 ) : FlipperAppErrorHelper {

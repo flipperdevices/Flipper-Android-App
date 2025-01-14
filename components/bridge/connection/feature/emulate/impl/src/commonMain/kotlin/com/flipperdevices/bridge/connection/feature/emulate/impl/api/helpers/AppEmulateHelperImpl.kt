@@ -11,7 +11,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
 import com.flipperdevices.protobuf.CommandStatus
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.app.AppState
@@ -32,8 +32,7 @@ import javax.inject.Inject
 
 const val RPC_START_REQUEST_ARG = "RPC"
 
-@ContributesBinding(AppGraph::class, AppEmulateHelper::class)
-class AppEmulateHelperImpl @Inject constructor(
+class AppEmulateHelperImpl(
     private val fRpcFeatureApi: FRpcFeatureApi,
 ) : AppEmulateHelper, LogTagProvider {
 

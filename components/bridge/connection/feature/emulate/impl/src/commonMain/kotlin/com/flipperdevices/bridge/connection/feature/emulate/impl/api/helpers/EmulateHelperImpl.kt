@@ -30,9 +30,7 @@ import kotlin.math.max
  *  It is very important for us not to call startEmulate if the application
  *  is already running - the flipper is very sensitive to the order of execution.
  */
-@Singleton
-@ContributesBinding(AppGraph::class, EmulateHelper::class)
-class EmulateHelperImpl @Inject constructor(
+class EmulateHelperImpl(
     private val startEmulateHelper: StartEmulateHelper,
     private val stopEmulateHelper: StopEmulateHelper
 ) : EmulateHelper, LogTagProvider {
@@ -86,7 +84,7 @@ class EmulateHelperImpl @Inject constructor(
         if (TimeHelper.getNow() > stopEmulateTimeAllowedMs) {
             info {
                 "Already passed delay, stop immediately " +
-                    "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
+                        "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
             }
             stopEmulateInternal()
             return@withLock
