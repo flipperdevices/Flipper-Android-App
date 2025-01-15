@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.backhandler.BackCallback
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
@@ -16,7 +17,6 @@ import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.buttondata.SingleKeyButtonData
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi.Companion.toDialogType
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi

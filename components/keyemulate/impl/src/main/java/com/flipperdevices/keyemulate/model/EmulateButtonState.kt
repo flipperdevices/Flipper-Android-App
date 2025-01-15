@@ -1,6 +1,7 @@
 package com.flipperdevices.keyemulate.model
 
 import androidx.compose.runtime.Stable
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 
 @Stable
 sealed class EmulateButtonState {

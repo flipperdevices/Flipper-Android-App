@@ -14,6 +14,8 @@ dependencies {
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.keyparser.api)
 
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)

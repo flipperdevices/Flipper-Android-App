@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.api.SynchronizationUiApi
 import com.flipperdevices.keyemulate.api.KeyEmulateApi
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyscreen.impl.R
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableDelete
 import com.flipperdevices.keyscreen.impl.composable.actions.ComposableNfcEdit

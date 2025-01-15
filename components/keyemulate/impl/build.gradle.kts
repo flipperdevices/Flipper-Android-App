@@ -21,11 +21,14 @@ dependencies {
     implementation(projects.components.core.ui.dialog)
     implementation(projects.components.core.ui.lifecycle)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.orchestrator.api)
     implementation(projects.components.bridge.synchronization.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+    implementation(projects.components.bridge.connection.feature.protocolversion.api)
+    implementation(projects.components.bridge.connection.pbutils)
 
     implementation(projects.components.rootscreen.api)
 

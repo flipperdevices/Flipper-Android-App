@@ -4,13 +4,14 @@ import com.flipperdevices.bridge.api.manager.FlipperRequestApi
 import com.flipperdevices.bridge.api.manager.service.FlipperVersionApi
 import com.flipperdevices.bridge.api.model.FlipperRequest
 import com.flipperdevices.bridge.api.model.FlipperRequestPriority
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.test.TimberRule
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.keyemulate.helpers.AppEmulateHelper
 import com.flipperdevices.keyemulate.helpers.EmulateHelperImpl
 import com.flipperdevices.keyemulate.helpers.FlipperAppErrorHelper
@@ -18,7 +19,6 @@ import com.flipperdevices.keyemulate.helpers.StartEmulateHelper
 import com.flipperdevices.keyemulate.helpers.StartEmulateHelperImpl
 import com.flipperdevices.keyemulate.helpers.StopEmulateHelper
 import com.flipperdevices.keyemulate.helpers.StopEmulateHelperImpl
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.FlipperAppError
 import com.flipperdevices.protobuf.Flipper
 import com.flipperdevices.protobuf.app.Application

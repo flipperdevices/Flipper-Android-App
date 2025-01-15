@@ -2,20 +2,21 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import kotlinx.coroutines.CoroutineScope
@@ -27,36 +28,40 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class InfraredViewModel @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: Application,
-    private val settings: DataStore<Settings>
+    private val settings: DataStore<Settings>,
+    fFeatureProvider: FFeatureProvider,
+    private val fDeviceOrchestrator: FDeviceOrchestrator
 ) : EmulateViewModel(
-    serviceProvider,
-    emulateHelper,
     synchronizationApi,
     closeEmulateAppTaskHolder,
     application,
-    settings
+    settings,
+    fFeatureProvider,
+    fDeviceOrchestrator
 ) {
     override val TAG = "InfraredViewModel"
 
     override suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig
     ) {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         val appStarted = calculateTimeoutAndStartEmulate(
             scope = scope,
-            serviceApi = serviceApi,
             config = config,
-            oneTimePress = false
+            oneTimePress = false,
+            emulateHelper
         )
 
         if (!appStarted) {
-            emulateHelper.stopEmulateForce(serviceApi.requestApi)
+            emulateHelper.stopEmulateForce()
         }
     }
 
@@ -70,18 +75,20 @@ class InfraredViewModel @Inject constructor(
             return
         }
 
-        serviceProvider.provideServiceApi(this) { serviceApi ->
-            viewModelScope.launch {
-                processSinglePress(serviceApi, this, config)
-            }
+        viewModelScope.launch {
+            processSinglePress(this, config)
         }
     }
 
     private suspend fun processSinglePress(
-        serviceApi: FlipperServiceApi,
         scope: CoroutineScope,
         config: EmulateConfig
     ) {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         val activeState = EmulateButtonState.Active(EmulateProgress.Infinite, config)
         emulateButtonStateFlow.update { buttonState ->
             when (buttonState) {
@@ -90,7 +97,7 @@ class InfraredViewModel @Inject constructor(
 
                 is EmulateButtonState.Inactive -> activeState
                 is EmulateButtonState.Active -> {
-                    emulateHelper.stopEmulateForce(serviceApi.requestApi)
+                    emulateHelper.stopEmulateForce()
                     // If press same button, then stop emulate and do nothing
                     if (buttonState.config == config) return
 
@@ -105,34 +112,34 @@ class InfraredViewModel @Inject constructor(
                 }
             }
         }
-        startEmulateInternal(scope, serviceApi, config)
+        startEmulateInternal(scope, config)
     }
 
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig,
     ) {
-        calculateTimeoutAndStartEmulate(scope, serviceApi, config, oneTimePress = true)
-        emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
+        calculateTimeoutAndStartEmulate(scope, config, oneTimePress = true, emulateHelper)
+        emulateHelper.stopEmulate(viewModelScope)
     }
 
     @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig,
-        oneTimePress: Boolean
+        oneTimePress: Boolean,
+        emulateHelper: EmulateHelper
     ): Boolean {
-        val requestApi = serviceApi.requestApi
         val timeout = config.minEmulateTime
         val appStarted: Boolean?
-        val isPressReleaseSupported =
-            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
         try {
             appStarted = emulateHelper.startEmulate(
                 scope = scope,
-                serviceApi = serviceApi,
                 config = config,
             )
             if (appStarted && timeout != null) {
@@ -154,23 +161,20 @@ class InfraredViewModel @Inject constructor(
             }
         } catch (ignored: AlreadyOpenedAppException) {
             emulateHelper.stopEmulateForce(
-                requestApi = requestApi,
-                isPressRelease = isPressReleaseSupported && oneTimePress
+                isPressRelease = oneTimePress
             )
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return false
         } catch (ignored: ForbiddenFrequencyException) {
             emulateHelper.stopEmulateForce(
-                requestApi = requestApi,
-                isPressRelease = isPressReleaseSupported && oneTimePress
+                isPressRelease = oneTimePress
             )
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return false
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate infrared" }
             emulateHelper.stopEmulateForce(
-                requestApi = requestApi,
-                isPressRelease = isPressReleaseSupported && oneTimePress
+                isPressRelease = oneTimePress
             )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return false
@@ -178,8 +182,7 @@ class InfraredViewModel @Inject constructor(
         if (!appStarted) {
             info { "Failed start emulation" }
             emulateHelper.stopEmulateForce(
-                requestApi = requestApi,
-                isPressRelease = isPressReleaseSupported && oneTimePress
+                isPressRelease = oneTimePress
             )
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }

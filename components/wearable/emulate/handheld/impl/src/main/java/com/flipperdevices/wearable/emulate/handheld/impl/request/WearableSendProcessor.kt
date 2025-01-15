@@ -1,19 +1,19 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
@@ -36,10 +36,9 @@ class WearableSendProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val scope: CoroutineScope,
-    private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper,
     private val simpleKeyApi: SimpleKeyApi,
-    private val keyParser: KeyParser
+    private val keyParser: KeyParser,
+    private val fFeatureProvider: FFeatureProvider
 ) : WearableCommandProcessor, LogTagProvider {
     override val TAG: String = "WearableSendProcessor-${hashCode()}"
 
@@ -47,12 +46,17 @@ class WearableSendProcessor @Inject constructor(
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasSendRequest()) {
                 info { "SendRequest: $it" }
-                startSend(serviceProvider.getServiceApi(), it.sendRequest.path)
+                startSend(it.sendRequest.path)
             }
         }.launchIn(scope)
     }
 
-    private suspend fun startSend(serviceApi: FlipperServiceApi, path: String) {
+    private suspend fun startSend(path: String) {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         info { "#sendEmulate $path" }
 
         val keyType = FlipperKeyType.getByExtension(File(path).extension) ?: return
@@ -74,7 +78,8 @@ class WearableSendProcessor @Inject constructor(
                     emulateStatus = Emulate.EmulateStatus.EMULATING
                 }
             )
-            emulateHelper.startEmulate(scope, serviceApi, emulateConfig)
+
+            emulateHelper.startEmulate(scope, emulateConfig)
             commandOutputStream.send(
                 mainResponse {
                     emulateStatus = Emulate.EmulateStatus.STOPPED
@@ -95,7 +100,7 @@ class WearableSendProcessor @Inject constructor(
                 }
             )
         } finally {
-            emulateHelper.stopEmulate(scope, serviceApi.requestApi)
+            emulateHelper.stopEmulate(scope)
         }
     }
 

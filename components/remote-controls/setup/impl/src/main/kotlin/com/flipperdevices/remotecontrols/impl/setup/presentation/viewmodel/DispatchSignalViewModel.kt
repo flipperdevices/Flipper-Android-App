@@ -5,6 +5,11 @@ import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.api.utils.Constants
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.service.api.FlipperServiceApi
@@ -21,9 +26,6 @@ import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
@@ -43,12 +45,12 @@ import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DispatchSignalApi::class)
 class DispatchSignalViewModel @Inject constructor(
-    private val emulateHelper: EmulateHelper,
     private val serviceProvider: FlipperServiceProvider,
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
     private val settings: DataStore<Settings>,
-    private val context: Context
+    private val context: Context,
+    private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel(),
     FlipperBleServiceConsumer,
     LogTagProvider,
@@ -150,9 +152,12 @@ class DispatchSignalViewModel @Inject constructor(
                         )
                         _state.emit(DispatchSignalApi.State.Emulating(identifier))
                         try {
-                            emulateHelper.startEmulate(
+                            val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+                                error { "#dispatch could not find FEmulateFeatureApi" }
+                                return@launch
+                            }
+                            fEmulateFeatureApi.getEmulateHelper().startEmulate(
                                 scope = this,
-                                serviceApi = serviceApi,
                                 config = config,
                             )
                             if (config.isPressRelease && isPressReleaseSupported) {
@@ -161,9 +166,8 @@ class DispatchSignalViewModel @Inject constructor(
                                 delay(DEFAULT_SIGNAL_DELAY)
                                 _state.emit(DispatchSignalApi.State.Pending)
                             }
-                            emulateHelper.stopEmulate(
+                            fEmulateFeatureApi.getEmulateHelper().stopEmulate(
                                 scope = this,
-                                requestApi = serviceApi.requestApi,
                                 isPressRelease = config.isPressRelease && isPressReleaseSupported
                             )
                             onDispatched.invoke()
@@ -186,11 +190,15 @@ class DispatchSignalViewModel @Inject constructor(
                 onError = { _state.value = DispatchSignalApi.State.Error },
                 onBleManager = { serviceApi ->
                     launch {
+                        val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+                            error { "#dispatch could not find FEmulateFeatureApi" }
+                            return@launch
+                        }
                         vibrator?.vibrateCompat(
                             VIBRATOR_TIME,
                             settings.data.first().disabled_vibration
                         )
-                        emulateHelper.stopEmulate(this, serviceApi.requestApi)
+                        fEmulateFeatureApi.getEmulateHelper().stopEmulate(this)
                         _state.emit(DispatchSignalApi.State.Pending)
                     }
                 }
@@ -202,7 +210,7 @@ class DispatchSignalViewModel @Inject constructor(
 
     override fun onDestroy() {
         if (_state.value is DispatchSignalApi.State.Emulating) {
-            closeEmulateAppTaskHolder.closeEmulateApp(serviceProvider, emulateHelper)
+            closeEmulateAppTaskHolder.closeEmulateApp()
         }
         super<DecomposeViewModel>.onDestroy()
     }

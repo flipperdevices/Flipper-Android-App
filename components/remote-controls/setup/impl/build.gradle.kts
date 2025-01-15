@@ -21,6 +21,10 @@ dependencies {
     implementation(projects.components.core.progress)
     implementation(projects.components.core.storage)
 
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.emulate.api)
+
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.pbutils)

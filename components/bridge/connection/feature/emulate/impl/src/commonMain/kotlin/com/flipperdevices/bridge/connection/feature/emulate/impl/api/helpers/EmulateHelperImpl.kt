@@ -1,8 +1,9 @@
-package com.flipperdevices.keyemulate.helpers
+package com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.core.di.AppGraph
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StopEmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.core.ktx.jre.launchWithLock
@@ -11,9 +12,6 @@ import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.model.EmulateConfig
-import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -22,17 +20,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.max
 
 /**
  *  It is very important for us not to call startEmulate if the application
  *  is already running - the flipper is very sensitive to the order of execution.
  */
-@Singleton
-@ContributesBinding(AppGraph::class, EmulateHelper::class)
-class EmulateHelperImpl @Inject constructor(
+class EmulateHelperImpl(
     private val startEmulateHelper: StartEmulateHelper,
     private val stopEmulateHelper: StopEmulateHelper
 ) : EmulateHelper, LogTagProvider {
@@ -49,21 +43,18 @@ class EmulateHelperImpl @Inject constructor(
 
     override suspend fun startEmulate(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig
     ) = withLockResult(mutex, "start") {
-        val requestApi = serviceApi.requestApi
         if (currentKeyEmulating.value != null) {
             info { "Emulate already running, start stop" }
-            stopEmulateInternal(requestApi)
+            stopEmulateInternal()
         }
         currentKeyEmulating.emit(config)
         val isEmulateStarted = try {
             startEmulateHelper.onStart(
                 scope,
-                serviceApi,
                 config,
-                onStop = { stopEmulateHelper.onStop(requestApi) },
+                onStop = { stopEmulateHelper.onStop() },
                 onResultTime = { time -> stopEmulateTimeAllowedMs = time }
             )
         } catch (throwable: Throwable) {
@@ -80,7 +71,6 @@ class EmulateHelperImpl @Inject constructor(
 
     override suspend fun stopEmulate(
         scope: CoroutineScope,
-        requestApi: FlipperRequestApi,
         isPressRelease: Boolean
     ) = withLock(mutex, "schedule_stop") {
         if (stopJob != null) {
@@ -92,7 +82,7 @@ class EmulateHelperImpl @Inject constructor(
                 "Already passed delay, stop immediately " +
                     "(current: ${TimeHelper.getNow()}/$stopEmulateTimeAllowedMs)"
             }
-            stopEmulateInternal(requestApi)
+            stopEmulateInternal()
             return@withLock
         }
         stopJob = scope.launch(FlipperDispatchers.workStealingDispatcher) {
@@ -103,7 +93,7 @@ class EmulateHelperImpl @Inject constructor(
                     delay(delayMs)
                 }
                 launchWithLock(mutex, scope, "stop") {
-                    stopEmulateInternal(requestApi)
+                    stopEmulateInternal()
                 }
             } finally {
                 stopJob = null
@@ -112,21 +102,19 @@ class EmulateHelperImpl @Inject constructor(
     }
 
     override suspend fun stopEmulateForce(
-        requestApi: FlipperRequestApi,
         isPressRelease: Boolean
     ) = withLock(mutex, "force_stop") {
         if (stopJob != null) {
             stopJob?.cancelAndJoin()
             stopJob = null
         }
-        stopEmulateInternal(requestApi, isPressRelease)
+        stopEmulateInternal(isPressRelease)
     }
 
     private suspend fun stopEmulateInternal(
-        requestApi: FlipperRequestApi,
         isPressRelease: Boolean = false
     ) {
-        stopEmulateHelper.onStop(requestApi, isPressRelease)
+        stopEmulateHelper.onStop(isPressRelease)
         currentKeyEmulating.emit(null)
     }
 }

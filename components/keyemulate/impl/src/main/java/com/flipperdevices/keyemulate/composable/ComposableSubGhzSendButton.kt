@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.core.ui.ktx.image.Picture
 import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
@@ -27,7 +28,6 @@ import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulate
 import com.flipperdevices.keyemulate.impl.R
 import com.flipperdevices.keyemulate.model.DisableButtonReason
 import com.flipperdevices.keyemulate.model.EmulateButtonState
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig

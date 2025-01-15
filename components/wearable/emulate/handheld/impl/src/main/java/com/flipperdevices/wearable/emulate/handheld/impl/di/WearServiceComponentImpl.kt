@@ -47,24 +47,21 @@ class WearServiceComponentImpl(
             commandInputStream = commandInputStream,
             commandOutputStream = commandOutputStream,
             scope = scope,
-            serviceProvider = flipperServiceProvider,
-            emulateHelper = emulateHelper,
             simpleKeyApi = simpleKeyApi,
-            keyParser = keyParser
+            keyParser = keyParser,
+            fFeatureProvider = fFeatureProvider
         ).run(::add)
         WearableStartEmulateProcessor(
             commandInputStream = commandInputStream,
             commandOutputStream = commandOutputStream,
             scope = scope,
-            serviceProvider = flipperServiceProvider,
-            emulateHelper = emulateHelper,
+            fFeatureProvider = fFeatureProvider
         ).run(::add)
         WearableStopEmulateProcessor(
             commandInputStream = commandInputStream,
             commandOutputStream = commandOutputStream,
             scope = scope,
-            serviceProvider = flipperServiceProvider,
-            emulateHelper = emulateHelper,
+            fFeatureProvider = fFeatureProvider
         ).run(::add)
     }
 }

@@ -2,19 +2,20 @@ package com.flipperdevices.keyemulate.viewmodel
 
 import android.app.Application
 import androidx.datastore.core.DataStore
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
+import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.exception.AlreadyOpenedAppException
-import com.flipperdevices.keyemulate.exception.ForbiddenFrequencyException
 import com.flipperdevices.keyemulate.model.EmulateButtonState
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
 import kotlinx.coroutines.CoroutineScope
@@ -25,30 +26,28 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class SubGhzViewModel @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper,
     synchronizationApi: SynchronizationApi,
     closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     application: Application,
-    private val settings: DataStore<Settings>
+    private val settings: DataStore<Settings>,
+    fFeatureProvider: FFeatureProvider,
+    private val fDeviceOrchestrator: FDeviceOrchestrator
 ) : EmulateViewModel(
-    serviceProvider,
-    emulateHelper,
     synchronizationApi,
     closeEmulateAppTaskHolder,
     application,
-    settings
+    settings,
+    fFeatureProvider,
+    fDeviceOrchestrator
 ) {
     override val TAG = "SubGhzViewModel"
 
     override suspend fun onStartEmulateInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig
     ) {
         calculateTimeoutAndStartEmulate(
             scope = scope,
-            serviceApi = serviceApi,
             config = config,
             oneTimePress = false
         )
@@ -81,36 +80,40 @@ class SubGhzViewModel @Inject constructor(
             }
         }
 
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch {
-                startEmulateInternal(this, it, config)
-            }
+        viewModelScope.launch {
+            startEmulateInternal(this, config)
         }
     }
 
     private suspend fun startEmulateInternal(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig,
     ) {
-        calculateTimeoutAndStartEmulate(scope, serviceApi, config, oneTimePress = true)
-        emulateHelper.stopEmulate(viewModelScope, serviceApi.requestApi)
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
+        calculateTimeoutAndStartEmulate(scope, config, oneTimePress = true)
+        emulateHelper.stopEmulate(viewModelScope)
     }
 
     private suspend fun calculateTimeoutAndStartEmulate(
         scope: CoroutineScope,
-        serviceApi: FlipperServiceApi,
         config: EmulateConfig,
         oneTimePress: Boolean
     ) {
-        val requestApi = serviceApi.requestApi
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         val timeout = config.minEmulateTime
         val appStarted: Boolean?
 
         try {
             appStarted = emulateHelper.startEmulate(
                 scope,
-                serviceApi,
                 config
             )
             if (appStarted && timeout != null) {
@@ -131,23 +134,23 @@ class SubGhzViewModel @Inject constructor(
                 }
             }
         } catch (ignored: AlreadyOpenedAppException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce()
             emulateButtonStateFlow.emit(EmulateButtonState.AppAlreadyOpenDialog)
             return
         } catch (ignored: ForbiddenFrequencyException) {
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce()
             emulateButtonStateFlow.emit(EmulateButtonState.ForbiddenFrequencyDialog)
             return
         } catch (fatal: Throwable) {
             error(fatal) { "Handle fatal exception on emulate subghz" }
-            emulateHelper.stopEmulateForce(requestApi)
+            emulateHelper.stopEmulateForce()
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
             return
         }
 
         if (!appStarted) {
             info { "Failed start app without crash" }
-            emulateHelper.stopEmulateForce(serviceApi.requestApi)
+            emulateHelper.stopEmulateForce()
             emulateButtonStateFlow.emit(EmulateButtonState.Inactive())
         }
     }

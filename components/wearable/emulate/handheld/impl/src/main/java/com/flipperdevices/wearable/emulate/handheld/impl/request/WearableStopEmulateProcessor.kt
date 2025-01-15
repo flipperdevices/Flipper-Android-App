@@ -1,12 +1,12 @@
 package com.flipperdevices.wearable.emulate.handheld.impl.request
 
-import com.flipperdevices.bridge.api.manager.FlipperRequestApi
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.core.di.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
@@ -25,8 +25,7 @@ class WearableStopEmulateProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
     private val scope: CoroutineScope,
-    private val serviceProvider: FlipperServiceProvider,
-    private val emulateHelper: EmulateHelper
+    private val fFeatureProvider: FFeatureProvider
 ) : WearableCommandProcessor, LogTagProvider {
     override val TAG: String = "WearableStopEmulateProcessor-${hashCode()}"
 
@@ -34,14 +33,19 @@ class WearableStopEmulateProcessor @Inject constructor(
         commandInputStream.getRequestsFlow().onEach {
             if (it.hasStopEmulate()) {
                 info { "StopEmulate: ${it.stopEmulate}" }
-                stopEmulate(serviceProvider.getServiceApi().requestApi)
+                stopEmulate()
             }
         }.launchIn(scope)
     }
 
-    private suspend fun stopEmulate(requestApi: FlipperRequestApi) {
+    private suspend fun stopEmulate() {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         try {
-            emulateHelper.stopEmulate(scope, requestApi)
+            emulateHelper.stopEmulate(scope)
             commandOutputStream.send(
                 mainResponse {
                     emulateStatus = Emulate.EmulateStatus.STOPPED

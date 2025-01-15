@@ -1,12 +1,15 @@
 package com.flipperdevices.widget.impl.storage
 
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.delegates.WidgetDataApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.flipperdevices.keyemulate.api.EmulateHelper
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
@@ -21,7 +24,7 @@ interface WidgetStateStorage {
 @Singleton
 @ContributesBinding(AppGraph::class, WidgetStateStorage::class)
 class WidgetStateStorageImpl @Inject constructor(
-    private val emulateHelper: EmulateHelper,
+    private val fFeatureProvider: FFeatureProvider,
     private val widgetDataApi: WidgetDataApi
 ) : WidgetStateStorage, LogTagProvider {
     override val TAG = "WidgetStateStorage"
@@ -47,6 +50,11 @@ class WidgetStateStorageImpl @Inject constructor(
     override suspend fun getState(
         widgetId: Int
     ): WidgetState = withLockResult(mutex, "get") {
+        val fEmulateApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+            error { "#onStartEmulateInternal could not get emulate api" }
+            return@withLockResult WidgetState.NOT_INITIALIZE
+        }
+        val emulateHelper = fEmulateApi.getEmulateHelper()
         val state = stateMap[widgetId]
         info { "Get widget state for $widgetId, state: $state" }
         val widgetData = widgetDataApi.getWidgetDataByWidgetId(widgetId)

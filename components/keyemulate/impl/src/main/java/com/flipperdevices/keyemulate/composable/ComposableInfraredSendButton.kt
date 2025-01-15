@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.core.ui.ktx.onScrollHoldPress
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.composable.common.ComposableActionDisable
@@ -12,7 +13,6 @@ import com.flipperdevices.keyemulate.composable.common.ComposableActionLoading
 import com.flipperdevices.keyemulate.composable.common.ComposableErrorDialogs
 import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulateButtonWithText
 import com.flipperdevices.keyemulate.model.EmulateButtonState
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyemulate.model.EmulateProgress
 import com.flipperdevices.keyemulate.viewmodel.InfraredViewModel
 import com.flipperdevices.rootscreen.api.LocalRootNavigation

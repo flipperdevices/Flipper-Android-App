@@ -1,5 +1,10 @@
 package com.flipperdevices.keyscreen.impl.api
 
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.dao.api.delegates.FavoriteApi
 import com.flipperdevices.bridge.dao.api.delegates.key.DeleteKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
@@ -9,8 +14,6 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.warn
-import com.flipperdevices.keyemulate.api.EmulateHelper
-import com.flipperdevices.keyemulate.model.EmulateConfig
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
@@ -33,6 +36,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,7 +56,7 @@ class KeyStateHelperImpl @AssistedInject constructor(
     private val metricApi: MetricApi,
     private val updaterKeyApi: UpdateKeyApi,
     private val keyEditorApi: NfcEditorApi,
-    private val emulateHelper: EmulateHelper
+    private val fFeatureProvider: FFeatureProvider
 ) : KeyStateHelperApi {
     private val keyScreenState = MutableStateFlow<KeyScreenState>(KeyScreenState.InProgress)
     private val restoreInProgress = AtomicBoolean(false)
@@ -149,7 +154,12 @@ class KeyStateHelperImpl @AssistedInject constructor(
         updaterKeyApi.subscribeOnUpdatePath(keyPathNotNull).flatMapLatest {
             combine(
                 simpleKeyApi.getKeyAsFlow(it),
-                emulateHelper.getCurrentEmulatingKey()
+                fFeatureProvider.get<FEmulateFeatureApi>()
+                    .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+                    .map { status -> status?.featureApi }
+                    .flatMapLatest { feature ->
+                        feature?.getEmulateHelper()?.getCurrentEmulatingKey() ?: flowOf(null)
+                    }
             ) { flipperKey, currentEmulateConfig -> flipperKey to currentEmulateConfig }
         }.collectLatest { (flipperKey, currentEmulateConfig) ->
             if (flipperKey == null) {

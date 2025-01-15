@@ -19,7 +19,8 @@ enum class FDeviceFeature {
     APP_START,
     SCREEN_STREAMING,
     SCREEN_UNLOCK,
-    UPDATE
+    UPDATE,
+    EMULATE
 }
 
 @Retention(AnnotationRetention.RUNTIME)
