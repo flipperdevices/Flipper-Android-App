@@ -4,8 +4,6 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.exception.Alread
 import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.AppEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
-import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.INFRARED_DEFAULT_TIMEOUT_MS
-import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.SUBGHZ_DEFAULT_TIMEOUT_MS
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.FlipperAppError
@@ -30,6 +28,8 @@ import kotlinx.coroutines.delay
 
 private const val APP_RETRY_COUNT = 3
 private const val APP_RETRY_SLEEP_TIME_MS = 1 * 1000L // 1 second
+const val SUBGHZ_DEFAULT_TIMEOUT_MS = 500L
+const val INFRARED_DEFAULT_TIMEOUT_MS = 500L
 
 val API_SUPPORTED_INFRARED_EMULATE = SemVer(
     majorVersion = 0,

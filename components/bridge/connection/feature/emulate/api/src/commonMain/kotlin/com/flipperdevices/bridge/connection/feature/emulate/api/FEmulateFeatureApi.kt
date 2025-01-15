@@ -6,7 +6,6 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateH
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StopEmulateHelper
-import com.flipperdevices.core.data.SemVer
 
 interface FEmulateFeatureApi : FDeviceFeatureApi {
     fun getAppEmulateHelper(): AppEmulateHelper
@@ -14,11 +13,4 @@ interface FEmulateFeatureApi : FDeviceFeatureApi {
     fun getFlipperErrorHelper(): FlipperAppErrorHelper
     fun getStartEmulateHelper(): StartEmulateHelper
     fun getStopEmulateHelper(): StopEmulateHelper
-
-    companion object {
-        val API_SUPPORTED_REMOTE_EMULATE = SemVer(
-            majorVersion = 0,
-            minorVersion = 11
-        )
-    }
 }

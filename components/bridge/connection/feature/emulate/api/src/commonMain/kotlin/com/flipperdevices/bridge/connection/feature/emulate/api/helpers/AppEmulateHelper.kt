@@ -6,8 +6,6 @@ import com.flipperdevices.protobuf.app.AppStateResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
-const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 3 seconds
-
 interface AppEmulateHelper {
     fun appStateFlow(): Flow<AppStateResponse>
 

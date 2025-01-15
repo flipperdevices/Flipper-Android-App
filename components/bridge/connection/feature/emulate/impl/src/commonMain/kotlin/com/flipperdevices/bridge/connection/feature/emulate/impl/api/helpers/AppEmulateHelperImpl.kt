@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers
 
 import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
-import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.APP_STARTED_TIMEOUT_MS
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.AppEmulateHelper
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcException
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withTimeoutOrNull
 
 const val RPC_START_REQUEST_ARG = "RPC"
+const val APP_STARTED_TIMEOUT_MS = 3 * 1000L // 3 seconds
 
 class AppEmulateHelperImpl(
     private val fRpcFeatureApi: FRpcFeatureApi,

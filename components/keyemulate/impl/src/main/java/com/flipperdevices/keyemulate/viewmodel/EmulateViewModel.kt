@@ -4,7 +4,6 @@ import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
-import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi.Companion.API_SUPPORTED_REMOTE_EMULATE
 import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
 import com.flipperdevices.bridge.connection.feature.emulate.api.exception.ForbiddenFrequencyException
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
@@ -164,8 +163,9 @@ abstract class EmulateViewModel(
                 .map { status -> status as? FFeatureStatus.Supported<FVersionFeatureApi> }
                 .map { status -> status?.featureApi },
             fDeviceOrchestrator.getState(),
-            synchronizationApi.getSynchronizationState()
-        ) { versionInformation, connectionState, synchronizationState ->
+            synchronizationApi.getSynchronizationState(),
+            fFeatureProvider.get<FEmulateFeatureApi>(),
+        ) { versionInformation, connectionState, synchronizationState, emulateFeatureStatus ->
 
             return@combine if (connectionState is FDeviceConnectStatus.Disconnected) {
                 EmulateButtonState.Disabled(DisableButtonReason.NOT_CONNECTED)
@@ -175,7 +175,7 @@ abstract class EmulateViewModel(
                 EmulateButtonState.Loading(LoadingState.CONNECTING)
             } else if (synchronizationState is SynchronizationState.InProgress) {
                 EmulateButtonState.Loading(LoadingState.SYNCING)
-            } else if (!versionInformation.isSupported(API_SUPPORTED_REMOTE_EMULATE)) {
+            } else if (emulateFeatureStatus !is FFeatureStatus.Supported<*>) {
                 EmulateButtonState.Disabled(DisableButtonReason.UPDATE_FLIPPER)
             } else {
                 EmulateButtonState.Inactive()
