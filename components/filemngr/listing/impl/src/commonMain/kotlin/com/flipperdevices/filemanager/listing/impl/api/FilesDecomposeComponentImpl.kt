@@ -160,7 +160,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
             optionsViewModel = optionsViewModel,
             storageInfoViewModel = storageInfoViewModel,
             selectionViewModel = selectionViewModel,
-            onBack = onBack::invoke,
+            onBack = backCallback::onBack,
             onUploadClick = multipleFilesPicker::startFilePicker,
             onPathChange = pathChangedCallback::invoke,
             onFileMoreClick = slotNavigation::activate,

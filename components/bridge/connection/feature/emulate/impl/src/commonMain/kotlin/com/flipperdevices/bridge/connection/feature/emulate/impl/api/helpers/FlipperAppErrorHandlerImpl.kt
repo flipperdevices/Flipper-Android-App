@@ -7,6 +7,8 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.data.SemVer
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.app.GetErrorRequest
 
@@ -18,7 +20,9 @@ private val API_SUPPORTED_FLIPPER_ERROR = SemVer(
 class FlipperAppErrorHandlerImpl(
     private val fRpcFeatureApi: FRpcFeatureApi,
     private val fVersionFeatureApi: FVersionFeatureApi
-) : FlipperAppErrorHelper {
+) : FlipperAppErrorHelper, LogTagProvider {
+    override val TAG: String = "FlipperAppErrorHelper"
+
     override suspend fun requestError(): FlipperAppError {
         if (!fVersionFeatureApi.isSupported(API_SUPPORTED_FLIPPER_ERROR)) {
             return FlipperAppError.NotSupportedApi
@@ -38,6 +42,7 @@ class FlipperAppErrorHandlerImpl(
                 ?: return FlipperAppError.BadResponse
             return FlipperAppError.fromCode(errorCode, errorText)
         } catch (e: Exception) {
+            error(e) { "#requestError unknown exception" }
             return FlipperAppError.BadResponse
         }
     }

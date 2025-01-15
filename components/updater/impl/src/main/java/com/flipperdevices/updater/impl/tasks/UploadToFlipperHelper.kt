@@ -26,6 +26,7 @@ import java.io.File
 import javax.inject.Inject
 
 interface UploadToFlipperHelper {
+    @Suppress("LongParameterList")
     suspend fun uploadToFlipper(
         flipperPath: String,
         updaterFolder: File,

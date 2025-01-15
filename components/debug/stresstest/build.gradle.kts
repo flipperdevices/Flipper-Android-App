@@ -18,6 +18,7 @@ dependencies {
 
     implementation(libs.appcompat)
 
+    implementation(projects.components.bridge.connection.config.api)
     implementation(projects.components.bridge.connection.orchestrator.api)
     implementation(projects.components.bridge.connection.transport.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
