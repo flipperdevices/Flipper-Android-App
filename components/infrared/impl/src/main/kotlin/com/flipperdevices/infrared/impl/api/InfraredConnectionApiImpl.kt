@@ -1,6 +1,6 @@
 package com.flipperdevices.infrared.impl.api
 
-import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper.Companion.API_SUPPORTED_INFRARED_EMULATE
+import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FVersionFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.model.FlipperSupportedState
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
@@ -38,15 +38,25 @@ class InfraredConnectionApiImpl @Inject constructor(
                 .map { status -> status?.featureApi }
                 .flatMapLatest { feature -> feature?.getSupportedStateFlow() ?: flowOf(null) },
             fDeviceOrchestrator.getState(),
-            synchronizationApi.getSynchronizationState()
-        ) { versionInformation, supportedState, connectionState, synchronizationState ->
+            synchronizationApi.getSynchronizationState(),
+            fFeatureProvider.get<FEmulateFeatureApi>()
+                .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+                .map { status -> status?.featureApi }
+                .flatMapLatest { feature ->
+                    feature?.isInfraredEmulationSupported ?: flowOf(false)
+                },
+        ) { versionInformation,
+            supportedState,
+            connectionState,
+            synchronizationState,
+            isInfraredEmulationSupported ->
             val infraredEmulateState = when {
                 connectionState is FDeviceConnectStatus.Disconnected -> {
                     InfraredConnectionApi.InfraredEmulateState.NOT_CONNECTED
                 }
 
                 connectionState !is FDeviceConnectStatus.Connected ||
-                    supportedState != FlipperSupportedState.READY -> {
+                        supportedState != FlipperSupportedState.READY -> {
                     InfraredConnectionApi.InfraredEmulateState.CONNECTING
                 }
 
@@ -54,7 +64,7 @@ class InfraredConnectionApiImpl @Inject constructor(
                     InfraredConnectionApi.InfraredEmulateState.SYNCING
                 }
 
-                versionInformation == null || versionInformation < API_SUPPORTED_INFRARED_EMULATE -> {
+                versionInformation == null || !isInfraredEmulationSupported -> {
                     InfraredConnectionApi.InfraredEmulateState.UPDATE_FLIPPER
                 }
 

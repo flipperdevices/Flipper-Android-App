@@ -12,11 +12,4 @@ interface StartEmulateHelper {
         onStop: suspend () -> Unit,
         onResultTime: (Long) -> Unit
     ): Boolean
-
-    companion object {
-        val API_SUPPORTED_INFRARED_EMULATE = SemVer(
-            majorVersion = 0,
-            minorVersion = 21
-        )
-    }
 }
