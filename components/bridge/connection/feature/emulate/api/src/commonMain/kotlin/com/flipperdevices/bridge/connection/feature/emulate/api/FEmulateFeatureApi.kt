@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateH
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StopEmulateHelper
+import kotlinx.coroutines.flow.Flow
 
 interface FEmulateFeatureApi : FDeviceFeatureApi {
     fun getAppEmulateHelper(): AppEmulateHelper
@@ -13,4 +14,5 @@ interface FEmulateFeatureApi : FDeviceFeatureApi {
     fun getFlipperErrorHelper(): FlipperAppErrorHelper
     fun getStartEmulateHelper(): StartEmulateHelper
     fun getStopEmulateHelper(): StopEmulateHelper
+    val isInfraredEmulationSupported: Flow<Boolean>
 }

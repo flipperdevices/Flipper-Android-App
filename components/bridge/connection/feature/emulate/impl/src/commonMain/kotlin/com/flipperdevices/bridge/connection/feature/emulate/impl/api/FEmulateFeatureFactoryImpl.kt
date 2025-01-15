@@ -10,6 +10,7 @@ import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.EmulateH
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.FlipperAppErrorHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StartEmulateHelper
 import com.flipperdevices.bridge.connection.feature.emulate.api.helpers.StopEmulateHelper
+import com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers.API_SUPPORTED_INFRARED_EMULATE
 import com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers.AppEmulateHelperImpl
 import com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers.EmulateHelperImpl
 import com.flipperdevices.bridge.connection.feature.emulate.impl.api.helpers.FlipperAppErrorHandlerImpl
@@ -21,6 +22,10 @@ import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDevic
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 @FDeviceFeatureQualifier(FDeviceFeature.EMULATE)
@@ -39,6 +44,9 @@ class FEmulateFeatureFactoryImpl @Inject constructor() : FDeviceFeatureApi.Facto
             ?: return null
 
         return object : FEmulateFeatureApi {
+            override val isInfraredEmulationSupported: Flow<Boolean> = flow {
+                emit(fVersionFeatureApi.isSupported(API_SUPPORTED_INFRARED_EMULATE))
+            }.shareIn(scope, SharingStarted.Lazily, 1)
             private val flipperAppErrorHelper = FlipperAppErrorHandlerImpl(
                 fRpcFeatureApi = rpcApi,
                 fVersionFeatureApi = fVersionFeatureApi

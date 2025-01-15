@@ -164,8 +164,13 @@ abstract class EmulateViewModel(
                 .map { status -> status?.featureApi },
             fDeviceOrchestrator.getState(),
             synchronizationApi.getSynchronizationState(),
-            fFeatureProvider.get<FEmulateFeatureApi>(),
-        ) { versionInformation, connectionState, synchronizationState, emulateFeatureStatus ->
+            fFeatureProvider.get<FEmulateFeatureApi>()
+                .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+                .map { status -> status?.featureApi }
+                .flatMapLatest { feature ->
+                    feature?.isInfraredEmulationSupported ?: flowOf(false)
+                },
+        ) { versionInformation, connectionState, synchronizationState, isInfraredEmulationSupported ->
 
             return@combine if (connectionState is FDeviceConnectStatus.Disconnected) {
                 EmulateButtonState.Disabled(DisableButtonReason.NOT_CONNECTED)
@@ -175,7 +180,7 @@ abstract class EmulateViewModel(
                 EmulateButtonState.Loading(LoadingState.CONNECTING)
             } else if (synchronizationState is SynchronizationState.InProgress) {
                 EmulateButtonState.Loading(LoadingState.SYNCING)
-            } else if (emulateFeatureStatus !is FFeatureStatus.Supported<*>) {
+            } else if (!isInfraredEmulationSupported) {
                 EmulateButtonState.Disabled(DisableButtonReason.UPDATE_FLIPPER)
             } else {
                 EmulateButtonState.Inactive()
@@ -187,7 +192,11 @@ abstract class EmulateViewModel(
         fFeatureProvider.get<FEmulateFeatureApi>()
             .map { status -> status as? FFeatureStatus.Supported }
             .map { status -> status?.featureApi }
-            .flatMapLatest { feature -> feature?.getAppEmulateHelper()?.appStateFlow() ?: flowOf(null) }
+            .flatMapLatest { feature ->
+                feature?.getAppEmulateHelper()?.appStateFlow() ?: flowOf(
+                    null
+                )
+            }
             .onEach { appStateResponse ->
                 if (appStateResponse?.state == AppState.APP_CLOSED) {
                     emulateButtonStateFlow.update {
