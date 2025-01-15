@@ -1,9 +1,6 @@
 package com.flipperdevices.core.ui.ktx.image
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import coil3.size.Size
-import coil3.transform.Transformation
 
 class WhiteToAlphaTransformation : Transformation() {
     override val cacheKey: String = javaClass.name

@@ -173,6 +173,7 @@ compose-gradle = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin
 
 # Coil
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-core = { module = "io.coil-kt.coil3:coil-core", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }

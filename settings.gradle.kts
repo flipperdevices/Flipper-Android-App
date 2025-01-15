@@ -270,7 +270,6 @@ include(
 
     ":components:toolstab:api",
     ":components:toolstab:impl",
-    ":components:faphub:appcard:api",
     ":components:faphub:appcard:composable",
     ":components:faphub:dao:api",
     ":components:faphub:dao:network",

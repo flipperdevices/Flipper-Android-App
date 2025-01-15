@@ -1,6 +1,5 @@
 package com.flipperdevices.faphub.appcard.composable.paging
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -21,14 +20,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.faphub.appcard.composable.R
 import com.flipperdevices.faphub.dao.api.model.SortType
+import flipperapp.components.faphub.appcard.composable.generated.resources.Res
+import flipperapp.components.faphub.appcard.composable.generated.resources.faphub_catalog_choice_published_asc
+import flipperapp.components.faphub.appcard.composable.generated.resources.faphub_catalog_choice_published_desc
+import flipperapp.components.faphub.appcard.composable.generated.resources.faphub_catalog_choice_unknown
+import flipperapp.components.faphub.appcard.composable.generated.resources.faphub_catalog_choice_updated_asc
+import flipperapp.components.faphub.appcard.composable.generated.resources.faphub_catalog_choice_updated_desc
+import flipperapp.components.faphub.appcard.composable.generated.resources.ic_down
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ComposableSortChoice(
@@ -75,7 +81,7 @@ private fun ComposableFapsChoice(
     ) {
         var sortTypeName = getSortTypeName(sortType)
         if (sortTypeName == null) {
-            sortTypeName = stringResource(R.string.faphub_catalog_choice_unknown)
+            sortTypeName = stringResource(Res.string.faphub_catalog_choice_unknown)
             onSelectSortType(SortType.UPDATE_AT_DESC)
         }
         Text(
@@ -88,7 +94,7 @@ private fun ComposableFapsChoice(
             modifier = Modifier
                 .padding(start = 4.dp, end = 12.dp)
                 .size(12.dp),
-            painter = painterResource(R.drawable.ic_down),
+            painter = painterResource(Res.drawable.ic_down),
             contentDescription = null,
             tint = LocalPallet.current.fapHubSortedColor
         )
@@ -114,25 +120,25 @@ private fun ComposableDropDown(
             onSelectSortType,
             onCloseDialog,
             SortType.UPDATE_AT_DESC,
-            R.string.faphub_catalog_choice_updated_desc
+            Res.string.faphub_catalog_choice_updated_desc
         )
         SortTypeItem(
             onSelectSortType,
             onCloseDialog,
             SortType.CREATED_AT_DESC,
-            R.string.faphub_catalog_choice_published_desc
+            Res.string.faphub_catalog_choice_published_desc
         )
         SortTypeItem(
             onSelectSortType,
             onCloseDialog,
             SortType.UPDATE_AT_ASC,
-            R.string.faphub_catalog_choice_updated_asc
+            Res.string.faphub_catalog_choice_updated_asc
         )
         SortTypeItem(
             onSelectSortType,
             onCloseDialog,
             SortType.CREATED_AT_ASC,
-            R.string.faphub_catalog_choice_published_asc
+            Res.string.faphub_catalog_choice_published_asc
         )
     }
 }
@@ -142,7 +148,7 @@ private fun SortTypeItem(
     onSelectSortType: (SortType) -> Unit,
     onCloseDialog: () -> Unit,
     sortType: SortType,
-    @StringRes textId: Int
+    textId: StringResource
 ) {
     DropdownMenuItem(onClick = {
         onSelectSortType(sortType)
@@ -159,10 +165,10 @@ private fun SortTypeItem(
 @Composable
 private fun getSortTypeName(sortType: SortType): String? {
     return when (sortType) {
-        SortType.UPDATE_AT_DESC -> stringResource(R.string.faphub_catalog_choice_updated_desc)
-        SortType.UPDATE_AT_ASC -> stringResource(R.string.faphub_catalog_choice_updated_asc)
-        SortType.CREATED_AT_DESC -> stringResource(R.string.faphub_catalog_choice_published_desc)
-        SortType.CREATED_AT_ASC -> stringResource(R.string.faphub_catalog_choice_published_asc)
+        SortType.UPDATE_AT_DESC -> stringResource(Res.string.faphub_catalog_choice_updated_desc)
+        SortType.UPDATE_AT_ASC -> stringResource(Res.string.faphub_catalog_choice_updated_asc)
+        SortType.CREATED_AT_DESC -> stringResource(Res.string.faphub_catalog_choice_published_desc)
+        SortType.CREATED_AT_ASC -> stringResource(Res.string.faphub_catalog_choice_published_asc)
         else -> null
     }
 }

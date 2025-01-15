@@ -14,6 +14,7 @@ commonDependencies {
     implementation(libs.lifecycle.compose)
     implementation(libs.compose.placeholder)
 
+    implementation(libs.coil.core)
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(libs.coil.network)

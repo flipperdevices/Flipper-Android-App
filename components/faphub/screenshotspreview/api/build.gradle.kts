@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.faphub.screenshotspreview.api"
 
-dependencies {
+commonDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.decompose)
