@@ -14,12 +14,18 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.core.ui.ktx)
+    implementation(projects.components.core.progress)
 
     implementation(libs.appcompat)
 
-//    implementation(projects.components.bridge.api)
-//    implementation(projects.components.bridge.pbutils)
-//    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.connection.orchestrator.api)
+    implementation(projects.components.bridge.connection.transport.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.serialspeed.api)
+    implementation(projects.components.bridge.connection.pbutils)
+
     implementation(libs.ble.common)
 
     // Compose

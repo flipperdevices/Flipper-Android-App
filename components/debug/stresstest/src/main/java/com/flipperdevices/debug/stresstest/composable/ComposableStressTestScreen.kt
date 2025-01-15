@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
@@ -25,8 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.flipperdevices.bridge.api.model.FlipperSerialSpeed
+import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.debug.stresstest.model.LogLine
@@ -44,7 +44,9 @@ fun ComposableStressTestScreen(
     val speedState by viewModel.getSpeed().collectAsState()
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ComposableStatus(stressTestState)
@@ -67,7 +69,7 @@ private fun ComposableStatus(
     Text(
         modifier = Modifier.padding(all = 16.dp),
         text = "Success: ${stressTestState.successfulCount} " +
-            "Error: ${stressTestState.errorCount}",
+                "Error: ${stressTestState.errorCount}",
         style = LocalTypography.current.titleB24
     )
 }
