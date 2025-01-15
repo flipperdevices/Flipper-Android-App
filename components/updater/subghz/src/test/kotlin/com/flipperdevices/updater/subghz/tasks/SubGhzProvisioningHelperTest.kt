@@ -3,11 +3,11 @@ package com.flipperdevices.updater.subghz.tasks
 import android.os.Build
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
+import com.flipperdevices.bridge.connection.feature.update.api.RegionApi.Companion.REGION_FILE
 import com.flipperdevices.core.test.readTestAsset
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.downloader.api.DownloaderApiImpl
-import com.flipperdevices.updater.subghz.helpers.REGION_FILE
 import com.flipperdevices.updater.subghz.helpers.RegionProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SkipProvisioningHelper
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper

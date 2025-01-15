@@ -2,8 +2,8 @@ package com.flipperdevices.updater.card.helpers.delegates
 
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
+import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi.Companion.MANIFEST_FILE
 import com.flipperdevices.updater.card.helpers.FileExistHelper
-import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferFlipperManifest.Companion.MANIFEST_FILE
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
