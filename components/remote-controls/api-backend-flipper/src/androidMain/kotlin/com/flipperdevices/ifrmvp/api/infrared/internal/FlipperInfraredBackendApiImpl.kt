@@ -1,11 +1,13 @@
 package com.flipperdevices.ifrmvp.api.infrared.internal
 
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
+import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
+import com.flipperdevices.bridge.connection.feature.storageinfo.model.flashSdStats
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
-import com.flipperdevices.bridge.rpcinfo.api.FlipperStorageInformationApi
-import com.flipperdevices.bridge.rpcinfo.model.FlipperInformationStatus
-import com.flipperdevices.bridge.rpcinfo.model.StorageStats
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected
@@ -21,9 +23,9 @@ import com.flipperdevices.ifrmvp.backend.model.PagesLayoutBackendModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -31,24 +33,20 @@ import javax.inject.Inject
 class FlipperInfraredBackendApiImpl @Inject constructor(
     private val api: InfraredBackendApi,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
-    private val flipperServiceProvider: FlipperServiceProvider,
-    private val flipperStorageInformationApi: FlipperStorageInformationApi,
+    private val fFeatureProvider: FFeatureProvider,
+    private val fDeviceOrchestrator: FDeviceOrchestrator
 ) : FlipperInfraredBackendApi {
     private suspend fun isSdCardPresent(): Boolean {
-        val stats = flipperStorageInformationApi.getStorageInformationFlow()
-            .map { fStorageInformation -> fStorageInformation.externalStorageStatus }
-            .filterIsInstance<FlipperInformationStatus.Ready<StorageStats?>>()
-            .map { fStatusInformation -> fStatusInformation.data }
-            .filterNotNull()
+        return fFeatureProvider.get<FStorageInfoFeatureApi>()
+            .map { status -> status as? FFeatureStatus.Supported<FStorageInfoFeatureApi> }
+            .map { status -> status?.featureApi }
+            .flatMapLatest { feature -> feature?.getStorageInformationFlow() ?: flowOf(null) }
             .first()
-        return stats is StorageStats.Loaded
+            ?.flashSdStats != null
     }
 
     private suspend fun isDeviceConnected(): Boolean {
-        return flipperServiceProvider.getServiceApi()
-            .connectionInformationApi
-            .getConnectionStateFlow()
-            .first() is ConnectionState.Ready
+        return fDeviceOrchestrator.getState().first() is FDeviceConnectStatus.Connected
     }
 
     @Suppress("ThrowsCount", "RethrowCaughtException")

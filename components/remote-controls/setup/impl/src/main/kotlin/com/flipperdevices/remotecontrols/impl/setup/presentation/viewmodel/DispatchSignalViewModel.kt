@@ -4,17 +4,15 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
 import com.flipperdevices.bridge.connection.feature.emulate.api.exception.AlreadyOpenedAppException
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureStatus
+import com.flipperdevices.bridge.connection.feature.provider.api.get
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.bridge.service.api.FlipperServiceApi
-import com.flipperdevices.bridge.service.api.provider.FlipperBleServiceConsumer
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
@@ -32,27 +30,27 @@ import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
 import com.flipperdevices.remotecontrols.impl.setup.encoding.JvmEncoder
 import com.flipperdevices.remotecontrols.impl.setup.util.toByteArray
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ContributesBinding(AppGraph::class, DispatchSignalApi::class)
 class DispatchSignalViewModel @Inject constructor(
-    private val serviceProvider: FlipperServiceProvider,
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,
     private val settings: DataStore<Settings>,
     private val context: Context,
     private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel(),
-    FlipperBleServiceConsumer,
     LogTagProvider,
     DispatchSignalApi {
     override val TAG: String = "DispatchSignalViewModel"
@@ -137,76 +135,64 @@ class DispatchSignalViewModel @Inject constructor(
         onDispatched: () -> Unit
     ) {
         if (latestDispatchJob?.isActive == true) return
-        latestDispatchJob = viewModelScope.launch(Dispatchers.Main) {
+        latestDispatchJob = viewModelScope.launch {
             _state.emit(DispatchSignalApi.State.Pending)
-            serviceProvider.provideServiceApi(
-                lifecycleOwner = this@DispatchSignalViewModel,
-                onError = { _state.value = DispatchSignalApi.State.Error },
-                onBleManager = { serviceApi ->
-                    launch {
-                        val isPressReleaseSupported =
-                            serviceApi.flipperVersionApi.isSupported(Constants.API_SUPPORTED_INFRARED_PRESS_RELEASE)
-                        vibrator?.vibrateCompat(
-                            VIBRATOR_TIME,
-                            settings.data.first().disabled_vibration
-                        )
-                        _state.emit(DispatchSignalApi.State.Emulating(identifier))
-                        try {
-                            val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
-                                error { "#dispatch could not find FEmulateFeatureApi" }
-                                return@launch
-                            }
-                            fEmulateFeatureApi.getEmulateHelper().startEmulate(
-                                scope = this,
-                                config = config,
-                            )
-                            if (config.isPressRelease && isPressReleaseSupported) {
-                                _state.emit(DispatchSignalApi.State.Pending)
-                            } else if (config.isPressRelease) {
-                                delay(DEFAULT_SIGNAL_DELAY)
-                                _state.emit(DispatchSignalApi.State.Pending)
-                            }
-                            fEmulateFeatureApi.getEmulateHelper().stopEmulate(
-                                scope = this,
-                                isPressRelease = config.isPressRelease && isPressReleaseSupported
-                            )
-                            onDispatched.invoke()
-                        } catch (ignored: AlreadyOpenedAppException) {
-                            _state.emit(DispatchSignalApi.State.FlipperIsBusy)
-                        } catch (e: Exception) {
-                            error(e) { "#tryLoad uncaught exception: could not dispatch signal" }
-                            _state.emit(DispatchSignalApi.State.Pending)
-                        }
-                    }
-                }
+            val isPressReleaseSupported = fFeatureProvider
+                .get<FEmulateFeatureApi>()
+                .map { status -> status as? FFeatureStatus.Supported<FEmulateFeatureApi> }
+                .map { status -> status?.featureApi }
+                .flatMapLatest { feature -> feature?.isInfraredEmulationSupported ?: flowOf(false) }
+                .first()
+            vibrator?.vibrateCompat(
+                VIBRATOR_TIME,
+                settings.data.first().disabled_vibration
             )
+            _state.emit(DispatchSignalApi.State.Emulating(identifier))
+            try {
+                val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+                    error { "#dispatch could not find FEmulateFeatureApi" }
+                    _state.value = DispatchSignalApi.State.Error
+                    return@launch
+                }
+                fEmulateFeatureApi.getEmulateHelper().startEmulate(
+                    scope = this,
+                    config = config,
+                )
+                if (config.isPressRelease && isPressReleaseSupported) {
+                    _state.emit(DispatchSignalApi.State.Pending)
+                } else if (config.isPressRelease) {
+                    delay(DEFAULT_SIGNAL_DELAY)
+                    _state.emit(DispatchSignalApi.State.Pending)
+                }
+                fEmulateFeatureApi.getEmulateHelper().stopEmulate(
+                    scope = this,
+                    isPressRelease = config.isPressRelease && isPressReleaseSupported
+                )
+                onDispatched.invoke()
+            } catch (ignored: AlreadyOpenedAppException) {
+                _state.emit(DispatchSignalApi.State.FlipperIsBusy)
+            } catch (e: Exception) {
+                error(e) { "#tryLoad uncaught exception: could not dispatch signal" }
+                _state.emit(DispatchSignalApi.State.Pending)
+            }
         }
     }
 
     override fun stopEmulate() {
-        viewModelScope.launch(Dispatchers.Main) {
-            serviceProvider.provideServiceApi(
-                lifecycleOwner = this@DispatchSignalViewModel,
-                onError = { _state.value = DispatchSignalApi.State.Error },
-                onBleManager = { serviceApi ->
-                    launch {
-                        val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
-                            error { "#dispatch could not find FEmulateFeatureApi" }
-                            return@launch
-                        }
-                        vibrator?.vibrateCompat(
-                            VIBRATOR_TIME,
-                            settings.data.first().disabled_vibration
-                        )
-                        fEmulateFeatureApi.getEmulateHelper().stopEmulate(this)
-                        _state.emit(DispatchSignalApi.State.Pending)
-                    }
-                }
+        viewModelScope.launch {
+            val fEmulateFeatureApi = fFeatureProvider.getSync<FEmulateFeatureApi>() ?: run {
+                error { "#dispatch could not find FEmulateFeatureApi" }
+                _state.value = DispatchSignalApi.State.Error
+                return@launch
+            }
+            vibrator?.vibrateCompat(
+                VIBRATOR_TIME,
+                settings.data.first().disabled_vibration
             )
+            fEmulateFeatureApi.getEmulateHelper().stopEmulate(this)
+            _state.emit(DispatchSignalApi.State.Pending)
         }
     }
-
-    override fun onServiceApiReady(serviceApi: FlipperServiceApi) = Unit
 
     override fun onDestroy() {
         if (_state.value is DispatchSignalApi.State.Emulating) {

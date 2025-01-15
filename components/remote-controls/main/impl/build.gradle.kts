@@ -18,9 +18,6 @@ dependencies {
     implementation(projects.components.core.ui.res)
 
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.api)
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.infrared.utils)
 
