@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection.feature.emulate.api.helpers
 
 import com.flipperdevices.bridge.connection.feature.emulate.api.model.EmulateConfig
+import com.flipperdevices.core.data.SemVer
 import kotlinx.coroutines.CoroutineScope
 
 interface StartEmulateHelper {
