@@ -1,11 +1,15 @@
 package com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel
 
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
-import com.flipperdevices.bridge.rpc.api.FlipperStorageApi
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
+import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.squareup.anvil.annotations.ContributesBinding
@@ -13,13 +17,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import okio.buffer
+import okio.source
 import javax.inject.Inject
 
 private const val EXT_PATH = "/ext"
 
 @ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
 class SaveTempSignalViewModel @Inject constructor(
-    private val flipperStorageApi: FlipperStorageApi,
+    private val fFeatureProvider: FFeatureProvider,
     private val storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(),
     LogTagProvider,
@@ -34,6 +40,10 @@ class SaveTempSignalViewModel @Inject constructor(
         onFinished: () -> Unit,
     ) {
         viewModelScope.launch {
+            val fStorageFeatureApi = fFeatureProvider.getSync<FStorageFeatureApi>() ?: run {
+                error { "#saveFiles could not get FStorageFeatureApi" }
+                return@launch
+            }
             _state.emit(SaveTempSignalApi.State.Uploading(0f))
             launchWithLock(mutex, viewModelScope, "load") {
                 filesDesc.forEachIndexed { index, fileDesc ->
@@ -43,13 +53,13 @@ class SaveTempSignalViewModel @Inject constructor(
                             folder = fileDesc.extFolderPath,
                             nameWithExtension = fileDesc.nameWithExtension
                         ).getPathOnFlipper()
-                        flipperStorageApi.mkdirs("$EXT_PATH/${fileDesc.extFolderPath}")
-                        flipperStorageApi.upload(
+                        fStorageFeatureApi.uploadApi().mkdir("$EXT_PATH/${fileDesc.extFolderPath}")
+                        fStorageFeatureApi.uploadApi().upload(
                             pathOnFlipper = fAbsolutePath,
-                            fileOnAndroid = deviceFile.toFile(),
-                            progressListener = { currentProgress ->
+                            fileOnAndroid = deviceFile,
+                            progressListener = { current, max ->
                                 _state.value = SaveTempSignalApi.State.Uploading(
-                                    progressPercent = index + currentProgress
+                                    progressPercent = if (max == 0L) 0f else current / max.toFloat()
                                 )
                             }
                         )
