@@ -24,4 +24,9 @@ interface FConnectionService {
      * Forget current device and disconnect from it as side effect
      */
     fun forgetCurrentDevice()
+
+    /**
+     * Connect devices only if it wasn't force disconnected
+     */
+    fun connectIfNotForceDisconnect()
 }

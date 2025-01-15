@@ -76,4 +76,9 @@ class FConnectionServiceImpl @Inject constructor(
                 }
         }
     }
+
+    override fun connectIfNotForceDisconnect() {
+        // todo. Need to make working connection and reconnection. Current version not as good as expected
+        onApplicationInit()
+    }
 }

@@ -16,11 +16,11 @@ dependencies {
 
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.keyemulate.api)
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
     implementation(projects.components.bridge.dao.api)
 
-    implementation(projects.components.bridge.pbutils)
+    implementation(projects.components.bridge.connection.pbutils)
+    implementation(projects.components.bridge.connection.service.api)
+    implementation(projects.components.bridge.connection.orchestrator.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)

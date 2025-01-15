@@ -5,8 +5,9 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
+import com.flipperdevices.bridge.connection.service.api.FConnectionService
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.ktx.android.getBluetoothAdapter
 import com.flipperdevices.core.log.LogTagProvider
@@ -17,7 +18,7 @@ import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
 import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
@@ -32,13 +33,16 @@ class WaitingForFlipperConnectWorker(
     override val TAG = "WaitingForFlipperConnectWorker"
 
     @Inject
-    lateinit var serviceProvider: FlipperServiceProvider
-
-    @Inject
     lateinit var widgetStorage: WidgetStateStorage
 
     @Inject
     lateinit var invalidateWidgetsHelper: InvalidateWidgetsHelper
+
+    @Inject
+    lateinit var fConnectionService: FConnectionService
+
+    @Inject
+    lateinit var fDeviceOrchestrator: FDeviceOrchestrator
 
     init {
         ComponentHolder.component<WidgetComponent>().inject(this)
@@ -59,14 +63,12 @@ class WaitingForFlipperConnectWorker(
             return Result.failure()
         }
 
-        val serviceApi = serviceProvider.getServiceApi()
-
         try {
-            serviceApi.connectIfNotForceDisconnect()
+            fConnectionService.connectIfNotForceDisconnect()
             withTimeout(WAIT_FLIPPER_TIMEOUT_MS) {
-                serviceApi.connectionInformationApi.getConnectionStateFlow().filter {
-                    it is ConnectionState.Ready
-                }.first()
+                fDeviceOrchestrator.getState()
+                    .filterIsInstance<FDeviceConnectStatus.Connected>()
+                    .first()
             }
         } catch (timeout: TimeoutCancellationException) {
             error(timeout) { "Can't connect to flipper within $WAIT_FLIPPER_TIMEOUT_MS ms" }

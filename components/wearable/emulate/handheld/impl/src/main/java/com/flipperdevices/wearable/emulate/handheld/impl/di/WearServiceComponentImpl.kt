@@ -28,15 +28,16 @@ class WearServiceComponentImpl(
     )
     override val commandProcessors: Set<WearableCommandProcessor> = buildSet {
         WearableAppStateProcessor(
-            serviceProvider = flipperServiceProvider,
             commandOutputStream = commandOutputStream,
-            scope = scope
+            scope = scope,
+            fFeatureProvider = fFeatureProvider
         ).run(::add)
         WearableFlipperStatusProcessor(
             commandInputStream = commandInputStream,
             commandOutputStream = commandOutputStream,
             scope = scope,
-            flipperServiceProvider = flipperServiceProvider
+            fFeatureProvider = fFeatureProvider,
+            fDeviceOrchestrator = fDeviceOrchestrator
         ).run(::add)
         WearablePingProcessor(
             commandInputStream = commandInputStream,
