@@ -23,7 +23,7 @@ import kotlinx.coroutines.sync.Mutex
 
 class PeripheralResponseReader @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
-    @Assisted private val restartRPCApi: FRestartRpcFeatureApi,
+    @Assisted private val restartRPCApi: FRestartRpcFeatureApi?,
     private val sentryApi: Shake2ReportApi
 ) : LogTagProvider {
     override val TAG = "PeripheralResponseReader"
@@ -65,7 +65,7 @@ class PeripheralResponseReader @AssistedInject constructor(
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
                 sentryApi.reportException(e, "protobuf_read")
-                restartRPCApi.restartRpc()
+                restartRPCApi?.restartRpc()
             }
         }
     }
@@ -74,7 +74,7 @@ class PeripheralResponseReader @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             scope: CoroutineScope,
-            restartRPCApi: FRestartRpcFeatureApi,
+            restartRPCApi: FRestartRpcFeatureApi?,
         ): PeripheralResponseReader
     }
 }

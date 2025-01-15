@@ -41,7 +41,8 @@ class ConnectionRootDecomposeComponent @AssistedInject constructor(
         componentContext: ComponentContext
     ): DecomposeComponent = when (config) {
         is ConnectionRootConfig.Search -> searchDecomposeFactory(
-            componentContext = componentContext
+            componentContext = componentContext,
+            onBack = navigation::pop
         )
 
         is ConnectionRootConfig.NoPermission ->

@@ -37,6 +37,7 @@ commonDependencies {
     api(projects.components.bridge.connection.device.common.api)
     api(projects.components.bridge.connection.device.fzero.api)
     api(projects.components.bridge.connection.device.fzero.impl)
+
     api(projects.components.bridge.connection.feature.common.api)
     api(projects.components.bridge.connection.feature.getinfo.api)
     api(projects.components.bridge.connection.feature.getinfo.impl)
@@ -61,6 +62,16 @@ commonDependencies {
     api(projects.components.bridge.connection.feature.storage.impl)
     api(projects.components.bridge.connection.feature.storageinfo.api)
     api(projects.components.bridge.connection.feature.storageinfo.impl)
+    api(projects.components.bridge.connection.feature.alarm.api)
+    api(projects.components.bridge.connection.feature.alarm.impl)
+    api(projects.components.bridge.connection.feature.deviceColor.api)
+    api(projects.components.bridge.connection.feature.deviceColor.impl)
+    api(projects.components.bridge.connection.feature.appstart.api)
+    api(projects.components.bridge.connection.feature.appstart.impl)
+    api(projects.components.bridge.connection.feature.screenstreaming.api)
+    api(projects.components.bridge.connection.feature.screenstreaming.impl)
+    api(projects.components.bridge.connection.feature.update.api)
+    api(projects.components.bridge.connection.feature.update.impl)
 
     api(projects.components.filemngr.main.api)
     api(projects.components.filemngr.main.impl)
@@ -87,6 +98,8 @@ commonDependencies {
     api(projects.components.analytics.metric.noop)
 
     api(libs.kotlin.immutable.collections)
+
+    implementation(projects.components.core.ui.res)
 }
 
 desktopDependencies {
@@ -94,6 +107,8 @@ desktopDependencies {
     api(projects.components.bridge.connection.transport.usb.impl)
 
     api(libs.decompose.jetpack)
+
+    implementation(libs.jserial)
 }
 
 androidDependencies {

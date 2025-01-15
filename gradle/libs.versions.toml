@@ -100,7 +100,7 @@ buildkonfig = "5.5.1"
 
 wire = "5.1.0"
 okio = "3.9.1"
-jserial = "2.10.3"
+jserial = "2.11.0"
 
 
 [libraries]

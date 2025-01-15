@@ -25,6 +25,7 @@ androidDependencies {
 
     implementation(libs.slf4j.timber)
     implementation(libs.kotlin.immutable.collections)
+    implementation(libs.androidx.core)
 }
 
 androidUnitTestDependencies {
