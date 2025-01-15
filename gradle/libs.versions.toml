@@ -19,7 +19,7 @@ compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wea
 compose-accompanist = "0.36.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
 compose-constraint = "0.5.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
-compose-paging = "3.3.5" # https://developer.android.com/jetpack/androidx/releases/paging
+compose-paging = "3.3.0-alpha02-0.5.1" # https://github.com/cashapp/multiplatform-paging/releases/tag/3.3.0-alpha02-0.5.1
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
 compose-multiplatform = "1.7.1" # https://github.com/JetBrains/compose-multiplatform/releases
 # 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
@@ -51,6 +51,7 @@ ble-kotlin = "1.3.0" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library
 slf4j = "1.7.36" # https://github.com/qos-ch/slf4j/tags
 slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
 lottie = "6.6.1" # https://github.com/airbnb/lottie/blob/master/android-compose.md
+compottie = "2.0.0-rc02" # https://github.com/alexzhirkevich/compottie/releases
 material = "1.12.0" # https://github.com/material-components/material-components-android/releases
 splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.9.1" # https://developer.android.com/jetpack/androidx/releases/annotation
@@ -66,7 +67,7 @@ apache-codec = "1.17.1" # https://mvnrepository.com/artifact/commons-codec/commo
 countly = "24.7.7" # https://github.com/Countly/countly-sdk-android/releases
 grgit-gradle = "8d818b74b9"
 work = "2.10.0" # https://developer.android.com/jetpack/androidx/releases/work
-coil = "3.0.4" # https://github.com/coil-kt/coil/releases
+coil = "3.0.3" # https://github.com/coil-kt/coil/releases
 play-core = "2.1.0" # https://developer.android.com/guide/playcore#java-kotlin-in-app-update
 decompose = "3.2.2" # https://github.com/arkivanov/Decompose/releases
 essenty = "2.4.0" # https://github.com/arkivanov/Essenty/releases
@@ -163,7 +164,7 @@ compose-pager-indicators = { module = "com.google.accompanist:accompanist-pager-
 compose-placeholder = { module = "io.github.fornewid:placeholder-foundation", version.ref = "compose-placeholder" }
 compose-swipetorefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "compose-accompanist" }
 compose-constraint = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "compose-constraint" }
-compose-paging = { module = "androidx.paging:paging-compose", version.ref = "compose-paging" }
+compose-paging = { module = "app.cash.paging:paging-compose-common", version.ref = "compose-paging" }
 compose-drag-drop = { module = "org.burnoutcrew.composereorderable:reorderable", version.ref = "compose-drag-drop" }
 
 # UI - Compose multiplatform
@@ -252,6 +253,7 @@ jserial = { module = "com.fazecast:jSerialComm", version.ref = "jserial" }
 
 # Images
 image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+image-compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 
 # Protobuf
 protobuf-kotlinlite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }

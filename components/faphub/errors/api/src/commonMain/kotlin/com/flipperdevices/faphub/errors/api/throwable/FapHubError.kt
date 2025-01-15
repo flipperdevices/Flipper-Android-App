@@ -1,6 +1,6 @@
 package com.flipperdevices.faphub.errors.api.throwable
 
-import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
+import com.flipperdevices.bridge.connection.feature.storage.api.exception.NoSdCardException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.http.HttpStatusCode

@@ -10,5 +10,5 @@ commonDependencies {
 
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.client)
-    implementation(projects.components.bridge.rpc.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
 }

@@ -20,6 +20,7 @@ commonDependencies {
     implementation(libs.coil.network)
 
     implementation(libs.decompose)
+    implementation(libs.image.compottie)
 }
 
 androidDependencies {

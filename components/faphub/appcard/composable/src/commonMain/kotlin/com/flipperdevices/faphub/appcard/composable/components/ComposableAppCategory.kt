@@ -60,9 +60,6 @@ fun ComposableAppCategory(
         modifier = textModifier,
         text = category?.name ?: DEFAULT_CATEGORY_NAME,
         style = baseStyle.copy(
-            platformStyle = PlatformTextStyle(
-                includeFontPadding = false
-            ),
             lineHeightStyle = LineHeightStyle(
                 alignment = LineHeightStyle.Alignment.Center,
                 trim = LineHeightStyle.Trim.Both

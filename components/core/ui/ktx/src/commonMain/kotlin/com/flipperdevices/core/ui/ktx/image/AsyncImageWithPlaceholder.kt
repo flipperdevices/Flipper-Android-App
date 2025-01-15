@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import coil3.transform.Transformation
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.request.CachePolicy
@@ -27,7 +29,7 @@ fun FlipperAsyncImage(
 ) {
     val context = LocalContext.current
     val request = remember(context, url, cacheKey) {
-        var builder = ImageRequest.Builder(context)
+        var builder = ImageRequest.Builder(PlatformContext.INSTANCE)
             .transformations(WhiteToAlphaTransformation())
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
