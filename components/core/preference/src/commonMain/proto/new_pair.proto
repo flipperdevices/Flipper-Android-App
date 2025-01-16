@@ -18,6 +18,7 @@ message SavedDevice {
 
   oneof data {
     FlipperZeroBle flipper_zero_ble = 10;
+    FlipperZeroUsb flipper_zero_usb = 11;
   }
 }
 
@@ -31,4 +32,9 @@ message FlipperZeroBle {
   }
 
   HardwareColor hardware_color = 2;
+}
+
+message FlipperZeroUsb {
+  string path = 1;
+
 }

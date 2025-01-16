@@ -40,7 +40,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val lagsDetector: FLagsDetectorFeature,
-    @Assisted private val restartApiFeature: FRestartRpcFeatureApi,
+    @Assisted private val restartApiFeature: FRestartRpcFeatureApi?,
     messageProtobufParserFactory: FProtobufMessageCollector.Factory
 ) : FRpcFeatureApi, LogTagProvider {
     override val TAG = "FlipperRequestApi"
@@ -212,7 +212,7 @@ class FRpcFeatureApiImpl @AssistedInject constructor(
             scope: CoroutineScope,
             serialApi: FSerialDeviceApi,
             lagsDetector: FLagsDetectorFeature,
-            restartApiFeature: FRestartRpcFeatureApi
+            restartApiFeature: FRestartRpcFeatureApi?
         ): FRpcFeatureApiImpl
     }
 }

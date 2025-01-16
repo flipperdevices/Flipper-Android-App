@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 
 class FProtobufMessageCollector @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
-    @Assisted restartApiFeature: FRestartRpcFeatureApi,
+    @Assisted restartApiFeature: FRestartRpcFeatureApi?,
     @Assisted private val serialApi: FSerialDeviceApi,
     @Assisted private val requestListeners: MutableMap<Int, OnReceiveResponse>,
     @Assisted private val requestStorage: FRequestStorage,
@@ -108,7 +108,7 @@ class FProtobufMessageCollector @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             @Assisted scope: CoroutineScope,
-            @Assisted restartApiFeature: FRestartRpcFeatureApi,
+            @Assisted restartApiFeature: FRestartRpcFeatureApi?,
             @Assisted serialApi: FSerialDeviceApi,
             @Assisted requestListeners: MutableMap<Int, OnReceiveResponse>,
             @Assisted requestStorage: FRequestStorage,

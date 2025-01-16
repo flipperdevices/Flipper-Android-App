@@ -12,6 +12,8 @@ import com.flipperdevices.bridge.connection.feature.rpcinfo.api.FRpcInfoFeatureA
 import com.flipperdevices.bridge.connection.feature.rpcinfo.model.FlipperInformationStatus
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.dataOrNull
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.protobuf.Main
@@ -34,7 +36,9 @@ import javax.inject.Inject
 class PingViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,
     orchestrator: FDeviceOrchestrator
-) : DecomposeViewModel() {
+) : DecomposeViewModel(), LogTagProvider {
+    override val TAG = "PingViewModel"
+
     private val logLines = MutableStateFlow(persistentListOf("Init PingViewModel"))
 
     init {
@@ -87,12 +91,18 @@ class PingViewModel @Inject constructor(
         log("Request send ping")
         val requestApi = featureProvider.getSync<FRpcFeatureApi>()
         info { "Receive requestApi: $requestApi" }
-        requestApi?.requestWithoutAnswer(
-            Main(
-                system_ping_request = PingRequest()
-            ).wrapToRequest()
-        )
-        info { "Send ping request successful" }
+        if (requestApi == null) {
+            error { "Failed receive request api" }
+            log("Failed receive request api")
+        } else {
+            requestApi.requestWithoutAnswer(
+                Main(
+                    system_ping_request = PingRequest()
+                ).wrapToRequest()
+            )
+            info { "Send ping request successful" }
+            log("Send ping request successful")
+        }
     }
 
     fun invalidateRpcInfo() = viewModelScope.launch {
