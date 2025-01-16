@@ -63,7 +63,6 @@ class FConnectionServiceImpl @Inject constructor(
     override fun disconnect(force: Boolean) {
         scope.launch {
             isForceDisconnected.emit(force)
-            orchestrator.disconnectCurrent()
         }
     }
 
