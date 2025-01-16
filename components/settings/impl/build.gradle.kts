@@ -27,13 +27,13 @@ dependencies {
 
     implementation(projects.components.debug.api)
     implementation(projects.components.firstpair.api)
-    implementation(projects.components.filemanager.api)
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.faphub.installation.all.api)
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.notification.api)
     implementation(projects.components.inappnotification.api)
+    implementation(projects.components.filemngr.main.api)
 
     implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)

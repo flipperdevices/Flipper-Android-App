@@ -56,7 +56,7 @@ class InfraredConnectionApiImpl @Inject constructor(
                 }
 
                 connectionState !is FDeviceConnectStatus.Connected ||
-                        supportedState != FlipperSupportedState.READY -> {
+                    supportedState != FlipperSupportedState.READY -> {
                     InfraredConnectionApi.InfraredEmulateState.CONNECTING
                 }
 

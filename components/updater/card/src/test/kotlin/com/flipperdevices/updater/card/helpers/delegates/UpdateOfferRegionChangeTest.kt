@@ -2,9 +2,9 @@ package com.flipperdevices.updater.card.helpers.delegates
 
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileDownloadApi
+import com.flipperdevices.bridge.connection.feature.update.api.RegionApi.Companion.REGION_FILE
 import com.flipperdevices.core.ktx.jre.TimeHelper
 import com.flipperdevices.protobuf.Region
-import com.flipperdevices.updater.subghz.helpers.REGION_FILE
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
 import io.mockk.coEvery
 import io.mockk.every

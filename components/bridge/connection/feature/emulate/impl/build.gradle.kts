@@ -13,6 +13,7 @@ commonDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)
+    implementation(projects.components.core.kmpparcelize)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.transport.common.api)
@@ -26,4 +27,14 @@ commonDependencies {
     implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.kotlin.coroutines)
+}
+
+commonTestDependencies {
+    // Testing
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.roboelectric)
+    implementation(libs.ktx.testing)
+    implementation(libs.mockk)
 }

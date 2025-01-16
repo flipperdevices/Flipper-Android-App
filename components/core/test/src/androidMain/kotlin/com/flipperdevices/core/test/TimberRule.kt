@@ -1,10 +1,9 @@
 package com.flipperdevices.core.test
 
-import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import timber.log.Timber
 
-class TimberRule : TestWatcher() {
+class TimberRule : LoggerRule() {
 
     private val printlnTree = object : Timber.DebugTree() {
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {

@@ -9,7 +9,6 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
 import com.squareup.anvil.annotations.ContributesBinding
@@ -17,8 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import okio.buffer
-import okio.source
 import javax.inject.Inject
 
 private const val EXT_PATH = "/ext"

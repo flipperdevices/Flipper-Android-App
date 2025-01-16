@@ -35,9 +35,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
-import kotlin.random.Random
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
+import kotlin.random.Random
 
 const val BUFFER_SIZE = 20 * 1024
 const val TEST_FILE = "/ext/stresstest_mobile.tmp"
@@ -112,8 +112,7 @@ class StressTestViewModel @Inject constructor(
         byteBuffer = Random.nextBytes(byteBuffer)
     }
 
-    private suspend fun sendBufferToFile(
-    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
+    private suspend fun sendBufferToFile() = withContext(FlipperDispatchers.workStealingDispatcher) {
         val fStorageFeatureApi = fFeatureProvider
             .getSync<FStorageFeatureApi>()
             ?: return@withContext
@@ -131,15 +130,13 @@ class StressTestViewModel @Inject constructor(
         writeToLog("Write file with length $BUFFER_SIZE successfully")
     }
 
-
     suspend fun FFileDownloadApi.readByteArray(pathOnFlipper: String) = coroutineScope {
         source(pathOnFlipper, this)
             .buffer()
             .readByteArray()
     }
 
-    private suspend fun receiveBufferFromFileAndCheck(
-    ) = withContext(FlipperDispatchers.workStealingDispatcher) {
+    private suspend fun receiveBufferFromFileAndCheck() = withContext(FlipperDispatchers.workStealingDispatcher) {
         val fStorageFeatureApi = fFeatureProvider
             .getSync<FStorageFeatureApi>()
             ?: return@withContext

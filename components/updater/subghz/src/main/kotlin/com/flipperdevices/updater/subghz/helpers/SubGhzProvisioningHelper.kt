@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.update.api.RegionApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
+import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.copyWithProgress
 import com.flipperdevices.metric.api.MetricApi
@@ -95,7 +96,8 @@ class SubGhzProvisioningHelperImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            throw FailedUploadSubGhzException(e)
+            error(e) { "#provideAndUploadSubGhz unknown exception" }
+            throw FailedUploadSubGhzException()
         }
 
         reportMetric(providedRegions, providedRegion, source ?: RegionProvisioningSource.DEFAULT)
