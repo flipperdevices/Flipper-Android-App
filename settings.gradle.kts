@@ -28,7 +28,6 @@ include(
     ":instances:wearable",
     ":components:bridge:api",
     ":components:bridge:impl",
-    ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",
     ":components:bridge:synchronization:stub",
