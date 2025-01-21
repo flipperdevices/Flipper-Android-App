@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.analytics.metric.api)
 
-    implementation(projects.components.bridge.api)
+    implementation(projects.components.firstpair.connection.api)
 
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.immutable.collections)

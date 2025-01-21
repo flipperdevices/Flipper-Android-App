@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.bridge.dao.api)
     // Only for PermissionHelper
-    implementation(projects.components.bridge.api)
+    implementation(projects.components.firstpair.connection.api)
 
     implementation(projects.components.bridge.connection.pbutils)
     implementation(projects.components.bridge.connection.feature.common.api)

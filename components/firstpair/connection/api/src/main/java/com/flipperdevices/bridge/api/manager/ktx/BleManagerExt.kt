@@ -1,17 +1,13 @@
 package com.flipperdevices.bridge.api.manager.ktx
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothProfile
-import com.flipperdevices.bridge.api.manager.ktx.providers.BondStateProvider
 import com.flipperdevices.bridge.api.manager.ktx.providers.ConnectionStateProvider
-import com.flipperdevices.bridge.api.manager.ktx.state.BondState
 import com.flipperdevices.bridge.api.manager.ktx.state.ConnectionState
 import com.flipperdevices.bridge.api.manager.observers.SuspendConnectionObserver
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
-import no.nordicsemi.android.ble.observer.BondingObserver
 import no.nordicsemi.android.ble.observer.ConnectionObserver
 
 /**
@@ -94,26 +90,3 @@ private fun parseDisconnectedReason(
         ConnectionObserver.REASON_TIMEOUT -> ConnectionState.Disconnected.Reason.TIMEOUT
         else -> ConnectionState.Disconnected.Reason.UNKNOWN
     }
-
-@SuppressLint("MissingPermission")
-private fun getBondingStateFrom(bondStateProvider: BondStateProvider): BondState {
-    return when (bondStateProvider.getBondState()) {
-        BluetoothDevice.BOND_BONDED -> BondState.Bonded
-        BluetoothDevice.BOND_BONDING -> BondState.Bonding
-        else -> BondState.NotBonded
-    }
-}
-
-private fun ProducerScope<BondState>.getBondingObserver() = object : BondingObserver {
-    override fun onBondingRequired(device: BluetoothDevice) {
-        trySend(BondState.Bonding)
-    }
-
-    override fun onBonded(device: BluetoothDevice) {
-        trySend(BondState.Bonded)
-    }
-
-    override fun onBondingFailed(device: BluetoothDevice) {
-        trySend(BondState.Bonding)
-    }
-}

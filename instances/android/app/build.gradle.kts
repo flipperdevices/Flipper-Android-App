@@ -142,8 +142,8 @@ dependencies {
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.synchronization.impl)
     implementation(projects.components.bridge.synchronization.ui)
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.impl)
+    implementation(projects.components.firstpair.connection.api)
+    implementation(projects.components.firstpair.connection.impl)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 

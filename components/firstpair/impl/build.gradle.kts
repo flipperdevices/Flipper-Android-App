@@ -24,7 +24,7 @@ dependencies {
     implementation(projects.components.singleactivity.api)
 
     // BLE
-    implementation(projects.components.bridge.api)
+    implementation(projects.components.firstpair.connection.api)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 
