@@ -19,7 +19,3 @@ commonDependencies {
 
     implementation(libs.annotations)
 }
-
-androidDependencies {
-    implementation(projects.components.bridge.service.api)
-}

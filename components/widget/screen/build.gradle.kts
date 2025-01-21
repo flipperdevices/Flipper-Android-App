@@ -20,7 +20,6 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.decompose)
 
-    implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.dao.api)
 

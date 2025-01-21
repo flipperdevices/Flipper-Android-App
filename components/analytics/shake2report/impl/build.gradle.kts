@@ -17,8 +17,6 @@ dependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.ui.decompose)
 
-    implementation(projects.components.bridge.api)
-
     implementation(libs.annotations)
     implementation(libs.appcompat)
 

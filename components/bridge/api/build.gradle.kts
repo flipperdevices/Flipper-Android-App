@@ -5,7 +5,6 @@ plugins {
 android.namespace = "com.flipperdevices.bridge.api"
 
 dependencies {
-    implementation(projects.components.bridge.pbutils)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.data)

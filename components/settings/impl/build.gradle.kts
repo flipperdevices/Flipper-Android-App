@@ -35,10 +35,12 @@ dependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.filemngr.main.api)
 
-    implementation(projects.components.bridge.api)
     implementation(projects.components.bridge.dao.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
+    implementation(projects.components.bridge.connection.feature.common.api)
+    implementation(projects.components.bridge.connection.feature.provider.api)
+    implementation(projects.components.bridge.connection.feature.restartrpc.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
+    implementation(projects.components.bridge.connection.pbutils)
     implementation(projects.components.bridge.synchronization.api)
     implementation(libs.ble.common)
 

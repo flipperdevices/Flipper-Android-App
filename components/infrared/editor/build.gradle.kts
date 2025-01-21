@@ -17,7 +17,7 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
 
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)

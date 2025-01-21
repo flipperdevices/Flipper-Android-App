@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.datastore.core.DataStore
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
-import com.flipperdevices.bridge.service.api.provider.FlipperServiceProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
+import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
@@ -24,8 +26,8 @@ class DebugViewModel @Inject constructor(
     private val application: Application,
     private val synchronizationApi: SynchronizationApi,
     private val settingsDataStore: DataStore<Settings>,
-    private val serviceProvider: FlipperServiceProvider,
-    private val fapInstallationAllApi: FapInstallationAllApi
+    private val fapInstallationAllApi: FapInstallationAllApi,
+    private val fFeatureProvider: FFeatureProvider
 ) : DecomposeViewModel() {
 
     fun onAction(
@@ -103,10 +105,12 @@ class DebugViewModel @Inject constructor(
     }
 
     private fun restartRpc() {
-        serviceProvider.provideServiceApi(this) {
-            viewModelScope.launch {
-                it.restartRPC()
+        viewModelScope.launch {
+            val fRestartRpcFeatureApi = fFeatureProvider.getSync<FRestartRpcFeatureApi>() ?: run {
+                com.flipperdevices.core.log.error { "#restartRpc could not find FRestartRpcFeatureApi" }
+                return@launch
             }
+            fRestartRpcFeatureApi.restartRpc()
         }
     }
 
@@ -147,7 +151,11 @@ class DebugViewModel @Inject constructor(
 
     private fun brokeBytes() {
         viewModelScope.launch {
-            serviceProvider.getServiceApi().requestApi.sendTrashBytesAndBrokeSession()
+            val fRestartRpcFeatureApi = fFeatureProvider.getSync<FRestartRpcFeatureApi>() ?: run {
+                com.flipperdevices.core.log.error { "#restartRpc could not find FRestartRpcFeatureApi" }
+                return@launch
+            }
+            fRestartRpcFeatureApi.restartRpc()
         }
     }
 }

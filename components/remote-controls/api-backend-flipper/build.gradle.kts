@@ -15,13 +15,14 @@ androidDependencies {
     implementation(projects.components.remoteControls.apiBackend)
     implementation(projects.components.faphub.target.api)
     implementation(projects.components.faphub.errors.api)
+    implementation(projects.components.faphub.installation.manifest.api)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
     implementation(projects.components.bridge.connection.feature.storageinfo.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.orchestrator.api)
     // Only for SDCardException
-    implementation(projects.components.bridge.rpc.api)
 
     implementation(libs.dagger)
     implementation(libs.zacsweers.anvil.annotations)

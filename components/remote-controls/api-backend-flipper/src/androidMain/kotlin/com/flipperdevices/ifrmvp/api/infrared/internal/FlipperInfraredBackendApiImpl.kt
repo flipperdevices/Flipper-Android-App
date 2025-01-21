@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfo
 import com.flipperdevices.bridge.connection.feature.storageinfo.model.flashSdStats
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
-import com.flipperdevices.bridge.rpc.api.model.exceptions.NoSdCardException
+import com.flipperdevices.faphub.installation.manifest.error.NoSdCardException
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.errors.api.throwable.FlipperNotConnected

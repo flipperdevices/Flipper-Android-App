@@ -10,4 +10,8 @@ class NoopRestartApi : FSerialRestartApi, LogTagProvider {
     override suspend fun restartRpc() {
         error { "Restart rpc failed, because this is noop implementation" }
     }
+
+    override suspend fun sendTrashBytesAndBrokeSession() {
+        error { "Restart rpc failed, because this is noop implementation" }
+    }
 }

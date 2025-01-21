@@ -12,6 +12,9 @@ class FRestartRpcFeatureApiImpl @AssistedInject constructor(
     override suspend fun restartRpc() {
         transportRestartApi.restartRpc()
     }
+    override suspend fun sendTrashBytesAndBrokeSession() {
+        transportRestartApi.sendTrashBytesAndBrokeSession()
+    }
 
     @AssistedFactory
     fun interface InternalFactory {

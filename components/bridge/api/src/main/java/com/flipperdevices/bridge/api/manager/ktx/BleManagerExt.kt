@@ -26,13 +26,6 @@ fun ConnectionStateProvider.stateAsFlow() = callbackFlow {
     awaitClose { unsubscribeConnectionState(observer) }
 }
 
-fun BondStateProvider.bondingStateAsFlow() = callbackFlow {
-    val bondObserver = getBondingObserver()
-    send(getBondingStateFrom(this@bondingStateAsFlow))
-    subscribeOnBondingState(bondObserver)
-    awaitClose { unsubscribeBondingState(bondObserver) }
-}
-
 private fun ProducerScope<ConnectionState>.getConnectionObserver(
     connectionStateProvider: ConnectionStateProvider
 ) = object : SuspendConnectionObserver {

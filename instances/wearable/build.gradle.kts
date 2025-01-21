@@ -33,8 +33,6 @@ dependencies {
 
     implementation(projects.components.keyemulate.api)
     implementation(projects.components.keyemulate.impl)
-    implementation(projects.components.bridge.service.api)
-    implementation(projects.components.bridge.service.noop)
     implementation(projects.components.bridge.synchronization.api)
     implementation(projects.components.bridge.synchronization.stub)
     implementation(projects.components.bridge.dao.api)

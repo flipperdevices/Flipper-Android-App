@@ -1,6 +1,5 @@
 package com.flipperdevices.wearable.emulate.common
 
-import com.flipperdevices.bridge.protobuf.toDelimitedBytes
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -69,7 +68,7 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 info { "Receive $request" }
 
                 withContext(dispatcher) {
-                    outputStream.write(request.toDelimitedBytes())
+                    request.writeDelimitedTo(outputStream)
                 }
             } catch (ignored: CancellationException) {
                 // ignore

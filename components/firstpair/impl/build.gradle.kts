@@ -25,7 +25,6 @@ dependencies {
 
     // BLE
     implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
     implementation(libs.ble.common)
     implementation(libs.ble.scan)
 
