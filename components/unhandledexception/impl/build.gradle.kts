@@ -14,9 +14,6 @@ dependencies {
     implementation(projects.components.core.ui.theme)
     implementation(projects.components.core.ui.dialog)
 
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.service.api)
-
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.deeplink.api)
 

@@ -26,7 +26,7 @@ dependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.synchronization.api)
-    implementation(projects.components.bridge.api)
+    implementation(projects.components.bridge.connection.feature.storage.api)
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.singleactivity.api)
     implementation(projects.components.deeplink.api)
@@ -48,4 +48,11 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     implementation(libs.okio)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.ktx.testing)
+    testImplementation(libs.mockk)
 }

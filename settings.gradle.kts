@@ -26,16 +26,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(
     ":instances:android:app",
     ":instances:wearable",
-    ":components:bridge:api",
-    ":components:bridge:impl",
-    ":components:bridge:service:noop",
-    ":components:bridge:service:impl",
-    ":components:bridge:service:api",
-    ":components:bridge:rpcinfo:api",
-    ":components:bridge:rpcinfo:impl",
-    ":components:bridge:rpc:api",
-    ":components:bridge:rpc:impl",
-    ":components:bridge:pbutils",
     ":components:bridge:synchronization:api",
     ":components:bridge:synchronization:impl",
     ":components:bridge:synchronization:stub",
@@ -218,6 +208,8 @@ include(
     ":components:infrared:editor",
     ":components:infrared:utils",
 
+    ":components:firstpair:connection:api",
+    ":components:firstpair:connection:impl",
     ":components:firstpair:api",
     ":components:firstpair:impl",
 

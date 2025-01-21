@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
+import com.flipperdevices.bridge.connection.feature.storage.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.delegates.key.UpdateKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFileFormat

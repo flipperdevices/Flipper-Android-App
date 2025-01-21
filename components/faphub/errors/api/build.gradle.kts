@@ -7,6 +7,8 @@ android.namespace = "com.flipperdevices.faphub.errors"
 dependencies {
     implementation(projects.components.core.ui.theme)
 
+    implementation(projects.components.faphub.installation.manifest.api)
+
     // Compose
     implementation(libs.compose.ui)
     implementation(libs.compose.tooling)
@@ -15,5 +17,4 @@ dependencies {
 
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.client)
-    implementation(projects.components.bridge.rpc.api)
 }

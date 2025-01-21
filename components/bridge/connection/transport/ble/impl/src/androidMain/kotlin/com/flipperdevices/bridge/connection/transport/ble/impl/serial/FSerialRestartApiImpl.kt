@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 import no.nordicsemi.android.kotlin.ble.core.data.BleWriteType
 import no.nordicsemi.android.kotlin.ble.core.data.util.DataByteArray
@@ -38,6 +39,24 @@ class FSerialRestartApiImpl @AssistedInject constructor(
             throw BLEConnectionPermissionException()
         }
         resetChar.write(DataByteArray(byteArrayOf(0)), BleWriteType.DEFAULT)
+    }
+
+    override suspend fun sendTrashBytesAndBrokeSession() {
+        if (context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            throw BLEConnectionPermissionException()
+        }
+        @Suppress("MagicNumber")
+        val randomBytes = byteArrayOf(-61, 91, 69, 107, -128, -69, -42, 107, 53, -102)
+        services.filterNotNull().map { gattServices -> gattServices.services }
+            .map { gattServiceList -> gattServiceList.flatMap { gattService -> gattService.characteristics } }
+            .onEach { characteristics ->
+                characteristics.onEach { characteristic ->
+                    characteristic.write(
+                        DataByteArray(randomBytes),
+                        BleWriteType.DEFAULT
+                    )
+                }
+            }
     }
 
     @AssistedFactory

@@ -117,7 +117,7 @@ androidDependencies {
     api(projects.components.bridge.connection.transport.ble.api)
     api(projects.components.bridge.connection.transport.ble.impl)
 
-    api(projects.components.bridge.api)
+    api(projects.components.firstpair.connection.api)
 
     api(projects.components.keyparser.api)
     api(projects.components.keyparser.impl)

@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Vibrator
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
-import com.flipperdevices.bridge.api.utils.FlipperSymbolFilter
+import com.flipperdevices.bridge.connection.feature.storage.api.utils.FlipperSymbolFilter
 import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.core.ktx.android.vibrateCompat
 import com.flipperdevices.core.log.LogTagProvider
@@ -33,7 +33,7 @@ class KeyEditViewModel @AssistedInject constructor(
     @Assisted private val editableKey: EditableKey,
     private val existedKeyProcessor: EditableKeyProcessor<EditableKey.Existed>,
     private val limbKeyProcessor: EditableKeyProcessor<EditableKey.Limb>,
-    private val settings: DataStore<Settings>
+    private val settings: DataStore<Settings>,
 ) : DecomposeViewModel(), LogTagProvider {
     override val TAG = "KeyEditViewModel"
 

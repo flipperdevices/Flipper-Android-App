@@ -7,10 +7,6 @@ plugins {
 android.namespace = "com.flipperdevices.filemanager.upload.impl"
 
 androidDependencies {
-    implementation(projects.components.bridge.api)
-    implementation(projects.components.bridge.pbutils)
-    implementation(projects.components.bridge.service.api)
-
     implementation(libs.compose.activity)
 }
 
