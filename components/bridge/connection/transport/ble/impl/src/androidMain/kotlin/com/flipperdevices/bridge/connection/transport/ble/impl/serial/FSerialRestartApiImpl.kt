@@ -45,10 +45,18 @@ class FSerialRestartApiImpl @AssistedInject constructor(
         if (context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             throw BLEConnectionPermissionException()
         }
+        @Suppress("MagicNumber")
         val randomBytes = byteArrayOf(-61, 91, 69, 107, -128, -69, -42, 107, 53, -102)
         services.filterNotNull().map { gattServices -> gattServices.services }
             .map { gattServiceList -> gattServiceList.flatMap { gattService -> gattService.characteristics } }
-            .onEach { characteristics -> characteristics.onEach { characteristic -> characteristic.write(DataByteArray(randomBytes),BleWriteType.DEFAULT) } }
+            .onEach { characteristics ->
+                characteristics.onEach { characteristic ->
+                    characteristic.write(
+                        DataByteArray(randomBytes),
+                        BleWriteType.DEFAULT
+                    )
+                }
+            }
     }
 
     @AssistedFactory
