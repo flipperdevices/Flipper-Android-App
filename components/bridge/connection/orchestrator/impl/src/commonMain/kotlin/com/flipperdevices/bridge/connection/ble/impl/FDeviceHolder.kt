@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class FDeviceHolder<API : FConnectedDeviceApi>(
     private val deviceConnectionHelper: FDeviceConfigToConnection,
     private val exceptionHandler: CoroutineExceptionHandler
 ) : LogTagProvider {
-    override val TAG = "FDeviceHolder-$config"
+    override val TAG = "FDeviceHolder"
 
     private val scope = CoroutineScope(
         FlipperDispatchers.workStealingDispatcher + exceptionHandler

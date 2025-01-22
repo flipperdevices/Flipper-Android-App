@@ -14,8 +14,10 @@ import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BLEConnecti
 import com.flipperdevices.bridge.connection.transport.ble.impl.utils.BleConstants
 import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withTimeout
 
 class BleDeviceConnectionApiImpl(
@@ -44,11 +46,12 @@ class BleDeviceConnectionApiImpl(
         }
         listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
         info { "Finding device with ${BleConstants.CONNECT_TIME_MS} timeout..." }
+        val deviceScope = CoroutineScope(FlipperDispatchers.workStealingDispatcher + Job())
         val device = withTimeout(BleConstants.CONNECT_TIME_MS) {
             connectionHelper.acceleratedBleConnect(
                 context = context,
                 macAddress = config.macAddress,
-                scope = scope
+                scope =  deviceScope
             )
         }
         info { "Find device" }
@@ -70,13 +73,14 @@ class BleDeviceConnectionApiImpl(
         val serialConfig = config.serialConfig
         return if (serialConfig == null) {
             FBleApiImpl(
+                deviceScope = deviceScope,
                 client = device,
-                scope = scope,
                 statusListener = listener,
                 metaInfoGattMap = config.metaInfoGattMap
             )
         } else {
             bleApiWithSerialFactory.build(
+                deviceScope = deviceScope,
                 scope = scope,
                 serialConfig = serialConfig,
                 metaInfoGattMap = config.metaInfoGattMap,

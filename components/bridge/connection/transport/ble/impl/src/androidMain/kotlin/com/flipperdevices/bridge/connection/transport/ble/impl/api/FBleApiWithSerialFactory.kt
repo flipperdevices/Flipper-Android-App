@@ -18,6 +18,7 @@ class FBleApiWithSerialFactory @Inject constructor(
     private val flipperActionNotifierFactory: FlipperActionNotifier.Factory
 ) {
     fun build(
+        deviceScope: CoroutineScope,
         scope: CoroutineScope,
         client: ClientBleGatt,
         serialConfig: FBleDeviceSerialConfig,
@@ -37,7 +38,7 @@ class FBleApiWithSerialFactory @Inject constructor(
             resetCharUUID = serialConfig.resetCharUUID
         )
         return FBleApiWithSerial(
-            scope = scope,
+            deviceScope = deviceScope,
             client = client,
             metaInfoGattMap = metaInfoGattMap,
             statusListener = statusListener,

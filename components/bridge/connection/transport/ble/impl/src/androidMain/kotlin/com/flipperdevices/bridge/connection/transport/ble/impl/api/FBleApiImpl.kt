@@ -7,10 +7,13 @@ import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransp
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.bridge.connection.transport.common.api.meta.TransportMetaInfoKey
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -18,7 +21,7 @@ import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 
 open class FBleApiImpl(
-    scope: CoroutineScope,
+    private val deviceScope: CoroutineScope,
     private val client: ClientBleGatt,
     private val statusListener: FTransportConnectionStatusListener,
     private val metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
@@ -38,15 +41,17 @@ open class FBleApiImpl(
                 info { "Receive state $state" }
                 statusListener.onStatusUpdate(
                     when (state) {
-                        GattConnectionState.STATE_DISCONNECTED ->
+                        GattConnectionState.STATE_DISCONNECTED -> {
+                            client.close()
                             FInternalTransportConnectionStatus.Disconnected
+                        }
 
                         GattConnectionState.STATE_CONNECTING ->
                             FInternalTransportConnectionStatus.Connecting
 
                         GattConnectionState.STATE_CONNECTED ->
                             FInternalTransportConnectionStatus.Connected(
-                                scope = scope,
+                                scope = deviceScope,
                                 deviceApi = this
                             )
 
@@ -54,11 +59,13 @@ open class FBleApiImpl(
                             FInternalTransportConnectionStatus.Disconnecting
                     }
                 )
-            }.launchIn(scope)
+                if (state == GattConnectionState.STATE_DISCONNECTED) {
+                    deviceScope.cancel()
+                }
+            }.launchIn(deviceScope)
     }
 
     override suspend fun disconnect() {
         client.disconnect()
-        client.close()
     }
 }
