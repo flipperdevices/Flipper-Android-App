@@ -790,3 +790,10 @@ DecomposeRule:
     active: true
     checkImport: true
     replaceTo: 'pushToFront()'
+
+
+compiler:
+  CompilerWarning:
+    active: true
+    ignoreDiagnostic:
+      - OPT_IN_USAGE

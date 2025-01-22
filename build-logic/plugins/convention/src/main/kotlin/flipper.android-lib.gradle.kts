@@ -6,8 +6,6 @@ plugins {
     id("flipper.lint")
 }
 
-suppressOptIn()
-
 configure<BaseExtension> {
     commonAndroid(project)
 }

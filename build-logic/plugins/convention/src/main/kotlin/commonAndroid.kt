@@ -22,6 +22,8 @@ fun BaseExtension.commonAndroid(target: Project) {
     configureBuildTypes()
     configureBuildFeatures()
     configureCompileOptions()
+
+    target.suppressOptIn()
 }
 
 @Suppress("UnstableApiUsage")
@@ -90,7 +92,7 @@ private fun BaseExtension.configureCompileOptions() {
 }
 
 @Suppress("MaxLineLength")
-fun Project.suppressOptIn() {
+private fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {

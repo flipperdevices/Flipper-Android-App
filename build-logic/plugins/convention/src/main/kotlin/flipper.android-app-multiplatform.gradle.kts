@@ -17,8 +17,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-suppressOptIn()
-
 @Suppress("UnstableApiUsage")
 configure<BaseExtension> {
     commonAndroid(project)
