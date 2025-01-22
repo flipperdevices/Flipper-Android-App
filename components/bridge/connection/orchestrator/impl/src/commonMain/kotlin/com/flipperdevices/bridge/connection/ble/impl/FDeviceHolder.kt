@@ -41,7 +41,7 @@ class FDeviceHolder<API : FConnectedDeviceApi>(
     private val deviceConnectionHelper: FDeviceConfigToConnection,
     private val exceptionHandler: CoroutineExceptionHandler
 ) : LogTagProvider {
-    override val TAG = "FDeviceHolder"
+    override val TAG = "FDeviceHolder-$config"
 
     private val scope = CoroutineScope(
         FlipperDispatchers.workStealingDispatcher + exceptionHandler
