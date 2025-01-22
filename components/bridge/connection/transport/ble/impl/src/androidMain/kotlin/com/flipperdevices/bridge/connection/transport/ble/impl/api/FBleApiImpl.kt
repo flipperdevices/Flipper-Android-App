@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
+import java.util.concurrent.atomic.AtomicBoolean
 
 open class FBleApiImpl(
     private val deviceScope: CoroutineScope,
@@ -30,6 +31,7 @@ open class FBleApiImpl(
     ),
     LogTagProvider {
     override val TAG = "FBleApi"
+    private val isForceDisconnected = AtomicBoolean(false)
 
     init {
         info { "Init ble api listener" }
@@ -40,6 +42,9 @@ open class FBleApiImpl(
                 statusListener.onStatusUpdate(
                     when (state) {
                         GattConnectionState.STATE_DISCONNECTED -> {
+                            if (!isForceDisconnected.get()) {
+                                client.disconnect()
+                            }
                             client.close()
                             FInternalTransportConnectionStatus.Disconnected
                         }
@@ -64,6 +69,7 @@ open class FBleApiImpl(
     }
 
     override suspend fun disconnect() {
+        isForceDisconnected.set(true)
         client.disconnect()
     }
 }
