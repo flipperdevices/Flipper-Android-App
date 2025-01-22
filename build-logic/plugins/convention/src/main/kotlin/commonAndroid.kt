@@ -111,8 +111,7 @@ private fun Project.suppressOptIn() {
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",
                     "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
-                    "androidx.compose.foundation.layout.ExperimentalLayoutApi",
-                    "kotlinx.coroutines.flow.flatMapLatest"
+                    "androidx.compose.foundation.layout.ExperimentalLayoutApi"
                 )
             }
         }
