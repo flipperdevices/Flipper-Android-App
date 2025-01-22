@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+suppressOptIn()
+
 kotlin {
     sourceSets {
         androidMain.dependencies {

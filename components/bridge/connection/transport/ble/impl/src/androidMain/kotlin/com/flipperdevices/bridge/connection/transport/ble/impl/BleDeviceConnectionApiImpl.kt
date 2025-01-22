@@ -51,7 +51,7 @@ class BleDeviceConnectionApiImpl(
             connectionHelper.acceleratedBleConnect(
                 context = context,
                 macAddress = config.macAddress,
-                scope =  deviceScope
+                scope = deviceScope
             )
         }
         info { "Find device" }

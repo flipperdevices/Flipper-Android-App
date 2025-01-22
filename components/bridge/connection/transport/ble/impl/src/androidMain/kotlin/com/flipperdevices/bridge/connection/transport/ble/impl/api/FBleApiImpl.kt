@@ -7,12 +7,10 @@ import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransp
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.bridge.connection.transport.common.api.meta.TransportMetaInfoKey
-import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn

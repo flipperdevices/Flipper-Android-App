@@ -17,6 +17,7 @@ class FBleApiWithSerialFactory @Inject constructor(
     private val fSerialRestartApiFactory: FSerialRestartApiImpl.Factory,
     private val flipperActionNotifierFactory: FlipperActionNotifier.Factory
 ) {
+    @Suppress("LongParameterList")
     fun build(
         deviceScope: CoroutineScope,
         scope: CoroutineScope,

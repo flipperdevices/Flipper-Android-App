@@ -22,8 +22,6 @@ fun BaseExtension.commonAndroid(target: Project) {
     configureBuildTypes()
     configureBuildFeatures()
     configureCompileOptions()
-
-    target.suppressOptIn()
 }
 
 @Suppress("UnstableApiUsage")
@@ -92,7 +90,7 @@ private fun BaseExtension.configureCompileOptions() {
 }
 
 @Suppress("MaxLineLength")
-private fun Project.suppressOptIn() {
+fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {
@@ -111,7 +109,8 @@ private fun Project.suppressOptIn() {
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",
                     "com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
-                    "androidx.compose.foundation.layout.ExperimentalLayoutApi"
+                    "androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                    "kotlinx.coroutines.flow.flatMapLatest"
                 )
             }
         }
