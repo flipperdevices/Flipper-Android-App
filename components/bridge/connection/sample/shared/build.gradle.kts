@@ -133,4 +133,5 @@ androidDependencies {
     api(libs.ble.kotlin.client)
 
     api(libs.compose.activity)
+    implementation(libs.usb.android)
 }
