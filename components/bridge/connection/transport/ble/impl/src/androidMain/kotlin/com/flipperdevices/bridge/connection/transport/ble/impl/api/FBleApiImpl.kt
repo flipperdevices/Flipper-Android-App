@@ -11,14 +11,18 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
+import java.util.concurrent.atomic.AtomicBoolean
 
 open class FBleApiImpl(
-    scope: CoroutineScope,
+    private val scope: CoroutineScope,
     private val client: ClientBleGatt,
     private val statusListener: FTransportConnectionStatusListener,
     private val metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
@@ -29,6 +33,7 @@ open class FBleApiImpl(
     ),
     LogTagProvider {
     override val TAG = "FBleApi"
+    private val isForceDisconnected = AtomicBoolean(false)
 
     init {
         info { "Init ble api listener" }
@@ -38,8 +43,10 @@ open class FBleApiImpl(
                 info { "Receive state $state" }
                 statusListener.onStatusUpdate(
                     when (state) {
-                        GattConnectionState.STATE_DISCONNECTED ->
+                        GattConnectionState.STATE_DISCONNECTED -> {
+                            client.close()
                             FInternalTransportConnectionStatus.Disconnected
+                        }
 
                         GattConnectionState.STATE_CONNECTING ->
                             FInternalTransportConnectionStatus.Connecting
@@ -58,7 +65,12 @@ open class FBleApiImpl(
     }
 
     override suspend fun disconnect() {
-        client.disconnect()
-        client.close()
+        isForceDisconnected.set(true)
+        if (client.connectionState.firstOrNull() != GattConnectionState.STATE_DISCONNECTED) {
+            client.disconnect()
+        }
+        client.connectionState
+            .filter { connectionState -> connectionState == GattConnectionState.STATE_DISCONNECTED }
+            .first()
     }
 }

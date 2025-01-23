@@ -51,7 +51,7 @@ class UpdateRequestViewModel @Inject constructor(
                     BatteryState.Ready(gattInfo.isCharging, batteryLevel)
                 } ?: BatteryState.Unknown
             }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, BatteryState.Unknown)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, BatteryState.Unknown)
 
     fun getBatteryState(): StateFlow<BatteryState> = batteryFlow
 

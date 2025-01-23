@@ -11,12 +11,12 @@ import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 
 class FBleApiWithSerial(
-    scope: CoroutineScope,
+    deviceScope: CoroutineScope,
     client: ClientBleGatt,
     metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
     statusListener: FTransportConnectionStatusListener,
     serialDeviceApi: FSerialDeviceApi,
     serialRestartApi: FSerialRestartApiImpl,
-) : FBleApiImpl(scope, client, statusListener, metaInfoGattMap),
+) : FBleApiImpl(deviceScope, client, statusListener, metaInfoGattMap),
     FSerialDeviceApi by serialDeviceApi,
     FSerialRestartApi by serialRestartApi

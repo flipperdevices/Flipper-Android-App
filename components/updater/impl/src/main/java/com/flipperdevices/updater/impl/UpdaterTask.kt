@@ -3,6 +3,7 @@ package com.flipperdevices.updater.impl
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
+import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcStorageExistException
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FFileUploadApi
 import com.flipperdevices.bridge.connection.feature.storage.api.fm.FListingStorageApi
@@ -182,11 +183,12 @@ class UpdaterTask @Inject constructor(
                 fFileUploadApi = fFileUploadApi,
                 stateListener = stateListener
             )
+        } catch (e: CancellationException) {
+            info { "Cancellation exception: ${e.message}" }
         } catch (e: Throwable) {
             error(e) { "Failed when upload to flipper" }
             when (e) {
                 is IntFlashFullException -> stateListener(UpdatingState.FailedInternalStorage)
-                is CancellationException -> {}
                 else -> stateListener(UpdatingState.FailedUpload)
             }
             return@useTemporaryFolder
@@ -228,8 +230,13 @@ class UpdaterTask @Inject constructor(
             ?: updaterFolder.name
 
         val flipperPath = "/ext/update/$updateName"
-        fFileUploadApi.mkdir(flipperPath)
-            .onFailure { error(it) { "#prepareToUpload could not mkdir" } }
+        try {
+            fFileUploadApi.mkdir(flipperPath)
+        } catch (e: FRpcStorageExistException) {
+            info { "Storage already exists: ${e.message}" }
+        } catch (e: Throwable) {
+            error(e) { "#prepareToUpload could not mkdir" }
+        }
         return flipperPath
     }
 }

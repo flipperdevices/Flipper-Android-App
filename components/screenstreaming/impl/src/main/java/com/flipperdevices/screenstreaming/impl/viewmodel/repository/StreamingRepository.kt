@@ -40,7 +40,7 @@ class StreamingRepository(
     private val flipperScreen = MutableStateFlow<FlipperScreenState>(FlipperScreenState.InProgress)
     private val streamingStateFlow = MutableStateFlow(StreamingState.DISABLED)
     private var startStreamingJob: Job? = null
-    private var startStreamingMutex: Mutex = Mutex()
+    private val startStreamingMutex: Mutex = Mutex()
 
     fun getFlipperScreen() = flipperScreen.asStateFlow()
 

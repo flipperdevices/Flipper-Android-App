@@ -70,13 +70,14 @@ class BleDeviceConnectionApiImpl(
         val serialConfig = config.serialConfig
         return if (serialConfig == null) {
             FBleApiImpl(
-                client = device,
                 scope = scope,
+                client = device,
                 statusListener = listener,
                 metaInfoGattMap = config.metaInfoGattMap
             )
         } else {
             bleApiWithSerialFactory.build(
+                deviceScope = scope,
                 scope = scope,
                 serialConfig = serialConfig,
                 metaInfoGattMap = config.metaInfoGattMap,

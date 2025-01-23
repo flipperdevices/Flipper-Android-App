@@ -43,7 +43,7 @@ class SaveTempSignalViewModel @Inject constructor(
             }
             _state.emit(SaveTempSignalApi.State.Uploading(0f))
             launchWithLock(mutex, viewModelScope, "load") {
-                filesDesc.forEachIndexed { index, fileDesc ->
+                filesDesc.forEachIndexed { _, fileDesc ->
                     storageProvider.useTemporaryFile { deviceFile ->
                         deviceFile.toFile().writeText(fileDesc.textContent)
                         val fAbsolutePath = FlipperFilePath(

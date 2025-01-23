@@ -2,6 +2,8 @@ package com.flipperdevices.bridge.connection.service.impl
 
 import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
+import com.flipperdevices.bridge.connection.orchestrator.api.model.DisconnectStatus
+import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
 import com.flipperdevices.bridge.connection.service.api.FConnectionService
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
@@ -9,11 +11,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.warn
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -32,6 +36,37 @@ class FConnectionServiceImpl @Inject constructor(
     private val mutex = Mutex()
     private val isForceDisconnected = MutableStateFlow(false)
 
+    private fun getBrokenConnectionReconnectJob(scope: CoroutineScope): Job {
+        return orchestrator.getState()
+            .onEach { status ->
+                if (status !is FDeviceConnectStatus.Disconnected) return@onEach
+                when (status.reason) {
+                    DisconnectStatus.NOT_INITIALIZED -> return@onEach
+                    DisconnectStatus.REPORTED_BY_TRANSPORT -> Unit
+                    DisconnectStatus.ERROR_UNKNOWN -> Unit
+                }
+                if (isForceDisconnected.first()) return@onEach
+                val currentDevice = status.device ?: return@onEach
+                orchestrator.disconnectCurrent()
+                orchestrator.connect(currentDevice)
+            }.launchIn(scope)
+    }
+
+    private fun getConnectionJob(scope: CoroutineScope): Job {
+        return combine(
+            flow = fDevicePersistedStorage.getCurrentDevice(),
+            flow2 = isForceDisconnected,
+            transform = { currentDevice, isForceDisconnected ->
+                when {
+                    isForceDisconnected -> orchestrator.disconnectCurrent()
+                    currentDevice == null -> orchestrator.disconnectCurrent()
+
+                    else -> orchestrator.connect(currentDevice)
+                }
+            }
+        ).launchIn(scope)
+    }
+
     override fun onApplicationInit() {
         scope.launch {
             if (mutex.isLocked) {
@@ -39,19 +74,10 @@ class FConnectionServiceImpl @Inject constructor(
                 return@launch
             }
             mutex.withLock {
-                val connectionJob = combine(
-                    flow = fDevicePersistedStorage.getCurrentDevice(),
-                    flow2 = isForceDisconnected,
-                    transform = { currentDevice, isForceDisconnected ->
-                        when {
-                            isForceDisconnected -> orchestrator.disconnectCurrent()
-                            currentDevice == null -> orchestrator.disconnectCurrent()
-                            else -> orchestrator.connect(currentDevice)
-                        }
-                    }
-                ).launchIn(this)
-                connectionJob.invokeOnCompletion { warn { "#onApplicationInit connection job cancelled" } }
+                val brokenConnectionReconnectJob = getBrokenConnectionReconnectJob(this)
+                val connectionJob = getConnectionJob(this)
                 connectionJob.join()
+                brokenConnectionReconnectJob.join()
             }
         }
     }
@@ -63,7 +89,6 @@ class FConnectionServiceImpl @Inject constructor(
     override fun disconnect(force: Boolean) {
         scope.launch {
             isForceDisconnected.emit(force)
-            orchestrator.disconnectCurrent()
         }
     }
 
@@ -78,7 +103,12 @@ class FConnectionServiceImpl @Inject constructor(
     }
 
     override fun connectIfNotForceDisconnect() {
-        // todo. Need to make working connection and reconnection. Current version not as good as expected
-        onApplicationInit()
+        scope.launch {
+            if (isForceDisconnected.first()) return@launch
+            val currentDevice = fDevicePersistedStorage.getCurrentDevice()
+                .first()
+                ?: return@launch
+            orchestrator.connect(currentDevice)
+        }
     }
 }
