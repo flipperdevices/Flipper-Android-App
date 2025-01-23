@@ -5,6 +5,8 @@ import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnec
 import com.flipperdevices.bridge.connection.transport.common.api.di.toHolder
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.usb.impl.USBDeviceConnectionApiImpl
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDevice
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDeviceFactory
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -20,6 +22,10 @@ class BleDeviceConnectionModule {
     @IntoMap
     @ClassKey(FUSBDeviceConnectionConfig::class)
     fun provideBleDeviceConnectionApi(
-        actionNotifierFactory: FlipperActionNotifier.Factory
-    ): DeviceConnectionApiHolder = USBDeviceConnectionApiImpl(actionNotifierFactory).toHolder()
+        actionNotifierFactory: FlipperActionNotifier.Factory,
+        platformDeviceFactory: USBPlatformDeviceFactory
+    ): DeviceConnectionApiHolder = USBDeviceConnectionApiImpl(
+        actionNotifierFactory,
+        platformDeviceFactory
+    ).toHolder()
 }

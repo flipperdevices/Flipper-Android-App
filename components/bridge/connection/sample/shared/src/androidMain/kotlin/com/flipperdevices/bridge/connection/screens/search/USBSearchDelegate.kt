@@ -89,8 +89,8 @@ class USBSearchDelegate @AssistedInject constructor(
 private fun UsbDevice.toFDeviceFlipperZeroUSBModel(): FDeviceFlipperZeroUsbModel {
     return FDeviceFlipperZeroUsbModel(
         name = productName?.extractFlipperName() ?: deviceName,
-        portPath = deviceName,
-        humanReadableName = deviceName,
+        portPath = deviceId.toString(),
+        humanReadableName = productName ?: deviceName,
     )
 }
 
