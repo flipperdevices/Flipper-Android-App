@@ -38,17 +38,15 @@ class FConnectionServiceImpl @Inject constructor(
 
     private fun getBrokenConnectionReconnectJob(scope: CoroutineScope): Job {
         return orchestrator.getState()
-            .onEach {
-                if (it !is FDeviceConnectStatus.Disconnected) return@onEach
-                when (it.reason) {
+            .onEach { status ->
+                if (status !is FDeviceConnectStatus.Disconnected) return@onEach
+                when (status.reason) {
                     DisconnectStatus.NOT_INITIALIZED -> return@onEach
                     DisconnectStatus.REPORTED_BY_TRANSPORT -> Unit
                     DisconnectStatus.ERROR_UNKNOWN -> Unit
                 }
                 if (isForceDisconnected.first()) return@onEach
-                val currentDevice = fDevicePersistedStorage.getCurrentDevice()
-                    .first()
-                    ?: return@onEach
+                val currentDevice = status.device ?: return@onEach
                 orchestrator.disconnectCurrent()
                 orchestrator.connect(currentDevice)
             }.launchIn(scope)
