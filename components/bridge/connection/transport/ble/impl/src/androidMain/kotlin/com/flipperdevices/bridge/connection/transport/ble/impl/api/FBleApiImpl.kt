@@ -11,8 +11,10 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
@@ -20,7 +22,7 @@ import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import java.util.concurrent.atomic.AtomicBoolean
 
 open class FBleApiImpl(
-    private val deviceScope: CoroutineScope,
+    private val scope: CoroutineScope,
     private val client: ClientBleGatt,
     private val statusListener: FTransportConnectionStatusListener,
     private val metaInfoGattMap: ImmutableMap<TransportMetaInfoKey, GATTCharacteristicAddress>,
@@ -42,9 +44,6 @@ open class FBleApiImpl(
                 statusListener.onStatusUpdate(
                     when (state) {
                         GattConnectionState.STATE_DISCONNECTED -> {
-                            if (!isForceDisconnected.get()) {
-                                client.disconnect()
-                            }
                             client.close()
                             FInternalTransportConnectionStatus.Disconnected
                         }
@@ -54,7 +53,7 @@ open class FBleApiImpl(
 
                         GattConnectionState.STATE_CONNECTED ->
                             FInternalTransportConnectionStatus.Connected(
-                                scope = deviceScope,
+                                scope = scope,
                                 deviceApi = this
                             )
 
@@ -62,14 +61,16 @@ open class FBleApiImpl(
                             FInternalTransportConnectionStatus.Disconnecting
                     }
                 )
-                if (state == GattConnectionState.STATE_DISCONNECTED) {
-                    deviceScope.cancel()
-                }
-            }.launchIn(deviceScope)
+            }.launchIn(scope)
     }
 
     override suspend fun disconnect() {
         isForceDisconnected.set(true)
-        client.disconnect()
+        if (client.connectionState.firstOrNull() != GattConnectionState.STATE_DISCONNECTED) {
+            client.disconnect()
+        }
+        client.connectionState
+            .filter { connectionState -> connectionState == GattConnectionState.STATE_DISCONNECTED }
+            .first()
     }
 }
