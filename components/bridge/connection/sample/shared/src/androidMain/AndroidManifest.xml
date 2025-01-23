@@ -2,7 +2,6 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <application
-            android:name="com.flipperdevices.bridge.connection.ConnectionTestApplication"
             android:theme="@style/FlipperTheme">
         <activity
                 android:exported="true"
