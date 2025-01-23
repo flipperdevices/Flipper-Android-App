@@ -2,6 +2,8 @@
 
 # 1.8.2 - In Progress
 
+- [Feature] Migrate app onto new BLE api
+
 
 # 1.8.1
 
