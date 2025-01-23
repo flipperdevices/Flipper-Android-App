@@ -40,7 +40,7 @@ class FConnectionServiceImpl @Inject constructor(
         return orchestrator.getState()
             .onEach {
                 if (it !is FDeviceConnectStatus.Disconnected) return@onEach
-                when(it.reason) {
+                when (it.reason) {
                     DisconnectStatus.NOT_INITIALIZED -> return@onEach
                     DisconnectStatus.REPORTED_BY_TRANSPORT -> Unit
                     DisconnectStatus.ERROR_UNKNOWN -> Unit
