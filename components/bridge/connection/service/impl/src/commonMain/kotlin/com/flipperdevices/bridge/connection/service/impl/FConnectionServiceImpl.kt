@@ -40,7 +40,11 @@ class FConnectionServiceImpl @Inject constructor(
         return orchestrator.getState()
             .onEach {
                 if (it !is FDeviceConnectStatus.Disconnected) return@onEach
-                if (it.reason != DisconnectStatus.REPORTED_BY_TRANSPORT) return@onEach
+                when(it.reason) {
+                    DisconnectStatus.NOT_INITIALIZED -> return@onEach
+                    DisconnectStatus.REPORTED_BY_TRANSPORT -> Unit
+                    DisconnectStatus.ERROR_UNKNOWN -> Unit
+                }
                 if (isForceDisconnected.first()) return@onEach
                 val currentDevice = fDevicePersistedStorage.getCurrentDevice()
                     .first()
