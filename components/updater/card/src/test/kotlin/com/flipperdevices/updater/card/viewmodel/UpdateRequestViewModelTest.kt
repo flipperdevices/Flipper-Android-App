@@ -55,7 +55,8 @@ private val requestServer = UpdatePending.Request(
 class UpdateRequestViewModelTest {
     private lateinit var synchronizationState: MutableStateFlow<SynchronizationState>
     private lateinit var synchronizationApi: SynchronizationApi
-    private lateinit var viewModel: UpdateRequestViewModel
+    private lateinit var lazyViewModel: Lazy<UpdateRequestViewModel>
+    private val viewModel get() = lazyViewModel.value
     private lateinit var fFeatureProvider: FFeatureProvider
     private lateinit var fGattInfoFeatureApi: FGattInfoFeatureApi
 
@@ -84,10 +85,12 @@ class UpdateRequestViewModelTest {
         every { fGattInfoFeatureApi.getGattInfoFlow() } answers {
             MutableStateFlow(FGattInformation(batteryLevel = 0.3f))
         }
-        viewModel = UpdateRequestViewModel(
-            fFeatureProvider = fFeatureProvider,
-            synchronizationApi = synchronizationApi
-        )
+        lazyViewModel = lazy {
+            UpdateRequestViewModel(
+                fFeatureProvider = fFeatureProvider,
+                synchronizationApi = synchronizationApi
+            )
+        }
     }
 
     @Test
