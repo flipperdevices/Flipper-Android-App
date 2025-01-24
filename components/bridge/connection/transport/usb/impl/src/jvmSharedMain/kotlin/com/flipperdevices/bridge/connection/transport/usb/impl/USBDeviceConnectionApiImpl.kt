@@ -1,12 +1,13 @@
 package com.flipperdevices.bridge.connection.transport.usb.impl
 
-import com.fazecast.jSerialComm.SerialPort
 import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.common.api.FInternalTransportConnectionStatus
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBApi
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.usb.api.USBDeviceConnectionApi
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDevice
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDeviceFactory
 import com.flipperdevices.bridge.connection.transport.usb.impl.serial.FUSBSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
@@ -20,10 +21,10 @@ private val FLOOD_END_STRING = "\r\n\r\n>: ".toByteArray()
 private val COMMAND = "start_rpc_session\r".toByteArray()
 private const val BAUD_RATE = 230400
 private const val DATA_BITS = 8
-private const val OPEN_PORT_TIME_MS = 1000
 
 class USBDeviceConnectionApiImpl(
-    private val actionNotifierFactory: FlipperActionNotifier.Factory
+    private val actionNotifierFactory: FlipperActionNotifier.Factory,
+    private val usbPlatformDeviceFactory: USBPlatformDeviceFactory
 ) : USBDeviceConnectionApi, LogTagProvider {
     override val TAG = "USBDeviceConnectionApi"
 
@@ -33,16 +34,13 @@ class USBDeviceConnectionApiImpl(
         listener: FTransportConnectionStatusListener
     ): Result<FUSBApi> = runCatching {
         listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
-        val serialPort = SerialPort.getCommPort(config.path)
-        serialPort.setComPortParameters(
+        val serialPort = usbPlatformDeviceFactory.getUSBPlatformDevice(config, scope)
+        val portOpened = serialPort.connect(
             BAUD_RATE,
             DATA_BITS,
-            SerialPort.ONE_STOP_BIT,
-            SerialPort.NO_PARITY
+            USBPlatformDevice.ONE_STOP_BIT,
+            USBPlatformDevice.NO_PARITY
         )
-        serialPort.openPort(OPEN_PORT_TIME_MS)
-        serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0)
-        val portOpened = serialPort.openPort()
 
         info { "Read port is: $portOpened" }
 
@@ -80,7 +78,7 @@ class USBDeviceConnectionApiImpl(
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun skipFlood(serialPort: SerialPort, floodBytes: ByteArray) {
+    private fun skipFlood(serialPort: USBPlatformDevice, floodBytes: ByteArray) {
         info { "Start wait flood" }
         var floodCurrentIndex = 0
         val buffer = ByteArray(size = 1)

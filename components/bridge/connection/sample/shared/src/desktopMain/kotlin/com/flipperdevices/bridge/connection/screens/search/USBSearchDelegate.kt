@@ -6,25 +6,27 @@ import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroU
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
 
-@ContributesBinding(AppGraph::class, ConnectionSearchViewModel::class)
-class USBSearchViewModel @Inject constructor(
+class USBSearchDelegate @AssistedInject constructor(
+    @Assisted viewModelScope: CoroutineScope,
     private val persistedStorage: FDevicePersistedStorage
-) : ConnectionSearchViewModel(persistedStorage), LogTagProvider {
+) : ConnectionSearchDelegate, LogTagProvider {
     override val TAG = "USBSearchViewModel"
 
     private val searchItems =
@@ -36,7 +38,7 @@ class USBSearchViewModel @Inject constructor(
                 flow {
                     while (true) {
                         emit(Unit)
-                        delay(1.seconds)
+                        kotlinx.coroutines.delay(1.seconds)
                     }
                 },
                 persistedStorage.getAllDevices()
@@ -69,6 +71,12 @@ class USBSearchViewModel @Inject constructor(
     }
 
     override fun getDevicesFlow() = searchItems.asStateFlow()
+
+    @AssistedFactory
+    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
+    fun interface Factory : ConnectionSearchDelegate.Factory {
+        override fun invoke(scope: CoroutineScope): USBSearchDelegate
+    }
 }
 
 private fun SerialPort.toFDeviceFlipperZeroUSBModel(): FDeviceFlipperZeroUsbModel {

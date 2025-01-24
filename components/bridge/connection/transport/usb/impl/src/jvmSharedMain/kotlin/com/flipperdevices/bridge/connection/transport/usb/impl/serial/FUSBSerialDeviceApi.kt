@@ -1,12 +1,12 @@
 package com.flipperdevices.bridge.connection.transport.usb.impl.serial
 
-import com.fazecast.jSerialComm.SerialPort
 import com.flipperdevices.bridge.connection.feature.actionnotifier.api.FlipperActionNotifier
 import com.flipperdevices.bridge.connection.transport.common.api.meta.FTransportMetaInfoApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialRestartApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBApi
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDevice
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class FUSBSerialDeviceApi(
     private val scope: CoroutineScope,
-    private val serialPort: SerialPort,
+    private val serialPort: USBPlatformDevice,
     private val actionNotifier: FlipperActionNotifier
 ) : FUSBApi,
     FSerialDeviceApi,
@@ -40,6 +40,7 @@ class FUSBSerialDeviceApi(
             while (result > 0) {
                 result = serialPort.readBytes(buffer, buffer.size)
                 val readBytes = buffer.take(result).toByteArray()
+                rxSpeed.onReceiveBytes(result)
                 receiverByteFlow.emit(readBytes)
             }
             error("End loop with result $result")
@@ -65,6 +66,7 @@ class FUSBSerialDeviceApi(
             val writtenBytes =
                 serialPort.writeBytes(data, data.size - writtenBytesOffset, writtenBytesOffset)
             info { "Write $writtenBytes" }
+            txSpeed.onReceiveBytes(writtenBytes)
             if (writtenBytes == -1) {
                 error("Failed to write bytes")
             }

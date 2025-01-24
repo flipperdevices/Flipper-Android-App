@@ -21,6 +21,13 @@ commonDependencies {
     implementation(libs.kotlin.coroutines)
 }
 
-jvmSharedDependencies {
+desktopDependencies {
     implementation(libs.jserial)
+}
+
+androidDependencies {
+    implementation(projects.components.core.activityholder)
+
+    implementation(libs.fastutil)
+    implementation(libs.usb.android)
 }

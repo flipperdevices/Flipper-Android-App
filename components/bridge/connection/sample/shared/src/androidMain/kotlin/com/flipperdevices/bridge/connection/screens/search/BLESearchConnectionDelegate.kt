@@ -7,10 +7,14 @@ import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
-import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesMultibinding
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -22,14 +26,13 @@ import no.nordicsemi.android.kotlin.ble.core.scanner.BleScanMode
 import no.nordicsemi.android.kotlin.ble.core.scanner.BleScannerSettings
 import no.nordicsemi.android.kotlin.ble.scanner.BleScanner
 import no.nordicsemi.android.kotlin.ble.scanner.aggregator.BleScanResultAggregator
-import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
-@ContributesBinding(AppGraph::class, ConnectionSearchViewModel::class)
-class BLESearchViewModel @Inject constructor(
+class BLESearchConnectionDelegate @AssistedInject constructor(
+    @Assisted viewModelScope: CoroutineScope,
     context: Context,
     persistedStorage: FDevicePersistedStorage
-) : ConnectionSearchViewModel(persistedStorage) {
+) : ConnectionSearchDelegate {
     private val aggregator = BleScanResultAggregator()
     private val devicesFlow = MutableStateFlow<PersistentList<ConnectionSearchItem>>(
         persistentListOf()
@@ -62,6 +65,12 @@ class BLESearchViewModel @Inject constructor(
     }
 
     override fun getDevicesFlow() = devicesFlow.asStateFlow()
+
+    @AssistedFactory
+    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
+    fun interface Factory : ConnectionSearchDelegate.Factory {
+        override fun invoke(scope: CoroutineScope): BLESearchConnectionDelegate
+    }
 }
 
 private fun ServerDevice.toFDeviceFlipperZeroBleModel() = FDeviceFlipperZeroBleModel(
