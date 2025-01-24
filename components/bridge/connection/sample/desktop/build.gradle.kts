@@ -34,7 +34,6 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Flipper App"
             packageVersion = project.VERSION_NAME
-                .let { "1.1" }
                 .split(".")
                 .let { semVers ->
                     // minimum major version for desktop is 1
