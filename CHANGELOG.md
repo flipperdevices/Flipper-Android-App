@@ -3,6 +3,7 @@
 # 1.8.2 - In Progress
 
 - [Feature] Migrate app onto new BLE api
+- [Fix] Fix CI for desktop sample app
 
 
 # 1.8.1
