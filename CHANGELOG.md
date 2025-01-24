@@ -2,6 +2,7 @@
 
 # 1.8.2 - In Progress
 
+- [Feature] Add USB connection option to sample
 
 # 1.8.1
 

@@ -3,7 +3,6 @@ package com.flipperdevices.bridge.connection.transport.usb.impl.model
 import android.app.PendingIntent
 import android.content.Intent
 import android.hardware.usb.UsbManager
-import android.util.Log
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
@@ -57,7 +56,6 @@ class USBAndroidDevice(
 
     private fun requestPermission() {
         if (!usbManager.hasPermission(serialDriver.device)) {
-
             val intent = Intent("Test")
 
             val activity = CurrentActivityHolder.getCurrentActivity()

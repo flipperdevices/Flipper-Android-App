@@ -9,7 +9,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-
 @ContributesBinding(AppGraph::class, USBPlatformDeviceFactory::class)
 class USBAndroidDeviceFactory @Inject constructor(
     private val context: Context

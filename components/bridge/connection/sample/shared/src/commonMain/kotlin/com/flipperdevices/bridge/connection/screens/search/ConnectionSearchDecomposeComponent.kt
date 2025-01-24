@@ -25,16 +25,11 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_search_title
-import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_add_box
-import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_delete
 import flipperapp.components.core.ui.res.generated.resources.material_ic_close
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import javax.inject.Provider
 import flipperapp.components.core.ui.res.generated.resources.Res as SharedRes
-import com.flipperdevices.bridge.connection.config.api.FDeviceType
-import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_bluetooth
-import flipperapp.components.bridge.connection.sample.shared.generated.resources.material_ic_usb
 
 class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -71,45 +66,10 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
                     devices,
                     key = { device -> device.address }
                 ) { searchItem ->
-                    Row {
-                        Icon(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .size(24.dp),
-                            painter = painterResource(
-                                when(searchItem.deviceModel.type) {
-                                    FDeviceType.FLIPPER_ZERO_BLE -> Res.drawable.material_ic_bluetooth
-                                    FDeviceType.FLIPPER_ZERO_USB -> Res.drawable.material_ic_usb
-                                }
-                            ),
-                            contentDescription = null,
-                            tint = LocalPallet.current.text100
-                        )
-
-                        Text(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(16.dp),
-                            text = searchItem.deviceModel.humanReadableName,
-                            color = LocalPallet.current.text100
-                        )
-
-                        Icon(
-                            modifier = Modifier
-                                .clickableRipple { searchViewModel.onDeviceClick(searchItem) }
-                                .padding(16.dp)
-                                .size(24.dp),
-                            painter = painterResource(
-                                if (searchItem.isAdded) {
-                                    Res.drawable.material_ic_delete
-                                } else {
-                                    Res.drawable.material_ic_add_box
-                                }
-                            ),
-                            contentDescription = null,
-                            tint = LocalPallet.current.text100
-                        )
-                    }
+                    ConnectionSearchItemComposable(
+                        searchItem,
+                        onDeviceClick = { searchViewModel.onDeviceClick(searchItem) }
+                    )
                 }
             }
         }

@@ -1,7 +1,6 @@
 package com.flipperdevices.bridge.connection.transport.usb.impl.model
 
 import com.fazecast.jSerialComm.SerialPort
-import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 
 private const val OPEN_PORT_TIME_MS = 1000
 

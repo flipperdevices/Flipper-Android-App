@@ -58,7 +58,7 @@ class USBSearchDelegate @AssistedInject constructor(
                     .filterIsInstance<FDeviceFlipperZeroUsbModel>()
                     .associateBy { it.portPath }
 
-                info { searchDevices.joinToString(",") { "${it}" } }
+                info { searchDevices.joinToString(",") { "$it" } }
 
                 searchItems.emit(
                     searchDevices.map { it.toFDeviceFlipperZeroUSBModel() }.map { usbDevice ->
@@ -77,7 +77,6 @@ class USBSearchDelegate @AssistedInject constructor(
     }
 
     override fun getDevicesFlow() = searchItems.asStateFlow()
-
 
     @AssistedFactory
     @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)

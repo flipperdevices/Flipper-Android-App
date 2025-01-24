@@ -1,7 +1,5 @@
 package com.flipperdevices.bridge.connection.transport.usb.impl.model
 
-import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
-
 interface USBPlatformDevice {
     fun connect(baudRate: Int, dataBits: Int, stopBits: Int, parity: Int): Boolean
     fun closePort()

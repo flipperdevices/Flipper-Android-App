@@ -72,7 +72,6 @@ class USBSearchDelegate @AssistedInject constructor(
 
     override fun getDevicesFlow() = searchItems.asStateFlow()
 
-
     @AssistedFactory
     @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
     fun interface Factory : ConnectionSearchDelegate.Factory {
