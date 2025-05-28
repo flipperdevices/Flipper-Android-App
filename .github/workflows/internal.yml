@@ -28,7 +28,7 @@ jobs:
       - name: Build internal
         uses: gradle/gradle-build-action@ac2d340dc04d9e1113182899e983b5400c17cda1 # v3
         with:
-          cache-read-only: false
+          cache-read-only: falscomponents/bridge/connection/feature/storage/api/src/commonMain/kotlin/com/flipperdevices/bridge/connection/feature/storage/api/exception/NoSdCardException.kte
           arguments: testDebugUnitTest desktopTest detekt lint
   build_number:
     name: Generate build number
