@@ -62,5 +62,4 @@ commonDependencies {
 commonTestDependencies {
     // Testing
     implementation(libs.junit)
-    implementation(libs.ktx.testing)
 }

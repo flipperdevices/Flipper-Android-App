@@ -43,7 +43,7 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
+
     implementation(libs.lifecycle.compose)
 
     // Compose

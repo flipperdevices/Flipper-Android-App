@@ -26,9 +26,10 @@ import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
 import java.io.File
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.minutes
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-private val SENTRY_TIMEOUT = 5.minutes
+private val SENTRY_TIMEOUT = 5.toDuration(DurationUnit.MINUTES)
 
 class Shake2ReportViewModel @Inject constructor(
     private val application: Application,

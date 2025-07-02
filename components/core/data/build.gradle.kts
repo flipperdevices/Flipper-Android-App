@@ -13,5 +13,4 @@ commonDependencies {
 commonTestDependencies {
     implementation(libs.junit)
     implementation(libs.mockito.kotlin)
-    implementation(libs.ktx.testing)
 }

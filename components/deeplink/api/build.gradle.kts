@@ -15,5 +15,8 @@ commonDependencies {
     implementation(libs.compose.ui)
 
     implementation(libs.annotations)
+}
+
+androidDependencies {
     implementation(libs.appcompat)
 }

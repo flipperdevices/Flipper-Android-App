@@ -36,7 +36,8 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class SearchViewModel @AssistedInject constructor(
     featureProvider: FFeatureProvider,
@@ -130,7 +131,7 @@ class SearchViewModel @AssistedInject constructor(
     init {
         combine(
             flow = featureState,
-            flow2 = _searchState.debounceAfterFirst(timeout = 1000.milliseconds),
+            flow2 = _searchState.debounceAfterFirst(timeout = 1.toDuration(DurationUnit.SECONDS)),
             transform = { featureState, _ ->
                 when (featureState) {
                     FFeatureStatus.NotFound -> _state.emit(State.Unsupported)

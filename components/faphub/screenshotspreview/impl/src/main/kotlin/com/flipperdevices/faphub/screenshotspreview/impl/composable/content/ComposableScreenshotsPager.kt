@@ -48,7 +48,7 @@ internal fun ComposableScreenshotsPager(
                 .onEach { event ->
                     when (event) {
                         is ImageSelectViewModel.Event.ImageSelected -> {
-                            zoomState.reset().join()
+                            zoomState.reset()
                             pagerState.scrollToPage(event.index)
                         }
                     }

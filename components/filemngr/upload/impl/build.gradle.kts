@@ -51,7 +51,6 @@ commonDependencies {
     implementation(libs.compose.tooling)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material)
-    implementation(libs.compose.activity)
     implementation(libs.compose.material.icons.core)
     implementation(libs.compose.material.icons.extended)
 
@@ -71,5 +70,4 @@ commonDependencies {
 commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
-    implementation(libs.ktx.testing)
 }

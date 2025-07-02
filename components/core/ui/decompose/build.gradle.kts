@@ -22,5 +22,4 @@ androidDependencies {
     implementation(libs.compose.activity)
 
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.viewmodel.ktx)
 }

@@ -58,5 +58,4 @@ commonDependencies {
 commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
-    implementation(libs.ktx.testing)
 }
