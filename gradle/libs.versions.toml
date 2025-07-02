@@ -2,7 +2,7 @@
 # You also need to bump the version of ksp
 kotlin-general = "2.2.0" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.4.0" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
-kotlin-datetime = "0.7.0-0.6.x-compat" # https://github.com/Kotlin/kotlinx-datetime/releases
+kotlin-datetime = "0.7.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.10.2" # https://github.com/Kotlin/kotlinx.coroutines/releases
 ksp = "2.2.0-2.0.2" # https://github.com/google/ksp/releases
 anvil = "0.4.1" # https://github.com/ZacSweers/anvil/releases
@@ -10,23 +10,19 @@ anvil-utils = "0.3.0-beta03" # https://github.com/IlyaGulya/anvil-utils/releases
 android-gradle = "8.11.0" # https://developer.android.com/studio/releases/gradle-plugin
 protobuf = "4.31.1" # https://github.com/protocolbuffers/protobuf/releases
 protobuf-gradle = "0.9.5" # https://github.com/google/protobuf-gradle-plugin/releases
-compose-material = "1.7.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
-compose-material3 = "1.3.2" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-material = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
+compose-material-icon = "1.7.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-foundation = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-ui = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-wear = "1.4.1" # https://developer.android.com/jetpack/androidx/releases/wear-compose
 compose-wear-preview = "1.0.0" # https://mvnrepository.com/artifact/androidx.wear/wear-tooling-preview
 compose-accompanist = "0.36.0" # https://github.com/google/accompanist/releases
 compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
-compose-constraint = "0.6.0-shaded-core" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
+compose-constraint = "0.6.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
 compose-paging = "3.3.6" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
 compose-multiplatform = "1.8.2" # https://github.com/JetBrains/compose-multiplatform/releases
-# 0.6.17 requires androidx.navigation:navigation-compose:2.8.0-beta0
-# androidx.navigation:navigation-compose:2.8.0-beta0 requires Android API 35
-# Android API 35 not supported by roboelectric
 horologist = "0.6.23" # https://github.com/google/horologist/releases
-# Until fix https://github.com/Kotlin/kotlinx.serialization/issues/2803
 serialization-json = "1.9.0" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.3.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-gms = "19.0.0" # https://mvnrepository.com/artifact/com.google.android.gms/play-services-wearable?repo=google
@@ -48,19 +44,19 @@ ble = "2.10.1" # https://github.com/NordicSemiconductor/Android-BLE-Library/rele
 ble-scan = "1.6.0" # https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library/releases
 ble-kotlin = "1.3.1" # https://github.com/NordicSemiconductor/Kotlin-BLE-Library/releases
 # don't update to 2.x, unless the ble-kotlin is also updated. PR: https://github.com/arcao/slf4j-timber/pull/12
-slf4j = "2.0.17" # https://github.com/qos-ch/slf4j/tags
+slf4j = "1.7.36" # https://github.com/qos-ch/slf4j/tags
 slf4j-timber = "3.1" # https://github.com/arcao/slf4j-timber
 lottie = "6.6.7" # https://github.com/airbnb/lottie/blob/master/android-compose.md
 material = "1.12.0" # https://github.com/material-components/material-components-android/releases
-splashscreen = "1.2.0-beta02" # https://developer.android.com/jetpack/androidx/releases/core
+splashscreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
 annotations = "1.9.1" # https://developer.android.com/jetpack/androidx/releases/annotation
 appcompat = "1.7.1" # https://developer.android.com/jetpack/androidx/releases/appcompat
 androidx-core = "1.16.0" # https://developer.android.com/jetpack/androidx/releases/core
 datastore = "1.1.7" # https://developer.android.com/topic/libraries/architecture/datastore
 # https://github.com/vsch/flexmark-java/issues/442
-flexmark = "0.64.8" # https://github.com/vsch/flexmark-java/tags
+flexmark = "0.42.14" # https://github.com/vsch/flexmark-java/tags
 markdown = "0.35.0" # https://github.com/mikepenz/multiplatform-markdown-renderer/releases
-ktor = "3.2.0" # https://ktor.io/
+ktor = "3.1.2" # https://ktor.io/
 apache-compress = "1.27.1" # https://commons.apache.org/proper/commons-compress/
 apache-codec = "1.18.0" # https://mvnrepository.com/artifact/commons-codec/commons-codec
 countly = "25.4.2" # https://github.com/Countly/countly-sdk-android/releases
@@ -147,9 +143,8 @@ compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-foundation" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material" }
-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material" }
-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material" }
+compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-icon" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icon" }
 
 # UI - Wear
 compose-wear-material = { module = "androidx.wear.compose:compose-material", version.ref = "compose-wear" }

@@ -12,14 +12,14 @@ plugins {
 }
 
 kotlin {
-    jvm("desktop") {
-        withJava()
-    }
+    jvm("desktop")
 
     sourceSets {
         val desktopMain by getting
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.dagger)
+            implementation(libs.anvil.utils.annotations)
         }
     }
 }
@@ -66,11 +66,6 @@ anvil {
 }
 
 dependencies {
-    "implementation"(libs.dagger)
-    "implementation"(libs.anvil.utils.annotations)
-    "commonKsp"(libs.anvil.utils.compiler)
-}
-
-dependencies {
     ksp(libs.dagger.compiler)
+    ksp(libs.anvil.utils.compiler)
 }
