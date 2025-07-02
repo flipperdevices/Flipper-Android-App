@@ -27,7 +27,7 @@ internal fun RemoteGridComposableContent(
         targetState = model,
         modifier = modifier,
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
-        contentKey = { model.contentKey }
+        contentKey = { it.contentKey }
     ) { animatedModel ->
         when (animatedModel) {
             is RemoteGridComponent.Model.Error -> {

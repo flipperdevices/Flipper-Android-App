@@ -67,6 +67,10 @@ commonDependencies {
     implementation(libs.kotlin.immutable.collections)
 }
 
+androidDependencies {
+    implementation(libs.compose.activity)
+}
+
 commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
