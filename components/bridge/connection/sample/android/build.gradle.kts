@@ -23,5 +23,5 @@ androidDependencies {
 }
 
 dependencies {
-    commonKsp(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 }

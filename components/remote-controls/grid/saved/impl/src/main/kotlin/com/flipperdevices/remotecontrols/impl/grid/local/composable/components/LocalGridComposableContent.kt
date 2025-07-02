@@ -37,7 +37,7 @@ internal fun LocalGridComposableContent(
         targetState = model,
         modifier = modifier,
         transitionSpec = { fadeIn().togetherWith(fadeOut()) },
-        contentKey = { model.contentKey }
+        contentKey = { it.contentKey }
     ) { animatedModel ->
         when (animatedModel) {
             // We leave screen on error

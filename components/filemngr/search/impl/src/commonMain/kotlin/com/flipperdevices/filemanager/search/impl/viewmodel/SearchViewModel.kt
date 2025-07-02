@@ -36,7 +36,10 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
+
+private val DEBOUNCE_TIME = 1.toDuration(DurationUnit.SECONDS)
 
 class SearchViewModel @AssistedInject constructor(
     featureProvider: FFeatureProvider,
@@ -130,7 +133,7 @@ class SearchViewModel @AssistedInject constructor(
     init {
         combine(
             flow = featureState,
-            flow2 = _searchState.debounceAfterFirst(timeout = 1000.milliseconds),
+            flow2 = _searchState.debounceAfterFirst(DEBOUNCE_TIME),
             transform = { featureState, _ ->
                 when (featureState) {
                     FFeatureStatus.NotFound -> _state.emit(State.Unsupported)

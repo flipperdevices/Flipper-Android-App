@@ -1,5 +1,7 @@
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.CURRENT_FLAVOR_TYPE
+import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.kotlin.dsl.withType
 
 plugins {
     id("flipper.multiplatform")
@@ -32,4 +34,8 @@ buildConfig {
         "ROBOELECTRIC_SDK_VERSION",
         ApkConfig.ROBOELECTRIC_SDK_VERSION
     )
+}
+
+tasks.withType<Detekt> {
+    enabled = false
 }

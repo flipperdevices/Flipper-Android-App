@@ -3,6 +3,7 @@ package com.flipperdevices.core.markdown
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -10,6 +11,7 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.mikepenz.markdown.compose.Markdown
 import com.mikepenz.markdown.model.DefaultMarkdownColors
+import com.mikepenz.markdown.model.DefaultMarkdownTypography
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
@@ -49,7 +51,9 @@ fun markdownColors(
     codeBackground = backgroundCode,
     inlineCodeBackground = backgroundCode,
     dividerColor = dividerColor,
-    inlineCodeText = text
+    inlineCodeText = text,
+    tableText = text,
+    tableBackground = backgroundCode,
 )
 
 @Composable
@@ -71,21 +75,27 @@ fun markdownTypography(
     quoteStyle: TextStyle = LocalTypography.current.bodyR14,
     textStyle: TextStyle = LocalTypography.current.bodyR14
 ): MarkdownTypography {
-    return object : MarkdownTypography {
-        override val bullet = bulletStyle.merge(additionalTextStyle)
-        override val code = codeStyle.merge(additionalTextStyle)
-        override val h1 = h1Style.merge(additionalTextStyle)
-        override val h2 = h2Style.merge(additionalTextStyle)
-        override val h3 = h3Style.merge(additionalTextStyle)
-        override val h4 = h4Style.merge(additionalTextStyle)
-        override val h5 = h5Style.merge(additionalTextStyle)
-        override val h6 = h6Style.merge(additionalTextStyle)
-        override val inlineCode = inlineCode.merge(additionalTextStyle)
-        override val link = linkStyle.merge(additionalTextStyle)
-        override val list = listStyle.merge(additionalTextStyle)
-        override val ordered = orderedStyle.merge(additionalTextStyle)
-        override val paragraph = paragraphStyle.merge(additionalTextStyle)
-        override val quote = quoteStyle.merge(additionalTextStyle)
-        override val text = textStyle.merge(additionalTextStyle)
-    }
+    return DefaultMarkdownTypography(
+        bullet = bulletStyle.merge(additionalTextStyle),
+        code = codeStyle.merge(additionalTextStyle),
+        h1 = h1Style.merge(additionalTextStyle),
+        h2 = h2Style.merge(additionalTextStyle),
+        h3 = h3Style.merge(additionalTextStyle),
+        h4 = h4Style.merge(additionalTextStyle),
+        h5 = h5Style.merge(additionalTextStyle),
+        h6 = h6Style.merge(additionalTextStyle),
+        inlineCode = inlineCode.merge(additionalTextStyle),
+        link = linkStyle.merge(additionalTextStyle),
+        list = listStyle.merge(additionalTextStyle),
+        ordered = orderedStyle.merge(additionalTextStyle),
+        paragraph = paragraphStyle.merge(additionalTextStyle),
+        quote = quoteStyle.merge(additionalTextStyle),
+        text = textStyle.merge(additionalTextStyle),
+        textLink = TextLinkStyles(
+            style = textStyle.merge(additionalTextStyle).copy(
+                textDecoration = TextDecoration.Underline,
+            ).toSpanStyle()
+        ),
+        table = textStyle.merge(additionalTextStyle)
+    )
 }
