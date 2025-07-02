@@ -28,10 +28,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
-private val TIMEOUT = 10.seconds
+private val TIMEOUT = 10.toDuration(DurationUnit.SECONDS)
 
 class PairDeviceViewModel(
     private val firstPairBleManagerFactory: FirstPairBleManager.Factory,

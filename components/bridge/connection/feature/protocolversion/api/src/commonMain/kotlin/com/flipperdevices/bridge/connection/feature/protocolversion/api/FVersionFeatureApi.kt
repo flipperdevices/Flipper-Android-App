@@ -5,9 +5,10 @@ import com.flipperdevices.bridge.connection.feature.protocolversion.model.Flippe
 import com.flipperdevices.core.data.SemVer
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-private val VERSION_WAITING_TIMEOUT = 30.seconds
+private val VERSION_WAITING_TIMEOUT = 30.toDuration(DurationUnit.SECONDS)
 
 interface FVersionFeatureApi : FDeviceFeatureApi {
     fun getVersionInformationFlow(): StateFlow<SemVer?>
