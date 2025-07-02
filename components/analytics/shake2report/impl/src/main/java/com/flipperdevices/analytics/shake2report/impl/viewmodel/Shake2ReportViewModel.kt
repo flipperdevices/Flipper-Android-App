@@ -24,10 +24,10 @@ import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 import java.io.File
 import javax.inject.Inject
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 private val SENTRY_TIMEOUT = 5.toDuration(DurationUnit.MINUTES)
 

@@ -46,7 +46,7 @@ compose.desktop {
                     val patch = semVers.getOrNull(3)
                         ?: semVers.getOrNull(2)
                         ?: 0
-                    "${major}.${minor}.${patch}"
+                    "$major.$minor.$patch"
                 }
         }
     }

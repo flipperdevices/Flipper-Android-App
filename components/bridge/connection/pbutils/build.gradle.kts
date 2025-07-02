@@ -26,4 +26,3 @@ commonDependencies {
 tasks.withType<Detekt> {
     enabled = false
 }
-

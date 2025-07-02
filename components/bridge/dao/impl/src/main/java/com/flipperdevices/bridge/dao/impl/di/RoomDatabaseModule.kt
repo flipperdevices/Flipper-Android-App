@@ -35,7 +35,7 @@ class RoomDatabaseModule {
             AppDatabase::class.java,
             DATABASE_NAME
         ).addTypeConverter(databaseKeyContentConverter)
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 

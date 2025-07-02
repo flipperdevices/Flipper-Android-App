@@ -28,9 +28,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withTimeout
+import javax.inject.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import javax.inject.Inject
 
 private val TIMEOUT = 10.toDuration(DurationUnit.SECONDS)
 
