@@ -92,7 +92,6 @@ fun ComposableSearchItem(
                     textAlign = TextAlign.Start,
                     style = LocalTypography.current.buttonM16
                 )
-
                 Text(
                     modifier = Modifier
                         .weight(weight = 1f)
