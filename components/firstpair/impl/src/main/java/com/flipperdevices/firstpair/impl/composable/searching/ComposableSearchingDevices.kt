@@ -83,6 +83,7 @@ fun ComposableSearchingDevices(
                 }
                 ComposableSearchItem(
                     text = name,
+                    underText = device.address,
                     isConnecting = isConnecting,
                     onConnectionClick = { onDeviceClick(device, false) }
                 )

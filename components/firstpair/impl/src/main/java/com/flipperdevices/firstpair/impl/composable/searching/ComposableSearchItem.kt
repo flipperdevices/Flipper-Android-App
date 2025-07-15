@@ -34,6 +34,7 @@ import com.flipperdevices.firstpair.impl.R
 @Suppress("LongMethod")
 fun ComposableSearchItem(
     text: String,
+    underText: String,
     isConnecting: Boolean,
     modifier: Modifier = Modifier,
     onConnectionClick: () -> Unit
@@ -79,14 +80,27 @@ fun ComposableSearchItem(
                 color = LocalPallet.current.divider12
             )
 
-            Text(
-                modifier = Modifier
-                    .weight(weight = 1f)
-                    .padding(horizontal = 16.dp),
-                text = text,
-                textAlign = TextAlign.Start,
-                style = LocalTypography.current.buttonM16
-            )
+            Column(
+                modifier = Modifier.padding(top = 10.dp, bottom = 6.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .padding(horizontal = 16.dp),
+                    text = text,
+                    textAlign = TextAlign.Start,
+                    style = LocalTypography.current.buttonM16
+                )
+                Text(
+                    modifier = Modifier
+                        .weight(weight = 1f)
+                        .padding(horizontal = 16.dp),
+                    text = underText,
+                    textAlign = TextAlign.Start,
+                    style = LocalTypography.current.buttonM16
+                )
+            }
 
             if (isConnecting) {
                 CircularProgressIndicator(
@@ -116,6 +130,6 @@ fun ComposableSearchItem(
 @Composable
 private fun ComposableSearchItemPreview() {
     Column {
-        ComposableSearchItem(text = "Anmach0n", isConnecting = true, onConnectionClick = {})
+        ComposableSearchItem(text = "Anmach0n", underText = "null", isConnecting = true, onConnectionClick = {})
     }
 }
