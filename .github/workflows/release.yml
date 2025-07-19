@@ -54,7 +54,7 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -123,7 +123,7 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -247,7 +247,7 @@ jobs:
           mv ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-gh_nogms.apk ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

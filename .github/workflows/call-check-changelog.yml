@@ -12,7 +12,7 @@ jobs:
           submodules: 'recursive'
       - name: Get change status for CHANGELOG.md
         id: changed-changelog
-        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45.0.5
+        uses: tj-actions/changed-files@055970845dd036d7345da7399b7e89f2e10f2b04 # v45.0.5
         with:
           files: CHANGELOG.md
       - name: Failed if changelog not changed
