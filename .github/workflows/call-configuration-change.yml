@@ -14,7 +14,7 @@ jobs:
           submodules: 'recursive'
       - name: Check that gradle files changed
         id: gradle-related-changed
-        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366 # v45.0.5
+        uses: tj-actions/changed-files@055970845dd036d7345da7399b7e89f2e10f2b04 # v45.0.5
         with:
           files: |
             **.gradle.kts
@@ -34,7 +34,7 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.17
-        uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
         with:
           distribution: 'temurin'
           java-version: '17'
