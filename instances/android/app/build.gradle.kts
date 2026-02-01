@@ -207,6 +207,8 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.update.impl)
     implementation(projects.components.bridge.connection.feature.emulate.api)
     implementation(projects.components.bridge.connection.feature.emulate.impl)
+    implementation(projects.components.bridge.connection.feature.networkproxy.api)
+    implementation(projects.components.bridge.connection.feature.networkproxy.impl)
 
     implementation(projects.components.analytics.shake2report.api)
     if (IS_SENTRY_ENABLED) {

@@ -93,6 +93,8 @@ include(
     ":components:bridge:connection:feature:update:impl",
     ":components:bridge:connection:feature:emulate:api",
     ":components:bridge:connection:feature:emulate:impl",
+    ":components:bridge:connection:feature:networkproxy:api",
+    ":components:bridge:connection:feature:networkproxy:impl",
 
     ":components:filemngr:util",
     ":components:filemanager:api",
