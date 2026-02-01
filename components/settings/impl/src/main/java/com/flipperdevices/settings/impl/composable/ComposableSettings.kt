@@ -80,6 +80,7 @@ fun ComposableSettings(
             ExperimentalCategory(
                 settings = settings,
                 onSwitchExperimental = settingsViewModel::onSwitchExperimental,
+                onSwitchNetworkProxyService = settingsViewModel::onSwitchNetworkProxyService,
                 onOpenFM = { onOpen(SettingsNavigationConfig.FileManager) },
             )
             ExportKeysCategory(

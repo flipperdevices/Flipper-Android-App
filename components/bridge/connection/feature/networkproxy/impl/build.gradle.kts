@@ -12,6 +12,7 @@ commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
+    implementation(projects.components.core.preference)
 
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.transport.common.api)
@@ -21,4 +22,10 @@ commonDependencies {
     implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.kotlin.coroutines)
+}
+
+androidDependencies {
+    implementation(projects.components.core.activityholder)
+    implementation(projects.components.core.ui.res)
+    implementation(libs.androidx.core)
 }

@@ -112,7 +112,8 @@ internal class SocketManager(
                         state = NetworkConnectionState.CONNECTED,
                         resolvedIp = resolvedIp
                     )
-                    _connectionStateFlow.emit(networkConnection)
+                    // Don't emit to connectionStateFlow here - the response is sent directly
+                    // The flow is only for async state changes (disconnection, errors)
                     Result.success(networkConnection)
                 }
 
@@ -136,7 +137,7 @@ internal class SocketManager(
                         state = NetworkConnectionState.CONNECTED,
                         resolvedIp = resolvedIp
                     )
-                    _connectionStateFlow.emit(networkConnection)
+                    // Don't emit to connectionStateFlow here - the response is sent directly
                     Result.success(networkConnection)
                 }
             }
@@ -201,19 +202,15 @@ internal class SocketManager(
         info { "Closing connection $connectionId" }
 
         try {
-            connection.receiverJob?.cancelAndJoin()
+            // Cancel receiver job (don't wait - socket close will unblock it)
+            connection.receiverJob?.cancel()
+            // Close socket - this will cause blocked reads to throw and receiver to exit
             when (connection) {
                 is ManagedConnection.Tcp -> connection.socket.close()
                 is ManagedConnection.Udp -> connection.socket.close()
             }
-
-            _connectionStateFlow.emit(
-                NetworkConnection(
-                    connectionId = connectionId,
-                    state = NetworkConnectionState.DISCONNECTED
-                )
-            )
-
+            // Don't emit to connectionStateFlow - the response is sent directly
+            // The flow is only for async disconnections (remote side closing)
             Result.success(Unit)
         } catch (e: Exception) {
             error(e) { "Error closing connection $connectionId" }

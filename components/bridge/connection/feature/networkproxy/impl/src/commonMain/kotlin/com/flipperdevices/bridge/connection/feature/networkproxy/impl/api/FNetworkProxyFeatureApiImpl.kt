@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.networkproxy.impl.api
 
+import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.networkproxy.api.FNetworkProxyFeatureApi
 import com.flipperdevices.bridge.connection.feature.networkproxy.api.NetworkConnection
 import com.flipperdevices.bridge.connection.feature.networkproxy.api.NetworkConnectionState
@@ -9,17 +10,15 @@ import com.flipperdevices.bridge.connection.feature.networkproxy.api.ReceivedDat
 import com.flipperdevices.bridge.connection.feature.networkproxy.api.SendResult
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
-import com.flipperdevices.core.ktx.jre.toThrowableFlow
+import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
+import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.protobuf.Main
-import com.flipperdevices.protobuf.network.CloseRequest
-import com.flipperdevices.protobuf.network.ConnectRequest
 import com.flipperdevices.protobuf.network.ConnectionState
 import com.flipperdevices.protobuf.network.ErrorCode
 import com.flipperdevices.protobuf.network.Protocol
 import com.flipperdevices.protobuf.network.ReceiveData
-import com.flipperdevices.protobuf.network.SendRequest
 import com.flipperdevices.protobuf.network.StateChanged
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -29,17 +28,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.job
 import okio.ByteString.Companion.toByteString
+import javax.inject.Provider
 
 private const val MAX_CHUNK_SIZE = 512
 
 class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
+    settingsStoreProvider: Provider<DataStore<Settings>>,
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,
     @Assisted private val scope: CoroutineScope
 ) : FNetworkProxyFeatureApi, LogTagProvider {
     override val TAG = "FNetworkProxyFeatureApi"
+    private val settingsStore by settingsStoreProvider
 
     private val socketManager = SocketManager(scope)
 
@@ -47,6 +52,21 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
     private val _connectionStateFlow = MutableSharedFlow<NetworkConnection>(extraBufferCapacity = 16)
 
     init {
+        // Observe settings and start/stop foreground service when setting changes
+        settingsStore.data
+            .map { it.enable_network_proxy_service }
+            .distinctUntilChanged()
+            .onEach { enabled ->
+                if (enabled) {
+                    info { "Network proxy service enabled - starting foreground service" }
+                    NetworkProxyServiceController.startService()
+                } else {
+                    info { "Network proxy service disabled - stopping foreground service" }
+                    NetworkProxyServiceController.stopService()
+                }
+            }
+            .launchIn(scope)
+
         // Forward socket manager flows
         socketManager.receivedDataFlow
             .onEach { data ->
@@ -69,6 +89,12 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
             .onEach { message -> handleFlipperMessage(message) }
             .catch { e -> info { "Notification flow error: ${e.message}" } }
             .launchIn(scope)
+
+        // Stop foreground service when scope is cancelled (device disconnected)
+        scope.coroutineContext.job.invokeOnCompletion {
+            info { "Network proxy feature shutting down - stopping foreground service" }
+            NetworkProxyServiceController.stopService()
+        }
     }
 
     override fun receivedDataFlow(): Flow<ReceivedData> = _receivedDataFlow.asSharedFlow()
@@ -154,6 +180,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
         // Send response
         val response = result.fold(
             onSuccess = { conn ->
+                info { "Connect success: conn_id=$clientConnectionId -> ${conn.resolvedIp}" }
                 Main(
                     command_id = message.command_id,
                     network_connect_response = com.flipperdevices.protobuf.network.ConnectResponse(
@@ -174,6 +201,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
                     NetworkError.MaxConnections -> ErrorCode.MAX_CONNECTIONS
                     else -> ErrorCode.INTERNAL_ERROR
                 }
+                info { "Connect failed: conn_id=$clientConnectionId error=$errorCode (${e.message})" }
                 Main(
                     command_id = message.command_id,
                     network_connect_response = com.flipperdevices.protobuf.network.ConnectResponse(
@@ -185,6 +213,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
             }
         )
 
+        info { "Sending connect response for conn_id=$clientConnectionId" }
         rpcFeatureApi.requestWithoutAnswer(response.wrapToRequest())
     }
 
@@ -199,6 +228,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
 
         val response = result.fold(
             onSuccess = { sendResult ->
+                info { "Send success: conn_id=$connectionId bytes=${sendResult.bytesSent}" }
                 Main(
                     command_id = message.command_id,
                     network_send_response = com.flipperdevices.protobuf.network.SendResponse(
@@ -215,6 +245,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
                     NetworkError.SendFailed -> ErrorCode.SEND_FAILED
                     else -> ErrorCode.INTERNAL_ERROR
                 }
+                info { "Send failed: conn_id=$connectionId error=$errorCode" }
                 Main(
                     command_id = message.command_id,
                     network_send_response = com.flipperdevices.protobuf.network.SendResponse(
@@ -226,6 +257,7 @@ class FNetworkProxyFeatureApiImpl @AssistedInject constructor(
             }
         )
 
+        info { "Sending send response for conn_id=$connectionId" }
         rpcFeatureApi.requestWithoutAnswer(response.wrapToRequest())
     }
 
