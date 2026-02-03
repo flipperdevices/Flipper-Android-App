@@ -33,7 +33,6 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -80,23 +79,27 @@ class FapManifestsLoader @AssistedInject constructor(
             }
             fStorageInfoApi.invalidate(scope = scope)
 
-            combine(
+            // Wait for storage info to be ready (not InProgress) - use first{} to avoid infinite loop
+            val (connectionState, flipperStorageInformation) = combine(
                 fDeviceOrchestrator.getState(),
                 fStorageInfoApi.getStorageInformationFlow()
             ) { connectionState, flipperStorageInformation ->
                 connectionState to flipperStorageInformation
-            }.collectLatest { (connectionState, flipperStorageInformation) ->
-                runCatching {
-                    loadInternal(
-                        connectionState = connectionState,
-                        storageInformation = flipperStorageInformation
-                    )
-                }.onFailure {
-                    if (it is CancellationException) {
-                        throw it
-                    } else {
-                        manifestLoaderState.emit(FapManifestLoaderState.Failed(it))
-                    }
+            }.first { (_, storageInfo) ->
+                // Wait until external storage status is Ready (not InProgress)
+                storageInfo.externalStorageStatus is FlipperInformationStatus.Ready<*>
+            }
+
+            runCatching {
+                loadInternal(
+                    connectionState = connectionState,
+                    storageInformation = flipperStorageInformation
+                )
+            }.onFailure {
+                if (it is CancellationException) {
+                    throw it
+                } else {
+                    manifestLoaderState.emit(FapManifestLoaderState.Failed(it))
                 }
             }
         }

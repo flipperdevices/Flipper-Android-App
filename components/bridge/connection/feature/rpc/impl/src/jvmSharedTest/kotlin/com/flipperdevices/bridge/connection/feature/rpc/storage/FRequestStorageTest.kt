@@ -4,7 +4,10 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequest
 import com.flipperdevices.bridge.connection.feature.rpc.model.FlipperRequestPriority
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.protobuf.Main
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -26,9 +29,9 @@ class FRequestStorageTest {
 
         subject.sendRequest(mediumPriority, lowPriority, highestPriority)
 
-        assertEquals(highestPriority, subject.getNextRequest(timeout = 100))
-        assertEquals(mediumPriority, subject.getNextRequest(timeout = 100))
-        assertEquals(lowPriority, subject.getNextRequest(timeout = 100))
+        assertEquals(highestPriority, subject.getNextRequest())
+        assertEquals(mediumPriority, subject.getNextRequest())
+        assertEquals(lowPriority, subject.getNextRequest())
     }
 
     @Test
@@ -39,18 +42,45 @@ class FRequestStorageTest {
 
         subject.sendRequest(mediumPriority, lowPriority, highestPriority)
 
-        assertEquals(highestPriority, subject.getNextRequest(timeout = 100))
-        assertEquals(mediumPriority, subject.getNextRequest(timeout = 100))
-        assertEquals(lowPriority, subject.getNextRequest(timeout = 100))
+        assertEquals(highestPriority, subject.getNextRequest())
+        assertEquals(mediumPriority, subject.getNextRequest())
+        assertEquals(lowPriority, subject.getNextRequest())
     }
 
     @Test
-    fun `Return null if not present request`() = runBlocking {
+    fun `Suspends when queue is empty`() = runBlocking {
         val request = Main().wrapToRequest(FlipperRequestPriority.BACKGROUND)
 
         subject.sendRequest(request)
 
-        assertEquals(request, subject.getNextRequest(timeout = 100))
-        assertNull(subject.getNextRequest(timeout = 100))
+        assertEquals(request, subject.getNextRequest())
+
+        // getNextRequest should suspend when queue is empty
+        // Use timeout to verify it doesn't return immediately
+        val result = withTimeoutOrNull(100) {
+            subject.getNextRequest()
+        }
+        assertNull(result)
+    }
+
+    @Test
+    fun `Resumes when request is added`() = runBlocking {
+        val request = Main().wrapToRequest(FlipperRequestPriority.BACKGROUND)
+
+        // Start waiting for request in background
+        val deferred = async {
+            subject.getNextRequest()
+        }
+
+        // Give it time to start suspending
+        delay(50)
+
+        // Add request - should resume the suspended coroutine
+        subject.sendRequest(request)
+
+        val result = withTimeoutOrNull(100) {
+            deferred.await()
+        }
+        assertEquals(request, result)
     }
 }
