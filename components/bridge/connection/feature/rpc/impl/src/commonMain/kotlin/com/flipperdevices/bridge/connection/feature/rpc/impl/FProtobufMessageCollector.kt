@@ -71,7 +71,9 @@ class FProtobufMessageCollector @AssistedInject constructor(
             while (isActive) {
                 val request = requestStorage.getNextRequest()
                 if (request != null) {
-                    serialApi.sendBytes(request.data.encodeWithDelimitedSize())
+                    val bytes = request.data.encodeWithDelimitedSize()
+                    info { "Sending ${bytes.size} bytes, cmd_id=${request.data.command_id}" }
+                    serialApi.sendBytes(bytes)
                     runCatching {
                         request.onSendCallback?.invoke()
                     }.onFailure {

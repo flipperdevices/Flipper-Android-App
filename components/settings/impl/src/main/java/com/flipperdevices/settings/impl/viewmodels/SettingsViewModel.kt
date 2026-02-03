@@ -110,4 +110,14 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun onSwitchNetworkProxyService(value: Boolean) {
+        viewModelScope.launch {
+            dataStoreSettings.updateData {
+                it.copy(
+                    enable_network_proxy_service = value
+                )
+            }
+        }
+    }
 }

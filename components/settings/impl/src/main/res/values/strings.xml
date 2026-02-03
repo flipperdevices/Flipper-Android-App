@@ -43,6 +43,8 @@
     <string name="experimental_screen_streaming">Screen Streaming</string>
     <string name="experimental_screen_streaming_desc">Control Flipper via phone</string>
     <string name="experimental_application_catalog">Enable Apps in Hub</string>
+    <string name="experimental_network_proxy_service">Network Proxy Service</string>
+    <string name="experimental_network_proxy_service_desc">Keep network proxy active when app is backgrounded</string>
 
     <string name="other_github_open">GitHub</string>
     <string name="other_github_url">https://github.com/flipperdevices/Flipper-Android-App</string>

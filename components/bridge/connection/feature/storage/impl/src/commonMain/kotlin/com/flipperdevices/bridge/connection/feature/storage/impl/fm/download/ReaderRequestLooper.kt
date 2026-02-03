@@ -10,9 +10,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.selects.select
 import okio.Closeable
 
 class ReaderRequestLooper(
@@ -44,15 +45,21 @@ class ReaderRequestLooper(
     }
 
     /**
-     * Implementation like this is required because after coroutine
-     * is cancelled, the queue.receive() will lasts forever
+     * Get next byte pack from queue with proper cancellation support.
+     * Uses select to wait for either data OR scope cancellation without busy-waiting.
      */
     suspend fun getNextBytePack(): Main {
-        while (scope.isActive) {
-            val value = queue.tryReceive().getOrNull()
-            if (value != null) return value
+        return select {
+            queue.onReceiveCatching { result ->
+                if (result.isClosed) {
+                    throw result.exceptionOrNull() ?: CancellationException("Channel closed")
+                }
+                result.getOrThrow()
+            }
+            scope.coroutineContext.job.onJoin {
+                throw CancellationException("Scope cancelled while waiting for byte pack")
+            }
         }
-        throw CancellationException("Scope got cancelled during getting next byte pack")
     }
 
     override fun close() {

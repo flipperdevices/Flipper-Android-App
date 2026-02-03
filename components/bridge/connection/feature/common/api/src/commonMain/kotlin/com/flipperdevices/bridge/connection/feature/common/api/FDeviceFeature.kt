@@ -20,7 +20,8 @@ enum class FDeviceFeature {
     SCREEN_STREAMING,
     SCREEN_UNLOCK,
     UPDATE,
-    EMULATE
+    EMULATE,
+    NETWORK_PROXY
 }
 
 @Retention(AnnotationRetention.RUNTIME)

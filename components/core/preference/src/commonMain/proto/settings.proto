@@ -76,4 +76,5 @@ message Settings {
   bool show_hidden_files_on_flipper = 32;
   bool disabled_vibration = 33;
   bool infrared_remotes_tab_shown = 34;
+  bool enable_network_proxy_service = 35;
 }

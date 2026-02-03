@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeature
 import com.flipperdevices.bridge.connection.feature.common.api.FDeviceFeatureApi
 import com.flipperdevices.bridge.connection.feature.devicecolor.api.FDeviceColorFeatureApi
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
+import com.flipperdevices.bridge.connection.feature.networkproxy.api.FNetworkProxyFeatureApi
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGattInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureApi
 import com.flipperdevices.bridge.connection.feature.protocolversion.api.FSdkVersionFeatureApi
@@ -49,6 +50,7 @@ object FZeroFeatureClassToEnumMapper {
             FDeviceFeature.SCREEN_UNLOCK -> FScreenUnlockFeatureApi::class
             FDeviceFeature.UPDATE -> FUpdateFeatureApi::class
             FDeviceFeature.EMULATE -> FEmulateFeatureApi::class
+            FDeviceFeature.NETWORK_PROXY -> FNetworkProxyFeatureApi::class
         }
     }
 

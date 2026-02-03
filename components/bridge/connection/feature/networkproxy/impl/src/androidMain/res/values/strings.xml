@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_proxy_notification_title">Network Proxy Active</string>
+    <string name="network_proxy_notification_desc">Flipper is using network through this device</string>
+    <string name="network_proxy_notification_stop">Stop</string>
+    <string name="network_proxy_channel_name">Network Proxy</string>
+    <string name="network_proxy_channel_desc">Shows when Flipper is using network proxy</string>
+</resources>
