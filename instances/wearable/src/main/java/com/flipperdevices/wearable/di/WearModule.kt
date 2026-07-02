@@ -4,7 +4,8 @@ import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
 import com.squareup.anvil.annotations.ContributesTo
@@ -28,11 +29,11 @@ class WearModule {
     @Singleton
     fun provideCommandInputStream(
         channelClient: ChannelClient
-    ) = WearableCommandInputStream<Main.MainResponse>(channelClient, Main.MainResponse::parseDelimitedFrom)
+    ) = WearableCommandInputStream(channelClient, MainResponse.ADAPTER)
 
     @Provides
     @Singleton
     fun provideCommandOutputStream(
         channelClient: ChannelClient
-    ) = WearableCommandOutputStream<Main.MainRequest>(channelClient)
+    ) = WearableCommandOutputStream(channelClient, MainRequest.ADAPTER)
 }

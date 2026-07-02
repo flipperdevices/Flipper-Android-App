@@ -9,7 +9,8 @@ import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.emulate.common.WearEmulateConstants
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.model.ChannelClientState
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneState
@@ -27,8 +28,8 @@ import javax.inject.Singleton
 @ContributesBinding(AppGraph::class, ChannelClientHelper::class)
 class ChannelClientHelper @Inject constructor(
     private val channelClient: ChannelClient,
-    private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
+    private val commandInputStream: WearableCommandInputStream<MainResponse>,
+    private val commandOutputStream: WearableCommandOutputStream<MainRequest>,
     private val handheldProcessors: MutableSet<HandheldProcessor>,
     private val findPhoneApi: FindPhoneApi
 ) : ChannelClientHelper, LogTagProvider {

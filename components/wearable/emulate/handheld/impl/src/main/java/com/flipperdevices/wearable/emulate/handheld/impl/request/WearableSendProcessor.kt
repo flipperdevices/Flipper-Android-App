@@ -18,14 +18,16 @@ import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -33,8 +35,8 @@ import javax.inject.Inject
 @SingleIn(WearHandheldGraph::class)
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableSendProcessor @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
+    private val commandInputStream: WearableCommandInputStream<MainRequest>,
+    private val commandOutputStream: WearableCommandOutputStream<MainResponse>,
     private val scope: CoroutineScope,
     private val simpleKeyApi: SimpleKeyApi,
     private val keyParser: KeyParser,
@@ -44,9 +46,10 @@ class WearableSendProcessor @Inject constructor(
 
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasSendRequest()) {
+            val sendRequest = it.send_request
+            if (sendRequest != null) {
                 info { "SendRequest: $it" }
-                startSend(it.sendRequest.path)
+                startSend(sendRequest.path)
             }
         }.launchIn(scope)
     }
@@ -74,33 +77,29 @@ class WearableSendProcessor @Inject constructor(
             )
             info { "Emulate Config $emulateConfig" }
             commandOutputStream.send(
-                mainResponse {
-                    emulateStatus = Emulate.EmulateStatus.EMULATING
-                }
+                MainResponse(emulate_status = EmulateStatus.EMULATING)
             )
 
             emulateHelper.startEmulate(scope, emulateConfig)
             commandOutputStream.send(
-                mainResponse {
-                    emulateStatus = Emulate.EmulateStatus.STOPPED
-                }
+                MainResponse(emulate_status = EmulateStatus.STOPPED)
             )
         } catch (throwable: Throwable) {
             error(throwable) { "Failed start send $path" }
 
-            val failedEmulateStatus: Emulate.EmulateStatus = when (throwable) {
-                is AlreadyOpenedAppException -> Emulate.EmulateStatus.ALREADY_OPENED_APP
-                is ForbiddenFrequencyException -> Emulate.EmulateStatus.FORBIDDEN_FREQUENCY
-                else -> Emulate.EmulateStatus.FAILED
+            val failedEmulateStatus: EmulateStatus = when (throwable) {
+                is AlreadyOpenedAppException -> EmulateStatus.ALREADY_OPENED_APP
+                is ForbiddenFrequencyException -> EmulateStatus.FORBIDDEN_FREQUENCY
+                else -> EmulateStatus.FAILED
             }
 
             commandOutputStream.send(
-                mainResponse {
-                    emulateStatus = failedEmulateStatus
-                }
+                MainResponse(emulate_status = failedEmulateStatus)
             )
         } finally {
-            emulateHelper.stopEmulate(scope)
+            withContext(NonCancellable) {
+                emulateHelper.stopEmulate(scope)
+            }
         }
     }
 

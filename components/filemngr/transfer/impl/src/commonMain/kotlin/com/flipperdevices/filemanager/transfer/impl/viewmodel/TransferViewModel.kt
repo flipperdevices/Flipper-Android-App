@@ -30,7 +30,7 @@ class TransferViewModel @Inject constructor(
 
     private val featureMutex = Mutex()
     private var featureJob: Job? = null
-    private var moveMutex = Mutex()
+    private val moveMutex = Mutex()
     private var moveJob: Job? = null
 
     private suspend fun move(

@@ -1,6 +1,6 @@
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.CURRENT_FLAVOR_TYPE
-import io.gitlab.arturbosch.detekt.Detekt
+import dev.detekt.gradle.Detekt
 import org.gradle.kotlin.dsl.withType
 
 plugins {

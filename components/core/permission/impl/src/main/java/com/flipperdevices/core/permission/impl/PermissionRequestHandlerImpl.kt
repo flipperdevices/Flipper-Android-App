@@ -42,9 +42,9 @@ class PermissionRequestHandlerImpl @Inject constructor() :
     }
 
     override fun onActivityResult(result: Map<String, Boolean>) {
-        result.forEach { (permission, result) ->
+        result.forEach { (permission, isGranted) ->
             permissionPendingListeners.remove(permission)?.forEach { listener ->
-                listener.invoke(permission, result)
+                listener.invoke(permission, isGranted)
             }
         }
     }

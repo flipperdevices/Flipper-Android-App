@@ -1,19 +1,21 @@
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.library")
     id("flipper.lint")
 }
 
-configure<BaseExtension> {
+pluginManager.apply("com.android.library")
+pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+
+configure<LibraryExtension> {
     commonAndroid(project)
 }
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
-kotlin {
+configure<KotlinMultiplatformExtension> {
     androidTarget {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8

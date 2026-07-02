@@ -26,7 +26,7 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
         Main(
             property_get_request = GetRequest(key = property.path)
         ).wrapToRequest()
-    ).mapCatching { it.property_get_response!!.value_ }
+    ).mapCatching { requireNotNull(it.property_get_response).value_ }
 
     override fun get(group: FGetInfoApiGroup): Flow<Pair<FGetInfoApiProperty, String>> {
         return rpcFeatureApi.request(

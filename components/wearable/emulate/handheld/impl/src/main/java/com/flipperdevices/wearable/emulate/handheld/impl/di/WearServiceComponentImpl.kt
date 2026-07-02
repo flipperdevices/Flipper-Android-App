@@ -2,8 +2,8 @@ package com.flipperdevices.wearable.emulate.handheld.impl.di
 
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main.MainRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableAppStateProcessor
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableCommandProcessor
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableFlipperStatusProcessor
@@ -21,10 +21,11 @@ class WearServiceComponentImpl(
     private val channelClient = Wearable.getChannelClient(context)
     override val commandInputStream = WearableCommandInputStream(
         channelClient = channelClient,
-        parser = MainRequest::parseDelimitedFrom
+        adapter = MainRequest.ADAPTER
     )
     override val commandOutputStream = WearableCommandOutputStream<MainResponse>(
-        channelClient = channelClient
+        channelClient = channelClient,
+        adapter = MainResponse.ADAPTER
     )
     override val commandProcessors: Set<WearableCommandProcessor> = buildSet {
         WearableAppStateProcessor(

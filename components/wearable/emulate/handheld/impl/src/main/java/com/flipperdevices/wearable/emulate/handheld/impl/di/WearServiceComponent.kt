@@ -8,7 +8,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableCommandProcessor
 import com.squareup.anvil.annotations.ContributesTo
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +24,8 @@ interface WearServiceComponentDependencies {
 }
 
 interface WearServiceComponent {
-    val commandInputStream: WearableCommandInputStream<Main.MainRequest>
-    val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>
+    val commandInputStream: WearableCommandInputStream<MainRequest>
+    val commandOutputStream: WearableCommandOutputStream<MainResponse>
     val commandProcessors: Set<WearableCommandProcessor>
 
     /**

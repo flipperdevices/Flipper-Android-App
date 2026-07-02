@@ -13,9 +13,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatus
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
@@ -33,8 +33,8 @@ import javax.inject.Inject
 @SingleIn(WearHandheldGraph::class)
 @ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
 class WearableFlipperStatusProcessor @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
+    private val commandInputStream: WearableCommandInputStream<MainRequest>,
+    private val commandOutputStream: WearableCommandOutputStream<MainResponse>,
     private val scope: CoroutineScope,
     private val fFeatureProvider: FFeatureProvider,
     private val fDeviceOrchestrator: FDeviceOrchestrator
@@ -43,8 +43,8 @@ class WearableFlipperStatusProcessor @Inject constructor(
 
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasSubscribeOnConnectStatus()) {
-                info { "SubscribeOnConnectStatus: ${it.subscribeOnConnectStatus}" }
+            if (it.subscribe_on_connect_status != null) {
+                info { "SubscribeOnConnectStatus: ${it.subscribe_on_connect_status}" }
                 combine(
                     flow = fDeviceOrchestrator.getState(),
                     flow2 = fFeatureProvider.get<FVersionFeatureApi>()
@@ -77,23 +77,21 @@ class WearableFlipperStatusProcessor @Inject constructor(
         supportedState: FlipperSupportedState?
     ) {
         val connectStatusProto = when (connectionState) {
-            is FDeviceConnectStatus.Connecting -> ConnectStatusOuterClass.ConnectStatus.CONNECTING
-            is FDeviceConnectStatus.Disconnecting -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTING
+            is FDeviceConnectStatus.Connecting -> ConnectStatus.CONNECTING
+            is FDeviceConnectStatus.Disconnecting -> ConnectStatus.DISCONNECTING
             is FDeviceConnectStatus.Connected -> {
                 if (supportedState == FlipperSupportedState.READY) {
-                    ConnectStatusOuterClass.ConnectStatus.READY
+                    ConnectStatus.READY
                 } else {
-                    ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED
+                    ConnectStatus.UNSUPPORTED
                 }
             }
 
-            is FDeviceConnectStatus.Disconnected -> ConnectStatusOuterClass.ConnectStatus.DISCONNECTED
+            is FDeviceConnectStatus.Disconnected -> ConnectStatus.DISCONNECTED
         }
 
         commandOutputStream.send(
-            mainResponse {
-                connectStatus = connectStatusProto
-            }
+            MainResponse(connect_status = connectStatusProto)
         )
     }
 }

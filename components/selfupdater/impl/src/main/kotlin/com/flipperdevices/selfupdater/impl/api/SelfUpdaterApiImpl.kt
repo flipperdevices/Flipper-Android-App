@@ -33,7 +33,7 @@ class SelfUpdaterApiImpl @Inject constructor(
             info { "Self update error: $e" }
             return SelfUpdateResult.ERROR
         } finally {
-            inProgressState.emit(false)
+            inProgressState.value = false
         }
     }
 

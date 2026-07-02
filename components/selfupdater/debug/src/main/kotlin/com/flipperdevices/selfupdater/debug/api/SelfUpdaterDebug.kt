@@ -35,7 +35,7 @@ class SelfUpdaterDebug @Inject constructor(
         return debugNoUpdates()
     }
 
-    @Suppress("UnusedPrivateMember")
+    @Suppress("UnusedPrivateFunction")
     private fun debugSuccessUpdate(): SelfUpdateResult {
         val startUpdateNotification = InAppNotification.SelfUpdateStarted()
         val readyUpdateNotification = InAppNotification.SelfUpdateReady(
@@ -49,7 +49,7 @@ class SelfUpdaterDebug @Inject constructor(
         return SelfUpdateResult.NO_UPDATES
     }
 
-    @Suppress("UnusedPrivateMember")
+    @Suppress("UnusedPrivateFunction")
     private fun debugErrorUpdate(manual: Boolean): SelfUpdateResult {
         if (manual) {
             inAppNotificationStorage.addNotification(InAppNotification.SelfUpdateError())

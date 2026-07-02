@@ -105,7 +105,7 @@ class UpdaterTask @Inject constructor(
         }
     }
 
-    @Suppress("LongMethod", "ComplexMethod")
+    @Suppress("LongMethod", "ComplexMethod", "CyclomaticComplexMethod")
     private suspend fun startInternalUnwrapped(
         input: UpdateRequest,
         fGetInfoFeatureApi: FGetInfoFeatureApi,

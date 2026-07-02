@@ -89,7 +89,7 @@ class SearchViewModel @AssistedInject constructor(
                     .filter { searchItem -> searchItem.instance.fileType == FileType.DIR }
                     .forEach { searchItem ->
                         itemsFlowRecursive(listingApi, searchItem.fullPath)
-                            .onEach { searchItems -> emit(searchItems) }
+                            .onEach { childSearchItems -> emit(childSearchItems) }
                             .collect()
                     }
             }.collect()
@@ -106,8 +106,8 @@ class SearchViewModel @AssistedInject constructor(
                     query.isEmpty() -> itemsFlow(listingApi, path)
                     else -> itemsFlowRecursive(listingApi, path)
                 }
-                itemsFlow.onEach {
-                    val filteredItems = it.filter { item ->
+                itemsFlow.onEach { searchItems ->
+                    val filteredItems = searchItems.filter { item ->
                         if (query.isEmpty()) {
                             true
                         } else {

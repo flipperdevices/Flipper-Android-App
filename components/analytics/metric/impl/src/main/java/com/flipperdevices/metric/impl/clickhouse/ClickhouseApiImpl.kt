@@ -20,20 +20,20 @@ import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
 import com.flipperdevices.metric.impl.BuildConfig
-import com.flipperdevices.pbmetric.Metric
-import com.flipperdevices.pbmetric.events.OpenOuterClass
-import com.flipperdevices.pbmetric.events.SubGhzProvisioningOuterClass
-import com.flipperdevices.pbmetric.events.UpdateFlipperEndOuterClass
-import com.flipperdevices.pbmetric.events.debugInfo
-import com.flipperdevices.pbmetric.events.flipperGattInfo
-import com.flipperdevices.pbmetric.events.flipperRpcInfo
-import com.flipperdevices.pbmetric.events.open
-import com.flipperdevices.pbmetric.events.subGhzProvisioning
-import com.flipperdevices.pbmetric.events.synchronizationEnd
-import com.flipperdevices.pbmetric.events.updateFlipperEnd
-import com.flipperdevices.pbmetric.events.updateFlipperStart
-import com.flipperdevices.pbmetric.metricEventsCollection
-import com.flipperdevices.pbmetric.metricReportRequest
+import com.flipperdevices.pbmetric.MetricEventsCollection
+import com.flipperdevices.pbmetric.MetricReportRequest
+import com.flipperdevices.pbmetric.MetricReportRequest.Platform
+import com.flipperdevices.pbmetric.events.DebugInfo as DebugInfoProto
+import com.flipperdevices.pbmetric.events.FlipperGattInfo as FlipperGattInfoProto
+import com.flipperdevices.pbmetric.events.FlipperRpcInfo as FlipperRpcInfoProto
+import com.flipperdevices.pbmetric.events.Open
+import com.flipperdevices.pbmetric.events.Open.OpenTarget
+import com.flipperdevices.pbmetric.events.SubGhzProvisioning as SubGhzProvisioningProto
+import com.flipperdevices.pbmetric.events.SubGhzProvisioning.RegionSource as RegionSourceProto
+import com.flipperdevices.pbmetric.events.SynchronizationEnd as SynchronizationEndProto
+import com.flipperdevices.pbmetric.events.UpdateFlipperEnd as UpdateFlipperEndProto
+import com.flipperdevices.pbmetric.events.UpdateFlipperEnd.UpdateStatus as UpdateStatusProto
+import com.flipperdevices.pbmetric.events.UpdateFlipperStart as UpdateFlipperStartProto
 import com.squareup.anvil.annotations.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -67,150 +67,123 @@ class ClickhouseApiImpl @Inject constructor(
     @Suppress("CyclomaticComplexMethod")
     override fun reportSimpleEvent(simpleEvent: SimpleEvent, simpleEventArg: String?) {
         val openTarget = when (simpleEvent) {
-            SimpleEvent.APP_OPEN -> OpenOuterClass.Open.OpenTarget.APP
-            SimpleEvent.OPEN_SAVE_KEY -> OpenOuterClass.Open.OpenTarget.SAVE_KEY
-            SimpleEvent.OPEN_EMULATE -> OpenOuterClass.Open.OpenTarget.EMULATE
-            SimpleEvent.OPEN_EDIT -> OpenOuterClass.Open.OpenTarget.EDIT
-            SimpleEvent.OPEN_SHARE -> OpenOuterClass.Open.OpenTarget.SHARE
-            SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_FM
-            SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING ->
-                OpenOuterClass.Open.OpenTarget.EXPERIMENTAL_SCREENSTREAMING
+            SimpleEvent.APP_OPEN -> OpenTarget.APP
+            SimpleEvent.OPEN_SAVE_KEY -> OpenTarget.SAVE_KEY
+            SimpleEvent.OPEN_EMULATE -> OpenTarget.EMULATE
+            SimpleEvent.OPEN_EDIT -> OpenTarget.EDIT
+            SimpleEvent.OPEN_SHARE -> OpenTarget.SHARE
+            SimpleEvent.EXPERIMENTAL_OPEN_FM -> OpenTarget.EXPERIMENTAL_FM
+            SimpleEvent.EXPERIMENTAL_OPEN_SCREEN_STREAMING -> OpenTarget.EXPERIMENTAL_SCREENSTREAMING
 
-            SimpleEvent.SHARE_SHORT_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_SHORTLINK
-            SimpleEvent.SHARE_LONG_LINK -> OpenOuterClass.Open.OpenTarget.SHARE_LONGLINK
-            SimpleEvent.SHARE_FILE -> OpenOuterClass.Open.OpenTarget.SHARE_FILE
-            SimpleEvent.SAVE_DUMP -> OpenOuterClass.Open.OpenTarget.SAVE_DUMP
-            SimpleEvent.MFKEY32 -> OpenOuterClass.Open.OpenTarget.MFKEY32
-            SimpleEvent.OPEN_NFC_DUMP_EDITOR -> OpenOuterClass.Open.OpenTarget.OPEN_NFC_DUMP_EDITOR
-            SimpleEvent.OPEN_FAPHUB -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB
-            SimpleEvent.OPEN_FAPHUB_CATEGORY -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_CATEGORY
-            SimpleEvent.OPEN_FAPHUB_SEARCH -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_SEARCH
-            SimpleEvent.OPEN_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.OPEN_FAPHUB_APP
-            SimpleEvent.INSTALL_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.INSTALL_FAPHUB_APP
-            SimpleEvent.HIDE_FAPHUB_APP -> OpenOuterClass.Open.OpenTarget.HIDE_FAPHUB_APP
-            SimpleEvent.OPEN_INFRARED_LIBRARY -> OpenOuterClass.Open.OpenTarget.OPEN_INFRARED_LIBRARY
-            SimpleEvent.SAVE_INFRARED_LIBRARY -> OpenOuterClass.Open.OpenTarget.SAVE_INFRARED_LIBRARY
+            SimpleEvent.SHARE_SHORT_LINK -> OpenTarget.SHARE_SHORTLINK
+            SimpleEvent.SHARE_LONG_LINK -> OpenTarget.SHARE_LONGLINK
+            SimpleEvent.SHARE_FILE -> OpenTarget.SHARE_FILE
+            SimpleEvent.SAVE_DUMP -> OpenTarget.SAVE_DUMP
+            SimpleEvent.MFKEY32 -> OpenTarget.MFKEY32
+            SimpleEvent.OPEN_NFC_DUMP_EDITOR -> OpenTarget.OPEN_NFC_DUMP_EDITOR
+            SimpleEvent.OPEN_FAPHUB -> OpenTarget.OPEN_FAPHUB
+            SimpleEvent.OPEN_FAPHUB_CATEGORY -> OpenTarget.OPEN_FAPHUB_CATEGORY
+            SimpleEvent.OPEN_FAPHUB_SEARCH -> OpenTarget.OPEN_FAPHUB_SEARCH
+            SimpleEvent.OPEN_FAPHUB_APP -> OpenTarget.OPEN_FAPHUB_APP
+            SimpleEvent.INSTALL_FAPHUB_APP -> OpenTarget.INSTALL_FAPHUB_APP
+            SimpleEvent.HIDE_FAPHUB_APP -> OpenTarget.HIDE_FAPHUB_APP
+            SimpleEvent.OPEN_INFRARED_LIBRARY -> OpenTarget.OPEN_INFRARED_LIBRARY
+            SimpleEvent.SAVE_INFRARED_LIBRARY -> OpenTarget.SAVE_INFRARED_LIBRARY
         }
 
         scope.launch {
             reportToServerSafe(
-                metricEventsCollection {
-                    open = open {
-                        target = openTarget
-                        if (simpleEventArg != null) {
-                            this.arg = simpleEventArg
-                        }
-                    }
-                }
+                MetricEventsCollection(
+                    open_ = Open(
+                        target = openTarget,
+                        arg = simpleEventArg.orEmpty()
+                    )
+                )
             )
         }
     }
 
-    @Suppress("LongMethod", "ComplexMethod")
+    @Suppress("LongMethod", "ComplexMethod", "CyclomaticComplexMethod")
     override fun reportComplexEvent(complexEvent: ComplexEvent) {
         val event = when (complexEvent) {
-            is FlipperGattInfoEvent -> metricEventsCollection {
-                flipperGattInfo = flipperGattInfo {
-                    flipperVersion = complexEvent.flipperVersion
-                }
-            }
+            is FlipperGattInfoEvent -> MetricEventsCollection(
+                flipper_gatt_info = FlipperGattInfoProto(
+                    flipper_version = complexEvent.flipperVersion
+                )
+            )
 
-            is FlipperRPCInfoEvent -> metricEventsCollection {
-                flipperRpcInfo = flipperRpcInfo {
-                    sdcardIsAvailable = complexEvent.sdCardIsAvailable
-                    internalFreeByte = complexEvent.internalFreeBytes
-                    internalTotalByte = complexEvent.internalTotalBytes
-                    externalFreeByte = complexEvent.externalFreeBytes
-                    externalTotalByte = complexEvent.externalTotalBytes
-                    complexEvent.firmwareForkName?.let {
-                        firmwareForkName = it
+            is FlipperRPCInfoEvent -> MetricEventsCollection(
+                flipper_rpc_info = FlipperRpcInfoProto(
+                    sdcard_is_available = complexEvent.sdCardIsAvailable,
+                    internal_free_byte = complexEvent.internalFreeBytes,
+                    internal_total_byte = complexEvent.internalTotalBytes,
+                    external_free_byte = complexEvent.externalFreeBytes,
+                    external_total_byte = complexEvent.externalTotalBytes,
+                    firmware_fork_name = complexEvent.firmwareForkName.orEmpty(),
+                    firmware_git_url = complexEvent.firmwareGitUrl.orEmpty()
+                )
+            )
+
+            is SynchronizationEnd -> MetricEventsCollection(
+                synchronization_end = SynchronizationEndProto(
+                    subghz_count = complexEvent.subghzCount,
+                    rfid_count = complexEvent.rfidCount,
+                    nfc_count = complexEvent.nfcCount,
+                    infrared_count = complexEvent.infraredCount,
+                    ibutton_count = complexEvent.iButtonCount,
+                    synchronization_time_ms = complexEvent.synchronizationTimeMs,
+                    changes_count = complexEvent.changesCount
+                )
+            )
+
+            is UpdateFlipperEnd -> MetricEventsCollection(
+                update_flipper_end = UpdateFlipperEndProto(
+                    update_from = complexEvent.updateFrom,
+                    update_to = complexEvent.updateTo,
+                    update_id = complexEvent.updateId,
+                    update_status = when (complexEvent.updateStatus) {
+                        UpdateStatus.COMPLETED -> UpdateStatusProto.COMPLETED
+                        UpdateStatus.CANCELED -> UpdateStatusProto.CANCELED
+                        UpdateStatus.FAILED_DOWNLOAD -> UpdateStatusProto.FAILED_DOWNLOAD
+                        UpdateStatus.FAILED_PREPARE -> UpdateStatusProto.FAILED_PREPARE
+                        UpdateStatus.FAILED_UPLOAD -> UpdateStatusProto.FAILED_UPLOAD
+                        UpdateStatus.FAILED -> UpdateStatusProto.FAILED
                     }
-                    complexEvent.firmwareGitUrl?.let {
-                        firmwareGitUrl = it
+                )
+            )
+
+            is UpdateFlipperStart -> MetricEventsCollection(
+                update_flipper_start = UpdateFlipperStartProto(
+                    update_from = complexEvent.updateFromVersion,
+                    update_to = complexEvent.updateToVersion,
+                    update_id = complexEvent.updateId
+                )
+            )
+
+            is SubGhzProvisioningEvent -> MetricEventsCollection(
+                subghz_provisioning = SubGhzProvisioningProto(
+                    region_network = complexEvent.regionNetwork.orEmpty(),
+                    region_sim_1 = complexEvent.regionSimOne.orEmpty(),
+                    region_ip = complexEvent.regionIp.orEmpty(),
+                    region_system = complexEvent.regionSystem.orEmpty(),
+                    region_provided = complexEvent.regionProvided.orEmpty(),
+                    is_roaming = complexEvent.isRoaming,
+                    region_source = when (complexEvent.regionSource) {
+                        RegionSource.SIM_NETWORK -> RegionSourceProto.SIM_NETWORK
+                        RegionSource.SIM_COUNTRY -> RegionSourceProto.SIM_COUNTRY
+                        RegionSource.GEO_IP -> RegionSourceProto.GEO_IP
+                        RegionSource.SYSTEM -> RegionSourceProto.SYSTEM
+                        RegionSource.DEFAULT -> RegionSourceProto.DEFAULT
                     }
-                }
-            }
+                )
+            )
 
-            is SynchronizationEnd -> metricEventsCollection {
-                synchronizationEnd = synchronizationEnd {
-                    subghzCount = complexEvent.subghzCount
-                    rfidCount = complexEvent.rfidCount
-                    nfcCount = complexEvent.nfcCount
-                    infraredCount = complexEvent.infraredCount
-                    ibuttonCount = complexEvent.iButtonCount
-                    synchronizationTimeMs = complexEvent.synchronizationTimeMs
-                    changesCount = complexEvent.changesCount
-                }
-            }
-
-            is UpdateFlipperEnd -> metricEventsCollection {
-                updateFlipperEnd = updateFlipperEnd {
-                    updateFrom = complexEvent.updateFrom
-                    updateTo = complexEvent.updateTo
-                    updateId = complexEvent.updateId
-                    updateStatus = when (complexEvent.updateStatus) {
-                        UpdateStatus.COMPLETED ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.COMPLETED
-
-                        UpdateStatus.CANCELED ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.CANCELED
-
-                        UpdateStatus.FAILED_DOWNLOAD ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_DOWNLOAD
-
-                        UpdateStatus.FAILED_PREPARE ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_PREPARE
-
-                        UpdateStatus.FAILED_UPLOAD ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED_UPLOAD
-
-                        UpdateStatus.FAILED ->
-                            UpdateFlipperEndOuterClass.UpdateFlipperEnd.UpdateStatus.FAILED
-                    }
-                }
-            }
-
-            is UpdateFlipperStart -> metricEventsCollection {
-                updateFlipperStart = updateFlipperStart {
-                    updateFrom = complexEvent.updateFromVersion
-                    updateTo = complexEvent.updateToVersion
-                    updateId = complexEvent.updateId
-                }
-            }
-
-            is SubGhzProvisioningEvent -> metricEventsCollection {
-                subghzProvisioning = subGhzProvisioning {
-                    complexEvent.regionNetwork?.let { regionNetwork = it }
-                    complexEvent.regionSimOne?.let { regionSim1 = it }
-                    complexEvent.regionIp?.let { regionIp = it }
-                    complexEvent.regionSystem?.let { regionSystem = it }
-                    complexEvent.regionProvided?.let { regionProvided = it }
-                    isRoaming = complexEvent.isRoaming
-                    regionSource = when (complexEvent.regionSource) {
-                        RegionSource.SIM_NETWORK ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_NETWORK
-
-                        RegionSource.SIM_COUNTRY ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SIM_COUNTRY
-
-                        RegionSource.GEO_IP ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.GEO_IP
-
-                        RegionSource.SYSTEM ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.SYSTEM
-
-                        RegionSource.DEFAULT ->
-                            SubGhzProvisioningOuterClass.SubGhzProvisioning.RegionSource.DEFAULT
-                    }
-                }
-            }
-
-            is DebugInfoEvent -> metricEventsCollection {
-                debugInfo = debugInfo {
-                    key = complexEvent.key.key
-                    value = complexEvent.value
-                }
-            }
+            is DebugInfoEvent -> MetricEventsCollection(
+                debug_info = DebugInfoProto(
+                    key = complexEvent.key.key,
+                    value_ = complexEvent.value
+                )
+            )
 
             else -> null
         }
@@ -223,21 +196,21 @@ class ClickhouseApiImpl @Inject constructor(
         }
     }
 
-    private suspend fun reportToServerSafe(event: Metric.MetricEventsCollection): Unit = try {
-        val reportRequest = metricReportRequest {
-            uuid = getUUID()
-            version = applicationParams.version
-            sessionUuid = sessionUUID.toString()
+    private suspend fun reportToServerSafe(event: MetricEventsCollection): Unit = try {
+        val reportRequest = MetricReportRequest(
+            uuid = getUUID(),
+            version = applicationParams.version,
+            session_uuid = sessionUUID.toString(),
             platform = if (BuildConfig.DEBUG) {
-                Metric.MetricReportRequest.Platform.ANDROID_DEBUG
+                Platform.ANDROID_DEBUG
             } else {
-                Metric.MetricReportRequest.Platform.ANDROID
-            }
-            events.add(event)
-        }
+                Platform.ANDROID
+            },
+            events = listOf(event)
+        )
         val httpResponse = client.post(METRIC_API_URL) {
             header(HttpHeaders.ContentType, ContentType.Application.OctetStream)
-            setBody(reportRequest.toByteArray())
+            setBody(MetricReportRequest.ADAPTER.encode(reportRequest))
         }
         if (!httpResponse.status.isSuccess()) {
             error {

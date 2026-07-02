@@ -7,10 +7,10 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.subscribeOnConnectStatusRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatus
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.SubscribeOnConnectStatusRequest
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +24,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface FlipperStatusHelper {
-    fun getState(): StateFlow<ConnectStatusOuterClass.ConnectStatus>
+    fun getState(): StateFlow<ConnectStatus>
 
     fun onSubscribe()
 }
@@ -33,34 +33,33 @@ interface FlipperStatusHelper {
 @ContributesBinding(AppGraph::class, FlipperStatusHelper::class)
 @ContributesMultibinding(AppGraph::class, HandheldProcessor::class)
 class FlipperStatusHelperImpl @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
+    private val commandInputStream: WearableCommandInputStream<MainResponse>,
+    private val commandOutputStream: WearableCommandOutputStream<MainRequest>,
 ) : FlipperStatusHelper, HandheldProcessor, LogTagProvider {
     override val TAG: String = "FlipperStatusHelper"
 
-    private val state = MutableStateFlow(ConnectStatusOuterClass.ConnectStatus.UNRECOGNIZED)
+    private val state = MutableStateFlow<ConnectStatus>(ConnectStatus.fromValue(-1))
     override fun getState() = state.asStateFlow()
 
     override fun init(scope: CoroutineScope) {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasConnectStatus()) {
+            val connectStatus = it.connect_status
+            if (connectStatus != null) {
                 info { "#hasConnectStatus $it" }
-                state.emit(it.connectStatus)
+                state.emit(connectStatus)
             }
         }.launchIn(scope)
     }
 
     override fun reset(scope: CoroutineScope) {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            state.emit(ConnectStatusOuterClass.ConnectStatus.UNRECOGNIZED)
+            state.emit(ConnectStatus.fromValue(-1))
         }
     }
 
     override fun onSubscribe() {
         commandOutputStream.send(
-            mainRequest {
-                subscribeOnConnectStatus = subscribeOnConnectStatusRequest { }
-            }
+            MainRequest(subscribe_on_connect_status = SubscribeOnConnectStatusRequest())
         )
     }
 }

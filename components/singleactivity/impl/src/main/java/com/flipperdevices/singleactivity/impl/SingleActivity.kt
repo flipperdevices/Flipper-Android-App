@@ -122,6 +122,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         metricApi.reportSessionState(SessionState.StartSession(this))
     }
 
+    @Suppress("MissingSuperCall")
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         metricApi.reportSessionState(SessionState.ConfigurationChanged(newConfig))

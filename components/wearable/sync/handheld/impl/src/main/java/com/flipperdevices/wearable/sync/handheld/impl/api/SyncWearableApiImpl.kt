@@ -10,7 +10,7 @@ import com.flipperdevices.core.ktx.jre.pmap
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.sync.common.WearableSyncItem
-import com.flipperdevices.wearable.sync.common.wearableSyncItemData
+import com.flipperdevices.wearable.sync.common.WearableSyncItemData
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
 import com.google.android.gms.wearable.PutDataRequest
 import com.google.android.gms.wearable.Wearable
@@ -35,9 +35,9 @@ class SyncWearableApiImpl @Inject constructor(
         val itemsToSync = flipperKeys.map { flipperKey ->
             WearableSyncItem(
                 path = File(flipperKey.path.pathToKey).absolutePath,
-                data = wearableSyncItemData {
-                    isFavorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
-                }
+                data = WearableSyncItemData(
+                    is_favorite = favoriteApi.isFavorite(flipperKey.getKeyPath())
+                )
             )
         }
         val itemsToSyncSet = itemsToSync.toSet()
@@ -68,7 +68,7 @@ class SyncWearableApiImpl @Inject constructor(
         toAdd.pmap {
             dataClient.putDataItem(
                 PutDataRequest.create(it.path).apply {
-                    data = it.data.toByteArray()
+                    data = WearableSyncItemData.ADAPTER.encode(it.data)
                 }
             ).await()
             info { "Complete add $it" }

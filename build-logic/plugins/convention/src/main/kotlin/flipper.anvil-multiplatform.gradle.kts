@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+
 plugins {
     id("flipper.multiplatform")
     id("dev.zacsweers.anvil")
@@ -13,7 +15,7 @@ pluginManager.withPlugin("kotlin-kapt") {
     error("Please, use `id(\"flipper.anvil.kapt\")` instead")
 }
 
-kotlin {
+configure<KotlinMultiplatformExtension> {
     sourceSets {
         val commonMain by getting
 

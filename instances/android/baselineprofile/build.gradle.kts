@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
 import com.flipperdevices.buildlogic.ApkConfig
 
 plugins {
@@ -21,8 +20,8 @@ android {
 
     targetProjectPath = projects.instances.android.app.path
 
-    testOptions.managedDevices.devices {
-        create<ManagedVirtualDevice>("pixel6Api31") {
+    testOptions.managedDevices.localDevices {
+        create("pixel6Api31") {
             device = "Pixel 6"
             apiLevel = 31
             systemImageSource = "google-atd"

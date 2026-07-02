@@ -1,10 +1,13 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+
 plugins {
     id("flipper.multiplatform")
+    id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-kotlin {
+configure<KotlinMultiplatformExtension> {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.tooling)

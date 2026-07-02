@@ -6,8 +6,8 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.ChannelClient.Channel
-import com.google.protobuf.GeneratedMessageLite
-import com.google.protobuf.InvalidProtocolBufferException
+import com.squareup.wire.ProtoAdapter
+import com.squareup.wire.ProtoWriter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -18,6 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import okio.buffer
+import okio.sink
+import java.io.IOException
 import java.io.OutputStream
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedTransferQueue
@@ -26,8 +29,9 @@ import java.util.concurrent.TimeUnit
 private const val TIMEOUT_MS = 100L
 private const val POOL_THREADS_AMOUNT = 2
 
-class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
-    private val channelClient: ChannelClient
+class WearableCommandOutputStream<T>(
+    private val channelClient: ChannelClient,
+    private val adapter: ProtoAdapter<T>
 ) : LogTagProvider {
     override val TAG = "WearableCommandOutputStream-${hashCode()}"
 
@@ -68,15 +72,23 @@ class WearableCommandOutputStream<T : GeneratedMessageLite<*, *>>(
                 info { "Receive $request" }
 
                 withContext(dispatcher) {
-                    request.writeDelimitedTo(outputStream)
+                    adapter.writeDelimitedTo(outputStream, request)
                 }
             } catch (ignored: CancellationException) {
                 // ignore
-            } catch (invalidProtocol: InvalidProtocolBufferException) {
-                error(invalidProtocol) { "Broke protocol" }
+            } catch (ioException: IOException) {
+                error(ioException) { "Broke protocol" }
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
             }
         }
+    }
+
+    private fun ProtoAdapter<T>.writeDelimitedTo(stream: OutputStream, value: T) {
+        val bufferedSink = stream.sink().buffer()
+        val writer = ProtoWriter(bufferedSink)
+        writer.writeVarint32(encodedSize(value))
+        encode(bufferedSink, value)
+        bufferedSink.emit()
     }
 }

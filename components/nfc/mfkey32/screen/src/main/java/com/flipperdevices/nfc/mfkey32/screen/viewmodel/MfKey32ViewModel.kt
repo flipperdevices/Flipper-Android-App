@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import okio.Path.Companion.toOkioPath
 import java.math.BigInteger
+import java.util.Locale
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -186,7 +187,7 @@ class MfKey32ViewModel @Inject constructor(
         val foundedKey = FoundedKey(
             nonce.sectorName,
             nonce.keyName,
-            key?.let { "%012X".format(it) }
+            key?.let { "%012X".format(Locale.US, it) }
         )
         existedKeysStorage.onNewKey(foundedKey)
     }

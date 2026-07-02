@@ -26,6 +26,7 @@ class UpdateContentDownloaderInternalStorage @Inject constructor(
         return updateContent is InternalStorageFirmware
     }
 
+    @Suppress("ThrowsCount")
     override suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,

@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 
 class WaitNotifyLock {
-    private var waitFlow = MutableSharedFlow<Unit>()
+    private val waitFlow = MutableSharedFlow<Unit>()
 
     suspend fun wait() = waitFlow.first()
 

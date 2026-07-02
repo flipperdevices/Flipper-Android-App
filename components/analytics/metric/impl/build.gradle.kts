@@ -4,7 +4,7 @@ import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
 plugins {
     id("flipper.android-lib")
     id("flipper.anvil")
-    id("flipper.protobuf")
+    id("flipper.wire")
 }
 
 android.namespace = "com.flipperdevices.metric.impl"

@@ -159,10 +159,10 @@ class FilesViewModel @AssistedInject constructor(
     }
 
     fun fileDeleted(path: Path) {
-        val loadedState = _state.value as? State.Loaded ?: return
-        _state.update {
+        _state.update { state ->
+            val loadedState = state as? State.Loaded ?: return@update state
             val newFileList = loadedState.files
-                .filter { it.path.name != path.name }
+                .filter { file -> file.path.name != path.name }
                 .toImmutableList()
             loadedState.copy(files = newFileList)
         }

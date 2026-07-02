@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-lib")
-    id("flipper.protobuf")
+    id("flipper.wire")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.common"

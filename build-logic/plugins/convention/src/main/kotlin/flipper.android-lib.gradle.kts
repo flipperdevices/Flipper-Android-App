@@ -1,12 +1,13 @@
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.LibraryExtension
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
     id("flipper.lint")
 }
 
-configure<BaseExtension> {
+pluginManager.apply("org.jetbrains.kotlin.android")
+
+configure<LibraryExtension> {
     commonAndroid(project)
 }
 

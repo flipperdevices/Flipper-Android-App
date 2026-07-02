@@ -1,5 +1,7 @@
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
+import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -12,7 +14,11 @@ plugins {
 }
 
 kotlin {
-    jvm("desktop")
+    jvm("desktop") {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
     sourceSets {
         val desktopMain by getting
@@ -22,6 +28,11 @@ kotlin {
             implementation(libs.anvil.utils.annotations)
         }
     }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
 }
 
 includeCommonKspConfigurationTo("kspDesktop")

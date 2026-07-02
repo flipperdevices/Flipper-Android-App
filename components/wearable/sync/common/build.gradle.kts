@@ -1,7 +1,6 @@
 plugins {
     id("flipper.android-compose")
-
-    id("flipper.protobuf")
+    id("flipper.wire")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.common"
