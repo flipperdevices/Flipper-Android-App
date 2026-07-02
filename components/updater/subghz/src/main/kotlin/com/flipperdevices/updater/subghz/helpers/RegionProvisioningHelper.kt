@@ -8,16 +8,17 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.updater.subghz.model.RegionProvisioning
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface RegionProvisioningHelper {
     suspend fun provideRegion(regionFromGeoIp: String?): RegionProvisioning
 }
 
-@ContributesBinding(AppGraph::class, RegionProvisioningHelper::class)
+@ContributesBinding(AppGraph::class, binding<RegionProvisioningHelper>())
 class RegionProvisioningHelperImpl @Inject constructor(
     private val context: Context
 ) : RegionProvisioningHelper, LogTagProvider {

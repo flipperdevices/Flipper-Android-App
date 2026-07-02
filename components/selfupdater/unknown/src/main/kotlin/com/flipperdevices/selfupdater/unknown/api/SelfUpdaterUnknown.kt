@@ -3,10 +3,11 @@ package com.flipperdevices.selfupdater.unknown.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdaterSourceApi>())
 class SelfUpdaterUnknown @Inject constructor() : SelfUpdaterSourceApi {
     override suspend fun checkUpdate(manual: Boolean): SelfUpdateResult {
         return SelfUpdateResult.NO_UPDATES

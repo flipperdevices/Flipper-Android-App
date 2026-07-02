@@ -11,9 +11,9 @@ import com.flipperdevices.protobuf.screen.ScreenFrame
 import com.flipperdevices.protobuf.screen.SendInputEventRequest
 import com.flipperdevices.protobuf.screen.StartScreenStreamRequest
 import com.flipperdevices.protobuf.screen.StopScreenStreamRequest
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 

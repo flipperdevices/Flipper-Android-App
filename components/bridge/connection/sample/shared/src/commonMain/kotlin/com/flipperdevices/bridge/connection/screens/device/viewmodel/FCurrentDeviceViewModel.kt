@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FCurrentDeviceViewModel @Inject constructor(
     private val orchestrator: FDeviceOrchestrator,

@@ -6,10 +6,11 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import com.flipperdevices.bridge.connection.screens.utils.PermissionChecker
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, PermissionChecker::class)
+@ContributesBinding(AppGraph::class, binding<PermissionChecker>())
 class PermissionCheckerImpl @Inject constructor(
     private val context: Context
 ) : PermissionChecker {

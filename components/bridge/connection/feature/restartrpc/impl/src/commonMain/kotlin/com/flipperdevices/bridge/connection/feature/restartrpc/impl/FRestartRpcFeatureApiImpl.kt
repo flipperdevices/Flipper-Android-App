@@ -2,9 +2,9 @@ package com.flipperdevices.bridge.connection.feature.restartrpc.impl
 
 import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialRestartApi
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class FRestartRpcFeatureApiImpl @AssistedInject constructor(
     @Assisted private val transportRestartApi: FSerialRestartApi

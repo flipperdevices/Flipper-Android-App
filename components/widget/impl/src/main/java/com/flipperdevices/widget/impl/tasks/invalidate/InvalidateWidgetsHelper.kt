@@ -11,21 +11,22 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRenderer
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface InvalidateWidgetsHelper {
     suspend fun invoke()
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, InvalidateWidgetsHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<InvalidateWidgetsHelper>())
 class InvalidateWidgetHelperImpl @Inject constructor(
     private val widgetDataApi: WidgetDataApi,
     private val context: Context,
-    private val rendererMap: MutableMap<WidgetState, WidgetStateRenderer>,
+    private val rendererMap: Map<WidgetState, WidgetStateRenderer>,
     private val widgetStateStorage: WidgetStateStorage
 ) : InvalidateWidgetsHelper, LogTagProvider {
     override val TAG = "InvalidateWidgetsHelper"

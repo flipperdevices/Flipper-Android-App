@@ -7,7 +7,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapManifestDeleter @Inject constructor(
     private val fFeatureProvider: FFeatureProvider

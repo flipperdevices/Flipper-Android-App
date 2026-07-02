@@ -7,9 +7,9 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.infrared.api.InfraredConnectionApi
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.model.KeyScreenState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -46,7 +46,7 @@ class InfraredViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            keyPath: FlipperKeyPath
+            paramKeyPath: FlipperKeyPath
         ): InfraredViewModel
     }
 }

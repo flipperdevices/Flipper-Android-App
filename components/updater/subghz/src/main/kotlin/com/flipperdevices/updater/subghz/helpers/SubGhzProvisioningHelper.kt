@@ -17,14 +17,15 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.subghz.model.FailedUploadSubGhzException
 import com.flipperdevices.updater.subghz.model.RegionProvisioning
 import com.flipperdevices.updater.subghz.model.RegionProvisioningSource
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.encode
 import okio.buffer
 import okio.source
 import java.nio.charset.Charset
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface SubGhzProvisioningHelper {
     suspend fun provideAndUploadSubGhz(
@@ -35,7 +36,7 @@ interface SubGhzProvisioningHelper {
     suspend fun getRegion(): String?
 }
 
-@ContributesBinding(AppGraph::class, SubGhzProvisioningHelper::class)
+@ContributesBinding(AppGraph::class, binding<SubGhzProvisioningHelper>())
 class SubGhzProvisioningHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi,
     private val regionProvisioningHelper: RegionProvisioningHelper,

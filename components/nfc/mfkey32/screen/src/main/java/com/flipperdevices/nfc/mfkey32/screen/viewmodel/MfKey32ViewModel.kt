@@ -34,7 +34,7 @@ import okio.Path.Companion.toOkioPath
 import java.math.BigInteger
 import java.util.Locale
 import java.util.concurrent.Executors
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 const val PATH_NONCE_LOG = "/ext/nfc/.mfkey32.log"
 private const val TOTAL_PERCENT = 1.0f

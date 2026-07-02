@@ -43,11 +43,11 @@ import com.flipperdevices.ui.decompose.findChildByConfig
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.runBlocking
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, BottomBarDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
@@ -76,7 +76,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
             initialConfiguration = BottomBarTabConfig.getInitialConfig(
                 getSavedTab = {
                     instanceKeeper.getOrCreate("bbdc_st_vm") {
-                        selectedTabViewModelProvider.get()
+                        selectedTabViewModelProvider.invoke()
                     }.getSelectedTab()
                 },
                 deeplink = deeplink
@@ -105,7 +105,7 @@ class BottomBarDecomposeComponentImpl @AssistedInject constructor(
         )
 
         val bottomBarViewModel: BottomBarViewModel = viewModelWithFactory(key = null) {
-            bottomBarViewModelProvider.get()
+            bottomBarViewModelProvider.invoke()
         }
         val toolsHasNotification by bottomBarViewModel.hasNotificationHubState().collectAsState()
         val appsHasNotification by bottomBarViewModel.hasNotificationAppsState().collectAsState()

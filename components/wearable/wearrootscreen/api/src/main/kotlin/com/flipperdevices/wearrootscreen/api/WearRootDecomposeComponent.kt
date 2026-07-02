@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
+import uk.kulikov.metro.assisted.AssistedKey
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
 
 interface WearRootDecomposeComponent {
@@ -15,7 +16,7 @@ interface WearRootDecomposeComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onBack: DecomposeOnBackParameter
+            @AssistedKey("onBackParameter") onBack: DecomposeOnBackParameter
         ): WearRootDecomposeComponent
     }
 }

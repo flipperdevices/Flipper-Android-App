@@ -12,8 +12,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface FavoriteSynchronization {
     data object FavoritesProgressDetail : DetailedProgressListener.Detail
@@ -21,7 +22,7 @@ interface FavoriteSynchronization {
     suspend fun syncFavorites(progressTracker: DetailedProgressWrapperTracker)
 }
 
-@ContributesBinding(TaskGraph::class, FavoriteSynchronization::class)
+@ContributesBinding(TaskGraph::class, binding<FavoriteSynchronization>())
 class FavoriteSynchronizationImpl @Inject constructor(
     private val favoriteApi: FavoriteApi,
     private val manifestRepository: ManifestRepository,

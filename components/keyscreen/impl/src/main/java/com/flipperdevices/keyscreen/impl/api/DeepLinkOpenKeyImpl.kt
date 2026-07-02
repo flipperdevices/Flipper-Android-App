@@ -6,13 +6,14 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.keyscreen.api.DeepLinkOpenKey
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val EXTRA_PATH_KEY = "key_path"
 private const val EXTRA_IS_DELETED_KEY = "is_delete"
 
-@ContributesBinding(AppGraph::class, DeepLinkOpenKey::class)
+@ContributesBinding(AppGraph::class, binding<DeepLinkOpenKey>())
 class DeepLinkOpenKeyImpl @Inject constructor(
     private val context: Context,
     private val applicationParams: ApplicationParams

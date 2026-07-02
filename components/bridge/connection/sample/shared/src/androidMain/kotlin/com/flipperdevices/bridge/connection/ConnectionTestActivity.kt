@@ -17,8 +17,8 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.core.ui.theme.FlipperTheme
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.viewmodel.ThemeViewModel
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class ConnectionTestActivity : AppCompatActivity() {
     @Inject
@@ -50,7 +50,7 @@ class ConnectionTestActivity : AppCompatActivity() {
                     }
                 },
                 themeViewModel = root.viewModelWithFactory(key = null) {
-                    themeViewModelProvider.get()
+                    themeViewModelProvider.invoke()
                 }
             )
         }

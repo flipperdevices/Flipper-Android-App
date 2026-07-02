@@ -10,9 +10,9 @@ import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.model.FavoriteState
 import com.flipperdevices.keyscreen.model.KeyScreenState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted

@@ -3,7 +3,7 @@ package com.flipperdevices.analytics.shake2report.impl
 import android.app.Application
 import android.util.Log
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import fr.bipi.treessence.file.FileLoggerTree
 import io.sentry.Sentry
 import io.sentry.SentryLevel
@@ -14,15 +14,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 private const val FILE_LOG_DIR = "log"
 private const val FILE_LOG_SIZE = 1 * 1024 * 1024 // 1 MB
 private const val FILE_LOG_LIMIT = 10
 
-@Singleton
-@ContributesBinding(AppGraph::class, InternalShake2Report::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<InternalShake2Report>())
 class Shake2ReportImpl @Inject constructor(
     private val application: Application
 ) : InternalShake2Report {

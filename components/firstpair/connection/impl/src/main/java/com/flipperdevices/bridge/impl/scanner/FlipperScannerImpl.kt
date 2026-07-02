@@ -12,7 +12,7 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
@@ -24,9 +24,10 @@ import kotlinx.coroutines.sync.withLock
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperScanner::class)
+@ContributesBinding(AppGraph::class, binding<FlipperScanner>())
 class FlipperScannerImpl @Inject constructor(
     private val scanner: BluetoothLeScannerCompat,
     private val bluetoothAdapter: BluetoothAdapter,

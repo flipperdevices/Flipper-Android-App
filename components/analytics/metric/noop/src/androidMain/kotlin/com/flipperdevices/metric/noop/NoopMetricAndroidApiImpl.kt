@@ -6,10 +6,11 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.ComplexEvent
 import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.api.events.SimpleEvent
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, MetricAndroidApi::class)
+@ContributesBinding(AppGraph::class, binding<MetricAndroidApi>())
 class NoopMetricAndroidApiImpl @Inject constructor() : MetricApi, MetricAndroidApi {
     override fun reportSessionState(state: SessionState) = Unit
 

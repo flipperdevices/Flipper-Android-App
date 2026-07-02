@@ -18,7 +18,7 @@ import com.flipperdevices.updater.model.FirmwareVersion
 import com.flipperdevices.updater.model.SubGhzProvisioningException
 import com.flipperdevices.updater.model.SubGhzProvisioningModel
 import com.flipperdevices.updater.model.VersionFiles
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -26,12 +26,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import java.io.File
 import java.util.EnumMap
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val UPDATER_URL = "https://update.flipperzero.one/firmware/directory.json"
 private const val SUB_GHZ_URL = "https://update.flipperzero.one/regions/api/v0/bundle"
 
-@ContributesBinding(AppGraph::class, DownloaderApi::class)
+@ContributesBinding(AppGraph::class, binding<DownloaderApi>())
 class DownloaderApiImpl @Inject constructor(
     private val client: HttpClient,
     private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi,

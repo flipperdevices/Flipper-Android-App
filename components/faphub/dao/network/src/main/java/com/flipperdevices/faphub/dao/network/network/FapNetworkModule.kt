@@ -4,18 +4,16 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.faphub.dao.network.network.model.FapNetworkHostEnum
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
-import dagger.Reusable
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-@Module
 @ContributesTo(AppGraph::class)
-class FapNetworkModule {
+interface FapNetworkModule {
     @Provides
-    @Reusable
+    @SingleIn(AppGraph::class)
     fun provideFapNetworkHostEnum(
         settings: DataStore<Settings>
     ): FapNetworkHostEnum {

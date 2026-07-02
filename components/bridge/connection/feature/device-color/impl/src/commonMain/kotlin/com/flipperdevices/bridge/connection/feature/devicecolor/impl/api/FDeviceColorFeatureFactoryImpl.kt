@@ -8,12 +8,13 @@ import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureA
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @FDeviceFeatureQualifier(FDeviceFeature.DEVICE_COLOR)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FDeviceColorFeatureFactoryImpl @Inject constructor(
     private val factory: FDeviceColorFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory, LogTagProvider {

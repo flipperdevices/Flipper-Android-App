@@ -17,7 +17,7 @@ import com.flipperdevices.faphub.target.model.FlipperTarget
 import com.flipperdevices.faphub.utils.FapHubConstants.FLIPPER_APPS_FOLDER
 import kotlinx.coroutines.flow.first
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class InstallationActionExecutor @Inject constructor(
     fapDownloadApi: FapDownloadApi,

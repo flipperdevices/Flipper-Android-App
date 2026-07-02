@@ -11,7 +11,7 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.handheld.impl.request.WearableCommandProcessor
-import com.squareup.anvil.annotations.ContributesTo
+import dev.zacsweers.metro.ContributesTo
 import kotlinx.coroutines.CoroutineScope
 
 @ContributesTo(AppGraph::class)

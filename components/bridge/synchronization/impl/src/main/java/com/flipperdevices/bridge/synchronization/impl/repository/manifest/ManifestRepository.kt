@@ -6,8 +6,9 @@ import com.flipperdevices.bridge.synchronization.impl.model.DiffSource
 import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.bridge.synchronization.impl.model.KeyWithHash
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface ManifestRepository {
     suspend fun updateManifest(
@@ -37,7 +38,7 @@ interface ManifestRepository {
     suspend fun getFavorites(): List<FlipperFilePath>?
 }
 
-@ContributesBinding(TaskGraph::class, ManifestRepository::class)
+@ContributesBinding(TaskGraph::class, binding<ManifestRepository>())
 class ManifestRepositoryImpl @Inject constructor(
     private val manifestStorage: ManifestStorage
 ) : ManifestRepository {

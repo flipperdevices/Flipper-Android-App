@@ -14,14 +14,15 @@ import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.keyparser.api.KeyParser
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.withContext
 import java.net.URLDecoder
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val SCHEME_FLIPPERKEY = "flipperkey"
 
-@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<DeepLinkParserDelegate>())
 class DeepLinkFlipperFormatSharing @Inject constructor(
     private val parser: KeyParser
 ) : DeepLinkParserDelegate, LogTagProvider {

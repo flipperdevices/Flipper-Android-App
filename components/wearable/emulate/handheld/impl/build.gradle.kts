@@ -31,8 +31,6 @@ dependencies {
     implementation(libs.kotlin.coroutines.play.services)
 
     // Dagger deps
-    implementation(libs.dagger)
-
     implementation(libs.wear)
     implementation(libs.wear.gms)
 

@@ -34,7 +34,7 @@ import com.flipperdevices.pbmetric.events.SynchronizationEnd as SynchronizationE
 import com.flipperdevices.pbmetric.events.UpdateFlipperEnd as UpdateFlipperEndProto
 import com.flipperdevices.pbmetric.events.UpdateFlipperEnd.UpdateStatus as UpdateStatusProto
 import com.flipperdevices.pbmetric.events.UpdateFlipperStart as UpdateFlipperStartProto
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -47,13 +47,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 const val METRIC_API_URL = "https://metric.flipp.dev/report"
 
-@Singleton
-@ContributesBinding(AppGraph::class, ClickhouseApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<ClickhouseApi>())
 class ClickhouseApiImpl @Inject constructor(
     private val client: HttpClient,
     private val dataStore: DataStore<Settings>,

@@ -16,5 +16,4 @@ android {
 dependencies {
     implementation(projects.components.bridge.connection.sample.shared)
     implementation(projects.components.core.di)
-    ksp(libs.dagger.compiler)
 }

@@ -4,7 +4,7 @@ import com.flipperdevices.bridge.connection.config.api.FDeviceType
 import com.flipperdevices.bridge.connection.device.common.api.FDeviceApi
 import com.flipperdevices.bridge.connection.device.fzero.api.FZeroDeviceApi
 import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnectStatus
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FDeviceConnectStatusToDeviceApi @Inject constructor(
     private val fZeroDeviceApiFactory: FZeroDeviceApi.Factory

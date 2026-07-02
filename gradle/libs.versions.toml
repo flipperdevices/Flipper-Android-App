@@ -1,12 +1,12 @@
 [versions]
 # You also need to bump the version of ksp
-kotlin-general = "2.2.21" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin-general = "2.4.0" # https://kotlinlang.org/docs/releases.html#release-details
 kotlin-immutable-collections = "0.5.0" # https://github.com/Kotlin/kotlinx.collections.immutable/releases
 kotlin-datetime = "0.8.0" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx = "1.11.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
-ksp = "2.2.21-2.0.5" # https://github.com/google/ksp/releases
-anvil = "0.4.1" # https://github.com/ZacSweers/anvil/releases
-anvil-utils = "0.4.0" # https://github.com/IlyaGulya/anvil-utils/releases
+ksp = "2.3.9" # https://github.com/google/ksp/releases
+metro = "1.2.1" # https://github.com/ZacSweers/metro/releases
+metro-utils = "0.6.0" # https://github.com/LionZXY/metro-utils (uk.kulikov.metro)
 android-gradle = "9.2.1" # https://developer.android.com/studio/releases/gradle-plugin
 compose-material = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-material-icon = "1.7.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -19,7 +19,7 @@ compose-placeholder = "2.0.0" # https://github.com/fornewid/placeholder/releases
 compose-constraint = "0.8.0" # https://github.com/Lavmee/constraintlayout-compose-multiplatform/releases
 compose-paging = "3.3.6" # https://developer.android.com/jetpack/androidx/releases/paging
 compose-drag-drop = "0.9.6" # https://github.com/aclassen/ComposeReorderable/releases
-compose-multiplatform = "1.9.0" # https://github.com/JetBrains/compose-multiplatform/releases
+compose-multiplatform = "1.11.1" # https://github.com/JetBrains/compose-multiplatform/releases
 horologist = "0.8.3-alpha" # https://github.com/google/horologist/releases
 serialization-json = "1.11.0" # https://github.com/Kotlin/kotlinx.serialization/releases
 wear = "1.4.0" # https://developer.android.com/jetpack/androidx/releases/wear
@@ -27,7 +27,6 @@ wear-gms = "20.0.1" # https://mvnrepository.com/artifact/com.google.android.gms/
 wear-interaction-phone = "1.1.0" # https://developer.android.com/jetpack/androidx/releases/wear
 wear-interaction-remote = "1.2.0" # https://developer.android.com/jetpack/androidx/releases/wear
 room = "2.8.4" # https://developer.android.com/jetpack/androidx/releases/room
-dagger = "2.60" # https://github.com/google/dagger/releases
 timber = "5.0.1" # https://github.com/JakeWharton/timber/releases
 timber-treessence = "1.1.2" # https://github.com/bastienpaulfr/Treessence/tags
 sentry-runtime = "8.43.2" # https://github.com/getsentry/sentry-java/releases
@@ -176,19 +175,10 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ksp = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
-# Dependency Injection
-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-
-anvil-utils-annotations = { module = "me.gulya.anvil:annotations", version.ref = "anvil-utils" }
-anvil-utils-compiler = { module = "me.gulya.anvil:compiler", version.ref = "anvil-utils" }
-
-# Dependency Injection - Anvil
-zacsweers-anvil-annotations = { module = "dev.zacsweers.anvil:annotations", version.ref = "anvil" }
-zacsweers-anvil-compiler-api = { module = "dev.zacsweers.anvil:compiler-api", version.ref = "anvil" }
-zacsweers-anvil-compiler-core = { module = "dev.zacsweers.anvil:compiler", version.ref = "anvil" }
-zacsweers-anvil-compiler-utils = { module = "dev.zacsweers.anvil:compiler-utils", version.ref = "anvil" }
-zacsweers-anvil-gradle = { module = "dev.zacsweers.anvil:gradle-plugin", version.ref = "anvil" }
+# Dependency Injection - Metro
+metro-gradle = { module = "dev.zacsweers.metro:dev.zacsweers.metro.gradle.plugin", version.ref = "metro" }
+metro-utils-annotations = { module = "uk.kulikov.metro:annotations", version.ref = "metro-utils" }
+metro-utils-ksp = { module = "uk.kulikov.metro:compiler", version.ref = "metro-utils" }
 
 # Bug report dependencies
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -292,7 +282,7 @@ detekt = { id = "dev.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-general" }
-zacsweers-anvil = { id = "dev.zacsweers.anvil", version.ref = "anvil" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 google-gms = { id = "com.google.gms.google-services", version.ref = "google-gms-gradle" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-general" }

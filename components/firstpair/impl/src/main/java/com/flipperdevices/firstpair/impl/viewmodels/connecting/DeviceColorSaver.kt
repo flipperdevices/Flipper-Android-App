@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.api.scanner.DiscoveredBluetoothDevice
 import com.flipperdevices.core.preference.pb.HardwareColor
 import com.flipperdevices.core.preference.pb.PairSettings
 import java.util.UUID
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private val TRANSPARENT_UUID = UUID.fromString("00003083-0000-1000-8000-00805f9b34fb")
 private val WHITE_UUID = UUID.fromString("00003082-0000-1000-8000-00805f9b34fb")

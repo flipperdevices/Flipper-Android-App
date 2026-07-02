@@ -13,6 +13,7 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import uk.kulikov.metro.assisted.AssistedKey
 
 interface SetupComponent {
     fun model(coroutineScope: CoroutineScope): StateFlow<Model>
@@ -57,8 +58,8 @@ interface SetupComponent {
         fun createSetupComponent(
             componentContext: ComponentContext,
             param: SetupScreenDecomposeComponent.Param,
-            onBack: DecomposeOnBackParameter,
-            onIrFileReady: (id: Long, name: String) -> Unit
+            @AssistedKey("onBackClick") onBack: DecomposeOnBackParameter,
+            @AssistedKey("onIfrFileFound") onIrFileReady: (Long, String) -> Unit
         ): SetupComponent
     }
 }

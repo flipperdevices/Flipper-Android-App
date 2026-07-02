@@ -10,8 +10,8 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.PingRequest
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,8 +19,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface ConnectionHelper {
     fun getState(): StateFlow<ConnectionTesterState>
@@ -28,9 +29,9 @@ interface ConnectionHelper {
     fun testConnection()
 }
 
-@Singleton
-@ContributesMultibinding(AppGraph::class, HandheldProcessor::class)
-@ContributesBinding(AppGraph::class, ConnectionHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesIntoSet(AppGraph::class, binding<HandheldProcessor>())
+@ContributesBinding(AppGraph::class, binding<ConnectionHelper>())
 class ConnectionHelperImpl @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<MainResponse>,
     private val commandOutputStream: WearableCommandOutputStream<MainRequest>,

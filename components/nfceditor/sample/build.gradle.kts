@@ -44,10 +44,6 @@ dependencies {
 
     implementation(libs.appcompat)
 
-    // Dagger deps
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
-
     implementation(libs.timber)
     implementation(libs.kotlin.immutable.collections)
 

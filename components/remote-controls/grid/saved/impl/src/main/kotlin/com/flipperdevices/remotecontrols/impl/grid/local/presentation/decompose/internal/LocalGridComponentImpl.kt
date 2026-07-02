@@ -11,14 +11,14 @@ import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.viewmodel.LocalGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, LocalGridComponent.Factory::class)
 class LocalGridComponentImpl @AssistedInject constructor(
@@ -35,11 +35,11 @@ class LocalGridComponentImpl @AssistedInject constructor(
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
         key = "LocalGridComponent_dispatchSignalApi_$keyPath",
-        factory = { createDispatchSignalApi.get() }
+        factory = { createDispatchSignalApi.invoke() }
     )
     private val connectionViewModel = instanceKeeper.getOrCreate(
         key = "LocalGridComponent_connectionViewModel_$keyPath",
-        factory = { createConnectionViewModel.get() }
+        factory = { createConnectionViewModel.invoke() }
     )
 
     override fun model(coroutineScope: CoroutineScope) = combine(

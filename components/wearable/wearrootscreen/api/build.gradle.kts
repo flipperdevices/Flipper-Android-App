@@ -6,6 +6,7 @@ plugins {
 android.namespace = "com.flipperdevices.wearrootscreen.api"
 
 dependencies {
+    implementation(libs.metro.utils.annotations)
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.bridge.dao.api)

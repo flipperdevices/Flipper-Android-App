@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.AtomicFile
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.bridge.synchronization.impl.model.ManifestFile
-import com.flipperdevices.core.di.SingleIn
+import dev.zacsweers.metro.SingleIn
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -19,7 +19,8 @@ import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 import java.io.File
 import java.io.FileOutputStream
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface ManifestStorage {
     suspend fun update(block: (ManifestFile) -> ManifestFile)
@@ -28,7 +29,7 @@ interface ManifestStorage {
 }
 
 @SingleIn(TaskGraph::class)
-@ContributesBinding(TaskGraph::class, ManifestStorage::class)
+@ContributesBinding(TaskGraph::class, binding<ManifestStorage>())
 class ManifestStorageImpl @Inject constructor(
     context: Context
 ) : ManifestStorage, LogTagProvider {

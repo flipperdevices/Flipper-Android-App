@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class UpdateStateViewModel @Inject constructor(
     private val updaterApi: UpdaterApi,

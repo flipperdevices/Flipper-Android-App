@@ -8,14 +8,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.coroutineScope
 import okio.buffer
 import okio.source
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @StorageType(Platform.FLIPPER)
-@ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
+@ContributesBinding(TaskGraph::class, binding<AbstractKeyStorage>())
 class FlipperKeyStorage @Inject constructor(
     private val fileDownloadApi: FFileDownloadApi,
     private val fileUploadApi: FFileUploadApi,

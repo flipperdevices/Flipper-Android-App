@@ -6,9 +6,10 @@ import com.flipperdevices.updater.api.DownloaderApi
 import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.DownloadProgress
 import com.flipperdevices.updater.model.UpdatingState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface FirmwareDownloaderHelper {
     suspend fun downloadFirmware(
@@ -18,7 +19,7 @@ interface FirmwareDownloaderHelper {
     )
 }
 
-@ContributesBinding(AppGraph::class, FirmwareDownloaderHelper::class)
+@ContributesBinding(AppGraph::class, binding<FirmwareDownloaderHelper>())
 class FirmwareDownloaderHelperImpl @Inject constructor(
     private val downloaderApi: DownloaderApi
 ) : FirmwareDownloaderHelper, LogTagProvider {

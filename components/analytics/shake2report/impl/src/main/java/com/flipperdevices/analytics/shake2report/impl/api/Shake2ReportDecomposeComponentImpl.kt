@@ -8,10 +8,10 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.shake2report.api.Shake2ReportDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, Shake2ReportDecomposeComponent.Factory::class)
 class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
@@ -25,7 +25,7 @@ class Shake2ReportDecomposeComponentImpl @AssistedInject constructor(
         Shake2ReportScreen(
             onBack = onBack::invoke,
             viewModel = viewModelWithFactory(key = null) {
-                viewModelProvider.get()
+                viewModelProvider.invoke()
             }
         )
     }

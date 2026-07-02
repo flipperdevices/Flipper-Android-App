@@ -17,11 +17,12 @@ import com.flipperdevices.faphub.installedtab.impl.composable.offline.dialog.Com
 import com.flipperdevices.faphub.installedtab.impl.model.FapBatchUpdateButtonState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsViewModel
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapInstalledApi::class)
+@ContributesBinding(AppGraph::class, binding<FapInstalledApi>())
 class FapInstalledApiImpl @Inject constructor(
     private val fapInstallationUIApi: FapInstallationUIApi,
     private val uninstallApi: FapUninstallApi,
@@ -32,7 +33,7 @@ class FapInstalledApiImpl @Inject constructor(
     @Composable
     override fun getUpdatePendingCount(componentContext: ComponentContext): Int {
         val installedViewModel = componentContext.viewModelWithFactory(key = null) {
-            installedFapsViewModelProvider.get()
+            installedFapsViewModelProvider.invoke()
         }
         val buttonStateFlow = remember { installedViewModel.getFapBatchUpdateButtonState() }
         val state by buttonStateFlow.collectAsState()
@@ -55,7 +56,7 @@ class FapInstalledApiImpl @Inject constructor(
         onOpenFapItem: (uid: String) -> Unit
     ) {
         val installedViewModel = componentContext.viewModelWithFactory(key = null) {
-            installedFapsViewModelProvider.get()
+            installedFapsViewModelProvider.invoke()
         }
         ComposableInstalledTabScreen(
             onOpenFapItem = onOpenFapItem,

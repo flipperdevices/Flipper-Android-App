@@ -62,8 +62,4 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.coroutines.play.services)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
 }

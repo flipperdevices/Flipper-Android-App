@@ -6,7 +6,7 @@ import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroU
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -16,13 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+import dev.zacsweers.metro.binding
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
 
-@ContributesBinding(AppGraph::class, ConnectionSearchViewModel::class)
+@ContributesBinding(AppGraph::class, binding<ConnectionSearchViewModel>())
 class USBSearchViewModel @Inject constructor(
     private val persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchViewModel(persistedStorage), LogTagProvider {

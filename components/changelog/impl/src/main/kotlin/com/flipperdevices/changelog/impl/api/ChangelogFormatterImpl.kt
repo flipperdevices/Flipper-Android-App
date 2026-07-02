@@ -2,9 +2,10 @@ package com.flipperdevices.changelog.impl.api
 
 import com.flipperdevices.changelog.api.ChangelogFormatterApi
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
-import dagger.Reusable
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val REGEX_GITHUB_PR = "(^| )(https://github.com/\\S+/pull/([0-9]+))"
 private const val REGEX_GITHUB_COMPARE = "(^| )(https://github.com/\\S+/compare/(\\S+))"
@@ -13,8 +14,8 @@ private const val REGEX_GITHUB_NICKNAME = "(^| )@(\\S+)"
 private const val NUMBER_MATCH_FIRST = 2
 private const val NUMBER_MATCH_SECOND = 3
 
-@Reusable
-@ContributesBinding(AppGraph::class, ChangelogFormatterApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<ChangelogFormatterApi>())
 class ChangelogFormatterImpl @Inject constructor() : ChangelogFormatterApi {
     override fun format(changelog: String): String {
         return changelog

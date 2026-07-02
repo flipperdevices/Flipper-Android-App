@@ -1,6 +1,6 @@
 package com.flipperdevices.bridge.connection.feature.common.api
 
-import dagger.MapKey
+import dev.zacsweers.metro.MapKey
 
 enum class FDeviceFeature {
     RPC,

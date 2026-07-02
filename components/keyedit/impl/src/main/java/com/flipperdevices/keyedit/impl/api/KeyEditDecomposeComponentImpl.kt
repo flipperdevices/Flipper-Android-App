@@ -11,9 +11,9 @@ import com.flipperdevices.keyedit.impl.composable.ComposableEditScreen
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.viewmodel.KeyEditViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class KeyEditDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

@@ -13,8 +13,8 @@ import com.flipperdevices.firstpair.impl.di.FirstPairComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class BluetoothEnableHelper(
     private val listener: Listener

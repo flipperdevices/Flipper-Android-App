@@ -5,7 +5,7 @@ import com.flipperdevices.core.ktx.jre.forEachIterable
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class DeleteViewModel @Inject constructor(
     private val deleteKeyApi: DeleteKeyApi

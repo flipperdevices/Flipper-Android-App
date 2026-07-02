@@ -19,9 +19,10 @@ import com.flipperdevices.bridge.connection.feature.storage.impl.fm.upload.FFile
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val API_SUPPORTED_MD5_LISTING = SemVer(
     majorVersion = 0,
@@ -30,7 +31,7 @@ private val API_SUPPORTED_MD5_LISTING = SemVer(
 private val API_SUPPORTED_TIMESTAMP = SemVer(majorVersion = 0, minorVersion = 13)
 
 @FDeviceFeatureQualifier(FDeviceFeature.STORAGE)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FFileStorageApiFactoryImpl @Inject constructor() : FDeviceFeatureApi.Factory {
     override suspend fun invoke(
         unsafeFeatureDeviceApi: FUnsafeDeviceFeatureApi,

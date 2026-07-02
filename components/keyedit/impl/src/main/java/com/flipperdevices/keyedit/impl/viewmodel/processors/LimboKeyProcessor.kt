@@ -15,7 +15,7 @@ import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
 import kotlinx.collections.immutable.toImmutableList
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class LimboKeyProcessor @Inject constructor(
     private val parser: KeyParser,

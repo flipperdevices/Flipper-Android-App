@@ -8,12 +8,13 @@ import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.impl.utils.Constants
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
-import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val PATHS = listOf("o", "mfkey32")
 
-@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<DeepLinkParserDelegate>())
 class DeepLinkMfKey @Inject constructor() : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkFap"
 

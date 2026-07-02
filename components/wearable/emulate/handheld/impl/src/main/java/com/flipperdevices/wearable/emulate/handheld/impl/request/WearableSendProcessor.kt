@@ -10,7 +10,7 @@ import com.flipperdevices.bridge.dao.api.delegates.key.SimpleKeyApi
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
-import com.flipperdevices.core.di.SingleIn
+import dev.zacsweers.metro.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -22,18 +22,19 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @Suppress("LongParameterList")
 @SingleIn(WearHandheldGraph::class)
-@ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
+@ContributesIntoSet(WearHandheldGraph::class, binding<WearableCommandProcessor>())
 class WearableSendProcessor @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<MainRequest>,
     private val commandOutputStream: WearableCommandOutputStream<MainResponse>,

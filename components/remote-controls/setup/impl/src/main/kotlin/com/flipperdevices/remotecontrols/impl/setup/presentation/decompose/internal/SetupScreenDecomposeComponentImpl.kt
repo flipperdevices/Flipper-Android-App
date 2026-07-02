@@ -9,9 +9,9 @@ import com.flipperdevices.remotecontrols.api.FlipperDispatchDialogApi
 import com.flipperdevices.remotecontrols.api.SetupScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.setup.composable.SetupScreen
 import com.flipperdevices.remotecontrols.impl.setup.presentation.decompose.SetupComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupScreenDecomposeComponent.Factory::class)
@@ -19,7 +19,7 @@ class SetupScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted param: SetupScreenDecomposeComponent.Param,
     @Assisted onBack: () -> Unit,
-    @Assisted onIrFileReady: (id: Long, name: String) -> Unit,
+    @Assisted onIrFileReady: (Long, String) -> Unit,
     setupComponentFactory: SetupComponent.Factory,
     flipperDispatchDialogApiFactory: FlipperDispatchDialogApi.Factory,
     private val errorsRenderer: FapHubComposableErrorsRenderer,

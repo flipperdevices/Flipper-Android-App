@@ -1,18 +1,18 @@
 package com.flipperdevices.bridge.connection.di
 
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Singleton
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-@MergeComponent(AppGraph::class)
+@SingleIn(AppGraph::class)
+@DependencyGraph(AppGraph::class)
 interface DesktopAppComponent : AppComponent {
-    @MergeComponent.Factory
-    interface Factory {
+    @DependencyGraph.Factory
+    fun interface Factory {
         fun create(
-            @BindsInstance scope: CoroutineScope
+            @Provides scope: CoroutineScope
         ): DesktopAppComponent
     }
 }

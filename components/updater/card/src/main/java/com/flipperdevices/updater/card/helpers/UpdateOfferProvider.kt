@@ -3,18 +3,19 @@ package com.flipperdevices.updater.card.helpers
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.helpers.delegates.UpdateOfferDelegate
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface UpdateOfferProviderApi {
     fun isUpdateRequire(fStorageFeatureApi: FStorageFeatureApi): Flow<Boolean>
 }
 
-@ContributesBinding(AppGraph::class, UpdateOfferProviderApi::class)
+@ContributesBinding(AppGraph::class, binding<UpdateOfferProviderApi>())
 class UpdateOfferProvider @Inject constructor(
-    private val delegates: MutableSet<UpdateOfferDelegate>
+    private val delegates: Set<UpdateOfferDelegate>
 ) : UpdateOfferProviderApi {
 
     override fun isUpdateRequire(fStorageFeatureApi: FStorageFeatureApi): Flow<Boolean> {

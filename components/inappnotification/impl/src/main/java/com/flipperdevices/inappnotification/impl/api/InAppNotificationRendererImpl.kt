@@ -6,8 +6,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.inappnotification.api.InAppNotificationRenderer
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.inappnotification.impl.composable.ComposableInAppNotification
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppGraph::class)
 class InAppNotificationRendererImpl @Inject constructor() : InAppNotificationRenderer {

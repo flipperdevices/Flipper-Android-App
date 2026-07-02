@@ -11,9 +11,10 @@ import com.flipperdevices.core.data.SemVer
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val API_SUPPORTED_LOAD_FAP = SemVer(
     majorVersion = 0,
@@ -21,7 +22,7 @@ private val API_SUPPORTED_LOAD_FAP = SemVer(
 )
 
 @FDeviceFeatureQualifier(FDeviceFeature.APP_START)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FAppStartFeatureFactoryImpl @Inject constructor(
     private val factory: FAppStartFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory {
