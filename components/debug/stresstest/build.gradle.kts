@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.debug.stresstest"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.debug.api)
 
     implementation(projects.components.core.di)
@@ -30,10 +31,6 @@ dependencies {
     implementation(libs.ble.common)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     implementation(libs.kotlin.immutable.collections)
 

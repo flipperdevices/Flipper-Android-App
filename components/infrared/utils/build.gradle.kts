@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.infrared.utils"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.ktx)

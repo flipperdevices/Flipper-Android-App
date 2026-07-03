@@ -1,3 +1,4 @@
+import com.squareup.wire.gradle.WireTask
 import dev.detekt.gradle.Detekt
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.kotlin.dsl.withType
@@ -5,14 +6,13 @@ import org.gradle.kotlin.dsl.withType
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
-    id("flipper.anvil-multiplatform")
+    id("flipper.anvil")
     alias(libs.plugins.wire)
 }
 
 android.namespace = "com.flipperdevices.core.preference"
 
 val wireOutputDir = layout.buildDirectory.dir("generated/source/wire")
-val generateProtos = tasks.named("generateProtos")
 
 commonDependencies {
     implementation(projects.components.core.di)
@@ -37,6 +37,7 @@ wire {
 
 configure<KotlinMultiplatformExtension> {
     sourceSets.named("commonMain") {
-        kotlin.srcDir(wireOutputDir)
+        // builtBy is required for Gradle strict task validation.
+        kotlin.srcDir(files(wireOutputDir).builtBy(tasks.withType<WireTask>()))
     }
 }

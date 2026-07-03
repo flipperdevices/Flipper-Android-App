@@ -1,14 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.wire")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.common"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.ktx)
 
     implementation(libs.wear.gms)
-
-    implementation(libs.compose.ui)
 }

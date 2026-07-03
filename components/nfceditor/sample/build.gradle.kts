@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.sample"

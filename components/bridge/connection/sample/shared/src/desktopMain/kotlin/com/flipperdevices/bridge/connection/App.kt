@@ -45,7 +45,7 @@ fun launch(appComponent: AppComponent) {
                     }
                 },
                 themeViewModel = root.viewModelWithFactory(key = null) {
-                    appComponent.themeViewModelProvider.get()
+                    appComponent.themeViewModelProvider.invoke()
                 }
             )
         }

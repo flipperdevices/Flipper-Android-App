@@ -1,5 +1,6 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("flipper.git-submodule-fetch")
 }
@@ -16,7 +17,7 @@ android {
     }
 }
 
-dependencies {
+androidDependencies {
     implementation(projects.components.nfc.tools.api)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)

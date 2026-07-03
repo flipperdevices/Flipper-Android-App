@@ -8,6 +8,7 @@ ksp = "2.3.9" # https://github.com/google/ksp/releases
 metro = "1.2.1" # https://github.com/ZacSweers/metro/releases
 metro-utils = "0.6.0" # https://github.com/LionZXY/metro-utils (uk.kulikov.metro)
 android-gradle = "9.2.1" # https://developer.android.com/studio/releases/gradle-plugin
+kotlinpoet = "2.3.0" # https://github.com/square/kotlinpoet/releases
 compose-material = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-material-icon = "1.7.8" # https://developer.android.com/jetpack/androidx/releases/compose#versions
 compose-foundation = "1.8.3" # https://developer.android.com/jetpack/androidx/releases/compose#versions
@@ -99,6 +100,7 @@ jserial = "2.11.4"
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle" }
 kotlin-ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 kotlin-jvm-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-general" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 
 kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin-general" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin-general" }

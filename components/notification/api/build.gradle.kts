@@ -1,13 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.notification.api"
 
-dependencies {
+androidDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.decompose)
 
     // Compose
-    implementation(libs.compose.ui)
 }

@@ -1,12 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.nfceditor.api)
 
     implementation(projects.components.core.ui.lifecycle)
@@ -33,24 +34,20 @@ dependencies {
 
     implementation(libs.appcompat)
 
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.lifecycle.compose)
+}
 
-    // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.junit)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(projects.components.keyparser.impl)
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.mockito.kotlin)
+    "androidUnitTestImplementation"(projects.components.keyparser.impl)
 }

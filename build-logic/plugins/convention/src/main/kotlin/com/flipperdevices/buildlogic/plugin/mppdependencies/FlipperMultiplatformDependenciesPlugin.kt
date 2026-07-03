@@ -1,4 +1,4 @@
-package com.flipperdevices.buildlogic.plugin
+package com.flipperdevices.buildlogic.plugin.mppdependencies
 
 import com.flipperdevices.buildlogic.util.ProjectExt.kotlin
 import org.gradle.api.Plugin

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.button.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.installation.button.api)
 
     implementation(projects.components.core.di)
@@ -36,10 +37,6 @@ dependencies {
     implementation(projects.components.faphub.installation.queue.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.decompose)
     implementation(libs.lifecycle.compose)
 

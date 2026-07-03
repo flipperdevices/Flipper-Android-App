@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.analytics.shake2report.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.analytics.shake2report.api)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
@@ -31,9 +32,5 @@ dependencies {
     implementation(libs.zip4j)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
 }

@@ -1,15 +1,15 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.remotecontrols.grid.remote.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.keyedit.api)
 
-    implementation(libs.compose.ui)
     implementation(libs.decompose)
 }

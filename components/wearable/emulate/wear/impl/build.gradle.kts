@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.emulate.wear.api)
     implementation(projects.components.wearable.sync.wear.api)
@@ -36,8 +37,6 @@ dependencies {
     implementation(libs.wear.interaction.phone)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
     implementation(libs.compose.placeholder)
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)

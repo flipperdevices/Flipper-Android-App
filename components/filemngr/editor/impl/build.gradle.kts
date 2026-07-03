@@ -1,7 +1,7 @@
 plugins {
     id("flipper.multiplatform-compose")
     id("flipper.multiplatform-dependencies")
-    id("flipper.anvil-multiplatform")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 android.namespace = "com.flipperdevices.filemanager.editor.impl"

@@ -17,13 +17,25 @@ dependencies {
     implementation(libs.kotlin.jvm.gradle)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    implementation(libs.kotlinpoet)
 }
 
 gradlePlugin {
     plugins {
         create("flipper.multiplatform-dependencies") {
             id = name
-            implementationClass = "com.flipperdevices.buildlogic.plugin.FlipperMultiplatformDependenciesPlugin"
+            implementationClass =
+                "com.flipperdevices.buildlogic.plugin.mppdependencies.FlipperMultiplatformDependenciesPlugin"
+        }
+        create("flipper.java.version") {
+            id = name
+            implementationClass =
+                "com.flipperdevices.buildlogic.plugin.JavaVersionPlugin"
+        }
+        create("flipper.compose-file-accessors") {
+            id = name
+            implementationClass =
+                "com.flipperdevices.buildlogic.plugin.composefiles.ComposeFileAccessorsPlugin"
         }
     }
 }
