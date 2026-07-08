@@ -1,12 +1,13 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.ajoberstar.grgit.gradle.GrgitService
+import org.gradle.api.services.ServiceReference
 
 plugins {
-    id("org.ajoberstar.grgit")
+    id("org.ajoberstar.grgit.service")
 }
 
 abstract class SubmoduleUpdateTask : DefaultTask() {
-    @get:Input
+    @get:ServiceReference("grgit")
     abstract val service: Property<GrgitService>
 
     @TaskAction
@@ -16,8 +17,6 @@ abstract class SubmoduleUpdateTask : DefaultTask() {
     }
 }
 
-val registeredTask = tasks.register<SubmoduleUpdateTask>("submoduleUpdate") {
-    service.set(grgitService.service)
-}
+val registeredTask = tasks.register<SubmoduleUpdateTask>("submoduleUpdate")
 
 tasks.named("preBuild").dependsOn(registeredTask)
