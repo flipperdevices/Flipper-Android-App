@@ -57,7 +57,7 @@ class FSerialDeviceApiWrapperTest {
         every {
             serialApiFactory.build(
                 config = eq(config),
-                serviceFlow = eq(services),
+                services = eq(services),
                 scope = any(),
                 flipperActionNotifier = any()
             )
@@ -94,7 +94,7 @@ class FSerialDeviceApiWrapperTest {
         every {
             serialApiFactory.build(
                 config = eq(config),
-                serviceFlow = eq(services),
+                services = eq(services),
                 scope = any(),
                 flipperActionNotifier = any()
             )
@@ -129,7 +129,7 @@ class FSerialDeviceApiWrapperTest {
         every {
             serialApiFactory.build(
                 config = eq(config),
-                serviceFlow = eq(services),
+                services = eq(services),
                 scope = any(),
                 flipperActionNotifier = any()
             )
@@ -166,7 +166,7 @@ class FSerialDeviceApiWrapperTest {
         every {
             serialApiFactory.build(
                 config = eq(config),
-                serviceFlow = eq(services),
+                services = eq(services),
                 scope = any(),
                 flipperActionNotifier = any()
             )

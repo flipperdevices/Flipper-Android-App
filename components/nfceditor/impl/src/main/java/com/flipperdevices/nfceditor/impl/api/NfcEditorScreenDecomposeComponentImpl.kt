@@ -10,7 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.pushToFront
@@ -55,7 +55,7 @@ class NfcEditorScreenDecomposeComponentImpl @AssistedInject constructor(
                 .navigationBarsPadding()
         ) {
             val isBackPressHandled by isBackPressHandledFlow.collectAsState()
-            val saveAsTitle = LocalContext.current.getString(R.string.nfc_dialog_save_as_title)
+            val saveAsTitle = stringResource(R.string.nfc_dialog_save_as_title)
             val nfcEditorViewModel = viewModelWithFactory(flipperKeyPath.toString()) {
                 nfcEditorViewModelFactory(flipperKeyPath)
             }

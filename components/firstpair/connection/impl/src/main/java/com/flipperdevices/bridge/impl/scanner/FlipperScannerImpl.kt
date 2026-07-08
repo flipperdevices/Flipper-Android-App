@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.impl.scanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.pm.PackageManager
@@ -89,6 +90,7 @@ class FlipperScannerImpl @Inject constructor(
             .map { DiscoveredBluetoothDevice(it) }
     }
 
+    @SuppressLint("MissingPermission")
     private fun getAlreadyBondedDevices(): List<DiscoveredBluetoothDevice> {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S &&
             ActivityCompat.checkSelfPermission(

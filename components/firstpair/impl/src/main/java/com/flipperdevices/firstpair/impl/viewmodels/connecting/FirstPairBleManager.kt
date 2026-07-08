@@ -54,6 +54,7 @@ class FirstPairBleManager @AssistedInject constructor(
 
     override fun supportState() = FlipperSupportedState.READY
 
+    @SuppressLint("MissingPermission")
     override fun initialize() {
         info { "Initialize device" }
 
