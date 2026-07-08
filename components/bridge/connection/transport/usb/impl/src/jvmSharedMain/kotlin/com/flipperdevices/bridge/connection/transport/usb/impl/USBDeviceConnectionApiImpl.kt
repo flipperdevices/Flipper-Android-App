@@ -48,20 +48,6 @@ class USBDeviceConnectionApiImpl(
             error("Fail to open port")
         }
 
-        info { "Port opened, start reading flood" }
-        skipFlood(serialPort, FLOOD_END_STRING)
-        info { "Flood skipped, send start_rpc_session command" }
-        serialPort.writeBytes(COMMAND, COMMAND.size)
-        skipFlood(serialPort, "\n".toByteArray())
-        info { "Flood skipped. Now we are in RPC mode" }
-
-        val deviceApi = FUSBSerialDeviceApi(
-            scope = scope,
-            serialPort = serialPort,
-            actionNotifier = actionNotifierFactory(scope)
-        )
-        info { "Finish create device API" }
-
         scope.launch {
             try {
                 awaitCancellation()
@@ -72,9 +58,36 @@ class USBDeviceConnectionApiImpl(
                 }
             }
         }
+
+        info { "Port opened, start reading flood" }
+        skipFlood(serialPort, FLOOD_END_STRING)
+        info { "Flood skipped, send start_rpc_session command" }
+        writeFully(serialPort, COMMAND)
+        skipFlood(serialPort, "\n".toByteArray())
+        info { "Flood skipped. Now we are in RPC mode" }
+
+        val deviceApi = FUSBSerialDeviceApi(
+            scope = scope,
+            serialPort = serialPort,
+            actionNotifier = actionNotifierFactory(scope)
+        )
+        info { "Finish create device API" }
+
         listener.onStatusUpdate(FInternalTransportConnectionStatus.Connected(scope, deviceApi))
 
         return@runCatching deviceApi
+    }
+
+    private fun writeFully(serialPort: USBPlatformDevice, data: ByteArray) {
+        var writtenOffset = 0
+        while (writtenOffset < data.size) {
+            val writtenBytes =
+                serialPort.writeBytes(data, data.size - writtenOffset, writtenOffset)
+            if (writtenBytes <= 0) {
+                error("Failed to write bytes, result is $writtenBytes")
+            }
+            writtenOffset += writtenBytes
+        }
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -83,8 +96,11 @@ class USBDeviceConnectionApiImpl(
         var floodCurrentIndex = 0
         val buffer = ByteArray(size = 1)
         while (!Thread.interrupted()) {
-            if (serialPort.readBytes(buffer, buffer.size) == 0) {
-                info { "Exit from skipFlood because buffer is empty" }
+            val readCount = serialPort.readBytes(buffer, buffer.size)
+            if (readCount < 0) {
+                error("Port closed while waiting for flood end")
+            }
+            if (readCount == 0) {
                 continue
             }
 

@@ -14,15 +14,13 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
-import javax.inject.Inject
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
 
@@ -30,7 +28,7 @@ class USBSearchDelegate @AssistedInject constructor(
     @Assisted viewModelScope: CoroutineScope,
     private val persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchDelegate, LogTagProvider {
-    override val TAG = "USBSearchViewModel"
+    override val TAG = "USBSearchDelegate"
 
     private val searchItems =
         MutableStateFlow<ImmutableList<ConnectionSearchItem>>(persistentListOf())
@@ -41,7 +39,7 @@ class USBSearchDelegate @AssistedInject constructor(
                 flow {
                     while (true) {
                         emit(Unit)
-                        delay(1.toDuration(DurationUnit.SECONDS))
+                        delay(1.seconds)
                     }
                 },
                 persistedStorage.getAllDevices()
@@ -74,6 +72,12 @@ class USBSearchDelegate @AssistedInject constructor(
     }
 
     override fun getDevicesFlow() = searchItems.asStateFlow()
+
+    @AssistedFactory
+    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
+    fun interface Factory : ConnectionSearchDelegate.Factory {
+        override fun invoke(scope: CoroutineScope): USBSearchDelegate
+    }
 }
 
 private fun SerialPort.toFDeviceFlipperZeroUSBModel(): FDeviceFlipperZeroUsbModel {

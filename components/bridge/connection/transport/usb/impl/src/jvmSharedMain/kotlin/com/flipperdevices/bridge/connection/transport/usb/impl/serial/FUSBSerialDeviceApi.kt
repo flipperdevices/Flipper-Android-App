@@ -10,12 +10,16 @@ import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatform
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
+
+private val WRITE_RETRY_DELAY = 1.milliseconds
 
 class FUSBSerialDeviceApi(
     private val scope: CoroutineScope,
@@ -39,9 +43,10 @@ class FUSBSerialDeviceApi(
             var result = 1
             while (result > 0) {
                 result = serialPort.readBytes(buffer, buffer.size)
-                val readBytes = buffer.take(result).toByteArray()
-                rxSpeed.onReceiveBytes(result)
-                receiverByteFlow.emit(readBytes)
+                if (result > 0) {
+                    rxSpeed.onReceiveBytes(result)
+                    receiverByteFlow.emit(buffer.copyOf(result))
+                }
             }
             error("End loop with result $result")
         }
@@ -62,16 +67,20 @@ class FUSBSerialDeviceApi(
 
     override suspend fun sendBytes(data: ByteArray) {
         var writtenBytesOffset = 0
-        do {
+        while (writtenBytesOffset < data.size) {
             val writtenBytes =
                 serialPort.writeBytes(data, data.size - writtenBytesOffset, writtenBytesOffset)
-            info { "Write $writtenBytes" }
-            txSpeed.onReceiveBytes(writtenBytes)
-            if (writtenBytes == -1) {
+            if (writtenBytes < 0) {
                 error("Failed to write bytes")
             }
+            if (writtenBytes == 0) {
+                delay(WRITE_RETRY_DELAY)
+                continue
+            }
+            info { "Write $writtenBytes" }
+            txSpeed.onReceiveBytes(writtenBytes)
             writtenBytesOffset += writtenBytes
-        } while (writtenBytesOffset < data.size)
+        }
     }
 
     override suspend fun disconnect() {

@@ -17,6 +17,7 @@ class USBSerialListener(
     override val TAG = "USBSerialListener"
 
     private val queue = ByteArrayFIFOQueue()
+    private var closed = false
 
     init {
         scope.launch {
@@ -24,11 +25,16 @@ class USBSerialListener(
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
-                    synchronized(queue) {
-                        queue.notifyAll()
-                    }
+                    markClosed()
                 }
             }
+        }
+    }
+
+    private fun markClosed() {
+        synchronized(queue) {
+            closed = true
+            queue.notifyAll()
         }
     }
 
@@ -39,6 +45,9 @@ class USBSerialListener(
         var index = 0
         synchronized(queue) {
             while (queue.isEmpty) {
+                if (closed) {
+                    return -1
+                }
                 queue.wait()
             }
             while (index < bytesToRead && !queue.isEmpty) {
@@ -49,10 +58,10 @@ class USBSerialListener(
     }
 
     override fun onNewData(data: ByteArray?) {
-        info { "Receive $data" }
+        info { "Receive ${data?.size ?: 0} bytes" }
         synchronized(queue) {
-            data?.forEach {
-                queue.enqueue(it)
+            data?.forEach { receivedByte ->
+                queue.enqueue(receivedByte)
             }
             queue.notifyAll()
         }
@@ -60,6 +69,7 @@ class USBSerialListener(
 
     override fun onRunError(e: Exception?) {
         error(e) { "Failed in usb serial" }
+        markClosed()
     }
 }
 

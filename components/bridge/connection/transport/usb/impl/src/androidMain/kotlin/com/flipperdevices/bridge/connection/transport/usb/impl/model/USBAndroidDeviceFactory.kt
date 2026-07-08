@@ -19,9 +19,9 @@ class USBAndroidDeviceFactory @Inject constructor(
     ): USBPlatformDevice {
         val manager = context.getSystemService(Context.USB_SERVICE) as UsbManager
         val availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager)
-        val device = availableDrivers.filter {
-            it.device.deviceId.toString() == config.path
-        }.firstOrNull()
+        val device = availableDrivers.firstOrNull { serialDriver ->
+            serialDriver.device.deviceId.toString() == config.path
+        }
         if (device == null) {
             error("Failed find device with id ${config.path}")
         }

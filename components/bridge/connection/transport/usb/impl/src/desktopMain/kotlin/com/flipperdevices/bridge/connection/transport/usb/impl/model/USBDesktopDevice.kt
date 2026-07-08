@@ -11,8 +11,8 @@ class USBDesktopDevice(
         serialPort.setComPortParameters(
             baudRate,
             dataBits,
-            SerialPort.ONE_STOP_BIT,
-            SerialPort.NO_PARITY
+            stopBits,
+            parity
         )
         serialPort.openPort(OPEN_PORT_TIME_MS)
         serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0)
