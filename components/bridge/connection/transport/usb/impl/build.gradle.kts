@@ -26,8 +26,6 @@ desktopDependencies {
 }
 
 androidDependencies {
-    implementation(projects.components.core.activityholder)
-
-    implementation(libs.fastutil)
+    implementation(libs.ktx)
     implementation(libs.usb.android)
 }

@@ -5,6 +5,7 @@ import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnec
 import com.flipperdevices.bridge.connection.transport.common.api.di.toHolder
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.usb.impl.USBDeviceConnectionApiImpl
+import com.flipperdevices.bridge.connection.transport.usb.impl.handshake.FlipperRpcHandshake
 import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDeviceFactory
 import com.flipperdevices.core.di.AppGraph
 import com.squareup.anvil.annotations.ContributesTo
@@ -15,16 +16,17 @@ import dagger.multibindings.IntoMap
 
 @Module
 @ContributesTo(AppGraph::class)
-class BleDeviceConnectionModule {
+class USBDeviceConnectionModule {
 
     @Provides
     @IntoMap
     @ClassKey(FUSBDeviceConnectionConfig::class)
-    fun provideBleDeviceConnectionApi(
+    fun provideUSBDeviceConnectionApi(
         actionNotifierFactory: FlipperActionNotifier.Factory,
         platformDeviceFactory: USBPlatformDeviceFactory
     ): DeviceConnectionApiHolder = USBDeviceConnectionApiImpl(
-        actionNotifierFactory,
-        platformDeviceFactory
+        actionNotifierFactory = actionNotifierFactory,
+        usbPlatformDeviceFactory = platformDeviceFactory,
+        rpcHandshake = FlipperRpcHandshake()
     ).toHolder()
 }

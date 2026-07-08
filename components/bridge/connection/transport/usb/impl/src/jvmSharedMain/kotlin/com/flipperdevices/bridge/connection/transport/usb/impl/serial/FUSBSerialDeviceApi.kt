@@ -10,21 +10,20 @@ import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatform
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
-
-private val WRITE_RETRY_DELAY = 1.milliseconds
 
 class FUSBSerialDeviceApi(
     private val scope: CoroutineScope,
-    private val serialPort: USBPlatformDevice,
-    private val actionNotifier: FlipperActionNotifier
+    private val device: USBPlatformDevice,
+    private val actionNotifier: FlipperActionNotifier,
+    private val initialData: ByteArray,
+    private val onTransportClosed: () -> Unit
 ) : FUSBApi,
     FSerialDeviceApi,
     FSerialRestartApi by NoopRestartApi(),
@@ -38,18 +37,7 @@ class FUSBSerialDeviceApi(
     private val speedFlowState = MutableStateFlow(FlipperSerialSpeed())
 
     init {
-        scope.launch {
-            val buffer = ByteArray(size = 1024)
-            var result = 1
-            while (result > 0) {
-                result = serialPort.readBytes(buffer, buffer.size)
-                if (result > 0) {
-                    rxSpeed.onReceiveBytes(result)
-                    receiverByteFlow.emit(buffer.copyOf(result))
-                }
-            }
-            error("End loop with result $result")
-        }
+        scope.launch { readUntilPortClosed() }
         combine(
             rxSpeed.getSpeed(),
             txSpeed.getSpeed()
@@ -61,29 +49,43 @@ class FUSBSerialDeviceApi(
         }.launchIn(scope)
     }
 
-    override suspend fun getSpeed() = speedFlowState.asStateFlow()
-    override suspend fun getReceiveBytesFlow() = receiverByteFlow
-    override fun getActionNotifier() = actionNotifier
+    private suspend fun emitReceivedBytes(chunk: ByteArray) {
+        rxSpeed.onReceiveBytes(chunk.size)
+        receiverByteFlow.emit(chunk)
+    }
 
-    override suspend fun sendBytes(data: ByteArray) {
-        var writtenBytesOffset = 0
-        while (writtenBytesOffset < data.size) {
-            val writtenBytes =
-                serialPort.writeBytes(data, data.size - writtenBytesOffset, writtenBytesOffset)
-            if (writtenBytes < 0) {
-                error("Failed to write bytes")
+    private suspend fun readUntilPortClosed() {
+        if (initialData.isNotEmpty()) {
+            // The shared flow drops emissions that happen before the first
+            // subscriber appears, so leftover handshake bytes must wait for it.
+            receiverByteFlow.subscriptionCount.first { subscribers -> subscribers > 0 }
+            emitReceivedBytes(initialData)
+        }
+        while (true) {
+            val chunk = device.read().getOrElse { readError ->
+                info { "USB port closed, stopping read loop: $readError" }
+                onTransportClosed()
+                return
             }
-            if (writtenBytes == 0) {
-                delay(WRITE_RETRY_DELAY)
-                continue
-            }
-            info { "Write $writtenBytes" }
-            txSpeed.onReceiveBytes(writtenBytes)
-            writtenBytesOffset += writtenBytes
+            emitReceivedBytes(chunk)
         }
     }
 
+    override suspend fun getSpeed() = speedFlowState.asStateFlow()
+
+    override suspend fun getReceiveBytesFlow() = receiverByteFlow
+
+    override fun getActionNotifier() = actionNotifier
+
+    override suspend fun sendBytes(data: ByteArray) {
+        // FSerialDeviceApi contract has no Result channel, so a write
+        // failure intentionally propagates as an exception.
+        device.write(data)
+            .onSuccess { txSpeed.onReceiveBytes(data.size) }
+            .getOrThrow()
+    }
+
     override suspend fun disconnect() {
-        serialPort.closePort()
+        device.close()
     }
 }

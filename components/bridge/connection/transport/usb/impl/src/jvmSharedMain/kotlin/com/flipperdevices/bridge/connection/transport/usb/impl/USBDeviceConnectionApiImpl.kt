@@ -6,119 +6,113 @@ import com.flipperdevices.bridge.connection.transport.common.api.FTransportConne
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBApi
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.bridge.connection.transport.usb.api.USBDeviceConnectionApi
+import com.flipperdevices.bridge.connection.transport.usb.impl.handshake.FlipperRpcHandshake
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBHandshakeTimeoutException
 import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDevice
 import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBPlatformDeviceFactory
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBSerialParity
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBSerialPortParams
+import com.flipperdevices.bridge.connection.transport.usb.impl.model.USBSerialStopBits
 import com.flipperdevices.bridge.connection.transport.usb.impl.serial.FUSBSerialDeviceApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration.Companion.seconds
 
-private val FLOOD_END_STRING = "\r\n\r\n>: ".toByteArray()
-private val COMMAND = "start_rpc_session\r".toByteArray()
-private const val BAUD_RATE = 230400
-private const val DATA_BITS = 8
+private val HANDSHAKE_TIMEOUT = 10.seconds
+private val SERIAL_PORT_PARAMS = USBSerialPortParams(
+    baudRate = 230400,
+    dataBits = 8,
+    stopBits = USBSerialStopBits.ONE,
+    parity = USBSerialParity.NONE
+)
 
 class USBDeviceConnectionApiImpl(
     private val actionNotifierFactory: FlipperActionNotifier.Factory,
-    private val usbPlatformDeviceFactory: USBPlatformDeviceFactory
+    private val usbPlatformDeviceFactory: USBPlatformDeviceFactory,
+    private val rpcHandshake: FlipperRpcHandshake
 ) : USBDeviceConnectionApi, LogTagProvider {
     override val TAG = "USBDeviceConnectionApi"
 
-    override suspend fun connect(
-        scope: CoroutineScope,
-        config: FUSBDeviceConnectionConfig,
-        listener: FTransportConnectionStatusListener
-    ): Result<FUSBApi> = runCatching {
-        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
-        val serialPort = usbPlatformDeviceFactory.getUSBPlatformDevice(config, scope)
-        val portOpened = serialPort.connect(
-            BAUD_RATE,
-            DATA_BITS,
-            USBPlatformDevice.ONE_STOP_BIT,
-            USBPlatformDevice.NO_PARITY
-        )
-
-        info { "Read port is: $portOpened" }
-
-        if (!portOpened) {
-            error("Fail to open port")
-        }
-
+    private fun closeDeviceOnScopeCancellation(scope: CoroutineScope, device: USBPlatformDevice) {
         scope.launch {
             try {
                 awaitCancellation()
             } finally {
                 withContext(NonCancellable) {
-                    info { "Closing port..." }
-                    serialPort.closePort()
+                    info { "Connection scope cancelled, closing port" }
+                    device.close()
                 }
             }
         }
+    }
 
-        info { "Port opened, start reading flood" }
-        skipFlood(serialPort, FLOOD_END_STRING)
-        info { "Flood skipped, send start_rpc_session command" }
-        writeFully(serialPort, COMMAND)
-        skipFlood(serialPort, "\n".toByteArray())
-        info { "Flood skipped. Now we are in RPC mode" }
+    private suspend fun runHandshakeWithTimeout(device: USBPlatformDevice): Result<ByteArray> {
+        return try {
+            withTimeout(HANDSHAKE_TIMEOUT) { rpcHandshake.enterRpcMode(device) }
+        } catch (_: TimeoutCancellationException) {
+            Result.failure(
+                USBHandshakeTimeoutException(
+                    "Flipper did not enter RPC mode within $HANDSHAKE_TIMEOUT"
+                )
+            )
+        }
+    }
 
-        val deviceApi = FUSBSerialDeviceApi(
-            scope = scope,
-            serialPort = serialPort,
-            actionNotifier = actionNotifierFactory(scope)
+    private fun createDeviceApi(
+        scope: CoroutineScope,
+        device: USBPlatformDevice,
+        listener: FTransportConnectionStatusListener,
+        initialData: ByteArray
+    ): FUSBSerialDeviceApi = FUSBSerialDeviceApi(
+        scope = scope,
+        device = device,
+        actionNotifier = actionNotifierFactory(scope),
+        initialData = initialData,
+        onTransportClosed = {
+            listener.onStatusUpdate(FInternalTransportConnectionStatus.Disconnected)
+        }
+    )
+
+    private suspend fun connectToDevice(
+        scope: CoroutineScope,
+        device: USBPlatformDevice,
+        listener: FTransportConnectionStatusListener
+    ): Result<FUSBApi> {
+        closeDeviceOnScopeCancellation(scope, device)
+        device.open(SERIAL_PORT_PARAMS).getOrElse { openError ->
+            device.close()
+            return Result.failure(openError)
+        }
+        return runHandshakeWithTimeout(device)
+            .map { leftoverBytes -> createDeviceApi(scope, device, listener, leftoverBytes) }
+            .onSuccess { deviceApi ->
+                info { "USB transport connected" }
+                listener.onStatusUpdate(
+                    FInternalTransportConnectionStatus.Connected(scope, deviceApi)
+                )
+            }
+            .onFailure { handshakeError ->
+                info { "USB connect failed: $handshakeError" }
+                device.close()
+            }
+    }
+
+    override suspend fun connect(
+        scope: CoroutineScope,
+        config: FUSBDeviceConnectionConfig,
+        listener: FTransportConnectionStatusListener
+    ): Result<FUSBApi> {
+        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connecting)
+        return usbPlatformDeviceFactory.getUSBPlatformDevice(config, scope).fold(
+            onSuccess = { device -> connectToDevice(scope, device, listener) },
+            onFailure = { deviceLookupError -> Result.failure(deviceLookupError) }
         )
-        info { "Finish create device API" }
-
-        listener.onStatusUpdate(FInternalTransportConnectionStatus.Connected(scope, deviceApi))
-
-        return@runCatching deviceApi
-    }
-
-    private fun writeFully(serialPort: USBPlatformDevice, data: ByteArray) {
-        var writtenOffset = 0
-        while (writtenOffset < data.size) {
-            val writtenBytes =
-                serialPort.writeBytes(data, data.size - writtenOffset, writtenOffset)
-            if (writtenBytes <= 0) {
-                error("Failed to write bytes, result is $writtenBytes")
-            }
-            writtenOffset += writtenBytes
-        }
-    }
-
-    @OptIn(ExperimentalStdlibApi::class)
-    private fun skipFlood(serialPort: USBPlatformDevice, floodBytes: ByteArray) {
-        info { "Start wait flood" }
-        var floodCurrentIndex = 0
-        val buffer = ByteArray(size = 1)
-        while (!Thread.interrupted()) {
-            val readCount = serialPort.readBytes(buffer, buffer.size)
-            if (readCount < 0) {
-                error("Port closed while waiting for flood end")
-            }
-            if (readCount == 0) {
-                continue
-            }
-
-            info {
-                "#skipFlood Read ${buffer.toHexString()} (${
-                    buffer.joinToString {
-                        it.toInt().toChar().toString()
-                    }
-                })"
-            }
-            if (floodBytes[floodCurrentIndex] == buffer.first()) {
-                floodCurrentIndex++
-            } else {
-                floodCurrentIndex = 0
-            }
-            if (floodCurrentIndex == floodBytes.size) {
-                return
-            }
-        }
     }
 }

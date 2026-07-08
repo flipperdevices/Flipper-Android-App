@@ -12,7 +12,22 @@ class USBDesktopDeviceFactory @Inject constructor() : USBPlatformDeviceFactory {
     override fun getUSBPlatformDevice(
         config: FUSBDeviceConnectionConfig,
         scope: CoroutineScope
-    ): USBPlatformDevice {
-        return USBDesktopDevice(SerialPort.getCommPort(config.path))
+    ): Result<USBPlatformDevice> {
+        val serialPort = runCatching { SerialPort.getCommPort(config.path) }
+            .getOrElse { portLookupError ->
+                return Result.failure(
+                    USBDeviceNotFoundException(
+                        "No serial port at path ${config.path}",
+                        portLookupError
+                    )
+                )
+            }
+        return Result.success(
+            USBDesktopDevice(
+                serialPort = serialPort,
+                scope = scope,
+                receiveBuffer = USBReceiveBuffer()
+            )
+        )
     }
 }

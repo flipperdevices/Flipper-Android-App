@@ -99,6 +99,8 @@ commonDependencies {
     api(projects.components.analytics.metric.api)
     api(projects.components.analytics.metric.noop)
 
+    api(projects.components.bridge.connection.liveTests)
+
     api(libs.kotlin.immutable.collections)
 
     implementation(projects.components.core.ui.res)
