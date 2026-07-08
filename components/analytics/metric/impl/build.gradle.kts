@@ -2,7 +2,8 @@ import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_APP_KEY
 import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
 
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("flipper.wire")
 }
@@ -24,7 +25,7 @@ android {
         }
     }
 }
-dependencies {
+androidDependencies {
     implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.core.di)

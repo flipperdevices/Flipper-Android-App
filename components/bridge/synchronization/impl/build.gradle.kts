@@ -1,13 +1,13 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.bridge.synchronization.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.synchronization.api)
 
     implementation(projects.components.core.di)
@@ -31,10 +31,6 @@ dependencies {
     implementation(projects.components.analytics.metric.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     implementation(libs.lifecycle.runtime.ktx)
 
@@ -43,12 +39,15 @@ dependencies {
 
     // Dagger deps
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }

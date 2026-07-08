@@ -1,7 +1,7 @@
 plugins {
-    id("flipper.android-app-multiplatform")
+    id("flipper.android-app")
     id("com.google.devtools.ksp")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
     id("kotlinx-serialization")
 }
 

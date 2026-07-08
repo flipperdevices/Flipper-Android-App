@@ -1,3 +1,4 @@
+import com.squareup.wire.gradle.WireTask
 import dev.detekt.gradle.Detekt
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.kotlin.dsl.withType
@@ -24,7 +25,8 @@ wire {
 
 configure<KotlinMultiplatformExtension> {
     sourceSets.named("commonMain") {
-        kotlin.srcDir(wireOutputDir)
+        // builtBy is required for Gradle strict task validation.
+        kotlin.srcDir(files(wireOutputDir).builtBy(tasks.withType<WireTask>()))
     }
 }
 

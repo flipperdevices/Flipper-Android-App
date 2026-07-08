@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyparser.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.bridge.dao.api)
 
@@ -18,12 +19,15 @@ dependencies {
     implementation(libs.kotlin.coroutines)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }

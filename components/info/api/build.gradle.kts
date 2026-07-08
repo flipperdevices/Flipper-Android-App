@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.info.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.deeplink.api)
 
     implementation(projects.components.core.ui.decompose)

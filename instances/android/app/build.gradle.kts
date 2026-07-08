@@ -6,7 +6,7 @@ import com.flipperdevices.buildlogic.SourceInstall
 
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
     alias(libs.plugins.google.gms)
     alias(libs.plugins.baselineprofile)
 }

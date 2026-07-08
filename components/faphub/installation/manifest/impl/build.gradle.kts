@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.manifest.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.installation.manifest.api)
 
     implementation(projects.components.core.di)

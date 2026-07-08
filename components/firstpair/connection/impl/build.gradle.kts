@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.di)
@@ -29,13 +30,16 @@ dependencies {
     implementation(libs.fastutil)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.mockito.kotlin)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }

@@ -2,6 +2,7 @@ package com.flipperdevices.buildlogic.util
 
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import java.util.Properties
 
 internal object ProjectExt {
     /**
@@ -12,5 +13,13 @@ internal object ProjectExt {
             val extensionAware = (this as org.gradle.api.plugins.ExtensionAware)
             val kotlinExtension = extensionAware.extensions.getByName("kotlin")
             return kotlinExtension as KotlinMultiplatformExtension
+        }
+
+    internal val Project.localProperties: Properties
+        get() = Properties().apply {
+            rootProject
+                .file("local.properties")
+                .reader()
+                .run(::load)
         }
 }

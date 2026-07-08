@@ -1,5 +1,6 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
@@ -7,7 +8,7 @@ plugins {
 
 android.namespace = "com.flipperdevices.info.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.markdown)
     implementation(projects.components.core.ktx)
@@ -57,11 +58,6 @@ dependencies {
 
     implementation(libs.appcompat)
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.essenty)
 
@@ -77,11 +73,14 @@ dependencies {
     implementation(libs.ble.scan)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }
