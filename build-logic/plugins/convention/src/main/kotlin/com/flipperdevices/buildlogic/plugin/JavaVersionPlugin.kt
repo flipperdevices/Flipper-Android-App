@@ -21,32 +21,32 @@ class JavaVersionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.afterEvaluate {
             target.extensions.findByType<JavaPluginExtension>()?.run {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
+                sourceCompatibility = JavaVersion.VERSION_21
+                targetCompatibility = JavaVersion.VERSION_21
             }
 
             target.extensions.findByType<BaseExtension>()?.run {
-                compileOptions.sourceCompatibility = JavaVersion.VERSION_17
-                compileOptions.targetCompatibility = JavaVersion.VERSION_17
+                compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+                compileOptions.targetCompatibility = JavaVersion.VERSION_21
             }
 
             target.extensions.findByType<CommonExtension>()?.run {
-                compileOptions.sourceCompatibility = JavaVersion.VERSION_17
-                compileOptions.targetCompatibility = JavaVersion.VERSION_17
+                compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+                compileOptions.targetCompatibility = JavaVersion.VERSION_21
             }
 
             target.extensions.findByType<KotlinMultiplatformExtension>()?.run {
                 targets.filterIsInstance<HasConfigurableKotlinCompilerOptions<*>>()
                     .mapNotNull { it.compilerOptions as? KotlinJvmCompilerOptions }
                     .onEach { androidTarget ->
-                        androidTarget.jvmTarget.set(JvmTarget.JVM_17)
+                        androidTarget.jvmTarget.set(JvmTarget.JVM_21)
                     }
             }
 
             target.tasks
                 .withType<KotlinCompile>()
                 .configureEach {
-                    compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+                    compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
                 }
         }
     }
