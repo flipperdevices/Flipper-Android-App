@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.util.UUID
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ButtonStackRepository @Inject constructor() {
     private val stackFlipperButtons =

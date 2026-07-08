@@ -6,6 +6,7 @@ plugins {
 android.namespace = "com.flipperdevices.filemanager.create.api"
 
 commonDependencies {
+    implementation(libs.metro.utils.annotations)
     implementation(projects.components.bridge.connection.feature.storage.api)
 
     implementation(projects.components.core.ui.decompose)

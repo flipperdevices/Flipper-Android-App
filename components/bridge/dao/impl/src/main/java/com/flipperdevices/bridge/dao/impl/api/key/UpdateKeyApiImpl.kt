@@ -15,18 +15,19 @@ import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.withFirstElement
 import com.flipperdevices.core.log.LogTagProvider
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, UpdateKeyApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<UpdateKeyApi>())
 class UpdateKeyApiImpl @Inject constructor(
     keysDaoProvider: Provider<SimpleKeyDao>,
     additionalFileApiProvider: Provider<FlipperFileApi>,

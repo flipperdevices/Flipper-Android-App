@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.wire.gradle)
     implementation(libs.grgit.gradle)
     implementation(libs.kotlin.ksp.gradle)
-    implementation(libs.zacsweers.anvil.gradle)
+    implementation(libs.metro.gradle)
     implementation(libs.compose.multiplatform.gradle)
     implementation(libs.compose.gradle)
     implementation(libs.kotlin.jvm.gradle)

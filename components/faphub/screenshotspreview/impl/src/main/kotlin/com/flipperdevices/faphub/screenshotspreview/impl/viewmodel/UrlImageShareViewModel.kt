@@ -20,7 +20,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val SCREENSHOT_FILE_PREFIX = "flpr"

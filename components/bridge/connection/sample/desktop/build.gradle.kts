@@ -10,7 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("flipper.multiplatform-dependencies")
     id("com.google.devtools.ksp")
-    id("dev.zacsweers.anvil")
+    id("dev.zacsweers.metro")
 }
 
 kotlin {
@@ -24,8 +24,7 @@ kotlin {
         val desktopMain by getting
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.dagger)
-            implementation(libs.anvil.utils.annotations)
+            implementation(libs.metro.utils.annotations)
         }
     }
 }
@@ -69,14 +68,6 @@ commonDependencies {
     implementation(libs.kotlin.coroutines.swing)
 }
 
-anvil {
-    useKsp(
-        contributesAndFactoryGeneration = true,
-        componentMerging = true,
-    )
-}
-
 dependencies {
-    ksp(libs.dagger.compiler)
-    ksp(libs.anvil.utils.compiler)
+    add("commonKsp", libs.metro.utils.ksp)
 }

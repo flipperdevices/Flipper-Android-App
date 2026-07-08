@@ -28,8 +28,8 @@ import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.Curre
 import com.flipperdevices.remotecontrols.impl.setup.presentation.viewmodel.HistoryViewModel
 import com.flipperdevices.remotecontrols.setup.impl.R
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,8 +42,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, SetupComponent.Factory::class)
@@ -51,7 +51,7 @@ class SetupComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted override val param: SetupScreenDecomposeComponent.Param,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onIfrFileFound: (id: Long, name: String) -> Unit,
+    @Assisted private val onIfrFileFound: (Long, String) -> Unit,
     private val inAppNotificationStorage: InAppNotificationStorage,
     currentSignalViewModelFactory: CurrentSignalViewModel.Factory,
     createHistoryViewModel: Provider<HistoryViewModel>,
@@ -63,25 +63,25 @@ class SetupComponentImpl @AssistedInject constructor(
     private val saveSignalApi = instanceKeeper.getOrCreate(
         key = "SetupComponent_saveSignalApi_${param.brandId}_${param.categoryId}",
         factory = {
-            createSaveTempSignalApi.get()
+            createSaveTempSignalApi.invoke()
         }
     )
     private val connectionViewModel = instanceKeeper.getOrCreate(
         key = "SetupComponent_connectionViewModel_${param.brandId}_${param.categoryId}",
         factory = {
-            createConnectionViewModel.get()
+            createConnectionViewModel.invoke()
         }
     )
     private val historyViewModel = instanceKeeper.getOrCreate(
         key = "SetupComponent_historyViewModel_${param.brandId}_${param.categoryId}",
         factory = {
-            createHistoryViewModel.get()
+            createHistoryViewModel.invoke()
         }
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
         key = "SetupComponent_dispatchSignalApi_${param.brandId}_${param.categoryId}",
         factory = {
-            createDispatchSignalApi.get()
+            createDispatchSignalApi.invoke()
         }
     )
     private val createCurrentSignalViewModel = instanceKeeper.getOrCreate(

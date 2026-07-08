@@ -12,11 +12,12 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.model.WidgetRendererOf
 import com.flipperdevices.widget.impl.model.WidgetState
-import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @WidgetRendererOf(WidgetState.NOT_INITIALIZE)
-@ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
+@ContributesIntoMap(AppGraph::class, binding<WidgetStateRenderer>())
 class NotInitializeWidgetStateRenderer @Inject constructor(
     private val context: Context,
     private val applicationParams: ApplicationParams

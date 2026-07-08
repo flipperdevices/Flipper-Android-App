@@ -13,10 +13,10 @@ import com.flipperdevices.toolstab.impl.composable.ComposableHub
 import com.flipperdevices.toolstab.impl.model.ToolsNavigationConfig
 import com.flipperdevices.toolstab.impl.viewmodel.ToolsNotificationViewModel
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -28,7 +28,7 @@ class ToolsMainScreenDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val nfcAttackViewModel = viewModelWithFactory(key = null) {
-            toolsNotificationViewModelProvider.get()
+            toolsNotificationViewModelProvider.invoke()
         }
         val hasNotification by nfcAttackViewModel.hasNotificationStateFlow.collectAsState()
 

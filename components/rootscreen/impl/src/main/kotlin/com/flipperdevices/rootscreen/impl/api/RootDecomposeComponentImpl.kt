@@ -33,11 +33,11 @@ import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.api.UpdaterDecomposeComponent
 import com.flipperdevices.widget.api.WidgetDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, RootDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")

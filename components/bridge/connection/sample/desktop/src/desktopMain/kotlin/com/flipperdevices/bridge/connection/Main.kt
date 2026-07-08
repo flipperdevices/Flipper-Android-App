@@ -1,6 +1,7 @@
 package com.flipperdevices.bridge.connection
 
-import com.flipperdevices.bridge.connection.di.DaggerMergedDesktopAppComponent
+import com.flipperdevices.bridge.connection.di.DesktopAppComponent
+import dev.zacsweers.metro.createGraphFactory
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -10,7 +11,7 @@ fun main() {
         SupervisorJob() + FlipperDispatchers.workStealingDispatcher
     )
     // Always create the root component outside Compose on the UI thread
-    val appComponent = DaggerMergedDesktopAppComponent.factory()
+    val appComponent = createGraphFactory<DesktopAppComponent.Factory>()
         .create(
             scope = applicationScope
         )

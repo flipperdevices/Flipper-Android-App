@@ -6,6 +6,7 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingIte
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import kotlinx.coroutines.flow.StateFlow
 import okio.Path
+import uk.kulikov.metro.assisted.AssistedKey
 
 abstract class CreateFileDecomposeComponent(
     componentContext: ComponentContext
@@ -21,7 +22,7 @@ abstract class CreateFileDecomposeComponent(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            createCallback: CreatedCallback,
+            @AssistedKey("createdCallback") createCallback: CreatedCallback,
         ): CreateFileDecomposeComponent
     }
 

@@ -19,12 +19,12 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 
 class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -40,7 +40,7 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val tabViewModel = viewModelWithFactory(key = null) {
-            generalTabviewModelProvider.get()
+            generalTabviewModelProvider.invoke()
         }
 
         val keys by tabViewModel.getKeys().collectAsState()
@@ -48,10 +48,10 @@ class ArchiveScreenDecomposeComponentImpl @AssistedInject constructor(
         val synchronizationState by tabViewModel.getSynchronizationState().collectAsState()
 
         val categoryViewModel = viewModelWithFactory(key = null) {
-            categoryViewModelProvider.get()
+            categoryViewModelProvider.invoke()
         }
         val speedViewModel = viewModelWithFactory(key = null) {
-            speedViewModelProvider.get()
+            speedViewModelProvider.invoke()
         }
 
         val categories by categoryViewModel.getCategoriesFlow().collectAsState()

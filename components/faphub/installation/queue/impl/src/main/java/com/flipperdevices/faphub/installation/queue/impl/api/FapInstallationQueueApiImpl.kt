@@ -6,16 +6,17 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.api.model.FapQueueState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, FapInstallationQueueApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FapInstallationQueueApi>())
 class FapInstallationQueueApiImpl @Inject constructor(
     private val queueRunner: FapQueueRunner
 ) : FapInstallationQueueApi, LogTagProvider {

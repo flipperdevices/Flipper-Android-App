@@ -6,34 +6,35 @@ import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.google.android.gms.wearable.CapabilityClient
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.Wearable
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
-import dagger.Reusable
-import javax.inject.Singleton
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@Module
 @ContributesTo(AppGraph::class)
-class WearModule {
+interface WearModule {
     @Provides
-    @Reusable
-    fun provideChannelClient(context: Context) = Wearable.getChannelClient(context)
+    @SingleIn(AppGraph::class)
+    fun provideChannelClient(context: Context): ChannelClient = Wearable.getChannelClient(context)
 
     @Provides
-    @Reusable
-    fun provideCapabilityClient(context: Context) = Wearable.getCapabilityClient(context)
+    @SingleIn(AppGraph::class)
+    fun provideCapabilityClient(context: Context): CapabilityClient =
+        Wearable.getCapabilityClient(context)
 
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideCommandInputStream(
         channelClient: ChannelClient
-    ) = WearableCommandInputStream(channelClient, MainResponse.ADAPTER)
+    ): WearableCommandInputStream<MainResponse> =
+        WearableCommandInputStream(channelClient, MainResponse.ADAPTER)
 
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideCommandOutputStream(
         channelClient: ChannelClient
-    ) = WearableCommandOutputStream(channelClient, MainRequest.ADAPTER)
+    ): WearableCommandOutputStream<MainRequest> =
+        WearableCommandOutputStream(channelClient, MainRequest.ADAPTER)
 }

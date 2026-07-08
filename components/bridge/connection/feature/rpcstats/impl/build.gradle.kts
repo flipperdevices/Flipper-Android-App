@@ -25,5 +25,4 @@ commonDependencies {
     implementation(projects.components.bridge.connection.pbutils)
 
     implementation(libs.kotlin.coroutines)
-    implementation(libs.dagger)
 }

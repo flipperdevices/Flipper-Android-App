@@ -42,8 +42,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Dagger deps
-    implementation(libs.dagger)
-
     // Testing
     testImplementation(projects.components.core.test)
     testImplementation(projects.components.core.buildKonfig)

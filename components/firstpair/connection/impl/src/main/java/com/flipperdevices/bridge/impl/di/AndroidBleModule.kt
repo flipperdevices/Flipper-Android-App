@@ -6,22 +6,20 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.android.getBluetoothAdapter
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@Module
 @ContributesTo(AppGraph::class)
-class AndroidBleModule {
+interface AndroidBleModule {
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideBluetoothAdapter(bluetoothManager: BluetoothManager?): BluetoothAdapter {
         return bluetoothManager.getBluetoothAdapter()
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideBluetoothManager(context: Context): BluetoothManager? {
         return ContextCompat.getSystemService(context, BluetoothManager::class.java)
     }

@@ -3,11 +3,12 @@ package com.flipperdevices.core.share
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import okio.Path.Companion.toOkioPath
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, PlatformShareHelper::class)
+@ContributesBinding(AppGraph::class, binding<PlatformShareHelper>())
 class AndroidShareHelper @Inject constructor(
     private val context: Context
 ) : PlatformShareHelper {

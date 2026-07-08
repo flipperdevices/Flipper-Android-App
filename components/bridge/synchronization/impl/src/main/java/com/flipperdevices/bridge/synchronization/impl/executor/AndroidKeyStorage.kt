@@ -12,11 +12,12 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @StorageType(Platform.ANDROID)
-@ContributesBinding(TaskGraph::class, AbstractKeyStorage::class)
+@ContributesBinding(TaskGraph::class, binding<AbstractKeyStorage>())
 class AndroidKeyStorage @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val deleteKeyApi: DeleteKeyApi,

@@ -10,7 +10,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class DeviceCategoryListViewModel @Inject constructor(
     private val deviceCategoriesRepository: DeviceCategoriesRepository

@@ -108,7 +108,6 @@ fun Project.suppressOptIn() {
                     "androidx.compose.foundation.ExperimentalFoundationApi",
                     "kotlinx.serialization.ExperimentalSerializationApi",
                     "kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "kotlin.time.ExperimentalTime",
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",

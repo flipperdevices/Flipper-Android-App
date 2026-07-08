@@ -347,9 +347,6 @@ dependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.ktx.activity)
 
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
-
     implementation(libs.timber)
 
     implementation(libs.profileinstaller)

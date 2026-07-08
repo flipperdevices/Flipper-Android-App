@@ -14,5 +14,4 @@ commonDependencies {
     implementation(projects.components.core.preference)
 
     implementation(libs.kotlin.coroutines)
-    implementation(libs.dagger)
 }

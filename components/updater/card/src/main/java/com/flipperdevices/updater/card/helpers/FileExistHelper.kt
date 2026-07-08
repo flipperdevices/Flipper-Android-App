@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FileExistHelper @Inject constructor() {
     fun isFileExist(pathToFile: String, fListingStorageApi: FListingStorageApi): Flow<Boolean> {

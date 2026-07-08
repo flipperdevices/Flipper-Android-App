@@ -14,15 +14,16 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import com.flipperdevices.core.di.AppGraph
 
 data class FapManifestCacheLoadResult(
     val cachedNames: List<Pair<File, String>>,
     val toLoadNames: List<String>
 )
 
-@Singleton
+@SingleIn(AppGraph::class)
 class FapManifestCacheLoader @Inject constructor(
     context: Context,
     private val fFeatureProvider: FFeatureProvider,

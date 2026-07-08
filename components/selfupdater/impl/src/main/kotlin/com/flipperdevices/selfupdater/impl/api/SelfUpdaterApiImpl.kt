@@ -6,14 +6,15 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, SelfUpdaterApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdaterApi>())
 class SelfUpdaterApiImpl @Inject constructor(
     private val selfUpdaterSourceApi: SelfUpdaterSourceApi
 ) : SelfUpdaterApi, LogTagProvider {

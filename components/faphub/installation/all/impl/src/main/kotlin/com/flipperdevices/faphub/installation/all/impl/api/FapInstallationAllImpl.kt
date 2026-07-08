@@ -12,16 +12,17 @@ import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
 import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val CHUNK_RECEIVED_COUNT = 50
 
-@ContributesBinding(AppGraph::class, FapInstallationAllApi::class)
+@ContributesBinding(AppGraph::class, binding<FapInstallationAllApi>())
 class FapInstallationAllImpl @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,
     private val queueApi: FapInstallationQueueApi,

@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.sync.Mutex
 import okio.Path
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class DeleteFilesViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,

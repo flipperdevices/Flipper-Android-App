@@ -10,12 +10,13 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectSta
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
 import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
 import com.flipperdevices.wearable.emulate.model.ChannelClientState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface WearStateMachineHelper {
     fun getState(): StateFlow<WearEmulateState>
@@ -29,8 +30,8 @@ interface WearStateMachineHelper {
     )
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, WearStateMachineHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<WearStateMachineHelper>())
 class WearStateMachineHelperImpl @Inject constructor(
     private val flipperStatusHelper: FlipperStatusHelper,
     private val connectionHelper: ConnectionHelper

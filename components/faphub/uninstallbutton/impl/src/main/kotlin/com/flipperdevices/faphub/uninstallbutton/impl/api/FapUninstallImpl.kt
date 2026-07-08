@@ -10,11 +10,12 @@ import com.flipperdevices.faphub.installation.queue.api.FapInstallationQueueApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.uninstallbutton.api.FapUninstallApi
 import com.flipperdevices.faphub.uninstallbutton.impl.composable.ComposableFapUninstall
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapUninstallApi::class)
+@ContributesBinding(AppGraph::class, binding<FapUninstallApi>())
 class FapUninstallImpl @Inject constructor(
     private val queueApiProvider: Provider<FapInstallationQueueApi>
 ) : FapUninstallApi {
@@ -28,7 +29,7 @@ class FapUninstallImpl @Inject constructor(
             modifier = modifier,
             dialogAppBox = dialogAppBox,
             onDelete = {
-                queueApiProvider.get().enqueue(FapActionRequest.Delete(applicationUid))
+                queueApiProvider.invoke().enqueue(FapActionRequest.Delete(applicationUid))
             }
         )
     }

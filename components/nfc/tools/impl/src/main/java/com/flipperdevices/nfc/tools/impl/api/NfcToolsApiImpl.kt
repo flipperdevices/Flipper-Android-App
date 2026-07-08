@@ -5,11 +5,12 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.nfc.tools.api.MfKey32Nonce
 import com.flipperdevices.nfc.tools.api.NfcToolsApi
 import com.flipperdevices.nfc.tools.impl.bindings.MfKey32Binding
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import java.math.BigInteger
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, NfcToolsApi::class)
+@ContributesBinding(AppGraph::class, binding<NfcToolsApi>())
 class NfcToolsApiImpl @Inject constructor() : NfcToolsApi, LogTagProvider {
     override val TAG = "NfcToolsApi"
 

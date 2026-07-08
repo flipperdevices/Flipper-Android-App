@@ -17,13 +17,14 @@ import com.flipperdevices.protobuf.system.RebootRequest
 import com.flipperdevices.protobuf.system.UpdateResponse
 import com.flipperdevices.updater.impl.model.IntFlashFullException
 import com.flipperdevices.updater.model.UpdatingState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
 import okio.Path
 import okio.Path.Companion.toOkioPath
 import okio.Path.Companion.toPath
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface UploadToFlipperHelper {
     @Suppress("LongParameterList")
@@ -37,7 +38,7 @@ interface UploadToFlipperHelper {
     )
 }
 
-@ContributesBinding(AppGraph::class, UploadToFlipperHelper::class)
+@ContributesBinding(AppGraph::class, binding<UploadToFlipperHelper>())
 class UploadToFlipperHelperImpl @Inject constructor() : UploadToFlipperHelper, LogTagProvider {
     override val TAG = "UploadToFlipperHelper"
 

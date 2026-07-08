@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.connection.transport.ble.api.OverflowControlCon
 import com.flipperdevices.bridge.connection.transport.common.api.meta.TransportMetaInfoKey
 import kotlinx.collections.immutable.persistentMapOf
 import java.util.UUID
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private val INFORMATION_SERVICE_UUID = UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")
 private val BATTERY_SERVICE_UUID = UUID.fromString("0000180f-0000-1000-8000-00805f9b34fb")

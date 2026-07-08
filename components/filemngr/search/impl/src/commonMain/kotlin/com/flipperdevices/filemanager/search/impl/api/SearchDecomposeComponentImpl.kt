@@ -15,9 +15,9 @@ import com.flipperdevices.filemanager.search.api.SearchDecomposeComponent
 import com.flipperdevices.filemanager.search.impl.composable.ComposableFilesSearchScreen
 import com.flipperdevices.filemanager.search.impl.viewmodel.SearchViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
 
 @ContributesAssistedFactory(AppGraph::class, SearchDecomposeComponent.Factory::class)

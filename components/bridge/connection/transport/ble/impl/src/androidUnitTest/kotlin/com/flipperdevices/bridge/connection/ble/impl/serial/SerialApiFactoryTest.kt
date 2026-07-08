@@ -42,7 +42,7 @@ class SerialApiFactoryTest {
             config = config,
             scope = mockk(),
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns null
@@ -64,7 +64,7 @@ class SerialApiFactoryTest {
             config = config,
             scope = mockk(),
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns mockk<ClientBleGattService> {
@@ -93,7 +93,7 @@ class SerialApiFactoryTest {
             config = config,
             scope = mockk(),
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns mockk<ClientBleGattService> {
@@ -135,7 +135,7 @@ class SerialApiFactoryTest {
             config = config,
             scope = scope,
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns mockk<ClientBleGattService> {
@@ -180,7 +180,7 @@ class SerialApiFactoryTest {
             ),
             scope = scope,
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns mockk<ClientBleGattService> {
@@ -238,7 +238,7 @@ class SerialApiFactoryTest {
             ),
             scope = scope,
             flipperActionNotifier = flipperActionNotifier,
-            services = mockk {
+            serviceFlow = mockk {
                 every {
                     findService(eq(UUID.fromString("00000000-0000-0000-0000-000000000001")))
                 } returns mockk<ClientBleGattService> {

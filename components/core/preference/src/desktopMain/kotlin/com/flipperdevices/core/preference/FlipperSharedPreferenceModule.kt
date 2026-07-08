@@ -10,19 +10,17 @@ import com.flipperdevices.core.preference.internal.SettingsSerializer
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.PairSettings
 import com.flipperdevices.core.preference.pb.Settings
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.plus
-import javax.inject.Singleton
+import dev.zacsweers.metro.SingleIn
 
-@Module
 @ContributesTo(AppGraph::class)
-class FlipperSharedPreferenceModule {
+interface FlipperSharedPreferenceModule {
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideDataStoreSettings(
         scope: CoroutineScope,
         storageProvider: FlipperStorageProvider
@@ -40,7 +38,7 @@ class FlipperSharedPreferenceModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideDataStorePairSettings(
         scope: CoroutineScope,
         storageProvider: FlipperStorageProvider
@@ -59,7 +57,7 @@ class FlipperSharedPreferenceModule {
     }
 
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideDataStoreNewPairSetting(
         scope: CoroutineScope,
         storageProvider: FlipperStorageProvider

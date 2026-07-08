@@ -15,22 +15,23 @@ import com.flipperdevices.wearable.emulate.model.ChannelClientState
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneState
 import com.google.android.gms.wearable.ChannelClient
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, ChannelClientHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<ChannelClientHelper>())
 class ChannelClientHelper @Inject constructor(
     private val channelClient: ChannelClient,
     private val commandInputStream: WearableCommandInputStream<MainResponse>,
     private val commandOutputStream: WearableCommandOutputStream<MainRequest>,
-    private val handheldProcessors: MutableSet<HandheldProcessor>,
+    private val handheldProcessors: Set<HandheldProcessor>,
     private val findPhoneApi: FindPhoneApi
 ) : ChannelClientHelper, LogTagProvider {
     override val TAG: String = "ChannelClientHelper"

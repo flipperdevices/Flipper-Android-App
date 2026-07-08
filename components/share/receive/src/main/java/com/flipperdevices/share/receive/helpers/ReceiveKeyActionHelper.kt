@@ -9,7 +9,7 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
 import com.flipperdevices.share.receive.R
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ReceiveKeyActionHelper @Inject constructor(
     private val notificationStorage: InAppNotificationStorage,

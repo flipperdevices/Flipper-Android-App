@@ -7,11 +7,12 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.keyedit.api.NotSavedFlipperFile
 import com.flipperdevices.keyedit.api.NotSavedFlipperKeyApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, NotSavedFlipperKeyApi::class)
+@ContributesBinding(AppGraph::class, binding<NotSavedFlipperKeyApi>())
 class NotSavedFlipperKeyApiImpl @Inject constructor(
     private val storageProvider: FlipperStorageProvider
 ) : NotSavedFlipperKeyApi {

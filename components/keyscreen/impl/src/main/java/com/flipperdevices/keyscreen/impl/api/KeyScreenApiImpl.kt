@@ -10,8 +10,8 @@ import com.flipperdevices.keyscreen.api.KeyScreenApi
 import com.flipperdevices.keyscreen.impl.composable.card.ComposableKeyCard
 import com.flipperdevices.keyscreen.model.DeleteState
 import com.flipperdevices.keyscreen.model.KeyScreenState
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppGraph::class)
 class KeyScreenApiImpl @Inject constructor(

@@ -12,9 +12,10 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val API_SUPPORTED_GET_REQUEST = SemVer(
     majorVersion = 0,
@@ -22,7 +23,7 @@ private val API_SUPPORTED_GET_REQUEST = SemVer(
 )
 
 @FDeviceFeatureQualifier(FDeviceFeature.GET_INFO)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FGetInfoFeatureFactoryImpl @Inject constructor(
     private val factory: FGetInfoFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory, LogTagProvider {

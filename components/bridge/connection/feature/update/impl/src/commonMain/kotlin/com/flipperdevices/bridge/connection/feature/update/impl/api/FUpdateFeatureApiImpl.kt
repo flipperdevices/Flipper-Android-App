@@ -4,9 +4,9 @@ import com.flipperdevices.bridge.connection.feature.update.api.BootApi
 import com.flipperdevices.bridge.connection.feature.update.api.DisplayApi
 import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
 import com.flipperdevices.core.log.LogTagProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class FUpdateFeatureApiImpl @AssistedInject constructor(
     @Assisted private val displayApi: DisplayApi,

@@ -7,9 +7,9 @@ import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnecti
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialRestartApi
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -22,8 +22,8 @@ import java.util.UUID
 
 class FSerialRestartApiImpl @AssistedInject constructor(
     @Assisted private val services: StateFlow<ClientBleGattServices?>,
-    @Assisted("service") private val serialServiceUuid: UUID,
-    @Assisted("characteristic") private val resetCharUUID: UUID,
+    @Assisted private val serialServiceUuid: UUID,
+    @Assisted private val resetCharUUID: UUID,
     private val context: Context
 ) : FSerialRestartApi, LogTagProvider {
     override val TAG = "FSerialRestartApi"
@@ -63,8 +63,8 @@ class FSerialRestartApiImpl @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             services: StateFlow<ClientBleGattServices?>,
-            @Assisted("service") serialServiceUuid: UUID,
-            @Assisted("characteristic") resetCharUUID: UUID
+            @Assisted serialServiceUuid: UUID,
+            @Assisted resetCharUUID: UUID
         ): FSerialRestartApiImpl
     }
 }

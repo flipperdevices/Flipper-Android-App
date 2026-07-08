@@ -13,15 +13,16 @@ import com.flipperdevices.updater.api.UpdateStateApi
 import com.flipperdevices.updater.api.UpdaterApi
 import com.flipperdevices.updater.model.FlipperUpdateState
 import com.flipperdevices.updater.model.UpdatingState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, UpdateStateApi::class)
+@ContributesBinding(AppGraph::class, binding<UpdateStateApi>())
 class UpdateStateApiImpl @Inject constructor(
     private val versionParser: FlipperVersionProviderApi,
     private val updaterApi: UpdaterApi,

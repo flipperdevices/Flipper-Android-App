@@ -4,10 +4,10 @@ import android.app.Application
 import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Singleton
+import dev.zacsweers.metro.SingleIn
 
 /**
  * This component is meta-component.
@@ -15,16 +15,16 @@ import javax.inject.Singleton
  * So you can just create component with this annotation and then you can use it
  */
 // Use singleton by default
-@Singleton
-@MergeComponent(AppGraph::class)
+@SingleIn(AppGraph::class)
+@DependencyGraph(AppGraph::class)
 interface AppComponent {
-    @MergeComponent.Factory
-    interface Factory {
+    @DependencyGraph.Factory
+    fun interface Factory {
         fun create(
-            @BindsInstance context: Context,
-            @BindsInstance application: Application,
-            @BindsInstance scope: CoroutineScope,
-            @BindsInstance applicationParams: ApplicationParams
+            @Provides context: Context,
+            @Provides application: Application,
+            @Provides scope: CoroutineScope,
+            @Provides applicationParams: ApplicationParams
         ): AppComponent
     }
 }

@@ -7,15 +7,16 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.protobuf.Region
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.buffer
 import java.nio.charset.Charset
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<UpdateOfferDelegate>())
 class UpdateOfferRegionChange @Inject constructor(
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper
 ) : UpdateOfferDelegate, LogTagProvider {

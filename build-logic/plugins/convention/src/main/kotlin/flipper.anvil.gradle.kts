@@ -1,14 +1,7 @@
-plugins {
-    id("dev.zacsweers.anvil")
-}
-
-anvil {
-    useKsp(contributesAndFactoryGeneration = true)
-    generateDaggerFactories = true
-}
+pluginManager.apply("com.google.devtools.ksp")
+pluginManager.apply("dev.zacsweers.metro")
 
 dependencies {
-    "implementation"(libs.dagger)
-    "implementation"(libs.anvil.utils.annotations)
-    "commonKsp"(libs.anvil.utils.compiler)
+    "implementation"(libs.metro.utils.annotations)
+    "commonKsp"(libs.metro.utils.ksp)
 }

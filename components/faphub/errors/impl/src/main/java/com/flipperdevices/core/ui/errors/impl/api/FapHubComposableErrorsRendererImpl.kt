@@ -11,10 +11,11 @@ import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.errors.api.throwable.FapHubError
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapHubComposableErrorsRenderer::class)
+@ContributesBinding(AppGraph::class, binding<FapHubComposableErrorsRenderer>())
 class FapHubComposableErrorsRendererImpl @Inject constructor() : FapHubComposableErrorsRenderer {
 
     override fun LazyListScope.ComposableThrowableErrorListItem(

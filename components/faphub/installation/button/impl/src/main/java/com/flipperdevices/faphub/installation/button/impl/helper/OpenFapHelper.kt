@@ -14,13 +14,14 @@ import com.flipperdevices.faphub.dao.api.model.FapBuildState
 import com.flipperdevices.faphub.installation.button.api.FapButtonConfig
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapResult
 import com.flipperdevices.faphub.installation.button.impl.model.OpenFapState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import okio.Path.Companion.toPath
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface OpenFapHelper {
     fun getOpenFapState(fapButtonConfig: FapButtonConfig?): Flow<OpenFapState>
@@ -30,8 +31,8 @@ interface OpenFapHelper {
     )
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, OpenFapHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<OpenFapHelper>())
 class OpenFapHelperImpl @Inject constructor(
     private val fFeatureProvider: FFeatureProvider
 ) : OpenFapHelper, LogTagProvider {

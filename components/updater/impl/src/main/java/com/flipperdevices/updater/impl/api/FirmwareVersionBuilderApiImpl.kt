@@ -4,8 +4,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.model.FirmwareChannel
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val DEVICE_VERSION_PART_COUNT = 4
 private const val DEVICE_VERSION_COMMIT_INDEX = 0
@@ -16,7 +17,7 @@ private const val DEVICE_VERSION_TYPE_RC_REGEX = "^\\d+\\.\\d+\\.\\d+-rc"
 private const val DEVICE_VERSION_TYPE_RELEASE_REGEX = "^\\d+\\.\\d+\\.\\d+"
 private const val DEVICE_VERSION_DATE_INDEX = 3
 
-@ContributesBinding(AppGraph::class, FirmwareVersionBuilderApi::class)
+@ContributesBinding(AppGraph::class, binding<FirmwareVersionBuilderApi>())
 class FirmwareVersionBuilderApiImpl @Inject constructor() : FirmwareVersionBuilderApi {
     override fun getFirmwareChannel(branch: String): FirmwareChannel {
         val preparedBranch = branch.trim().lowercase()

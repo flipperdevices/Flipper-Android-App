@@ -37,7 +37,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import java.net.UnknownHostException
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 
@@ -45,7 +45,7 @@ private const val DISCONNECT_WAIT_TIMEOUT_MS = 30 * 1000L
 class UpdaterTask @Inject constructor(
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
-    private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
+    private val updateContentDownloader: Set<UpdateContentDownloader>,
     private val fapNeedUpdatePopUpHelper: FapNeedUpdatePopUpHelper,
     private val storageProvider: FlipperStorageProvider,
     private val flipperUpdateImageHelper: FlipperUpdateImageHelper,

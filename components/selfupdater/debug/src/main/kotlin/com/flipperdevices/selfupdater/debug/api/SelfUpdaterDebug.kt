@@ -9,15 +9,16 @@ import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val NOTIFICATION_DEBUG_DELAY_MS = 15000L
 
-@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdaterSourceApi>())
 class SelfUpdaterDebug @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>,
     private val inAppNotificationStorage: InAppNotificationStorage

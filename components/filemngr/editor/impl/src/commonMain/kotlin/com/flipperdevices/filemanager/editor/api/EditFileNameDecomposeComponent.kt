@@ -7,14 +7,14 @@ import com.flipperdevices.filemanager.editor.composable.dialog.CreateFileDialogC
 import com.flipperdevices.filemanager.editor.viewmodel.EditFileNameViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import okio.Path
 
 class EditFileNameDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted("fullPathOnFlipper") private val fullPathOnFlipper: Path,
+    @Assisted private val fullPathOnFlipper: Path,
     @Assisted private val onBack: DecomposeOnBackParameter,
     @Assisted private val onChanged: (Path) -> Unit,
     editFileNameViewModelFactory: EditFileNameViewModel.Factory
@@ -38,7 +38,7 @@ class EditFileNameDecomposeComponent @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
+            @Assisted fullPathOnFlipper: Path,
             onBack: DecomposeOnBackParameter,
             onChanged: (Path) -> Unit
         ): EditFileNameDecomposeComponent

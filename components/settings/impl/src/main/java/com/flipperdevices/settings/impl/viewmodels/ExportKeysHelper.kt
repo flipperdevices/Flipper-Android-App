@@ -8,11 +8,12 @@ import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.ktx.jre.createClearNewFileWithMkDirs
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.share.SharableFile
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface ExportKeysHelper {
     suspend fun createBackupArchive(): SharableFile?
@@ -20,7 +21,7 @@ interface ExportKeysHelper {
 
 private const val KEYS_ARCHIVE_NAME = "keys.zip"
 
-@ContributesBinding(AppGraph::class, ExportKeysHelper::class)
+@ContributesBinding(AppGraph::class, binding<ExportKeysHelper>())
 class ExportKeysHelperImpl @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val context: Context

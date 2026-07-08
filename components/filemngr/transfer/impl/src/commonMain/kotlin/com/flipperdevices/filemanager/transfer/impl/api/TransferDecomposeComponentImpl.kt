@@ -16,13 +16,13 @@ import com.flipperdevices.filemanager.transfer.impl.viewmodel.FilesViewModel
 import com.flipperdevices.filemanager.transfer.impl.viewmodel.OptionsViewModel
 import com.flipperdevices.filemanager.transfer.impl.viewmodel.TransferViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, TransferDecomposeComponent.Factory::class)
@@ -41,10 +41,10 @@ class TransferDecomposeComponentImpl @AssistedInject constructor(
         filesViewModelFactory.invoke(path = param.path)
     }
     private val transferViewModel = instanceKeeper.getOrCreate("transfer_${param.path}") {
-        transferViewModelProvider.get()
+        transferViewModelProvider.invoke()
     }
     private val optionsViewModel = instanceKeeper.getOrCreate("options_${param.path}") {
-        optionsViewModelProvider.get()
+        optionsViewModelProvider.invoke()
     }
     private val createFileDecomposeComponent = createFileDecomposeComponentFactory.invoke(
         componentContext = childContext("createfolder_${param.path}"),

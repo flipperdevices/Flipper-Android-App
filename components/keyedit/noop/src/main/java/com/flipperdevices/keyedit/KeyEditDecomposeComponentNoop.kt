@@ -8,8 +8,9 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 class KeyEditDecomposeComponentNoop(
     componentContext: ComponentContext
@@ -19,7 +20,7 @@ class KeyEditDecomposeComponentNoop(
     @Suppress("NonSkippableComposable")
     override fun Render() = Unit
 
-    @ContributesBinding(AppGraph::class, KeyEditDecomposeComponent.Factory::class)
+    @ContributesBinding(AppGraph::class, binding<KeyEditDecomposeComponent.Factory>())
     class Factory @Inject constructor() : KeyEditDecomposeComponent.Factory {
         override fun invoke(
             componentContext: ComponentContext,

@@ -25,7 +25,7 @@ import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
 import com.flipperdevices.widget.impl.tasks.invalidate.WidgetNotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 const val EXTRA_KEY_FILE_PATH = "file_path"
 const val EXTRA_KEY_WIDGET_ID = AppWidgetManager.EXTRA_APPWIDGET_ID

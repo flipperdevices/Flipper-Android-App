@@ -14,8 +14,8 @@ import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.SendReques
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.StartEmulateRequest
 import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.StopEmulateRequest
 import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +23,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface EmulateHelper {
 
@@ -37,9 +38,9 @@ interface EmulateHelper {
     fun getState(): StateFlow<EmulateStatus>
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, EmulateHelper::class)
-@ContributesMultibinding(AppGraph::class, HandheldProcessor::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<EmulateHelper>())
+@ContributesIntoSet(AppGraph::class, binding<HandheldProcessor>())
 class EmulateHelperImpl @Inject constructor(
     private val commandInputStream: WearableCommandInputStream<MainResponse>,
     private val commandOutputStream: WearableCommandOutputStream<MainRequest>,

@@ -9,9 +9,9 @@ import com.flipperdevices.wearable.emulate.impl.helper.ConnectionHelper
 import com.flipperdevices.wearable.emulate.impl.helper.EmulateHelper
 import com.flipperdevices.wearable.emulate.impl.helper.FlipperStatusHelper
 import com.flipperdevices.wearable.emulate.impl.helper.WearStateMachineHelper
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import java.io.File

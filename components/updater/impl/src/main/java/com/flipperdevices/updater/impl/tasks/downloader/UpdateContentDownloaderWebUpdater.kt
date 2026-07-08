@@ -5,11 +5,12 @@ import com.flipperdevices.updater.model.DistributionFile
 import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.WebUpdaterFirmware
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateContentDownloader::class)
+@ContributesIntoSet(AppGraph::class, binding<UpdateContentDownloader>())
 class UpdateContentDownloaderWebUpdater @Inject constructor(
     private val firmwareDownloaderHelper: FirmwareDownloaderHelper
 ) : UpdateContentDownloader {

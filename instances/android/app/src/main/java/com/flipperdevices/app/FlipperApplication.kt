@@ -6,7 +6,8 @@ import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
-import com.flipperdevices.app.di.DaggerMergedAppComponent
+import com.flipperdevices.app.di.AppComponent
+import dev.zacsweers.metro.createGraphFactory
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
@@ -30,7 +31,7 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
 
         CurrentActivityHolder.register(this)
 
-        val appComponent = DaggerMergedAppComponent.factory()
+        val appComponent = createGraphFactory<AppComponent.Factory>()
             .create(
                 context = this,
                 application = this,
@@ -45,7 +46,7 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
 
         if (BuildConfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
-            val shake2report = ComponentHolder.component<MainComponent>().shake2report.get()
+            val shake2report = ComponentHolder.component<MainComponent>().shake2report.invoke()
             shake2report.init()
         }
         setUp()
@@ -63,8 +64,8 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
         } catch (e: Exception) {
             error(e) { "Failed init notification api" }
         }
-        component.permissionRequestHandlerImpl.get().register(this)
-        component.fConnectionService.get().onApplicationInit()
+        component.permissionRequestHandlerImpl.invoke().register(this)
+        component.fConnectionService.invoke().onApplicationInit()
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader {

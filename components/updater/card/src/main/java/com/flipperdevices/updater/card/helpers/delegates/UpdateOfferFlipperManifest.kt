@@ -4,12 +4,13 @@ import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureA
 import com.flipperdevices.bridge.connection.feature.update.api.FUpdateFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.helpers.FileExistHelper
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<UpdateOfferDelegate>())
 class UpdateOfferFlipperManifest @Inject constructor(
     private val fileExistHelper: FileExistHelper
 ) : UpdateOfferDelegate {

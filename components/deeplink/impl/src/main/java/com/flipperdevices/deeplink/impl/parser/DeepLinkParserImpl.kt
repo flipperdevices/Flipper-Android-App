@@ -12,12 +12,13 @@ import com.flipperdevices.core.log.warn
 import com.flipperdevices.deeplink.api.DeepLinkParser
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.Deeplink
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, DeepLinkParser::class)
+@ContributesBinding(AppGraph::class, binding<DeepLinkParser>())
 class DeepLinkParserImpl @Inject constructor(
-    private val delegates: MutableSet<DeepLinkParserDelegate>
+    private val delegates: Set<DeepLinkParserDelegate>
 ) : DeepLinkParser, LogTagProvider {
     override val TAG = "DeepLinkParser"
 

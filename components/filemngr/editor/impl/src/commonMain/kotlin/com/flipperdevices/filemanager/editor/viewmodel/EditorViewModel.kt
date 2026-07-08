@@ -8,9 +8,9 @@ import com.flipperdevices.filemanager.editor.model.EditorEncodingEnum
 import com.flipperdevices.filemanager.editor.model.HexString
 import com.flipperdevices.filemanager.editor.util.HexConverter
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,8 +21,8 @@ import okio.buffer
 import okio.use
 
 class EditorViewModel @AssistedInject constructor(
-    @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-    @Assisted("fullPathOnDevice") private val fullPathOnDevice: Path,
+    @Assisted fullPathOnFlipper: Path,
+    @Assisted private val fullPathOnDevice: Path,
     private val storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel() {
 
@@ -117,8 +117,8 @@ class EditorViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-            @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+            @Assisted fullPathOnFlipper: Path,
+            @Assisted fullPathOnDevice: Path,
         ): EditorViewModel
     }
 }

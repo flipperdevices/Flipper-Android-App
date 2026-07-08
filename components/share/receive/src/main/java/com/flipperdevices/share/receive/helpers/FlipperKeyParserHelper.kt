@@ -8,7 +8,7 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.receive.models.FlipperKeyParseException
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FlipperKeyParserHelper @Inject constructor(
     private val cryptoStorageApi: CryptoStorageApi

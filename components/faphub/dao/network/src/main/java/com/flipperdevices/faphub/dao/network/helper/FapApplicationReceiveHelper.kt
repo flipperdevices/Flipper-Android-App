@@ -16,7 +16,7 @@ import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val MAX_QUERY_ARRAY_SIZE = 500
 

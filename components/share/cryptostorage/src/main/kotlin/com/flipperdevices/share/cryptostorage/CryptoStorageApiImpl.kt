@@ -8,7 +8,7 @@ import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.share.api.CryptoStorageApi
 import com.flipperdevices.share.cryptostorage.helper.DecryptHelper
 import com.flipperdevices.share.cryptostorage.helper.EncryptHelper
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -21,7 +21,7 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.ByteWriteChannel
 import java.io.FileNotFoundException
 import java.net.UnknownServiceException
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 internal const val ALGORITHM_HELPER = "AES/GCM/NoPadding"
 internal const val KEY_SIZE = 128

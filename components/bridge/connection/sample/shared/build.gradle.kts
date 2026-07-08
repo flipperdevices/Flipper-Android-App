@@ -20,9 +20,6 @@ commonDependencies {
     api(projects.components.core.ui.ktx)
     api(projects.components.core.ui.theme)
 
-    api(libs.dagger)
-    api(libs.anvil.utils.annotations)
-
     api(projects.components.bridge.connection.pbutils)
     api(projects.components.bridge.connection.transport.common.api)
     api(projects.components.bridge.connection.transport.common.impl)

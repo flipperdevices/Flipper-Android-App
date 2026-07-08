@@ -8,10 +8,11 @@ import com.flipperdevices.keyedit.api.KeyEditDecomposeComponent
 import com.flipperdevices.keyedit.api.NotSavedFlipperKey
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, KeyEditDecomposeComponent.Factory::class)
+@ContributesBinding(AppGraph::class, binding<KeyEditDecomposeComponent.Factory>())
 class KeyEditDecomposeComponentFactory @Inject constructor(
     private val keyEditRealFactory: KeyEditDecomposeComponentImpl.Factory
 ) : KeyEditDecomposeComponent.Factory {

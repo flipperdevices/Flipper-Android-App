@@ -7,7 +7,7 @@ import com.flipperdevices.notification.model.UpdateNotificationState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class NotificationViewModel @Inject constructor(
     private val notificationApi: FlipperAppNotificationApi

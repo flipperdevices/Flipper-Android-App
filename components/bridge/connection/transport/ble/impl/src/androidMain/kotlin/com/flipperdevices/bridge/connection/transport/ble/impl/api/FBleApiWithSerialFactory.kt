@@ -10,7 +10,7 @@ import com.flipperdevices.bridge.connection.transport.common.api.meta.TransportM
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FBleApiWithSerialFactory @Inject constructor(
     private val serialDeviceApiWrapperFactory: FSerialDeviceApiWrapper.Factory,
@@ -30,7 +30,7 @@ class FBleApiWithSerialFactory @Inject constructor(
         val serialDeviceApi = serialDeviceApiWrapperFactory(
             scope = scope,
             config = serialConfig,
-            services = client.services,
+            serviceFlow = client.services,
             flipperActionNotifier = flipperActionNotifier
         )
         val restartApi = fSerialRestartApiFactory(

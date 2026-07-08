@@ -13,19 +13,17 @@ import com.flipperdevices.bridge.dao.impl.repository.key.DeleteKeyDao
 import com.flipperdevices.bridge.dao.impl.repository.key.SimpleKeyDao
 import com.flipperdevices.bridge.dao.impl.repository.key.UtilsKeyDao
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
 private const val DATABASE_NAME = "flipper.db"
 
-@Module
 @ContributesTo(AppGraph::class)
 @Suppress("TooManyFunctions")
-class RoomDatabaseModule {
+interface RoomDatabaseModule {
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun provideRoom(
         context: Context,
         databaseKeyContentConverter: DatabaseKeyContentConverter,

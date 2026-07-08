@@ -7,9 +7,10 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.preference.pb.Settings
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface SkipProvisioningHelper {
     suspend fun shouldSkipProvisioning(
@@ -17,7 +18,7 @@ interface SkipProvisioningHelper {
     ): Boolean
 }
 
-@ContributesBinding(AppGraph::class, SkipProvisioningHelper::class)
+@ContributesBinding(AppGraph::class, binding<SkipProvisioningHelper>())
 class SkipProvisioningHelperImpl @Inject constructor(
     private val settings: DataStore<Settings>
 ) : SkipProvisioningHelper, LogTagProvider {

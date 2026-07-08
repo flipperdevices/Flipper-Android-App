@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.notification.api.FlipperAppNotificationDialogApi
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperAppNotificationDialogApi::class)
+@ContributesBinding(AppGraph::class, binding<FlipperAppNotificationDialogApi>())
 class FlipperAppNotificationDialogApiNoopImpl @Inject constructor() :
     FlipperAppNotificationDialogApi {
     @Composable
