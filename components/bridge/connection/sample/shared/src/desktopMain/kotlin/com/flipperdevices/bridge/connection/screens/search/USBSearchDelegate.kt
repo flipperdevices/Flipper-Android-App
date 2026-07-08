@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
+import javax.inject.Inject
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
 
@@ -38,7 +41,7 @@ class USBSearchDelegate @AssistedInject constructor(
                 flow {
                     while (true) {
                         emit(Unit)
-                        kotlinx.coroutines.delay(1.seconds)
+                        delay(1.toDuration(DurationUnit.SECONDS))
                     }
                 },
                 persistedStorage.getAllDevices()
@@ -71,12 +74,6 @@ class USBSearchDelegate @AssistedInject constructor(
     }
 
     override fun getDevicesFlow() = searchItems.asStateFlow()
-
-    @AssistedFactory
-    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
-    fun interface Factory : ConnectionSearchDelegate.Factory {
-        override fun invoke(scope: CoroutineScope): USBSearchDelegate
-    }
 }
 
 private fun SerialPort.toFDeviceFlipperZeroUSBModel(): FDeviceFlipperZeroUsbModel {

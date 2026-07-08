@@ -1,9 +1,6 @@
 import com.android.build.gradle.BaseExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_PUBLISH
-import gradle.kotlin.dsl.accessors._7a4d13f58a317316fed3ebe1f66c7d31.compose
-import gradle.kotlin.dsl.accessors._7a4d13f58a317316fed3ebe1f66c7d31.kotlin
-import gradle.kotlin.dsl.accessors._7a4d13f58a317316fed3ebe1f66c7d31.sourceSets
 import io.sentry.android.gradle.extensions.SentryPluginExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

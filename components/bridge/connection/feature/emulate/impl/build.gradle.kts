@@ -34,7 +34,5 @@ commonTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.junit)
     implementation(libs.kotlin.coroutines.test)
-    implementation(libs.roboelectric)
-    implementation(libs.ktx.testing)
     implementation(libs.mockk)
 }

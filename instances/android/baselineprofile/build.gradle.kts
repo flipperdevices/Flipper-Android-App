@@ -19,7 +19,7 @@ android {
         buildConfigField("String", "TARGET_APP_ID_KEY", "\"${TARGET_APP_ID_KEY}\"")
     }
 
-    targetProjectPath = projects.instances.android.app.identityPath.path
+    targetProjectPath = projects.instances.android.app.path
 
     testOptions.managedDevices.devices {
         create<ManagedVirtualDevice>("pixel6Api31") {

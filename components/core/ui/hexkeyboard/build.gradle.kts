@@ -13,4 +13,5 @@ commonDependencies {
 
     // Compose
     implementation(libs.compose.constraint)
+    implementation(libs.compose.material.icons.core)
 }

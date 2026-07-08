@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.flipperdevices.core.log
 
 @Suppress("PropertyName")

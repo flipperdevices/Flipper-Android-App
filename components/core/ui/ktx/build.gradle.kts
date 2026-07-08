@@ -22,6 +22,7 @@ commonDependencies {
 }
 
 androidDependencies {
-
     implementation(libs.image.lottie)
+
+    implementation(libs.compose.material.icons.core)
 }

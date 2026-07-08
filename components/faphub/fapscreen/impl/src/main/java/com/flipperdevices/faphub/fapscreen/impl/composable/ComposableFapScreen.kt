@@ -16,7 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import com.flipperdevices.core.ui.ktx.OrangeAppBar
 import com.flipperdevices.core.ui.ktx.clickableRipple
 import com.flipperdevices.core.ui.ktx.elements.SwipeRefresh
@@ -175,8 +174,7 @@ private fun ComposableFapScreenBar(
                                 putExtra(Intent.EXTRA_TEXT, url)
                                 type = "text/plain"
                             }
-                            ContextCompat.startActivity(
-                                context,
+                            context.startActivity(
                                 Intent.createChooser(intent, shareTitle),
                                 null
                             )

@@ -13,9 +13,10 @@ import kotlinx.coroutines.SupervisorJob
 import java.util.Stack
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-private val TIMER_DELAY = 1.seconds
+private val TIMER_DELAY = 1.toDuration(DurationUnit.SECONDS)
 
 @Singleton
 @ContributesBinding(AppGraph::class, InAppNotificationStorage::class)

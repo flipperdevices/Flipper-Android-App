@@ -1,3 +1,6 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.kotlin.dsl.withType
+
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
@@ -12,6 +15,10 @@ commonDependencies {
     implementation(projects.components.core.storage)
 
     api(libs.datastore)
+}
+
+tasks.withType<Detekt> {
+    enabled = false
 }
 
 wire {

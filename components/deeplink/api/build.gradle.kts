@@ -14,5 +14,8 @@ commonDependencies {
     implementation(libs.kotlin.serialization.json)
 
     implementation(libs.annotations)
+}
+
+androidDependencies {
     implementation(libs.appcompat)
 }
