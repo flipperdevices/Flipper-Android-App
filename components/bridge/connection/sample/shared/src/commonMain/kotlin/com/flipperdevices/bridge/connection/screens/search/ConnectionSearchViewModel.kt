@@ -14,9 +14,11 @@ class ConnectionSearchViewModel @Inject constructor(
     private val persistedStorage: FDevicePersistedStorage,
     searchDelegatesFactories: Set<ConnectionSearchDelegate.Factory>
 ) : DecomposeViewModel() {
-    private val searchDelegates = searchDelegatesFactories.map { it(viewModelScope) }
-    private val combinedFlow = combine(searchDelegates.map { it.getDevicesFlow() }) { flows ->
-        flows.toList().flatten().toImmutableList()
+    private val searchDelegates = searchDelegatesFactories.map { factory -> factory(viewModelScope) }
+    private val combinedFlow = combine(
+        searchDelegates.map { delegate -> delegate.getDevicesFlow() }
+    ) { deviceLists ->
+        deviceLists.flatMap { deviceList -> deviceList }.toImmutableList()
     }.stateIn(viewModelScope, SharingStarted.Lazily, persistentListOf())
 
     fun getDevicesFlow() = combinedFlow

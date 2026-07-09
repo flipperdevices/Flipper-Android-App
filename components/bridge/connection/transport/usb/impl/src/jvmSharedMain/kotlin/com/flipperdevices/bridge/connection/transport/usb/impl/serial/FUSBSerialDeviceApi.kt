@@ -14,13 +14,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class FUSBSerialDeviceApi(
     private val scope: CoroutineScope,
-    private val serialPort: USBPlatformDevice,
-    private val actionNotifier: FlipperActionNotifier
+    private val device: USBPlatformDevice,
+    private val actionNotifier: FlipperActionNotifier,
+    private val initialData: ByteArray,
+    private val onTransportClosed: () -> Unit
 ) : FUSBApi,
     FSerialDeviceApi,
     FSerialRestartApi by NoopRestartApi(),
@@ -34,17 +37,7 @@ class FUSBSerialDeviceApi(
     private val speedFlowState = MutableStateFlow(FlipperSerialSpeed())
 
     init {
-        scope.launch {
-            val buffer = ByteArray(size = 1024)
-            var result = 1
-            while (result > 0) {
-                result = serialPort.readBytes(buffer, buffer.size)
-                val readBytes = buffer.take(result).toByteArray()
-                rxSpeed.onReceiveBytes(result)
-                receiverByteFlow.emit(readBytes)
-            }
-            error("End loop with result $result")
-        }
+        scope.launch { readUntilPortClosed() }
         combine(
             rxSpeed.getSpeed(),
             txSpeed.getSpeed()
@@ -56,25 +49,43 @@ class FUSBSerialDeviceApi(
         }.launchIn(scope)
     }
 
+    private suspend fun emitReceivedBytes(chunk: ByteArray) {
+        rxSpeed.onReceiveBytes(chunk.size)
+        receiverByteFlow.emit(chunk)
+    }
+
+    private suspend fun readUntilPortClosed() {
+        if (initialData.isNotEmpty()) {
+            // The shared flow drops emissions that happen before the first
+            // subscriber appears, so leftover handshake bytes must wait for it.
+            receiverByteFlow.subscriptionCount.first { subscribers -> subscribers > 0 }
+            emitReceivedBytes(initialData)
+        }
+        while (true) {
+            val chunk = device.read().getOrElse { readError ->
+                info { "USB port closed, stopping read loop: $readError" }
+                onTransportClosed()
+                return
+            }
+            emitReceivedBytes(chunk)
+        }
+    }
+
     override suspend fun getSpeed() = speedFlowState.asStateFlow()
+
     override suspend fun getReceiveBytesFlow() = receiverByteFlow
+
     override fun getActionNotifier() = actionNotifier
 
     override suspend fun sendBytes(data: ByteArray) {
-        var writtenBytesOffset = 0
-        do {
-            val writtenBytes =
-                serialPort.writeBytes(data, data.size - writtenBytesOffset, writtenBytesOffset)
-            info { "Write $writtenBytes" }
-            txSpeed.onReceiveBytes(writtenBytes)
-            if (writtenBytes == -1) {
-                error("Failed to write bytes")
-            }
-            writtenBytesOffset += writtenBytes
-        } while (writtenBytesOffset < data.size)
+        // FSerialDeviceApi contract has no Result channel, so a write
+        // failure intentionally propagates as an exception.
+        device.write(data)
+            .onSuccess { txSpeed.onReceiveBytes(data.size) }
+            .getOrThrow()
     }
 
     override suspend fun disconnect() {
-        serialPort.closePort()
+        device.close()
     }
 }

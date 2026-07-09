@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -26,15 +27,17 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
+private const val FLIPPER_USB_MANUFACTURER = "Flipper Devices Inc."
 
 class USBSearchDelegate @AssistedInject constructor(
     @Assisted scope: CoroutineScope,
     private val context: Context,
     private val persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchDelegate, LogTagProvider {
-    override val TAG = "USBSearchViewModel"
+    override val TAG = "USBSearchDelegate"
 
     private val usbManager = context.getSystemService(Context.USB_SERVICE) as UsbManager
+    private val usbSerialProber = UsbSerialProber.getDefaultProber()
 
     private val searchItems =
         MutableStateFlow<ImmutableList<ConnectionSearchItem>>(persistentListOf())
@@ -45,35 +48,36 @@ class USBSearchDelegate @AssistedInject constructor(
                 flow {
                     while (true) {
                         emit(Unit)
-                        kotlinx.coroutines.delay(1.seconds)
+                        delay(1.seconds)
                     }
                 },
                 persistedStorage.getAllDevices()
-            ) { _, savedDevices ->
-                UsbSerialProber
-                    .getDefaultProber()
-                    .findAllDrivers(usbManager)
-                    .map { it.device } to savedDevices
-            }.collect { (searchDevices, savedDevices) ->
-                val existedDescriptors = savedDevices
-                    .filterIsInstance<FDeviceFlipperZeroUsbModel>()
-                    .associateBy { it.portPath }
+            ) { _, savedDevices -> savedDevices }
+                .collect { savedDevices ->
+                    val existedDescriptors = savedDevices
+                        .filterIsInstance<FDeviceFlipperZeroUsbModel>()
+                        .associateBy { savedDevice -> savedDevice.portPath }
 
-                info { searchDevices.joinToString(",") { "$it" } }
+                    val searchDevices = usbSerialProber
+                        .findAllDrivers(usbManager)
+                        .map { serialDriver -> serialDriver.device }
+                        .filter { usbDevice -> usbDevice.manufacturerName == FLIPPER_USB_MANUFACTURER }
 
-                searchItems.emit(
-                    searchDevices.map { it.toFDeviceFlipperZeroUSBModel() }.map { usbDevice ->
-                        ConnectionSearchItem(
-                            address = usbDevice.portPath,
-                            deviceModel = existedDescriptors[usbDevice.portPath]
-                                ?: usbDevice,
-                            isAdded = existedDescriptors.containsKey(usbDevice.portPath)
-                        )
-                    }.distinctBy { it.address }
-                        .toImmutableList()
+                    info { searchDevices.joinToString(",") { usbDevice -> "$usbDevice" } }
 
-                )
-            }
+                    searchItems.emit(
+                        searchDevices.map { usbDevice ->
+                            val usbModel = usbDevice.toFDeviceFlipperZeroUSBModel()
+                            ConnectionSearchItem(
+                                address = usbModel.portPath,
+                                deviceModel = existedDescriptors[usbModel.portPath]
+                                    ?: usbModel,
+                                isAdded = existedDescriptors.containsKey(usbModel.portPath)
+                            )
+                        }.distinctBy { searchItem -> searchItem.address }
+                            .toImmutableList()
+                    )
+                }
         }
     }
 

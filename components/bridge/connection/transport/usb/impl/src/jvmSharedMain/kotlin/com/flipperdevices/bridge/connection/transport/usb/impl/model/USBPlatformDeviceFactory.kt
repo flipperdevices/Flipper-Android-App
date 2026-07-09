@@ -7,5 +7,5 @@ interface USBPlatformDeviceFactory {
     fun getUSBPlatformDevice(
         config: FUSBDeviceConnectionConfig,
         scope: CoroutineScope
-    ): USBPlatformDevice
+    ): Result<USBPlatformDevice>
 }
