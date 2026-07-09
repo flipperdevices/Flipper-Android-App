@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.updater.card"
 
 androidDependencies {
     implementation(projects.components.core.ktx)
@@ -52,11 +51,11 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.mockk)
+androidHostTestDependencies {
+    implementation(projects.components.core.buildKonfig)
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.roboelectric)
+    implementation(libs.ktx.testing)
+    implementation(libs.mockk)
 }

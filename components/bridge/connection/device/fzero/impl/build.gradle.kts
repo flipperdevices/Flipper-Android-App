@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.device.fzero.impl"
 
 commonDependencies {
     implementation(projects.components.bridge.connection.device.fzero.api)

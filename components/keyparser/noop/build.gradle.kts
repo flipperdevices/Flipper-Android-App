@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.parser.noop"
-
 androidDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyparser.api)

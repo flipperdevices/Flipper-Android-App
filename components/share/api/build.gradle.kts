@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.share.api"
 
 androidDependencies {
     implementation(projects.components.deeplink.api)

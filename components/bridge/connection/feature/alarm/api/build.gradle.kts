@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.alarm.api"
 
 commonDependencies {
     implementation(projects.components.core.data)

@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.archive.api"
 
 androidDependencies {
     implementation(projects.components.bridge.dao.api)

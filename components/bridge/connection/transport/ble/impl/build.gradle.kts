@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.transport.ble.impl"
 
 androidDependencies {
     implementation(projects.components.bridge.connection.transport.ble.api)
@@ -28,7 +27,7 @@ androidDependencies {
     implementation(libs.androidx.core)
 }
 
-androidUnitTestDependencies {
+androidHostTestDependencies {
     implementation(projects.components.core.test)
     implementation(libs.kotlin.coroutines.test)
     implementation(libs.junit)

@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.remotecontrols.brands.api"
 
 androidDependencies {
     implementation(projects.components.core.ui.decompose)

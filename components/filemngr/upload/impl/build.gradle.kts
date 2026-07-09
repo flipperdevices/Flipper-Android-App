@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.filemanager.upload.impl"
 
 androidDependencies {
     implementation(libs.compose.activity)

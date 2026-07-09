@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.remotecontrols.grid.remote.api"
 
 androidDependencies {
     implementation(projects.components.bridge.dao.api)

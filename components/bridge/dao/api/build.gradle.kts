@@ -5,7 +5,6 @@ plugins {
     id("kotlin-parcelize")
 }
 
-android.namespace = "com.flipperdevices.bridge.dao.api"
 
 compose.resources {
     publicResClass = true

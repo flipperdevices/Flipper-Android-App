@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.ui.searchbar"
 
 commonDependencies {
     implementation(projects.components.core.ui.res)

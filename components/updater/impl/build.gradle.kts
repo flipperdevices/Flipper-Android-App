@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.updater.impl"
 
 androidDependencies {
     implementation(projects.components.updater.api)
@@ -38,18 +37,18 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockito.kotlin)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.lifecycle.test)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
-    "androidUnitTestImplementation"(projects.components.updater.downloader)
-    "androidUnitTestImplementation"(libs.ktor.client)
-    "androidUnitTestImplementation"(libs.ktor.negotiation)
-    "androidUnitTestImplementation"(libs.ktor.serialization)
-    "androidUnitTestImplementation"(libs.ktor.mock)
-    "androidUnitTestImplementation"(libs.kotlin.serialization.json)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.mockito.kotlin)
+    implementation(libs.ktx.testing)
+    implementation(libs.roboelectric)
+    implementation(libs.lifecycle.test)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(projects.components.updater.downloader)
+    implementation(libs.ktor.client)
+    implementation(libs.ktor.negotiation)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.mock)
+    implementation(libs.kotlin.serialization.json)
 }

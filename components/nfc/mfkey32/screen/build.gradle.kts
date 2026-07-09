@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.nfc.mfkey32.screen"
 
 androidDependencies {
     implementation(projects.components.nfc.mfkey32.api)

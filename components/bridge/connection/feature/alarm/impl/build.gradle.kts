@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.alarm.impl"
 
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.alarm.api)

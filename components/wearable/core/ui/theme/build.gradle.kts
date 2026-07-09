@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.wearable.core.ui.theme"
 
 androidDependencies {
     implementation(projects.components.core.ui.theme)

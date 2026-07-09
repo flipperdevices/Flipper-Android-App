@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.analytics.shake2report.impl"
 
 androidDependencies {
     implementation(projects.components.analytics.shake2report.api)

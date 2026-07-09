@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.keyemulate.api"
 
 androidDependencies {
     implementation(projects.components.core.di)

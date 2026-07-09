@@ -5,8 +5,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.remotecontrols.api.backend.flipper"
-
 androidDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)

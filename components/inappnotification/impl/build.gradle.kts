@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.inappnotification.impl"
 
 androidDependencies {
     implementation(projects.components.inappnotification.api)

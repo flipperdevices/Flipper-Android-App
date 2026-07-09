@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.rpc.api"
 
 commonDependencies {
     api(projects.components.bridge.connection.feature.rpc.model)

@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.bottombar.impl"
 
 androidDependencies {
     implementation(projects.components.bottombar.api)

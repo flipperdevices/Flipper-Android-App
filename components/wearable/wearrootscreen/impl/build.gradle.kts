@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.wearrootscreen.impl"
 
 androidDependencies {
     implementation(projects.components.wearable.wearrootscreen.api)

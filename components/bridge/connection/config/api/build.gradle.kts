@@ -4,7 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.config.api"
 
 commonDependencies {
     implementation(projects.components.core.preference)

@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.infrared.impl"
 
 androidDependencies {
     implementation(projects.components.infrared.api)
@@ -53,12 +52,12 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockk)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.lifecycle.test)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.mockk)
+    implementation(libs.ktx.testing)
+    implementation(libs.roboelectric)
+    implementation(libs.lifecycle.test)
+    implementation(libs.kotlin.coroutines.test)
 }

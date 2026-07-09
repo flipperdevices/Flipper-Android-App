@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.screenstreaming.impl"
 
 androidDependencies {
     implementation(projects.components.screenstreaming.api)

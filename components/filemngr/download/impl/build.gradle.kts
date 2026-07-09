@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.filemanager.download.impl"
 
 commonDependencies {
     implementation(projects.components.core.di)

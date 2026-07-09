@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.settings.impl"
 
 androidDependencies {
     implementation(projects.components.settings.api)

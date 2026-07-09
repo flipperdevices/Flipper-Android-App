@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bottombar.api"
 
 androidDependencies {
     implementation(projects.components.deeplink.api)
@@ -14,8 +13,8 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockito.kotlin)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.mockito.kotlin)
 }

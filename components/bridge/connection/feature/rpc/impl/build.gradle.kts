@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.rpc.impl"
 
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.rpc.api)

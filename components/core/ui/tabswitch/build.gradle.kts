@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.tabswitch"
 
 commonDependencies {
     implementation(projects.components.core.ui.theme)

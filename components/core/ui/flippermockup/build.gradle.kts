@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.ui.flippermockup"
 
 commonDependencies {
     implementation(projects.components.core.ui.theme)

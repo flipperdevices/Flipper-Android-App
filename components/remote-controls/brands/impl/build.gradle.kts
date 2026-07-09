@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.remotecontrols.brands.impl"
 
 androidDependencies {
     implementation(projects.components.core.di)

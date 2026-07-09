@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.changelog.impl"
 
 androidDependencies {
     implementation(projects.components.changelog.api)

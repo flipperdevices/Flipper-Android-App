@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.wearable.sync.wear.impl"
 
 androidDependencies {
     implementation(projects.components.wearable.sync.common)

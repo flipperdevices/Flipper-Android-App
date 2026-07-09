@@ -3,4 +3,3 @@ plugins {
     id("kotlin-parcelize")
 }
 
-android.namespace = "com.flipperdevices.core.kmpparcelize"

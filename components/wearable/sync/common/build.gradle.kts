@@ -4,7 +4,6 @@ plugins {
     id("flipper.wire")
 }
 
-android.namespace = "com.flipperdevices.wearable.sync.common"
 
 androidDependencies {
     implementation(projects.components.core.ktx)

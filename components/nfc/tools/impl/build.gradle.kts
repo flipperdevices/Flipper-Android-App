@@ -2,19 +2,6 @@ plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
-    id("flipper.git-submodule-fetch")
-}
-
-android.namespace = "com.flipperdevices.nfc.tools.impl"
-
-android {
-    externalNativeBuild {
-        cmake {
-            path("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
-            ndkVersion = "26.1.10909125"
-        }
-    }
 }
 
 androidDependencies {

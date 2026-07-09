@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.nfceditor.api"
 
 androidDependencies {
     implementation(projects.components.bridge.dao.api)

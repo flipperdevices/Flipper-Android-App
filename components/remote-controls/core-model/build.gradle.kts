@@ -4,8 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.remotecontrols.core.model"
-
 commonDependencies {
     implementation(libs.kotlin.serialization.json)
 }

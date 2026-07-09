@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.deeplink.impl"
 
 androidDependencies {
     implementation(projects.components.core.di)

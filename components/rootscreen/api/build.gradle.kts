@@ -4,7 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.rootscreen.api"
 
 androidDependencies {
     implementation(projects.components.faphub.screenshotspreview.api)

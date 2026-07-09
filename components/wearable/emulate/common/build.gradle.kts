@@ -4,7 +4,6 @@ plugins {
     id("flipper.wire")
 }
 
-android.namespace = "com.flipperdevices.wearable.emulate.common"
 
 androidDependencies {
     implementation(projects.components.core.log)

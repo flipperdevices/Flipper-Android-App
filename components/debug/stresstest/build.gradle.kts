@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.debug.stresstest"
 
 androidDependencies {
     implementation(projects.components.debug.api)

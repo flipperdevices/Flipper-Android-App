@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.filemanager.rename.api"
-
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.storage.api)
 

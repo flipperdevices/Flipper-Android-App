@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.faphub.installation.stateprovider.impl"
 
 androidDependencies {
     implementation(projects.components.faphub.installation.stateprovider.api)
@@ -25,9 +24,9 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockk)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.mockk)
+    implementation(libs.kotlin.coroutines.test)
 }
