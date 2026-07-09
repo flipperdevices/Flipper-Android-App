@@ -10,12 +10,13 @@ import com.flipperdevices.bridge.connection.feature.seriallagsdetector.api.FLags
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @FDeviceFeatureQualifier(FDeviceFeature.RPC)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FRpcFeatureFactoryImpl @Inject constructor(
     private val rpcFeatureFactory: FRpcFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory {

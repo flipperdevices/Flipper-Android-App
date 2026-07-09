@@ -31,7 +31,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okio.Path
 import org.jetbrains.compose.resources.getString
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class DownloadViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,

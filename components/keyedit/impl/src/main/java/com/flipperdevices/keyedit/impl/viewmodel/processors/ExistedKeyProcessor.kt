@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.keyedit.impl.model.EditableKey
 import com.flipperdevices.keyedit.impl.model.KeyEditState
 import com.flipperdevices.keyparser.api.KeyParser
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ExistedKeyProcessor @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,

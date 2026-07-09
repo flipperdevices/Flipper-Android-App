@@ -1,5 +1,6 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("com.google.devtools.ksp")
 }
@@ -10,7 +11,7 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.dao.api)
 
     implementation(projects.components.core.di)
@@ -21,19 +22,23 @@ dependencies {
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    commonKsp(libs.room.ksp)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.okio)
     implementation(libs.okio.fake)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "commonKsp"(libs.room.ksp)
+
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.mockito.kotlin)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }

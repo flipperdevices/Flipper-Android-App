@@ -6,8 +6,8 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.DebugInfoEnum
 import com.flipperdevices.metric.api.events.complex.DebugInfoEvent
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @Suppress("MagicNumber")
 private val SUPPORTED_NFC_FORMATS = intArrayOf(2, 3, 4)

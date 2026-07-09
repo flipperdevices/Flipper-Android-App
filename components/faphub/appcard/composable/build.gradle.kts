@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.faphub.appcard.composable"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.rootscreen.api)
 
     implementation(projects.components.faphub.screenshotspreview.api)
@@ -18,10 +19,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.coil.compose)
     implementation(libs.compose.paging)
 }

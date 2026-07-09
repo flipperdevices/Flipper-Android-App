@@ -7,9 +7,9 @@ import com.flipperdevices.bridge.connection.feature.screenstreaming.api.FScreenU
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.desktop.UnlockRequest
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class FScreenUnlockFeatureApiImpl @AssistedInject constructor(
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,

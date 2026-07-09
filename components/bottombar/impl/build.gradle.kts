@@ -1,12 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.bottombar.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bottombar.api)
 
     implementation(projects.components.core.di)
@@ -34,10 +35,6 @@ dependencies {
 
     implementation(libs.appcompat)
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
     implementation(libs.compose.pager)
     implementation(libs.bundles.decompose)
     implementation(libs.image.lottie)

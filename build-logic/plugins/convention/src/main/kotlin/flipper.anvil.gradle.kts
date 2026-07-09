@@ -1,14 +1,27 @@
-plugins {
-    id("dev.zacsweers.anvil")
-}
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-anvil {
-    useKsp(contributesAndFactoryGeneration = true)
-    generateDaggerFactories = true
-}
+pluginManager.apply("com.google.devtools.ksp")
+pluginManager.apply("dev.zacsweers.metro")
+
+val metroAnnotations = libs.metro.utils.annotations
 
 dependencies {
-    "implementation"(libs.dagger)
-    "implementation"(libs.anvil.utils.annotations)
-    "commonKsp"(libs.anvil.utils.compiler)
+    add("commonKsp", libs.metro.utils.ksp)
+}
+
+pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+    configure<KotlinMultiplatformExtension> {
+        sourceSets {
+            val commonMain by getting
+            commonMain.dependencies {
+                implementation(metroAnnotations)
+            }
+        }
+    }
+}
+
+pluginManager.withPlugin("org.jetbrains.kotlin.android") {
+    dependencies {
+        "implementation"(metroAnnotations)
+    }
 }

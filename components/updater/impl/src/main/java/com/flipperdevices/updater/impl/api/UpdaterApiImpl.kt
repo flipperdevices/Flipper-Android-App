@@ -22,21 +22,22 @@ import com.flipperdevices.updater.model.UpdateRequest
 import com.flipperdevices.updater.model.UpdatingState
 import com.flipperdevices.updater.model.UpdatingStateWithRequest
 import com.flipperdevices.updater.subghz.helpers.SubGhzProvisioningHelper
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
+@SingleIn(AppGraph::class)
 @Suppress("LongParameterList")
-@ContributesBinding(AppGraph::class, UpdaterApi::class)
+@ContributesBinding(AppGraph::class, binding<UpdaterApi>())
 class UpdaterApiImpl @Inject constructor(
-    private val updateContentDownloader: MutableSet<UpdateContentDownloader>,
+    private val updateContentDownloader: Set<UpdateContentDownloader>,
     private val subGhzProvisioningHelper: SubGhzProvisioningHelper,
     private val uploadToFlipperHelper: UploadToFlipperHelper,
     private val metricApi: MetricApi,

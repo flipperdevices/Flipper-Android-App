@@ -9,14 +9,15 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.updater.api.FirmwareVersionBuilderApi
 import com.flipperdevices.updater.api.FlipperVersionProviderApi
 import com.flipperdevices.updater.model.FirmwareVersion
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperVersionProviderApi::class)
+@ContributesBinding(AppGraph::class, binding<FlipperVersionProviderApi>())
 class FlipperVersionProviderApiImpl @Inject constructor(
     private val firmwareVersionBuilderApi: FirmwareVersionBuilderApi,
     private val fFeatureProvider: FFeatureProvider

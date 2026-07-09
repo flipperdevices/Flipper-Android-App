@@ -27,7 +27,7 @@ import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val CAPABILITY_PHONE_APP = "verify_remote_flipper_phone_app"
 

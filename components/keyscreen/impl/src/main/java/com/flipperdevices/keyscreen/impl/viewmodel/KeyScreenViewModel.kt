@@ -7,9 +7,9 @@ import com.flipperdevices.keyscreen.api.KeyStateHelperApi
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("LongParameterList")
@@ -51,6 +51,6 @@ class KeyScreenViewModel @AssistedInject constructor(
 
     @AssistedFactory
     fun interface Factory {
-        operator fun invoke(keyPath: FlipperKeyPath): KeyScreenViewModel
+        operator fun invoke(paramKeyPath: FlipperKeyPath): KeyScreenViewModel
     }
 }

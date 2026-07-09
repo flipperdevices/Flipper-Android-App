@@ -9,8 +9,8 @@ import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.Bran
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.BrandsListViewModel
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.QueryViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,16 +18,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, BrandsDecomposeComponent.Factory::class)
 class BrandsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBackClick: DecomposeOnBackParameter,
-    @Assisted private val onBrandClick: (brandId: Long, brandName: String) -> Unit,
-    @Assisted private val onBrandLongClick: (brandId: Long) -> Unit,
+    @Assisted private val onBrandClick: (Long, String) -> Unit,
+    @Assisted private val onBrandLongClick: (Long) -> Unit,
     @Assisted categoryId: Long,
     createBrandsListViewModel: BrandsListViewModel.Factory,
     createQueryViewModel: Provider<QueryViewModel>
@@ -41,7 +41,7 @@ class BrandsDecomposeComponentImpl @AssistedInject constructor(
     private val queryFeature = instanceKeeper.getOrCreate(
         key = "BrandsDecomposeComponent_${categoryId}_queryFeature",
         factory = {
-            createQueryViewModel.get()
+            createQueryViewModel.invoke()
         }
     )
 

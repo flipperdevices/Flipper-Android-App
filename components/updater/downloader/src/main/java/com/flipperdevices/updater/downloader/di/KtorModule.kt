@@ -4,9 +4,8 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.BuildConfig
 import com.flipperdevices.core.log.TaggedLogger
 import com.flipperdevices.core.log.verbose
-import com.squareup.anvil.annotations.ContributesTo
-import dagger.Module
-import dagger.Provides
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
@@ -19,13 +18,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import javax.inject.Singleton
+import dev.zacsweers.metro.SingleIn
 
-@Module
 @ContributesTo(AppGraph::class)
-class KtorModule {
+interface KtorModule {
     @Provides
-    @Singleton
+    @SingleIn(AppGraph::class)
     fun providerKtorClient(): HttpClient {
         val ktorTimber = TaggedLogger("Ktor")
 

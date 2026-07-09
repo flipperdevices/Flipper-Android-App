@@ -1,7 +1,7 @@
 package com.flipperdevices.main.impl.di
 
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesTo
+import dev.zacsweers.metro.ContributesTo
 
 @ContributesTo(AppGraph::class)
 interface FapHubMainComponent

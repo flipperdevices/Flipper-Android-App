@@ -7,11 +7,11 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.pingRequest
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesMultibinding
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.PingRequest
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,8 +19,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface ConnectionHelper {
     fun getState(): StateFlow<ConnectionTesterState>
@@ -28,12 +29,12 @@ interface ConnectionHelper {
     fun testConnection()
 }
 
-@Singleton
-@ContributesMultibinding(AppGraph::class, HandheldProcessor::class)
-@ContributesBinding(AppGraph::class, ConnectionHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesIntoSet(AppGraph::class, binding<HandheldProcessor>())
+@ContributesBinding(AppGraph::class, binding<ConnectionHelper>())
 class ConnectionHelperImpl @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
+    private val commandInputStream: WearableCommandInputStream<MainResponse>,
+    private val commandOutputStream: WearableCommandOutputStream<MainRequest>,
 ) : ConnectionHelper, HandheldProcessor, LogTagProvider {
     override val TAG: String = "ConnectionTester-${hashCode()}"
 
@@ -41,7 +42,7 @@ class ConnectionHelperImpl @Inject constructor(
 
     override fun init(scope: CoroutineScope) {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasPing()) {
+            if (it.ping != null) {
                 info { "Ping received" }
                 state.emit(ConnectionTesterState.CONNECTED)
             }
@@ -58,9 +59,7 @@ class ConnectionHelperImpl @Inject constructor(
     override fun getState(): StateFlow<ConnectionTesterState> = state.asStateFlow()
     override fun testConnection() {
         commandOutputStream.send(
-            mainRequest {
-                ping = pingRequest { }
-            }
+            MainRequest(ping = PingRequest())
         )
     }
 }

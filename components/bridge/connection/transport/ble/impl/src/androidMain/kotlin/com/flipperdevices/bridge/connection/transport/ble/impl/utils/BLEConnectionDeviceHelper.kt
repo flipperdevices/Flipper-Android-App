@@ -15,7 +15,7 @@ import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectOptions
 import no.nordicsemi.android.kotlin.ble.core.scanner.BleScanMode
 import no.nordicsemi.android.kotlin.ble.core.scanner.BleScannerSettings
 import no.nordicsemi.android.kotlin.ble.scanner.BleScanner
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 /**
  * This class aims to speed up the connection to a BLE device.

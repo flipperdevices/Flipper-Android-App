@@ -14,7 +14,7 @@ import com.flipperdevices.faphub.utils.FapHubConstants
 import okio.buffer
 import okio.source
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapManifestUploader @Inject constructor(
     private val parser: FapManifestParser,

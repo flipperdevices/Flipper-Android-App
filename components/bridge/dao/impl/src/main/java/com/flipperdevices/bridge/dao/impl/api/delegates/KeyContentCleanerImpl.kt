@@ -7,12 +7,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import java.io.File
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, KeyContentCleaner::class)
+@ContributesBinding(AppGraph::class, binding<KeyContentCleaner>())
 class KeyContentCleanerImpl @Inject constructor(
     private val deleteKeyDaoProvider: Provider<DeleteKeyDao>,
     flipperStorageProvider: FlipperStorageProvider

@@ -7,9 +7,9 @@ import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.remotecontrols.api.InfraredsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.composable.InfraredsScreen
 import com.flipperdevices.remotecontrols.impl.brands.presentation.viewmodel.InfraredsListViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, InfraredsScreenDecomposeComponent.Factory::class)
 class InfraredFilesDecomposeComponentImpl @AssistedInject constructor(

@@ -1,35 +1,24 @@
-build:
-  maxIssues: 0
-  excludeCorrectable: false
-  weights:
-  # complexity: 2
-  # LongParameterList: 1
-  # style: 1
-  # comments: 1
-
 config:
   validation: true
   warningsAsErrors: false
   checkExhaustiveness: false
-  # when writing own rules with new properties, exclude the property path e.g.: 'my_rule_set,.*>.*>[my_property]'
-  excludes: ''
+  # when writing own rules with new properties, exclude the property path e.g.: ['my_rule_set', '.*>.*>[my_property]']
+  excludes: []
 
 processors:
   active: true
-  exclude:
-    - 'DetektProgressListener'
+  exclude: []
   # - 'KtFileCountProcessor'
   # - 'PackageCountProcessor'
   # - 'ClassCountProcessor'
   # - 'FunctionCountProcessor'
   # - 'PropertyCountProcessor'
-  # - 'ProjectComplexityProcessor'
+  # - 'ProjectCyclomaticComplexityProcessor'
   # - 'ProjectCognitiveComplexityProcessor'
   # - 'ProjectLLOCProcessor'
   # - 'ProjectCLOCProcessor'
   # - 'ProjectLOCProcessor'
   # - 'ProjectSLOCProcessor'
-  # - 'LicenseHeaderLoaderExtension'
 
 console-reports:
   active: true
@@ -37,29 +26,19 @@ console-reports:
     - 'ProjectStatisticsReport'
     - 'ComplexityReport'
     - 'NotificationReport'
-    - 'FindingsReport'
-    - 'FileBasedFindingsReport'
-  #  - 'LiteFindingsReport'
-
-output-reports:
-  active: true
-  exclude:
-  # - 'TxtOutputReport'
-  # - 'XmlOutputReport'
-  # - 'HtmlOutputReport'
-  # - 'MdOutputReport'
+    - 'IssuesReport'
+    - 'FileBasedIssuesReport'
+  #  - 'LiteIssuesReport'
 
 comments:
   active: true
   AbsentOrWrongFileLicense:
     active: false
-    licenseTemplateFile: 'license.template'
-    licenseTemplateIsRegex: false
-  CommentOverPrivateFunction:
-    active: false
-  CommentOverPrivateProperty:
-    active: false
   DeprecatedBlockTag:
+    active: false
+  DocumentationOverPrivateFunction:
+    active: false
+  DocumentationOverPrivateProperty:
     active: false
   EndOfSentenceFormat:
     active: false
@@ -93,19 +72,19 @@ complexity:
   active: true
   CognitiveComplexMethod:
     active: false
-    threshold: 15
+    allowedComplexity: 15
   ComplexCondition:
     active: true
-    threshold: 4
+    allowedConditions: 3
   ComplexInterface:
     active: false
-    threshold: 10
+    allowedDefinitions: 10
     includeStaticDeclarations: false
     includePrivateDeclarations: false
     ignoreOverloaded: false
   CyclomaticComplexMethod:
     active: true
-    threshold: 15
+    allowedComplexity: 14
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
@@ -124,31 +103,31 @@ complexity:
     ignoredLabels: [ ]
   LargeClass:
     active: true
-    threshold: 600
+    allowedLines: 600
   LongMethod:
     active: true
-    threshold: 60
+    allowedLines: 60
   LongParameterList:
     active: true
-    functionThreshold: 6
-    constructorThreshold: 7
+    allowedFunctionParameters: 5
+    allowedConstructorParameters: 6
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
     ignoreAnnotated: [ 'Composable' ]
   MethodOverloading:
     active: false
-    threshold: 6
+    allowedOverloads: 6
   NamedArguments:
     active: false
-    threshold: 3
+    allowedArguments: 3
     ignoreArgumentsMatchingNames: false
   NestedBlockDepth:
     active: true
-    threshold: 4
+    allowedDepth: 4
   NestedScopeFunctions:
     active: false
-    threshold: 1
+    allowedDepth: 1
     functions:
       - 'kotlin.apply'
       - 'kotlin.run'
@@ -160,18 +139,18 @@ complexity:
   StringLiteralDuplication:
     active: false
     excludes: [ '**/test/**','**/jvmSharedTest/**', '**/androidUnitTest/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    threshold: 3
+    allowedDuplications: 2
     ignoreAnnotation: true
-    excludeStringsWithLessThan5Characters: true
+    allowedWithLengthLessThan: 5
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
     excludes: [ '**/test/**','**/jvmSharedTest/**', '**/androidUnitTest/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    thresholdInFiles: 11
-    thresholdInClasses: 11
-    thresholdInInterfaces: 11
-    thresholdInObjects: 11
-    thresholdInEnums: 11
+    allowedFunctionsPerFile: 11
+    allowedFunctionsPerClass: 11
+    allowedFunctionsPerInterface: 11
+    allowedFunctionsPerObject: 11
+    allowedFunctionsPerEnum: 11
     ignoreDeprecated: false
     ignorePrivate: false
     ignoreOverridden: false
@@ -190,6 +169,8 @@ coroutines:
     active: true
   SleepInsteadOfDelay:
     active: true
+  SuspendFunSwallowedCancellation:
+    active: false
   SuspendFunWithCoroutineScopeReceiver:
     active: false
   SuspendFunWithFlowReturnType:
@@ -219,7 +200,7 @@ empty-blocks:
     active: true
   EmptyInitBlock:
     active: true
-  EmptyKtFile:
+  EmptyKotlinFile:
     active: true
   EmptySecondaryConstructor:
     active: true
@@ -320,10 +301,10 @@ naming:
   ForbiddenClassName:
     active: false
     forbiddenName: [ ]
-  FunctionMaxLength:
+  FunctionNameMaxLength:
     active: false
     maximumFunctionNameLength: 30
-  FunctionMinLength:
+  FunctionNameMinLength:
     active: false
     minimumFunctionNameLength: 3
   FunctionNaming:
@@ -331,7 +312,7 @@ naming:
     excludes: [ '**/test/**','**/jvmSharedTest/**', '**/androidUnitTest/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
     functionPattern: '[a-z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
-    ignoreAnnotated: [ 'Composable' ]
+    ignoreAnnotated: [ 'Composable', 'Test' ]
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
@@ -384,7 +365,7 @@ performance:
     active: true
   CouldBeSequence:
     active: false
-    threshold: 3
+    allowedOperations: 2
   ForEachOnRange:
     active: true
     excludes: [ '**/test/**','**/jvmSharedTest/**', '**/androidUnitTest/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
@@ -464,11 +445,17 @@ potential-bugs:
   MissingPackageDeclaration:
     active: false
     excludes: [ '**/*.kts' ]
+  MissingUseCall:
+    active: false
   NullCheckOnMutableProperty:
+    active: false
+  PropertyUsedBeforeDeclaration:
     active: false
   NullableToStringCall:
     active: false
   UnconditionalJumpStatementInLoop:
+    active: false
+  UnnamedParameterUse:
     active: false
   UnnecessaryNotNullCheck:
     active: false
@@ -494,6 +481,10 @@ potential-bugs:
 
 style:
   active: true
+  AbstractClassCanBeConcreteClass:
+    active: false
+  AbstractClassCanBeInterface:
+    active: false
   AlsoCouldBeApply:
     active: false
   BracesOnIfStatements:
@@ -518,6 +509,8 @@ style:
     conversionFunctionPrefix:
       - 'to'
   DataClassShouldBeImmutable:
+    active: false
+  DoubleNegativeLambda:
     active: false
   DestructuringDeclarationWithTooManyEntries:
     active: true
@@ -545,8 +538,6 @@ style:
     allowedPatterns: ''
   ForbiddenImport:
     active: false
-    imports: [ ]
-    forbiddenPatterns: ''
   ForbiddenMethodCall:
     active: false
     methods:
@@ -599,7 +590,7 @@ style:
     excludeImportStatements: true
     excludeCommentStatements: false
     excludeRawStrings: true
-  MayBeConst:
+  MayBeConstant:
     active: true
   ModifierOrder:
     active: true
@@ -622,15 +613,17 @@ style:
     active: true
   OptionalUnit:
     active: false
-  PreferToOverPairSyntax:
-    active: false
   ProtectedMemberInFinalClass:
     active: true
+  RangeUntilInsteadOfRangeTo:
+    active: false
   RedundantExplicitType:
     active: false
   RedundantHigherOrderMapUsage:
     active: true
-  RedundantVisibilityModifierRule:
+  RedundantConstructorKeyword:
+    active: false
+  RedundantVisibilityModifier:
     active: false
   ReturnCount:
     active: false
@@ -644,7 +637,9 @@ style:
     active: true
   SerialVersionUIDInSerializableClass:
     active: true
-  SpacingBetweenPackageAndImports:
+  SpacingAfterPackageAndImports:
+    active: false
+  StringShouldBeRawString:
     active: false
   ThrowsCount:
     active: true
@@ -658,16 +653,16 @@ style:
     active: false
     acceptableLength: 4
     allowNonStandardGrouping: false
-  UnnecessaryAbstractClass:
-    active: false
-  UnnecessaryAnnotationUseSiteTarget:
-    active: false
   UnnecessaryApply:
     active: true
   UnnecessaryBackticks:
     active: false
+  UnnecessaryBracesAroundTrailingLambda:
+    active: false
   UnnecessaryFilter:
     active: true
+  UnnecessaryFullyQualifiedName:
+    active: false
   UnnecessaryInheritance:
     active: true
   UnnecessaryInnerClass:
@@ -677,13 +672,15 @@ style:
   UnnecessaryParentheses:
     active: false
     allowForUnclearPrecedence: false
-  UntilInsteadOfRangeTo:
-    active: false
-  UnusedImports:
+  UnusedImport:
     active: false
   UnusedPrivateClass:
     active: true
-  UnusedPrivateMember:
+  UnusedPrivateFunction:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID|Composable.*Preview)'
+    ignoreAnnotated: [ 'Composable' ]
+  UnusedPrivateProperty:
     active: true
     allowedNames: '(_|ignored|expected|serialVersionUID|Composable.*Preview)'
     ignoreAnnotated: [ 'Composable' ]
@@ -706,6 +703,8 @@ style:
     active: false
   UseIsNullOrEmpty:
     active: true
+  UseLet:
+    active: false
   UseOrEmpty:
     active: true
   UseRequire:
@@ -727,11 +726,74 @@ style:
       - 'java.util.*'
       - 'com.flipperdevices.bridge.connection.feature.getinfo.model.FGetInfoApiProperty.DeviceInfo.*'
 
-formatting:
+ktlint:
   IfElseBracing:
     active: true
+  # New ktlint 1.x rules, disabled to keep the pre-detekt-2 code style
+  BackingPropertyNaming:
+    active: false
+  BlankLineBeforeDeclaration:
+    active: false
+  BlankLineBetweenWhenConditions:
+    active: false
+  ArgumentListWrapping:
+    active: false
+  ChainMethodContinuation:
+    active: false
+  ClassSignature:
+    active: false
+  EnumWrapping:
+    active: false
+  ExpressionOperandWrapping:
+    active: false
+  FunctionExpressionBody:
+    active: false
+  FunctionLiteral:
+    active: false
+  FunctionName:
+    active: false
+  FunctionSignature:
+    active: false
+  FunctionTypeModifierSpacing:
+    active: false
+  IfElseWrapping:
+    active: false
+  ImportOrdering:
+    active: false
+  Kdoc:
+    active: false
+  MultilineExpressionWrapping:
+    active: false
+  NoBlankLineInList:
+    active: false
+  NoEmptyFirstLineInClassBody:
+    active: false
+  NoConsecutiveComments:
+    active: false
+  PropertyName:
+    active: false
+  StringTemplateIndent:
+    active: false
+  SpacingAroundColon:
+    active: false
+  StatementWrapping:
+    active: false
+  TrailingCommaOnCallSite:
+    active: false
+  TrailingCommaOnDeclarationSite:
+    active: false
+  TypeParameterListSpacing:
+    active: false
+  ValueParameterComment:
+    active: false
+  WhenEntryBracing:
+    active: false
 
 Compose:
+  ComposableNestingDepth:
+    active: false
+  Material2:
+    active: false
   CompositionLocalAllowlist:
     active: true
     # You can optionally define a list of CompositionLocals that are allowed here
@@ -741,8 +803,6 @@ Compose:
     active: true
     # You can optionally add your own composables here
     # contentEmitters: MyComposable,MyOtherComposable
-  ModifierComposable:
-    active: true
   ModifierMissing:
     active: true
     # You can optionally control the visibility of which composables to check for here
@@ -783,6 +843,12 @@ Compose:
     active: true
   LambdaParameterEventTrailing:
     active: false
+  MissingReadOnlyComposable:
+    active: false
+  UnnecessaryComposable:
+    active: false
+  VarsWithoutStateBacking:
+    active: false
 
 
 DecomposeRule:
@@ -790,10 +856,3 @@ DecomposeRule:
     active: true
     checkImport: true
     replaceTo: 'pushToFront()'
-
-
-compiler:
-  CompilerWarning:
-    active: true
-    ignoreDiagnostic:
-      - OPT_IN_USAGE

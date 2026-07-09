@@ -8,10 +8,11 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyCrypto
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.keyparser.api.KeyParser
 import com.flipperdevices.keyparser.api.model.FlipperKeyParsed
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, KeyParser::class)
+@ContributesBinding(AppGraph::class, binding<KeyParser>())
 class KeyParserNoop @Inject constructor() : KeyParser {
     override suspend fun parseKey(flipperKey: FlipperKey): FlipperKeyParsed {
         throw NotImplementedError()

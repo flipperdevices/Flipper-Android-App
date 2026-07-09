@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.ui.decompose)
 
     implementation(projects.components.bridge.dao.api)

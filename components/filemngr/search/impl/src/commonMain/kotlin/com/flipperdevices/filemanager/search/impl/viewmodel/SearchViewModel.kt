@@ -11,9 +11,9 @@ import com.flipperdevices.core.ktx.jre.debounceAfterFirst
 import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -89,7 +89,7 @@ class SearchViewModel @AssistedInject constructor(
                     .filter { searchItem -> searchItem.instance.fileType == FileType.DIR }
                     .forEach { searchItem ->
                         itemsFlowRecursive(listingApi, searchItem.fullPath)
-                            .onEach { searchItems -> emit(searchItems) }
+                            .onEach { childSearchItems -> emit(childSearchItems) }
                             .collect()
                     }
             }.collect()
@@ -106,8 +106,8 @@ class SearchViewModel @AssistedInject constructor(
                     query.isEmpty() -> itemsFlow(listingApi, path)
                     else -> itemsFlowRecursive(listingApi, path)
                 }
-                itemsFlow.onEach {
-                    val filteredItems = it.filter { item ->
+                itemsFlow.onEach { searchItems ->
+                    val filteredItems = searchItems.filter { item ->
                         if (query.isEmpty()) {
                             true
                         } else {

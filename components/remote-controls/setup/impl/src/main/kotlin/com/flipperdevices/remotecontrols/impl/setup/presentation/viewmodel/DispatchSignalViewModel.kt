@@ -29,7 +29,7 @@ import com.flipperdevices.remotecontrols.api.DispatchSignalApi
 import com.flipperdevices.remotecontrols.impl.setup.encoding.ByteArrayEncoder
 import com.flipperdevices.remotecontrols.impl.setup.encoding.JvmEncoder
 import com.flipperdevices.remotecontrols.impl.setup.util.toByteArray
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -41,9 +41,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, DispatchSignalApi::class)
+@ContributesBinding(AppGraph::class, binding<DispatchSignalApi>())
 class DispatchSignalViewModel @Inject constructor(
     private val closeEmulateAppTaskHolder: CloseEmulateAppTaskHolder,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,

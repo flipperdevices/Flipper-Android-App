@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.stateprovider.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.installation.stateprovider.api)
 
     implementation(projects.components.core.di)
@@ -22,8 +23,11 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlin.coroutines.test)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
 }

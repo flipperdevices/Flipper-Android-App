@@ -14,6 +14,9 @@
 - [Feature] Single tap for infrared remotes
 - [Refactor] Move rename and file create to separated modules
 - [Refactor] Improve and refactor new FileManager Editor
+- [Refactor] Update project dependencies
+- [Refactor] Migrate to metro DI
+- [Refactor] Update build-logic
 - [FIX] Migrate url host from metric.flipperdevices.com to metric.flipp.dev
 - [FIX] Fix empty response in faphub category
 - [FIX] New file manager uploading progress

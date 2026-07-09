@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class StorageExistHelper @Inject constructor(
     private val fFeatureProvider: FFeatureProvider

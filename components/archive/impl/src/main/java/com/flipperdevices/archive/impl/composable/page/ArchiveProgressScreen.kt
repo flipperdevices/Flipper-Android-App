@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,26 +79,26 @@ private fun AnimatedStatusComposable(inProgressState: SynchronizationState.InPro
             modifier = Modifier.fillMaxWidth(),
             text = when (animatedInProgressState) {
                 is SynchronizationState.InProgress.FileInProgress -> {
-                    LocalContext.current.getString(
+                    stringResource(
                         R.string.archive_updating,
                         animatedInProgressState.fileName
                     )
                 }
 
                 is SynchronizationState.InProgress.Default -> {
-                    LocalContext.current.getString(R.string.archive_sync_progress)
+                    stringResource(R.string.archive_sync_progress)
                 }
 
                 is SynchronizationState.InProgress.Favorites -> {
-                    LocalContext.current.getString(R.string.archive_favorites)
+                    stringResource(R.string.archive_favorites)
                 }
 
                 is SynchronizationState.InProgress.Prepare -> {
-                    LocalContext.current.getString(R.string.archive_preparing)
+                    stringResource(R.string.archive_preparing)
                 }
 
                 is SynchronizationState.InProgress.PrepareHashes -> {
-                    LocalContext.current.getString(
+                    stringResource(
                         R.string.archive_hashes,
                         animatedInProgressState.keyType.humanReadableName
                     )
@@ -129,7 +128,7 @@ fun ArchiveProgressScreen(
     ) {
         Text(
             modifier = Modifier,
-            text = LocalContext.current.getString(
+            text = stringResource(
                 R.string.archive_syncing,
             ),
             style = LocalTypography.current.titleB18,
@@ -147,7 +146,7 @@ fun ArchiveProgressScreen(
             modifier = Modifier,
             text = when (speed) {
                 null -> ""
-                else -> LocalContext.current.getString(
+                else -> stringResource(
                     R.string.archive_speed,
                     speed.receiveBytesInSec.toFormattedSize()
                 )

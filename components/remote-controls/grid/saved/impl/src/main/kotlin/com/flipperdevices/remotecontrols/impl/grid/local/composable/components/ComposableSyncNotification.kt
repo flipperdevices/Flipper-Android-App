@@ -116,12 +116,12 @@ internal fun ComposableNotification(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Crossfade(state) { state -> NotificationIcon(state) }
-        Crossfade(state) { state ->
-            val color by animateNotificationColor(state)
+        Crossfade(state) { targetState -> NotificationIcon(targetState) }
+        Crossfade(state) { targetState ->
+            val color by animateNotificationColor(targetState)
             Text(
                 modifier = Modifier.weight(1f),
-                text = notificationText(state),
+                text = notificationText(targetState),
                 style = LocalTypography.current.subtitleM12,
                 color = color
             )

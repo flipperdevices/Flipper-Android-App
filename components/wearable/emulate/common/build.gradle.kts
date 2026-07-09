@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
-    id("flipper.protobuf")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
+    id("flipper.wire")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.common"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
 

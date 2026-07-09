@@ -1,11 +1,12 @@
-import io.gitlab.arturbosch.detekt.Detekt
+import dev.detekt.gradle.Detekt
 
 plugins {
-    id("io.gitlab.arturbosch.detekt")
+    id("dev.detekt")
 }
 
 tasks.register<Detekt>("detektFormat") {
     autoCorrect = true
+    ignoreFailures = true
 }
 
 tasks.withType<Detekt> {
@@ -14,8 +15,9 @@ tasks.withType<Detekt> {
 
     reports {
         html.required.set(true)
-        xml.required.set(false)
-        txt.required.set(false)
+        checkstyle.required.set(false)
+        sarif.required.set(false)
+        markdown.required.set(false)
     }
 
     setSource(files(projectDir))
@@ -27,18 +29,18 @@ tasks.withType<Detekt> {
         "**/build/**",
     )
 
+    exclude {
+        it.file.absolutePath.contains("/build/generated/")
+    }
+
     parallel = true
 
     buildUponDefaultConfig = true
 
     allRules = true
-
-    // Target version of the generated JVM bytecode. It is used for type resolution.
-    this.jvmTarget = "1.8"
 }
 
 dependencies {
-    detektPlugins(libs.detekt.ruleset.compiler)
     detektPlugins(libs.detekt.ruleset.ktlint)
     detektPlugins(libs.detekt.ruleset.compose)
     detektPlugins(libs.detekt.ruleset.decompose)

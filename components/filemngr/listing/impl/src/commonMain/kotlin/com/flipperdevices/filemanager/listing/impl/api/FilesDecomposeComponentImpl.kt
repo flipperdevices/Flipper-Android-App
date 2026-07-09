@@ -30,11 +30,11 @@ import com.flipperdevices.filemanager.listing.impl.viewmodel.StorageInfoViewMode
 import com.flipperdevices.filemanager.rename.api.RenameDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, FilesDecomposeComponent.Factory::class)
 @Suppress("LongParameterList")
@@ -67,7 +67,7 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     )
 
     private val selectionViewModel = instanceKeeper.getOrCreate("selectionViewModel_$path") {
-        createSelectionViewModel.get()
+        createSelectionViewModel.invoke()
     }
 
     val filesViewModel = instanceKeeper.getOrCreate("filesViewModel_$path") {
@@ -138,13 +138,13 @@ class FilesDecomposeComponentImpl @AssistedInject constructor(
     override fun Render() {
         val multipleFilesPicker = uploadDecomposeComponent.rememberMultipleFilesPicker(path)
         val storageInfoViewModel = viewModelWithFactory(path.root.toString()) {
-            storageInfoViewModelFactory.get()
+            storageInfoViewModelFactory.invoke()
         }
         val optionsViewModel = viewModelWithFactory(path.root.toString()) {
-            optionsInfoViewModelFactory.get()
+            optionsInfoViewModelFactory.invoke()
         }
         val deleteFileViewModel = viewModelWithFactory(path.toString()) {
-            deleteFilesViewModelFactory.get()
+            deleteFilesViewModelFactory.invoke()
         }
         LaunchedEventsComposable(
             deleteFilesViewModel = deleteFileViewModel,

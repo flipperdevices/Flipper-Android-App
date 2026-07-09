@@ -13,9 +13,9 @@ import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
 import com.flipperdevices.updater.model.UpdateRequest
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 @ContributesBinding(AppGraph::class)
 class UpdaterCardApiImpl @Inject constructor(
@@ -35,7 +35,7 @@ class UpdaterCardApiImpl @Inject constructor(
     ) {
         val updateStateViewModel: UpdateStateViewModel =
             componentContext.viewModelWithFactory(key = null) {
-                updateStateViewModelProvider.get()
+                updateStateViewModelProvider.invoke()
             }
         val updateCardViewModel: UpdateCardViewModel = componentContext.viewModelWithFactory(
             key = deeplink?.toString()
@@ -44,7 +44,7 @@ class UpdaterCardApiImpl @Inject constructor(
         }
         val updateRequestViewModel: UpdateRequestViewModel =
             componentContext.viewModelWithFactory(key = null) {
-                updateRequestViewModelProvider.get()
+                updateRequestViewModelProvider.invoke()
             }
 
         LaunchedEffect(requestRefresh, onRefreshRequestExecute) {

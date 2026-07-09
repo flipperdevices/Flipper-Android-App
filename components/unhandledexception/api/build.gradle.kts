@@ -1,9 +1,9 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.unhandledexception.api"
 
-dependencies {
-    implementation(libs.compose.ui)
+androidDependencies {
 }

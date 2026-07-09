@@ -23,7 +23,7 @@ import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 @Composable
-@Suppress("LongMethod", "ComplexMethod")
+@Suppress("LongMethod", "ComplexMethod", "CyclomaticComplexMethod")
 fun ComposableUpdateContent(
     updaterScreenState: UpdaterScreenState,
     onRetry: () -> Unit,

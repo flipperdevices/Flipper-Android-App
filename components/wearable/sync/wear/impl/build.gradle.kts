@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.sync.wear.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.wearable.sync.common)
     implementation(projects.components.wearable.sync.wear.api)
 
@@ -34,8 +35,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
     implementation(libs.compose.wear.foundation)
     implementation(libs.compose.wear.material)
     implementation(libs.compose.wear.preview)

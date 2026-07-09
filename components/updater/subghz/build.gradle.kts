@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.subghz"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.updater.api)
 
     implementation(projects.components.core.di)
@@ -31,25 +32,24 @@ dependencies {
     implementation(projects.components.bridge.connection.pbutils)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     // Testing
-    testImplementation(projects.components.core.buildKonfig)
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(projects.components.updater.downloader)
-    testImplementation(libs.ktor.client)
-    testImplementation(libs.ktor.negotiation)
-    testImplementation(libs.ktor.serialization)
-    testImplementation(libs.ktor.mock)
-    testImplementation(libs.kotlin.serialization.json)
-    testImplementation(libs.kotlin.immutable.collections)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+    "androidUnitTestImplementation"(projects.components.updater.downloader)
+    "androidUnitTestImplementation"(libs.ktor.client)
+    "androidUnitTestImplementation"(libs.ktor.negotiation)
+    "androidUnitTestImplementation"(libs.ktor.serialization)
+    "androidUnitTestImplementation"(libs.ktor.mock)
+    "androidUnitTestImplementation"(libs.kotlin.serialization.json)
+    "androidUnitTestImplementation"(libs.kotlin.immutable.collections)
 }

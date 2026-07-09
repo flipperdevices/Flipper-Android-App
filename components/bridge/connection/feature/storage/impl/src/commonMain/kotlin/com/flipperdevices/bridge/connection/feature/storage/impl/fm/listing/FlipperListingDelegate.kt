@@ -19,7 +19,7 @@ abstract class FlipperListingDelegate(
 ) : LogTagProvider {
     override val TAG = "FlipperListingDelegate"
 
-    suspend fun listing(pathOnFlipper: String): Flow<Result<List<ListingItem>>> {
+    fun listing(pathOnFlipper: String): Flow<Result<List<ListingItem>>> {
         return listingInternal(pathOnFlipper, includeMd5Flag = false).mapCatching { list ->
             list.map { item ->
                 ListingItem(
@@ -31,7 +31,7 @@ abstract class FlipperListingDelegate(
         }
     }
 
-    protected suspend fun listingInternal(
+    protected fun listingInternal(
         pathOnFlipper: String,
         includeMd5Flag: Boolean
     ): Flow<Result<List<File>>> {

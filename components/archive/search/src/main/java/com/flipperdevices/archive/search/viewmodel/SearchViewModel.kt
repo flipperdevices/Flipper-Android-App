@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModel @Inject constructor(

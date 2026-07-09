@@ -2,7 +2,8 @@ package com.flipperdevices.bridge.connection
 
 import android.app.Application
 import com.flipperdevices.bridge.connection.di.AppComponent
-import com.flipperdevices.bridge.connection.di.DaggerMergedAndroidAppComponent
+import com.flipperdevices.bridge.connection.di.AndroidAppComponent
+import dev.zacsweers.metro.createGraphFactory
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import timber.log.Timber
@@ -14,7 +15,7 @@ class ConnectionTestApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerMergedAndroidAppComponent.factory()
+        appComponent = createGraphFactory<AndroidAppComponent.Factory>()
             .create(
                 context = this,
                 application = this,

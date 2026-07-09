@@ -10,9 +10,9 @@ import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.widget.screen.compose.WidgetOptionsComposable
 import com.flipperdevices.widget.screen.model.WidgetNavigationConfig
 import com.flipperdevices.widget.screen.viewmodel.WidgetSelectViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class WidgetOptionsDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

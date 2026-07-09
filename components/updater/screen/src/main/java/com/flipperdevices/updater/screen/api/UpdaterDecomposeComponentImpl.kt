@@ -23,10 +23,10 @@ import com.flipperdevices.updater.screen.composable.ComposableUpdaterScreen
 import com.flipperdevices.updater.screen.model.UpdaterScreenState
 import com.flipperdevices.updater.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.updater.screen.viewmodel.UpdaterViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, UpdaterDecomposeComponent.Factory::class)
 class UpdaterDecomposeComponentImpl @AssistedInject constructor(
@@ -42,10 +42,10 @@ class UpdaterDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val flipperColorViewModel = viewModelWithFactory(key = null) {
-            flipperColorViewModelProvider.get()
+            flipperColorViewModelProvider.invoke()
         }
         val updaterViewModel = viewModelWithFactory(key = null) {
-            updaterViewModelProvider.get()
+            updaterViewModelProvider.invoke()
         }
 
         LaunchedEffect(key1 = Unit) {

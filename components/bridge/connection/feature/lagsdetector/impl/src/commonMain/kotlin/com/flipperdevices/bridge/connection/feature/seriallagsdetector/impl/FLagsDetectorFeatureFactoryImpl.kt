@@ -8,12 +8,13 @@ import com.flipperdevices.bridge.connection.feature.restartrpc.api.FRestartRpcFe
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @FDeviceFeatureQualifier(FDeviceFeature.SERIAL_LAGS_DETECTOR)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FLagsDetectorFeatureFactoryImpl @Inject constructor(
     private val lagsDetectorFeatureFactory: FLagsDetectorFeatureImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory {

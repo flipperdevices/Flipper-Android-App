@@ -6,7 +6,7 @@ import com.flipperdevices.core.ktx.jre.md5
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import java.io.File
 import java.nio.charset.Charset
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val FAP_MANIFEST_FILETYPE_KEY = "Filetype"
 private const val FAP_MANIFEST_FILETYPE_VALUE = "Flipper Application Installation Manifest"

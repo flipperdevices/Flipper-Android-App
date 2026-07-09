@@ -5,14 +5,15 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface SynchronizationStateRepository {
     suspend fun markAsSynchronized(usedKeys: List<FlipperKey>)
 }
 
-@ContributesBinding(TaskGraph::class, SynchronizationStateRepository::class)
+@ContributesBinding(TaskGraph::class, binding<SynchronizationStateRepository>())
 class SynchronizationStateRepositoryImpl @Inject constructor(
     private val utilsKeyApi: UtilsKeyApi
 ) : SynchronizationStateRepository, LogTagProvider {

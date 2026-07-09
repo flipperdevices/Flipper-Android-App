@@ -22,14 +22,15 @@ import com.flipperdevices.ifrmvp.backend.model.InfraredsResponse
 import com.flipperdevices.ifrmvp.backend.model.PagesLayoutBackendModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperInfraredBackendApi::class)
+@ContributesBinding(AppGraph::class, binding<FlipperInfraredBackendApi>())
 class FlipperInfraredBackendApiImpl @Inject constructor(
     private val api: InfraredBackendApi,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,

@@ -24,7 +24,7 @@ import com.flipperdevices.notification.model.UpdateNotificationStateInternal
 import com.flipperdevices.notification.utils.NotificationPermissionHelper
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -36,16 +36,17 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.UnknownHostException
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 private const val COUNT_PERMISSION_DENIED = 3
 private const val TOPIC_UPDATE_FIRMWARE = "flipper_update_firmware_release"
 private const val UPDATE_TOPIC_NOTIFICATION_CHANNEL = "flipper_update_firmware_channel"
 
-@Singleton
-@ContributesBinding(AppGraph::class, FlipperAppNotificationApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FlipperAppNotificationApi>())
 class FlipperAppNotificationApiImpl @Inject constructor(
     dataStoreProvider: Provider<DataStore<com.flipperdevices.core.preference.pb.Settings>>,
     permissionHelperProvider: Provider<NotificationPermissionHelper>,

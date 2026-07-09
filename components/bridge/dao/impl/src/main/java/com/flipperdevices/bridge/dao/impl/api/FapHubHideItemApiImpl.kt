@@ -5,12 +5,13 @@ import com.flipperdevices.bridge.dao.api.model.FapHubHiddenItem
 import com.flipperdevices.bridge.dao.impl.model.HideFapHubApp
 import com.flipperdevices.bridge.dao.impl.repository.HideFapHubAppDao
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapHubHideItemApi::class)
+@ContributesBinding(AppGraph::class, binding<FapHubHideItemApi>())
 class FapHubHideItemApiImpl @Inject constructor(
     private val fapHubAppDao: HideFapHubAppDao
 ) : FapHubHideItemApi {

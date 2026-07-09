@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class CategoriesViewModel @Inject constructor(
     private val fapNetworkApi: FapNetworkApi,

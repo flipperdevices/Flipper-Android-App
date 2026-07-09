@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.nfceditor.sample"
@@ -43,10 +43,6 @@ dependencies {
     internalImplementation(projects.components.analytics.shake2report.impl)
 
     implementation(libs.appcompat)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
 
     implementation(libs.timber)
     implementation(libs.kotlin.immutable.collections)

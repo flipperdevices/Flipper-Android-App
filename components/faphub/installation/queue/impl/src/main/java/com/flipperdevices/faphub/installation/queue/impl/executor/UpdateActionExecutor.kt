@@ -10,7 +10,7 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapActionUpload
 import com.flipperdevices.faphub.installation.queue.impl.executor.actions.FapIconDownloader
 import com.flipperdevices.faphub.target.model.FlipperTarget
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class UpdateActionExecutor @Inject constructor(
     fapDownloadApi: FapDownloadApi,

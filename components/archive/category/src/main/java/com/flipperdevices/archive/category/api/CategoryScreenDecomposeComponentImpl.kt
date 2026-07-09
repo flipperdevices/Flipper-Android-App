@@ -19,10 +19,10 @@ import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.ui.decompose.popOr
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
@@ -39,7 +39,7 @@ class CategoryScreenDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val deleteViewModel = viewModelWithFactory(key = null) {
-            deleteViewModelProvider.get()
+            deleteViewModelProvider.invoke()
         }
         val categoryViewModel = viewModelWithFactory(key = categoryType.toString()) {
             categoryViewModelFactory(categoryType)

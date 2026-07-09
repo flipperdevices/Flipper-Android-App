@@ -4,10 +4,10 @@ import com.flipperdevices.core.ktx.jre.launchWithLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
+import com.flipperdevices.bridge.connection.pbutils.decodeDelimitedPackage
 import com.google.android.gms.wearable.ChannelClient
 import com.google.android.gms.wearable.ChannelClient.Channel
-import com.google.protobuf.GeneratedMessageLite
-import com.google.protobuf.InvalidProtocolBufferException
+import com.squareup.wire.ProtoAdapter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -24,15 +24,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.io.InputStream
 import java.util.concurrent.Executors
 
 private const val READ_TIMEOUT_MS = 100L
 private const val POOL_THREADS_AMOUNT = 2
 
-class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
+class WearableCommandInputStream<T>(
     private val channelClient: ChannelClient,
-    private val parser: (InputStream) -> T?
+    private val adapter: ProtoAdapter<T>
 ) : LogTagProvider {
     override val TAG = "WearableCommandInputStream-${hashCode()}"
 
@@ -69,18 +70,14 @@ class WearableCommandInputStream<T : GeneratedMessageLite<*, *>>(
         while (scope.isActive) {
             try {
                 val main = withContext(dispatcher) {
-                    parser(inputStream)
-                }
-                if (main == null) {
-                    delay(READ_TIMEOUT_MS)
-                    continue
+                    adapter.decodeDelimitedPackage(inputStream)
                 }
                 info { "Receive $main response" }
                 requests.emit(main)
             } catch (ignored: CancellationException) {
                 // ignore
-            } catch (invalidProtocol: InvalidProtocolBufferException) {
-                error(invalidProtocol) { "Broke protocol" }
+            } catch (ioException: IOException) {
+                error(ioException) { "Broke protocol" }
             } catch (e: Exception) {
                 error(e) { "Failed parse stream" }
             }

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.unhandledexception.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.unhandledexception.api)
 
     implementation(projects.components.core.di)
@@ -16,9 +17,4 @@ dependencies {
 
     implementation(projects.components.rootscreen.api)
     implementation(projects.components.deeplink.api)
-
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
-    implementation(libs.compose.tooling)
 }

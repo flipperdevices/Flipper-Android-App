@@ -17,7 +17,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKey
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.nfceditor.api.NfcEditorDecomposeComponent
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class NfcEditorActivity : AppCompatActivity() {
 

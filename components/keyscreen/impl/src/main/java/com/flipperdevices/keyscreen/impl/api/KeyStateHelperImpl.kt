@@ -25,8 +25,8 @@ import com.flipperdevices.keyscreen.model.ShareState
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.nfceditor.api.NfcEditorApi
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import java.util.concurrent.atomic.AtomicBoolean
 
 @ContributesAssistedFactory(AppGraph::class, KeyStateHelperApi.Builder::class)

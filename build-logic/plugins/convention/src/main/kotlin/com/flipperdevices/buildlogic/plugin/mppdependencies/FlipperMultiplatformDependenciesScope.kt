@@ -1,4 +1,4 @@
-package com.flipperdevices.buildlogic.plugin
+package com.flipperdevices.buildlogic.plugin.mppdependencies
 
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 

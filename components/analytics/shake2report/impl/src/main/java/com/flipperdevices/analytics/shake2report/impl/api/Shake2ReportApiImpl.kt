@@ -3,10 +3,10 @@ package com.flipperdevices.analytics.shake2report.impl.api
 import com.flipperdevices.analytics.shake2report.impl.InternalShake2Report
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.sentry.Sentry
 import io.sentry.SentryEvent
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppGraph::class)
 class Shake2ReportApiImpl @Inject constructor(

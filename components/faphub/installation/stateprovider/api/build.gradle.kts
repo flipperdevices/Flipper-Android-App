@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.faphub.installation.stateprovider.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.data)
 
     implementation(projects.components.faphub.dao.api)

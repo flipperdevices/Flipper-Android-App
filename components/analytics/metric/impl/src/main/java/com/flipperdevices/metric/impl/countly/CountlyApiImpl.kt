@@ -12,7 +12,7 @@ import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.impl.BuildConfig
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -20,11 +20,12 @@ import kotlinx.coroutines.runBlocking
 import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, CountlyApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<CountlyApi>())
 class CountlyApiImpl @Inject constructor(
     private val application: Application,
     private val dataStore: DataStore<Settings>

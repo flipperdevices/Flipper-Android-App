@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.synchronization.ui.model.ItemSynchronizationSta
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class SynchronizationStateViewModel @Inject constructor(
     private val synchronizationApi: SynchronizationApi,

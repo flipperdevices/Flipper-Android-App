@@ -8,9 +8,9 @@ import com.flipperdevices.core.ktx.jre.WaitNotifyLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.warn
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -88,7 +88,7 @@ class FSerialDeviceApiWrapper @AssistedInject constructor(
         operator fun invoke(
             scope: CoroutineScope,
             config: FBleDeviceSerialConfig,
-            services: StateFlow<ClientBleGattServices?>,
+            serviceFlow: StateFlow<ClientBleGattServices?>,
             flipperActionNotifier: FlipperActionNotifier
         ): FSerialDeviceApiWrapper
     }

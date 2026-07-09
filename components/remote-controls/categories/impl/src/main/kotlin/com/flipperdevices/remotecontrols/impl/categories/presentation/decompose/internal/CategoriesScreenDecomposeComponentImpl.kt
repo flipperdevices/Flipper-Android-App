@@ -9,15 +9,15 @@ import com.flipperdevices.remotecontrols.api.CategoriesScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.api.PauseSyncDialogDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.categories.composable.DeviceCategoriesScreen
 import com.flipperdevices.remotecontrols.impl.categories.presentation.decompose.DeviceCategoriesComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, CategoriesScreenDecomposeComponent.Factory::class)
 class CategoriesScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted onBackClick: () -> Unit,
-    @Assisted onCategoryClick: (categoryId: Long, categoryName: String) -> Unit,
+    @Assisted onCategoryClick: (Long, String) -> Unit,
     deviceCategoriesComponentFactory: DeviceCategoriesComponent.Factory,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
     private val pauseSyncDialogComponentFactory: PauseSyncDialogDecomposeComponent.Factory

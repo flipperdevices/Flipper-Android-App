@@ -13,9 +13,9 @@ import com.flipperdevices.bridge.synchronization.ui.viewmodel.ItemSynchronizatio
 import com.flipperdevices.bridge.synchronization.ui.viewmodel.SynchronizationStateViewModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 @ContributesBinding(AppGraph::class)
 class SynchronizationUiApiImpl @Inject constructor(
@@ -28,7 +28,7 @@ class SynchronizationUiApiImpl @Inject constructor(
         withText: Boolean,
     ) {
         val synchronizationViewModel = componentContext.viewModelWithFactory(null) {
-            synchronizationStateViewModelProvider.get()
+            synchronizationStateViewModelProvider.invoke()
         }
         val state by synchronizationViewModel.getSynchronizationState(keyPath).collectAsState(
             initial = ItemSynchronizationState.NOT_SYNCHRONIZED

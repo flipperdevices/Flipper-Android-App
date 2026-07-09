@@ -15,9 +15,9 @@ import com.flipperdevices.filemanager.ui.components.error.UnknownErrorComposable
 import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorComposable
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_uploading
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -30,8 +30,8 @@ import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 class UploadFileDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onBack: DecomposeOnBackParameter,
-    @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-    @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+    @Assisted fullPathOnFlipper: Path,
+    @Assisted fullPathOnDevice: Path,
     @Assisted private val onProgress: (ListingItem) -> Unit,
     @Assisted private val onFinished: () -> Unit,
     uploadFileViewModelFactory: UploadFileViewModel.Factory
@@ -97,8 +97,8 @@ class UploadFileDecomposeComponent @AssistedInject constructor(
         operator fun invoke(
             componentContext: ComponentContext,
             onBack: DecomposeOnBackParameter,
-            @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-            @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+            @Assisted fullPathOnFlipper: Path,
+            @Assisted fullPathOnDevice: Path,
             onProgress: (ListingItem) -> Unit,
             onFinished: () -> Unit,
         ): UploadFileDecomposeComponent

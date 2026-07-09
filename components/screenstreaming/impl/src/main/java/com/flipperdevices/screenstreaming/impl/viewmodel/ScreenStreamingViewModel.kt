@@ -16,9 +16,9 @@ import com.flipperdevices.screenstreaming.impl.viewmodel.repository.ButtonStackR
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.FlipperButtonRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.LockRepository
 import com.flipperdevices.screenstreaming.impl.viewmodel.repository.StreamingRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.uninstallbutton.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.uninstallbutton.api)
 
     implementation(projects.components.core.di)
@@ -18,10 +19,6 @@ dependencies {
     implementation(projects.components.faphub.installation.queue.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     // ViewModel
     implementation(libs.lifecycle.compose)

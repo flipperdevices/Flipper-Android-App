@@ -8,7 +8,7 @@ import com.flipperdevices.core.ktx.jre.withLockResult
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.io.path.Path
 import kotlin.io.path.pathString
 

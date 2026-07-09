@@ -8,8 +8,8 @@ import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.screen.ScreenFrame
 import com.flipperdevices.protobuf.screen.StartVirtualDisplayRequest
 import com.flipperdevices.protobuf.screen.StopVirtualDisplayRequest
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import okio.ByteString.Companion.toByteString
 
 class DisplayApiImpl @AssistedInject constructor(

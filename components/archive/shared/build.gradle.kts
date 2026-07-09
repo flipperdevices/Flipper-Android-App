@@ -1,10 +1,11 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.archive.shared"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyparser.api)
 
@@ -13,12 +14,11 @@ dependencies {
     implementation(projects.components.core.ui.theme)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
 
     // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlin.immutable.collections)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.kotlin.immutable.collections)
 }

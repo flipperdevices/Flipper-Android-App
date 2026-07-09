@@ -4,6 +4,7 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyPath
 import com.flipperdevices.keyscreen.model.KeyScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import uk.kulikov.metro.assisted.AssistedKey
 
 interface KeyStateHelperApi {
     fun getKeyScreenState(): StateFlow<KeyScreenState>
@@ -14,7 +15,7 @@ interface KeyStateHelperApi {
 
     interface Builder {
         fun build(
-            flipperKeyPath: FlipperKeyPath,
+            @AssistedKey("keyPath") flipperKeyPath: FlipperKeyPath,
             scope: CoroutineScope
         ): KeyStateHelperApi
     }

@@ -19,7 +19,7 @@ import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @Suppress("TooManyFunctions")
 class DebugViewModel @Inject constructor(

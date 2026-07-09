@@ -15,7 +15,7 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
-import com.squareup.anvil.annotations.ContributesTo
+import dev.zacsweers.metro.ContributesTo
 
 @ContributesTo(AppGraph::class)
 interface TaskSynchronizationComponentDependencies {

@@ -9,11 +9,11 @@ import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
 import com.flipperdevices.filemanager.upload.impl.composable.UploadingComposable
 import com.flipperdevices.filemanager.upload.impl.viewmodel.UploadViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, UploaderDecomposeComponent.Factory::class)
 class UploaderDecomposeComponentImpl @AssistedInject constructor(
@@ -21,7 +21,7 @@ class UploaderDecomposeComponentImpl @AssistedInject constructor(
     private val uploadViewModelFactory: Provider<UploadViewModel>
 ) : UploaderDecomposeComponent, ComponentContext by componentContext {
     private val uploadViewModel = instanceKeeper.getOrCreate {
-        uploadViewModelFactory.get()
+        uploadViewModelFactory.invoke()
     }
 
     override val state = uploadViewModel.state

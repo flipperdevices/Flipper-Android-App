@@ -8,10 +8,11 @@ import com.flipperdevices.bridge.connection.configbuilder.impl.builders.FlipperZ
 import com.flipperdevices.bridge.connection.configbuilder.impl.builders.FlipperZeroUsbBuilderConfig
 import com.flipperdevices.bridge.connection.transport.common.api.FDeviceConnectionConfig
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FDeviceConnectionConfigMapper::class)
+@ContributesBinding(AppGraph::class, binding<FDeviceConnectionConfigMapper>())
 class FDeviceConnectionConfigMapperImpl @Inject constructor(
     private val flipperZeroBleBuilderConfig: FlipperZeroBleBuilderConfig,
     private val flipperZeroUsbBuilderConfig: FlipperZeroUsbBuilderConfig

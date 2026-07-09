@@ -2,7 +2,15 @@ enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 pluginManagement {
     repositories {
-        google()
+        mavenLocal()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
         gradlePluginPortal()
         maven("https://jitpack.io")
     }
@@ -10,7 +18,15 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        google()
+        mavenLocal()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
         gradlePluginPortal()
         maven("https://jitpack.io")
     }

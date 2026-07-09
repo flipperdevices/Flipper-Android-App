@@ -1,6 +1,6 @@
 package com.flipperdevices.widget.impl.model
 
-import dagger.MapKey
+import dev.zacsweers.metro.MapKey
 
 enum class WidgetState {
     NOT_INITIALIZE,

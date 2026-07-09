@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class BasicInfoViewModel @Inject constructor(
     private val fFeatureProvider: FFeatureProvider,

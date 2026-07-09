@@ -1,5 +1,7 @@
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
+import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -8,20 +10,28 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("flipper.multiplatform-dependencies")
     id("com.google.devtools.ksp")
-    id("dev.zacsweers.anvil")
+    id("dev.zacsweers.metro")
 }
 
 kotlin {
-    jvm("desktop")
+    jvm("desktop") {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
     sourceSets {
         val desktopMain by getting
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.dagger)
-            implementation(libs.anvil.utils.annotations)
+            implementation(libs.metro.utils.annotations)
         }
     }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
 }
 
 includeCommonKspConfigurationTo("kspDesktop")
@@ -58,14 +68,6 @@ commonDependencies {
     implementation(libs.kotlin.coroutines.swing)
 }
 
-anvil {
-    useKsp(
-        contributesAndFactoryGeneration = true,
-        componentMerging = true,
-    )
-}
-
 dependencies {
-    ksp(libs.dagger.compiler)
-    ksp(libs.anvil.utils.compiler)
+    add("commonKsp", libs.metro.utils.ksp)
 }

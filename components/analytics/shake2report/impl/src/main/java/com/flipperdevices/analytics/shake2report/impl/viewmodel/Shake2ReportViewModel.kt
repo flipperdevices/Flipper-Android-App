@@ -25,7 +25,7 @@ import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 

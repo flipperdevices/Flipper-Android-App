@@ -34,16 +34,16 @@ fun SearchItemsComposable(
             FolderCardPlaceholderLazyComposable()
         }
 
-        rootSearchState?.let { rootSearchState ->
-            item { ListingTitleComposable(rootSearchState.path) }
+        rootSearchState?.let { rootState ->
+            item { ListingTitleComposable(rootState.path) }
 
             FolderCardListLazyComposable(
-                searchState = rootSearchState,
+                searchState = rootState,
                 onFolderSelect = onFolderSelect
             )
-            NoFilesLazyComposable(rootSearchState)
+            NoFilesLazyComposable(rootState)
 
-            if (rootSearchState.isSearching) {
+            if (rootState.isSearching) {
                 FolderCardPlaceholderLazyComposable()
             }
         }

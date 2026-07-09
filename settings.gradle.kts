@@ -95,8 +95,6 @@ include(
     ":components:bridge:connection:feature:emulate:impl",
 
     ":components:filemngr:util",
-    ":components:filemanager:api",
-    ":components:filemanager:impl",
     ":components:filemngr:ui-components",
     ":components:filemngr:main:api",
     ":components:filemngr:main:impl",
@@ -244,9 +242,7 @@ include(
     ":components:wearable:sync:handheld:noop",
     ":components:wearable:emulate:wear:api",
     ":components:wearable:emulate:wear:impl",
-    ":components:wearable:emulate:handheld:api",
     ":components:wearable:emulate:handheld:impl",
-    ":components:wearable:emulate:handheld:noop",
     ":components:wearable:emulate:common",
     ":components:wearable:wearrootscreen:api",
     ":components:wearable:wearrootscreen:impl",

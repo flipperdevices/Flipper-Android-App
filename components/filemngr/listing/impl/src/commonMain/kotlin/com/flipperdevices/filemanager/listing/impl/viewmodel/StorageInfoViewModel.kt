@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class StorageInfoViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,

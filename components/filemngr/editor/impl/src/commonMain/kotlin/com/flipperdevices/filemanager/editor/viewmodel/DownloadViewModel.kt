@@ -10,9 +10,9 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +25,8 @@ import kotlinx.coroutines.flow.stateIn
 import okio.Path
 
 class DownloadViewModel @AssistedInject constructor(
-    @Assisted("fullPathOnFlipper") private val fullPathOnFlipper: Path,
-    @Assisted("fullPathOnDevice") private val fullPathOnDevice: Path,
+    @Assisted private val fullPathOnFlipper: Path,
+    @Assisted private val fullPathOnDevice: Path,
     private val featureProvider: FFeatureProvider,
     private val storageProvider: FlipperStorageProvider
 ) : DecomposeViewModel(), LogTagProvider {
@@ -127,8 +127,8 @@ class DownloadViewModel @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-            @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+            @Assisted fullPathOnFlipper: Path,
+            @Assisted fullPathOnDevice: Path,
         ): DownloadViewModel
     }
 }

@@ -23,9 +23,6 @@ androidDependencies {
     implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.orchestrator.api)
     // Only for SDCardException
-
-    implementation(libs.dagger)
-    implementation(libs.zacsweers.anvil.annotations)
     implementation(libs.ktor.client)
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
