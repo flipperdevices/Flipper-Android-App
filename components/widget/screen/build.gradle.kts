@@ -5,8 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.widget.screen"
-
 androidDependencies {
     implementation(projects.components.widget.api)
 

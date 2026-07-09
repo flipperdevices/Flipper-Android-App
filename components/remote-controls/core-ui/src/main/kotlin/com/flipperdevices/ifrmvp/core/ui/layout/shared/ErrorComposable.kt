@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.flipperdevices.core.ui.theme.LocalPalletV2
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Composable
 fun ErrorComposable(

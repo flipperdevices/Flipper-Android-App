@@ -5,8 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.toolstab.impl"
-
 androidDependencies {
     implementation(projects.components.toolstab.api)
 

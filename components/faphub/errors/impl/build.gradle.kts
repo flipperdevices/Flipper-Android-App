@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.core.ui.errors"
-
 androidDependencies {
     implementation(projects.components.faphub.errors.api)
 

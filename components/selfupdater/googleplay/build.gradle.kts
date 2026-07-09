@@ -4,12 +4,11 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.selfupdater.source.googleplay"
-
 androidDependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)
 
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.log)
     implementation(projects.components.core.activityholder)
 

@@ -4,8 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.faphub.screenshotspreview.api"
-
 androidDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(libs.kotlin.immutable.collections)

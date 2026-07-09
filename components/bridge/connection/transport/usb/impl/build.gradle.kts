@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.transport.usb.impl"
-
 commonDependencies {
     implementation(projects.components.bridge.connection.transport.usb.api)
 

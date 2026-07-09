@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.archive.shared"
-
 androidDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.keyparser.api)
@@ -18,7 +16,7 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.kotlin.immutable.collections)
+androidHostTestDependencies {
+    implementation(libs.junit)
+    implementation(libs.kotlin.immutable.collections)
 }

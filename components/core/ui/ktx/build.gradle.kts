@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.ui.ktx"
-
 commonDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.ui.theme)

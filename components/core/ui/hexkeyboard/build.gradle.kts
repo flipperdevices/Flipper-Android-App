@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.ui.hexkeyboard"
-
 commonDependencies {
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.data)

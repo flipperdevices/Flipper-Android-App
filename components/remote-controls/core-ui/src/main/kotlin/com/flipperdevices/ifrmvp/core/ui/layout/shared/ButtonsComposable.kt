@@ -20,7 +20,7 @@ import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
 import com.flipperdevices.ifrmvp.model.IfrButton
 import com.flipperdevices.ifrmvp.model.IfrKeyIdentifier
 import com.flipperdevices.ifrmvp.model.PageLayout
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Composable
 internal fun BoxWithConstraintsScope.ButtonsComposable(

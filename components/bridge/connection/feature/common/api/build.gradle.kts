@@ -4,8 +4,6 @@ plugins {
     id("dev.zacsweers.metro")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.common.api"
-
 commonDependencies {
     implementation(projects.components.core.di)
 

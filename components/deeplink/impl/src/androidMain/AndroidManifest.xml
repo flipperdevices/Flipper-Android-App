@@ -5,7 +5,7 @@
     <application>
         <activity
                 android:exported="true"
-                android:name="${splashScreenActivity}">
+                android:name="com.flipperdevices.singleactivity.impl.SingleActivity">
             <intent-filter
                     android:autoVerify="true"
                     tools:ignore="UnusedAttribute">

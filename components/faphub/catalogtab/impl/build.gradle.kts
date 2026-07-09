@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.faphub.catalogtab.impl"
-
 androidDependencies {
     implementation(projects.components.faphub.catalogtab.api)
 

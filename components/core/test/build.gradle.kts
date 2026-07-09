@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.test"
-
 commonDependencies {
     implementation(projects.components.core.ui.lifecycle)
     implementation(projects.components.core.storage)

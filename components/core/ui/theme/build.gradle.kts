@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.core.ui.theme"
-
 commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.lifecycle)

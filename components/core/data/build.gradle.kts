@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.core.data"
-
 commonDependencies {
     implementation(libs.kotlin.immutable.collections)
 }

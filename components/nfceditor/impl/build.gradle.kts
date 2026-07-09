@@ -5,8 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.nfceditor.impl"
-
 androidDependencies {
     implementation(projects.components.nfceditor.api)
 
@@ -42,12 +40,12 @@ androidDependencies {
     implementation(libs.lifecycle.compose)
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.mockito.kotlin)
-    "androidUnitTestImplementation"(projects.components.keyparser.impl)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(projects.components.core.buildKonfig)
+    implementation(libs.roboelectric)
+    implementation(libs.junit)
+    implementation(libs.ktx.testing)
+    implementation(libs.mockito.kotlin)
+    implementation(projects.components.keyparser.impl)
 }

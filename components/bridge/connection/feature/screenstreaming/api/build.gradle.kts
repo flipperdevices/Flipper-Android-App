@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.feature.screenstreaming.api"
-
 commonDependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)

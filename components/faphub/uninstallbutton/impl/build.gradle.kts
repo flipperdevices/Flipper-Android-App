@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.faphub.uninstallbutton.impl"
-
 androidDependencies {
     implementation(projects.components.faphub.uninstallbutton.api)
 

@@ -26,7 +26,7 @@ import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.theme.FlipperThemeInternal
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
-import com.flipperdevices.main.impl.R
+import com.flipperdevices.faphub.main.impl.R
 import com.flipperdevices.main.impl.model.FapHubTabEnum
 
 @Composable

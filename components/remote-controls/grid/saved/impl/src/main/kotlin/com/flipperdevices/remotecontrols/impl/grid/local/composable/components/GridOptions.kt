@@ -33,7 +33,7 @@ import com.flipperdevices.core.ui.theme.LocalPalletV2
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.remotecontrols.grid.saved.impl.R
 import com.flipperdevices.core.ui.res.R as DesignSystem
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Composable
 @Suppress("LongMethod")

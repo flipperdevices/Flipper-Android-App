@@ -1,4 +1,5 @@
 import com.flipperdevices.buildlogic.ApkConfig
+import com.flipperdevices.buildlogic.ApkConfig.TARGET_APP_ID_KEY
 
 plugins {
     alias(libs.plugins.android.test)
@@ -6,16 +7,12 @@ plugins {
     alias(libs.plugins.baselineprofile)
 }
 
-@Suppress("VariableNaming")
-val TARGET_APP_ID_KEY = "targetAppId"
-
 android {
     commonAndroid(project)
     namespace = "${ApkConfig.APPLICATION_ID}.baselineprofile"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "TARGET_APP_ID_KEY", "\"${TARGET_APP_ID_KEY}\"")
     }
 
     targetProjectPath = projects.instances.android.app.path
@@ -35,6 +32,7 @@ baselineProfile {
 }
 
 dependencies {
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.log)
     implementation(libs.ktx.testing)
     implementation(libs.espresso.core)

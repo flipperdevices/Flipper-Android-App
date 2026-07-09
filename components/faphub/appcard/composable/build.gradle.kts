@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.faphub.appcard.composable"
-
 androidDependencies {
     implementation(projects.components.rootscreen.api)
 

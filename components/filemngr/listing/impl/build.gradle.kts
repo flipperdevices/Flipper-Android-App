@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
-android.namespace = "com.flipperdevices.filemanager.listing.impl"
 
 kotlin {
     sourceSets {

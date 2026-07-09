@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.core.storage"
-
 commonDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.di)

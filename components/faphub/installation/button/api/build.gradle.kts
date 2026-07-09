@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.faphub.installation.button.api"
-
 androidDependencies {
     implementation(projects.components.faphub.dao.api)
 

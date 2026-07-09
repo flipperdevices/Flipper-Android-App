@@ -4,8 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.deeplink.api"
-
 commonDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.ktx)

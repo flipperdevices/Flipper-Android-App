@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.faphub.target.impl"
-
 androidDependencies {
     implementation(projects.components.faphub.target.api)
 

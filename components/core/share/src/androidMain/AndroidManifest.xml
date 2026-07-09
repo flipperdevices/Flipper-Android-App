@@ -3,7 +3,7 @@
 
     <application>
         <provider
-                android:authorities="${shareFileAuthorities}"
+                android:authorities="${applicationId}.filemanager.export.provider"
                 android:exported="false"
                 android:grantUriPermissions="true"
                 android:name="androidx.core.content.FileProvider">

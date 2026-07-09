@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.unhandledexception.impl"
-
 androidDependencies {
     implementation(projects.components.unhandledexception.api)
 

@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.core.permission.impl"
-
 androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.permission.api)

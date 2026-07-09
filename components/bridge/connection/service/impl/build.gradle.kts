@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.service.impl"
-
 commonDependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)
