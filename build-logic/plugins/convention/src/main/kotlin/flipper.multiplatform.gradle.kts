@@ -1,39 +1,27 @@
-import com.android.build.api.dsl.LibraryExtension
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+ import com.flipperdevices.buildlogic.ApkConfig
+ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 
-plugins {
+ plugins {
+    id("org.jetbrains.kotlin.multiplatform")
+    id("com.android.kotlin.multiplatform.library")
     id("flipper.lint")
+    id("flipper.kotlin-flags")
 }
 
-pluginManager.apply("com.android.library")
-pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+kotlin {
+    androidLibrary {
+        namespace = "com.flipperdevices"
+            .plus(project.path.removePrefix(":components"))
+            .replace(":", ".")
+            .replace("-", "")
+            .replace("..", ".")
+        compileSdk = ApkConfig.COMPILE_SDK_VERSION
+        minSdk = ApkConfig.MIN_SDK_VERSION
+        // Jetbrains Compose Resources doesn't handle the new resourceless android plugin
+        androidResources.enable = true
 
-val legacyAndroidManifest = file("src/main/AndroidManifest.xml")
-
-configure<LibraryExtension> {
-    commonAndroid(project)
-
-    // Consume the legacy single-target android layout (src/main, src/test) directly, so modules
-    // don't have to move sources into src/androidMain. Additive, so existing KMP modules that
-    // already use src/androidMain keep working.
-    sourceSets.getByName("main") {
-        res.srcDir("src/main/res")
-        assets.srcDir("src/main/assets")
-        if (legacyAndroidManifest.exists()) manifest.srcFile(legacyAndroidManifest)
-    }
-    sourceSets.getByName("test") {
-        resources.srcDir("src/test/resources")
-        assets.srcDir("src/test/assets")
-    }
-}
-
-@OptIn(ExperimentalKotlinGradlePluginApi::class)
-configure<KotlinMultiplatformExtension> {
-    androidTarget {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
+        withHostTest {
+            isIncludeAndroidResources = true
         }
     }
     jvm("desktop")
@@ -41,16 +29,22 @@ configure<KotlinMultiplatformExtension> {
     applyDefaultHierarchyTemplate {
         common {
             group("jvmShared") {
-                withAndroidTarget()
-                withJvm()
+                withCompilations { compilation ->
+                    compilation.platformType == KotlinPlatformType.androidJvm ||
+                        compilation.platformType == KotlinPlatformType.jvm
+                }
             }
         }
     }
 
     sourceSets.getByName("androidMain").kotlin.srcDir("src/main/kotlin")
     sourceSets.getByName("androidMain").kotlin.srcDir("src/main/java")
-    sourceSets.getByName("androidUnitTest").kotlin.srcDir("src/test/kotlin")
-    sourceSets.getByName("androidUnitTest").kotlin.srcDir("src/test/java")
+    sourceSets.getByName("androidMain").resources.srcDir("src/main/resources")
+    sourceSets.getByName("androidHostTest").kotlin.srcDir("src/test/kotlin")
+    sourceSets.getByName("androidHostTest").kotlin.srcDir("src/test/java")
+    sourceSets.getByName("androidHostTest").resources.srcDir("src/test/resources")
 }
+
+project.ignoreNoDiscoveredTests()
 
 includeCommonKspConfigurationTo("kspAndroid", "kspDesktop")
