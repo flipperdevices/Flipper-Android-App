@@ -47,7 +47,7 @@ jobs:
     needs: [ validate_gradle_wrapper ]
     strategy:
       matrix:
-        target: [ "testAndroidHostTest", "desktopTest" ]
+        target: [ "allTests" ]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
