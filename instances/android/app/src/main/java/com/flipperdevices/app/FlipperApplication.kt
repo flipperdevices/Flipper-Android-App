@@ -38,20 +38,20 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
                 scope = applicationScope,
                 ApplicationParams(
                     startApplicationClass = SingleActivity::class,
-                    version = BuildConfig.VERSION_NAME
+                    version = BuildKonfig.VERSION_NAME
                 )
             )
 
         ComponentHolder.components += appComponent
 
-        if (BuildConfig.INTERNAL) {
+        if (BuildKonfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
             val shake2report = ComponentHolder.component<MainComponent>().shake2report.invoke()
             shake2report.init()
         }
         setUp()
 
-        info { "Start Flipper Application with version ${BuildConfig.VERSION_NAME}" }
+        info { "Start Flipper Application with version ${BuildKonfig.VERSION_NAME}" }
     }
 
     private fun setUp() {

@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.activity.result.ActivityResult
 import com.flipperdevices.bridge.api.utils.PermissionHelper
 import com.flipperdevices.core.ktx.jre.getMaxOf
-import com.flipperdevices.core.log.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
@@ -100,7 +100,7 @@ class PermissionStateBuilder(
             val permissionState = getStateForPermission(permissionNotGranted)
             if (permissionState != null) {
                 return permissionState
-            } else if (BuildConfig.INTERNAL) {
+            } else if (BuildKonfig.CRASH_APP_ON_FAILED_CHECKS) {
                 error("Can't find state for $permissionNotGranted")
             }
         }

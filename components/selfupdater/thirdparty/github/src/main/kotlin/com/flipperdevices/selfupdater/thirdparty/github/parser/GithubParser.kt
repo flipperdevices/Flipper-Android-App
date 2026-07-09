@@ -5,7 +5,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdate
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdateParserApi
-import com.flipperdevices.selfupdater.thirdparty.github.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.selfupdater.thirdparty.github.model.GithubRelease
 import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
@@ -68,9 +68,9 @@ class GithubParser @Inject constructor(
         return response.firstOrNull { it.preRelease }
     }
 
-    private fun isGooglePlayEnable() = BuildConfig.IS_GOOGLE_FEATURE_AVAILABLE
+    private fun isGooglePlayEnable() = BuildKonfig.IS_GOOGLE_FEATURE_AVAILABLE
 
     private fun isDev(): Boolean {
-        return BuildConfig.BUILD_TYPE == DEV_BUILD_TYPE
+        return BuildKonfig.BUILD_TYPE == DEV_BUILD_TYPE
     }
 }

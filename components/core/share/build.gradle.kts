@@ -4,18 +4,8 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.core.share"
-
-android {
-    defaultConfig {
-        val applicationId = com.flipperdevices.buildlogic.ApkConfig.APPLICATION_ID
-        val shareFileAuthorities = "$applicationId.filemanager.export.provider"
-        manifestPlaceholders["shareFileAuthorities"] = shareFileAuthorities
-        buildConfigField("String", "SHARE_FILE_AUTHORITIES", "\"$shareFileAuthorities\"")
-    }
-}
-
 commonDependencies {
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.di)
     implementation(libs.okio)
 }

@@ -7,7 +7,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.selfupdater.api.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -85,7 +85,7 @@ class SelfUpdaterGooglePlay @Inject constructor(
         }
     }
 
-    override fun getInstallSourceName() = "Google Play/" + BuildConfig.BUILD_TYPE
+    override fun getInstallSourceName() = "Google Play/" + BuildKonfig.BUILD_TYPE
     override fun isSelfUpdateCanManualCheck(): Boolean = false
 
     private fun isUpdateAvailable(appUpdateInfo: AppUpdateInfo): Boolean {

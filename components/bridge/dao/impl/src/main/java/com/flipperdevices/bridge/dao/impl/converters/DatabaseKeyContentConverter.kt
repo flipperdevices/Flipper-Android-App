@@ -9,7 +9,7 @@ import com.flipperdevices.bridge.dao.impl.md5.MD5FileProvider
 import com.flipperdevices.bridge.dao.impl.model.DatabaseKeyContent
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
-import com.flipperdevices.core.log.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import okio.buffer
@@ -32,7 +32,7 @@ class DatabaseKeyContentConverter @Inject constructor(
 
     @TypeConverter
     fun keyContentToPath(keyContent: DatabaseKeyContent?): String? {
-        if (BuildConfig.INTERNAL && Looper.getMainLooper() == Looper.myLooper()) {
+        if (BuildKonfig.CRASH_APP_ON_FAILED_CHECKS && Looper.getMainLooper() == Looper.myLooper()) {
             error("This method can be executed only on background thread!")
         }
 

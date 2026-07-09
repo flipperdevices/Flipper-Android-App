@@ -63,7 +63,6 @@ private fun CommonExtension.configureDefaultConfig(project: Project) {
 private fun CommonExtension.configureBuildTypes() {
     buildTypes.apply {
         maybeCreate("debug").apply {
-            buildConfigField("boolean", "INTERNAL", "true")
             if (this is ApplicationBuildType) {
                 isDebuggable = true
             }
@@ -71,20 +70,16 @@ private fun CommonExtension.configureBuildTypes() {
         maybeCreate("internal").apply {
             matchingFallbacks += "debug"
             sourceSets.getByName(this.name).setRoot("src/debug")
-
-            buildConfigField("boolean", "INTERNAL", "true")
         }
-        maybeCreate("release").apply {
-            buildConfigField("boolean", "INTERNAL", "true")
-        }
+        maybeCreate("release")
     }
 }
 
 @Suppress("UnstableApiUsage", "ForbiddenComment")
 private fun CommonExtension.configureBuildFeatures() {
     // TODO: Disable by default
-    //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
-    buildFeatures.buildConfig = true
+    //  BuildKonfig is java source code. Java and Kotlin at one time affect build speed.
+    buildFeatures.buildConfig = false
     buildFeatures.resValues = false
     buildFeatures.shaders = false
 }

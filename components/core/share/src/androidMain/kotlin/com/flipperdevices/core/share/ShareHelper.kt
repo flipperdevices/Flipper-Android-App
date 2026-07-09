@@ -27,7 +27,7 @@ object ShareHelper {
     fun shareFile(context: Context, file: PlatformSharableFile, text: String) {
         val uri = FileProvider.getUriForFile(
             context,
-            BuildConfig.SHARE_FILE_AUTHORITIES,
+            BuildKonfig.SHARE_FILE_AUTHORITIES,
             file.path.toFile(),
             file.path.name
         )

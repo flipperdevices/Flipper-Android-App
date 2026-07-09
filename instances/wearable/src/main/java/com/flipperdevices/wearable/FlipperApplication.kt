@@ -21,13 +21,13 @@ class FlipperApplication : Application() {
                 application = this,
                 ApplicationParams(
                     startApplicationClass = MainWearActivity::class,
-                    version = BuildConfig.VERSION_NAME
+                    version = BuildKonfig.VERSION_NAME
                 )
             )
 
         ComponentHolder.components += appComponent
 
-        if (BuildConfig.INTERNAL) {
+        if (BuildKonfig.INTERNAL) {
             Timber.plant(Timber.DebugTree())
             val shake2report = ComponentHolder.component<WearableComponent>().shake2report.invoke()
             shake2report.init()
