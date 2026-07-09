@@ -3,6 +3,7 @@ package com.flipperdevices.core.share
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import okio.Path.Companion.toOkioPath
 
@@ -27,7 +28,7 @@ object ShareHelper {
     fun shareFile(context: Context, file: PlatformSharableFile, text: String) {
         val uri = FileProvider.getUriForFile(
             context,
-            BuildConfig.SHARE_FILE_AUTHORITIES,
+            BuildKonfig.SHARE_FILE_AUTHORITIES,
             file.path.toFile(),
             file.path.name
         )

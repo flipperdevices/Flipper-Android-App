@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.filemanager.ui.components"
-
 commonDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)

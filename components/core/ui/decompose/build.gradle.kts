@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.ui.decompose"
-
 commonDependencies {
     implementation(projects.components.core.activityholder)
 

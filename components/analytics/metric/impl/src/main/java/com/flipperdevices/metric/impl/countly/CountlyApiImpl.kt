@@ -11,7 +11,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.log.verbose
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.metric.api.events.SessionState
-import com.flipperdevices.metric.impl.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -74,15 +74,15 @@ class CountlyApiImpl @Inject constructor(
 
     private fun initCountly(): Countly {
         val sharedInstance = Countly.sharedInstance()
-        if (BuildConfig.COUNTLY_URL.isBlank()) {
+        if (BuildKonfig.COUNTLY_URL.isBlank()) {
             return sharedInstance
         }
         val config = CountlyConfig(
             application,
-            BuildConfig.COUNTLY_APP_KEY,
-            BuildConfig.COUNTLY_URL
+            BuildKonfig.COUNTLY_APP_KEY,
+            BuildKonfig.COUNTLY_URL
         )
-        config.setLoggingEnabled(BuildConfig.INTERNAL)
+        config.setLoggingEnabled(BuildKonfig.IS_LOG_ENABLED)
         val settings = runBlocking {
             dataStore.updateData {
                 if (it.uuid.isBlank()) {
@@ -94,7 +94,7 @@ class CountlyApiImpl @Inject constructor(
                 }
             }
         }
-        info { "Init countly config with uuid ${settings.uuid} and ${BuildConfig.COUNTLY_URL}" }
+        info { "Init countly config with uuid ${settings.uuid} and ${BuildKonfig.COUNTLY_URL}" }
         config.setDeviceId(settings.uuid)
         return sharedInstance.init(config)
     }

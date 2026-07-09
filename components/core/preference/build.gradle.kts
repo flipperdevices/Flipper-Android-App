@@ -10,8 +10,6 @@ plugins {
     alias(libs.plugins.wire)
 }
 
-android.namespace = "com.flipperdevices.core.preference"
-
 val wireOutputDir = layout.buildDirectory.dir("generated/source/wire")
 
 commonDependencies {

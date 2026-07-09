@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
-import com.flipperdevices.wearable.emulate.impl.R
+import com.flipperdevices.wearable.emulate.wear.impl.R
 
 @Composable
 fun ComposableActionDisable(

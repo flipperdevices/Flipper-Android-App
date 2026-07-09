@@ -14,6 +14,7 @@ plugins {
 android.namespace = "com.flipperdevices.app"
 
 dependencies {
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.di)
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)

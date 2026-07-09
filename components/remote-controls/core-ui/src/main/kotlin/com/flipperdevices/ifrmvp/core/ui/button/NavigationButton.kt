@@ -25,7 +25,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundVariantColo
 import com.flipperdevices.ifrmvp.core.ui.button.core.onScrollHoldPress
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
 import com.flipperdevices.ifrmvp.core.ui.util.GridConstants
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Suppress("LongMethod")
 @Composable

@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.faphub.installedtab.impl"
-
 androidDependencies {
     implementation(projects.components.faphub.installedtab.api)
 
@@ -38,8 +36,8 @@ androidDependencies {
     implementation(libs.kotlin.immutable.collections)
 }
 
-dependencies {
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockk)
+androidHostTestDependencies {
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.junit)
+    implementation(libs.mockk)
 }

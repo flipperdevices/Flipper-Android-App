@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.remotecontrols.core.ui"
-
 androidDependencies {
     implementation(projects.components.core.log)
 

@@ -11,6 +11,7 @@ object ApkConfig {
     const val TARGET_SDK_VERSION = 36
     const val COMPILE_SDK_VERSION = 37
     const val ROBOELECTRIC_SDK_VERSION = 34
+    const val TARGET_APP_ID_KEY = "targetAppId"
 
     private const val DEBUG_VERSION = "1.0.0"
 
@@ -56,7 +57,7 @@ object ApkConfig {
             if (propValue == null) {
                 logger.warn("Property $key was not found, writing default $default")
             }
-            return FlavorType.values().find { it.name == propValue } ?: default
+            return FlavorType.entries.find { it.name == propValue } ?: default
         }
 }
 

@@ -278,7 +278,7 @@ essenty = ["essenty-lifecycle", "essenty-lifecycle-coroutines"]
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-gradle" }
-android-lib = { id = "com.android.library", version.ref = "android-gradle" }
+android-lib = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle" }
 android-test = { id = "com.android.test", version.ref = "android-gradle" }
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-general" }

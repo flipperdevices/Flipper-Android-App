@@ -5,8 +5,6 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-android.namespace = "com.flipperdevices.bridge.dao.impl"
-
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
@@ -14,6 +12,7 @@ ksp {
 androidDependencies {
     implementation(projects.components.bridge.dao.api)
 
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -31,14 +30,16 @@ androidDependencies {
 }
 
 dependencies {
-    "commonKsp"(libs.room.ksp)
+    commonKsp(libs.room.ksp)
+}
 
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(projects.components.core.buildKonfig)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.mockk)
-    "androidUnitTestImplementation"(libs.mockito.kotlin)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(projects.components.core.buildKonfig)
+    implementation(libs.junit)
+    implementation(libs.mockk)
+    implementation(libs.mockito.kotlin)
+    implementation(libs.ktx.testing)
+    implementation(libs.roboelectric)
+    implementation(libs.kotlin.coroutines.test)
 }

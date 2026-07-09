@@ -1,5 +1,3 @@
-import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
-
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
@@ -7,19 +5,8 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.selfupdater.thirdparty.github"
-
-android {
-    val isGoogleFeatureAvailable = project.IS_GOOGLE_FEATURE_AVAILABLE.toString()
-
-    buildTypes {
-        defaultConfig {
-            buildConfigField("boolean", "IS_GOOGLE_FEATURE_AVAILABLE", isGoogleFeatureAvailable)
-        }
-    }
-}
-
 androidDependencies {
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.selfupdater.thirdparty.api)
     implementation(projects.components.inappnotification.api)
 

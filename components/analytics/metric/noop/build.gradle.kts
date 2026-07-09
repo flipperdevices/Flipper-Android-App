@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.metric.noop"
-
 commonDependencies {
     implementation(projects.components.analytics.metric.api)
 

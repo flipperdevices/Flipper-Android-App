@@ -13,6 +13,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -62,7 +63,6 @@ private fun CommonExtension.configureDefaultConfig(project: Project) {
 private fun CommonExtension.configureBuildTypes() {
     buildTypes.apply {
         maybeCreate("debug").apply {
-            buildConfigField("boolean", "INTERNAL", "true")
             if (this is ApplicationBuildType) {
                 isDebuggable = true
             }
@@ -70,27 +70,23 @@ private fun CommonExtension.configureBuildTypes() {
         maybeCreate("internal").apply {
             matchingFallbacks += "debug"
             sourceSets.getByName(this.name).setRoot("src/debug")
-
-            buildConfigField("boolean", "INTERNAL", "true")
         }
-        maybeCreate("release").apply {
-            buildConfigField("boolean", "INTERNAL", "true")
-        }
+        maybeCreate("release")
     }
 }
 
 @Suppress("UnstableApiUsage", "ForbiddenComment")
 private fun CommonExtension.configureBuildFeatures() {
     // TODO: Disable by default
-    //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
-    buildFeatures.buildConfig = true
+    //  BuildKonfig is java source code. Java and Kotlin at one time affect build speed.
+    buildFeatures.buildConfig = false
     buildFeatures.resValues = false
     buildFeatures.shaders = false
 }
 
 private fun CommonExtension.configureCompileOptions() {
-    compileOptions.sourceCompatibility = JavaVersion.VERSION_11
-    compileOptions.targetCompatibility = JavaVersion.VERSION_11
+    compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+    compileOptions.targetCompatibility = JavaVersion.VERSION_21
 }
 
 @Suppress("MaxLineLength")
@@ -98,7 +94,7 @@ fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_11)
+                jvmTarget.set(JvmTarget.JVM_21)
 
                 freeCompilerArgs.add("-Xexpect-actual-classes")
 
@@ -116,6 +112,16 @@ fun Project.suppressOptIn() {
                 )
             }
         }
+}
+
+/**
+ * Gradle 9 fails test tasks that discover no tests; most KMP modules have empty host/desktop
+ * test compilations, so the failure is downgraded here
+ */
+fun Project.ignoreNoDiscoveredTests() {
+    tasks.withType<AbstractTestTask>().configureEach {
+        failOnNoDiscoveredTests.set(false)
+    }
 }
 
 /**

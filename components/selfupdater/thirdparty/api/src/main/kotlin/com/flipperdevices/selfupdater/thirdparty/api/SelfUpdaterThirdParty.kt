@@ -19,7 +19,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.flipperdevices.selfupdater.api.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import dev.zacsweers.metro.ContributesBinding
@@ -36,7 +36,7 @@ class SelfUpdaterThirdParty @Inject constructor(
 
     private val nameParser = updateParser.getName()
     override val TAG: String get() = "SelfUpdaterThirdParty"
-    override fun getInstallSourceName() = "$nameParser/${BuildConfig.BUILD_TYPE}"
+    override fun getInstallSourceName() = "$nameParser/${BuildKonfig.BUILD_TYPE}"
     override fun isSelfUpdateCanManualCheck(): Boolean = true
 
     private var downloadId: Long? = null

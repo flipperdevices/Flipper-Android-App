@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.wearable.sync.wear.api"
-
 androidDependencies {
     implementation(projects.components.core.ui.decompose)
 

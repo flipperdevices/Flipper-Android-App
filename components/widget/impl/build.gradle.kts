@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.widget.impl"
-
 androidDependencies {
     implementation(projects.components.widget.api)
 

@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.selfupdater.unknown"
-
 androidDependencies {
     implementation(projects.components.selfupdater.api)
 

@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.synchronization.stub"
-
 commonDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.bridge.dao.api)

@@ -5,8 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.keyscreen.impl"
-
 androidDependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
@@ -55,11 +53,11 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(projects.components.core.test)
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.mockk)
+androidHostTestDependencies {
+    implementation(projects.components.core.test)
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.roboelectric)
+    implementation(libs.ktx.testing)
+    implementation(libs.mockk)
 }

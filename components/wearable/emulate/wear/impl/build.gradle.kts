@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.wearable.emulate.impl"
-
 androidDependencies {
     implementation(projects.components.wearable.emulate.common)
     implementation(projects.components.wearable.emulate.wear.api)

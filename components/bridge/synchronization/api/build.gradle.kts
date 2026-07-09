@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.synchronization.api"
-
 commonDependencies {
     implementation(projects.components.bridge.dao.api)
 

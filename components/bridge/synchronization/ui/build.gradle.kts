@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.bridge.synchronization.ui"
-
 commonDependencies {
     implementation(projects.components.bridge.synchronization.api)
 

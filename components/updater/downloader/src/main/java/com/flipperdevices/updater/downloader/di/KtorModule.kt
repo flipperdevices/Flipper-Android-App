@@ -1,7 +1,7 @@
 package com.flipperdevices.updater.downloader.di
 
 import com.flipperdevices.core.di.AppGraph
-import com.flipperdevices.core.log.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.log.TaggedLogger
 import com.flipperdevices.core.log.verbose
 import dev.zacsweers.metro.ContributesTo
@@ -40,14 +40,14 @@ interface KtorModule {
                 )
             }
 
-            if (BuildConfig.INTERNAL) {
+            if (BuildKonfig.IS_LOG_ENABLED) {
                 install(Logging) {
                     logger = object : Logger {
                         override fun log(message: String) {
                             ktorTimber.verbose { message }
                         }
                     }
-                    level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.INFO
+                    level = if (BuildKonfig.IS_VERBOSE_LOG_ENABLED) LogLevel.ALL else LogLevel.INFO
                 }
             }
 

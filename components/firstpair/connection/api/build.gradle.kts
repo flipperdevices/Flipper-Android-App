@@ -3,8 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.bridge.api"
-
 androidDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -20,10 +18,10 @@ androidDependencies {
     // Testing
 }
 
-dependencies {
-    "androidUnitTestImplementation"(libs.junit)
-    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
-    "androidUnitTestImplementation"(libs.roboelectric)
-    "androidUnitTestImplementation"(libs.ktx.testing)
-    "androidUnitTestImplementation"(libs.mockk)
+androidHostTestDependencies {
+    implementation(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
+    implementation(libs.roboelectric)
+    implementation(libs.ktx.testing)
+    implementation(libs.mockk)
 }

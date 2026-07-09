@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.synchronization.impl.api
 import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.bridge.synchronization.api.SynchronizationState
-import com.flipperdevices.bridge.synchronization.impl.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.bridge.synchronization.impl.SynchronizationTask
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.runBlockingWithLog
@@ -46,7 +46,7 @@ class SynchronizationApiImpl @Inject constructor(
             info { "Synchronization skipped, because we already in synchronization" }
             return
         }
-        if (BuildConfig.DEBUG && !force) { // Option only for debug build
+        if (BuildKonfig.CRASH_APP_ON_FAILED_CHECKS && !force) { // Option only for debug build
             if (runBlockingWithLog { dataStore.data.first().skip_auto_sync_in_debug }) {
                 return
             }

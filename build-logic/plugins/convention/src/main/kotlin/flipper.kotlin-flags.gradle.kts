@@ -1,5 +1,6 @@
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -24,6 +25,7 @@ extensions
 tasks.withType<KotlinCompile>()
     .configureEach {
         compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
             optIn.addAll(optIns)
         }

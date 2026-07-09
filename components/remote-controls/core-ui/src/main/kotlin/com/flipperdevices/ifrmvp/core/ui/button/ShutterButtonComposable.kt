@@ -23,7 +23,7 @@ import com.flipperdevices.ifrmvp.core.ui.button.core.ButtonPlaceholderBox
 import com.flipperdevices.ifrmvp.core.ui.button.core.buttonBackgroundVariantColor
 import com.flipperdevices.ifrmvp.core.ui.button.core.onScrollHoldPress
 import com.flipperdevices.ifrmvp.core.ui.layout.core.sf
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Composable
 fun ShutterButtonComposable(

@@ -5,7 +5,7 @@ import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
-import com.flipperdevices.app.baselineprofile.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import org.junit.Assert
 
 object UiAutomatorExt {
@@ -13,7 +13,7 @@ object UiAutomatorExt {
 
     val requirePackageName: String
         get() = InstrumentationRegistry.getArguments()
-            .getString(BuildConfig.TARGET_APP_ID_KEY)
+            .getString(BuildKonfig.TARGET_APP_ID_KEY)
             ?: error("targetAppId not passed as instrumentation runner arg")
 
     /**

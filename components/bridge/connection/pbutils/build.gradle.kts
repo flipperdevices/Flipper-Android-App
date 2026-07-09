@@ -9,8 +9,6 @@ plugins {
     alias(libs.plugins.wire)
 }
 
-android.namespace = "com.flipperdevices.bridge.connection.pbutils"
-
 val wireOutputDir = layout.buildDirectory.dir("generated/source/wire")
 
 wire {

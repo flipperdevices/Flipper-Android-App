@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.rootscreen.impl"
-
 androidDependencies {
     implementation(projects.components.faphub.screenshotspreview.api)
 

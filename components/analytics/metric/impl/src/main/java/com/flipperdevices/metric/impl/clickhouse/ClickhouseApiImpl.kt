@@ -19,7 +19,7 @@ import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperEnd
 import com.flipperdevices.metric.api.events.complex.UpdateFlipperStart
 import com.flipperdevices.metric.api.events.complex.UpdateStatus
-import com.flipperdevices.metric.impl.BuildConfig
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.pbmetric.MetricEventsCollection
 import com.flipperdevices.pbmetric.MetricReportRequest
 import com.flipperdevices.pbmetric.MetricReportRequest.Platform
@@ -202,7 +202,7 @@ class ClickhouseApiImpl @Inject constructor(
             uuid = getUUID(),
             version = applicationParams.version,
             session_uuid = sessionUUID.toString(),
-            platform = if (BuildConfig.DEBUG) {
+            platform = if (BuildKonfig.CRASH_APP_ON_FAILED_CHECKS) {
                 Platform.ANDROID_DEBUG
             } else {
                 Platform.ANDROID

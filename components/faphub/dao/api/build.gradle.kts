@@ -5,8 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-android.namespace = "com.flipperdevices.faphub.dao.api"
-
 androidDependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.progress)

@@ -4,8 +4,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-android.namespace = "com.flipperdevices.filemanager.transfer.api"
-
 commonDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.deeplink.api)

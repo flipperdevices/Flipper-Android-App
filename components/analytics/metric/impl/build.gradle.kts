@@ -1,6 +1,3 @@
-import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_APP_KEY
-import com.flipperdevices.buildlogic.ApkConfig.COUNTLY_URL
-
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
@@ -8,24 +5,8 @@ plugins {
     id("flipper.wire")
 }
 
-android.namespace = "com.flipperdevices.metric.impl"
-android {
-    buildTypes {
-        defaultConfig {
-            buildConfigField(
-                "String",
-                "COUNTLY_URL",
-                "\"${COUNTLY_URL}\""
-            )
-            buildConfigField(
-                "String",
-                "COUNTLY_APP_KEY",
-                "\"${COUNTLY_APP_KEY}\""
-            )
-        }
-    }
-}
 androidDependencies {
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.analytics.metric.api)
 
     implementation(projects.components.core.di)

@@ -4,8 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-android.namespace = "com.flipperdevices.keyedit.noop"
-
 androidDependencies {
     implementation(projects.components.keyedit.api)
 
