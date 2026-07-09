@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.bridge.connection.livetests.api.LiveTest
 import com.flipperdevices.bridge.connection.livetests.model.FeatureNotSupportedError
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class LargeFileTransferLiveTest @Inject constructor(
     private val featureProvider: FFeatureProvider

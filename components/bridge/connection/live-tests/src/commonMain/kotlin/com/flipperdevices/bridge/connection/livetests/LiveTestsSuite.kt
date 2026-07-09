@@ -3,7 +3,7 @@ package com.flipperdevices.bridge.connection.livetests
 import com.flipperdevices.bridge.connection.livetests.api.LiveTest
 import com.flipperdevices.bridge.connection.livetests.tests.ReconnectLiveTest
 import com.flipperdevices.bridge.connection.livetests.tests.SoundLiveTest
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 /**
  * Defines which live tests run and in which order.

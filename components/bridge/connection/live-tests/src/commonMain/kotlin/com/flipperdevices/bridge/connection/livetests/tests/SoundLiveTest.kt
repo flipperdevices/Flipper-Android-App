@@ -5,7 +5,7 @@ import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvide
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.bridge.connection.livetests.api.LiveTest
 import com.flipperdevices.bridge.connection.livetests.model.FeatureNotSupportedError
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class SoundLiveTest @Inject constructor(
     private val featureProvider: FFeatureProvider

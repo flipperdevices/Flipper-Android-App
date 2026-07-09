@@ -10,7 +10,7 @@ import com.flipperdevices.bridge.connection.livetests.model.LiveTestAssertionErr
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.system.PingRequest
 import okio.ByteString.Companion.toByteString
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.random.Random
 
 class PingStressLiveTest @Inject constructor(

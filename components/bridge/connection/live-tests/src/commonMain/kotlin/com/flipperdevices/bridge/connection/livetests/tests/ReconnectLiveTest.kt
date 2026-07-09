@@ -14,7 +14,7 @@ import com.flipperdevices.protobuf.system.PingRequest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class ReconnectLiveTest @Inject constructor(

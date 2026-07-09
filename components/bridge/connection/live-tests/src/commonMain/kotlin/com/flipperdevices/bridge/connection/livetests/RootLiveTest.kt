@@ -8,7 +8,7 @@ import com.flipperdevices.bridge.connection.orchestrator.api.model.FDeviceConnec
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.time.TimeSource
 
 /**
