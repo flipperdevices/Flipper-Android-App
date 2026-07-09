@@ -12,18 +12,18 @@ import com.flipperdevices.filemanager.create.api.CreateFileDecomposeComponent
 import com.flipperdevices.filemanager.create.impl.viewmodel.CreateFileViewModel
 import com.flipperdevices.filemanager.ui.components.name.NameDialog
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import flipperapp.components.filemngr.create.impl.generated.resources.fmc_create_file_allowed_chars
 import flipperapp.components.filemngr.create.impl.generated.resources.fmc_create_file_title
 import flipperapp.components.filemngr.create.impl.generated.resources.fml_create_file_btn
 import flipperapp.components.filemngr.create.impl.generated.resources.fml_create_folder_btn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
 import org.jetbrains.compose.resources.stringResource
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 import flipperapp.components.filemngr.create.impl.generated.resources.Res as FMC
 
 @ContributesAssistedFactory(AppGraph::class, CreateFileDecomposeComponent.Factory::class)
@@ -33,7 +33,7 @@ class CreateFileDecomposeComponentImpl @AssistedInject constructor(
     renameViewModelProvider: Provider<CreateFileViewModel>
 ) : CreateFileDecomposeComponent(componentContext) {
     private val createFileViewModel = instanceKeeper.getOrCreate {
-        renameViewModelProvider.get()
+        renameViewModelProvider.invoke()
     }
 
     override val canCreateFiles = createFileViewModel.canCreateFiles

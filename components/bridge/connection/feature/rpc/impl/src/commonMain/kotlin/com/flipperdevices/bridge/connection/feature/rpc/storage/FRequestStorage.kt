@@ -5,7 +5,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val QUEUE_INITIAL_CAPACITY = 11
 private const val REQUEST_POOL_TIMEOUT_MS = 100L

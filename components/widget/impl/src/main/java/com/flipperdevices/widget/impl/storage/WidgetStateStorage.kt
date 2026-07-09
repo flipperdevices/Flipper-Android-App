@@ -11,18 +11,19 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.widget.impl.model.WidgetState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface WidgetStateStorage {
     suspend fun updateState(widgetId: Int, state: WidgetState)
     suspend fun getState(widgetId: Int): WidgetState
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, WidgetStateStorage::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<WidgetStateStorage>())
 class WidgetStateStorageImpl @Inject constructor(
     private val fFeatureProvider: FFeatureProvider,
     private val widgetDataApi: WidgetDataApi

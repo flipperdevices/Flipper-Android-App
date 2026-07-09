@@ -16,9 +16,9 @@ import com.flipperdevices.bridge.api.utils.Constants
 import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -54,6 +54,7 @@ class FirstPairBleManager @AssistedInject constructor(
 
     override fun supportState() = FlipperSupportedState.READY
 
+    @SuppressLint("MissingPermission")
     override fun initialize() {
         info { "Initialize device" }
 

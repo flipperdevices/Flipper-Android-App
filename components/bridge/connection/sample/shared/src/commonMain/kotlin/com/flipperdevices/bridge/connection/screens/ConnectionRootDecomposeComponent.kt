@@ -13,9 +13,9 @@ import com.flipperdevices.bridge.connection.screens.utils.PermissionChecker
 import com.flipperdevices.filemanager.main.api.FileManagerDecomposeComponent
 import com.flipperdevices.ui.decompose.CompositeDecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class ConnectionRootDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

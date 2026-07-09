@@ -1,12 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.archive.search"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.archive.api)
     implementation(projects.components.archive.shared)
     implementation(projects.components.keyscreen.api)
@@ -30,10 +31,6 @@ dependencies {
     implementation(libs.appcompat)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
 
     implementation(libs.lifecycle.compose)

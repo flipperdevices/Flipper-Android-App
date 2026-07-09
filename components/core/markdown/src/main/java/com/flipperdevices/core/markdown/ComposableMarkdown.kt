@@ -42,17 +42,12 @@ fun ComposableMarkdown(
 fun markdownColors(
     backgroundCode: Color = LocalPallet.current.text8,
     text: Color = LocalPallet.current.text100,
-    link: Color = LocalPallet.current.accentSecond,
     dividerColor: Color = LocalPallet.current.divider12
 ) = DefaultMarkdownColors(
     text = text,
-    codeText = text,
-    linkText = link,
     codeBackground = backgroundCode,
     inlineCodeBackground = backgroundCode,
     dividerColor = dividerColor,
-    inlineCodeText = text,
-    tableText = text,
     tableBackground = backgroundCode,
 )
 
@@ -69,7 +64,10 @@ fun markdownTypography(
     h6Style: TextStyle = LocalTypography.current.bodySB14,
     inlineCode: TextStyle = LocalTypography.current.monoSpaceM14,
     listStyle: TextStyle = LocalTypography.current.bodyR14,
-    linkStyle: TextStyle = LocalTypography.current.bodyR14.copy(textDecoration = TextDecoration.Underline),
+    linkStyle: TextStyle = LocalTypography.current.bodyR14.copy(
+        color = LocalPallet.current.accentSecond,
+        textDecoration = TextDecoration.Underline
+    ),
     orderedStyle: TextStyle = LocalTypography.current.bodyR14,
     paragraphStyle: TextStyle = LocalTypography.current.bodyR14,
     quoteStyle: TextStyle = LocalTypography.current.bodyR14,
@@ -85,16 +83,13 @@ fun markdownTypography(
         h5 = h5Style.merge(additionalTextStyle),
         h6 = h6Style.merge(additionalTextStyle),
         inlineCode = inlineCode.merge(additionalTextStyle),
-        link = linkStyle.merge(additionalTextStyle),
         list = listStyle.merge(additionalTextStyle),
         ordered = orderedStyle.merge(additionalTextStyle),
         paragraph = paragraphStyle.merge(additionalTextStyle),
         quote = quoteStyle.merge(additionalTextStyle),
         text = textStyle.merge(additionalTextStyle),
         textLink = TextLinkStyles(
-            style = textStyle.merge(additionalTextStyle).copy(
-                textDecoration = TextDecoration.Underline,
-            ).toSpanStyle()
+            style = linkStyle.merge(additionalTextStyle).toSpanStyle()
         ),
         table = textStyle.merge(additionalTextStyle)
     )

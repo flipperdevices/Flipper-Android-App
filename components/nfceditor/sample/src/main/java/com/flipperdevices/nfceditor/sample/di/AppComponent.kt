@@ -6,23 +6,23 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.nfceditor.sample.NfcEditorActivity
 import com.flipperdevices.shake2report.api.Shake2ReportApi
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
-import javax.inject.Provider
-import javax.inject.Singleton
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-@MergeComponent(AppGraph::class)
+@SingleIn(AppGraph::class)
+@DependencyGraph(AppGraph::class)
 interface AppComponent {
     val shake2report: Provider<Shake2ReportApi>
     fun inject(activity: NfcEditorActivity)
 
-    @MergeComponent.Factory
-    interface Factory {
+    @DependencyGraph.Factory
+    fun interface Factory {
         fun create(
-            @BindsInstance context: Context,
-            @BindsInstance application: Application,
-            @BindsInstance applicationParams: ApplicationParams
+            @Provides context: Context,
+            @Provides application: Application,
+            @Provides applicationParams: ApplicationParams
         ): AppComponent
     }
 }

@@ -1,9 +1,8 @@
 plugins {
-    id("flipper.android-app-multiplatform")
+    id("flipper.android-app")
     id("com.google.devtools.ksp")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
     id("kotlinx-serialization")
-    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.sample.android"
@@ -14,15 +13,8 @@ android {
     }
 }
 
-commonDependencies {
+dependencies {
     implementation(projects.components.bridge.connection.sample.shared)
-}
-
-androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.activityholder)
-}
-
-dependencies {
-    ksp(libs.dagger.compiler)
 }

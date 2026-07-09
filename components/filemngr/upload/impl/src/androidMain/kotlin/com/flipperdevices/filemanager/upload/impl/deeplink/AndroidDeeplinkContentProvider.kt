@@ -4,12 +4,13 @@ import android.content.Context
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.deeplink.model.DeeplinkContent
 import com.flipperdevices.deeplink.model.openStream
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import okio.Source
 import okio.source
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, DeeplinkContentProvider::class)
+@ContributesBinding(AppGraph::class, binding<DeeplinkContentProvider>())
 class AndroidDeeplinkContentProvider @Inject constructor(
     context: Context,
 ) : DeeplinkContentProvider {

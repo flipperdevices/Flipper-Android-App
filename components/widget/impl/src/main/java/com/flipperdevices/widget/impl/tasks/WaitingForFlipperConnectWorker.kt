@@ -21,7 +21,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeout
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val WAIT_FLIPPER_TIMEOUT_MS = 3 * 1000L // 10 sec
 private const val DEFAULT_WIDGET_APP_ID = -1

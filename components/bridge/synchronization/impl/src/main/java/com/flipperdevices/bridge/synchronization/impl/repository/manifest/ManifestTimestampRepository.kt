@@ -4,8 +4,9 @@ import com.flipperdevices.bridge.dao.api.model.FlipperKeyType
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface ManifestTimestampRepository {
     suspend fun setTimestampForType(
@@ -19,7 +20,7 @@ interface ManifestTimestampRepository {
     ): Boolean
 }
 
-@ContributesBinding(TaskGraph::class, ManifestTimestampRepository::class)
+@ContributesBinding(TaskGraph::class, binding<ManifestTimestampRepository>())
 class ManifestTimestampRepositoryImpl @Inject constructor(
     private val manifestStorage: ManifestStorage
 ) : ManifestTimestampRepository, LogTagProvider {

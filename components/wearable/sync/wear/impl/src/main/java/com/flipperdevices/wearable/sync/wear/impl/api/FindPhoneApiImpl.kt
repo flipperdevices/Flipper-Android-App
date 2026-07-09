@@ -3,15 +3,16 @@ package com.flipperdevices.wearable.sync.wear.impl.api
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneApi
 import com.flipperdevices.wearable.sync.wear.api.FindPhoneState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, FindPhoneApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FindPhoneApi>())
 class FindPhoneApiImpl @Inject constructor() : FindPhoneApi {
     private val state = MutableStateFlow<FindPhoneState>(FindPhoneState.Loading)
 

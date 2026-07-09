@@ -12,7 +12,7 @@ import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestUpl
 import com.flipperdevices.faphub.installation.manifest.impl.utils.FapManifestsLoader
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestItem
 import com.flipperdevices.faphub.installation.manifest.model.FapManifestState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
@@ -25,11 +25,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, FapManifestApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FapManifestApi>())
 class FapManifestApiImpl @Inject constructor(
     loaderFactory: FapManifestsLoader.Factory,
     private val manifestUploader: FapManifestUploader,

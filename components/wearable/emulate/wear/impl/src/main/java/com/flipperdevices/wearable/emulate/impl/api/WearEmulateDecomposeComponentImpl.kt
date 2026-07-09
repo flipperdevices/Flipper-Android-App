@@ -11,9 +11,9 @@ import com.flipperdevices.wearable.core.ui.components.ComposableWearOsScrollable
 import com.flipperdevices.wearable.emulate.api.WearEmulateDecomposeComponent
 import com.flipperdevices.wearable.emulate.impl.composable.ComposableWearEmulate
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearEmulateViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, WearEmulateDecomposeComponent.Factory::class)
 class WearEmulateDecomposeComponentImpl @AssistedInject constructor(

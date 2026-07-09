@@ -12,8 +12,9 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface FolderKeySynchronization {
     suspend fun syncFolder(
@@ -22,7 +23,7 @@ interface FolderKeySynchronization {
     ): Int
 }
 
-@ContributesBinding(TaskGraph::class, FolderKeySynchronization::class)
+@ContributesBinding(TaskGraph::class, binding<FolderKeySynchronization>())
 class FolderKeySynchronizationImpl @Inject constructor(
     private val androidHashRepository: AndroidHashRepository,
     private val flipperHashRepository: FlipperHashRepository,

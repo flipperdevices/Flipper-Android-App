@@ -14,11 +14,12 @@ import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.faphub.installation.button.api.FapButtonSize
 import com.flipperdevices.faphub.installation.button.api.FapInstallationUIApi
 import com.flipperdevices.faphub.installation.button.api.toFapButtonConfig
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, CatalogTabApi::class)
+@ContributesBinding(AppGraph::class, binding<CatalogTabApi>())
 class CatalogTabApiImpl @Inject constructor(
     private val fapInstallationUIApi: FapInstallationUIApi,
     private val errorsRenderer: FapHubComposableErrorsRenderer,
@@ -45,10 +46,10 @@ class CatalogTabApiImpl @Inject constructor(
                 )
             },
             categoriesViewModel = componentContext.viewModelWithFactory(key = null) {
-                categoriesViewModelProvider.get()
+                categoriesViewModelProvider.invoke()
             },
             fapsListViewModel = componentContext.viewModelWithFactory(key = null) {
-                fapsListViewModelProvider.get()
+                fapsListViewModelProvider.invoke()
             }
         )
     }

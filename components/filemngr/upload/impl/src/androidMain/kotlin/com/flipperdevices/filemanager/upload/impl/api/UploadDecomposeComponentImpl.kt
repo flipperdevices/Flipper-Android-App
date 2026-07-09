@@ -24,12 +24,12 @@ import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.filemanager.upload.api.MultipleFilesPicker
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
 import com.flipperdevices.filemanager.upload.api.UploaderDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
 
 @ContributesAssistedFactory(AppGraph::class, UploadDecomposeComponent.Factory::class)

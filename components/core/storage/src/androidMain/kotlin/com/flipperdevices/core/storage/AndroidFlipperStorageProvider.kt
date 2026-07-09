@@ -3,12 +3,13 @@ package com.flipperdevices.core.storage
 import android.content.Context
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperStorageProvider::class)
+@ContributesBinding(AppGraph::class, binding<FlipperStorageProvider>())
 class AndroidFlipperStorageProvider @Inject constructor(
     context: Context
 ) : FlipperStorageProvider() {

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.rootscreen.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.screenshotspreview.api)
 
     implementation(projects.components.rootscreen.api)
@@ -32,10 +33,6 @@ dependencies {
     implementation(projects.components.remoteControls.brands.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.essenty)
 }

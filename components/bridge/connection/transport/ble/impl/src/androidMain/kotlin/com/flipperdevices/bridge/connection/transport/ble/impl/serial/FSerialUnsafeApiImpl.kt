@@ -8,9 +8,9 @@ import com.flipperdevices.bridge.connection.transport.ble.impl.model.BLEConnecti
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
 import com.flipperdevices.core.log.LogTagProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -29,8 +29,8 @@ private const val DAGGER_ID_CHARACTERISTIC_TX = "tx_service"
 
 @OptIn(ExperimentalStdlibApi::class)
 class FSerialUnsafeApiImpl @AssistedInject constructor(
-    @Assisted(DAGGER_ID_CHARACTERISTIC_RX) val rxCharacteristic: ClientBleGattCharacteristic,
-    @Assisted(DAGGER_ID_CHARACTERISTIC_TX) val txCharacteristic: ClientBleGattCharacteristic,
+    @Assisted val rxCharacteristic: ClientBleGattCharacteristic,
+    @Assisted val txCharacteristic: ClientBleGattCharacteristic,
     @Assisted scope: CoroutineScope,
     @Assisted private val flipperActionNotifier: FlipperActionNotifier,
     private val context: Context,
@@ -83,8 +83,8 @@ class FSerialUnsafeApiImpl @AssistedInject constructor(
     @AssistedFactory
     fun interface Factory {
         operator fun invoke(
-            @Assisted(DAGGER_ID_CHARACTERISTIC_RX) rxCharacteristic: ClientBleGattCharacteristic,
-            @Assisted(DAGGER_ID_CHARACTERISTIC_TX) txCharacteristic: ClientBleGattCharacteristic,
+            @Assisted rxCharacteristic: ClientBleGattCharacteristic,
+            @Assisted txCharacteristic: ClientBleGattCharacteristic,
             scope: CoroutineScope,
             flipperActionNotifier: FlipperActionNotifier
         ): FSerialUnsafeApiImpl

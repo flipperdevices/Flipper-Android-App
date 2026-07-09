@@ -6,10 +6,11 @@ import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroU
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesMultibinding
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.binding
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -20,12 +21,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import kotlin.time.Duration.Companion.seconds
 
 private val FLIPPER_NAME_REGEXP = "Flipper ([A-Za-z]+)".toRegex()
 
 class USBSearchDelegate @AssistedInject constructor(
-    @Assisted viewModelScope: CoroutineScope,
+    @Assisted scope: CoroutineScope,
     private val persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchDelegate, LogTagProvider {
     override val TAG = "USBSearchDelegate"
@@ -34,7 +37,7 @@ class USBSearchDelegate @AssistedInject constructor(
         MutableStateFlow<ImmutableList<ConnectionSearchItem>>(persistentListOf())
 
     init {
-        viewModelScope.launch {
+        scope.launch {
             combine(
                 flow {
                     while (true) {
@@ -74,7 +77,7 @@ class USBSearchDelegate @AssistedInject constructor(
     override fun getDevicesFlow() = searchItems.asStateFlow()
 
     @AssistedFactory
-    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
+    @ContributesIntoSet(AppGraph::class, binding<ConnectionSearchDelegate.Factory>())
     fun interface Factory : ConnectionSearchDelegate.Factory {
         override fun invoke(scope: CoroutineScope): USBSearchDelegate
     }

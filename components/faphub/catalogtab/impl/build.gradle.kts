@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.catalogtab.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.catalogtab.api)
 
     implementation(projects.components.core.di)
@@ -28,10 +29,6 @@ dependencies {
     implementation(projects.components.bridge.dao.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.compose.paging)
     implementation(libs.decompose)
 

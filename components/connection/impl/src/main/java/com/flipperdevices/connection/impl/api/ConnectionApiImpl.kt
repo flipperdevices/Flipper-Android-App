@@ -12,9 +12,9 @@ import com.flipperdevices.connection.impl.viewmodel.ConnectionTabStateMapper
 import com.flipperdevices.connection.impl.viewmodel.UnsupportedStateViewModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 @ContributesBinding(AppGraph::class)
 class ConnectionApiImpl @Inject constructor(
@@ -26,7 +26,7 @@ class ConnectionApiImpl @Inject constructor(
         componentContext: ComponentContext
     ): TabState {
         val connectionStatusViewModel = componentContext.viewModelWithFactory(null) {
-            connectionStatusVMProvider.get()
+            connectionStatusVMProvider.invoke()
         }
         val connectionStatusState by connectionStatusViewModel.getStatusState().collectAsState()
         return ConnectionTabStateMapper.getConnectionTabState(connectionStatusState)
@@ -37,7 +37,7 @@ class ConnectionApiImpl @Inject constructor(
         componentContext: ComponentContext
     ) {
         val viewModel = componentContext.viewModelWithFactory(null) {
-            unsupportedStateVMProvider.get()
+            unsupportedStateVMProvider.invoke()
         }
         val supportedState by viewModel.getUnsupportedState().collectAsState()
         ComposableUnsupportedDialog(supportedState)

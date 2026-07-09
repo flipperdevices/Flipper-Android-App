@@ -8,14 +8,15 @@ import com.flipperdevices.core.ktx.jre.withLock
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, FDeviceOrchestrator::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FDeviceOrchestrator>())
 class FDeviceOrchestratorImpl @Inject constructor(
     private val deviceHolderFactory: FDeviceHolderFactory,
     private val deviceConnectionConfigMapper: FDeviceConnectionConfigMapper

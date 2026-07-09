@@ -7,12 +7,12 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class ConnectionSearchViewModel @Inject constructor(
     private val persistedStorage: FDevicePersistedStorage,
-    searchDelegatesFactories: MutableSet<ConnectionSearchDelegate.Factory>
+    searchDelegatesFactories: Set<ConnectionSearchDelegate.Factory>
 ) : DecomposeViewModel() {
     private val searchDelegates = searchDelegatesFactories.map { factory -> factory(viewModelScope) }
     private val combinedFlow = combine(

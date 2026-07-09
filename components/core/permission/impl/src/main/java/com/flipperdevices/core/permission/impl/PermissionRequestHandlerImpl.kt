@@ -10,12 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.permission.api.PermissionListener
 import com.flipperdevices.core.permission.api.PermissionRequestHandler
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, PermissionRequestHandler::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<PermissionRequestHandler>())
 class PermissionRequestHandlerImpl @Inject constructor() :
     PermissionRequestHandler,
     Application.ActivityLifecycleCallbacks,
@@ -42,9 +43,9 @@ class PermissionRequestHandlerImpl @Inject constructor() :
     }
 
     override fun onActivityResult(result: Map<String, Boolean>) {
-        result.forEach { (permission, result) ->
+        result.forEach { (permission, isGranted) ->
             permissionPendingListeners.remove(permission)?.forEach { listener ->
-                listener.invoke(permission, result)
+                listener.invoke(permission, isGranted)
             }
         }
     }

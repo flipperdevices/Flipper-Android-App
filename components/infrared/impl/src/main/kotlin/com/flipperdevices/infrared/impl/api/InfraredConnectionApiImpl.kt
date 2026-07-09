@@ -13,15 +13,16 @@ import com.flipperdevices.bridge.synchronization.api.SynchronizationState
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.info
 import com.flipperdevices.infrared.api.InfraredConnectionApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, InfraredConnectionApi::class)
+@ContributesBinding(AppGraph::class, binding<InfraredConnectionApi>())
 class InfraredConnectionApiImpl @Inject constructor(
     private val synchronizationApi: SynchronizationApi,
     private val fDeviceOrchestrator: FDeviceOrchestrator,

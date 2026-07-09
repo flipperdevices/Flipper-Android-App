@@ -9,10 +9,11 @@ import com.flipperdevices.keyemulate.composable.common.InternalComposableEmulate
 import com.flipperdevices.keyemulate.composable.common.button.ComposableEmulateButton
 import com.flipperdevices.keyemulate.composable.common.button.ComposableEmulatePlaceholder
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, KeyEmulateUiApi::class)
+@ContributesBinding(AppGraph::class, binding<KeyEmulateUiApi>())
 class KeyEmulateUiApiImpl @Inject constructor() : KeyEmulateUiApi {
     @Composable
     override fun ComposableEmulateButtonRaw(

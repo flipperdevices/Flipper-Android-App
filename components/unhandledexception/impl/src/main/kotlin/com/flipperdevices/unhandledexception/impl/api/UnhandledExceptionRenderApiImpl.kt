@@ -13,12 +13,13 @@ import com.flipperdevices.deeplink.model.DeeplinkBottomBarTab
 import com.flipperdevices.rootscreen.api.LocalDeeplinkHandler
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionRenderApi
 import com.flipperdevices.unhandledexception.impl.composable.ComposableUnhandledExceptionDialog
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, UnhandledExceptionRenderApi::class)
+@ContributesBinding(AppGraph::class, binding<UnhandledExceptionRenderApi>())
 class UnhandledExceptionRenderApiImpl @Inject constructor(
     dataStoreProvider: Provider<DataStore<Settings>>,
 ) : UnhandledExceptionRenderApi {

@@ -6,18 +6,19 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 private const val BLE_EXCEPTION_PREFIX = "Need BLUETOOTH PRIVILEGED permission"
 
-@Singleton
-@ContributesBinding(AppGraph::class, UnhandledExceptionApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<UnhandledExceptionApi>())
 class UnhandledExceptionImpl @Inject constructor(
     private val dataStoreProvider: Provider<DataStore<Settings>>
 ) : UnhandledExceptionApi, Thread.UncaughtExceptionHandler, LogTagProvider {
@@ -35,7 +36,7 @@ class UnhandledExceptionImpl @Inject constructor(
     }
 
     override fun isBleConnectionForbiddenFlow(): Flow<Boolean> {
-        return dataStoreProvider.get().data.map { it.fatal_ble_security_exception_happens }
+        return dataStoreProvider.invoke().data.map { it.fatal_ble_security_exception_happens }
     }
 
     override fun uncaughtException(t: Thread, e: Throwable) {
@@ -48,7 +49,7 @@ class UnhandledExceptionImpl @Inject constructor(
 
     private fun markFatalBleSecurityExceptionHappens() {
         runBlocking {
-            dataStoreProvider.get().updateData {
+            dataStoreProvider.invoke().updateData {
                 it.copy(
                     fatal_ble_security_exception_happens = true
                 )

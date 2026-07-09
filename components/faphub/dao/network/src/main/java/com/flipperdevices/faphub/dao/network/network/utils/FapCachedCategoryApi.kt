@@ -11,8 +11,8 @@ import com.flipperdevices.faphub.dao.network.network.model.KtorfitCategory
 import com.flipperdevices.faphub.target.model.FlipperTarget
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class FapCachedCategoryApi @Inject constructor(
     httpClient: HttpClient,

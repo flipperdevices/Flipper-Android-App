@@ -6,7 +6,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.updater.api.DownloadAndUnpackDelegateApi
 import com.flipperdevices.updater.model.DistributionFile
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.content.ProgressListener
 import io.ktor.client.plugins.onDownload
@@ -21,11 +21,12 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val TRY_MAX_COUNT = 3
 
-@ContributesBinding(AppGraph::class, DownloadAndUnpackDelegateApi::class)
+@ContributesBinding(AppGraph::class, binding<DownloadAndUnpackDelegateApi>())
 class DownloadAndUnpackDelegateApiImpl @Inject constructor(
     private val client: HttpClient
 ) : DownloadAndUnpackDelegateApi, LogTagProvider {

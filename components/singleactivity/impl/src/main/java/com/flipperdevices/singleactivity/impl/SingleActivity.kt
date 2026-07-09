@@ -37,8 +37,8 @@ import com.flipperdevices.singleactivity.impl.utils.FlipperStackAnimationProvide
 import com.flipperdevices.singleactivity.impl.utils.OnCreateHandlerDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class SingleActivity : AppCompatActivity(), LogTagProvider {
     override val TAG = "SingleActivity"
@@ -97,7 +97,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
                     }
                 },
                 themeViewModel = root.viewModelWithFactory(key = null) {
-                    themeViewModelProvider.get()
+                    themeViewModelProvider.invoke()
                 }
             )
         }
@@ -122,6 +122,7 @@ class SingleActivity : AppCompatActivity(), LogTagProvider {
         metricApi.reportSessionState(SessionState.StartSession(this))
     }
 
+    @Suppress("MissingSuperCall")
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         metricApi.reportSessionState(SessionState.ConfigurationChanged(newConfig))

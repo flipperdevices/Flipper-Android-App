@@ -7,11 +7,12 @@ import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdate
 import com.flipperdevices.selfupdater.thirdparty.api.SelfUpdateParserApi
 import com.flipperdevices.selfupdater.thirdparty.github.BuildConfig
 import com.flipperdevices.selfupdater.thirdparty.github.model.GithubRelease
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val GITHUB_API_ALL_RELEASES =
     "https://api.github.com/repos/flipperdevices/Flipper-Android-App/releases"
@@ -20,7 +21,7 @@ private const val GITHUB_API_LAST_RELEASE =
 
 private const val DEV_BUILD_TYPE = "internal"
 
-@ContributesBinding(AppGraph::class, SelfUpdateParserApi::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdateParserApi>())
 class GithubParser @Inject constructor(
     private val client: HttpClient
 ) : SelfUpdateParserApi, LogTagProvider {

@@ -14,9 +14,10 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 import kotlin.io.path.Path
+import dev.zacsweers.metro.binding
 
 const val SIZE_BYTES_LIMIT = 10 * 1024 * 1024 // 10MiB
 
@@ -31,7 +32,7 @@ interface FlipperHashRepository {
     ): List<KeyWithHash>
 }
 
-@ContributesBinding(TaskGraph::class, FlipperHashRepository::class)
+@ContributesBinding(TaskGraph::class, binding<FlipperHashRepository>())
 class FlipperHashRepositoryImpl @Inject constructor(
     private val flipperStorageApi: FListingStorageApi
 ) : FlipperHashRepository, LogTagProvider {

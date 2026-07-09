@@ -6,13 +6,14 @@ import com.flipperdevices.faphub.installedtab.api.FapUpdatePendingCountApi
 import com.flipperdevices.faphub.installedtab.impl.model.FapInstalledInternalState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.FapInstalledInternalLoadingState
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsFromNetworkProducer
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapUpdatePendingCountApi::class)
+@ContributesBinding(AppGraph::class, binding<FapUpdatePendingCountApi>())
 class FapUpdatePendingCountApiImpl @Inject constructor(
     fapsStateProducerProvider: Provider<InstalledFapsFromNetworkProducer>
 ) : FapUpdatePendingCountApi {

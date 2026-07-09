@@ -13,12 +13,13 @@ import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
 import com.flipperdevices.deeplink.model.DeeplinkContent
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.withContext
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<DeepLinkParserDelegate>())
 class DeepLinkFileUriCopy @Inject constructor() : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkFileUriCopy"
 

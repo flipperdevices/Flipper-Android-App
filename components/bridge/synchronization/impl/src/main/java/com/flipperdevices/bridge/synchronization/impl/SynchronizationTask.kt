@@ -26,12 +26,13 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.complex.SynchronizationEnd
 import com.flipperdevices.nfc.mfkey32.api.MfKey32Api
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface SynchronizationTask {
 
@@ -50,7 +51,7 @@ interface SynchronizationTask {
     }
 }
 
-@ContributesBinding(AppGraph::class, SynchronizationTask.Builder::class)
+@ContributesBinding(AppGraph::class, binding<SynchronizationTask.Builder>())
 class SynchronizationTaskBuilder @Inject constructor(
     private val featureProvider: FFeatureProvider,
     private val simpleKeyApi: SimpleKeyApi,

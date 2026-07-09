@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.screenstreaming.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.screenstreaming.api)
 
     implementation(projects.components.bridge.connection.pbutils)
@@ -35,10 +36,6 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.compose.constraint)
     implementation(libs.bundles.decompose)
 

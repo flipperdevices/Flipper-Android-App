@@ -9,7 +9,7 @@ import com.flipperdevices.core.progress.ProgressWrapperTracker
 import com.flipperdevices.faphub.dao.api.FapDownloadApi
 import com.flipperdevices.faphub.dao.network.network.api.FapNetworkBundleApi
 import com.flipperdevices.faphub.target.model.FlipperTarget
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.contentLength
@@ -17,9 +17,10 @@ import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readRemaining
 import kotlinx.io.readByteArray
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapDownloadApi::class)
+@ContributesBinding(AppGraph::class, binding<FapDownloadApi>())
 class FapDownloadApiImpl @Inject constructor(
     private val bundleApi: FapNetworkBundleApi,
     private val storageProvider: FlipperStorageProvider

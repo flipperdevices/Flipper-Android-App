@@ -14,9 +14,9 @@ import com.flipperdevices.share.receive.helpers.FlipperKeyParserHelper
 import com.flipperdevices.share.receive.helpers.ReceiveKeyActionHelper
 import com.flipperdevices.share.receive.models.ReceiveState
 import com.flipperdevices.share.receive.models.ReceiverError
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Job

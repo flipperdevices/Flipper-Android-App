@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -96,7 +95,7 @@ private fun ArchiveProgressScreen(inProgressState: SynchronizationState.InProgre
         )
         Text(
             modifier = Modifier.padding(top = 14.dp),
-            text = LocalContext.current.getString(
+            text = stringResource(
                 R.string.widget_options_sync_percent,
                 inProgressState.progress.roundPercentToString()
             ),

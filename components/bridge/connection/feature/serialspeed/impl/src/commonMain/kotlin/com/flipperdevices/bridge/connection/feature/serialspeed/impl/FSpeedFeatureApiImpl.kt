@@ -3,9 +3,9 @@ package com.flipperdevices.bridge.connection.feature.serialspeed.impl
 import com.flipperdevices.bridge.connection.feature.serialspeed.api.FSpeedFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FSerialDeviceApi
 import com.flipperdevices.bridge.connection.transport.common.api.serial.FlipperSerialSpeed
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.StateFlow
 
 class FSpeedFeatureApiImpl @AssistedInject constructor(

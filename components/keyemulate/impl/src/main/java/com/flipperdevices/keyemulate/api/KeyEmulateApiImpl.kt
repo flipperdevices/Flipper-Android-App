@@ -13,9 +13,9 @@ import com.flipperdevices.keyemulate.composable.ComposableSubGhzSendButton
 import com.flipperdevices.keyemulate.viewmodel.InfraredViewModel
 import com.flipperdevices.keyemulate.viewmodel.SimpleEmulateViewModel
 import com.flipperdevices.keyemulate.viewmodel.SubGhzViewModel
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 @ContributesBinding(AppGraph::class)
 class KeyEmulateApiImpl @Inject constructor(
@@ -37,7 +37,7 @@ class KeyEmulateApiImpl @Inject constructor(
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
                 emulateViewModel = componentContext.viewModelWithFactory(key = null) {
-                    subGhzViewModel.get()
+                    subGhzViewModel.invoke()
                 }
             )
 
@@ -48,7 +48,7 @@ class KeyEmulateApiImpl @Inject constructor(
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
                 emulateViewModel = componentContext.viewModelWithFactory(key = null) {
-                    simpleEmulateViewModel.get()
+                    simpleEmulateViewModel.invoke()
                 }
             )
 
@@ -57,7 +57,7 @@ class KeyEmulateApiImpl @Inject constructor(
                 emulateConfig = emulateConfig,
                 isSynchronized = isSynchronized,
                 emulateViewModel = componentContext.viewModelWithFactory(key = null) {
-                    infraredViewModel.get()
+                    infraredViewModel.invoke()
                 }
             )
         }

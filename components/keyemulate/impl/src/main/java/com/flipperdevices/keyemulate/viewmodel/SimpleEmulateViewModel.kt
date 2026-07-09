@@ -7,7 +7,7 @@ import com.flipperdevices.bridge.connection.orchestrator.api.FDeviceOrchestrator
 import com.flipperdevices.bridge.synchronization.api.SynchronizationApi
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.keyemulate.tasks.CloseEmulateAppTaskHolder
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class SimpleEmulateViewModel @Inject constructor(
     synchronizationApi: SynchronizationApi,

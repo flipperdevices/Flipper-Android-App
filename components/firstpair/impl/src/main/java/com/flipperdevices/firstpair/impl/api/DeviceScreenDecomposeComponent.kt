@@ -8,10 +8,10 @@ import com.flipperdevices.firstpair.impl.viewmodels.connecting.PairDeviceViewMod
 import com.flipperdevices.firstpair.impl.viewmodels.searching.BLEDeviceViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 fun interface OnClickHelp {
     operator fun invoke()
@@ -30,10 +30,10 @@ class DeviceScreenDecomposeComponent @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val pairViewModel: PairDeviceViewModel = viewModelWithFactory(key = null) {
-            pairDeviceViewModelProvider.get()
+            pairDeviceViewModelProvider.invoke()
         }
         val bleDeviceViewModel: BLEDeviceViewModel = viewModelWithFactory(key = null) {
-            bleDeviceViewModelProvider.get()
+            bleDeviceViewModelProvider.invoke()
         }
         ComposableSearchingView(
             onHelpClicking = onHelpClick::invoke,

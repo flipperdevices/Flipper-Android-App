@@ -1,6 +1,6 @@
 plugins {
     id("flipper.android-app")
-    id("flipper.anvil.entrypoint")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable"
@@ -62,8 +62,4 @@ dependencies {
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlin.coroutines.play.services)
-
-    // Dagger deps
-    implementation(libs.dagger)
-    commonKsp(libs.dagger.compiler)
 }

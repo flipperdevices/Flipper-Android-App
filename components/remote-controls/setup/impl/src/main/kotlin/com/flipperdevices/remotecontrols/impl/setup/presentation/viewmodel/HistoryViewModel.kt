@@ -4,7 +4,7 @@ import com.flipperdevices.core.ktx.jre.safeRemoveLast
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.ifrmvp.backend.model.SignalModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel.SignalResultData
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class HistoryViewModel @Inject constructor() : DecomposeViewModel() {
     private val flatData = mutableListOf<FlatData>()

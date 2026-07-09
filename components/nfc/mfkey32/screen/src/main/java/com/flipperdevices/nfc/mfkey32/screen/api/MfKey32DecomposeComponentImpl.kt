@@ -18,14 +18,14 @@ import com.flipperdevices.nfc.mfkey32.screen.model.MfKey32State
 import com.flipperdevices.nfc.mfkey32.screen.viewmodel.FlipperColorViewModel
 import com.flipperdevices.nfc.mfkey32.screen.viewmodel.MfKey32ViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, MfKey32DecomposeComponent.Factory::class)
 class MfKey32DecomposeComponentImpl @AssistedInject constructor(
@@ -47,7 +47,7 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
         val isBackPressHandled by isBackPressHandledFlow.collectAsState()
 
         val viewModel = viewModelWithFactory(key = null) {
-            mfKey32ViewModelProvider.get()
+            mfKey32ViewModelProvider.invoke()
         }
         val state by viewModel.getMfKey32State().collectAsState()
         val foundedKeys by viewModel.getFoundedInformation().collectAsState()
@@ -82,7 +82,7 @@ class MfKey32DecomposeComponentImpl @AssistedInject constructor(
         }
 
         val flipperColorViewModel = viewModelWithFactory(key = null) {
-            flipperColorViewModelProvider.get()
+            flipperColorViewModelProvider.invoke()
         }
         val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
 

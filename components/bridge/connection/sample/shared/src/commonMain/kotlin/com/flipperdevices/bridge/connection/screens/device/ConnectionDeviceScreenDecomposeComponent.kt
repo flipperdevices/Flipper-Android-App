@@ -16,10 +16,10 @@ import com.flipperdevices.bridge.connection.screens.device.viewmodel.PingViewMod
 import com.flipperdevices.bridge.connection.screens.models.ConnectionRootConfig
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactoryWithoutRemember
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -29,13 +29,13 @@ class ConnectionDeviceScreenDecomposeComponent @AssistedInject constructor(
     private val pingViewModelProvider: Provider<PingViewModel>
 ) : ScreenDecomposeComponent(componentContext) {
     private val devicesViewModel = viewModelWithFactoryWithoutRemember(null) {
-        devicesViewModelProvider.get()
+        devicesViewModelProvider.invoke()
     }
     private val currentDeviceViewModel = viewModelWithFactoryWithoutRemember(null) {
-        currentDeviceViewModelProvider.get()
+        currentDeviceViewModelProvider.invoke()
     }
     private val pingViewModel = viewModelWithFactoryWithoutRemember(null) {
-        pingViewModelProvider.get()
+        pingViewModelProvider.invoke()
     }
 
     @Composable

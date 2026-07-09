@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import com.flipperdevices.core.permission.api.PermissionRequestHandler
 import com.flipperdevices.notification.model.NotificationPermissionState
 import kotlinx.coroutines.CompletableDeferred
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class NotificationPermissionHelper @Inject constructor(
     private val context: Context,

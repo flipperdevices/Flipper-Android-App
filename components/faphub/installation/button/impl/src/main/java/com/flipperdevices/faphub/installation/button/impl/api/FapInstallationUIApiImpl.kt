@@ -15,11 +15,12 @@ import com.flipperdevices.faphub.installation.button.impl.composable.states.Comp
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.FapStatusViewModel
 import com.flipperdevices.faphub.installation.button.impl.viewmodel.OpenFapViewModel
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapInstallationUIApi::class)
+@ContributesBinding(AppGraph::class, binding<FapInstallationUIApi>())
 class FapInstallationUIApiImpl @Inject constructor(
     private val openFapViewModelProvider: Provider<OpenFapViewModel>,
     private val fapStatusViewModelProvider: Provider<FapStatusViewModel>
@@ -33,14 +34,14 @@ class FapInstallationUIApiImpl @Inject constructor(
         fapButtonSize: FapButtonSize
     ) {
         val statusViewModel = componentContext.viewModelWithFactory(key = null) {
-            fapStatusViewModelProvider.get()
+            fapStatusViewModelProvider.invoke()
         }
         val stateFlow = remember(config) {
             statusViewModel.getStateForApplicationId(config)
         }
         val state by stateFlow.collectAsState(FapState.NotInitialized)
         val openViewModel = componentContext.viewModelWithFactory(key = null) {
-            openFapViewModelProvider.get()
+            openFapViewModelProvider.invoke()
         }
 
         ComposableFapButton(

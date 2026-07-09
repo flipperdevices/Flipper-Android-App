@@ -10,10 +10,10 @@ import com.flipperdevices.screenstreaming.impl.composable.ComposableStreamingScr
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenStreamingViewModel
 import com.flipperdevices.screenstreaming.impl.viewmodel.ScreenshotViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, ScreenStreamingDecomposeComponent.Factory::class)
 class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
@@ -30,7 +30,7 @@ class ScreenStreamingDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val screenshotViewModel = viewModelWithFactory(null) {
-            screenshotViewModelProvider.get()
+            screenshotViewModelProvider.invoke()
         }
 
         ComposableStreamingScreen(

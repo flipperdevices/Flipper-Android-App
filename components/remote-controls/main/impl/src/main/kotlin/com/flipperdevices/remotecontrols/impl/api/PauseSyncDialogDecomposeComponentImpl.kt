@@ -14,10 +14,10 @@ import com.flipperdevices.remotecontrols.api.PauseSyncDialogDecomposeComponent
 import com.flipperdevices.remotecontrols.device.select.impl.R
 import com.flipperdevices.remotecontrols.impl.viewmodel.PauseSyncViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, PauseSyncDialogDecomposeComponent.Factory::class)
@@ -30,7 +30,7 @@ class PauseSyncDialogDecomposeComponentImpl @AssistedInject constructor(
     @Composable
     override fun Render() {
         val pauseSyncViewModel = viewModelWithFactory(null) {
-            pauseSyncViewModelProvider.get()
+            pauseSyncViewModelProvider.invoke()
         }
         val isDialogVisible by pauseSyncViewModel.isDialogVisible.collectAsState()
 

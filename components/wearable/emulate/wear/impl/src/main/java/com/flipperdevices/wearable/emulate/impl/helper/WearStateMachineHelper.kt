@@ -6,16 +6,17 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatusOuterClass
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.ConnectStatus
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
 import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
 import com.flipperdevices.wearable.emulate.model.ChannelClientState
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface WearStateMachineHelper {
     fun getState(): StateFlow<WearEmulateState>
@@ -23,14 +24,14 @@ interface WearStateMachineHelper {
     suspend fun onStatesUpdated(
         channelState: ChannelClientState,
         connectionState: ConnectionTesterState,
-        flipperState: ConnectStatusOuterClass.ConnectStatus,
-        emulateState: Emulate.EmulateStatus,
+        flipperState: ConnectStatus,
+        emulateState: EmulateStatus,
         keyToEmulate: KeyToEmulate
     )
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, WearStateMachineHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<WearStateMachineHelper>())
 class WearStateMachineHelperImpl @Inject constructor(
     private val flipperStatusHelper: FlipperStatusHelper,
     private val connectionHelper: ConnectionHelper
@@ -44,8 +45,8 @@ class WearStateMachineHelperImpl @Inject constructor(
     override suspend fun onStatesUpdated(
         channelState: ChannelClientState,
         connectionState: ConnectionTesterState,
-        flipperState: ConnectStatusOuterClass.ConnectStatus,
-        emulateState: Emulate.EmulateStatus,
+        flipperState: ConnectStatus,
+        emulateState: EmulateStatus,
         keyToEmulate: KeyToEmulate
     ) {
         info { "#processStates $channelState $connectionState $flipperState $emulateState" }
@@ -80,11 +81,11 @@ class WearStateMachineHelperImpl @Inject constructor(
         }
 
         when (flipperState) {
-            ConnectStatusOuterClass.ConnectStatus.UNSUPPORTED -> {
+            ConnectStatus.UNSUPPORTED -> {
                 state.emit(WearEmulateState.UnsupportedFlipper)
                 return
             }
-            ConnectStatusOuterClass.ConnectStatus.READY ->
+            ConnectStatus.READY ->
                 state.emit(WearEmulateState.ReadyForEmulate(keyToEmulate.keyType))
             else -> {
                 state.emit(WearEmulateState.ConnectingToFlipper)
@@ -93,7 +94,7 @@ class WearStateMachineHelperImpl @Inject constructor(
         }
 
         when (emulateState) {
-            Emulate.EmulateStatus.EMULATING -> {
+            EmulateStatus.EMULATING -> {
                 state.emit(WearEmulateState.Emulating(keyToEmulate.keyType, EmulateProgress.Infinite))
                 return
             }

@@ -5,7 +5,7 @@ import com.flipperdevices.toolstab.api.ToolsApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ToolsNotificationViewModel @Inject constructor(
     toolsApi: ToolsApi

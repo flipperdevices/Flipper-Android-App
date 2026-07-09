@@ -1,12 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.remotecontrols.categories.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.ui.decompose)
 
-    implementation(libs.compose.ui)
     implementation(libs.decompose)
 }

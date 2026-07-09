@@ -1,18 +1,19 @@
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.ApplicationExtension
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.IS_SENTRY_PUBLISH
 import io.sentry.android.gradle.extensions.SentryPluginExtension
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     id("io.sentry.android.gradle")
     id("flipper.lint")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+pluginManager.apply("org.jetbrains.kotlin.android")
+
 @Suppress("UnstableApiUsage")
-configure<BaseExtension> {
+configure<ApplicationExtension> {
     commonAndroid(project)
 
     defaultConfig {
@@ -23,9 +24,6 @@ configure<BaseExtension> {
         internal {
             isShrinkResources = true
             isMinifyEnabled = true
-            consumerProguardFile(
-                "proguard-rules.pro"
-            )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -34,9 +32,6 @@ configure<BaseExtension> {
         release {
             isShrinkResources = true
             isMinifyEnabled = true
-            consumerProguardFile(
-                "proguard-rules.pro"
-            )
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

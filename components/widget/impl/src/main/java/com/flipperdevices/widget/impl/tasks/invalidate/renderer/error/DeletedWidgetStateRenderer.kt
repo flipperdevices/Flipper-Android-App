@@ -7,11 +7,12 @@ import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.model.WidgetRendererOf
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.tasks.invalidate.renderer.WidgetStateRenderer
-import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @WidgetRendererOf(WidgetState.ERROR_KEY_DELETED)
-@ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
+@ContributesIntoMap(AppGraph::class, binding<WidgetStateRenderer>())
 class DeletedWidgetStateRenderer @Inject constructor(
     context: Context,
     deepLinkOpenKey: DeepLinkOpenKey

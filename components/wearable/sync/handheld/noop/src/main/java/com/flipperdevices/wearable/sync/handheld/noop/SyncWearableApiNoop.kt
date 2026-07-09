@@ -2,8 +2,8 @@ package com.flipperdevices.wearable.sync.handheld.noop
 
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.wearable.sync.handheld.api.SyncWearableApi
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppGraph::class)
 class SyncWearableApiNoop @Inject constructor() : SyncWearableApi {

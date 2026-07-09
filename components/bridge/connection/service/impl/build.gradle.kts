@@ -1,7 +1,7 @@
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
-    id("flipper.anvil-multiplatform")
+    id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.bridge.connection.service.impl"

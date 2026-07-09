@@ -7,10 +7,11 @@ import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
-import com.squareup.anvil.annotations.ContributesMultibinding
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.binding
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -29,7 +30,7 @@ import no.nordicsemi.android.kotlin.ble.scanner.aggregator.BleScanResultAggregat
 
 @SuppressLint("MissingPermission")
 class BLESearchConnectionDelegate @AssistedInject constructor(
-    @Assisted viewModelScope: CoroutineScope,
+    @Assisted scope: CoroutineScope,
     context: Context,
     persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchDelegate {
@@ -61,13 +62,13 @@ class BLESearchConnectionDelegate @AssistedInject constructor(
                 )
             }
         }.onEach { devicesFlow.emit(it.toPersistentList()) }
-            .launchIn(viewModelScope)
+            .launchIn(scope)
     }
 
     override fun getDevicesFlow() = devicesFlow.asStateFlow()
 
     @AssistedFactory
-    @ContributesMultibinding(AppGraph::class, ConnectionSearchDelegate.Factory::class)
+    @ContributesIntoSet(AppGraph::class, binding<ConnectionSearchDelegate.Factory>())
     fun interface Factory : ConnectionSearchDelegate.Factory {
         override fun invoke(scope: CoroutineScope): BLESearchConnectionDelegate
     }

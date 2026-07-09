@@ -10,10 +10,10 @@ import com.flipperdevices.faphub.screenshotspreview.impl.composable.ComposableFu
 import com.flipperdevices.faphub.screenshotspreview.impl.viewmodel.ImageSelectViewModel
 import com.flipperdevices.faphub.screenshotspreview.impl.viewmodel.UrlImageShareViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, ScreenshotsPreviewDecomposeComponent.Factory::class)
 class FullScreenScreenshotDecomposeComponentImpl @AssistedInject constructor(
@@ -28,10 +28,10 @@ class FullScreenScreenshotDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val urlImageShareViewModel = viewModelWithFactory(null) {
-            urlImageShareViewModelProvider.get()
+            urlImageShareViewModelProvider.invoke()
         }
         val imageSelectViewModel = viewModelWithFactory(null) {
-            imageSelectViewModelProvider.get()
+            imageSelectViewModelProvider.invoke()
         }
 
         ComposableFullScreenshotScreen(

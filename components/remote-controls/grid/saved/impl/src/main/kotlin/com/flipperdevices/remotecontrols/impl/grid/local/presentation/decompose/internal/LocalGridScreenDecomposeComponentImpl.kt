@@ -15,11 +15,11 @@ import com.flipperdevices.remotecontrols.impl.grid.local.composable.LocalGridCom
 import com.flipperdevices.remotecontrols.impl.grid.local.presentation.decompose.LocalGridComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.statusbar.ThemeStatusBarIconStyleProvider
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, LocalGridScreenDecomposeComponent.Factory::class)

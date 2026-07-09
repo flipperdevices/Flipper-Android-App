@@ -7,19 +7,20 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.inappnotification.api.InAppNotificationListener
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import java.util.Stack
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+import dev.zacsweers.metro.binding
 
 private val TIMER_DELAY = 1.toDuration(DurationUnit.SECONDS)
 
-@Singleton
-@ContributesBinding(AppGraph::class, InAppNotificationStorage::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<InAppNotificationStorage>())
 class InAppNotificationStorageImpl @Inject constructor() :
     InAppNotificationStorage,
     LogTagProvider {

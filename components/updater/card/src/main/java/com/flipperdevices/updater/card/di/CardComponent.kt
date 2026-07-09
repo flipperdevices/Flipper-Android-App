@@ -4,7 +4,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.updater.card.viewmodel.UpdateCardViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateRequestViewModel
 import com.flipperdevices.updater.card.viewmodel.UpdateStateViewModel
-import com.squareup.anvil.annotations.ContributesTo
+import dev.zacsweers.metro.ContributesTo
 
 @ContributesTo(AppGraph::class)
 interface CardComponent {

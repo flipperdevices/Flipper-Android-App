@@ -18,9 +18,9 @@ import com.flipperdevices.core.preference.pb.FileManagerSort
 import com.flipperdevices.core.preference.pb.Settings
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.filemanager.listing.api.model.ExtendedListingItem
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -159,10 +159,10 @@ class FilesViewModel @AssistedInject constructor(
     }
 
     fun fileDeleted(path: Path) {
-        val loadedState = _state.value as? State.Loaded ?: return
-        _state.update {
+        _state.update { state ->
+            val loadedState = state as? State.Loaded ?: return@update state
             val newFileList = loadedState.files
-                .filter { it.path.name != path.name }
+                .filter { file -> file.path.name != path.name }
                 .toImmutableList()
             loadedState.copy(files = newFileList)
         }

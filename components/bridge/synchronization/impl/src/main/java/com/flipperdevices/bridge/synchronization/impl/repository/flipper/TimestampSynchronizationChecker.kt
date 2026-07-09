@@ -8,10 +8,11 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import java.util.concurrent.atomic.AtomicLong
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.io.path.Path
+import dev.zacsweers.metro.binding
 
 interface TimestampSynchronizationChecker {
     data object TimestampsProgressDetail : DetailedProgressListener.Detail
@@ -22,7 +23,7 @@ interface TimestampSynchronizationChecker {
     ): Map<FlipperKeyType, Long?>
 }
 
-@ContributesBinding(TaskGraph::class, TimestampSynchronizationChecker::class)
+@ContributesBinding(TaskGraph::class, binding<TimestampSynchronizationChecker>())
 class TimestampSynchronizationCheckerImpl @Inject constructor(
     private val timestampApi: FFileTimestampApi,
 ) : TimestampSynchronizationChecker, LogTagProvider {

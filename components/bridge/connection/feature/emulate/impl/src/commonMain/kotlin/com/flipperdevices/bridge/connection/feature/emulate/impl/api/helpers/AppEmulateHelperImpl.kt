@@ -16,6 +16,7 @@ import com.flipperdevices.protobuf.app.AppState
 import com.flipperdevices.protobuf.app.AppStateResponse
 import com.flipperdevices.protobuf.app.StartRequest
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 
 const val RPC_START_REQUEST_ARG = "RPC"
@@ -72,7 +74,9 @@ class AppEmulateHelperImpl(
             error(e) { "#tryOpenApp unknown exception" }
             return false
         } finally {
-            pendingStateJob.cancelAndJoin()
+            withContext(NonCancellable) {
+                pendingStateJob.cancelAndJoin()
+            }
         }
     }
 

@@ -6,9 +6,9 @@ import com.flipperdevices.bridge.connection.feature.storage.api.model.ListingIte
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.filemanager.upload.api.MultipleFilesPicker
 import com.flipperdevices.filemanager.upload.api.UploadDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
 
 @ContributesAssistedFactory(AppGraph::class, UploadDecomposeComponent.Factory::class)

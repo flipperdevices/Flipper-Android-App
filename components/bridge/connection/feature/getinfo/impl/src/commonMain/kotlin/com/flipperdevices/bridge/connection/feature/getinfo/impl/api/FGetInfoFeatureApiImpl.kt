@@ -8,9 +8,9 @@ import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.property.GetRequest
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -26,7 +26,7 @@ class FGetInfoFeatureApiImpl @AssistedInject constructor(
         Main(
             property_get_request = GetRequest(key = property.path)
         ).wrapToRequest()
-    ).mapCatching { it.property_get_response!!.value_ }
+    ).mapCatching { requireNotNull(it.property_get_response).value_ }
 
     override fun get(group: FGetInfoApiGroup): Flow<Pair<FGetInfoApiProperty, String>> {
         return rpcFeatureApi.request(

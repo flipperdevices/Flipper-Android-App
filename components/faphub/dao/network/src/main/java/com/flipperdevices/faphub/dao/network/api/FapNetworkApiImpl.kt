@@ -15,11 +15,12 @@ import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitAppli
 import com.flipperdevices.faphub.dao.network.network.utils.FapCachedCategoryApi
 import com.flipperdevices.faphub.errors.api.throwable.FirmwareNotSupported
 import com.flipperdevices.faphub.target.model.FlipperTarget
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FapNetworkApi::class)
+@ContributesBinding(AppGraph::class, binding<FapNetworkApi>())
 class FapNetworkApiImpl @Inject constructor(
     private val applicationApi: FapNetworkApplicationApi,
     private val categoryApi: FapCachedCategoryApi,

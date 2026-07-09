@@ -22,6 +22,6 @@ data class FlipperWearKey(
                 deleted = false
             )
         },
-        isFavorites = syncItem.data.isFavorite
+        isFavorites = syncItem.data.is_favorite
     )
 }

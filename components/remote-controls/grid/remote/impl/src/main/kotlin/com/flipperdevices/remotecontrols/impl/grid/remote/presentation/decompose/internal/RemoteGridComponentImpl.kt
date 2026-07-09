@@ -16,14 +16,14 @@ import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.mapping.G
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.ConnectionViewModel
 import com.flipperdevices.remotecontrols.impl.grid.remote.presentation.viewmodel.RemoteGridViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, RemoteGridComponent.Factory::class)
@@ -40,19 +40,19 @@ class RemoteGridComponentImpl @AssistedInject constructor(
     private val saveTempSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_saveSignalViewModel_${param.key}",
         factory = {
-            createSaveTempSignalApi.get()
+            createSaveTempSignalApi.invoke()
         }
     )
     private val connectionViewModel = instanceKeeper.getOrCreate(
         key = "GridComponent_connectionViewModel_${param.key}",
         factory = {
-            createConnectionViewModel.get()
+            createConnectionViewModel.invoke()
         }
     )
     private val dispatchSignalApi = instanceKeeper.getOrCreate(
         key = "GridComponent_dispatchSignalViewModel_${param.key}",
         factory = {
-            createDispatchSignalApi.get()
+            createDispatchSignalApi.invoke()
         }
     )
     private val remoteGridViewModel = instanceKeeper.getOrCreate(

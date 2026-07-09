@@ -3,7 +3,7 @@ package com.flipperdevices.nfceditor.sample
 import android.app.Application
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.nfceditor.sample.di.AppComponent
-import com.flipperdevices.nfceditor.sample.di.DaggerMergedAppComponent
+import dev.zacsweers.metro.createGraphFactory
 import timber.log.Timber
 
 class NfcEditorApplication : Application() {
@@ -13,7 +13,7 @@ class NfcEditorApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerMergedAppComponent.factory()
+        appComponent = createGraphFactory<AppComponent.Factory>()
             .create(
                 context = this,
                 application = this,
@@ -24,7 +24,7 @@ class NfcEditorApplication : Application() {
             )
 
         Timber.plant(Timber.DebugTree())
-        val shake2report = appComponent.shake2report.get()
+        val shake2report = appComponent.shake2report.invoke()
         shake2report.init()
     }
 }

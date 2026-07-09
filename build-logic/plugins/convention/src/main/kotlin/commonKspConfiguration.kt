@@ -6,9 +6,9 @@ fun Project.includeCommonKspConfigurationTo(
     vararg toConfigurations: String,
 ) {
     pluginManager.withPlugin("com.google.devtools.ksp") {
-        val commonKsp = configurations.create("commonKsp")
+        val commonKsp = configurations.maybeCreate("commonKsp")
         toConfigurations.forEach { configurationName ->
-            configurations.getByName(configurationName).extendsFrom(commonKsp)
+            configurations.findByName(configurationName)?.extendsFrom(commonKsp)
         }
     }
 }

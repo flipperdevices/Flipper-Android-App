@@ -11,7 +11,7 @@ import com.flipperdevices.faphub.installedtab.impl.viewmodel.FapInstalledInterna
 import com.flipperdevices.faphub.installedtab.impl.viewmodel.InstalledFapsFromNetworkProducer
 import com.flipperdevices.inappnotification.api.InAppNotificationStorage
 import com.flipperdevices.inappnotification.api.model.InAppNotification
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -19,12 +19,13 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, FapNeedUpdatePopUpHelper::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<FapNeedUpdatePopUpHelper>())
 class FapNeedUpdatePopUpHelperImpl @Inject constructor(
     globalScopeProvider: Provider<CoroutineScope>,
     inAppNotificationStorageProvider: Provider<InAppNotificationStorage>,

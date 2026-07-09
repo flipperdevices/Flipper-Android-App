@@ -8,10 +8,11 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyAction
 import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
 import java.nio.charset.Charset
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 
@@ -24,7 +25,7 @@ interface FlipperFavoritesRepository {
     ): List<FlipperFilePath>
 }
 
-@ContributesBinding(TaskGraph::class, FlipperFavoritesRepository::class)
+@ContributesBinding(TaskGraph::class, binding<FlipperFavoritesRepository>())
 class FlipperFavoritesRepositoryImpl @Inject constructor() :
     FlipperFavoritesRepository,
     LogTagProvider {

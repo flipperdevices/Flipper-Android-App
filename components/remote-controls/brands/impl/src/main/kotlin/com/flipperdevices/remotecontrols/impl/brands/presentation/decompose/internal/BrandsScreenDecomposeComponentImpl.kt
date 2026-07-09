@@ -8,9 +8,9 @@ import com.flipperdevices.faphub.errors.api.FapHubComposableErrorsRenderer
 import com.flipperdevices.remotecontrols.api.BrandsScreenDecomposeComponent
 import com.flipperdevices.remotecontrols.impl.brands.composable.BrandsScreen
 import com.flipperdevices.remotecontrols.impl.brands.presentation.decompose.BrandsDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @Suppress("LongParameterList")
 @ContributesAssistedFactory(AppGraph::class, BrandsScreenDecomposeComponent.Factory::class)
@@ -18,8 +18,8 @@ class BrandsScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted categoryId: Long,
     @Assisted onBackClick: () -> Unit,
-    @Assisted onBrandClick: (brandId: Long, brandName: String) -> Unit,
-    @Assisted onBrandLongClick: (brandId: Long) -> Unit,
+    @Assisted onBrandClick: (Long, String) -> Unit,
+    @Assisted onBrandLongClick: (Long) -> Unit,
     brandsDecomposeComponentFactory: BrandsDecomposeComponent.Factory,
     private val errorsRenderer: FapHubComposableErrorsRenderer
 ) : BrandsScreenDecomposeComponent(componentContext) {

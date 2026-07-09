@@ -36,7 +36,7 @@ import kotlinx.coroutines.sync.withLock
 import okio.ByteString
 import okio.Path
 import okio.buffer
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class CreateFileViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,

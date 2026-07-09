@@ -9,9 +9,9 @@ import com.flipperdevices.faphub.report.impl.composable.main.ComposableMainRepor
 import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class FapReportSelectDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,

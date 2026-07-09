@@ -7,15 +7,15 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.api.HandheldProcessor
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.sendRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.startEmulateRequest
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.stopEmulateRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.SendRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.StartEmulateRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.StopEmulateRequest
 import com.flipperdevices.wearable.emulate.impl.viewmodel.KeyToEmulate
-import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +23,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 interface EmulateHelper {
 
@@ -34,62 +35,53 @@ interface EmulateHelper {
 
     fun onStopEmulate()
 
-    fun getState(): StateFlow<Emulate.EmulateStatus>
+    fun getState(): StateFlow<EmulateStatus>
 }
 
-@Singleton
-@ContributesBinding(AppGraph::class, EmulateHelper::class)
-@ContributesMultibinding(AppGraph::class, HandheldProcessor::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<EmulateHelper>())
+@ContributesIntoSet(AppGraph::class, binding<HandheldProcessor>())
 class EmulateHelperImpl @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainResponse>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainRequest>,
+    private val commandInputStream: WearableCommandInputStream<MainResponse>,
+    private val commandOutputStream: WearableCommandOutputStream<MainRequest>,
 ) : EmulateHelper, HandheldProcessor, LogTagProvider {
     override val TAG: String = "EmulateHelper-${hashCode()}"
 
-    private val state = MutableStateFlow(Emulate.EmulateStatus.UNRECOGNIZED)
+    private val state = MutableStateFlow<EmulateStatus>(EmulateStatus.fromValue(-1))
 
     override fun getState() = state.asStateFlow()
 
     override fun init(scope: CoroutineScope) {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasEmulateStatus()) {
+            val emulateStatus = it.emulate_status
+            if (emulateStatus != null) {
                 info { "#hasEmulateStatus $it" }
-                state.emit(it.emulateStatus)
+                state.emit(emulateStatus)
             }
         }.launchIn(scope)
     }
 
     override fun reset(scope: CoroutineScope) {
         scope.launch(FlipperDispatchers.workStealingDispatcher) {
-            state.emit(Emulate.EmulateStatus.UNRECOGNIZED)
+            state.emit(EmulateStatus.fromValue(-1))
         }
     }
 
     override fun onClickEmulate(keyToEmulate: KeyToEmulate) {
         commandOutputStream.send(
-            mainRequest {
-                startEmulate = startEmulateRequest {
-                    path = keyToEmulate.keyPath
-                }
-            }
+            MainRequest(start_emulate = StartEmulateRequest(path = keyToEmulate.keyPath))
         )
     }
 
     override fun onShortEmulate(keyToEmulate: KeyToEmulate) {
         commandOutputStream.send(
-            mainRequest {
-                sendRequest = sendRequest {
-                    path = keyToEmulate.keyPath
-                }
-            }
+            MainRequest(send_request = SendRequest(path = keyToEmulate.keyPath))
         )
     }
 
     override fun onStopEmulate() {
         commandOutputStream.send(
-            mainRequest {
-                stopEmulate = stopEmulateRequest { }
-            }
+            MainRequest(stop_emulate = StopEmulateRequest())
         )
     }
 }
