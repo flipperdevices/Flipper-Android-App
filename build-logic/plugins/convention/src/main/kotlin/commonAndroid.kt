@@ -90,8 +90,8 @@ private fun CommonExtension.configureBuildFeatures() {
 }
 
 private fun CommonExtension.configureCompileOptions() {
-    compileOptions.sourceCompatibility = JavaVersion.VERSION_11
-    compileOptions.targetCompatibility = JavaVersion.VERSION_11
+    compileOptions.sourceCompatibility = JavaVersion.VERSION_21
+    compileOptions.targetCompatibility = JavaVersion.VERSION_21
 }
 
 @Suppress("MaxLineLength")
@@ -99,7 +99,7 @@ fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_11)
+                jvmTarget.set(JvmTarget.JVM_21)
 
                 freeCompilerArgs.add("-Xexpect-actual-classes")
 

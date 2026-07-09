@@ -2,7 +2,7 @@ package com.flipperdevices.core.ui.errors.impl.composable
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.flipperdevices.core.ui.errors.R
+import com.flipperdevices.faphub.errors.impl.R
 import com.flipperdevices.faphub.errors.api.FapErrorSize
 import com.flipperdevices.core.ui.res.R as DesignSystem
 

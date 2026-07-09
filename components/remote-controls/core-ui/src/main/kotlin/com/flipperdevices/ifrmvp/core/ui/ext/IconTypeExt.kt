@@ -3,7 +3,7 @@ package com.flipperdevices.ifrmvp.core.ui.ext
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import com.flipperdevices.ifrmvp.model.buttondata.IconButtonData
-import com.flipperdevices.remotecontrols.core.ui.R as RemoteControlsR
+import com.flipperdevices.remotecontrols.coreui.R as RemoteControlsR
 
 @Suppress("CyclomaticComplexMethod", "LongMethod")
 @Composable

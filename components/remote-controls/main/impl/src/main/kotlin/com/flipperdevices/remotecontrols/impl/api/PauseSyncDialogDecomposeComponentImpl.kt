@@ -11,7 +11,7 @@ import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoi
 import com.flipperdevices.core.ui.dialog.composable.multichoice.FlipperMultiChoiceDialogModel
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.remotecontrols.api.PauseSyncDialogDecomposeComponent
-import com.flipperdevices.remotecontrols.device.select.impl.R
+import com.flipperdevices.remotecontrols.main.impl.R
 import com.flipperdevices.remotecontrols.impl.viewmodel.PauseSyncViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import dev.zacsweers.metro.Assisted
