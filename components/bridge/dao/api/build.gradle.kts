@@ -5,7 +5,6 @@ plugins {
     id("kotlin-parcelize")
 }
 
-
 compose.resources {
     publicResClass = true
 }

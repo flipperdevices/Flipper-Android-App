@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 androidDependencies {
     implementation(libs.kotlin.coroutines)
     implementation(libs.decompose)

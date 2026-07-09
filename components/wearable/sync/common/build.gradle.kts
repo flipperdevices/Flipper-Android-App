@@ -4,7 +4,6 @@ plugins {
     id("flipper.wire")
 }
 
-
 androidDependencies {
     implementation(projects.components.core.ktx)
 

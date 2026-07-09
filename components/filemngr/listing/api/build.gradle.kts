@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 commonDependencies {
     implementation(projects.components.core.ui.decompose)
     implementation(projects.components.bridge.connection.feature.storage.api)

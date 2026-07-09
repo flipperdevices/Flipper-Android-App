@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 androidDependencies {
     implementation(projects.components.deeplink.api)
     implementation(projects.components.bridge.dao.api)

@@ -1,7 +1,7 @@
- import com.flipperdevices.buildlogic.ApkConfig
- import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import com.flipperdevices.buildlogic.ApkConfig
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 
- plugins {
+plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.kotlin.multiplatform.library")
     id("flipper.lint")

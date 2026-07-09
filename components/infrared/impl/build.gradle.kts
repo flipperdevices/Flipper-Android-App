@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.infrared.api)
     implementation(projects.components.keyscreen.api)

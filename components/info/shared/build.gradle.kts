@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 androidDependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.core.ui.res)

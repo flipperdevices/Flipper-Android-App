@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)

@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.info.shared)

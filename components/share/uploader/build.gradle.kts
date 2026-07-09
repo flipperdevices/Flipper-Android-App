@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.analytics.metric.api)
     implementation(projects.components.share.api)

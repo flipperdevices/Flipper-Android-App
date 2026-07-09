@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.connection.api)
     implementation(projects.components.bottombar.api)

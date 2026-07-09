@@ -4,7 +4,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 commonDependencies {
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.core.ktx)

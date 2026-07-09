@@ -4,7 +4,6 @@ plugins {
     id("dev.zacsweers.metro")
 }
 
-
 jvmSharedTestDependencies {
     implementation(libs.junit)
     implementation(libs.kotlin.coroutines.test)

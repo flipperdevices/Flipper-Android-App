@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.faphub.screenshotspreview.api)
     implementation(projects.components.faphub.fapscreen.api)

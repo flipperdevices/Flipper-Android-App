@@ -5,7 +5,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.selfupdater.api)
     implementation(projects.components.inappnotification.api)

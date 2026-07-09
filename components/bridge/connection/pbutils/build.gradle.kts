@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.wire)
 }
 
-
 val wireOutputDir = layout.buildDirectory.dir("generated/source/wire")
 
 wire {

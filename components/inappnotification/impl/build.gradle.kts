@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.inappnotification.api)
     implementation(projects.components.core.di)

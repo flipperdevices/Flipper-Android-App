@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)

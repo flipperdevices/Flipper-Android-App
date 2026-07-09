@@ -3,6 +3,5 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 androidDependencies {
 }

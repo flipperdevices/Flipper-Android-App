@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.nfc.mfkey32.api)
     implementation(projects.components.nfc.tools.api)

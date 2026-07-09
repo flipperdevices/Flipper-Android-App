@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 commonDependencies {
     implementation(projects.components.core.ktx)
     implementation(projects.components.core.log)

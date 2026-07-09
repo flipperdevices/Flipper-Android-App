@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.keyparser.api)
     implementation(projects.components.bridge.dao.api)

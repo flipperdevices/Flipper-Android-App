@@ -6,7 +6,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.markdown)

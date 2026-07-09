@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 commonDependencies {
     implementation(projects.components.bridge.connection.feature.serialspeed.api)
 

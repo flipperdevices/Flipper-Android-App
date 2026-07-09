@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 commonDependencies {
     api(projects.components.bridge.connection.feature.rpc.model)
 

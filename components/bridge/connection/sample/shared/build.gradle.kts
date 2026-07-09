@@ -6,7 +6,6 @@ plugins {
     id("kotlinx-serialization")
 }
 
-
 commonDependencies {
     api(projects.components.core.di)
     api(projects.components.core.log)

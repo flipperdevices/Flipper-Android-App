@@ -3,7 +3,6 @@ plugins {
     id("flipper.multiplatform-dependencies")
 }
 
-
 commonDependencies {
     implementation(projects.components.core.data)
     implementation(projects.components.core.ktx)

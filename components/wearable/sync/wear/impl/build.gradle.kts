@@ -4,7 +4,6 @@ plugins {
     id("flipper.anvil")
 }
 
-
 androidDependencies {
     implementation(projects.components.wearable.sync.common)
     implementation(projects.components.wearable.sync.wear.api)
