@@ -3,6 +3,7 @@ package com.flipperdevices.core.share
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.ktx.jre.createNewFileWithMkDirs
 import okio.Path.Companion.toOkioPath
 

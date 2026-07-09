@@ -7,7 +7,7 @@ import com.flipperdevices.core.ui.ktx.onHoldPress
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
 import com.flipperdevices.keyemulate.model.EmulateProgress
-import com.flipperdevices.wearable.emulate.impl.R
+import com.flipperdevices.wearable.emulate.wear.impl.R
 
 @Composable
 fun ComposableWearSubGhzEmulate(

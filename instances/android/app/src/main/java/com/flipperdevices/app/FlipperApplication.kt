@@ -10,6 +10,7 @@ import com.flipperdevices.app.di.AppComponent
 import dev.zacsweers.metro.createGraphFactory
 import com.flipperdevices.app.di.MainComponent
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.di.provideDelegate
@@ -44,7 +45,7 @@ class FlipperApplication : Application(), SingletonImageLoader.Factory, LogTagPr
 
         ComponentHolder.components += appComponent
 
-        if (BuildKonfig.INTERNAL) {
+        if (BuildKonfig.IS_LOG_ENABLED) {
             Timber.plant(Timber.DebugTree())
             val shake2report = ComponentHolder.component<MainComponent>().shake2report.invoke()
             shake2report.init()

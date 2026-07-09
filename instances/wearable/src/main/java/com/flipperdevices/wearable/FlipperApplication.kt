@@ -2,6 +2,7 @@ package com.flipperdevices.wearable
 
 import android.app.Application
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
+import com.flipperdevices.core.buildkonfig.BuildKonfig
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.wearable.di.AppComponent
@@ -27,7 +28,7 @@ class FlipperApplication : Application() {
 
         ComponentHolder.components += appComponent
 
-        if (BuildKonfig.INTERNAL) {
+        if (BuildKonfig.IS_LOG_ENABLED) {
             Timber.plant(Timber.DebugTree())
             val shake2report = ComponentHolder.component<WearableComponent>().shake2report.invoke()
             shake2report.init()

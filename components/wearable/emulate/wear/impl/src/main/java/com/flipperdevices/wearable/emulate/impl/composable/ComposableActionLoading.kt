@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.keyemulate.api.KeyEmulateUiApi
-import com.flipperdevices.wearable.emulate.impl.R
+import com.flipperdevices.wearable.emulate.wear.impl.R
 import com.flipperdevices.wearable.emulate.impl.viewmodel.WearLoadingState
 import io.github.fornewid.placeholder.foundation.PlaceholderHighlight
 import io.github.fornewid.placeholder.foundation.placeholder

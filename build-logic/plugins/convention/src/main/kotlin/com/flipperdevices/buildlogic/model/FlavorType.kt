@@ -12,17 +12,20 @@ enum class FlavorType(
     val isLogEnabled: Boolean,
     val crashAppOnFailedChecks: Boolean,
     val loggingPendingCommands: Boolean,
+    val buildTypeName: String,
     val isVerboseLogEnabled: Boolean = false,
 ) {
     DEV(
         isLogEnabled = true,
         crashAppOnFailedChecks = true,
         loggingPendingCommands = true,
+        buildTypeName = "internal",
         isVerboseLogEnabled = true
     ),
     PROD(
         isLogEnabled = true,
         crashAppOnFailedChecks = false,
-        loggingPendingCommands = true
+        loggingPendingCommands = true,
+        buildTypeName = "release"
     )
 }

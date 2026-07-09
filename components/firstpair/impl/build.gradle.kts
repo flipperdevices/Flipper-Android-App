@@ -7,6 +7,7 @@ plugins {
 
 androidDependencies {
     implementation(projects.components.firstpair.api)
+    implementation(projects.components.core.buildKonfig)
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
