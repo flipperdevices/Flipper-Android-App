@@ -17,20 +17,28 @@ class USBAndroidDeviceFactory @Inject constructor(
     override fun getUSBPlatformDevice(
         config: FUSBDeviceConnectionConfig,
         scope: CoroutineScope
-    ): USBPlatformDevice {
-        val manager = context.getSystemService(Context.USB_SERVICE) as UsbManager
-        val availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager)
-        val device = availableDrivers.firstOrNull { serialDriver ->
-            serialDriver.device.deviceId.toString() == config.path
+    ): Result<USBPlatformDevice> {
+        val usbManager = context.getSystemService(Context.USB_SERVICE) as UsbManager
+        val availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(usbManager)
+        val serialDriver = availableDrivers.firstOrNull { driver ->
+            driver.device.deviceId.toString() == config.path
+        } ?: return Result.failure(
+            USBDeviceNotFoundException("No USB device with id ${config.path}")
+        )
+        if (serialDriver.ports.isEmpty()) {
+            return Result.failure(
+                USBDeviceNotFoundException("USB device ${config.path} has no serial ports")
+            )
         }
-        if (device == null) {
-            error("Failed find device with id ${config.path}")
-        }
-
-        return USBAndroidDevice(
-            serialDriver = device,
-            usbManager = manager,
-            scope = scope
+        val receiveBuffer = USBReceiveBuffer()
+        return Result.success(
+            USBAndroidDevice(
+                serialDriver = serialDriver,
+                usbManager = usbManager,
+                permissionRequester = USBPermissionRequester(context, usbManager),
+                receiveBuffer = receiveBuffer,
+                serialListener = USBSerialListener(receiveBuffer)
+            )
         )
     }
 }

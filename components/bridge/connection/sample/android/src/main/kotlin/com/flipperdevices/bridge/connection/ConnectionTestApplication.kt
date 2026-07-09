@@ -7,12 +7,16 @@ import dev.zacsweers.metro.createGraphFactory
 import com.flipperdevices.core.activityholder.CurrentActivityHolder
 import com.flipperdevices.core.di.ApplicationParams
 import com.flipperdevices.core.di.ComponentHolder
+import com.flipperdevices.core.ktx.jre.FlipperDispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ConnectionTestApplication : Application() {
-    companion object {
-        lateinit var appComponent: AppComponent
-    }
+    private val applicationScope = CoroutineScope(
+        SupervisorJob() + FlipperDispatchers.workStealingDispatcher
+    )
 
     override fun onCreate() {
         super.onCreate()
@@ -31,5 +35,13 @@ class ConnectionTestApplication : Application() {
         Timber.plant(Timber.DebugTree())
 
         CurrentActivityHolder.register(this)
+
+        applicationScope.launch {
+            appComponent.rootLiveTest.awaitDeviceAndRunAll()
+        }
+    }
+
+    companion object {
+        lateinit var appComponent: AppComponent
     }
 }

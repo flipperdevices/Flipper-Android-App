@@ -1,24 +1,28 @@
 package com.flipperdevices.bridge.connection.transport.usb.impl.model
 
+/**
+ * Platform-specific serial port for a single USB connection session.
+ *
+ * Instances are single-use: [open] once, then [close] once.
+ * [close] is idempotent and safe to call concurrently from any state.
+ */
 interface USBPlatformDevice {
-    fun connect(baudRate: Int, dataBits: Int, stopBits: Int, parity: Int): Boolean
-    fun closePort()
+    /**
+     * Opens the port with [params] and starts collecting incoming bytes
+     * into an internal buffer consumed via [read].
+     */
+    suspend fun open(params: USBSerialPortParams): Result<Unit>
 
-    fun writeBytes(buffer: ByteArray, bytesToWrite: Int = buffer.size, offset: Int = 0): Int
+    /**
+     * Writes [data] fully or returns a failure. Partial writes never succeed.
+     */
+    suspend fun write(data: ByteArray): Result<Unit>
 
-    fun readBytes(buffer: ByteArray, bytesToRead: Int = buffer.size): Int
+    /**
+     * Suspends until the next chunk of incoming bytes is available.
+     * Returns [USBPortClosedException] failure when the port is closed.
+     */
+    suspend fun read(): Result<ByteArray>
 
-    companion object {
-        // Parity Values
-        const val NO_PARITY: Int = 0
-        const val ODD_PARITY: Int = 1
-        const val EVEN_PARITY: Int = 2
-        const val MARK_PARITY: Int = 3
-        const val SPACE_PARITY: Int = 4
-
-        // Number of Stop Bits
-        const val ONE_STOP_BIT: Int = 1
-        const val ONE_POINT_FIVE_STOP_BITS: Int = 2
-        const val TWO_STOP_BITS: Int = 3
-    }
+    suspend fun close()
 }
