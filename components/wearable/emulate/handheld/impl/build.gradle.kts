@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.wearable.emulate.handheld.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.wearable.emulate.common)
 
     implementation(projects.components.core.di)
@@ -31,8 +32,6 @@ dependencies {
     implementation(libs.kotlin.coroutines.play.services)
 
     // Dagger deps
-    implementation(libs.dagger)
-
     implementation(libs.wear)
     implementation(libs.wear.gms)
 

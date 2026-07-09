@@ -11,8 +11,9 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.DiffMe
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface KeyDiffApplier {
     suspend fun applyDiffs(
@@ -22,7 +23,7 @@ interface KeyDiffApplier {
     )
 }
 
-@ContributesBinding(TaskGraph::class, KeyDiffApplier::class)
+@ContributesBinding(TaskGraph::class, binding<KeyDiffApplier>())
 class KeyDiffApplierImpl @Inject constructor(
     private val diffMergeHelper: DiffMergeHelper,
     private val diffKeyExecutor: DiffKeyExecutor,

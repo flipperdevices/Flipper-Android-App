@@ -10,13 +10,14 @@ import com.flipperdevices.updater.impl.model.UpdateContentException
 import com.flipperdevices.updater.model.InternalStorageFirmware
 import com.flipperdevices.updater.model.UpdateContent
 import com.flipperdevices.updater.model.UpdatingState
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val MANIFEST_NAME = "update.fuf"
 
-@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateContentDownloader::class)
+@ContributesIntoSet(AppGraph::class, binding<UpdateContentDownloader>())
 class UpdateContentDownloaderInternalStorage @Inject constructor(
     private val downloadAndUnpackDelegateApi: DownloadAndUnpackDelegateApi,
     private val deeplinkParser: DeepLinkParser,
@@ -26,6 +27,7 @@ class UpdateContentDownloaderInternalStorage @Inject constructor(
         return updateContent is InternalStorageFirmware
     }
 
+    @Suppress("ThrowsCount")
     override suspend fun downloadFirmwareLocal(
         updateContent: UpdateContent,
         updaterFolder: File,

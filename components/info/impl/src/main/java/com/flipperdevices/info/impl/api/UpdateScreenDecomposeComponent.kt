@@ -26,12 +26,12 @@ import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
 import com.flipperdevices.updater.api.UpdaterCardApi
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 class UpdateScreenDecomposeComponent @AssistedInject constructor(
@@ -54,26 +54,26 @@ class UpdateScreenDecomposeComponent @AssistedInject constructor(
     override fun Render() {
         val rootNavigation = LocalRootNavigation.current
         val deviceStatusViewModel = viewModelWithFactory(key = null) {
-            deviceStatusViewModelProvider.get()
+            deviceStatusViewModelProvider.invoke()
         }
         val deviceStatus by deviceStatusViewModel.getState().collectAsState()
         val updateState by deviceStatusViewModel.getUpdateState().collectAsState()
         val connectViewModel = viewModelWithFactory(key = null) {
-            connectViewModelProvider.get()
+            connectViewModelProvider.invoke()
         }
         val flipperColorViewModel = viewModelWithFactory(key = null) {
-            flipperColorProvider.get()
+            flipperColorProvider.invoke()
         }
         val flipperColor by flipperColorViewModel.getFlipperColor().collectAsState()
         val firmwareUpdateViewModel = viewModelWithFactory(key = null) {
-            firmwareUpdateViewModelProvider.get()
+            firmwareUpdateViewModelProvider.invoke()
         }
         val supportState by firmwareUpdateViewModel.getState().collectAsState()
         val alarmViewModel = viewModelWithFactory(key = null) {
-            alarmViewModelProvider.get()
+            alarmViewModelProvider.invoke()
         }
         val basicInfoViewModel = viewModelWithFactory(key = null) {
-            basicInfoViewModelProvider.get()
+            basicInfoViewModelProvider.invoke()
         }
         val basicInfo by basicInfoViewModel.getDeviceInfo().collectAsState()
 

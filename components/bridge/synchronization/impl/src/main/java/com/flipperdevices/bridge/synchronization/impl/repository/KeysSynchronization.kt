@@ -10,8 +10,9 @@ import com.flipperdevices.bridge.synchronization.impl.repository.manifest.Manife
 import com.flipperdevices.bridge.synchronization.impl.repository.manifest.ManifestTimestampRepository
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface KeysSynchronization {
     /**
@@ -24,7 +25,7 @@ interface KeysSynchronization {
 
 private const val PERCENT_FETCH_TIMESTAMP = 0.1f
 
-@ContributesBinding(TaskGraph::class, KeysSynchronization::class)
+@ContributesBinding(TaskGraph::class, binding<KeysSynchronization>())
 class KeysSynchronizationImpl @Inject constructor(
     private val folderKeySynchronization: FolderKeySynchronization,
     private val timestampSynchronizationChecker: TimestampSynchronizationChecker,

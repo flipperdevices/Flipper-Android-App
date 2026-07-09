@@ -14,9 +14,9 @@ import com.flipperdevices.faphub.dao.api.model.FapCategory
 import com.flipperdevices.faphub.dao.api.model.SortType
 import com.flipperdevices.faphub.dao.api.model.SortType.Companion.toSortType
 import com.flipperdevices.faphub.target.api.FlipperTargetProviderApi
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

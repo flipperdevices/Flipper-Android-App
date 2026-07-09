@@ -22,10 +22,11 @@ import com.flipperdevices.inappnotification.api.model.InAppNotification
 import com.flipperdevices.selfupdater.api.BuildConfig
 import com.flipperdevices.selfupdater.api.SelfUpdaterSourceApi
 import com.flipperdevices.selfupdater.models.SelfUpdateResult
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdaterSourceApi>())
 class SelfUpdaterThirdParty @Inject constructor(
     context: Context,
     private val updateParser: SelfUpdateParserApi,

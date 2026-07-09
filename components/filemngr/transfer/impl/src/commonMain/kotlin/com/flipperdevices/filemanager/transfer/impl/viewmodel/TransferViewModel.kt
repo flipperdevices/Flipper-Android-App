@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import okio.Path
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class TransferViewModel @Inject constructor(
     private val featureProvider: FFeatureProvider,
@@ -30,7 +30,7 @@ class TransferViewModel @Inject constructor(
 
     private val featureMutex = Mutex()
     private var featureJob: Job? = null
-    private var moveMutex = Mutex()
+    private val moveMutex = Mutex()
     private var moveJob: Job? = null
 
     private suspend fun move(

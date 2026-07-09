@@ -14,7 +14,7 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.verbose
 import okio.buffer
 import okio.source
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @ProvidedTypeConverter
 class DatabaseKeyContentConverter @Inject constructor(

@@ -12,13 +12,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import java.util.EnumMap
 import kotlin.reflect.KClass
 
@@ -26,8 +26,8 @@ import kotlin.reflect.KClass
 class FZeroDeviceApiImpl @AssistedInject constructor(
     @Assisted private val scope: CoroutineScope,
     @Assisted private val connectedDevice: FConnectedDeviceApi,
-    onReadyFeaturesApiFactories: MutableSet<FOnDeviceReadyFeatureApi.Factory>,
-    private val factories: MutableMap<FDeviceFeature, FDeviceFeatureApi.Factory>
+    onReadyFeaturesApiFactories: Set<FOnDeviceReadyFeatureApi.Factory>,
+    private val factories: Map<FDeviceFeature, FDeviceFeatureApi.Factory>
 ) : FZeroDeviceApi, FUnsafeDeviceFeatureApi, LogTagProvider {
     override val TAG = "FZeroDeviceApi"
 

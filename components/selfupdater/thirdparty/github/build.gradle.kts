@@ -1,7 +1,8 @@
 import com.flipperdevices.buildlogic.ApkConfig.IS_GOOGLE_FEATURE_AVAILABLE
 
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
@@ -18,7 +19,7 @@ android {
     }
 }
 
-dependencies {
+androidDependencies {
     implementation(projects.components.selfupdater.thirdparty.api)
     implementation(projects.components.inappnotification.api)
 

@@ -20,15 +20,15 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.core.ui.theme.LocalTypography
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.Res
 import flipperapp.components.bridge.connection.sample.shared.generated.resources.connection_search_title
 import flipperapp.components.core.ui.res.generated.resources.material_ic_close
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 import flipperapp.components.core.ui.res.generated.resources.Res as SharedRes
 
 class ConnectionSearchDecomposeComponent @AssistedInject constructor(
@@ -39,7 +39,7 @@ class ConnectionSearchDecomposeComponent @AssistedInject constructor(
     @Composable
     override fun Render() {
         val searchViewModel = viewModelWithFactory(key = null) {
-            searchViewModelProvider.get()
+            searchViewModelProvider.invoke()
         }
         val devices by searchViewModel.getDevicesFlow().collectAsState()
 

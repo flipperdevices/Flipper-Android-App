@@ -25,11 +25,12 @@ import com.flipperdevices.core.ui.theme.LocalPallet
 import com.flipperdevices.share.api.ShareBottomUIApi
 import com.flipperdevices.uploader.compose.ComposableSheetContent
 import com.flipperdevices.uploader.viewmodel.UploaderViewModel
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, ShareBottomUIApi::class)
+@ContributesBinding(AppGraph::class, binding<ShareBottomUIApi>())
 class ShareBottomUIImpl @Inject constructor(
     private val uploaderViewModelFactory: UploaderViewModel.Factory
 ) : ShareBottomUIApi {

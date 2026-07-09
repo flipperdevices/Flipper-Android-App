@@ -6,7 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import java.util.Base64
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapIconDownloader @Inject constructor(
     private val client: HttpClient

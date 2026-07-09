@@ -9,7 +9,7 @@ import com.flipperdevices.selfupdater.models.SelfUpdateResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class VersionViewModel @Inject constructor(
     private val selfUpdaterApi: SelfUpdaterApi,

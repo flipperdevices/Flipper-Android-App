@@ -14,12 +14,13 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.di.provideDelegate
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, WidgetDataApi::class)
+@ContributesBinding(AppGraph::class, binding<WidgetDataApi>())
 class WidgetDataApiImpl @Inject constructor(
     widgetDataDaoProvider: Provider<WidgetDataDao>,
     simpleKeyDaoProvider: Provider<SimpleKeyDao>,

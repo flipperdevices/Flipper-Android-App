@@ -16,9 +16,9 @@ import com.flipperdevices.filemanager.ui.components.error.UnsupportedErrorCompos
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_error_too_large_desc
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_error_too_large_title
 import flipperapp.components.filemngr.editor.impl.generated.resources.fme_status_downloading
@@ -31,8 +31,8 @@ import flipperapp.components.filemngr.editor.impl.generated.resources.Res as FME
 
 class FileDownloadDecomposeComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
-    @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-    @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+    @Assisted fullPathOnFlipper: Path,
+    @Assisted fullPathOnDevice: Path,
     @Assisted private val onDownloaded: () -> Unit,
     @Assisted private val onBack: DecomposeOnBackParameter,
     downloadViewModelFactory: DownloadViewModel.Factory
@@ -95,8 +95,8 @@ class FileDownloadDecomposeComponent @AssistedInject constructor(
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            @Assisted("fullPathOnFlipper") fullPathOnFlipper: Path,
-            @Assisted("fullPathOnDevice") fullPathOnDevice: Path,
+            @Assisted fullPathOnFlipper: Path,
+            @Assisted fullPathOnDevice: Path,
             onBack: DecomposeOnBackParameter,
             onDownloaded: () -> Unit
         ): FileDownloadDecomposeComponent

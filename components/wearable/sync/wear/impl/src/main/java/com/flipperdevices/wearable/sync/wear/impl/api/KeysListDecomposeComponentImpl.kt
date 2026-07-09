@@ -10,10 +10,10 @@ import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
 import com.flipperdevices.wearable.sync.wear.impl.composable.ComposableKeysList
 import com.flipperdevices.wearable.sync.wear.impl.viewmodel.KeysListViewModel
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, KeysListDecomposeComponent.Factory::class)
 class KeysListDecomposeComponentImpl @AssistedInject constructor(
@@ -30,7 +30,7 @@ class KeysListDecomposeComponentImpl @AssistedInject constructor(
                 navigation.pushToFront(WearRootConfig.OpenKey(it.path))
             },
             keysListViewModel = viewModelWithFactory(key = null) {
-                keysListViewModelProvider.get()
+                keysListViewModelProvider.invoke()
             }
         )
     }

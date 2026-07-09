@@ -12,8 +12,9 @@ import com.flipperdevices.bridge.synchronization.impl.utils.UnresolvedConflictEx
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.warn
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface DiffMergeHelper {
     suspend fun mergeDiffs(
@@ -22,7 +23,7 @@ interface DiffMergeHelper {
     ): List<KeyDiff>
 }
 
-@ContributesBinding(TaskGraph::class, DiffMergeHelper::class)
+@ContributesBinding(TaskGraph::class, binding<DiffMergeHelper>())
 class DiffMergeHelperImpl @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,
     private val utilsKeyApi: UtilsKeyApi,

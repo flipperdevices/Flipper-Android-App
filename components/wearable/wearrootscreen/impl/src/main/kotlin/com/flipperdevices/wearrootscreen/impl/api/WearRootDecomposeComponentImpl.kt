@@ -13,9 +13,9 @@ import com.flipperdevices.wearable.emulate.api.WearEmulateDecomposeComponent
 import com.flipperdevices.wearable.sync.wear.api.KeysListDecomposeComponent
 import com.flipperdevices.wearrootscreen.api.WearRootDecomposeComponent
 import com.flipperdevices.wearrootscreen.model.WearRootConfig
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, WearRootDecomposeComponent.Factory::class)
 class WearRootDecomposeComponentImpl @AssistedInject constructor(

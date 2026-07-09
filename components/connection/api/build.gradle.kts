@@ -1,12 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
 }
 
 android.namespace = "com.flipperdevices.connection.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.bottombar.api)
-    implementation(libs.compose.ui)
 
     implementation(libs.decompose)
 }

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.TreeMap
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class CategoryViewModel @Inject constructor(
     private val application: Application,

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class GeneralTabViewModel @Inject constructor(
     private val simpleKeyApi: SimpleKeyApi,

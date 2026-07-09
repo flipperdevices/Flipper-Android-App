@@ -19,9 +19,9 @@ import com.flipperdevices.share.uploader.R
 import com.flipperdevices.uploader.models.ShareContent
 import com.flipperdevices.uploader.models.ShareError
 import com.flipperdevices.uploader.models.ShareState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

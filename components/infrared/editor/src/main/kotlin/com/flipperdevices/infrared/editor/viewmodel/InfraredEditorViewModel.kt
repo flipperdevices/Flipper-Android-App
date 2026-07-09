@@ -20,9 +20,9 @@ import com.flipperdevices.infrared.editor.R
 import com.flipperdevices.infrared.editor.core.model.InfraredRemote
 import com.flipperdevices.infrared.editor.core.parser.InfraredKeyParser
 import com.flipperdevices.infrared.editor.model.InfraredEditorState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers

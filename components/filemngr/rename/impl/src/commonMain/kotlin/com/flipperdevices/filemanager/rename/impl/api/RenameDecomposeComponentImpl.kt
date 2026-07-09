@@ -12,17 +12,17 @@ import com.flipperdevices.filemanager.rename.api.RenameDecomposeComponent
 import com.flipperdevices.filemanager.rename.impl.viewmodel.RenameViewModel
 import com.flipperdevices.filemanager.ui.components.name.NameDialog
 import com.flipperdevices.filemanager.util.constant.FileManagerConstants
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import flipperapp.components.filemngr.rename.impl.generated.resources.fmr_create_file_allowed_chars
 import flipperapp.components.filemngr.rename.impl.generated.resources.fmr_create_file_folder_btn
 import flipperapp.components.filemngr.rename.impl.generated.resources.fmr_create_file_title
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 import okio.Path
 import org.jetbrains.compose.resources.stringResource
-import javax.inject.Provider
+import dev.zacsweers.metro.Provider
 import flipperapp.components.filemngr.rename.impl.generated.resources.Res as FMR
 
 @ContributesAssistedFactory(AppGraph::class, RenameDecomposeComponent.Factory::class)
@@ -32,7 +32,7 @@ class RenameDecomposeComponentImpl @AssistedInject constructor(
     renameViewModelProvider: Provider<RenameViewModel>
 ) : RenameDecomposeComponent(componentContext) {
     private val renameViewModel = instanceKeeper.getOrCreate {
-        renameViewModelProvider.get()
+        renameViewModelProvider.invoke()
     }
 
     override fun startRename(fullPath: Path, type: FileType) {

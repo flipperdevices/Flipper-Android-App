@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val ANDROID_MARKET_APP_URI = "market://details?id=com.flipperdevices.app"

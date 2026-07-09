@@ -11,14 +11,15 @@ import okio.Sink
 import okio.Source
 import okio.buffer
 
+@Suppress("InjectDispatcher")
 class KmpAtomicFile(
     private val mBaseName: Path,
     private val fileSystem: FileSystem = FileSystem.SYSTEM
 ) : AtomicFile, LogTagProvider {
     override val TAG = "KmpAtomicFile"
 
-    private var mNewName = mBaseName.resolve(".new")
-    private var mLegacyBackupName = mBaseName.resolve(".bak")
+    private val mNewName = mBaseName.resolve(".new")
+    private val mLegacyBackupName = mBaseName.resolve(".bak")
 
     override suspend fun getBaseFile() = mBaseName
 

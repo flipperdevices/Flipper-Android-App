@@ -3,27 +3,28 @@ package com.flipperdevices.wearable.emulate.handheld.impl.request
 import com.flipperdevices.bridge.connection.feature.emulate.api.FEmulateFeatureApi
 import com.flipperdevices.bridge.connection.feature.provider.api.FFeatureProvider
 import com.flipperdevices.bridge.connection.feature.provider.api.getSync
-import com.flipperdevices.core.di.SingleIn
+import dev.zacsweers.metro.SingleIn
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.wearable.emulate.common.WearableCommandInputStream
 import com.flipperdevices.wearable.emulate.common.WearableCommandOutputStream
-import com.flipperdevices.wearable.emulate.common.ipcemulate.Main
-import com.flipperdevices.wearable.emulate.common.ipcemulate.mainResponse
-import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.Emulate
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainRequest
+import com.flipperdevices.wearable.emulate.common.ipcemulate.MainResponse
+import com.flipperdevices.wearable.emulate.common.ipcemulate.requests.EmulateStatus
 import com.flipperdevices.wearable.emulate.handheld.impl.di.WearHandheldGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @SingleIn(WearHandheldGraph::class)
-@ContributesMultibinding(WearHandheldGraph::class, WearableCommandProcessor::class)
+@ContributesIntoSet(WearHandheldGraph::class, binding<WearableCommandProcessor>())
 class WearableStopEmulateProcessor @Inject constructor(
-    private val commandInputStream: WearableCommandInputStream<Main.MainRequest>,
-    private val commandOutputStream: WearableCommandOutputStream<Main.MainResponse>,
+    private val commandInputStream: WearableCommandInputStream<MainRequest>,
+    private val commandOutputStream: WearableCommandOutputStream<MainResponse>,
     private val scope: CoroutineScope,
     private val fFeatureProvider: FFeatureProvider
 ) : WearableCommandProcessor, LogTagProvider {
@@ -31,8 +32,8 @@ class WearableStopEmulateProcessor @Inject constructor(
 
     override fun init() {
         commandInputStream.getRequestsFlow().onEach {
-            if (it.hasStopEmulate()) {
-                info { "StopEmulate: ${it.stopEmulate}" }
+            if (it.stop_emulate != null) {
+                info { "StopEmulate: ${it.stop_emulate}" }
                 stopEmulate()
             }
         }.launchIn(scope)
@@ -47,16 +48,12 @@ class WearableStopEmulateProcessor @Inject constructor(
         try {
             emulateHelper.stopEmulate(scope)
             commandOutputStream.send(
-                mainResponse {
-                    emulateStatus = Emulate.EmulateStatus.STOPPED
-                }
+                MainResponse(emulate_status = EmulateStatus.STOPPED)
             )
         } catch (throwable: Throwable) {
             error(throwable) { "Failed stop emulate" }
             commandOutputStream.send(
-                mainResponse {
-                    emulateStatus = Emulate.EmulateStatus.FAILED
-                }
+                MainResponse(emulate_status = EmulateStatus.FAILED)
             )
         }
     }

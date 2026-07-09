@@ -6,15 +6,16 @@ import com.flipperdevices.bridge.connection.feature.provider.api.getSync
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.error
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
-@Singleton
-@ContributesBinding(AppGraph::class, CloseEmulateAppTaskHolder::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<CloseEmulateAppTaskHolder>())
 class CloseEmulateAppTaskHolderImpl @Inject constructor(
     private val fFeatureProvider: FFeatureProvider
 ) : CloseEmulateAppTaskHolder {

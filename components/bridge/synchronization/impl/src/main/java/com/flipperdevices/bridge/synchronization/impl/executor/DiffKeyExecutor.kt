@@ -11,8 +11,9 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.DetailedProgressListener
 import com.flipperdevices.core.progress.DetailedProgressWrapperTracker
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 interface DiffKeyExecutor {
     data class DiffProgressDetail(
@@ -30,7 +31,7 @@ interface DiffKeyExecutor {
 /**
  * This class execute diff for
  */
-@ContributesBinding(TaskGraph::class, DiffKeyExecutor::class)
+@ContributesBinding(TaskGraph::class, binding<DiffKeyExecutor>())
 class DiffKeyExecutorImpl @Inject constructor() : DiffKeyExecutor, LogTagProvider {
     override val TAG = "DiffKeyExecutor"
 

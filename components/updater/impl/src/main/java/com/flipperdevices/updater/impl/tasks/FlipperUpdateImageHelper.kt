@@ -8,7 +8,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
 
 private const val STOP_IMAGE_TIMEOUT_MS = 5 * 1000L

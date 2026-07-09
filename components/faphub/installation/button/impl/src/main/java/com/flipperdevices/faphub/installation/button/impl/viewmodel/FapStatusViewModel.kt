@@ -8,7 +8,7 @@ import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
 import com.flipperdevices.faphub.installation.stateprovider.api.api.FapInstallationStateManager
 import com.flipperdevices.faphub.installation.stateprovider.api.model.FapState
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapStatusViewModel @Inject constructor(
     private val stateManager: FapInstallationStateManager,

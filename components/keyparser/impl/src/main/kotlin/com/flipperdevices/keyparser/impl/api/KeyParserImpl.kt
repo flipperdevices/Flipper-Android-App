@@ -28,14 +28,15 @@ import com.flipperdevices.keyparser.impl.parsers.url.PREFFERED_SCHEME
 import com.flipperdevices.keyparser.impl.parsers.url.QUERY_ID
 import com.flipperdevices.keyparser.impl.parsers.url.QUERY_KEY
 import com.flipperdevices.keyparser.impl.parsers.url.QUERY_KEY_PATH
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URL
 import java.nio.charset.Charset
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, KeyParser::class)
+@ContributesBinding(AppGraph::class, binding<KeyParser>())
 class KeyParserImpl @Inject constructor() : KeyParser, LogTagProvider {
     override val TAG = "KeyParser"
 

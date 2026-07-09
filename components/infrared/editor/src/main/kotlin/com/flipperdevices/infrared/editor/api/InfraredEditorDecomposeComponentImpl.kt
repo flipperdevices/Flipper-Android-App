@@ -13,13 +13,13 @@ import com.flipperdevices.infrared.api.InfraredEditorDecomposeComponent
 import com.flipperdevices.infrared.editor.compose.screen.ComposableInfraredEditorScreen
 import com.flipperdevices.infrared.editor.viewmodel.InfraredEditorViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, InfraredEditorDecomposeComponent.Factory::class)
 class InfraredEditorDecomposeComponentImpl @AssistedInject constructor(

@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.core.ui.errors"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.errors.api)
 
     implementation(projects.components.core.di)
@@ -16,10 +17,6 @@ dependencies {
     implementation(projects.components.deeplink.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.compose.paging)
 
     implementation(libs.ktor.client)

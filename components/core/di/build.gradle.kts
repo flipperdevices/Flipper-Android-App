@@ -1,13 +1,10 @@
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
+    id("dev.zacsweers.metro")
 }
 
 android.namespace = "com.flipperdevices.core.di"
-
-commonDependencies {
-    implementation(libs.dagger)
-}
 
 jvmSharedTestDependencies {
     implementation(libs.junit)

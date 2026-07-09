@@ -1,10 +1,11 @@
 package com.flipperdevices.core.share
 
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, PlatformShareHelper::class)
+@ContributesBinding(AppGraph::class, binding<PlatformShareHelper>())
 class DesktopShareHelper @Inject constructor() : PlatformShareHelper {
 
     override fun provideSharableFile(fileName: String): PlatformSharableFile {

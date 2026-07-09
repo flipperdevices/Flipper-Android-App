@@ -8,7 +8,7 @@ import com.flipperdevices.core.log.error
 import com.flipperdevices.core.log.info
 import kotlinx.coroutines.CoroutineScope
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class SerialApiFactory @Inject constructor(
     private val unsafeApiImplFactory: FSerialUnsafeApiImpl.Factory,

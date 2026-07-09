@@ -16,9 +16,9 @@ import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.findComponentByConfig
 import com.flipperdevices.ui.decompose.popOr
 import com.flipperdevices.ui.decompose.popToRoot
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, DeviceScreenDecomposeComponent.Factory::class)
 class DeviceScreenDecomposeComponentImpl @AssistedInject constructor(

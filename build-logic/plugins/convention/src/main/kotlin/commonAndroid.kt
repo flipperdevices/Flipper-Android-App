@@ -1,6 +1,10 @@
 @file:Suppress("Filename")
 
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.BuildType
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryVariantDimension
 import com.flipperdevices.buildlogic.ApkConfig
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_CODE
 import com.flipperdevices.buildlogic.ApkConfig.VERSION_NAME
@@ -17,7 +21,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 private const val SPLASH_SCREEN_ACTIVITY = "com.flipperdevices.singleactivity.impl.SingleActivity"
 private const val SPLASH_SCREEN_ACTIVITY_KEY = "splashScreenActivity"
 
-fun BaseExtension.commonAndroid(target: Project) {
+fun CommonExtension.commonAndroid(target: Project) {
     configureDefaultConfig(target)
     configureBuildTypes()
     configureBuildFeatures()
@@ -27,46 +31,44 @@ fun BaseExtension.commonAndroid(target: Project) {
 }
 
 @Suppress("UnstableApiUsage")
-private fun BaseExtension.configureDefaultConfig(project: Project) {
-    compileSdkVersion(ApkConfig.COMPILE_SDK_VERSION)
-    defaultConfig {
-        minSdk = ApkConfig.MIN_SDK_VERSION
-        targetSdk = ApkConfig.TARGET_SDK_VERSION
-        versionCode = project.VERSION_CODE
-        versionName = project.VERSION_NAME
+private fun CommonExtension.configureDefaultConfig(project: Project) {
+    compileSdk = ApkConfig.COMPILE_SDK_VERSION
+    defaultConfig.minSdk = ApkConfig.MIN_SDK_VERSION
+    defaultConfig.manifestPlaceholders[SPLASH_SCREEN_ACTIVITY_KEY] = SPLASH_SCREEN_ACTIVITY
 
-        consumerProguardFiles(
-            "consumer-rules.pro"
-        )
+    if (this is ApplicationExtension) {
+        defaultConfig.targetSdk = ApkConfig.TARGET_SDK_VERSION
+        defaultConfig.versionCode = project.VERSION_CODE
+        defaultConfig.versionName = project.VERSION_NAME
+    }
 
-        packagingOptions {
-            resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
-            resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
-            resources.excludes += "META-INF/LICENSE-W3C-TEST"
-            resources.excludes += "META-INF/DEPENDENCIES"
-            resources.excludes += "*.proto"
-        }
-
-        testOptions {
-            unitTests {
-                isIncludeAndroidResources = true
-            }
+    val commonDefaultConfig = defaultConfig
+    if (commonDefaultConfig is LibraryVariantDimension) {
+        val consumerRules = project.layout.projectDirectory.file("consumer-rules.pro").asFile
+        if (consumerRules.exists()) {
+            commonDefaultConfig.consumerProguardFiles(consumerRules)
         }
     }
+
+    packaging.resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
+    packaging.resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
+    packaging.resources.excludes += "META-INF/LICENSE-W3C-TEST"
+    packaging.resources.excludes += "META-INF/DEPENDENCIES"
+    packaging.resources.excludes += "*.proto"
+
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
-private fun BaseExtension.configureBuildTypes() {
-    buildTypes {
-        defaultConfig {
-            manifestPlaceholders[SPLASH_SCREEN_ACTIVITY_KEY] = SPLASH_SCREEN_ACTIVITY
-        }
+private fun CommonExtension.configureBuildTypes() {
+    buildTypes.apply {
         maybeCreate("debug").apply {
             buildConfigField("boolean", "INTERNAL", "true")
-            multiDexEnabled = true
-            isDebuggable = true
+            if (this is ApplicationBuildType) {
+                isDebuggable = true
+            }
         }
         maybeCreate("internal").apply {
-            setMatchingFallbacks("debug")
+            matchingFallbacks += "debug"
             sourceSets.getByName(this.name).setRoot("src/debug")
 
             buildConfigField("boolean", "INTERNAL", "true")
@@ -78,7 +80,7 @@ private fun BaseExtension.configureBuildTypes() {
 }
 
 @Suppress("UnstableApiUsage", "ForbiddenComment")
-private fun BaseExtension.configureBuildFeatures() {
+private fun CommonExtension.configureBuildFeatures() {
     // TODO: Disable by default
     //  BuildConfig is java source code. Java and Kotlin at one time affect build speed.
     buildFeatures.buildConfig = true
@@ -86,13 +88,13 @@ private fun BaseExtension.configureBuildFeatures() {
     buildFeatures.shaders = false
 }
 
-private fun BaseExtension.configureCompileOptions() {
+private fun CommonExtension.configureCompileOptions() {
     compileOptions.sourceCompatibility = JavaVersion.VERSION_11
     compileOptions.targetCompatibility = JavaVersion.VERSION_11
 }
 
 @Suppress("MaxLineLength")
-private fun Project.suppressOptIn() {
+fun Project.suppressOptIn() {
     tasks.withType<KotlinCompile>()
         .configureEach {
             compilerOptions {
@@ -106,7 +108,6 @@ private fun Project.suppressOptIn() {
                     "androidx.compose.foundation.ExperimentalFoundationApi",
                     "kotlinx.serialization.ExperimentalSerializationApi",
                     "kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "com.squareup.anvil.annotations.ExperimentalAnvilApi",
                     "kotlin.time.ExperimentalTime",
                     "kotlin.RequiresOptIn",
                     "androidx.compose.animation.ExperimentalAnimationApi",
@@ -128,19 +129,19 @@ private fun Project.suppressOptIn() {
 fun DependencyHandler.internalImplementation(dependencyNotation: Any): Dependency? =
     add("internalImplementation", dependencyNotation)
 
-fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.debug(
+fun <BuildTypeT : BuildType> NamedDomainObjectContainer<BuildTypeT>.debug(
     action: BuildTypeT.() -> Unit
 ) {
     maybeCreate("debug").action()
 }
 
-fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.internal(
+fun <BuildTypeT : BuildType> NamedDomainObjectContainer<BuildTypeT>.internal(
     action: BuildTypeT.() -> Unit
 ) {
     maybeCreate("internal").action()
 }
 
-fun <BuildTypeT> NamedDomainObjectContainer<BuildTypeT>.release(
+fun <BuildTypeT : BuildType> NamedDomainObjectContainer<BuildTypeT>.release(
     action: BuildTypeT.() -> Unit
 ) {
     maybeCreate("release").action()

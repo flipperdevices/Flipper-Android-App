@@ -4,11 +4,12 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.ifrmvp.api.infrared.FlipperInfraredBackendApi
 import com.flipperdevices.ifrmvp.backend.model.BrandModel
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, BrandsRepository::class)
+@ContributesBinding(AppGraph::class, binding<BrandsRepository>())
 class BackendBrandsRepository @Inject constructor(
     private val infraredBackendApi: FlipperInfraredBackendApi,
 ) : BrandsRepository {

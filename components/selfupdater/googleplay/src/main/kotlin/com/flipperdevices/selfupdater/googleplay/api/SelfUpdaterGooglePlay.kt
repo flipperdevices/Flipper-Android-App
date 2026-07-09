@@ -18,15 +18,16 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 
 private const val UPDATE_CODE = 228
 
-@Singleton
-@ContributesBinding(AppGraph::class, SelfUpdaterSourceApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<SelfUpdaterSourceApi>())
 class SelfUpdaterGooglePlay @Inject constructor(
     private val context: Context,
     private val inAppNotificationStorage: InAppNotificationStorage

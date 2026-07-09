@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FlipperButtonRepository @Inject constructor(
     private val fFeatureProvider: FFeatureProvider

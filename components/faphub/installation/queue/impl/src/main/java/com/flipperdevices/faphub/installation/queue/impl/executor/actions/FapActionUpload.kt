@@ -14,7 +14,7 @@ import kotlinx.coroutines.runBlocking
 import okio.buffer
 import okio.source
 import java.io.File
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapActionUpload @Inject constructor(
     private val fFeatureProvider: FFeatureProvider,

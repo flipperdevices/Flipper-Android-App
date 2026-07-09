@@ -7,13 +7,15 @@ import com.flipperdevices.bridge.connection.transport.common.api.FDeviceConnecti
 import com.flipperdevices.bridge.connection.transport.common.api.FTransportConnectionStatusListener
 import com.flipperdevices.bridge.connection.transport.common.api.di.DeviceConnectionApiHolder
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import kotlin.reflect.KClass
 
-@ContributesBinding(AppGraph::class, FDeviceConfigToConnection::class)
+@ContributesBinding(AppGraph::class, binding<FDeviceConfigToConnection>())
 class FDeviceConfigToConnectionImpl @Inject constructor(
-    private val configToConnectionMap: Map<Class<*>, DeviceConnectionApiHolder>
+    private val configToConnectionMap: Map<KClass<*>, DeviceConnectionApiHolder>
 ) : FDeviceConfigToConnection {
     override suspend fun <API : FConnectedDeviceApi, CONFIG : FDeviceConnectionConfig<API>> connect(
         scope: CoroutineScope,

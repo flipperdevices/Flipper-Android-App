@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.faphub.installedtab.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.faphub.installedtab.api)
 
     implementation(projects.components.core.di)
@@ -30,17 +31,15 @@ dependencies {
     implementation(projects.components.inappnotification.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.compose.paging)
     implementation(libs.decompose)
     implementation(libs.coil.compose)
 
     implementation(libs.kotlin.immutable.collections)
+}
 
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
+dependencies {
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockk)
 }

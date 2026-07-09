@@ -11,9 +11,9 @@ import com.flipperdevices.faphub.report.impl.model.FapReportNavigationConfig
 import com.flipperdevices.ui.decompose.DecomposeComponent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.popOr
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, FapReportDecomposeComponent.Factory::class)
 class FapReportDecomposeComponentImpl @AssistedInject constructor(

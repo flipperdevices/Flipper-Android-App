@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 private const val CHECK_CANCEL_DELAY = 100L
 

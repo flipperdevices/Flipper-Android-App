@@ -39,7 +39,7 @@ internal fun RemoteGridTopBar(
 
             else -> {
                 val progress by animateIntAsState(saveProgress)
-                stringResource(R.string.uploading_to_flipper).format("$progress%")
+                stringResource(R.string.uploading_to_flipper, "$progress%")
             }
         },
         actions = {

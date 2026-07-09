@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.singleactivity.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.log)
     implementation(projects.components.core.ktx)
@@ -27,10 +28,6 @@ dependencies {
     implementation(libs.annotations)
     implementation(libs.appcompat)
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
     implementation(libs.compose.activity)
 

@@ -9,7 +9,7 @@ object ApkConfig {
     const val MIN_SDK_VERSION = 26
 
     const val TARGET_SDK_VERSION = 36
-    const val COMPILE_SDK_VERSION = 36
+    const val COMPILE_SDK_VERSION = 37
     const val ROBOELECTRIC_SDK_VERSION = 34
 
     private const val DEBUG_VERSION = "1.0.0"

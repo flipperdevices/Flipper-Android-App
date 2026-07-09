@@ -19,14 +19,14 @@ import com.flipperdevices.filemanager.download.api.DownloadDecomposeComponent
 import com.flipperdevices.filemanager.download.impl.composable.DownloadingComposable
 import com.flipperdevices.filemanager.download.impl.viewmodel.DownloadViewModel
 import com.flipperdevices.filemanager.download.model.DownloadableFile
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.plus
-import me.gulya.anvil.assisted.ContributesAssistedFactory
-import javax.inject.Provider
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Provider
 
 @ContributesAssistedFactory(AppGraph::class, DownloadDecomposeComponent.Factory::class)
 class DownloadDecomposeComponentImpl @AssistedInject constructor(
@@ -34,7 +34,7 @@ class DownloadDecomposeComponentImpl @AssistedInject constructor(
     private val downloadViewModelFactory: Provider<DownloadViewModel>,
 ) : DownloadDecomposeComponent(componentContext) {
     private val downloadViewModel = instanceKeeper.getOrCreate {
-        downloadViewModelFactory.get()
+        downloadViewModelFactory.invoke()
     }
 
     override val isInProgress = downloadViewModel.state

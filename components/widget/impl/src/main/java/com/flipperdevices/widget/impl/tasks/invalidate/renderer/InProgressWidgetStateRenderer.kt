@@ -12,12 +12,13 @@ import com.flipperdevices.widget.impl.R
 import com.flipperdevices.widget.impl.broadcast.WidgetBroadcastReceiver
 import com.flipperdevices.widget.impl.model.WidgetRendererOf
 import com.flipperdevices.widget.impl.model.WidgetState
-import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import com.flipperdevices.core.ui.res.R as DesignSystem
+import dev.zacsweers.metro.binding
 
 @WidgetRendererOf(WidgetState.IN_PROGRESS)
-@ContributesMultibinding(AppGraph::class, WidgetStateRenderer::class)
+@ContributesIntoMap(AppGraph::class, binding<WidgetStateRenderer>())
 class InProgressWidgetStateRenderer @Inject constructor(
     private val context: Context
 ) : WidgetStateRenderer, LogTagProvider {

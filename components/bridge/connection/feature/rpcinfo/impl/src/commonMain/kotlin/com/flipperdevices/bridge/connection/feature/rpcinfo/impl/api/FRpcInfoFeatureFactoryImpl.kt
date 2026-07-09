@@ -8,12 +8,13 @@ import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureA
 import com.flipperdevices.bridge.connection.feature.rpc.api.FRpcFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 @FDeviceFeatureQualifier(FDeviceFeature.RPC_INFO)
-@ContributesMultibinding(AppGraph::class, FDeviceFeatureApi.Factory::class)
+@ContributesIntoMap(AppGraph::class, binding<FDeviceFeatureApi.Factory>())
 class FRpcInfoFeatureFactoryImpl @Inject constructor(
     private val factory: FRpcInfoFeatureApiImpl.InternalFactory
 ) : FDeviceFeatureApi.Factory {

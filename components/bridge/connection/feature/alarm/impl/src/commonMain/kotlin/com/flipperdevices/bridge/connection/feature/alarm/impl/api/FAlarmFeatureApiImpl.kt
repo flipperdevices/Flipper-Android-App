@@ -6,9 +6,9 @@ import com.flipperdevices.bridge.connection.feature.rpc.model.wrapToRequest
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.protobuf.Main
 import com.flipperdevices.protobuf.system.PlayAudiovisualAlertRequest
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 
 class FAlarmFeatureApiImpl @AssistedInject constructor(
     @Assisted private val rpcFeatureApi: FRpcFeatureApi,

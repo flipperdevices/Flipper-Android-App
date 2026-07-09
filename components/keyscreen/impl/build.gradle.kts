@@ -1,12 +1,13 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
     id("kotlinx-serialization")
 }
 
 android.namespace = "com.flipperdevices.keyscreen.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.keyscreen.api)
     implementation(projects.components.share.api)
     implementation(projects.components.keyscreen.shared)
@@ -42,10 +43,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.material)
     implementation(libs.bundles.decompose)
     implementation(libs.image.lottie)
 
@@ -56,10 +53,13 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.mockk)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.mockk)
 }

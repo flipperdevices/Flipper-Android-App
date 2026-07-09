@@ -12,9 +12,9 @@ import com.flipperdevices.share.api.KeyReceiveDecomposeComponent
 import com.flipperdevices.share.receive.composable.ComposableKeyReceive
 import com.flipperdevices.share.receive.viewmodels.KeyReceiveViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import me.gulya.anvil.assisted.ContributesAssistedFactory
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedInject
+import uk.kulikov.metro.assisted.ContributesAssistedFactory
 
 @ContributesAssistedFactory(AppGraph::class, KeyReceiveDecomposeComponent.Factory::class)
 class KeyReceiveDecomposeComponentImpl @AssistedInject constructor(

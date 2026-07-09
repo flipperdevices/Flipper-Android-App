@@ -11,16 +11,17 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.log.error
 import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.remotecontrols.api.SaveTempSignalApi
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val EXT_PATH = "/ext"
 
-@ContributesBinding(AppGraph::class, SaveTempSignalApi::class)
+@ContributesBinding(AppGraph::class, binding<SaveTempSignalApi>())
 class SaveTempSignalViewModel @Inject constructor(
     private val fFeatureProvider: FFeatureProvider,
     private val storageProvider: FlipperStorageProvider

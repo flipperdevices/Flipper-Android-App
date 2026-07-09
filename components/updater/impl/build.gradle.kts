@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-lib")
+    id("flipper.multiplatform")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.updater.impl"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.updater.api)
     implementation(projects.components.updater.subghz)
 
@@ -35,17 +36,20 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
 
     // Testing
-    testImplementation(projects.components.core.test)
-    testImplementation(libs.junit)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.ktx.testing)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.lifecycle.test)
-    testImplementation(libs.kotlin.coroutines.test)
-    testImplementation(projects.components.updater.downloader)
-    testImplementation(libs.ktor.client)
-    testImplementation(libs.ktor.negotiation)
-    testImplementation(libs.ktor.serialization)
-    testImplementation(libs.ktor.mock)
-    testImplementation(libs.kotlin.serialization.json)
+}
+
+dependencies {
+    "androidUnitTestImplementation"(projects.components.core.test)
+    "androidUnitTestImplementation"(libs.junit)
+    "androidUnitTestImplementation"(libs.mockito.kotlin)
+    "androidUnitTestImplementation"(libs.ktx.testing)
+    "androidUnitTestImplementation"(libs.roboelectric)
+    "androidUnitTestImplementation"(libs.lifecycle.test)
+    "androidUnitTestImplementation"(libs.kotlin.coroutines.test)
+    "androidUnitTestImplementation"(projects.components.updater.downloader)
+    "androidUnitTestImplementation"(libs.ktor.client)
+    "androidUnitTestImplementation"(libs.ktor.negotiation)
+    "androidUnitTestImplementation"(libs.ktor.serialization)
+    "androidUnitTestImplementation"(libs.ktor.mock)
+    "androidUnitTestImplementation"(libs.kotlin.serialization.json)
 }

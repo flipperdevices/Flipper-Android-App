@@ -9,12 +9,13 @@ import com.flipperdevices.core.ktx.jre.runBlockingWithLog
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import com.flipperdevices.core.preference.pb.PairSettings
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.first
 import java.util.UUID
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FirstPairStorage::class)
+@ContributesBinding(AppGraph::class, binding<FirstPairStorage>())
 class FirstPairStorageImpl @Inject constructor(
     private val pairSettingsStore: DataStore<PairSettings>,
     private val persistedStorage: FDevicePersistedStorage

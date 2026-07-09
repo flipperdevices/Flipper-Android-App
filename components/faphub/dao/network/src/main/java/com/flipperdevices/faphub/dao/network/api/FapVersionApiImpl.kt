@@ -7,12 +7,13 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.faphub.dao.api.FapVersionApi
 import com.flipperdevices.faphub.dao.network.network.api.FapNetworkVersionApi
 import com.flipperdevices.faphub.dao.network.network.model.requests.KtorfitDetailedVersionRequest
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private const val MAX_QUERY_ARRAY_SIZE = 500
 
-@ContributesBinding(AppGraph::class, FapVersionApi::class)
+@ContributesBinding(AppGraph::class, binding<FapVersionApi>())
 class FapVersionApiImpl @Inject constructor(
     private val fapNetworkVersionApi: FapNetworkVersionApi
 ) : FapVersionApi, LogTagProvider {

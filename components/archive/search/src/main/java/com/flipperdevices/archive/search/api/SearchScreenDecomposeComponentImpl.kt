@@ -12,10 +12,10 @@ import com.flipperdevices.rootscreen.api.LocalRootNavigation
 import com.flipperdevices.rootscreen.model.RootScreenConfig
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
@@ -29,7 +29,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     override fun Render() {
         val keyboard = LocalSoftwareKeyboardController.current
         val searchViewModel: SearchViewModel = viewModelWithFactory(key = null) {
-            searchViewModelProvider.get()
+            searchViewModelProvider.invoke()
         }
 
         val rootNavigation = LocalRootNavigation.current

@@ -32,10 +32,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import com.flipperdevices.core.di.AppGraph
 
-@Singleton
+@SingleIn(AppGraph::class)
 class InstalledFapsFromNetworkProducer @Inject constructor(
     private val installedFapsUidsProducer: InstalledFapsUidsProducer,
     private val flipperTargetProviderApi: FlipperTargetProviderApi,

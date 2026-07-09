@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import com.flipperdevices.core.di.ComponentHolder
 import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.widget.impl.di.WidgetComponent
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class InvalidateWidgetsWorker(
     context: Context,

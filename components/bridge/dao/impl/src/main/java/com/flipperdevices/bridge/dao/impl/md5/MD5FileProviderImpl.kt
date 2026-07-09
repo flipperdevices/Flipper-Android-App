@@ -5,14 +5,15 @@ import com.flipperdevices.bridge.dao.impl.comparator.FileComparator
 import com.flipperdevices.core.FlipperStorageProvider
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.log.verbose
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import okio.Path
 import okio.buffer
 import okio.source
 import okio.use
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, MD5FileProvider::class)
+@ContributesBinding(AppGraph::class, binding<MD5FileProvider>())
 class MD5FileProviderImpl @Inject constructor(
     private val fileComparator: FileComparator,
     private val storageProvider: FlipperStorageProvider

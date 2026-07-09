@@ -10,7 +10,7 @@ import com.flipperdevices.ifrmvp.backend.model.InfraredsResponse
 import com.flipperdevices.ifrmvp.backend.model.PagesLayoutBackendModel
 import com.flipperdevices.ifrmvp.backend.model.SignalRequestModel
 import com.flipperdevices.ifrmvp.backend.model.SignalResponseModel
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -20,9 +20,10 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, InfraredBackendApi::class)
+@ContributesBinding(AppGraph::class, binding<InfraredBackendApi>())
 class InfraredBackendApiImpl(
     private val httpClient: HttpClient,
     private val host: InfraredHost = InfraredHost.PROD

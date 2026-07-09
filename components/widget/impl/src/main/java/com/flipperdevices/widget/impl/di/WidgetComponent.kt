@@ -10,7 +10,7 @@ import com.flipperdevices.widget.impl.tasks.WaitForEmulateEndWorker
 import com.flipperdevices.widget.impl.tasks.WaitingForFlipperConnectWorker
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsWorker
-import com.squareup.anvil.annotations.ContributesTo
+import dev.zacsweers.metro.ContributesTo
 
 @ContributesTo(AppGraph::class)
 interface WidgetComponent {

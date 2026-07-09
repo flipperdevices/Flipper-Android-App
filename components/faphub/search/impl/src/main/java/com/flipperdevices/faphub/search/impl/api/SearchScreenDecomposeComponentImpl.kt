@@ -19,10 +19,10 @@ import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
@@ -39,7 +39,7 @@ class SearchScreenDecomposeComponentImpl @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val searchViewModel = viewModelWithFactory(key = null) {
-            searchViewModelProvider.get()
+            searchViewModelProvider.invoke()
         }
         val fapsList = searchViewModel.faps.collectAsLazyPagingItems()
         val searchRequest by searchViewModel.getSearchRequest().collectAsState()

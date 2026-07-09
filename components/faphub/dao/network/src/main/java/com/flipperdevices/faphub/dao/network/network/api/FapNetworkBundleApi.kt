@@ -7,8 +7,8 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.prepareGet
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpStatement
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class FapNetworkBundleApi @Inject constructor(
     private val httpClient: HttpClient,

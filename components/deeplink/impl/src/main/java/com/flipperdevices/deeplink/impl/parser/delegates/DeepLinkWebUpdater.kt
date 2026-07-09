@@ -7,15 +7,16 @@ import com.flipperdevices.core.log.LogTagProvider
 import com.flipperdevices.deeplink.api.DeepLinkParserDelegate
 import com.flipperdevices.deeplink.model.DeepLinkParserDelegatePriority
 import com.flipperdevices.deeplink.model.Deeplink
-import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
 private val SUPPORTED_HOSTS = listOf("lab.flipper.net", "my.flipp.dev")
 private const val QUERY_URL = "url"
 private const val QUERY_VERSION = "version"
 private const val QUERY_CHANNEL = "channel"
 
-@ContributesMultibinding(AppGraph::class, DeepLinkParserDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<DeepLinkParserDelegate>())
 class DeepLinkWebUpdater @Inject constructor() : DeepLinkParserDelegate, LogTagProvider {
     override val TAG = "DeepLinkWebUpdater"
 

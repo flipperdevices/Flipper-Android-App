@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FlipperColorViewModel @Inject constructor(
     fDevicePersistedStorage: FDevicePersistedStorage,

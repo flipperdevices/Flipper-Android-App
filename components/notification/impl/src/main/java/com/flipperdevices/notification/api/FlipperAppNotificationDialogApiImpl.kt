@@ -21,11 +21,12 @@ import com.flipperdevices.core.ui.ktx.image.painterResourceByKey
 import com.flipperdevices.core.ui.lifecycle.viewModelWithFactory
 import com.flipperdevices.notification.impl.R
 import com.flipperdevices.notification.viewmodel.NotificationDialogViewModel
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FlipperAppNotificationDialogApi::class)
+@ContributesBinding(AppGraph::class, binding<FlipperAppNotificationDialogApi>())
 class FlipperAppNotificationDialogApiImpl @Inject constructor(
     private val notificationDialogViewModelProvider: Provider<NotificationDialogViewModel>
 ) : FlipperAppNotificationDialogApi, LogTagProvider {
@@ -37,7 +38,7 @@ class FlipperAppNotificationDialogApiImpl @Inject constructor(
         componentContext: ComponentContext
     ) {
         val dialogViewModel = componentContext.viewModelWithFactory(key = null) {
-            notificationDialogViewModelProvider.get()
+            notificationDialogViewModelProvider.invoke()
         }
         val isDialogShown by dialogViewModel.isNotificationShown().collectAsState()
 

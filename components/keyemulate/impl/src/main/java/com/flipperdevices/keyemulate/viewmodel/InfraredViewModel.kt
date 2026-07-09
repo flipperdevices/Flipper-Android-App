@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class InfraredViewModel @Inject constructor(
     synchronizationApi: SynchronizationApi,

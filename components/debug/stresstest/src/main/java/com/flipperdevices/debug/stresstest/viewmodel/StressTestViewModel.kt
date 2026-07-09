@@ -36,7 +36,7 @@ import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import kotlin.random.Random
 
 const val BUFFER_SIZE = 20 * 1024

@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 private const val TIMEOUT_MS = 30L * 1000
 

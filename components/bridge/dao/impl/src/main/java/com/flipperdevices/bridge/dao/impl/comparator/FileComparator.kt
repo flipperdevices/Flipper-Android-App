@@ -7,7 +7,7 @@ import okio.BufferedSource
 import okio.FileSystem
 import okio.Path
 import okio.buffer
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FileComparator @Inject constructor(
     private val flipperStorageProvider: FlipperStorageProvider

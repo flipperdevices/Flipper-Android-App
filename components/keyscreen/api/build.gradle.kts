@@ -1,11 +1,12 @@
 plugins {
-    id("flipper.android-compose")
+    id("flipper.multiplatform-compose")
+    id("flipper.multiplatform-dependencies")
     id("flipper.anvil")
 }
 
 android.namespace = "com.flipperdevices.keyscreen.api"
 
-dependencies {
+androidDependencies {
     implementation(projects.components.core.di)
     implementation(projects.components.core.ui.ktx)
     implementation(projects.components.core.ui.decompose)
@@ -15,8 +16,6 @@ dependencies {
     implementation(projects.components.bridge.connection.feature.emulate.api)
 
     // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.foundation)
     implementation(libs.decompose)
 
     implementation(projects.components.keyemulate.api)

@@ -15,7 +15,7 @@ import com.flipperdevices.info.impl.model.FlipperBasicInfo
 import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ShareFullInfoFileViewModel @Inject constructor(
     private val application: Application,

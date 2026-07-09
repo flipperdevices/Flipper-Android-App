@@ -12,8 +12,8 @@ import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.selfupdater.api.SelfUpdaterApi
 import com.flipperdevices.unhandledexception.api.UnhandledExceptionApi
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 private var appOpenReported = false
 
@@ -31,7 +31,7 @@ class OnCreateHandlerDispatcher @Inject constructor(
         }
 
         try {
-            unhandledExceptionApiProvider.get().initExceptionHandler()
+            unhandledExceptionApiProvider.invoke().initExceptionHandler()
         } catch (@Suppress("TooGenericExceptionCaught") throwable: Throwable) {
             error(throwable) { "Failed init unhandledExceptionApi" }
         }
@@ -39,7 +39,7 @@ class OnCreateHandlerDispatcher @Inject constructor(
         lifecycleOwner.lifecycleScope.launch(FlipperDispatchers.workStealingDispatcher) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 try {
-                    selfUpdaterApiProvider.get().startCheckUpdate()
+                    selfUpdaterApiProvider.invoke().startCheckUpdate()
                 } catch (@Suppress("TooGenericExceptionCaught") throwable: Throwable) {
                     error(throwable) { "Failed initial check update" }
                 }

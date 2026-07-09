@@ -4,12 +4,13 @@ import androidx.datastore.core.DataStore
 import com.flipperdevices.bridge.connection.feature.storage.api.FStorageFeatureApi
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.Settings
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(scope = AppGraph::class, boundType = UpdateOfferDelegate::class)
+@ContributesIntoSet(AppGraph::class, binding<UpdateOfferDelegate>())
 class UpdateOfferDebugFlagAlways @Inject constructor(
     private val dataStoreSettings: DataStore<Settings>
 ) : UpdateOfferDelegate {

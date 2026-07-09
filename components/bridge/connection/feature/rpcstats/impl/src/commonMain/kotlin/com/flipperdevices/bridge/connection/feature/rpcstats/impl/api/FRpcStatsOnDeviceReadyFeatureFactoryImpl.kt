@@ -7,11 +7,12 @@ import com.flipperdevices.bridge.connection.feature.getinfo.api.FGetInfoFeatureA
 import com.flipperdevices.bridge.connection.feature.storageinfo.api.FStorageInfoFeatureApi
 import com.flipperdevices.bridge.connection.transport.common.api.FConnectedDeviceApi
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesMultibinding
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesMultibinding(AppGraph::class, FOnDeviceReadyFeatureApi.Factory::class)
+@ContributesIntoSet(AppGraph::class, binding<FOnDeviceReadyFeatureApi.Factory>())
 class FRpcStatsOnDeviceReadyFeatureFactoryImpl @Inject constructor(
     private val factory: FRpcStatsOnDeviceReadyFeatureApiImpl.InternalFactory
 ) : FOnDeviceReadyFeatureApi.Factory {

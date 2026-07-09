@@ -10,13 +10,14 @@ import com.flipperdevices.metric.api.events.SessionState
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.metric.impl.clickhouse.ClickhouseApi
 import com.flipperdevices.metric.impl.countly.CountlyApi
-import com.squareup.anvil.annotations.ContributesBinding
-import dagger.Reusable
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@Reusable
-@ContributesBinding(AppGraph::class, MetricApi::class)
-@ContributesBinding(AppGraph::class, MetricAndroidApi::class)
+@SingleIn(AppGraph::class)
+@ContributesBinding(AppGraph::class, binding<MetricApi>())
+@ContributesBinding(AppGraph::class, binding<MetricAndroidApi>())
 class MetricApiImpl @Inject constructor(
     private val countlyApi: CountlyApi,
     private val clickhouseApi: ClickhouseApi

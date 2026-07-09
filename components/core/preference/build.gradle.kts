@@ -1,14 +1,18 @@
-import io.gitlab.arturbosch.detekt.Detekt
+import com.squareup.wire.gradle.WireTask
+import dev.detekt.gradle.Detekt
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.kotlin.dsl.withType
 
 plugins {
     id("flipper.multiplatform")
     id("flipper.multiplatform-dependencies")
-    id("flipper.anvil-multiplatform")
+    id("flipper.anvil")
     alias(libs.plugins.wire)
 }
 
 android.namespace = "com.flipperdevices.core.preference"
+
+val wireOutputDir = layout.buildDirectory.dir("generated/source/wire")
 
 commonDependencies {
     implementation(projects.components.core.di)
@@ -22,7 +26,18 @@ tasks.withType<Detekt> {
 }
 
 wire {
+    sourcePath {
+        srcDir("src/commonMain/proto")
+    }
     kotlin {
+        out = wireOutputDir.get().asFile.path
         enumMode = "sealed_class"
+    }
+}
+
+configure<KotlinMultiplatformExtension> {
+    sourceSets.named("commonMain") {
+        // builtBy is required for Gradle strict task validation.
+        kotlin.srcDir(files(wireOutputDir).builtBy(tasks.withType<WireTask>()))
     }
 }

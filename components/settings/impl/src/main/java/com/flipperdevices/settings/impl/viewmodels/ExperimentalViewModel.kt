@@ -7,8 +7,8 @@ import com.flipperdevices.core.ui.lifecycle.DecomposeViewModel
 import com.flipperdevices.metric.api.MetricApi
 import com.flipperdevices.metric.api.events.SimpleEvent
 import com.flipperdevices.settings.impl.model.SettingsNavigationConfig
-import javax.inject.Inject
-import javax.inject.Provider
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Provider
 
 class ExperimentalViewModel @Inject constructor(
     metricApiProvider: Provider<MetricApi>

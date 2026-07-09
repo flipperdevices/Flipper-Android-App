@@ -13,12 +13,13 @@ import com.flipperdevices.core.preference.pb.FlipperZeroBle
 import com.flipperdevices.core.preference.pb.FlipperZeroUsb
 import com.flipperdevices.core.preference.pb.NewPairSettings
 import com.flipperdevices.core.preference.pb.SavedDevice
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, FDevicePersistedStorage::class)
+@ContributesBinding(AppGraph::class, binding<FDevicePersistedStorage>())
 class FDevicePersistedStorageImpl @Inject constructor(
     private val newPairSettings: DataStore<NewPairSettings>
 ) : FDevicePersistedStorage, LogTagProvider {

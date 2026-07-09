@@ -5,10 +5,11 @@ import com.flipperdevices.widget.api.WidgetApi
 import com.flipperdevices.widget.impl.model.WidgetState
 import com.flipperdevices.widget.impl.storage.WidgetStateStorage
 import com.flipperdevices.widget.impl.tasks.invalidate.InvalidateWidgetsHelper
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, WidgetApi::class)
+@ContributesBinding(AppGraph::class, binding<WidgetApi>())
 class WidgetApiImpl @Inject constructor(
     private val invalidateWidgetsHelper: InvalidateWidgetsHelper,
     private val updateStorage: WidgetStateStorage

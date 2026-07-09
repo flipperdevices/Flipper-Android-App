@@ -4,10 +4,11 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.ifrmvp.api.infrared.FlipperInfraredBackendApi
 import com.flipperdevices.ifrmvp.backend.model.toPagesLayout
 import com.flipperdevices.ifrmvp.model.PagesLayout
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 
-@ContributesBinding(AppGraph::class, PagesRepository::class)
+@ContributesBinding(AppGraph::class, binding<PagesRepository>())
 class BackendPagesRepository @Inject constructor(
     private val infraredBackendApi: FlipperInfraredBackendApi,
 ) : PagesRepository {

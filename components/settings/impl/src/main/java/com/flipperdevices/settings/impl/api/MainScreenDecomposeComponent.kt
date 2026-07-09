@@ -13,10 +13,10 @@ import com.flipperdevices.settings.impl.viewmodels.SettingsViewModel
 import com.flipperdevices.settings.impl.viewmodels.VersionViewModel
 import com.flipperdevices.ui.decompose.DecomposeOnBackParameter
 import com.flipperdevices.ui.decompose.ScreenDecomposeComponent
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import javax.inject.Provider
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.Provider
 
 @Suppress("LongParameterList")
 class MainScreenDecomposeComponent @AssistedInject constructor(
@@ -32,16 +32,16 @@ class MainScreenDecomposeComponent @AssistedInject constructor(
     @Suppress("NonSkippableComposable")
     override fun Render() {
         val settingsViewModel = viewModelWithFactory(key = null) {
-            settingsViewModelProvider.get()
+            settingsViewModelProvider.invoke()
         }
         val notificationViewModel = viewModelWithFactory(key = null) {
-            notificationViewModelProvider.get()
+            notificationViewModelProvider.invoke()
         }
         val debugViewModel = viewModelWithFactory(key = null) {
-            debugViewModelProvider.get()
+            debugViewModelProvider.invoke()
         }
         val versionViewModel = viewModelWithFactory(key = null) {
-            versionViewModelProvider.get()
+            versionViewModelProvider.invoke()
         }
 
         ComposableSettings(

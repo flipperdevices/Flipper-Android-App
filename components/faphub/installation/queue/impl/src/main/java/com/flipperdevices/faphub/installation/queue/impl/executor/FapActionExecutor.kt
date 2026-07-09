@@ -5,7 +5,7 @@ import com.flipperdevices.core.log.info
 import com.flipperdevices.core.progress.ProgressListener
 import com.flipperdevices.faphub.installation.manifest.api.FapManifestApi
 import com.flipperdevices.faphub.installation.queue.api.model.FapActionRequest
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class FapActionExecutor @Inject constructor(
     private val installationExecutor: InstallationActionExecutor,
