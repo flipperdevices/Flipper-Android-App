@@ -5,11 +5,12 @@ import android.hardware.usb.UsbManager
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.core.di.AppGraph
 import com.hoho.android.usbserial.driver.UsbSerialProber
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, USBPlatformDeviceFactory::class)
+@ContributesBinding(AppGraph::class, binding<USBPlatformDeviceFactory>())
 class USBAndroidDeviceFactory @Inject constructor(
     private val context: Context
 ) : USBPlatformDeviceFactory {

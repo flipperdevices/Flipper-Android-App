@@ -3,11 +3,12 @@ package com.flipperdevices.bridge.connection.transport.usb.impl.model
 import com.fazecast.jSerialComm.SerialPort
 import com.flipperdevices.bridge.connection.transport.usb.api.FUSBDeviceConnectionConfig
 import com.flipperdevices.core.di.AppGraph
-import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
-import javax.inject.Inject
 
-@ContributesBinding(AppGraph::class, USBPlatformDeviceFactory::class)
+@ContributesBinding(AppGraph::class, binding<USBPlatformDeviceFactory>())
 class USBDesktopDeviceFactory @Inject constructor() : USBPlatformDeviceFactory {
     override fun getUSBPlatformDevice(
         config: FUSBDeviceConnectionConfig,

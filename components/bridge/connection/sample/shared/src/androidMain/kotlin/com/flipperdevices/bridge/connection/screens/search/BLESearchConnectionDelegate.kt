@@ -7,7 +7,11 @@ import com.flipperdevices.bridge.connection.config.api.FDevicePersistedStorage
 import com.flipperdevices.bridge.connection.config.api.model.FDeviceFlipperZeroBleModel
 import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.preference.pb.FlipperZeroBle
-import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.binding
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -23,13 +27,10 @@ import no.nordicsemi.android.kotlin.ble.core.scanner.BleScanMode
 import no.nordicsemi.android.kotlin.ble.core.scanner.BleScannerSettings
 import no.nordicsemi.android.kotlin.ble.scanner.BleScanner
 import no.nordicsemi.android.kotlin.ble.scanner.aggregator.BleScanResultAggregator
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
 
 @SuppressLint("MissingPermission")
-@ContributesBinding(AppGraph::class, binding<ConnectionSearchViewModel>())
-class BLESearchViewModel @Inject constructor(
-    @Assisted viewModelScope: CoroutineScope,
+class BLESearchConnectionDelegate @AssistedInject constructor(
+    @Assisted scope: CoroutineScope,
     context: Context,
     persistedStorage: FDevicePersistedStorage
 ) : ConnectionSearchDelegate {
@@ -61,10 +62,16 @@ class BLESearchViewModel @Inject constructor(
                 )
             }
         }.onEach { devicesFlow.emit(it.toPersistentList()) }
-            .launchIn(viewModelScope)
+            .launchIn(scope)
     }
 
     override fun getDevicesFlow() = devicesFlow.asStateFlow()
+
+    @AssistedFactory
+    @ContributesIntoSet(AppGraph::class, binding<ConnectionSearchDelegate.Factory>())
+    fun interface Factory : ConnectionSearchDelegate.Factory {
+        override fun invoke(scope: CoroutineScope): BLESearchConnectionDelegate
+    }
 }
 
 private fun ServerDevice.toFDeviceFlipperZeroBleModel() = FDeviceFlipperZeroBleModel(
