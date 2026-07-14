@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 
 buildCache {
     remote<HttpBuildCache> {
-        isEnabled = providers.gradleProperty("flipper.gradleRemoteEnabled").orNull.toBoolean()
+        isEnabled = providers.gradleProperty("flipper.gradleRemoteToken").isPresent
 
         url = uri("https://cache.eu-central-a.buildfetch.com/WVl8kn/gradle/")
 
