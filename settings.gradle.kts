@@ -19,6 +19,21 @@ dependencyResolutionManagement {
     }
 }
 
+buildCache {
+    remote<HttpBuildCache> {
+        isEnabled = providers.gradleProperty("flipper_buildfetch_token").isPresent
+
+        url = uri("https://cache.eu-central-a.buildfetch.com/WVl8kn/gradle/")
+
+        credentials {
+            username = "token-auth"
+            password = providers.gradleProperty("flipper_buildfetch_token").orNull
+        }
+
+        isPush = providers.gradleProperty("flipper_buildfetch_write_enabled").orNull.toBoolean()
+    }
+}
+
 rootProject.name = "FlipperApp"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
