@@ -30,6 +30,9 @@ jobs:
         with:
           cache-read-only: false
       - name: Build internal
+        env:
+          ORG_GRADLE_PROJECT_flipper_buildfetch_write_enabled: true
+          ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
         run: ./gradlew testAndroidHostTest desktopTest detekt lint
   build_number:
     name: Generate build number
@@ -97,6 +100,7 @@ jobs:
           ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
           ORG_GRADLE_PROJECT_countly_url: ${{ secrets.COUNTLY_URL_PROD }}
           ORG_GRADLE_PROJECT_countly_app_key: ${{ secrets.COUNTLY_APP_KEY_PROD }}
+          ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
         run: |
           export $(cat .github/workflows/targets/${{ matrix.target }}.env | xargs)
           ./gradlew :instances:android:app:assembleInternal :instances:android:app:bundleInternal
@@ -159,6 +163,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           ORG_GRADLE_PROJECT_version_code: ${{ steps.vars.outputs.minor_version }}
           ORG_GRADLE_PROJECT_version_name: "${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}"
+          ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
         run: |
           export $(cat .github/workflows/targets/wearos.env | xargs)
           ./gradlew :instances:wearable:assembleInternal :instances:wearable:bundleInternal

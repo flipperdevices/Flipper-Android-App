@@ -9,6 +9,7 @@
 - [Refactor] Migrate to metro DI
 - [Refactor] Update build-logic
 - [Refactor] Update project dependencies
+- [Refactor] Add BuildFetch
 
 # 1.8.1
 

@@ -60,6 +60,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
       - name: "Test ${{ matrix.target }}"
+        env:
+          ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
         run: ./gradlew ${{ matrix.target }}
   detekt:
     name: "Check project by linters"
@@ -80,4 +82,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
       - name: "Lint by ${{ matrix.target }}"
+        env:
+          ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
         run: ./gradlew ${{ matrix.target }}
