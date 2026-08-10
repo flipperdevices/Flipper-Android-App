@@ -9,6 +9,7 @@
 - [Refactor] Update build-logic
 - [Refactor] Update project dependencies
 - [Refactor] Add BuildFetch
+- [CI] Add isolated-projects support
 
 
 # 1.8.1
