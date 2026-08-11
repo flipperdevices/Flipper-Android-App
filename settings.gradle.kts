@@ -64,6 +64,7 @@ include(
     ":components:bridge:connection:sample:shared",
     ":components:bridge:connection:sample:android",
     ":components:bridge:connection:sample:desktop",
+    ":components:bridge:connection:live-tests",
     ":components:bridge:connection:config:api",
     ":components:bridge:connection:config:impl",
     ":components:bridge:connection:transportconfigbuilder:api",

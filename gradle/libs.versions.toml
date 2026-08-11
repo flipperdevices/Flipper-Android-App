@@ -93,6 +93,7 @@ buildkonfig = "6.0.10"
 wire = "6.2.0"
 okio = "3.17.0"
 jserial = "2.11.4"
+usb-android = "3.8.1"
 
 
 [libraries]
@@ -230,6 +231,7 @@ ble-kotlin-client = { module = "no.nordicsemi.android.kotlin.ble:client", versio
 
 # USB
 jserial = { module = "com.fazecast:jSerialComm", version.ref = "jserial" }
+usb-android = { module = "com.github.mik3y:usb-serial-for-android", version.ref = "usb-android" }
 
 # Images
 image-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
