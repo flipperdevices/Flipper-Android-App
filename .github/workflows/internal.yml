@@ -21,7 +21,7 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.21
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -83,7 +83,7 @@ jobs:
           name: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_ID }}
           path: ${{ needs.create_internal_baseline.outputs.BASELINE_FILE_PATH }}
       - name: Set up JDK 1.21
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -148,7 +148,7 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.21
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -271,7 +271,7 @@ jobs:
           mv ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-gh_nogms.apk ${{ steps.artifacts_copy.outputs.path }}/flipper-zero-nogms-${{ steps.vars.outputs.major_version }}.${{ steps.vars.outputs.minor_version }}.apk
       - name: Create internal Release
         id: create_internal_release
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
