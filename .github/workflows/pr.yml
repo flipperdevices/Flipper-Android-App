@@ -53,12 +53,12 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.21
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
       - name: "Test ${{ matrix.target }}"
         env:
           ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
@@ -75,12 +75,12 @@ jobs:
         with:
           submodules: 'recursive'
       - name: Set up JDK 1.21
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
       - name: "Lint by ${{ matrix.target }}"
         env:
           ORG_GRADLE_PROJECT_flipper_buildfetch_token: ${{ secrets.GRADLE_REMOTE_CACHE_TOKEN }}
