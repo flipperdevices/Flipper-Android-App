@@ -12,7 +12,7 @@ import com.flipperdevices.core.ui.navigation.ComposableFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
 import tangle.viewmodel.compose.tangleViewModel
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppGraph::class, ${__formattedModuleName}FeatureEntry::class)
 @ContributesMultibinding(AppGraph::class, ComposableFeatureEntry::class)
@@ -38,7 +38,7 @@ import com.flipperdevices.core.di.AppGraph
 import com.flipperdevices.core.ui.navigation.AggregateFeatureEntry
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesMultibinding
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 import tangle.viewmodel.compose.tangleViewModel
 
 @ContributesBinding(AppGraph::class, ${__formattedModuleName}FeatureEntry::class)
