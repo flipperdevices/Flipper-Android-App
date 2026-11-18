@@ -20,6 +20,7 @@ androidDependencies {
 
     implementation(projects.components.bridge.dao.api)
     implementation(projects.components.bridge.connection.feature.storage.api)
+    implementation(projects.components.bridge.connection.feature.rpc.api)
     implementation(projects.components.bridge.connection.feature.common.api)
     implementation(projects.components.bridge.connection.feature.provider.api)
 

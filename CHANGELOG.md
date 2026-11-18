@@ -4,6 +4,7 @@
 
 - [Feature] Migrate app onto new BLE api
 - [Feature] Replaced old android library with multiplatform
+- [FIX] Fix synchronization hanging when favorites.txt is missing
 - [FIX] Fix CI for desktop sample app
 - [Refactor] Migrate to metro DI
 - [Refactor] Update build-logic
