@@ -1,5 +1,6 @@
 package com.flipperdevices.bridge.synchronization.impl.repository.flipper
 
+import com.flipperdevices.bridge.connection.feature.rpc.api.exception.FRpcStorageNotExistException
 import com.flipperdevices.bridge.dao.api.model.FlipperFilePath
 import com.flipperdevices.bridge.dao.api.model.FlipperKeyContent
 import com.flipperdevices.bridge.synchronization.impl.di.TaskGraph
@@ -9,10 +10,10 @@ import com.flipperdevices.bridge.synchronization.impl.model.KeyDiff
 import com.flipperdevices.core.ktx.jre.FlipperDispatchers
 import com.flipperdevices.core.log.LogTagProvider
 import dev.zacsweers.metro.ContributesBinding
-import kotlinx.coroutines.withContext
-import java.nio.charset.Charset
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
+import kotlinx.coroutines.withContext
+import java.nio.charset.Charset
 
 private val FAVORITES_PATH = FlipperFilePath("/", "favorites.txt")
 
@@ -49,10 +50,12 @@ class FlipperFavoritesRepositoryImpl @Inject constructor() :
     private suspend fun getFavoritesFromFlipper(
         flipperKeyStorage: FlipperKeyStorage
     ): List<String> = withContext(FlipperDispatchers.workStealingDispatcher) {
-        val favoritesFile = flipperKeyStorage.loadFile(
-            FAVORITES_PATH
-        ).openStream().use {
-            it.readBytes().toString(Charset.defaultCharset())
+        val favoritesFile = try {
+            flipperKeyStorage.loadFile(FAVORITES_PATH).openStream().use { stream ->
+                stream.readBytes().toString(Charset.defaultCharset())
+            }
+        } catch (_: FRpcStorageNotExistException) {
+            return@withContext emptyList()
         }
         return@withContext favoritesFile
             .split("\n")
