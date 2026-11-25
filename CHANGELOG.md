@@ -2,6 +2,7 @@
 
 # 1.8.2 - In Progress
 
+- [Feature] Add USB connection option to sample
 - [Feature] Migrate app onto new BLE api
 - [Feature] Replaced old android library with multiplatform
 - [FIX] Fix synchronization hanging when favorites.txt is missing
@@ -11,7 +12,6 @@
 - [Refactor] Update project dependencies
 - [Refactor] Add BuildFetch
 - [CI] Add isolated-projects support
-
 
 # 1.8.1
 

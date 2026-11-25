@@ -67,6 +67,8 @@ commonDependencies {
     api(projects.components.bridge.connection.feature.screenstreaming.impl)
     api(projects.components.bridge.connection.feature.update.api)
     api(projects.components.bridge.connection.feature.update.impl)
+    api(projects.components.bridge.connection.feature.emulate.api)
+    api(projects.components.bridge.connection.feature.emulate.impl)
 
     api(projects.components.filemngr.main.api)
     api(projects.components.filemngr.main.impl)
@@ -92,6 +94,8 @@ commonDependencies {
     api(projects.components.analytics.metric.api)
     api(projects.components.analytics.metric.noop)
 
+    api(projects.components.bridge.connection.liveTests)
+
     api(libs.kotlin.immutable.collections)
 
     implementation(projects.components.core.ui.res)
@@ -112,6 +116,9 @@ androidDependencies {
     api(projects.components.bridge.connection.transport.ble.api)
     api(projects.components.bridge.connection.transport.ble.impl)
 
+    api(projects.components.bridge.connection.transport.usb.api)
+    api(projects.components.bridge.connection.transport.usb.impl)
+
     api(projects.components.firstpair.connection.api)
 
     api(projects.components.keyparser.api)
@@ -128,4 +135,5 @@ androidDependencies {
     api(libs.ble.kotlin.client)
 
     api(libs.compose.activity)
+    implementation(libs.usb.android)
 }
